@@ -1,0 +1,321 @@
+<?php
+
+namespace PublishPress\Permissions;
+
+/**
+ * TermFilters class
+ *
+ * @package PressPermit
+ * @author Kevin Behrens <kevin@agapetry.net>
+ * @copyright Copyright (c) 2019, PublishPress
+ *
+ */
+
+class TermFilters
+{
+    public function __construct()
+    {
+        add_filter('get_terms_args', [$this, 'fltGetTermsArgs'], 50, 2);
+        add_filter('terms_clauses', [$this, 'fltTermsClauses'], 50, 3);
+
+        if (!presspermit()->isUserUnfiltered())
+            add_filter('get_the_terms', [$this, 'fltGetTheTerms'], 10, 3);
+
+        // Avoid redundant filtering when called from within a get_posts() call
+        // (PP filters already use posts_clauses filter to apply term exceptions via join)
+        add_action('pre_get_posts', [$this, 'actDisableFiltering']);
+    }
+
+    public function actDisableFiltering()
+    {
+        presspermit()->flags['disable_term_filtering'] = true;
+        add_action('posts_selection', [$this, 'actEnableFiltering']);
+    }
+
+    public function actEnableFiltering()
+    {
+        unset(presspermit()->flags['disable_term_filtering']);
+        remove_action('posts_selection', [$this, 'actEnableFiltering']);
+    }
+
+    public function fltGetTheTerms($terms, $post_id, $taxonomy)
+    {
+        static $busy;
+        if (!empty($busy)) {
+            return $terms;
+        }
+        $busy = true;  // @todo: necessary?
+
+        $user = presspermit()->getUser();
+
+        if ($terms) {
+            $args = [];
+            if ($this->skipFiltering((array)$taxonomy, $args))
+                return $terms;
+
+            if (defined('PP_GET_TERMS_SHORTCUT') && !did_action('wp_head'))  // experimental theme-specific workaround
+                return $terms;
+
+            if (!$_post = get_post($post_id))
+                return $terms;
+
+            if (!apply_filters('presspermit_skip_the_terms_filtering', false, $post_id)) {
+                if ($restrict_ids = $user->getExceptionTerms(
+                    'read',
+                    'include',
+                    $_post->post_type,
+                    $taxonomy,
+                    ['merge_universals' => true, 'return_term_ids' => true]
+                )) {
+                    foreach (array_keys($terms) as $key) {
+                        if (!in_array($terms[$key]->term_id, $restrict_ids)) {
+                            unset($terms[$key]);
+                        }
+                    }
+                } elseif ($restrict_ids = $user->getExceptionTerms(
+                    'read',
+                    '
+                    exclude',
+                    $_post->post_type,
+                    $taxonomy,
+                    ['merge_universals' => true, 'return_term_ids' => true]
+                )) {
+                    if ($add_ids = $user->getExceptionTerms(
+                        'read',
+                        'additional',
+                        $_post->post_type,
+                        $taxonomy,
+                        ['merge_universals' => true, 'return_term_ids' => true]
+                    )) {
+                        $restrict_ids = array_diff($restrict_ids, $add_ids);
+                    }
+
+                    foreach (array_keys($terms) as $key) {
+                        if (in_array($terms[$key]->term_id, $restrict_ids)) {
+                            unset($terms[$key]);
+                        }
+                    }
+                }
+            }
+        }
+
+        $busy = false;
+        return $terms;
+    }
+
+    private function skipFiltering($taxonomies, $args)
+    {
+        if (!$taxonomies = array_intersect($taxonomies, presspermit()->getEnabledTaxonomies())) {
+            return true;
+        }
+
+        if (
+            !empty($args['pp_no_filter']) || !empty(presspermit()->flags['disable_term_filtering'])
+            || apply_filters('presspermit_terms_skip_filtering', false, $taxonomies, $args)
+        ) {
+            return true;
+        }
+
+        if (!empty($args['fields']) && ('id=>parent' == $args['fields'])) { // internal storage of {$taxonomy}_children
+            return true;
+        }
+
+        if (!empty($args['object_ids']) && empty($args['required_operation'])) {  // WP 4.7 pushes wp_get_object_terms call through get_terms()
+            return true;
+        }
+
+        // Kriesi Enfold theme conflict on "More Posts" query
+        if (
+            defined('DOING_AJAX') && DOING_AJAX
+            && in_array($_REQUEST['action'], apply_filters('presspermit_unfiltered_ajax_termcount', ['avia_ajax_masonry_more']), true)
+        ) {
+            return true;
+        }
+
+        // Prevent term reading exceptions from filtering Gutenberg term assignment checkbox visibility
+        if (
+            !empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')
+            && !presspermit()->moduleActive('collaboration')
+        ) {
+            return true;
+        }
+    }
+
+    public function fltGetTermsArgs($args, $taxonomies)
+    {
+        if ($this->skipFiltering($taxonomies, $args))
+            return $args;
+
+        $defaults = ['skip_teaser' => false, 'post_type' => '', 'required_operation' => ''];
+        $args = wp_parse_args($args, $defaults);
+
+        if (('all' == $args['fields']) || $args['hide_empty'] || $args['pad_counts']) {
+            require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
+            $filters_obj = TermFiltersCount::instance();
+            $args = $filters_obj->fltGetTermsArgs($args);
+        }
+
+        return $args;
+    }
+
+    public function fltTermsClauses($clauses, $taxonomies, $args)
+    {
+        if ($this->skipFiltering($taxonomies, $args))
+            return $clauses;
+
+        $user = presspermit()->getUser();
+
+        if (('all' == $args['fields']) || $args['hide_empty'] || $args['pad_counts']) {
+            // adds get_terms filter to adjust post counts based on current user's access and pad_counts setting
+            require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
+            $filters_obj = TermFiltersCount::instance();
+            $clauses = $filters_obj->fltTermsClauses($clauses, $args);
+        }
+
+        if (empty($args['required_operation'])) {
+            $args['required_operation'] = apply_filters(
+                'presspermit_get_terms_operation',
+                PWP::isFront() ? 'read' : 'assign',
+                $taxonomies,
+                $args
+            );
+        }
+
+        // must consider all related post types when filtering terms list
+        // NOTE: If hide_empty is true, additional filtering will be applied to the results based on a full posts query.  
+        // Posts may have direct restrictions which make them inaccessable regardless of term restrictions.
+        $all_excluded_ttids = [];
+
+        $enabled_types = presspermit()->getEnabledPostTypes();
+        $required_operation = $args['required_operation'];
+
+        foreach ($taxonomies as $taxonomy) {
+            $excluded_ttids = $included_ttids = [];
+            $any_non_inclusions = false;
+
+            if (!in_array($required_operation, ['manage', 'associate'], true)) {
+                $universal = [];
+                $universal['include'] = $user->getExceptionTerms($required_operation, 'include', '', $taxonomy);
+                $universal['exclude'] = ($universal['include']) ? [] : $user->getExceptionTerms($required_operation, 'exclude', '', $taxonomy);
+                $universal['additional'] = $user->getExceptionTerms($required_operation, 'additional', '', $taxonomy);
+
+                $universal = apply_filters('presspermit_get_terms_universal_exceptions', $universal, $required_operation, $taxonomy, $args);
+
+                if (!empty($args['object_type']))
+                    $exception_types = array_intersect((array)$args['object_type'], $enabled_types);
+                else {
+                    $tx = get_taxonomy($taxonomy);
+                    $exception_types = array_intersect((array)$tx->object_type, $enabled_types);
+                }
+            } else {
+                $universal = array_fill_keys(['include', 'exclude', 'additional'], []);
+                $exception_types = [$taxonomy];
+            }
+
+            foreach ($exception_types as $post_type) {
+                $additional_tt_ids = apply_filters(
+                    'presspermit_get_terms_additional',
+                    array_merge(
+                        $universal['additional'],
+                        $user->getExceptionTerms($required_operation, 'additional', $post_type, $taxonomy)
+                    ),
+                    $required_operation,
+                    $post_type,
+                    $taxonomy,
+                    $args
+                );
+
+                foreach (['include', 'exclude'] as $mod_type) {
+                    $args['additional_tt_ids'] = $additional_tt_ids;
+
+                    $tt_ids = apply_filters(
+                        'presspermit_get_terms_exceptions',
+                        $user->getExceptionTerms($required_operation, $mod_type, $post_type, $taxonomy),
+                        $required_operation,
+                        $mod_type,
+                        $post_type,
+                        $taxonomy,
+                        $args
+                    );
+
+                    // remove type-specific inclusions from universal exclusions
+                    if ('include' == $mod_type) {
+                        $universal['exclude'] = array_diff($universal['exclude'], $tt_ids);
+                    }
+
+                    // merge type-specific exceptions with universal
+                    if ($tt_ids = array_merge($universal[$mod_type], $tt_ids)) {
+                        // add additional terms to includes set, and remove from exclude set (but only if include/exclude set exists to begin with)
+                        if ($additional_tt_ids) {
+                            $tt_ids = ('include' == $mod_type)
+                                ? array_merge($tt_ids, $additional_tt_ids)
+                                : array_diff($tt_ids, $additional_tt_ids);
+                        }
+                    }
+
+                    if ($tt_ids) {
+                        if ('include' == $mod_type) {
+                            $included_ttids = array_merge($included_ttids, $tt_ids);
+
+                            if (count($exception_types) > 1) {
+                                continue 2;  // don't support simultaneous include and exclude terms for the same taxonomy (but do support term assign exclusion even if an edit inclusion is set for the same term)
+                            }
+                        } else {
+                            $excluded_ttids[] = $tt_ids;
+                            $any_non_inclusions = true;
+                        }
+                    } else {
+                        $any_non_inclusions = true;
+
+                        if ('exclude' == $mod_type)
+                            $excluded_ttids[] = [];
+                    }
+                }
+            }
+
+            if ($excluded_ttids) {
+                // don't exclude a term unless it is excluded for all post types
+                $exc = $excluded_ttids[0];
+                for ($i = 1; $i < count($excluded_ttids); $i++) {
+                    $exc = array_intersect($exc, $excluded_ttids[$i]);
+                }
+
+                if ($exc) {
+                    // but don't exclude a term which is explicitly included for one or more post types
+                    if (count($exception_types) > 1) {
+                        $all_excluded_ttids = array_merge($all_excluded_ttids, array_diff($exc, $included_ttids));
+                    } else {
+                        $all_excluded_ttids = array_merge($all_excluded_ttids, $exc);
+                    }
+                }
+            }
+
+            if ($included_ttids) {
+                if (empty($wrapped)) {
+                    $clauses['where'] = "( {$clauses['where']} )";
+                    $wrapped = true;
+                }
+
+                // include terms were specified for all post types
+                if (count($taxonomies) == 1) {
+                    $clauses['where'] = " ( " . $clauses['where'] . " )"
+                        . " AND tt.term_taxonomy_id IN ('" . implode("','", array_unique($included_ttids)) . "')";
+                } else {
+                    $clauses['where'] .= " AND ( tt.taxonomy != '$taxonomy' "
+                        . "OR tt.term_taxonomy_id IN ('" . implode("','", array_unique($included_ttids)) . "') )";
+                }
+            }
+        }
+
+        if ($all_excluded_ttids) {
+            if (empty($wrapped)) {
+                $clauses['where'] = "( {$clauses['where']} )";
+                $wrapped = true;
+            }
+
+            $clauses['where'] .= " AND tt.term_taxonomy_id NOT IN ('" . implode("','", $all_excluded_ttids) . "')";
+        }
+
+        return $clauses;
+    }
+}

@@ -1,0 +1,4 @@
+#pp_add_permission_tabs .agp-unselected_agent, #pp_add_permission_tabs .agp-unselected_agent a {
+    background-color: white !important;
+    border-bottom: none;
+}

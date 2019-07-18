@@ -1,0 +1,356 @@
+/* PressPermit. Copyright (c) 2019 PublishPress.
+ * This file is licensed under the GNU GPL.
+ */
+
+/* --- Colors --- */
+.pp-gray, .pp-gray a, .pp-gray a:link, .pp-gray a:visited {
+    color: #888;
+}
+
+.pp-blue, .pp-blue a, .pp-blue a:link, .pp-blue a:visited {
+    color: blue;
+}
+
+.pp-green, .pp-green a, .pp-green a:link, .pp-green a:visited {
+    color: #0a0;
+}
+
+.pp-red, .pp-red a, .pp-red a:link, .pp-red a:visited {
+    color: #d00;
+}
+
+.pp-bg-gray {
+    background-color: #ededed;
+}
+
+.pp-subtext {
+    color: #777;
+    font-style: italic;
+    margin-top: 3px;
+}
+
+.pp-settings-caption {
+    margin-top: 10px;
+}
+
+/* --- Misc Admin --- */
+.pp-hint {
+    margin-top: 0.2em;
+    /*color: #393*/
+}
+
+.pp-notes {
+    margin-top: 0.2em;
+    list-style-type: circle;
+}
+
+.pp-notes li {
+    margin-bottom: 1em;
+    margin-left: 1.5em;
+}
+
+.pp-admin-notice {
+    padding: 10px;
+    line-height: 18px;
+    position: relative;
+}
+
+.pp-admin-notice-plugin {
+    margin-top: 30px;
+    margin-right: 120px;
+}
+
+#pp_dashboard_message, .pp-admin-notice, .pp-admin-notice-plugin {
+    padding: 10px;
+}
+
+.pp-ext-promo {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    margin-top: 1em;
+    color: #777;
+}
+
+.pp-ext-promo div {
+    margin-top: 0.3em;
+}
+
+#the-list a span.pp_nolink {
+    color: black;
+    text-decoration: none
+}
+
+#change_log.pp-update {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 540px;
+}
+
+#change_log.pp-update li {
+    margin-bottom: 10px
+}
+
+.pp-list_horiz {
+    width: 100%;
+    clear: both;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.pp-list_horiz li {
+    list-style: none;
+    float: left;
+    margin: 0;
+}
+
+.agp-vspaced_input {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.agp-opt-checkbox {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.agp-vtight_input {
+    margin-top: 2px;
+    margin-bottom: 4px;
+}
+
+span.pp-key-expired {
+    font-weight: bold;
+    color: #c00;
+    vertical-align: bottom;
+    margin-right: 0.5em
+}
+
+/* Contextual Help */
+#tab-panel-pp div {
+    margin-left: 20px;
+}
+
+div.pp-custom-privacy-promo, div.pp-file-filtering-promo {
+    margin-left: 5px;
+}
+
+/* --- User / Group display and selection (on several pages) --- */
+.pp-agents {
+    background-color: #FFFEEB;
+    padding: 0 0 0.2em 0.3em;
+    border: 1px solid #ccc;
+    margin-top: 0;
+}
+
+.pp-agents input {
+    vertical-align: text-bottom;
+}
+
+.agp-agent {
+    padding: 0.2em 0.5em 0.2em 0.5em;
+}
+
+.agp-unselected_agent {
+    border: none;
+    background: none;
+}
+
+.agp-selected_agent {
+    border: 1px solid #ccc;
+    background-color: #FFFEEB;
+    border-bottom: 1px solid #FFFEEB;
+}
+
+.agp-selected_agent a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.agp-unselected_agent a {
+    color: #00019b;
+    text-decoration: default;
+    font-weight: normal;
+}
+
+
+/* --- edit-tags.php (PP Exception metaboxes) --- */
+#edittag div.meta-box-sortables {
+    min-width: 420px;
+    max-width: 800px;
+}
+
+
+/* --- Users, Groups Listing --- */
+div.presspermit-groups .pp-group-site-roles {
+    font-weight: bold;
+}
+
+th.column-pp_no_groups, td.column-pp_no_groups, th.column-pp_no_groups a {
+    width: 30px;
+    text-align: right;
+    padding-right: 2px;
+}
+
+th.column-pp_groups, td.column-pp_groups, th.column-pp_groups a {
+    padding-left: 2px;
+    text-align: left;
+}
+
+div.pp-bulk-user-perm, p.pp-bulk-user-perm {
+    margin-top: 50px;
+}
+
+/* --- User Profile --- */
+#userprofile_groupsdiv_pp fieldset {
+    width: 90%;
+}
+
+#userprofile_groupsdiv_pp fieldset input {
+    width: auto;
+}
+
+
+/* --- User Profile and Permissions Edit --- */
+.pp-group-box {
+    margin: 2em 0 2em 0;
+    padding: 0 0.5em 0.5em 0.5em;
+    border: 1px solid black;
+}
+
+.pp-group-box h3 {
+    margin-top: 0.6em !important;
+}
+
+#poststuff .pp-group-box h3 {
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 0.5em 0 0.5em 0;
+}
+
+.pp-group_members h3 {
+    margin-bottom: 0;
+}
+
+.pp-group_members {
+    background-color: #eee;
+    margin-right: 20px;
+}
+
+.pp-group-roles {
+    background-color: #F3F9C4;
+    margin-bottom: 2em;
+}
+
+.pp-user-roles {
+    background-color: #EAF7F7;
+}
+
+.pp-current-roles-note {
+    color: #777;
+    margin-top: 0.4em;
+    margin-left: 4em;
+}
+
+option.pp-new-selection {
+    color: #00c;
+}
+
+.pp-bulk-groups {
+    margin-left: 14px;
+}
+
+.pp-usermeta-field-more {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.pp-user-meta-search {
+    white-space: nowrap;
+}
+
+
+/* Admin icon */
+/*
+#toplevel_page_presspermit-groups .dashicons-before::before,
+#toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before {
+    background-image: url(../img/menu/menu-icon.png);
+    background-repeat: no-repeat;
+    background-position: 0 8px;
+    background-size: 19px auto;
+    content: " ";
+    transition: none;
+    -moz-transition: none;
+    -webkit-transition: none;
+    -o-transition: none;
+}
+*/
+
+/* Admin icon customized per admin theme, excluding the default and light */
+.admin-color-blue #toplevel_page_presspermit-groups .dashicons-before::before,
+.admin-color-coffee #toplevel_page_presspermit-groups .dashicons-before::before,
+.admin-color-ectoplasm #toplevel_page_presspermit-groups .dashicons-before::before,
+.admin-color-midnight #toplevel_page_presspermit-groups .dashicons-before::before,
+.admin-color-ocean #toplevel_page_presspermit-groups .dashicons-before::before,
+.admin-color-sunrise #toplevel_page_presspermit-groups .dashicons-before::before,
+.admin-color-blue #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
+.admin-color-coffee #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
+.admin-color-ectoplasm #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
+.admin-color-midnight #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
+.admin-color-ocean #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
+.admin-color-sunrise #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
+.admin-color-blue #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+.admin-color-coffee #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+.admin-color-ectoplasm #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+.admin-color-midnight #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+.admin-color-ocean #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+.admin-color-sunrise #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+.admin-color-blue #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
+.admin-color-coffee #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
+.admin-color-ectoplasm #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
+.admin-color-midnight #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
+.admin-color-ocean #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
+.admin-color-sunrise #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before {
+    background-position: 0 -60px;
+}
+
+#toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+#toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before {
+    background-position: 0 -26px;
+}
+
+/* Customize the icon for "Light" admin theme's hover and active states */
+.admin-color-light #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+.admin-color-light #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before {
+    background-position: 0 8px;
+}
+
+#toplevel_page_presspermit-groups .wp-menu-open .dashicons-before::before,
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups .dashicons-before::before,
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups:hover .dashicons-before::before
+{
+    background-position: 0 -60px;
+}
+
+#toplevel_page_presspermit-groups > a.wp-menu-open,
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > a {
+    background: #655997 !important;
+}
+
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > a > div,
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > li:hover,
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > li a:focus
+{
+    color: #fff;
+}
+
+#toplevel_page_presspermit-groups ul li a[href*="presspermit-edit-permissions"] {
+    display: none;
+}
+
+
+.publishpress-extended-post-status select {
+    width: 120px;
+  }

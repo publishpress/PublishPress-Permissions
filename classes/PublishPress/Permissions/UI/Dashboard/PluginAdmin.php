@@ -1,0 +1,109 @@
+<?php
+
+namespace PublishPress\Permissions\UI\Dashboard;
+
+class PluginAdmin
+{
+    public function __construct()
+    {
+        add_filter('plugin_row_meta', [$this, 'fltPluginActionLinks'], 10, 2);
+
+        add_action('after_plugin_row_' . plugin_basename(PRESSPERMIT_FILE), [$this, 'actCorePluginStatus'], 10, 3);
+
+        if (!empty($_REQUEST['activate']) || !empty($_REQUEST['activate-multi'])) {
+            if (get_option('presspermit_activation')) {
+                delete_option('presspermit_activation');
+                $this->activationNotice();
+            }
+        }
+
+        if (!defined('PRESSPERMIT_PRO') && get_option('ppce_version') || get_option('pps_version') || get_option('ppp_version')) {
+            $this->proNotice();
+        }
+    }
+
+    // note: this is only called for PP Core plugin row
+    public function actCorePluginStatus($plugin_file, $plugin_data, $status)
+    {
+        if (!$this->typeUsageStored()) {
+            if (get_post_types(['public' => true, '_builtin' => false])) {
+                $url = admin_url('admin.php?page=presspermit-settings');
+                echo '<tr class="plugin-update-tr"><td colspan="3" class="activating"><div class="update-message">';
+                printf(
+                    __('PressPermit needs directions. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered.', 'press-permit-core'),
+                    '<a href="' . $url . '">',
+                    '</a>'
+                );
+
+                echo '</div></td></tr>';
+            }
+        }
+
+        if (is_network_admin() || !is_multisite()) {
+            $key = presspermit()->getOption('edd_key');
+            $keyStatus = isset($key['license_status']) ? $key['license_status'] : 'invalid';
+
+            if (in_array($keyStatus, ['invalid', 'expired'])) {
+                require_once PRESSPERMIT_CLASSPATH . '/PluginStatus.php';
+                $message = ('expired' == $keyStatus) 
+                ? \PublishPress\Permissions\PluginStatus::renewalMsg() 
+                : \PublishPress\Permissions\PluginStatus::buyMsg();
+                
+                $wp_list_table = _get_list_table('WP_Plugins_List_Table');
+
+                echo '<tr class="plugin-update-tr"><td colspan="' . $wp_list_table->get_column_count()
+                    . '" class="plugin-update"><div class="update-message">' . $message . '</div></td></tr>';
+            }
+        }
+    }
+
+    // adds an Options link next to Deactivate, Edit in Plugins listing
+    public function fltPluginActionLinks($links, $file)
+    {
+        if ($file == plugin_basename(PRESSPERMIT_FILE)) {
+            if (!is_network_admin()) {
+                $links[] = "<a href='admin.php?page=presspermit-settings'>" . PWP::__wp('Settings') . "</a>";
+            }
+        }
+
+        return $links;
+    }
+
+    private function typeUsageStored()
+    {
+        $types_vals = get_option('presspermit_enabled_post_types');
+        if (!is_array($types_vals)) {
+            $txs_val = get_option('presspermit_enabled_taxonomies');
+        }
+
+        return is_array($types_vals) || is_array($txs_val);
+    }
+
+    private function activationNotice()
+    {
+        if (!$this->typeUsageStored() && !is_network_admin()) {
+            $url = admin_url('admin.php?page=presspermit-settings');
+            
+            presspermit()->admin()->notice(
+                sprintf(
+                    __('Thanks for activating PressPermit. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered.', 'press-permit-core'),
+                    '<a href="' . $url . '">',
+                    '</a>'
+                )
+            );
+        }
+    }
+
+    private function proNotice()
+    {       
+        $url = admin_url('admin.php?page=presspermit-settings');
+        
+        presspermit()->admin()->notice(
+            sprintf(
+                __('For Pro features, replace the PressPermit plugin with Press Permit Pro. See %sPermissions > Settings > Install%s for details.', 'press-permit-core'),
+                '<a href="' . $url . '">',
+                '</a>'
+            )
+        );
+    }
+}

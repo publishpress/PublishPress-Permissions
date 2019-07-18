@@ -1,0 +1,209 @@
+<?php
+
+namespace PublishPress\Permissions\UI\Handlers;
+
+class Settings
+{
+    public function __construct()
+    {
+        if (!current_user_can('pp_manage_settings'))
+            wp_die(PWP::__wp('Cheatin&#8217; uh?'));
+
+        if (!empty($_REQUEST['pp_refresh_updates'])) {
+            delete_site_transient('update_plugins');
+            //presspermit()->admin()->getVersionInfo(['force_refresh'=>true]);
+            wp_update_plugins();
+            wp_redirect(admin_url('admin.php?page=presspermit-settings&pp_refresh_done=1'));
+            exit;
+        }
+
+        if (!empty($_REQUEST['pp_renewal'])) {
+            $opt_val = is_multisite() ? get_site_meta('pp_support_key') : get_option('pp_support_key');
+            $renewal_token = (!is_array($opt_val) || count($opt_val) < 2) ? '' : $opt_val[1];
+
+            $url = site_url('');
+            $arr_url = parse_url($url);
+            $site = urlencode(str_replace($arr_url['scheme'] . '://', '', $url));
+
+            wp_redirect('https://publishpress.com/presspermit/?pkg=press-permit-pro&site=' . $site . '&presspermit_account=' . $renewal_token);
+            exit;
+        }
+
+        if (!empty($_REQUEST['pp_upload_config']) || !empty($_REQUEST['pp_help_ticket'])) {
+            $args = [];
+            if (isset($_REQUEST['post_id']))
+                $args['post_id'] = (int)$_REQUEST['post_id'];
+
+            if (isset($_REQUEST['term_taxonomy_id']))
+                $args['term_taxonomy_id'] = (int)$_REQUEST['term_taxonomy_id'];
+
+            $key = presspermit()->getOption('edd_key');
+
+            if (!empty($_REQUEST['pp_help_ticket'])) {
+                $url = "https://publishpress.com/contact/";
+
+                if ($key && is_array($key) && ('valid' == $key['license_status'])) {
+                    $url = add_query_arg('ppsh', substr($key['license_key'], 0, 16), $url); // partial license key for identification
+                }
+
+                wp_redirect($url);
+            }
+
+            if (empty($_REQUEST['pp_help_ticket'])) {
+                if (-1 === $success)
+                    $flag = 'pp_config_no_change';
+                elseif ($success)
+                    $flag = 'pp_config_uploaded';
+                else
+                    $flag = 'pp_config_failed';
+
+                wp_redirect(admin_url("admin.php?page=presspermit-settings&{$flag}=1"));
+            }
+
+            exit;
+        }
+
+        if (isset($_POST['presspermit_submit'])) {
+            $this->handleSubmission('update');
+
+        } elseif (isset($_POST['presspermit_defaults'])) {
+            $this->handleSubmission('default');
+
+        } elseif (isset($_POST['pp_role_usage_defaults'])) {
+            delete_option('presspermit_role_usage');
+            presspermit()->refreshOptions();
+        }
+    }
+
+    private function handleSubmission($action)
+    {
+        $args = apply_filters('presspermit_handle_submission_args', []); // @todo: is this used?
+
+        if (empty($_POST['pp_submission_topic']))
+            return;
+
+        if ('options' == $_POST['pp_submission_topic']) {
+            $method = "{$action}Options";
+            if (method_exists($this, $method))
+                call_user_func([$this, $method], $args);
+
+            do_action('presspermit_handle_submission', $action, $args);
+
+            presspermit()->refreshOptions();
+        }
+    }
+
+    private function updateOptions($args)
+    {
+        check_admin_referer('pp-update-options');
+
+        $this->updatePageOptions($args);
+
+        global $wpdb;
+
+        $wpdb->query(
+            "UPDATE $wpdb->options SET autoload = 'no' WHERE option_name LIKE 'presspermit_%'"
+            . " AND option_name NOT LIKE '%_version' AND option_name NOT IN ('presspermit_custom_conditions_post_status')"
+        );
+    }
+
+    private function defaultOptions($args)
+    {
+        $pp = presspermit();
+
+        check_admin_referer('pp-update-options');
+
+        $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
+
+        $reviewed_options = array_merge(explode(',', $_POST['all_options']), explode(',', $_POST['all_otype_options']));
+        foreach ($reviewed_options as $option_name) {
+            $pp->deleteOption($default_prefix . $option_name, $args);
+        }
+    }
+
+    private function updatePageOptions($args)
+    {
+        $pp = presspermit();
+
+        do_action('presspermit_update_options', $args);
+
+        $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
+
+        foreach (explode(',', $_POST['all_options']) as $option_basename) {
+            $value = isset($_POST[$option_basename]) ? $_POST[$option_basename] : '';
+
+            if (!is_array($value))
+                $value = trim($value);
+
+            $pp->updateOption($default_prefix . $option_basename, stripslashes_deep($value), $args);
+        }
+
+        foreach (explode(',', $_POST['all_otype_options']) as $option_basename) {
+            // support stored default values (to apply to any post type which does not have an explicit setting)
+            if (isset($_POST[$option_basename][0])) {
+                $_POST[$option_basename][''] = $_POST[$option_basename][0];
+                unset($_POST[$option_basename][0]);
+            }
+
+            $value = (isset($pp->default_options[$option_basename])) ? $pp->default_options[$option_basename] : [];
+
+            // retain setting for any types which were previously enabled for filtering but are currently not registered
+            $current = $pp->getOption($option_basename);
+
+            if ($current = $pp->getOption($option_basename)) {
+                $value = array_merge($value, $current);
+            }
+
+            if (isset($_POST[$option_basename])) {
+                $value = array_merge($value, $_POST[$option_basename]);
+            }
+
+            foreach (array_keys($value) as $key) {
+                $value[$key] = stripslashes_deep($value[$key]);
+            }
+
+            $pp->updateOption($default_prefix . $option_basename, $value, $args);
+        }
+
+        if (!empty($_POST['post_blockage_priority'])) {  // once this is switched on manually, don't ever default-disable it again
+            if (get_option('presspermit_legacy_exception_handling')) {
+                delete_option('presspermit_legacy_exception_handling');
+            }
+        }
+        
+        // =============== Module Activation ================
+        if (!$_deactivated = $pp->getOption('deactivated_modules')) {
+            $_deactivated = [];
+        }
+        
+        $deactivated = $_deactivated;
+
+        // add deactivations (unchecked from Active list)
+        if (!empty($_POST['presspermit_reviewed_modules'])) {
+            $reviewed_modules = array_fill_keys( explode(',', $_POST['presspermit_reviewed_modules']), (object)[]);
+
+            $deactivated = array_merge(
+                $deactivated,
+                array_diff_key(
+                    $reviewed_modules,
+                    !empty($_POST['presspermit_active_modules']) ? array_filter($_POST['presspermit_active_modules']) : []
+                )
+            );
+        }
+
+        // remove deactivations (checked in Inactive list)
+        if (! empty($_POST['presspermit_deactivated_modules'])) {
+            $deactivated = array_diff_key(
+                $deactivated, 
+                $_POST['presspermit_deactivated_modules']
+            );
+        }
+
+        if ($_deactivated !== $deactivated) {
+            $pp->updateOption('deactivated_modules', $deactivated);
+            $tab = (!empty($_POST['pp_tab'])) ? "&pp_tab={$_POST['pp_tab']}" : '';
+            wp_redirect(admin_url("admin.php?page=presspermit-settings$tab&presspermit_submit_redirect=1"));
+        }
+        // =====================================================
+    }
+}

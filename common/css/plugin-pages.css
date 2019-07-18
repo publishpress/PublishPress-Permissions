@@ -1,0 +1,51 @@
+#wpbody-content h1 {
+    padding-top: 4px;
+}
+
+/* --- PP Groups Listing */
+.wp-list-table th.column-circle_type {
+    width: 6em;
+}
+
+.wp-list-table th.column-roles {
+    min-width: 25%;
+}
+
+div.presspermit-groups table th.column-ID {
+    width: 6em;
+}
+
+div.presspermit-groups th#group_name {
+    max-width: 12em;
+}
+
+div.presspermit-groups table th.column-num_users {
+    text-align: center;
+    width: 6em;
+}
+
+div.pp-admin-info {
+    background-color: #FFFBE4;
+    border: 1px solid #dfdfdf;
+    padding: 5px 10px 5px 10px;
+    max-width: 650px;
+}
+
+#wpbody .pp-submit input {
+    height: 30px;
+}
+
+#wpbody .pp-submit-alternate input {
+    height: 25px;
+    padding-top: 0;
+    line-height: 10px;
+    margin-left: 0;
+}
+
+div.pp-icon {
+    float:left;
+    margin: 5px 10px 0 0;
+}
+div.pp-icon img {
+    height:48px;
+}

@@ -1,0 +1,423 @@
+/* --- Colors used in settings table --- */
+.pp-important {
+    font-weight: bold;
+    color: #700;
+}
+
+.pp-warning {
+    color: #c00;
+}
+
+.pp-success {
+    color: #0b0;
+}
+
+.pp-backtan {
+    background-color: #858585; /*#dfdfdf;*/ /*#FFFEEB;*/
+}
+
+#pp_settings_form ul.pp-list_horiz li.pp-backtan a {
+    color: white;
+}
+
+/* --- Settings table layout --- */
+
+#pp_settings_form .form-table th {
+    width: auto;
+    padding-right:25px;
+}
+
+.pp-options {
+    padding: 0 0.5em 1em 0.5em;
+    border: 1px solid #ccc;
+    margin-top: 0;
+}
+
+.pp-form-table input {
+    vertical-align: text-bottom;
+}
+
+.pp-options-table tr {
+    border-bottom: 4px solid #e8e8e8; /*#FFFEEB;*/
+}
+
+.pp-options-table tr td {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.pp-options-wrapper .pp-options-table th {
+    font-weight: bold;
+    padding-top: 1em;
+    padding-left: 10px;
+}
+
+.pp-form-table tr th span a {
+    color: #333;
+    background-color: #CFEBF7;
+}
+
+.pp-form-table tr th, .pp-form-table tr td {
+    background-color: #f4f4f4; /*#CFEBF7;*/
+    border-bottom: 4px solid #858585; /*#e8e8e8;*/ /*#FFFEEB;*/
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.pp-vtight input {
+    margin-top: 0.15em;
+}
+
+.pp-optionhint {
+    margin-top: 0.5em;
+    font-style: italic;
+    color: white;
+}
+
+table.pp-options-table .pp-optionhint {
+    color: #686868;
+}
+
+#pp_settings_form li.agp-selected_agent {
+    border-bottom: none;
+}
+
+#pp_settings_form li.agp-selected_agent a {
+    font-weight: bold;
+}
+
+
+#pp_settings_form .activating, #pp_settings_form .activating, #pp-install .activating, #tab-panel-pp .activating {
+    border-width: 1px;
+    border-style: solid;
+    padding: 5px;
+    margin: 0.5em 0.5em 0 0;
+    -moz-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #ffffe0;
+    border-color: #e6db55;
+}
+
+#pp_settings_form .activating p, #tab-panel-pp .activating p {
+    margin: 0;
+    padding-top: 5px;
+    padding-bottom: 5px
+}
+
+#pp_settings_form div.pp-subtext {
+    margin-bottom: 20px !important;
+}
+
+/* --- Install Tab --- */
+#pp-install_table span.publishpress, #pp-install_table span.publishpress a, #pp-install_table span.publishpress a:visited {
+    color: #655997;
+    font-weight: bold
+}
+
+#pp-install #edd_key {
+    width: 325px
+}
+
+#pp-install #activation-button {
+    vertical-align: top
+}
+
+#pp-install .pp-key-active {
+    font-weight: bold;
+    color: #070;
+    vertical-align: bottom;
+    margin-right: 0.5em
+}
+
+span.pp-key-warning {
+    color: #c00;
+    font-weight: normal
+}
+
+#pp-install .pp-install-list {
+    margin: 0.5em 0 1em 0
+}
+
+#pp-install .pp-install-list li {
+    padding-left: 1em
+}
+
+#pp-install #activation-status {
+    text-align: center;
+    margin-bottom: 10px
+}
+
+#pp-install table.pp-extensions tr th, #pp-install table.pp-extensions tr td, #pp-install table.pp-extensions tr {
+    margin-bottom: 1px;
+    vertical-align: top;
+    border-bottom: none;
+}
+
+#pp-install table.pp-extensions {
+    margin-right: 20px;
+    margin-top: 2px;
+    margin-left: 0;
+}
+
+#pp-install table.pp-extensions tr th {
+    line-height: 8px
+}
+
+#pp-install table.pp-extensions tr td {
+    line-height: 15px;
+    padding-left: 5px;
+    background-color: #fff;
+    padding: 8px;
+}
+
+#pp-install span.pp-ext-info {
+    color: #777;
+    font-style: italic;
+}
+
+#pp_config_upload_caption {
+    text-indent: -10px;
+    padding-left: 10px;
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+#pp_config_upload_wrap {
+    padding-left: 22px;
+}
+
+#pp-install .support_data div {
+    margin-bottom: 6px;
+    vertical-align: bottom;
+}
+
+#pp-install .pp-feature-list-caption {
+    margin-top: 20px;
+}
+
+#pp-install .pp-bullet-list {
+    list-style: disc;
+    padding-left: 15px;
+}
+
+span.pp-key-wrap {
+    margin-left: 5px;
+    margin-top: 10px;
+}
+
+span.pp-key-normal {
+    margin-left: 60px;
+}
+
+span.pp-key-refresh, span.pp-key-refresh a {
+    vertical-align: bottom;
+    white-space: nowrap;
+}
+
+div.pp-key-hint {
+    margin-left: 145px;
+    margin-top: 5px;
+}
+
+div.pp-key-hint-expired {
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+#pp-install_table h4 {
+    margin-bottom: 2px;
+}
+
+#pp_settings_form #activation-status {
+    margin-top: 20px;
+}
+
+#pp_settings_form #activation-error {
+    margin-top: 20px;
+}
+
+#plugin-information-footer {
+    display: none;
+}
+
+/* --- Advanced tab --- */
+.pp-capabilities-caption {
+    margin-left: 125px;
+}
+
+.pp_cap_descripts {
+    margin-left: 10px;
+    margin-right: 10px
+}
+
+.pp_cap_descripts tr {
+    border-bottom: none
+}
+
+.pp_cap_descripts tr th {
+    border-bottom: none;
+    line-height: 8px
+}
+
+.pp_cap_descripts tr td {
+    border-bottom: none;
+    line-height: 15px;
+    margin-bottom: 1px;
+    padding-left: 5px;
+    background-color: #fff;
+}
+
+.pp_cap_descripts th.cap-name {
+    text-align: center;
+}
+
+.pp_cap_descripts td.cap-name {
+    width: 22%;
+    text-align: center;
+    font-family: courier new, courier, monospace
+}
+
+.pp_cap_descripts tr.const-section td {
+    font-style: italic;
+    text-align: right;
+    vertical-align: bottom;
+    padding-bottom: 0
+}
+
+.pp_cap_descripts td.defined {
+    font-weight: bold;
+}
+
+div.pp-settings-code {
+    max-width: 700px;
+}
+
+div.pp-settings-code textarea {
+    margin-top: 5px;
+}
+
+/* --- PPFF Attachments Utility --- */
+.pp-instructions ol {
+    list-style-type: decimal;
+}
+
+.pp-instructions ol li {
+    margin: 1em 0 1em 2em;
+}
+
+#pp_settings_form #message {
+    margin-top: 35px;
+}
+
+@media screen and (max-width: 782px) {
+    .pp-form-table tr th {
+        border-bottom: none;
+    }
+
+    .pp-form-table div.agp-v-spaced_input {
+        margin-top: 15px;
+    }
+
+    .pp-form-table div.agp-vtight_input {
+        margin-top: 8px;
+    }
+
+    .pp-form-table #activation-button {
+        margin-top: 5px;
+    }
+
+    .pp-form-table div.pp-subtext {
+        margin-bottom: 20px;
+        margin-top: 5px
+    }
+
+    div.default_privacy table td.rlabel {
+        text-align: left;
+        font-weight: bold
+    }
+
+    span.pp-capabilities-caption {
+        margin-left: 10px
+    }
+
+    #pp_cap_descripts {
+        margin-top: 10px;
+    }
+
+    #pp_cap_descripts th {
+        display: none;
+    }
+
+    #pp_cap_descripts td {
+        padding-top: 0
+    }
+
+    #pp_cap_descripts td.cap-name {
+        margin-bottom: 0;
+        padding-top: 5px;
+        font-weight: bold
+    }
+
+    #pp_cap_descripts td, #pp_cap_descripts td.cap-name {
+        width: 100%;
+        text-align: left
+    }
+
+    #pp_defined_constants {
+        margin-top: 10px;
+    }
+
+    #pp_defined_constants th {
+        display: none;
+    }
+
+    #pp_defined_constants td {
+        padding-top: 0
+    }
+
+    #pp_defined_constants td.cap-name {
+        font-weight: bold
+    }
+
+    #pp_defined_constants td {
+        margin-bottom: 0;
+        padding-top: 5px
+    }
+
+    #pp_defined_constants td, #pp_defined_constants td.cap-name {
+        width: 100%;
+        text-align: left
+    }
+
+    #pp_available_constants {
+        margin-top: 10px;
+    }
+
+    #pp_available_constants th {
+        display: none;
+    }
+
+    #pp_available_constants td {
+        padding-top: 0
+    }
+
+    #pp_available_constants td.cap-name {
+        font-weight: bold
+    }
+
+    #pp_available_constants td {
+        margin-bottom: 0;
+        padding-top: 5px
+    }
+
+    #pp_available_constants td, #pp_available_constants td.cap-name {
+        width: 100%;
+        text-align: left
+    }
+}
+
+#pp_defined_constants th, #pp_available_constants th {
+    width: auto;
+}

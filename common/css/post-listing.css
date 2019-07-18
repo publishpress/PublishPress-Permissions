@@ -1,0 +1,31 @@
+/* --- bulk/inline edit --- */
+#wpbody-content .bulk-edit-row .inline-edit-col-left {
+    width: 30%;
+}
+
+#wpbody-content .quick-edit-row-page .inline-edit-col-right span.title, #wpbody-content .bulk-edit-row-page .inline-edit-col-right span.title {
+    width: 7.5em;
+}
+
+#wpbody-content .quick-edit-row-page .inline-edit-status-sub span.title, #wpbody-content .bulk-edit-row-page .inline-edit-status-sub span.title {
+    display: inline;
+    margin-right: 0.5em;
+}
+
+#wpbody-content #default-edit .inline-edit-col-left {
+    padding-top: 0.2em;
+}
+
+
+/* --- Custom Post Statuses --- */
+span.pp_child_select-open {
+    margin-left: 1em;
+    margin-right: 0.1em;
+    font-size: 18px;
+}
+
+span.pp_child_select-close {
+    margin-left: 0.15em;
+    margin-right: 0.5em;
+    font-size: 18px;
+}
