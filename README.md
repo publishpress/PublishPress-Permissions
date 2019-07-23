@@ -3,7 +3,7 @@
 
 ## Description
 
-Advanced and flexible content permissions. Includes Pro modules (Collaborative Publishing, Status Control, File Access, Compatibility Pack for bbPress, Revisionary, others). Give users or groups type-specific roles. Enable or block access for specific posts or terms.
+Advanced and flexible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
 
 ## Documentation
 
