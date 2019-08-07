@@ -75,7 +75,7 @@ class REST
 			}
 
 			foreach ( $handlers as $handler ) {
-                if (!isset($handler['callback'][0]) || !is_object($handler['callback'][0])) {
+                if (!is_array($handler['callback']) || !isset($handler['callback'][0]) || !is_object($handler['callback'][0])) {
                     continue;
                 }
 
