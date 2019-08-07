@@ -9,6 +9,15 @@ class PluginUpdated
         // single-pass do loop to easily skip unnecessary version checks
         do {
             if (!$prev_version) {
+                if (false === get_option('presspermit_deactivated_modules')) {
+                    $deactivate_modules = array_fill_keys(
+                        ['presspermit-circles', 'presspermit-file-access', 'presspermit-import', 'presspermit-membership', 'presspermit-teaser'], 
+                        (object)[]
+                    );
+                    
+                    update_option('presspermit_deactivated_modules', $deactivate_modules);
+                }
+
                 if (get_option('pp_version') && !get_option('presspermit_group_index_drop_done')) {  // previous installation of PP < 2.0 ?
                     update_option('presspermit_need_group_index_drop', true); // flag groups index drop to be launched from PP Options
                 }
