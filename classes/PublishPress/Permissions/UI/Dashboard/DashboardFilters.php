@@ -24,7 +24,7 @@ class DashboardFilters
 
         add_action('show_user_profile', [$this, 'actUserUi'], 2);
         add_action('edit_user_profile', [$this, 'actUserUi'], 2);
-        add_action('admin.php', [$this, 'actInsertGroupsUi']);
+        add_action('admin_print_scripts-user-new.php', [$this, 'actInsertGroupsUi']);
 
         add_action('admin_menu', [$this, 'actNggUploaderWorkaround']);
 
