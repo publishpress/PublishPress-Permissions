@@ -3,7 +3,7 @@ Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.7
 Tested up to: 5.2.2
-Stable tag: 2.7.10
+Stable tag: 2.7.11
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -46,13 +46,16 @@ PressPermit [Pro](https://publishpress.com/presspermit/) is [available](https://
 	
 == Upgrade Notice ==
 
-= 2.7.10 =
+= 2.7.11 =
 Pro users: download PressPermit Pro from publishpress.com before upgrading to this version.
 
 = 2.1.14 =
 Initial production release
 
 == Changelog ==
+
+= 2.7.11 - 17 Jul 2019 =
+* Change : Adjust explanation about PressPermit Pro account migration
 
 = 2.7.10 - 17 Jul 2019 =
 * Fixed : Supplemental Media Editor role granted Post Editor capabilities if Permissions > Settings > Core > Filtered Post Types > "Enforce distinct edit, delete capability requirements for Media" not enabled

@@ -148,7 +148,7 @@ class SettingsTabInstall
                         $url = "https://publishpress.com/contact/?pp_topic=presspermit-migration&presspermit_account=$key_string";
                         
                         $msg = sprintf(
-                            __('A presspermit.com key appears to be active. To restore Pro features, please check your email for a free publishpress.com migration offer or <a href="%s">contact us for assistance</a>.', 'press-permit-core'),
+                            __('A presspermit.com key appears to be active. <a href="%s" target="_blank">Contact us</a> for assistance in migrating your account to publishpress.com.', 'press-permit-core'),
                             $url
                         );
                     }
