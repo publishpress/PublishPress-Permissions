@@ -17,7 +17,7 @@ class TermFiltersCount
 
     private function __construct()
     {
-        
+
     }
 
     private function init() {
@@ -148,7 +148,7 @@ class TermFiltersCount
 
         static $busy;
 
-        if (isset($busy)) {
+        if (!empty($busy)) {
             return $terms;
         }
 
@@ -280,7 +280,6 @@ class TermFiltersCount
         }
 
         $busy = false;
-
         return $terms;
     }
 }
