@@ -60,6 +60,15 @@ class Permissions
 
     }
 
+    public function capDefs() {
+        if (!isset($this->cap_defs)) {
+            require_once(PRESSPERMIT_CLASSPATH . '/Capabilities.php');
+            $this->cap_defs = new Permissions\Capabilities();
+        }
+
+        return $this->cap_defs;
+    }
+
     public static function doingREST()
     {
         return self::instance()->doing_rest;

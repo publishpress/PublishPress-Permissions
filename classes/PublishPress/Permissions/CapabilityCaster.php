@@ -103,7 +103,7 @@ class CapabilityCaster
             }
 
             // log caps not defined for any post type or status
-            if ($misc_caps = array_diff_key($caps[$role_name], $pp->cap_defs->all_type_caps, $exclude_caps))
+            if ($misc_caps = array_diff_key($caps[$role_name], $pp->capDefs()->all_type_caps, $exclude_caps))
                 $this->pattern_role_arbitrary_caps[$role_name] = array_combine(array_keys($misc_caps), array_keys($misc_caps));
         }
 

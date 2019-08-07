@@ -148,16 +148,16 @@ class CapabilityFilters
         }
 
         if (is_array($orig_cap) || !isset($this->meta_caps[$orig_cap])) { // Revisionary may pass array into args[0]
+            $item_type = '';
 
             // If we would fail a straight post cap check, pass it if appropriate additions stored
             if (array_diff($orig_reqd_caps, array_keys(array_filter($wp_sitecaps)))) {
                 $is_post_cap = false;
-                $item_type = '';
 
-                if ($type_caps = array_intersect($orig_reqd_caps, array_keys($pp->cap_defs->all_type_caps))) {
+                if ($type_caps = array_intersect($orig_reqd_caps, array_keys($pp->capDefs()->all_type_caps))) {
                     if (
                         in_array($orig_cap, array_keys($this->meta_caps), true)
-                        || in_array($orig_cap, array_keys($pp->cap_defs->all_type_caps), true)
+                        || in_array($orig_cap, array_keys($pp->capDefs()->all_type_caps), true)
                     ) {
                         $is_post_cap = true;
 
