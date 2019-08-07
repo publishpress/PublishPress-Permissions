@@ -82,7 +82,7 @@ class PermissionsHooksAdmin
             if (isset($_REQUEST["pp_ajax_{$ajax_type}"])) {
                 $class_name = str_replace('_', '', ucwords( $ajax_type, '_') ) . 'Ajax';
                 
-                $class_parent = ( in_array($class_name, ['ItemAjax','User']) ) ? 'Dashboard' : '';
+                $class_parent = ( in_array($class_name, ['ItemAjax','UserAjax']) ) ? 'Dashboard' : '';
                 
                 $require_path = ( $class_parent ) ? "{$class_parent}/" : '';
                 require_once(PRESSPERMIT_CLASSPATH . "/UI/{$require_path}{$class_name}.php");
