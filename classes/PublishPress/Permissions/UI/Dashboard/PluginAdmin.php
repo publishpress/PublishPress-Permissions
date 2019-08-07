@@ -22,20 +22,19 @@ class PluginAdmin
         }
     }
 
-    // note: this is only called for PP Core plugin row
     public function actCorePluginStatus($plugin_file, $plugin_data, $status)
     {
+        $message = '';
+
         if (!$this->typeUsageStored()) {
             if (get_post_types(['public' => true, '_builtin' => false])) {
                 $url = admin_url('admin.php?page=presspermit-settings');
-                echo '<tr class="plugin-update-tr"><td colspan="3" class="activating"><div class="update-message">';
-                printf(
+
+                $message = sprintf(
                     __('PressPermit needs directions. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered.', 'press-permit-core'),
                     '<a href="' . $url . '">',
                     '</a>'
                 );
-
-                echo '</div></td></tr>';
             }
         }
 
@@ -45,15 +44,22 @@ class PluginAdmin
 
             if (in_array($keyStatus, ['invalid', 'expired'])) {
                 require_once PRESSPERMIT_CLASSPATH . '/PluginStatus.php';
-                $message = ('expired' == $keyStatus) 
+                
+                if ($message) {
+                    $message .= '<br /><br />';
+                }
+                
+                $message .= ('expired' == $keyStatus) 
                 ? \PublishPress\Permissions\PluginStatus::renewalMsg() 
                 : \PublishPress\Permissions\PluginStatus::buyMsg();
-                
-                $wp_list_table = _get_list_table('WP_Plugins_List_Table');
-
-                echo '<tr class="plugin-update-tr"><td colspan="' . $wp_list_table->get_column_count()
-                    . '" class="plugin-update"><div class="update-message">' . $message . '</div></td></tr>';
             }
+        }
+
+        if ($message) {
+            $wp_list_table = _get_list_table('WP_Plugins_List_Table');
+
+            echo '<tr class="plugin-update-tr"><td colspan="' . $wp_list_table->get_column_count()
+                . '" class="plugin-update"><div class="update-message">' . $message . '</div></td></tr>';
         }
     }
 

@@ -32,7 +32,7 @@ class PluginStatus
     public static function buyMsg()
     {
         return sprintf(
-            __('Activate your <a href="%1$s">license key</a> for PressPermit Pro and priority support.', 'press-permit-core'),
+            __('Activate your <a href="%1$s">license key</a> for PressPermit Pro downloads and priority support.', 'press-permit-core'),
             admin_url('admin.php?page=presspermit-settings&pp_tab=install'),
             'https://publishpress.com/pricing/'
         );
