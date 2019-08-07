@@ -134,7 +134,7 @@ class TermFilters
 
         // Prevent term reading exceptions from filtering Gutenberg term assignment checkbox visibility
         if (
-            !empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')
+            defined('REST_REQUEST') && REST_REQUEST && !empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post') && !empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')
             && !presspermit()->moduleActive('collaboration')
         ) {
             return true;
