@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PressPermit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-23 14:40-0500\n"
+"POT-Creation-Date: 2019-08-07 11:13-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: PublishPress <help@publishpress.com>\n"
@@ -363,7 +363,7 @@ msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/PluginStatus.php:35
 #, php-format
-msgid "Activate your <a href=\"%1$s\">license key</a> for PressPermit Pro and priority support."
+msgid "Activate your <a href=\"%1$s\">license key</a> for PressPermit Pro downloads and priority support."
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/REST.php:218
@@ -1757,7 +1757,7 @@ msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:151
 #, php-format
-msgid "A presspermit.com key appears to be active. <a href=\"%s\">Contact us</a> for assistance in migrating your account to publishpress.com."
+msgid "A presspermit.com key appears to be active. <a href=\"%s\" target=\"_blank\">Contact us</a> for assistance in migrating your account to publishpress.com."
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:157
@@ -2114,17 +2114,17 @@ msgstr ""
 msgid "To customize <strong>for a specific post status</strong>, edit the desired role / group / user permissions directly (Permissions > Groups or Users)"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/PluginAdmin.php:33
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/PluginAdmin.php:34
 #, php-format
 msgid "PressPermit needs directions. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/PluginAdmin.php:89
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/PluginAdmin.php:95
 #, php-format
 msgid "Thanks for activating PressPermit. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/PluginAdmin.php:103
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/PluginAdmin.php:109
 #, php-format
 msgid "For Pro features, replace the PressPermit plugin with Press Permit Pro. See %sPermissions > Settings > Install%s for details."
 msgstr ""
