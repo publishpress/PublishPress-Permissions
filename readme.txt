@@ -3,7 +3,7 @@ Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.7
 Tested up to: 5.2.2
-Stable tag: 2.7.11
+Stable tag: 2.7.12
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -46,13 +46,20 @@ PressPermit [Pro](https://publishpress.com/presspermit/) is [available](https://
 	
 == Upgrade Notice ==
 
-= 2.7.11 =
+= 2.7.12 =
 Pro users: download PressPermit Pro from publishpress.com before upgrading to this version.
 
 = 2.1.14 =
 Initial production release
 
 == Changelog ==
+
+= 2.7.12 - 6 Aug 2019 =
+* Fixed : Add New User screen was missing Permission Groups selection UI
+* Fixed : Categories were improperly filtered when queried within a shortcode, and in other cases where get_terms() was already previously called
+* Fixed : Conflict with TagDiv Cloud Library plugin (Newspaper Theme) and others that use a non-standard REST handler structure
+* Fixed : Inconsistent formatting of messages below Plugins row
+* Lang : Update .po file
 
 = 2.7.11 - 17 Jul 2019 =
 * Change : Adjust explanation about PressPermit Pro account migration
