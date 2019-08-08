@@ -59,6 +59,7 @@ Initial production release
 * Fixed : Categories were improperly filtered when queried within a shortcode, and in other cases where get_terms() was already previously called
 * Fixed : Conflict with TagDiv Cloud Library plugin (Newspaper Theme) and others that use a non-standard REST handler structure
 * Fixed : Inconsistent formatting of messages below Plugins row
+* Fixed : Gutenberg - Improvements to REST term filtering
 * Lang : Update .po file
 
 = 2.7.11 - 17 Jul 2019 =
