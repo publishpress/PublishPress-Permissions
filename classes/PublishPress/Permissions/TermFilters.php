@@ -59,9 +59,19 @@ class TermFilters
             if (!$_post = get_post($post_id))
                 return $terms;
 
+            $operation = 'read';
+
+            // Prevent Reading exceptions from being applied for Gutenberg term assignment checkbox visibility / selection
+            if (presspermit()->doing_rest) {
+                $operation = REST::instance()->operation;
+
+            } elseif (!empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')) {
+                $operation = 'edit';
+            }
+
             if (!apply_filters('presspermit_skip_the_terms_filtering', false, $post_id)) {
                 if ($restrict_ids = $user->getExceptionTerms(
-                    'read',
+                    $operation,
                     'include',
                     $_post->post_type,
                     $taxonomy,
@@ -73,7 +83,7 @@ class TermFilters
                         }
                     }
                 } elseif ($restrict_ids = $user->getExceptionTerms(
-                    'read',
+                    $operation,
                     '
                     exclude',
                     $_post->post_type,
@@ -81,7 +91,7 @@ class TermFilters
                     ['merge_universals' => true, 'return_term_ids' => true]
                 )) {
                     if ($add_ids = $user->getExceptionTerms(
-                        'read',
+                        $operation,
                         'additional',
                         $_post->post_type,
                         $taxonomy,
@@ -131,14 +141,6 @@ class TermFilters
         ) {
             return true;
         }
-
-        // Prevent term reading exceptions from filtering Gutenberg term assignment checkbox visibility
-        if (
-            defined('REST_REQUEST') && REST_REQUEST && !empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post') && !empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')
-            && !presspermit()->moduleActive('collaboration')
-        ) {
-            return true;
-        }
     }
 
     public function fltGetTermsArgs($args, $taxonomies)
@@ -153,6 +155,20 @@ class TermFilters
             require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
             $filters_obj = TermFiltersCount::instance();
             $args = $filters_obj->fltGetTermsArgs($args);
+        }
+
+        if (presspermit()->doing_rest) {
+            $rest = \PublishPress\Permissions\REST::instance();
+            
+            if ($rest->is_posts_request) {
+                if (!empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')) {
+                    $args['required_operation'] = 'edit';
+                } else {
+                    $args['required_operation'] = $rest->operation;
+                }
+            } else {
+                $args['required_operation'] = 'manage';
+            }
         }
 
         return $args;
