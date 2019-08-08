@@ -29,8 +29,9 @@ class HintsItemExceptions
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
+
+                echo "<div class='pp-ext-promo' style='padding:0.5em;margin-top:0'>$msg</div>";
             }
-            echo "<div class='pp-ext-promo' style='padding:0.5em;margin-top:0'>$msg</div>";
         }
     }
 }
