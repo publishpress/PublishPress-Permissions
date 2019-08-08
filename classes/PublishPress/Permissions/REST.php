@@ -100,16 +100,16 @@ class REST
                     $this->referer = reset($this->referer);
                 }
 
-                $this->operation = (isset($_REQUEST['context'])) ? sanitize_key($_REQUEST['context']) : '';
+                $this->operation = (isset($this->params['context'])) ? sanitize_key($this->params['context']) : '';
                 if ('view' == $this->operation) {
                     $this->operation = 'read';
                 }
 
-                // voluntary filtering of get_items (for WYSIWY can edit, etc.)
-                if ($this->is_view_method && !empty($_REQUEST['operation'])) {
+			  // voluntary filtering of get_items (for WYSIWY can edit, etc.)
+                if ($this->is_view_method && ('read' == $this->operation) && !empty($_REQUEST['operation'])) {
                     $this->operation = $_REQUEST['operation'];
                 }
-
+			
                 // NOTE: setting or default may be adapted downstream
                 if (!in_array($this->operation, ['edit', 'assign', 'manage', 'delete'], true)) {
                     $this->operation = ($this->is_view_method) ? 'read' : 'edit';
