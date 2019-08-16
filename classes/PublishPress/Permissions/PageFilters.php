@@ -475,25 +475,8 @@ class PageFilters
         // PressPermit note: WP core get_pages has already updated wp_cache and pagecache with unfiltered results.
         update_post_cache($pages);
 
-        // ==================================== Begin PressPermit Modification ===================================
-        //
-        // Support a disjointed pages tree with some parents hidden
-        if ($child_of || empty($tease_all)) {  // if we're including all pages with teaser, no need to continue thru tree remapping
-            require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Ancestry.php');
-           
-            $ancestors = \PressShack\Ancestry::getPageAncestors(0, $post_type); // array of all ancestor IDs for keyed page_id, with direct parent first
-
-            $orderby = $sort_column;
-
-            $remap_args = compact('child_of', 'parent', 'exclude', 'depth', 'orderby');  // one or more of these args may have been modified after extraction 
-
-            \PressShack\Ancestry::remapTree($pages, $ancestors, $remap_args);
-        }
-        //
-        // ==================================== End PressPermit Modification ===================================
-
-        if (!empty($r['exclude_tree'])) {
-            $exclude = wp_parse_id_list($r['exclude_tree']);
+        if ($exclude_tree) {
+            $exclude = wp_parse_id_list($exclude_tree);
             foreach ($exclude as $id) {
                 $children = get_page_children($id, $pages);  // PP note: okay to use unfiltered WP function here since it's only used for excluding
                 foreach ($children as $child) {
@@ -511,6 +494,19 @@ class PageFilters
 
         // ==================================== Begin PressPermit Modification ===================================
         //
+        // Support a disjointed pages tree with some parents hidden
+        if ($child_of || empty($tease_all)) {  // if we're including all pages with teaser, no need to continue thru tree remapping
+            require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Ancestry.php');
+           
+            $ancestors = \PressShack\Ancestry::getPageAncestors(0, $post_type); // array of all ancestor IDs for keyed page_id, with direct parent first
+
+            $orderby = $sort_column;
+
+            $remap_args = compact('child_of', 'parent', 'exclude', 'depth', 'orderby');  // one or more of these args may have been modified after extraction 
+
+            \PressShack\Ancestry::remapTree($pages, $ancestors, $remap_args);
+        }
+
         if (!empty($append_page) && !empty($pages)) {
             $found = false;
             foreach (array_keys($pages) as $key) {
