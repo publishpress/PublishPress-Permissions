@@ -24,14 +24,14 @@ class HintsItemExceptions
         if (!$pp->moduleActive('collaboration')) {
             if (defined('PRESSPERMIT_PRO_VERSION')) {
                 $msg = __('To customize editing permissions, activate the Collaborative Publishing module.', 'press-permit-core');
+            } else {
                 $msg = sprintf(
                     __('To customize editing permissions, %1$supgrade to PressPermit Pro%2$s and install the Collaborative Publishing module.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
-
-                echo "<div class='pp-ext-promo' style='padding:0.5em;margin-top:0'>$msg</div>";
             }
+            echo "<div class='pp-ext-promo' style='padding:0.5em;margin-top:0'>$msg</div>";
         }
     }
 }
