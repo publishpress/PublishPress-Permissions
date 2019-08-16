@@ -115,7 +115,11 @@ class TermFiltersCount
             'offset' => 0,
             'include' => false,
             'exclude' => false,
-            'actual_args' => []
+            'actual_args' => [],
+
+            'pad_counts' => false,
+            'skip_teaser' => false,
+            'post_type' => '',
         ];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
