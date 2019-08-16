@@ -34,7 +34,11 @@ class MediaFilters
                 switch ($cap) {
                     case 'read_post':
                     case 'read_page':
-                        $status_obj = get_post_status_object($post_status);
+                        if (!$status_obj = get_post_status_object($post_status)) {
+                            $caps = array_diff($caps, [$post_type->cap->read]);
+                            return $caps;
+                        }
+
                         if ($status_obj->public || ($status_obj->private && ($user_id == $post_author_id))) {
                             $caps[] = $post_type->cap->read;
                             break;
