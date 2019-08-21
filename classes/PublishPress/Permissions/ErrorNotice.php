@@ -145,15 +145,44 @@ class ErrorNotice
             add_action('all_admin_notices', [$this, 'actDoNotices'], 5);
         }
 
-        $this->notices[] = (object)array_merge(compact('body'), $args);
+        if (!empty($args['id'])) {
+            $this->notices[$args['id']] = (object)array_merge(compact('body'), $args);
+        } else {
+            $this->notices[] = (object)array_merge(compact('body'), $args);
+        }
     }
 
     public function actDoNotices()
     {
-        foreach ($this->notices as $msg) {
+        global $pp_plugin_page;
+
+        foreach ($this->notices as $msg_id => $msg) {
             $style = (!empty($msg->style)) ? "style='$msg->style'" : "style='color:black'";
-            $class = (!empty($msg->class)) ? "class='$msg->class'" : '';
-            echo "<div id='message' class='error fade' $style $class>" . $msg->body . '</div>';
+            
+            $class = 'pp-admin-notice';
+            
+            $class .= (!empty($msg->class)) ? "class='$msg->class'" : '';
+
+		    if ( ! empty( $pp_plugin_page ) )
+			    $class .= ' pp-admin-notice-plugin';
+
+            if (is_numeric($msg_id)) :  // if no msg_id was provided, notice is not dismissible
+                echo "<div id='message' class='error fade' $style $class>" . $msg->body . '</div>';
+            else :?>
+                <div class='updated' class='<?php echo $class;?>' class='pp_dashboard_message'><p><?php echo $msg->body ?>&nbsp;
+                <a href="javascript:void(0);" class="presspermit-dismiss-notice" id="<?php echo $msg_id;?>"><?php _e("Dismiss", "pp") ?></a>
+                </p></div>
+        <?php endif;
         }
+		?>
+		<script type="text/javascript">
+            jQuery(document).ready( function($) {
+                $('a.presspermit-dismiss-notice').click(function(e) {
+                    $(this).closest('div').slideUp();
+                    jQuery.post(ajaxurl, {action:"pp_dismiss_msg", msg_id:$(this).attr('id'), cookie: encodeURIComponent(document.cookie)});
+                });
+            });
+		</script>
+		<?php
     }
 }
