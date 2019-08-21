@@ -95,7 +95,7 @@ class PluginAdmin
                     __('Thanks for activating PressPermit. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered.', 'press-permit-core'),
                     '<a href="' . $url . '">',
                     '</a>'
-                )
+                ), 'initial-activation'
             );
         }
     }
@@ -109,7 +109,7 @@ class PluginAdmin
                 __('For Pro features, replace the PressPermit plugin with Press Permit Pro. See %sPermissions > Settings > Install%s for details.', 'press-permit-core'),
                 '<a href="' . $url . '">',
                 '</a>'
-            )
+            ), 'pro-info'
         );
     }
 }

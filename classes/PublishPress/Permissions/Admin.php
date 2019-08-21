@@ -211,10 +211,15 @@ class Admin
         return new Permissions\ErrorNotice($err_slug, $args);
     }
 
-    public function notice($notice)
+    public function notice($notice, $msg_id = '')
     {
+		$dismissals = (array) pp_get_option('dismissals');
+
+		if (isset($dismissals[$msg_id]))
+			return;
+		
         require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');
         $err = new \PublishPress\Permissions\ErrorNotice();
-        $err->addNotice($notice);
+        $err->addNotice($notice, ['id' => $msg_id]);
     }
 }
