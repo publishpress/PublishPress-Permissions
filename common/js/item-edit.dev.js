@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-    //$('li.agp-agent a').live('click',function() {  // @todo: merge these classes, slicker selectors
+    // @todo: merge these classes, slicker selectors
     $(document).on('click', 'li.agp-agent a', function () {
         $(this).closest('div.inside').find('li.agp-agent').removeClass('agp-selected_agent').removeClass('agp-selected_agent_colorized').addClass('agp-unselected_agent').addClass('agp-unselected_agent_colorized');
         $(this).parent().addClass('agp-selected_agent').addClass('agp-selected_agent_colorized').removeClass('agp-unselected_agent').removeClass('agp-unselected_agent_colorized');
@@ -10,7 +10,6 @@ jQuery(document).ready(function ($) {
 
 // ensure selected dropdown option is styled according to its css class
 jQuery(document).ready(function ($) {
-    //$( '.pp-exceptions select').live('change', function(e) {
     $(document).on('change', '.pp-exceptions select', function (e) {
         $(e.target.options).filter(":selected").each(function () {
             var elemclass = $(this).attr('class');
@@ -38,7 +37,6 @@ jQuery(document).ready(function ($) {
         return false;
     });
 
-    //$('td.pp-exc-item select').live('change', function() {
     $(document).on('change', 'td.pp-exc-item select', function () {
         $(this).closest('tr').find('td.pp-exc-children select[disabled="disabled"]').val($(this).val()).trigger('change');
         $(this).closest('tr').find('td.pp-exc-children input[type="hidden"]').val($(this).val());
