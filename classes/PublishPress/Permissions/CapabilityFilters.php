@@ -89,10 +89,14 @@ class CapabilityFilters
 
         $pp = presspermit();
 
+        $this->in_process = true;
+
         $user = $pp->getUser();
 
-        if ($args[1] != $user->ID)
+        if ($args[1] != $user->ID) {
+            $this->in_process = false;
             return $wp_sitecaps;
+        }
 
         $args = (array)$args;
         $orig_cap = (isset($args[0])) ? $args[0] : '';
@@ -140,9 +144,11 @@ class CapabilityFilters
                 $unfiltered_types = explode(',', constant($unfiltered_types));
 
                 if (in_array(get_post_field('post_type', $item_id), $unfiltered_types, true)) {
+                    $this->in_process = false;
                     return $wp_sitecaps;
                 }
             } else {
+                $this->in_process = false;
                 return $wp_sitecaps;
             }
         }
@@ -178,8 +184,10 @@ class CapabilityFilters
                             $item_status = '';
                         }
 
-                        if ($item_type && !in_array($item_type, $pp->getEnabledPostTypes(), true))
+                        if ($item_type && !in_array($item_type, $pp->getEnabledPostTypes(), true)) {
+                            $this->in_process = false;
                             return $wp_sitecaps;
+                        }
                     }
                 }
 
@@ -199,8 +207,10 @@ class CapabilityFilters
                         $buffer_qualified = [];
                     }
                     $bkey = $item_type . $item_id . md5(serialize($type_caps));
-                    if (!empty($buffer_qualified[$bkey]))
+                    if (!empty($buffer_qualified[$bkey])) {
+                        $this->in_process = false;
                         return array_merge($wp_sitecaps, array_fill_keys($orig_reqd_caps, true));
+                    }
 
                     if ($is_post_cap && apply_filters('presspermit_use_post_exceptions', true, $item_type)) {
                         $pass = false;
@@ -310,6 +320,7 @@ class CapabilityFilters
 
                     if ($pass) {
                         $buffer_qualified[$bkey] = true;
+                        $this->in_process = false;
                         return array_merge($wp_sitecaps, array_fill_keys($orig_reqd_caps, true));
                     }
 
@@ -340,6 +351,7 @@ class CapabilityFilters
             if (!empty($force_post_metacap_check)) {
                 $orig_cap = $force_post_metacap_check;
             } else {
+                $this->in_process = false;
                 return $wp_sitecaps;
             }
         }
