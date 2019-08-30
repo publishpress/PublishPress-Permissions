@@ -68,7 +68,7 @@ class Permissions
 
         return $this->cap_defs;
     }
-
+  
     public static function doingREST()
     {
         return self::instance()->doing_rest;
@@ -894,27 +894,29 @@ class Permissions
         return !$error;
     }
 
-    // get last stored key status
+    /**
+     * @return EDD_SL_Plugin_Updater
+     */
+    public function load_updater()
+    {
+		if (defined('PRESSPERMIT_PRO_VERSION')) {
+        	require_once(PRESSPERMIT_ABSPATH . '/includes-pro/library/Factory.php');
+        	$container = \PublishPress\Permissions\Factory::get_container();
+			return $container['edd_container']['update_manager'];
+		}
+    }
+    
     public function keyStatus($refresh = false)
     {
-        $opt_val = $this->getOption('support_key');
-    
-        if (!is_array($opt_val) || count($opt_val) < 2) {
-            return false;
+        if (defined('PRESSPERMIT_PRO_VERSION')) {
+            require_once(PRESSPERMIT_ABSPATH . '/includes-pro/pro-key.php');
+            return _presspermit_key_status($refresh);
         } else {
-            if (is_array($opt_val) && count($opt_val) >= 2) {
-            if (1 == $opt_val[0]) {
-                return true;
-            } elseif (-1 == $opt_val[0]) {
-                return 'expired';
-            }
-            }
+            require_once(PRESSPERMIT_ABSPATH . '/includes/key.php');
+            return _presspermit_legacy_key_status($refresh);
         }
-    
-        return false;
     }
 
-    // was last stored key status active?
     public function keyActive($refresh = false)
     {
         return in_array($this->keyStatus($refresh), [true, 'valid', 'expired'], true);                

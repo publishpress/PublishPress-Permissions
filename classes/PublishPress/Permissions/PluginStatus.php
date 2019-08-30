@@ -4,22 +4,6 @@ namespace PublishPress\Permissions;
 
 class PluginStatus
 {
-    public static function callHome($request_topic, $request_vars = [], $post_vars = false)
-    {
-    }
-
-    /**
-     * Loads the change log for an available update
-     *
-     * @return void
-     **@author Kevin Behrens
-     *
-     * @author Jonathan Davis
-     */
-    public static function changeLog()
-    {
-    }
-
     public static function renewalMsg()
     {
         return sprintf(
