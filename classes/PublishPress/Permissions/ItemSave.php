@@ -53,21 +53,26 @@ class ItemSave
             foreach (array_keys($posted_exceptions) as $for_item_type) {
                 $_for_type = ('(all)' == $for_item_type) ? '' : $for_item_type;
 
-                if ($_for_type && ('post' == $for_item_source) && !post_type_exists($_for_type)) {
-                    continue;
-                }
-
-                if (('term' == $for_item_source) && !taxonomy_exists($_for_type)) {
-                    continue;
-                }
-
                 foreach (array_keys($posted_exceptions[$for_item_type]) as $op) {
-                    if (!$pp_admin->canSetExceptions($op, $for_item_type, compact('via_item_source', 'via_item_type', 'item_id', 'for_item_source'))) {
+                    $_for_item_source = $for_item_source;
+                    
+                    if (('term' == $for_item_source) || (('term' == $via_item_source) && in_array($op, ['manage', 'associate'] ) ) ) {
+                        $_for_item_source = 'term';
+                        
+                        if (!taxonomy_exists($_for_type)) {
+                            continue;
+                        }
+                    } elseif ($_for_type && ('post' == $for_item_source) && !post_type_exists($_for_type)) {
+                        continue;
+                    }
+
+                    if (!$pp_admin->canSetExceptions($op, $for_item_type, compact('via_item_source', 'via_item_type', 'item_id', '_for_item_source'))) {
                         continue;
                     }
 
                     foreach (array_keys($posted_exceptions[$for_item_type][$op]) as $agent_type) {
                         $args['for_item_type'] = $_for_type;
+                        $args['for_item_source'] = $_for_item_source;
                         $args['operation'] = $op;
                         $args['agent_type'] = $agent_type;
 
