@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PressPermit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-07 11:13-0500\n"
+"POT-Creation-Date: 2019-08-30 15:06-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: PublishPress <help@publishpress.com>\n"
@@ -308,29 +308,33 @@ msgstr ""
 msgid "Development use only (on front end, do not replace 'post_status = 'publish'' clause with filtered equivalent)"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/ErrorNotice.php:83
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/ErrorNotice.php:88
 #, php-format
 msgid "%1$s won&#39;t work until you upgrade PHP to version %2$s or later. Current version: %3$s"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/ErrorNotice.php:94
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/ErrorNotice.php:99
 #, php-format
-msgid "%1$s won&#39;t work until you upgrade PressPermit to version %2$s or later."
+msgid "%1$s won&#39;t work until you upgrade %2$s to version %3$s or later."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/ErrorNotice.php:104
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/ErrorNotice.php:110
 #, php-format
 msgid "%1$s won&#39;t work until you upgrade WordPress to version %2$s or later."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/ErrorNotice.php:114
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/ErrorNotice.php:120
 #, php-format
-msgid "This version of %1$s cannot work with your current PressPermit version. Please upgrade it to %2$s or later."
+msgid "This version of %1$s cannot work with your current %2$s version. Please upgrade it to %3$s or later."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/ErrorNotice.php:124
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/ErrorNotice.php:131
 #, php-format
-msgid "Duplicate PressPermit module activated (%1$s in folder %2$s)."
+msgid "Duplicate %1$s module activated (%2$s in folder %3$s)."
+msgstr ""
+
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/ErrorNotice.php:181
+msgid "Dismiss"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Groups.php:57
@@ -356,12 +360,12 @@ msgstr ""
 msgid "%1$s&nbsp;%2$s&nbsp;%3$s"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/PluginStatus.php:26
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/PluginStatus.php:10
 #, php-format
 msgid "Your license key has expired.  For updates to PressPermit Pro and priority support, <a href=\"%1$s\" target=\"_blank\">please renew</a>."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/PluginStatus.php:35
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/PluginStatus.php:19
 #, php-format
 msgid "Activate your <a href=\"%1$s\">license key</a> for PressPermit Pro downloads and priority support."
 msgstr ""
@@ -411,8 +415,6 @@ msgid "All users with the WordPress role of %s"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/DB/PermissionsMeta.php:104
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:860
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:862
 #, php-format
 msgid "%1$s %2$s"
 msgstr ""
@@ -874,6 +876,7 @@ msgid "unpublished"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:900
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/GroupsListTableBase.php:62
 #, php-format
 msgid "%1$s (%2$s)"
 msgstr ""
@@ -1176,7 +1179,7 @@ msgstr ""
 msgid "To customize editing permissions, activate the Collaborative Publishing module."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/HintsItemExceptions.php:28
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/HintsItemExceptions.php:29
 #, php-format
 msgid "To customize editing permissions, %1$supgrade to PressPermit Pro%2$s and install the Collaborative Publishing module."
 msgstr ""
@@ -1352,28 +1355,28 @@ msgstr ""
 msgid "#%d (no title)"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Settings.php:70
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Settings.php:168
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Settings.php:75
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Settings.php:173
 msgid "Save Changes"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Settings.php:74
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Settings.php:79
 msgid "PressPermit Settings"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Settings.php:130
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Settings.php:135
 msgid "All settings were updated."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Settings.php:138
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Settings.php:143
 msgid "All settings were reset to defaults."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Settings.php:174
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Settings.php:179
 msgid "All settings in this form (including those on undisplayed tabs) will be reset to DEFAULTS.  Are you sure?"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Settings.php:178
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Settings.php:183
 msgid "Revert to Defaults"
 msgstr ""
 
@@ -1600,6 +1603,7 @@ msgid "Filtered Post Types"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:30
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/DashboardFilters.php:231
 msgid "Permissions"
 msgstr ""
 
@@ -1711,223 +1715,6 @@ msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:314
 msgid "note: Groups and Roles are always displayed in \"Edit User\""
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:24
-msgid "Installation"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:31
-msgid "Account"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:32
-msgid "Version"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:33
-msgid "Pro Features"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:45
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:46
-msgid "settings"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:70
-msgid "Configuration data was uploaded."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:76
-msgid "Configuration data is unchanged since last upload."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:82
-msgid "Configuration data could not be uploaded."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:90
-msgid "Version info was refreshed."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:143
-#, php-format
-msgid "Your presspermit.com key has expired, but a <a href=\"%s\">PublishPress renewal</a> discount may be available."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:151
-#, php-format
-msgid "A presspermit.com key appears to be active. <a href=\"%s\" target=\"_blank\">Contact us</a> for assistance in migrating your account to publishpress.com."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:157
-#, php-format
-msgid "This is the free edition of PressPermit. For more features and priority support, upgrade to <a href=\"%s\" target=\"_blank\">PressPermit Pro</a>."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:168
-msgid "Further details for your installation:"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:181
-#, php-format
-msgid "Original presspermit.com support key hash: <strong>%s</strong> (expires %s)"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:183
-#, php-format
-msgid "Original presspermit.com support key hash: <strong>%s</strong>"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:192
-#, php-format
-msgid "To temporarily restore Pro features before migrating to a publishpress.com account, delete this version and install <span style=\"white-space:nowrap\"><a href=\"%s\" target=\"_blank\">Press Permit Core 2.6.x</a></span> using Plugins > Add New > Upload."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:231
-#, php-format
-msgid "%s&nbsp;details"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:238
-#, php-format
-msgid "PressPermit Version: %1$s %2$s"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:240
-#, php-format
-msgid "Database Schema Version: %s"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:246
-#, php-format
-msgid "- part of the %1$sPublishPress%2$s family of professional publishing tools"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:258
-#, php-format
-msgid "WordPress Version: %s"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:261
-#, php-format
-msgid "PHP Version: %s"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:279
-msgid "PressPermit Pro modules include:"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:281
-#, php-format
-msgid "%1$sContent-specific editing permissions, with PublishPress and Revisionary support%2$s"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:282
-#, php-format
-msgid "%1$sCustom Post Statuses (for visibility or workflow moderation)%2$s"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:283
-#, php-format
-msgid "%1$sCustomize bbPress forum access%2$s"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:284
-#, php-format
-msgid "%1$sFile Access control%2$s"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:285
-#, php-format
-msgid "%1$sRole Scoper import script%2$s"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:286
-#, php-format
-msgid "%1$s...and more%2$s"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:315
-msgid "PressPermit Documentation"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:320
-msgid "Submit a Help Ticket"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:326
-msgid "Upload site configuration to presspermit.com now"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:334
-#, php-format
-msgid "%s Site configuration data selected below will be uploaded to presspermit.com:"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:345
-msgid "Version info for server, WP, PressPermit and various other plugins"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:346
-msgid "PressPermit Settings and related WP Settings"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:347
-msgid "Theme name, version and status"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:348
-msgid "Activated plugins list"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:349
-msgid "Inactive plugins list"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:350
-msgid "WordPress Roles, Capabilities, Post Types, Taxonomies and Post Statuses"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:351
-msgid "Role Assignments and Exceptions"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:352
-msgid "Group definitions"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:353
-msgid "Group Membership (id only)"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:354
-msgid "Role Scoper / Press Permit 1.x Configuration and Import Results"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:355
-msgid "Post id, status, author id, parent id, and term ids and taxonomy name (when support accessed from post or term edit form)"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:356
-msgid "PHP Error Log (recent entries, no absolute paths)"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:390
-msgid "<strong>note:</strong> user data, absolute paths, database prefix, post title, post content and post excerpt are <strong>never</strong> uploaded"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:398
-msgid "Upgrade to PressPermit Pro for access to the following resources:"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:405
-#, php-format
-msgid "Priority support through our <a href=\"%s\" target=\"_blank\">help ticket</a> system"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabInstall.php:406
-msgid "Optional uploading of your site configuration to assist troubleshooting"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Users.php:14
@@ -2119,12 +1906,12 @@ msgstr ""
 msgid "PressPermit needs directions. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/PluginAdmin.php:95
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/PluginAdmin.php:96
 #, php-format
-msgid "Thanks for activating PressPermit. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered."
+msgid "Thanks for activating %1$s. Please go to %2$sPermissions > Settings%3$s and indicate which Post Types and Taxonomies should be filtered."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/PluginAdmin.php:109
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/PluginAdmin.php:111
 #, php-format
 msgid "For Pro features, replace the PressPermit plugin with Press Permit Pro. See %sPermissions > Settings > Install%s for details."
 msgstr ""
@@ -2292,83 +2079,225 @@ msgstr ""
 msgid "You can&#8217;t delete that group."
 msgstr ""
 
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:24
+msgid "Installation"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:31
+msgid "Account"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:32
+msgid "Version"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:33
+msgid "Pro Features"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:45
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:46
+msgid "settings"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:70
+msgid "Configuration data was uploaded."
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:76
+msgid "Configuration data is unchanged since last upload."
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:82
+msgid "Configuration data could not be uploaded."
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:90
+msgid "Version info was refreshed."
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:143
+#, php-format
+msgid "Your presspermit.com key has expired, but a <a href=\"%s\">PublishPress renewal</a> discount may be available."
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:151
+#, php-format
+msgid "A presspermit.com key appears to be active. <a href=\"%s\" target=\"_blank\">Contact us</a> for assistance in migrating your account to publishpress.com."
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:157
+#, php-format
+msgid "This is the free edition of PressPermit. For more features and priority support, upgrade to <a href=\"%s\" target=\"_blank\">PressPermit Pro</a>."
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:168
+msgid "Further details for your installation:"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:181
+#, php-format
+msgid "Original presspermit.com support key hash: <strong>%s</strong> (expires %s)"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:183
+#, php-format
+msgid "Original presspermit.com support key hash: <strong>%s</strong>"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:192
+#, php-format
+msgid "To temporarily restore Pro features before migrating to a publishpress.com account, delete this version and install <span style=\"white-space:nowrap\"><a href=\"%s\" target=\"_blank\">Press Permit Core 2.6.x</a></span> using Plugins > Add New > Upload."
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:231
+#, php-format
+msgid "%s&nbsp;details"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:238
+#, php-format
+msgid "PressPermit Version: %1$s %2$s"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:240
+#, php-format
+msgid "Database Schema Version: %s"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:246
+#, php-format
+msgid "- part of the %1$sPublishPress%2$s family of professional publishing tools"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:258
+#, php-format
+msgid "WordPress Version: %s"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:261
+#, php-format
+msgid "PHP Version: %s"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:279
+msgid "PressPermit Pro modules include:"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:281
+#, php-format
+msgid "%1$sContent-specific editing permissions, with PublishPress and Revisionary support%2$s"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:282
+#, php-format
+msgid "%1$sCustom Post Statuses (for visibility or workflow moderation)%2$s"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:283
+#, php-format
+msgid "%1$sCustomize bbPress forum access%2$s"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:284
+#, php-format
+msgid "%1$sFile Access control%2$s"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:285
+#, php-format
+msgid "%1$sRole Scoper import script%2$s"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:286
+#, php-format
+msgid "%1$s...and more%2$s"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:315
+msgid "PressPermit Documentation"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:320
+msgid "Submit a Help Ticket"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:326
+msgid "Upload site configuration to presspermit.com now"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:334
+#, php-format
+msgid "%s Site configuration data selected below will be uploaded to presspermit.com:"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:345
+msgid "Version info for server, WP, PressPermit and various other plugins"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:346
+msgid "PressPermit Settings and related WP Settings"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:347
+msgid "Theme name, version and status"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:348
+msgid "Activated plugins list"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:349
+msgid "Inactive plugins list"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:350
+msgid "WordPress Roles, Capabilities, Post Types, Taxonomies and Post Statuses"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:351
+msgid "Role Assignments and Exceptions"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:352
+msgid "Group definitions"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:353
+msgid "Group Membership (id only)"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:354
+msgid "Role Scoper / Press Permit 1.x Configuration and Import Results"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:355
+msgid "Post id, status, author id, parent id, and term ids and taxonomy name (when support accessed from post or term edit form)"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:356
+msgid "PHP Error Log (recent entries, no absolute paths)"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:390
+msgid "<strong>note:</strong> user data, absolute paths, database prefix, post title, post content and post excerpt are <strong>never</strong> uploaded"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:398
+msgid "Upgrade to PressPermit Pro for access to the following resources:"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:405
+#, php-format
+msgid "Priority support through our <a href=\"%s\" target=\"_blank\">help ticket</a> system"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:406
+msgid "Optional uploading of your site configuration to assist troubleshooting"
+msgstr ""
+
 #: F:\snapshot\press-permit-core/library/debug.php:10
 #, php-format
 msgid "%1$s queries in %2$s seconds. %3$s MB used."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/edd-license-handler/EDD_License_Handler.php:123
-#, php-format
-msgid "%1$s License Key"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/edd-license-handler/EDD_License_Handler.php:249
-msgid "Deactivate License"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/edd-license-handler/EDD_SL_Plugin_Updater.php:198
-#, php-format
-msgid "There is a new version of %1$s available. %2$sView version %3$s details%4$s."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/edd-license-handler/EDD_SL_Plugin_Updater.php:206
-#, php-format
-msgid "There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/edd-license-handler/EDD_SL_Plugin_Updater.php:394
-msgid "You do not have permission to install plugin updates"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/edd-license-handler/EDD_SL_Plugin_Updater.php:394
-msgid "Error"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/wordpress-edd-license-integration/src/core/License.php:122
-msgid "An error occurred. Please, try again."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:108
-msgid "Missing license"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:111
-msgid "Your license key is expired"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:114
-msgid "Your license key has been disabled"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:118
-msgid "Invalid license"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:121
-msgid "Your license is not active for this URL"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:124
-msgid "This appears to be an invalid license key for this product"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:127
-msgid "Your license key has reached its activation limit"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:132
-msgid "Activated"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:135
-msgid "Not validated yet"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:150
-msgid "Click here to read more about licenses."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/vendor/publishpress/wordpress-edd-license-integration/src/core/Setting/Field/License_key.php:151
-msgid "More information"
 msgstr ""
 
