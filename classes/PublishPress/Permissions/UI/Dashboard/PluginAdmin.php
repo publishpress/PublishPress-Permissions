@@ -17,7 +17,7 @@ class PluginAdmin
             }
         }
 
-        if (!defined('PRESSPERMIT_PRO') && get_option('ppce_version') || get_option('pps_version') || get_option('ppp_version')) {
+        if (!defined('PRESSPERMIT_PRO') && ( get_option('ppce_version') || get_option('pps_version') || get_option('ppp_version'))) {
             $this->proNotice();
         }
     }
@@ -89,11 +89,13 @@ class PluginAdmin
     {
         if (!$this->typeUsageStored() && !is_network_admin()) {
             $url = admin_url('admin.php?page=presspermit-settings');
-            
+			$plugin_title = (defined('PRESSPERMIT_PRO_VERSION')) ? 'PressPermit Pro' : 'PressPermit';            
+
             presspermit()->admin()->notice(
                 sprintf(
-                    __('Thanks for activating PressPermit. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered.', 'press-permit-core'),
-                    '<a href="' . $url . '">',
+                    __('Thanks for activating %1$s. Please go to %2$sPermissions > Settings%3$s and indicate which Post Types and Taxonomies should be filtered.', 'press-permit-core'),
+                    $plugin_title,
+					'<a href="' . $url . '">',
                     '</a>'
                 ), 'initial-activation'
             );

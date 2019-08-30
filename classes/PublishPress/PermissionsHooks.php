@@ -31,6 +31,14 @@ class PermissionsHooks
         if ($args['load_filters']) {
             $this->loadFilters();
         }
+
+		if (defined('PRESSPERMIT_PRO_VERSION')) {
+        	add_action('admin_init', [$this, 'loadUpdater']);
+		}
+    }
+
+	public function loadUpdater() {
+        return presspermit()->load_updater();
     }
 
     public function filtersLoaded()
@@ -210,14 +218,13 @@ class PermissionsHooks
         }
 
         // Capabilities() instantiation forces type-specific cap names for enabled post types and taxonomies
-        require_once(PRESSPERMIT_CLASSPATH . '/Capabilities.php');
-        $pp->cap_defs = new Permissions\Capabilities();
+        $pp->capDefs();
 
         do_action('presspermit_pre_init');
 
         if (is_admin()) {
             @load_plugin_textdomain('press-permit-core', false, dirname(plugin_basename(PRESSPERMIT_FILE)) . '/languages');
-            
+
             $this->admin_hooks->init();
         }
     }
@@ -256,7 +263,7 @@ class PermissionsHooks
         $pp_user = $pp->getUser(false, '', ['retrieve_site_roles' => false]);
         $pp_user->retrieveExtraGroups();
         $pp_user->getSiteRoles();
-
+        
         $pp->refreshUserAllcaps();
 
         do_action('presspermit_user_init');

@@ -18,14 +18,12 @@ class Settings
         }
 
         if (!empty($_REQUEST['pp_renewal'])) {
-            $opt_val = is_multisite() ? get_site_meta('pp_support_key') : get_option('pp_support_key');
-            $renewal_token = (!is_array($opt_val) || count($opt_val) < 2) ? '' : $opt_val[1];
+            if (defined('PRESSPERMIT_PRO_VERSION')) {
+                include_once(PRESSPERMIT_ABSPATH . '/includes-pro/pro-renewal-redirect.php');
+            } else {
+                include_once(PRESSPERMIT_ABSPATH . '/includes/renewal-redirect.php');
+            }
 
-            $url = site_url('');
-            $arr_url = parse_url($url);
-            $site = urlencode(str_replace($arr_url['scheme'] . '://', '', $url));
-
-            wp_redirect('https://publishpress.com/presspermit/?pkg=press-permit-pro&site=' . $site . '&presspermit_account=' . $renewal_token);
             exit;
         }
 
@@ -47,6 +45,11 @@ class Settings
                 }
 
                 wp_redirect($url);
+            }
+
+            if (defined('PRESSPERMIT_PRO_VERSION') && $key && is_array($key) && !empty($key['license_key'])) {
+                require_once(PRESSPERMIT_ABSPATH . '/includes-pro/Support.php');
+                $success = \PublishPress\Permissions\Support::supportUpload($args);
             }
 
             if (empty($_REQUEST['pp_help_ticket'])) {
