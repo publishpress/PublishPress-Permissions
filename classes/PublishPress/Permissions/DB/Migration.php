@@ -19,7 +19,7 @@ class Migration
         );
 
         if (is_multisite()) {
-            if (!get_site_meta('presspermit_updated_2_7_ms')) {
+            if (!get_site_option('presspermit_updated_2_7_ms')) {
                 self::migrateNetworkOptions();
             }
         }
