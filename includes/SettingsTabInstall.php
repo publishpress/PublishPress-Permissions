@@ -282,8 +282,8 @@ class SettingsTabInstall
                             <li><?php printf(__('%1$sCustom Post Statuses (for visibility or workflow moderation)%2$s', 'press-permit-core'), '<a href="https://publishpress.com/presspermit/?pp_module=status_control" target="_blank">', '</a>'); ?></li>
                             <li><?php printf(__('%1$sCustomize bbPress forum access%2$s', 'press-permit-core'), '<a href="https://publishpress.com/presspermit/?pp_module=compatibility" target="_blank">', '</a>'); ?></li>
                             <li><?php printf(__('%1$sFile Access control%2$s', 'press-permit-core'), '<a href="https://publishpress.com/presspermit/?pp_module=file-access" target="_blank">', '</a>'); ?></li>
-                            <li><?php printf(__('%1$sRole Scoper import script%2$s', 'press-permit-core'), '<a href="https://publishpress.com/presspermit/?pp_module=import target="_blank"">', '</a>'); ?></li>
-                            <li><?php printf(__('%1$s...and more%2$s', 'press-permit-core'), '<a href="https://publishpress.com/presspermit/ target="_blank"">', '</a>'); ?></li>
+                            <li><?php printf(__('%1$sRole Scoper import script%2$s', 'press-permit-core'), '<a href="https://publishpress.com/presspermit/?pp_module=import" target="_blank">', '</a>'); ?></li>
+                            <li><?php printf(__('%1$s...and more%2$s', 'press-permit-core'), '<a href="https://publishpress.com/presspermit/" target="_blank">', '</a>'); ?></li>
                         </ul>
 
                         <?php
