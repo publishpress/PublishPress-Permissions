@@ -99,7 +99,7 @@ if (!defined('PRESSPERMIT_FILE') && !$pro_active) {
 
             // Non-critical intialization errors (may prevent integration with module or external plugin, but continue with initialization)
             if (defined('RVY_VERSION') && !defined('REVISIONARY_VERSION')) {
-                err('old_extension', ['module_title' => 'Revisionary', 'min_version' => '1.3.5']);
+                presspermit_err('old_extension', ['module_title' => 'Revisionary', 'min_version' => '1.3.5']);
             }
 
             require_once(PRESSPERMIT_CLASSPATH_COMMON . '/LibArray.php');
