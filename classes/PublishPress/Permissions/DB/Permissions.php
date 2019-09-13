@@ -554,7 +554,7 @@ class Permissions
 
             // post may be required to be IN a term set for one taxonomy, and NOT IN a term set for another taxonomy
             foreach ($mod_types as $mod) {
-                if ($tt_ids = $user->getExceptionTerms($required_operation, $mod, $post_type, $taxonomy, $args)) {
+                if ($tt_ids = $user->getExceptionTerms($required_operation, $mod, $post_type, $taxonomy, array_merge($args, ['merge_universals' => true]))) {
                     if ('include' == $mod) {
                         if ($tx_additional_ids)
                             $tt_ids = array_merge($tt_ids, $tx_additional_ids);
