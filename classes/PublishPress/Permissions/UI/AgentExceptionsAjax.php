@@ -91,7 +91,7 @@ class AgentExceptionsAjax
 
                 if ((!$is_wp_role
                         || !in_array($group->metagroup_id, ['wp_anon', 'wp_all'])
-                        || ($pp->moduleActive('file-url-filter') && 'attachment' == $for_type)
+                        || ($pp->moduleActive('file-access') && 'attachment' == $for_type)
                         || defined('PP_ALL_ANON_FULL_EXCEPTIONS'))
                     && !defined('PP_NO_ADDITIONAL_ACCESS')
                 ) {

@@ -114,7 +114,7 @@ class ItemExceptionsUI
                 foreach ($this->data->agent_info['wp_role'] as $agent_id => $role) {
                     if (
                         in_array($role->metagroup_id, ['wp_anon', 'wp_all'], true)
-                        && (!$pp->moduleActive('file-url-filter') || 'attachment' != $for_item_type)
+                        && (!$pp->moduleActive('file-access') || 'attachment' != $for_item_type)
                         && !defined('PP_ALL_ANON_FULL_EXCEPTIONS')
                         && (('read' != $op) || $pp->getOption('anonymous_unfiltered'))
                     ) {
@@ -282,7 +282,7 @@ class ItemExceptionsUI
 
         if (('read' == $op) && $pp->getOption('display_extension_hints')
             && (
-                (('attachment' == $for_item_type) && !$pp->moduleActive('file-url-filter'))
+                (('attachment' == $for_item_type) && !$pp->moduleActive('file-access'))
                 || ! $pp->moduleActive('collaboration'))
         ) {
             require_once(PRESSPERMIT_CLASSPATH . '/UI/HintsItemExceptions.php');

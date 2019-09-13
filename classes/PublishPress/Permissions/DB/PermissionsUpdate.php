@@ -434,7 +434,7 @@ class PermissionsUpdate
             if (has_action('pp_inserted_exception_item')) {  // for perf, don't fire an action for each insertion unless it's been hooked into
                 $enable_actions = true;
 
-                if (presspermit()->moduleActive('file-url-filter') && (self::countHooks('pp_inserted_exception_item') < 2)) {  // if not explicitly enabled and PP File Filtering is the only API user, stop doing the action after file rules have been expired
+                if (presspermit()->moduleActive('file-access') && (self::countHooks('pp_inserted_exception_item') < 2)) {  // if not explicitly enabled and PP File Filtering is the only API user, stop doing the action after file rules have been expired
                     add_action('update_option_presspermit_file_rules_expired', [&$helper, 'disableActions']);
                 }
             }

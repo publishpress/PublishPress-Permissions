@@ -44,14 +44,6 @@ class PostFilters
         add_filter('presspermit_posts_request', [$this, 'fltDoPostsRequest'], 2, 2);
         add_filter('presspermit_posts_where', [$this, 'fltPostsWhere'], 10, 2);
         
-        if (defined('PP_ALL_ANON_FULL_EXCEPTIONS')) {
-            global $current_user;
-            if (empty($current_user->ID)) {
-                add_filter('posts_results', [$this, 'fltLogAnonResults']);
-                add_filter('the_posts', [$this, 'fltReinstateAnonResults']);
-            }
-        }
-
         add_filter('presspermit_force_post_metacap_check', [$this, 'fltForcePostMetacapCheck'], 10, 2);
 
         //add_filter( 'posts_request', [$this, 'flt_debug_query'], 999 );
@@ -70,7 +62,7 @@ class PostFilters
         return $results;
     }
 
-    // enable PP to grant read permissions to Anonymous users for private posts, but only if constant PP_ALL_ANON_FULL_EXCEPTIONS is defined
+    // enable PP to grant read permissions to Anonymous users for private posts
     public function fltReinstateAnonResults($posts)
     {
         global $wp_query;
@@ -81,12 +73,20 @@ class PostFilters
         return $posts;
     }
 
-    // avoid unexpected query behavior due to external calling of $wp_query->get_queried_object()
     public function actParseQueryFollowup($query_obj = false)
     {
+        // avoid unexpected query behavior due to external calling of $wp_query->get_queried_object()
         if ($query_obj && isset($query_obj->queried_object_id) && !$query_obj->queried_object_id) {
             unset($query_obj->queried_object);
             unset($query_obj->queried_object_id);
+        }
+
+        if (defined('PP_ALL_ANON_FULL_EXCEPTIONS') || presspermit()->moduleActive('file-access')) {
+            global $current_user;
+            if (empty($current_user->ID)) {
+                add_filter('posts_results', [$this, 'fltLogAnonResults']);
+                add_filter('the_posts', [$this, 'fltReinstateAnonResults']);
+            }
         }
     }
 
@@ -309,7 +309,7 @@ class PostFilters
                     }
                 }
             }
-            }
+        }
 
         if (('associate' == $required_operation) && !defined(PRESSPERMIT_COLLAB_VERSION)) {
             return $where;
@@ -512,7 +512,7 @@ class PostFilters
             } else {
                 $required_operation = (PWP::isFront() && !is_preview()) ? 'read' : 'edit';
             }
-
+            
             $args['required_operation'] = $required_operation;
         }
 
@@ -545,6 +545,8 @@ class PostFilters
         } else {
             $use_statuses = PWP::getPostStatuses(['internal' => false, 'post_type' => $post_types], 'object');
         }
+
+        $use_statuses = apply_filters('presspermit_query_post_statuses', $use_statuses, $args );
 
         if (in_array('attachment', $post_types, true)) {
             $use_statuses['inherit'] = (object)[];

@@ -147,13 +147,15 @@ class SettingsTabCore
 
                         $hidden_types = apply_filters('presspermit_hidden_post_types', []);
 
+                        $locked_types = apply_filters('presspermit_locked_post_types', []);
+
                         $types = $pp->admin()->orderTypes($types);
                     }
 
                     $ui->all_otype_options[] = $option_name;
 
                     if (isset($pp->default_options[$option_name])) {
-                    if (!$enabled = $ui->getOption($option_name)) {
+                    if (!$enabled = apply_filters('presspermit_enabled_post_types', $ui->getOption($option_name))) {
                         $enabled = [];
                     }
 
@@ -171,12 +173,14 @@ class SettingsTabCore
                     <?php else : ?>
                     <?php if (isset($hidden_types[$key])) : ?>
                         <input name="<?php echo($name); ?>" type="hidden" value="<?php echo $hidden_types[$key]; ?>"/>
-                    <?php else : ?>
+                    <?php else : 
+                        $locked = (!empty($locked_types[$key])) ? 'disabled=disabled' : '';
+                        ?>
                     <div class="agp-vtight_input">
-                        <input name="<?php echo($name); ?>" type="hidden" value="0"/>
+                        <input name="<?php echo $name; ?>" type="hidden" value="<?php echo (empty($locked_types[$key])) ? '0' : '1';?>"/>
                         <label for="<?php echo($id); ?>" title="<?php echo($key); ?>">
-                            <input name="<?php echo($name); ?>" type="checkbox" id="<?php echo($id); ?>"
-                                   value="1" <?php checked('1', !empty($enabled[$key])); ?> />
+                            <input name="<?php echo (empty($locked_types[$key])) ? $name : ''; ?>" type="checkbox" id="<?php echo($id); ?>"
+                                   value="1" <?php checked('1', !empty($enabled[$key])); echo $locked; ?> />
 
                             <?php
                             if (isset($obj->labels_pp)) {

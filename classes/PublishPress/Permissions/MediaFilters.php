@@ -48,7 +48,7 @@ class MediaFilters
                         if (!$post_author_id)
                             $post_author_id = $user_id;
 
-                        if ($status_obj->private)
+                        if ($status_obj->private || presspermit()->moduleActive('file-access'))
                             $caps[] = $post_type->cap->read_private_posts;
                         else
                             $caps = map_meta_cap('edit_post', $user_id, $post->ID);
