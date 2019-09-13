@@ -126,7 +126,7 @@ class SettingsTabAdvanced
 
         $section = 'file_filtering';
 
-        if (!$pp->moduleActive('file-url-filter')) :
+        if (!$pp->moduleActive('file-access')) :
             ?>
             <tr>
                 <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>

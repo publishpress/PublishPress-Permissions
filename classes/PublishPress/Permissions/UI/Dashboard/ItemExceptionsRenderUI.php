@@ -201,7 +201,7 @@ class ItemExceptionsRenderUI
                                         <?php
                     foreach ($this->options[$option_set] as $val => $lbl) :
                     if (('wp_role' == $agent_type) && in_array($agent_info->metagroup_id, ['wp_anon', 'wp_all'], true)
-                        && (!$pp->moduleActive('file-url-filter') || 'attachment' != $for_type) && !defined('PP_ALL_ANON_FULL_EXCEPTIONS')
+                        && (!$pp->moduleActive('file-access') || 'attachment' != $for_type) && !defined('PP_ALL_ANON_FULL_EXCEPTIONS')
                         && (2 == $val)
                     ) {
                         continue;
