@@ -3,7 +3,7 @@ Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.7
 Tested up to: 5.2.2
-Stable tag: 2.7.13
+Stable tag: 2.7.14
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -46,7 +46,7 @@ PressPermit [Pro](https://publishpress.com/presspermit/) is [available](https://
 	
 == Upgrade Notice ==
 
-= 2.7.13 =
+= 2.7.14 =
 Pro users: download PressPermit Pro from publishpress.com before upgrading to this version.
 
 = 2.1.14 =
@@ -54,9 +54,17 @@ Initial production release
 
 == Changelog ==
 
+= 2.7.14 - 13 Sep 2019 =
+* Fixed : Exceptions assigned for "All" post types and "Only these" categories blocked access to all categories
+* Change : Work around unexplained class loading error on early user_has_cap filtering with CAS integration
+* Fixed : Fatal error if Revisionary 1.2.x (releases older than March 2019) active
+* Change : Better dismissal support for admin notices
+* Change : Better sharing / separation of Core, Pro code
+
 = 2.7.13 - 21 Aug 2019 =
 * Fixed : If get_pages() was called with depth, child_of, and exclude_tree arguments, some pages were not properly excluded
 * Fixed : PHP Notices for undefined variable if get_pages() or wp_list_pages() is called with hide_empty argument
+* Change : The informational notice displayed to existing Pro users (to replace PressPermit with PressPermit Pro) is now dismissible  
 
 = 2.7.12 - 6 Aug 2019 =
 * Fixed : Add New User screen was missing Permission Groups selection UI

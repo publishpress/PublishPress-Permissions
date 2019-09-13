@@ -5,7 +5,7 @@
  * Description: Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
  * Author: PublishPress
  * Author URI:  https://publishpress.com/
- * Version:     2.7.13
+ * Version:     2.7.14
  * Text Domain: press-permit-core
  * Domain Path: /languages/
  * Min WP Version: 4.9.7
@@ -91,7 +91,7 @@ if (!defined('PRESSPERMIT_FILE') && !$pro_active) {
                 return;
             }
 
-            define('PRESSPERMIT_VERSION', '2.7.13');
+            define('PRESSPERMIT_VERSION', '2.7.14');
 
             if (!defined('PRESSPERMIT_LEGACY_HOOKS')) {
                 define('PRESSPERMIT_LEGACY_HOOKS', false);
