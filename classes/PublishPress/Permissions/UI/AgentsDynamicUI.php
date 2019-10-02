@@ -236,17 +236,18 @@ class AgentsDynamicUI
         </table>
         <?php
         if (!$pp->moduleActive('membership') && $pp->getOption('display_extension_hints')) {
-
-            if (defined('PRESSPERMIT_PRO_VERSION')) {
-                $msg = __('To set date limits on group membership, activate the Membership module.', 'press-permit-core');
-            } else {
-                $msg = sprintf(
-                    __('To set date limits on group membership, %1$supgrade to PressPermit Pro%2$s and enable the Membership module.', 'press-permit-core'),
-                    '<a href="https://publishpress.com/pricing/">',
-                    '</a>'
-                );
+            if (0 === strpos($id_suffix, 'read')) {
+                if (defined('PRESSPERMIT_PRO_VERSION')) {
+                    $msg = __('To set date limits on group membership, activate the Membership module.', 'press-permit-core');
+                } else {
+                    $msg = sprintf(
+                        __('To set date limits on group membership, %1$supgrade to PressPermit Pro%2$s and enable the Membership module.', 'press-permit-core'),
+                        '<a href="https://publishpress.com/pricing/">',
+                        '</a>'
+                    );
+                }
+                echo "<div class='pp-ext-promo'>$msg</div>";
             }
-            echo "<div class='pp-ext-promo'>$msg</div>";
         }
 
         $csv = ($current_selections) ? implode(',', array_keys($current_selections)) : '';

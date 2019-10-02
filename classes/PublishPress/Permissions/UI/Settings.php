@@ -24,6 +24,11 @@ class Settings
         wp_enqueue_script('presspermit-settings', PRESSPERMIT_URLPATH . "/common/js/settings{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
         $wp_scripts->in_footer[] = 'presspermit-settings';  // otherwise it will not be printed in footer  @todo: review
 
+        if (defined('PRESSPERMIT_PRO_VERSION')) {
+            wp_enqueue_script('presspermit-pro-settings', PRESSPERMIT_URLPATH . "/includes-pro/settings-pro{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
+            $wp_scripts->in_footer[] = 'presspermit-pro-settings';  // otherwise it will not be printed in footer  @todo: review
+        }
+
         if (!current_user_can('pp_manage_settings'))
             wp_die(PWP::__wp('Cheatin&#8217; uh?'));
 
@@ -57,13 +62,14 @@ class Settings
         }
 
         ?>
-        <div class='wrap'>
+        <div class="pressshack-admin-wrapper wrap">
             <?php
             echo '<form id="pp_settings_form" action="" method="post">';
             wp_nonce_field('pp-update-options');
 
             do_action('presspermit_options_form');
             ?>
+        <header>
             <?php PluginPage::icon(); ?>
 
             <div class="submit pp-submit" style="border:none;position:absolute;right:20px;top:25px;">
@@ -101,6 +107,9 @@ class Settings
                 });
                 /* ]]> */
             </script>
+
+        </header>
+        
             <?php
             $default_tab = (isset($_REQUEST['pp_tab']) && isset($ui->tab_captions[$_REQUEST['pp_tab']]))
                 ? $_REQUEST['pp_tab'] : 'install';
@@ -179,8 +188,11 @@ class Settings
                         onclick="<?php echo $js_call; ?>"/>
             </p>
             </form>
-            <p style='clear:both'>
-            </p>
+            <p style='clear:both'></p>
+
+            <?php 
+            presspermit()->admin()->publishpressFooter();
+            ?>
         </div>
 
         <?php

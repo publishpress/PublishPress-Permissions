@@ -110,7 +110,6 @@
 }
 
 .agp-opt-checkbox {
-    margin-top: 5px;
     margin-bottom: 10px;
 }
 
@@ -350,7 +349,36 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
     display: none;
 }
 
-
 .publishpress-extended-post-status select {
     width: 120px;
-  }
+}
+
+.pressshack-admin-wrapper p.submit {
+    padding-bottom:0;
+}
+
+.pressshack-admin-wrapper .button-primary {
+    text-shadow: none !important;
+}
+
+#wpbody-content .pressshack-admin-wrapper p.pp-submit {
+    float:right;
+}
+
+#wpbody-content .pressshack-admin-wrapper > footer > div.pp-rating {
+    margin-top:5px;
+}
+
+.pressshack-admin-wrapper footer {
+margin-top:25px;
+}
+
+.pressshack-admin-wrapper .activating a, .pressshack-admin-wrapper .activating a:link, .pressshack-admin-wrapper .activating a:visited {
+color:rgb(0, 115, 170);
+text-decoration: underline;
+}
+
+.pressshack-admin-wrapper .activating a:active, .pressshack-admin-wrapper .activating a:hover {
+color:#00a0d2;
+text-decoration: underline;
+}

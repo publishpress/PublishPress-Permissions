@@ -52,8 +52,10 @@ class PluginUpdated
                 self::syncWordPressRoles();
             }
 
-            if (version_compare($prev_version, '2.7.3', '<')) {
+            if ((defined('PRESSPERMIT_PRO_VERSION') && version_compare($prev_version, '2.7.11', '<')) || (!defined('PRESSPERMIT_PRO_VERSION') && version_compare($prev_version, '2.7.3', '<'))) {
                 // 2.7 and 2.7.1 incorrectly defaulted this array to ['pp-import'] instead of ['presspermit-import']
+                // PressPermit Core 2.7.2 fixed the bug, but did not apply this database patch.
+                // Beginning with 2.7.12, PressPermit Pro applies the database patch on first-time Pro execution
                 $deactivated = (array) get_option('presspermit_deactivated_modules');
 
                 if (isset($deactivated['pp-import'])) {
@@ -88,6 +90,7 @@ class PluginUpdated
 
                 // Previously, propagated exceptions were not removed when parent exception assign_for was changed to item only.  Expose them by setting inherited_from to 0
                 //DB\Migration::expose_orphaned_exception_items();
+
                 require_once(PRESSPERMIT_CLASSPATH . '/DB/Permissions.php');
                 \PublishPress\Permissions\DB\Permissions::expose_orphaned_exception_items();
             } else break;

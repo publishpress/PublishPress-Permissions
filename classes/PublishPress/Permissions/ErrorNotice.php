@@ -18,7 +18,7 @@ class ErrorNotice
         }
 
         $defaults = [
-            'module_title' => 'PressPermit',
+            'module_title' => PRESSPERMIT_TITLE,
             'module_slug' => '',
             'module_folder' => '',
             'min_version' => '',
@@ -36,12 +36,13 @@ class ErrorNotice
             return;  // @todo: review which messages to limit to update.php
         }
 
+        // @todo: Review which of the remaining plugin initialization error strings can be translated (some are executed very early).
         switch ($err) {
             case 'multiple_pp':
                 if (is_admin() && ('plugins.php' == $pagenow) && !strpos(urldecode($_SERVER['REQUEST_URI']), 'deactivate')) {
                     $message = sprintf(
                         '<strong>Error:</strong> Multiple copies of %1$s activated. Only the copy in folder "%2$s" is functional.',
-                        'PressPermit',
+                        PRESSPERMIT_TITLE,
                         dirname(plugin_basename(PRESSPERMIT_FILE))
                     );
 
@@ -55,7 +56,9 @@ class ErrorNotice
                     update_option('ppc_migration_buffer_active_plugins', get_option('active_plugins'));
                 }
 
-                $this->addNotice('PressPermit cannot operate until Press Permit Core and PP extension plugins are deactivated.');
+                $this->addNotice(
+                    sprintf('%s cannot operate until Press Permit Core and PP extension plugins are deactivated.', PRESSPERMIT_TITLE)
+                );
                 break;
 
             case 'rs_active':
@@ -66,7 +69,7 @@ class ErrorNotice
                     : [];
 
                 $this->addNotice(
-                    'PressPermit is running in configuration only mode. Access filtering will not be applied until Role Scoper is deactivated.',
+                    sprintf('%s is running in configuration only mode. Access filtering will not be applied until Role Scoper is deactivated.', PRESSPERMIT_TITLE),
                     $args
                 );
 
@@ -74,7 +77,9 @@ class ErrorNotice
                 break;
 
             case 'pp_legacy_active':
-                $this->addNotice('PressPermit cannot operate with an older version of Press Permit active.');   // Press Permit 1.x beta, circa 2011
+                $this->addNotice(
+                    sprintf('%s cannot operate with an older version of Press Permit active.', PRESSPERMIT_TITLE) // Press Permit 1.x beta, circa 2011
+                );
                 break;
 
             case 'old_php':
@@ -91,8 +96,9 @@ class ErrorNotice
             case 'old_pp':
                 $this->addNotice(
                     sprintf(
-                        __('%1$s won&#39;t work until you upgrade PressPermit to version %2$s or later.', 'press-permit-core'),
+                        __('%1$s won&#39;t work until you upgrade %2$s to version %3$s or later.', 'press-permit-core'),
                         $module_title,
+                        PRESSPERMIT_TITLE,
                         $min_version
                     )
                 );
@@ -111,8 +117,9 @@ class ErrorNotice
             case 'old_extension':
                 $this->addNotice(
                     sprintf(
-                        __('This version of %1$s cannot work with your current PressPermit version. Please upgrade it to %2$s or later.', 'press-permit-core'),
+                        __('This version of %1$s cannot work with your current %2$s version. Please upgrade it to %3$s or later.', 'press-permit-core'),
                         $module_title,
+                        PRESSPERMIT_TITLE,
                         $min_version
                     )
                 );
@@ -121,7 +128,8 @@ class ErrorNotice
             case 'duplicate_module':
                 $this->addNotice(
                     sprintf(
-                        __('Duplicate PressPermit module activated (%1$s in folder %2$s).', 'press-permit-core'),
+                        __('Duplicate %1$s module activated (%2$s in folder %3$s).', 'press-permit-core'),
+                        PRESSPERMIT_TITLE,
                         $module_slug,
                         $module_folder
                     )
@@ -145,15 +153,44 @@ class ErrorNotice
             add_action('all_admin_notices', [$this, 'actDoNotices'], 5);
         }
 
+        if (!empty($args['id'])) {
+            $this->notices[$args['id']] = (object)array_merge(compact('body'), $args);
+        } else {
         $this->notices[] = (object)array_merge(compact('body'), $args);
+    }
     }
 
     public function actDoNotices()
     {
-        foreach ($this->notices as $msg) {
+        global $pp_plugin_page;
+
+        foreach ($this->notices as $msg_id => $msg) {
             $style = (!empty($msg->style)) ? "style='$msg->style'" : "style='color:black'";
-            $class = (!empty($msg->class)) ? "class='$msg->class'" : '';
+            
+            $class = 'pp-admin-notice';
+            
+            $class .= (!empty($msg->class)) ? "class='$msg->class'" : '';
+
+		    if ( ! empty( $pp_plugin_page ) )
+			    $class .= ' pp-admin-notice-plugin';
+
+            if (is_numeric($msg_id)) :  // if no msg_id was provided, notice is not dismissible
             echo "<div id='message' class='error fade' $style $class>" . $msg->body . '</div>';
+            else :?>
+                <div class='updated' class='<?php echo $class;?>' class='pp_dashboard_message'><p><?php echo $msg->body ?>&nbsp;
+                <a href="javascript:void(0);" class="presspermit-dismiss-notice" id="<?php echo $msg_id;?>"><?php _e("Dismiss", "pp") ?></a>
+                </p></div>
+        <?php endif;
         }
+		?>
+		<script type="text/javascript">
+            jQuery(document).ready( function($) {
+                $('a.presspermit-dismiss-notice').click(function(e) {
+                    $(this).closest('div').slideUp();
+                    jQuery.post(ajaxurl, {action:"pp_dismiss_msg", msg_id:$(this).attr('id'), cookie: encodeURIComponent(document.cookie)});
+                });
+            });
+		</script>
+		<?php
     }
 }

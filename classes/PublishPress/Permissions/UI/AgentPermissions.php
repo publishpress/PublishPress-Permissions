@@ -118,7 +118,8 @@ class AgentPermissions
             </div>
         <?php endif; ?>
 
-            <div class="wrap" id="group-profile-page">
+            <div class="wrap pressshack-admin-wrapper" id="group-profile-page">
+                <header>
                 <?php PluginPage::icon(); ?>
                 <h1><?php
 
@@ -134,6 +135,7 @@ class AgentPermissions
                         printf(__('Edit Permissions (%s)', 'press-permit-core'), $group_type_obj->labels->singular_name);
 
                     ?></h1>
+                </header>
 
                 <div id="pp_cred_wrap">
                     <form id="agent-profile" class="pp-admin <?php echo esc_attr($agent_type) . '-profile'; ?>"
@@ -375,6 +377,10 @@ class AgentPermissions
                     <?php endif; ?>
 
                 </div>
+                
+                <?php 
+                presspermit()->admin()->publishpressFooter();
+                ?>
             </div>
         <?php
     }
