@@ -373,8 +373,10 @@ class PageFilters
             $where_status = $wpdb->prepare("AND post_status = %s", $post_status);
         elseif ($is_front)
             $where_status = "AND post_status IN ('" . implode("','", $safeguard_statuses) . "')";
-        else
-            $where_status = "AND post_status NOT IN ('" . implode("','", get_post_stati(['internal' => true])) . "')";
+        else {
+            // @TODO: Revisionary 2.0 : query replacement workaround due to previous clause here: AND post_status NOT IN [internal=true]
+            $where_status = "AND post_status IN ('" . implode("','", get_post_stati(['internal' => false])) . "')";
+        }
 
         $where_id = '';
         global $pagenow;

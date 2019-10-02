@@ -425,7 +425,7 @@ class LibWP
 
     public static function isNetworkActivated($plugin_file = '')
     {
-        if ( ! $plugin_file && defined(PRESSPERMIT_FILE) ) {
+        if ( ! $plugin_file && defined('PRESSPERMIT_FILE') ) {
             $plugin_file = plugin_basename(PRESSPERMIT_FILE);
         }
         return (array_key_exists($plugin_file, (array)maybe_unserialize(get_site_option('active_sitewide_plugins'))));
