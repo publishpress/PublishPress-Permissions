@@ -17,7 +17,7 @@ class PluginAdmin
             }
         }
 
-        if (!defined('PRESSPERMIT_PRO') && get_option('ppce_version') || get_option('pps_version') || get_option('ppp_version')) {
+        if (!defined('PRESSPERMIT_PRO_VERSION') && ( get_option('ppce_version') || get_option('pps_version') || get_option('ppp_version'))) {
             $this->proNotice();
         }
     }
