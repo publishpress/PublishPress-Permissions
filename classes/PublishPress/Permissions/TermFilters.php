@@ -167,7 +167,7 @@ class TermFilters
                     $args['required_operation'] = $rest->operation;
                 }
             } else {
-                $args['required_operation'] = 'manage';
+                $args['required_operation'] = ($rest->is_view_method) ? 'assign' : 'manage';
             }
         }
 
