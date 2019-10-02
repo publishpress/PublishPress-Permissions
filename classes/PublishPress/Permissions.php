@@ -42,6 +42,7 @@ class Permissions
     public $doing_rest = false; 
     public $flags = [];
     public $listed_ids = [];               // $listed_ids[object_type][object_id] = true : avoid separate capability query for each listed item
+    public $meta_cap_post = false;
 
     public static function instance($args = [])
     {
