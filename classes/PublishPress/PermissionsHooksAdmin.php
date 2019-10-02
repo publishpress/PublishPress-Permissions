@@ -37,6 +37,11 @@ class PermissionsHooksAdmin
 
     public function init()
     {
+        if (defined('PRESSPERMIT_PRO_VERSION')) {
+            require_once(PRESSPERMIT_ABSPATH . '/includes-pro/pro-maint.php');
+            Permissions\PressPermitMaint::adminRedirectCheck();
+        }
+
         require_once(PRESSPERMIT_CLASSPATH . '/CapabilityFiltersAdmin.php');
         new Permissions\CapabilityFiltersAdmin();
 
@@ -54,7 +59,7 @@ class PermissionsHooksAdmin
 
         if (
             !empty($_POST['presspermit_submit']) || !empty($_POST['presspermit_defaults']) || !empty($_POST['pp_role_usage_defaults'])
-            || !empty($_REQUEST['pp_refresh_updates']) || !empty($_REQUEST['pp_renewal'])
+            || !empty($_REQUEST['presspermit_refresh_updates']) || !empty($_REQUEST['pp_renewal'])
             || !empty($_REQUEST['pp_upload_config']) || !empty($_REQUEST['pp_help_ticket'])
         ) {
             // For 'settings' admin panels, handle updated options right after current_user load (and before pp_init).
