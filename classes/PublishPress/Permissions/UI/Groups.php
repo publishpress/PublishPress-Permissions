@@ -56,7 +56,7 @@ class Groups
                     <?php wp_nonce_field('pp-bulk-groups');?>
                     <?php echo $referer; ?>
 
-                    <div class="wrap">
+                    <div class="wrap pressshack-admin-wrapper">
                         <?php PluginPage::icon(); ?>
                         <h1><?php _e('Delete Groups'); ?></h1>
                         <p><?php echo _n('You have specified this group for deletion:', 'You have specified these groups for deletion:', count($groupids), 'press-permit-core'); ?></p>
@@ -140,7 +140,8 @@ class Groups
                         echo $msg;
                 } ?>
 
-                <div class="wrap presspermit-groups">
+                <div class="wrap pressshack-admin-wrapper presspermit-groups">
+                    <header>
                     <?php PluginPage::icon(); ?>
                     <h1>
                         <?php
@@ -169,7 +170,7 @@ class Groups
                             if (defined('PP_GROUPS_HINT')) {
                                 echo esc_html(PP_GROUPS_HINT);
                             } else {
-                                echo esc_html(__('Permission Groups are sets of users to which you may assign supplemental roles or exceptions. To customize permissions for an individual user instead, click their Role in the Users listing.', 'press-permit-core'));
+                                echo esc_html(__("Permission Groups adjust user access with type-specific Roles and content-specific Exceptions. To customize permissions for a single user instead, click their Role in the Users listing.", 'press-permit-core'));
                             }
 
                             echo '</div><br />';
@@ -202,7 +203,8 @@ class Groups
                         if (!empty($groupsearch))
                             printf('<span class="subtitle">' . __('Search Results for &#8220;%s&#8221;', 'press-permit-core') . '</span>', esc_html($groupsearch)); ?>
                     </h1>
-
+                    </header>
+                    
                     <?php $groups_list_table->views(); ?>
 
                     <form action="<?php echo "$url" ?>" method="get">
@@ -235,6 +237,10 @@ class Groups
 
                         echo "<div class='pp-ext-promo'>$msg</div>";
                     }
+                    ?>
+
+                    <?php 
+                    presspermit()->admin()->publishpressFooter();
                     ?>
 
                 </div>
