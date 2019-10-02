@@ -3,7 +3,7 @@ Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.7
 Tested up to: 5.2.2
-Stable tag: 2.7.14
+Stable tag: 2.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -53,6 +53,12 @@ Pro users: download PressPermit Pro from publishpress.com before upgrading to th
 Initial production release
 
 == Changelog ==
+
+= 2.8 = 2 Oct 2019 =
+* Fixed : Category / Term listing: after clicking Universal Exceptions link, category links led to edit screen for type-specific exceptions
+* Fixed : PHP Notice when Term Exceptions are assigned to enable access (adjustment mode "Also these") 
+* Change : On Permissions > Groups list, change "Group" filter link to "Custom Group"
+* Change : Added PublishPress footer to plugin screens
 
 = 2.7.14 - 13 Sep 2019 =
 * Fixed : Exceptions assigned for "All" post types and "Only these" categories blocked access to all categories

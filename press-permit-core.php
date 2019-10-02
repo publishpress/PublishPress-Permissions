@@ -91,7 +91,7 @@ if (!defined('PRESSPERMIT_FILE') && !$pro_active) {
                 return;
             }
 
-            define('PRESSPERMIT_VERSION', '2.7.14');
+            define('PRESSPERMIT_VERSION', '2.8');
 
             if (!defined('PRESSPERMIT_LEGACY_HOOKS')) {
                 define('PRESSPERMIT_LEGACY_HOOKS', false);
