@@ -55,7 +55,8 @@ class GroupNew
             </div>
         <?php endif; ?>
 
-            <div class="wrap" id="group-profile-page">
+            <div class="wrap pressshack-admin-wrapper" id="group-profile-page">
+                <header>
                 <?php
                 PluginPage::icon();
                 ?>
@@ -69,6 +70,7 @@ class GroupNew
                     else
                         printf(__('Create New %s', 'press-permit-core'), $group_type_obj->labels->singular_name);
                     ?></h1>
+                </header>
 
                 <form action="" method="post" id="creategroup" name="creategroup" class="pp-admin">
                     <input name="action" type="hidden" value="creategroup"/>
@@ -110,6 +112,10 @@ class GroupNew
                     ?>
 
                 </form>
+
+                <?php 
+                presspermit()->admin()->publishpressFooter();
+                ?>
             </div>
         <?php
     }

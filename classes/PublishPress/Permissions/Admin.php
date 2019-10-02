@@ -222,4 +222,45 @@ class Admin
         $err = new \PublishPress\Permissions\ErrorNotice();
         $err->addNotice($notice, ['id' => $msg_id]);
     }
+
+    function publishpressFooter() {
+    ?>
+        <footer>
+
+        <div class="pp-rating">
+        <a href="https://wordpress.org/support/plugin/press-permit-core/reviews/#new-post" target="_blank" rel="noopener noreferrer">
+        <?php printf( 
+            __('If you like %s, please leave us a %s rating. Thank you!', 'press-permit-core'),
+            '<strong>PressPermit</strong>',
+            '<span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>'
+            );
+        ?>
+        </a>
+        </div>
+
+        <hr>
+        <nav>
+        <ul>
+        <li><a href="https://publishpress.com/presspermit" target="_blank" rel="noopener noreferrer" title="<?php _e('About PressPermit', 'press-permit-core');?>"><?php _e('About', 'press-permit-core');?>
+        </a></li>
+        <li><a href="https://publishpress.com/documentation/presspermit-start/" target="_blank" rel="noopener noreferrer" title="<?php _e('PressPermit Documentation', 'press-permit-core');?>"><?php _e('Documentation', 'press-permit-core');?>
+        </a></li>
+        <li><a href="https://publishpress.com/contact" target="_blank" rel="noopener noreferrer" title="<?php _e('Contact the PublishPress team', 'press-permit-core');?>"><?php _e('Contact', 'press-permit-core');?>
+        </a></li>
+        <li><a href="https://twitter.com/publishpresscom" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-twitter"></span>
+        </a></li>
+        <li><a href="https://facebook.com/publishpress" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-facebook"></span>
+        </a></li>
+        </ul>
+        </nav>
+
+        <div class="pp-pressshack-logo">
+        <a href="//publishpress.com" target="_blank" rel="noopener noreferrer">
+        <img src="<?php echo plugins_url('', PRESSPERMIT_FILE) . '/common/img/publishpress-logo.png';?>" />
+        </a>
+        </div>
+
+        </footer>
+    <?php
+    }
 }
