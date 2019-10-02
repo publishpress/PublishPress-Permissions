@@ -840,9 +840,11 @@ class PostFilters
         ];
 
         wp_cache_add(-1, $_post, 'posts');  // prevent querying for fake post
+        presspermit()->meta_cap_post = $_post;
         //$return = array_diff(map_meta_cap($cap_name, $user_id, $_post), [null]);  // post types which leave some basic cap properties undefined result in nulls
         $return = array_diff(map_meta_cap($cap_name, $user_id, $_post->ID), [null]);  // post types which leave some basic cap properties undefined result in nulls
         wp_cache_delete(-1, 'posts');
+        presspermit()->meta_cap_post = false;
 
         return $return;
     }
