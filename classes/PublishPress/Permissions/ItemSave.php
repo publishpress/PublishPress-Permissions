@@ -43,7 +43,7 @@ class ItemSave
             }
         }
 
-        if (!$disallow_manual_entry) {
+        if (empty($disallow_manual_entry)) {
             $disallow_manual_entry = defined('XMLRPC_REQUEST');
         }
 

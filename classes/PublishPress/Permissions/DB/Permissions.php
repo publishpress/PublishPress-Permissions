@@ -289,6 +289,9 @@ class Permissions
             if ($additional_ids)
                 $include_ids = array_unique(array_merge($include_ids, $additional_ids));
 
+            // @todo: how can this ever have array elements (PHP error log from one user)
+            $include_ids = array_filter($include_ids, 'is_scalar');
+
             $where = " AND $col_id IN ('" . implode("','", array_unique($include_ids)) . "')";
         } elseif ($exclude_ids = array_diff($user->getExceptionPosts($operation, 'exclude', $post_type), $additional_ids)) {
             $where = " AND $col_id NOT IN ('" . implode("','", $exclude_ids) . "')";

@@ -52,6 +52,9 @@ class PostSave
             if (is_numeric($last_parent)) { // not theoretically necessary, but an easy safeguard to avoid re-inheriting parent roles
                 $is_new = false;
             }
+        } else {
+            $set_parent = 0;
+            $last_parent = 0;
         }
 
         if (empty($_REQUEST['page']) || ('rvy-revisions' != $_REQUEST['page'])) {

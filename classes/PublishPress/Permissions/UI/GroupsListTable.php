@@ -122,6 +122,10 @@ class GroupsListTable extends GroupsListTableBase
     {
         global $wp_roles;
 
+        if (empty($this->items)) {
+            return false;
+        }
+        
         foreach ($this->items as $group) {
             if (('wp_role' == $group->metagroup_type)) {
                 $role_name = $group->metagroup_id;

@@ -64,8 +64,9 @@ class TermSave
         global $typenow;
 
         require_once(PRESSPERMIT_CLASSPATH . '/ItemSave.php');
-        $args = compact('is_new', 'set_parent', 'last_parent', 'disallow_manual_entry');
+        $args = compact('is_new', 'set_parent', 'last_parent');
         $args['via_item_type'] = $taxonomy;
+
         ItemSave::itemUpdateProcessExceptions('term', 'post', $tt_id, $args);
 
         do_action('presspermit_update_item_exceptions', 'term', $tt_id, $args);
