@@ -735,26 +735,6 @@ class PostFilters
                 }
             }
 
-            if ($additional_ttids) {
-                $in_clause = "IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $additional_ttids) . "') )";
-                $term_additions_clause = apply_filters(
-                    'presspermit_additions_clause',
-                    "$src_table.ID $in_clause",
-                    $required_operation,
-                    '',
-                    [   'via_item_source' => 'term', 
-                        'status' => '', 
-                        'in_clause' => $in_clause, 
-                        'src_table' => $src_table,
-                        'ids' => $additional_ttids
-                    ]
-                );
-
-                if ($term_additions_clause) {
-                    $term_exc_where = "( ( $term_exc_where ) OR ( $term_additions_clause ) )";
-                }
-            }
-
             if ($term_exc_where = DB\Permissions::addTermRestrictionsClause(
                 $required_operation,
                 '',
