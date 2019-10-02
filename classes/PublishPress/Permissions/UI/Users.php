@@ -15,26 +15,6 @@ class Users
                 ?>
             </h1>
 
-            <p class="pp-bulk-user-perm">
-            <h4><a href="admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_type=user">
-                    <?php
-                    _e('Bulk-Add User Permissions', 'press-permit-core');
-                    ?>
-                </a>
-            </h4>
-            <?php if (presspermit()->getOption('display_hints')) : ?>
-                <span class="pp-subtext">
-                        <?php
-                        printf(
-                            __('%1$snote%2$s: If you need to assign the same role or exception to multiple users, grouping them into a WP Role or custom Permission Group usually leads to a cleaner configuration.', 'press-permit-core'),
-                            '<strong>',
-                            '</strong>'
-                        );
-                        ?>
-                    </span>
-            <?php endif; ?>
-            </p>
-
             <div class="pp-bulk-user-perm">
                 <h4>
                     <?php
