@@ -78,12 +78,13 @@ table.pp-options-table .pp-optionhint {
     color: #686868;
 }
 
-#pp_settings_form li.agp-selected_agent {
+#wpbody-content li.agp-selected_agent {
     border-bottom: none;
 }
 
-#pp_settings_form li.agp-selected_agent a {
+#wpbody-content li.agp-selected_agent a {
     font-weight: bold;
+    color: white;
 }
 
 
@@ -117,11 +118,22 @@ table.pp-options-table .pp-optionhint {
 }
 
 #pp-install #edd_key {
-    width: 325px
+    width: 300px;
 }
+
+#pp-install #edd_key::-webkit-input-placeholder {color: #aaa;}
+#pp-install #edd_key::-moz-placeholder {color: #aaa;}
+#pp-install #edd_key::-moz-placeholder {color: #aaa;}
+#pp-install #edd_key::-ms-input-placeholder {color: #aaa;}
 
 #pp-install #activation-button {
     vertical-align: top
+}
+
+#pp-install .pp-key-label {
+    padding-top:5px;
+    padding-left:10px;
+    padding-right:10px;
 }
 
 #pp-install .pp-key-active {
@@ -131,9 +143,35 @@ table.pp-options-table .pp-optionhint {
     margin-right: 0.5em
 }
 
-span.pp-key-warning {
+#pp-install .pp-key-inactive {
+    font-weight: bold;
+    vertical-align: bottom;
+    margin-right: 0.5em
+}
+
+#pp-install span.pp-key-warning {
     color: #c00;
     font-weight: normal
+}
+
+#pp-install div.pp-key-wrap {
+    white-space: nowrap;
+}
+
+#pp-install div.pp-key-refresh {
+    white-space: nowrap;
+    padding-left: 10px;
+    vertical-align:middle;
+}
+
+#pp-install div.pp-key-hint {
+    margin-left: 120px;
+    margin-top: 10px;
+}
+
+#pp-install div.pp-key-hint-expired {
+    margin-left: 5px;
+    margin-top: 5px;
 }
 
 #pp-install .pp-install-list {
@@ -200,30 +238,6 @@ span.pp-key-warning {
 #pp-install .pp-bullet-list {
     list-style: disc;
     padding-left: 15px;
-}
-
-span.pp-key-wrap {
-    margin-left: 5px;
-    margin-top: 10px;
-}
-
-span.pp-key-normal {
-    margin-left: 60px;
-}
-
-span.pp-key-refresh, span.pp-key-refresh a {
-    vertical-align: bottom;
-    white-space: nowrap;
-}
-
-div.pp-key-hint {
-    margin-left: 145px;
-    margin-top: 5px;
-}
-
-div.pp-key-hint-expired {
-    margin-left: 5px;
-    margin-top: 5px;
 }
 
 #pp-install_table h4 {
