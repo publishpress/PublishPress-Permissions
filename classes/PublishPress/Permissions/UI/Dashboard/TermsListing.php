@@ -136,7 +136,7 @@ class TermsListing
         ?>
         <script type="text/javascript">
             /* <![CDATA[ */
-            public function updateQueryStringParameterPP(uri, key, value) {
+            function updateQueryStringParameterPP(uri, key, value) {
                 <?php /* https://stackoverflow.com/a/6021027 */ ?>
                 var re = new RegExp("([?|&])" + key + "=.*?(&|$)", "i");
                 separator = uri.indexOf('?') !== -1 ? "&" : "?";
