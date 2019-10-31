@@ -69,7 +69,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             $title_attrib = '';
         }
 
-        $output .= "<label test='test'{$title_attrib}>";
+        $output .= "<label {$title_attrib}>";
         $output .= esc_html($item->title);
         $output .= '</label>';
     }

@@ -274,7 +274,7 @@ class SettingsTabInstall
                 </th>
                 <td>
                     <?php
-                    if (!defined('PRESSPERMIT_PRO_VERSION')) : ?>
+                    if (!presspermit()->isPro()) : ?>
                         <div>
                             <strong><?php _e('PressPermit Pro modules include:', 'press-permit-core'); ?></strong></div>
                         <ul class="pp-bullet-list">
@@ -308,7 +308,7 @@ class SettingsTabInstall
                 <td>
                     <?php
 
-                    if (defined('PRESSPERMIT_PRO_VERSION')) {
+                    if (presspermit()->isPro()) {
                         ?>
                         <ul class="pp-support-list">
                             <li><a href='https://publishpress.com/presspermit/'

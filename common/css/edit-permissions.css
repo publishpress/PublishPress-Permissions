@@ -150,7 +150,7 @@ div.pp-add-exceptions {
     margin-left: 1em;
 }
 
-#pp_add_exception .nav-tabs-nav {
+#pp_add_exception .nav-tabs-nav, #pp_add_exception button.handlediv {
     display: none;
 }
 

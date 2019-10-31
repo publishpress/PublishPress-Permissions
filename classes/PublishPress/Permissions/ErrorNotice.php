@@ -17,8 +17,10 @@ class ErrorNotice
             return;
         }
 
+        $presspermit_title = (defined('PRESSPERMIT_TITLE')) ? PRESSPERMIT_TITLE : 'PressPermit';
+
         $defaults = [
-            'module_title' => PRESSPERMIT_TITLE,
+            'module_title' => $presspermit_title,
             'module_slug' => '',
             'module_folder' => '',
             'min_version' => '',
@@ -57,7 +59,7 @@ class ErrorNotice
                 }
 
                 $this->addNotice(
-                    sprintf('%s cannot operate until Press Permit Core and PP extension plugins are deactivated.', PRESSPERMIT_TITLE)
+                    sprintf('%s cannot operate until Press Permit Core and PP extension plugins are deactivated.', $presspermit_title)
                 );
                 break;
 
@@ -69,7 +71,7 @@ class ErrorNotice
                     : [];
 
                 $this->addNotice(
-                    sprintf('%s is running in configuration only mode. Access filtering will not be applied until Role Scoper is deactivated.', PRESSPERMIT_TITLE),
+                    sprintf('%s is running in configuration only mode. Access filtering will not be applied until Role Scoper is deactivated.', $presspermit_title),
                     $args
                 );
 
@@ -78,7 +80,7 @@ class ErrorNotice
 
             case 'pp_legacy_active':
                 $this->addNotice(
-                    sprintf('%s cannot operate with an older version of Press Permit active.', PRESSPERMIT_TITLE) // Press Permit 1.x beta, circa 2011
+                    sprintf('%s cannot operate with an older version of Press Permit active.', $presspermit_title) // Press Permit 1.x beta, circa 2011
                 );
                 break;
 
@@ -98,7 +100,7 @@ class ErrorNotice
                     sprintf(
                         __('%1$s won&#39;t work until you upgrade %2$s to version %3$s or later.', 'press-permit-core'),
                         $module_title,
-                        PRESSPERMIT_TITLE,
+                        $presspermit_title,
                         $min_version
                     )
                 );
@@ -119,7 +121,7 @@ class ErrorNotice
                     sprintf(
                         __('This version of %1$s cannot work with your current %2$s version. Please upgrade it to %3$s or later.', 'press-permit-core'),
                         $module_title,
-                        PRESSPERMIT_TITLE,
+                        $presspermit_title,
                         $min_version
                     )
                 );
@@ -129,7 +131,7 @@ class ErrorNotice
                 $this->addNotice(
                     sprintf(
                         __('Duplicate %1$s module activated (%2$s in folder %3$s).', 'press-permit-core'),
-                        PRESSPERMIT_TITLE,
+                        $presspermit_title,
                         $module_slug,
                         $module_folder
                     )

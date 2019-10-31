@@ -96,7 +96,7 @@ class ItemSave
 
     public static function inheritParentExceptions($item_id, $args = [])
     {
-        $defaults = ['via_item_source' => '', 'via_item_type' => '', 'set_parent' => '', 'last_parent' => '', 'is_new' => true];
+        $defaults = ['via_item_source' => '', 'via_item_type' => '', 'set_parent' => '', 'last_parent' => '', 'is_new' => true, 'force_for_item_type' => false];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -159,6 +159,7 @@ class ItemSave
                 // propagate exception from new parent to this item and its branch of sub-items
                 require_once(PRESSPERMIT_CLASSPATH.'/DB/PermissionsUpdate.php');
                 
+                $force_for_item_type = (isset($args['force_for_item_type'])) ? $args['force_for_item_type'] : false; // @todo: why is this variable not already set?
                 $_args = compact('retain_exceptions', 'force_for_item_type');
 
                 $_args['parent_exceptions'] = DB\PermissionsUpdate::getParentExceptions(

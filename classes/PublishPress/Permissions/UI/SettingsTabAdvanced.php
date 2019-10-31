@@ -60,7 +60,7 @@ class SettingsTabAdvanced
                 'suppress_administrator_metagroups' => sprintf(__('%1$sDisable%2$s metagroup exceptions for Administrators', 'press-permit-core'), '<strong>', '</strong>'),
                 'user_search_by_role' => __('User Search: Filter by WP role', 'press-permit-core'),
                 'display_hints' => __('Display Administrative Hints', 'press-permit-core'),
-                'display_extension_hints' => __('Display Extension Hints', 'press-permit-core'),
+                'display_extension_hints' => __('Display Module Hints', 'press-permit-core'),
                 'dynamic_wp_roles' => __('Detect Dynamically Mapped WP Roles', 'press-permit-core'),
                 'non_admins_set_read_exceptions' => __('Non-Administrators can set Reading Exceptions for their editable posts', 'press-permit-core'),
                 'users_bulk_groups' => __('Bulk Add / Remove Groups on Users Screen', 'press-permit-core'),
@@ -199,8 +199,10 @@ class SettingsTabAdvanced
                         $hint = __('Display additional descriptions in role assignment and options UI.', 'press-permit-core');
                         $ui->optionCheckbox('display_hints', $tab, $section, $hint);
 
-                        $hint = __('Display descriptive captions for additional functionality provided by missing or deactivated modules (PressPermit Pro package).', 'press-permit-core');
-                        $ui->optionCheckbox('display_extension_hints', $tab, $section, $hint);
+                        if (presspermit()->isPro()) {
+                            $hint = __('Display descriptive captions for additional functionality provided by missing or deactivated modules (PressPermit Pro package).', 'press-permit-core');
+                            $ui->optionCheckbox('display_extension_hints', $tab, $section, $hint);
+                        }
                         ?>
                     </td>
                 </tr>
