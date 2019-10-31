@@ -311,7 +311,7 @@ class PostFilters
             }
         }
 
-        if (('associate' == $required_operation) && !defined(PRESSPERMIT_COLLAB_VERSION)) {
+        if (('associate' == $required_operation) && !defined('PRESSPERMIT_COLLAB_VERSION')) {
             return $where;
         }
 

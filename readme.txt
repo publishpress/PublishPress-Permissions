@@ -1,13 +1,14 @@
 === PressPermit ===
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
-Requires at least: 4.7
-Tested up to: 5.2.2
-Stable tag: 2.8
+Requires at least: 4.9.7
+Tested up to: 5.2.4
+Requires PHP: 5.6.20
+Stable tag: 2.8.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
+Advanced and flexible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
 
 == Description ==
 
@@ -46,7 +47,7 @@ PressPermit [Pro](https://publishpress.com/presspermit/) is [available](https://
 	
 == Upgrade Notice ==
 
-= 2.7.14 =
+= 2.8.2 =
 Pro users: download PressPermit Pro from publishpress.com before upgrading to this version.
 
 = 2.1.14 =
@@ -54,10 +55,15 @@ Initial production release
 
 == Changelog ==
 
-= 2.8 = 2 Oct 2019 =
+= 2.8.2 - 31 Oct 2019 =
+* Fixed : Supplemental Media Author role - uploader stuck on "Crunching" after uploading a file, could not open it until reloading Media Library
 * Fixed : Category / Term listing: after clicking Universal Exceptions link, category links led to edit screen for type-specific exceptions
-* Fixed : PHP Notice when Term Exceptions are assigned to enable access (adjustment mode "Also these") 
-* Change : On Permissions > Groups list, change "Group" filter link to "Custom Group"
+* Fixed : Edit Permissions screen - when selecting Media for Exception assignment, paging did not work in the Select Media metabox
+* Fixed : Edit Permissions screen - Page / Category Exceptions - fatal error on update if item "(none)" was selected with "sub-Items" checkbox selected
+* Fixed : Edit Permissions screen - Improper UI handling for editing existing exceptions if Apply button is clicked twice or without any items selected
+* Fixed : PHP Notice when Term Exceptions are assigned to enable access (adjustment mode "Also these")
+* Change : On Permissions > Groups list, change "Group" filter link caption to "Custom Group"
+* Change : Plugins screen - Put Settings link next to Activate / Deactivate (was in plugin description area)
 * Change : Added PublishPress footer to plugin screens
 
 = 2.7.14 - 13 Sep 2019 =

@@ -114,26 +114,9 @@ class PermissionsHooks
         }
     }
 
-    private function interruptInit()
-    {
-        if (
-            is_admin() && strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php') && !empty($_POST['attachment_id'])
-            && !empty($_POST['fetch']) && (3 == $_POST['fetch'])
-        ) {
-            if ($att = get_post($_POST['attachment_id'])) {
-                global $current_user;
-                if ($att->post_author == $current_user->ID && !defined('PP_UPLOADS_FORCE_FILTERING'))
-                    return true;
-            }
-        }
-    }
-
     public function actSetCurrentUser()
     {
         global $current_user;
-
-        if ($this->interruptInit())
-            return;
 
         presspermit()->setUser($current_user->ID);
 
@@ -203,10 +186,6 @@ class PermissionsHooks
         }
         */
         // --- end version check ---
-
-        if ($this->interruptInit()) {
-            return;
-        }
 
         // already loaded these early, so apply filter again for modules
         $pp->default_options = apply_filters('presspermit_default_options', $pp->default_options);
