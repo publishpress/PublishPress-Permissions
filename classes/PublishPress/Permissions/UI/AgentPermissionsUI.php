@@ -55,6 +55,8 @@ class AgentPermissionsUI
         require_once( PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
 
         $vars['noItems'] = __('No items selected!', 'press-permit-core');
+        $vars['noParent'] = __('(no parent)', 'press-permit-core');
+        $vars['none'] = __('(none)', 'press-permit-core');
 
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
 
@@ -198,7 +200,7 @@ class AgentPermissionsUI
     <div class='pp-ext-promo'>
         <?php
         if (!$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
-            if (defined('PRESSPERMIT_PRO_VERSION')) 
+            if (presspermit()->isPro()) 
                 $msg = __('To assign exceptions for editing, parent selection or term assignment, activate the Collaborative Publishing module.', 'press-permit-core');
             else
                 $msg = sprintf(
@@ -216,7 +218,7 @@ class AgentPermissionsUI
             function_exists('bbp_get_version') && !$pp->moduleActive('compatibility')
             && $pp->getOption('display_extension_hints')
         ) {
-            if (defined('PRESSPERMIT_PRO_VERSION'))
+            if (presspermit()->isPro())
                 $msg = __('To assign exceptions for bbPress forums, activate the Compatibility Pack module.', 'press-permit-core');
             else
                 $msg = sprintf(
@@ -280,7 +282,7 @@ class AgentPermissionsUI
     <div class='pp-ext-promo'>
         <?php
         if (!$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
-            if (defined('PRESSPERMIT_PRO_VERSION'))
+            if (presspermit()->isPro())
                 $msg = __('To assign roles for custom post statuses, activate the Status Control module.', 'press-permit-core');
             else
                 $msg = sprintf(
@@ -295,7 +297,7 @@ class AgentPermissionsUI
 
         <?php
             if (function_exists('bbp_get_version') && !$pp->moduleActive('compatibility') && $pp->getOption('display_extension_hints')) {
-                if (defined('PRESSPERMIT_PRO_VERSION'))
+                if (presspermit()->isPro())
                     $msg = __('To assign roles for bbPress forums, activate the Compatibility Pack module.', 'press-permit-core');
                 else
                     $msg = sprintf(
@@ -310,7 +312,7 @@ class AgentPermissionsUI
 
         <?php
         if (defined('REVISIONARY_VERSION') && (!$pp->moduleActive('collaboration') || !$pp->moduleActive('compatibility')) && $pp->getOption('display_extension_hints')) {
-            if (defined('PRESSPERMIT_PRO_VERSION'))
+            if (presspermit()->isPro())
                 $msg = __('To assign Revisionary exceptions, activate the Collaborative Publishing and Compatibility Pack modules.', 'press-permit-core');
             else
                 $msg = sprintf(
@@ -932,6 +934,10 @@ class AgentPermissionsUI
                                 uasort($tx_item_paths, 'strnatcasecmp');  // sort by array values, but maintain keys );
 
                                 foreach ($tx_item_paths as $item_id => $item_path) {
+                                    if (!$item_id && ('associate' == $operation)) {
+                                        $item_path = __('(no parent)', 'press-permit-core');
+                                    }
+
                                     $assignment = $exceptions[$via_src][$via_type][$for_type][$operation][$mod_type][$status][$item_id];
 
                                     $classes = [];

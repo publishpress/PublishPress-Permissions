@@ -388,6 +388,24 @@ jQuery(document).ready(function ($) {
         $('input.menu-item-checkbox').prop('checked', false);
     });
 
+    var presspermitUpdateItemNoneCaption = function() {
+        if ($('select[name="pp_select_x_for_type"]').val() == '_term_') {
+            if ($('select[name="pp_select_x_operation"]').val() == 'associate' && $('select[name="pp_select_x_mod_type"]').val() != 'additional') {
+                $('#select-exception-' + $('select[name="pp_select_x_via_type"]').val()).find('input.menu-item-checkbox[value="0"]').siblings('label').first().html(ppRestrict.noParent);
+            } else {
+                $('#select-exception-' + $('select[name="pp_select_x_via_type"]').val()).find('input.menu-item-checkbox[value="0"]').siblings('label').first().html(ppRestrict.none);
+            }
+        } else {
+            if ($('select[name="pp_select_x_operation"]').val() == 'associate' && $('select[name="pp_select_x_mod_type"]').val() != 'additional') {
+                $('#select-exception-' + $('select[name="pp_select_x_for_type"]').val()).find('input.menu-item-checkbox[value="0"]').siblings('label').first().html(ppRestrict.noParent);
+            } else {
+                $('#select-exception-' + $('select[name="pp_select_x_for_type"]').val()).find('input.menu-item-checkbox[value="0"]').siblings('label').first().html(ppRestrict.none);
+            }
+        }
+    }
+
+    $('select[name="pp_select_x_mod_type"]').bind('change', presspermitUpdateItemNoneCaption);
+
     var presspermitDrawOperations = function (data, txtStatus) {
         sel = $('select[name="pp_select_x_operation"]');
         sel.html(data);
@@ -670,15 +688,21 @@ jQuery(document).ready(function ($) {
             selected_ids.push($(this).attr('value'));
         });
 
+        var rids = selected_ids.join('|');
+
+        if (!rids) {
+            return false;
+        }
+
         $(this).prop('disabled', true);
         $(this).closest('div').find('.waiting').show();
 
         switch (action) {
             case 'remove':
-                presspermitAjaxSubmit('exceptions_remove', presspermitRemoveExceptionsDone, selected_ids.join('|'));
+                presspermitAjaxSubmit('exceptions_remove', presspermitRemoveExceptionsDone, rids);
                 break
             default:
-                presspermitAjaxSubmit('exceptions_' + action, presspermitEditExceptionsDone, selected_ids.join('|'));
+                presspermitAjaxSubmit('exceptions_' + action, presspermitEditExceptionsDone, rids);
                 break
         }
 
@@ -686,9 +710,6 @@ jQuery(document).ready(function ($) {
     });
 
     var presspermitAjaxSubmit = function (op, handler, rids) {
-        if (!rids)
-            return;
-
         var data = {
             'pp_ajax_agent_permissions': op,
             'agent_type': ppRestrict.agentType,

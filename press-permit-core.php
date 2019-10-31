@@ -92,6 +92,8 @@ if (!defined('PRESSPERMIT_FILE') && !$pro_active) {
             }
 
             define('PRESSPERMIT_VERSION', '2.8');
+			require_once(__DIR__ . '/includes/Core.php');
+            new \PublishPress\Permissions\Core();
 
             if (!defined('PRESSPERMIT_LEGACY_HOOKS')) {
                 define('PRESSPERMIT_LEGACY_HOOKS', false);

@@ -6,7 +6,7 @@ class PluginAdmin
 {
     public function __construct()
     {
-        add_filter('plugin_row_meta', [$this, 'fltPluginActionLinks'], 10, 2);
+        add_filter('plugin_action_links_' . plugin_basename(PRESSPERMIT_FILE), [$this, 'fltPluginActionLinks'], 10, 2);
 
         add_action('after_plugin_row_' . plugin_basename(PRESSPERMIT_FILE), [$this, 'actCorePluginStatus'], 10, 3);
 
@@ -17,7 +17,7 @@ class PluginAdmin
             }
         }
 
-        if (!defined('PRESSPERMIT_PRO_VERSION') && ( get_option('ppce_version') || get_option('pps_version') || get_option('ppp_version'))) {
+        if (!presspermit()->isPro() && ( get_option('ppce_version') || get_option('pps_version') || get_option('ppp_version'))) {
             $this->proNotice();
         }
     }
@@ -89,7 +89,7 @@ class PluginAdmin
     {
         if (!$this->typeUsageStored() && !is_network_admin()) {
             $url = admin_url('admin.php?page=presspermit-settings');
-			$plugin_title = (defined('PRESSPERMIT_PRO_VERSION')) ? 'PressPermit Pro' : 'PressPermit';            
+			$plugin_title = (presspermit()->isPro()) ? 'PressPermit Pro' : 'PressPermit';            
 
             presspermit()->admin()->notice(
                 sprintf(

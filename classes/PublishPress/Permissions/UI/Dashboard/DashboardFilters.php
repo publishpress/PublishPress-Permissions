@@ -36,6 +36,7 @@ class DashboardFilters
             require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/PostEdit.php');
             new PostEdit();
             $is_post_admin = true;
+
         } elseif (('term.php' == $pagenow) || (('edit-tags.php' == $pagenow)
                 && !empty($_REQUEST['action']) && ('edit' == $_REQUEST['action']))
         ) {
@@ -74,6 +75,7 @@ class DashboardFilters
 
             if ('presspermit-edit-permissions' == $pp_plugin_page) {
                 add_action('admin_head', [$this, 'actLoadScripts']);
+
             } elseif ('presspermit-settings' == $pp_plugin_page) {
                 wp_enqueue_style('plugin-install');
                 wp_enqueue_script('plugin-install');
@@ -93,6 +95,7 @@ class DashboardFilters
 
         if ($pp_plugin_page || (!empty($_REQUEST['page']) && (0 === strpos($_REQUEST['page'], 'capsman')))) {
             wp_enqueue_style('presspermit-plugin-pages', PRESSPERMIT_URLPATH . '/common/css/plugin-pages.css', [], PRESSPERMIT_VERSION);
+            wp_enqueue_style('presspermit-admin-common', PRESSPERMIT_URLPATH . '/common/css/pressshack-admin.css', [], PRESSPERMIT_VERSION);
         }
 
         if (in_array($pagenow, ['user-edit.php', 'user-new.php', 'profile.php'])) {
@@ -102,9 +105,10 @@ class DashboardFilters
         } elseif (in_array($pp_plugin_page, ['presspermit-edit-permissions', 'presspermit-group-new'], true)) {
             wp_enqueue_style('presspermit-edit-permissions', PRESSPERMIT_URLPATH . '/common/css/edit-permissions.css', [], PRESSPERMIT_VERSION);
             wp_enqueue_style('presspermit-groups-checklist', PRESSPERMIT_URLPATH . '/common/css/groups-checklist.css', [], PRESSPERMIT_VERSION);
+        } 
         
-        } elseif (('presspermit-settings' == presspermitPluginPage()) || (('plugin-install.php' == $pagenow)
-                && strpos($_SERVER['HTTP_REFERER'], 'presspermit-settings'))
+        if (('presspermit-settings' == presspermitPluginPage()) || (('plugin-install.php' == $pagenow)
+            && strpos($_SERVER['HTTP_REFERER'], 'presspermit-settings'))
         ) {
             wp_enqueue_style('presspermit-settings', PRESSPERMIT_URLPATH . '/common/css/settings.css', [], PRESSPERMIT_VERSION);
         }

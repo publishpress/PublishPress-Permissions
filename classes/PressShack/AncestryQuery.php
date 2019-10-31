@@ -17,6 +17,10 @@ class AncestryQuery
         $descendant_ids = [];
         $clauses = $append_clause;
 
+        if (!$parent_id) {
+            return [];
+        }
+
         switch ($source_name) {
             case 'post':
                 if ($post_types) {

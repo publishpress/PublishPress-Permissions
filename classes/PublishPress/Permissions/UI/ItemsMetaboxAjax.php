@@ -14,8 +14,7 @@ class ItemsMetaboxAjax
         if ( isset( $_POST['item-type'] ) && 'post_type' == $_POST['item-type'] ) {
             $type = 'posttype';
             $callback = ['\PublishPress\Permissions\UI\ItemsMetabox', 'post_type_meta_box'];
-            $items = (array) get_post_types( [ 'show_in_nav_menus' => true ], 'object' );
-
+            $items = (array) presspermit()->getEnabledPostTypes([], 'object');
         } elseif ( isset( $_POST['item-type'] ) && 'taxonomy' == $_POST['item-type'] ) {
             $type = 'taxonomy';
             $callback = ['\PublishPress\Permissions\UI\ItemsMetabox', 'taxonomy_meta_box'];
@@ -24,7 +23,7 @@ class ItemsMetaboxAjax
 
         if ( ! empty( $_POST['item-object'] ) && isset( $items[$_POST['item-object']] ) ) {
             $item = $items[ $_POST['item-object'] ];
-            
+
             ob_start();
             call_user_func_array($callback, [
                 null,

@@ -24,7 +24,7 @@ class Settings
         wp_enqueue_script('presspermit-settings', PRESSPERMIT_URLPATH . "/common/js/settings{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
         $wp_scripts->in_footer[] = 'presspermit-settings';  // otherwise it will not be printed in footer  @todo: review
 
-        if (defined('PRESSPERMIT_PRO_VERSION')) {
+        if (presspermit()->isPro()) {
             wp_enqueue_script('presspermit-pro-settings', PRESSPERMIT_URLPATH . "/includes-pro/settings-pro{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
             $wp_scripts->in_footer[] = 'presspermit-pro-settings';  // otherwise it will not be printed in footer  @todo: review
         }
