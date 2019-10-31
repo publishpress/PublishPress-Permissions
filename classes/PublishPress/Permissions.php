@@ -895,12 +895,16 @@ class Permissions
         return !$error;
     }
 
+    public function isPro() {
+        return defined('PRESSPERMIT_PRO_VERSION') && !class_exists('PublishPress\Permissions\Core');
+    }
+
     /**
      * @return EDD_SL_Plugin_Updater
      */
     public function load_updater()
     {
-		if (defined('PRESSPERMIT_PRO_VERSION')) {
+		if ($this->isPro()) {
         	require_once(PRESSPERMIT_ABSPATH . '/includes-pro/library/Factory.php');
         	$container = \PublishPress\Permissions\Factory::get_container();
 			return $container['edd_container']['update_manager'];
@@ -909,7 +913,7 @@ class Permissions
     
     public function keyStatus($refresh = false)
     {
-        if (defined('PRESSPERMIT_PRO_VERSION')) {
+        if ($this->isPro()) {
             require_once(PRESSPERMIT_ABSPATH . '/includes-pro/pro-key.php');
             return _presspermit_key_status($refresh);
         } else {
