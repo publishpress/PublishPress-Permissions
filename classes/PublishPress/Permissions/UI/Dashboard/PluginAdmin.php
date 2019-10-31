@@ -6,7 +6,7 @@ class PluginAdmin
 {
     public function __construct()
     {
-        add_filter('plugin_row_meta', [$this, 'fltPluginActionLinks'], 10, 2);
+        add_filter('plugin_action_links_' . plugin_basename(PRESSPERMIT_FILE), [$this, 'fltPluginActionLinks'], 10, 2);
 
         add_action('after_plugin_row_' . plugin_basename(PRESSPERMIT_FILE), [$this, 'actCorePluginStatus'], 10, 3);
 
