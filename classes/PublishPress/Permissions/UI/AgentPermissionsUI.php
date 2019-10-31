@@ -55,6 +55,8 @@ class AgentPermissionsUI
         require_once( PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
 
         $vars['noItems'] = __('No items selected!', 'press-permit-core');
+        $vars['noParent'] = __('(no parent)', 'press-permit-core');
+        $vars['none'] = __('(none)', 'press-permit-core');
 
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
 
@@ -932,6 +934,10 @@ class AgentPermissionsUI
                                 uasort($tx_item_paths, 'strnatcasecmp');  // sort by array values, but maintain keys );
 
                                 foreach ($tx_item_paths as $item_id => $item_path) {
+                                    if (!$item_id && ('associate' == $operation)) {
+                                        $item_path = __('(no parent)', 'press-permit-core');
+                                    }
+
                                     $assignment = $exceptions[$via_src][$via_type][$for_type][$operation][$mod_type][$status][$item_id];
 
                                     $classes = [];
