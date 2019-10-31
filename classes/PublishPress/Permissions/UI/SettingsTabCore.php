@@ -242,7 +242,7 @@ class SettingsTabCore
                                 echo '<br /><div>';
 
                                 if (in_array('attachment', presspermit()->getEnabledPostTypes(), true)) {
-                                    if (!presspermit()->isPro()) {
+                                    if (!defined('PRESSPERMIT_PRO_VERSION')) {
                                         $hint = __("For most installations, leave this disabled. If enabled, corresponding edit and delete capabilities must be added to existing roles.", 'ppce');
                                     } else {
                                         $hint = defined('PRESSPERMIT_COLLAB_VERSION') 

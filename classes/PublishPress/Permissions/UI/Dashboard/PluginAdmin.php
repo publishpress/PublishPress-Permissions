@@ -17,7 +17,7 @@ class PluginAdmin
             }
         }
 
-        if (!presspermit()->isPro() && ( get_option('ppce_version') || get_option('pps_version') || get_option('ppp_version'))) {
+        if (!defined('PRESSPERMIT_PRO_VERSION') && ( get_option('ppce_version') || get_option('pps_version') || get_option('ppp_version'))) {
             $this->proNotice();
         }
     }
@@ -89,7 +89,7 @@ class PluginAdmin
     {
         if (!$this->typeUsageStored() && !is_network_admin()) {
             $url = admin_url('admin.php?page=presspermit-settings');
-			$plugin_title = (presspermit()->isPro()) ? 'PressPermit Pro' : 'PressPermit';            
+			$plugin_title = (defined('PRESSPERMIT_PRO_VERSION')) ? 'PressPermit Pro' : 'PressPermit';            
 
             presspermit()->admin()->notice(
                 sprintf(

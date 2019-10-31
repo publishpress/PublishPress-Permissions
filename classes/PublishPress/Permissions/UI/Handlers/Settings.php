@@ -19,7 +19,7 @@ class Settings
         }
 
         if (!empty($_REQUEST['pp_renewal'])) {
-            if (presspermit()->isPro()) {
+            if (defined('PRESSPERMIT_PRO_VERSION')) {
                 include_once(PRESSPERMIT_ABSPATH . '/includes-pro/pro-renewal-redirect.php');
             } else {
                 include_once(PRESSPERMIT_ABSPATH . '/includes/renewal-redirect.php');
@@ -48,7 +48,7 @@ class Settings
                 wp_redirect($url);
             }
 
-            if (presspermit()->isPro() && $key && is_array($key) && !empty($key['license_key'])) {
+            if (defined('PRESSPERMIT_PRO_VERSION') && $key && is_array($key) && !empty($key['license_key'])) {
                 require_once(PRESSPERMIT_ABSPATH . '/includes-pro/Support.php');
                 $success = \PublishPress\Permissions\Support::supportUpload($args);
             }

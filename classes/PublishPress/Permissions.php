@@ -573,7 +573,7 @@ class Permissions
     {
         // @todo: any other Gutenberg Administrator requests to filter?
         return $this->isAdministrator($user_id, 'unfiltered', $args) 
-        && (!defined('REST_REQUEST') || ! REST_REQUEST || (empty($_REQUEST['parent_exclude']) || did_action('presspermit_refresh_administrator_check'))); // page parent dropdown
+        && (!defined('REST_REQUEST') || ! REST_REQUEST || empty($_REQUEST['parent_exclude'])); // page parent dropdown
     }
 
     public function isAdministrator($user_id = false, $admin_type = 'content', $args = [])
@@ -584,8 +584,6 @@ class Permissions
         static $cached_user_id = [];
 
         if (false === $user_id) {
-            $args['force_refresh'] = !empty($args['force_refresh']) || did_action('presspermit_refresh_administrator_check');
-
             if (
                 isset($is_administrator[$admin_type])
                 && ($cached_user_id[$admin_type] == $current_user->ID) && empty($args['force_refresh'])
@@ -897,16 +895,12 @@ class Permissions
         return !$error;
     }
 
-    public function isPro() {
-        return defined('PRESSPERMIT_PRO_VERSION') && !class_exists('PublishPress\Permissions\Core');
-    }
-
     /**
      * @return EDD_SL_Plugin_Updater
      */
     public function load_updater()
     {
-		if ($this->isPro()) {
+		if (defined('PRESSPERMIT_PRO_VERSION')) {
         	require_once(PRESSPERMIT_ABSPATH . '/includes-pro/library/Factory.php');
         	$container = \PublishPress\Permissions\Factory::get_container();
 			return $container['edd_container']['update_manager'];
@@ -915,7 +909,7 @@ class Permissions
     
     public function keyStatus($refresh = false)
     {
-        if ($this->isPro()) {
+        if (defined('PRESSPERMIT_PRO_VERSION')) {
             require_once(PRESSPERMIT_ABSPATH . '/includes-pro/pro-key.php');
             return _presspermit_key_status($refresh);
         } else {

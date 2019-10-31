@@ -52,7 +52,7 @@ class PluginUpdated
                 self::syncWordPressRoles();
             }
 
-            if ((presspermit()->isPro() && version_compare($prev_version, '2.7.11', '<')) || (!presspermit()->isPro() && version_compare($prev_version, '2.7.3', '<'))) {
+            if ((defined('PRESSPERMIT_PRO_VERSION') && version_compare($prev_version, '2.7.11', '<')) || (!defined('PRESSPERMIT_PRO_VERSION') && version_compare($prev_version, '2.7.3', '<'))) {
                 // 2.7 and 2.7.1 incorrectly defaulted this array to ['pp-import'] instead of ['presspermit-import']
                 // PressPermit Core 2.7.2 fixed the bug, but did not apply this database patch.
                 // Beginning with 2.7.12, PressPermit Pro applies the database patch on first-time Pro execution

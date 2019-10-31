@@ -225,7 +225,7 @@ class Groups
                         defined('BP_VERSION') && !$pp->moduleActive('collaboration')
                         && $pp->getOption('display_extension_hints')
                     ) {
-                        if (presspermit()->isPro()) {
+                        if (defined('PRESSPERMIT_PRO_VERSION')) {
                             $msg = __('To assign roles or exceptions to BuddyPress groups, activate the Compatibility Pack module', 'press-permit-core');
                         } else {
                             $msg = sprintf(

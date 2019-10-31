@@ -9,7 +9,7 @@ class HintsItemExceptions
         $pp = presspermit();
 
         if (('attachment' == $for_item_type) && !$pp->moduleActive('file-access')) {
-            if (presspermit()->isPro()) {
+            if (defined('PRESSPERMIT_PRO_VERSION')) {
                 $msg = __('To block direct access to unreadable files, activate the File Access module.', 'press-permit-core');
             } else {
                 $msg = sprintf(
@@ -22,7 +22,7 @@ class HintsItemExceptions
         }
 
         if (!$pp->moduleActive('collaboration')) {
-            if (presspermit()->isPro()) {
+            if (defined('PRESSPERMIT_PRO_VERSION')) {
                 $msg = __('To customize editing permissions, activate the Collaborative Publishing module.', 'press-permit-core');
             } else {
                 $msg = sprintf(

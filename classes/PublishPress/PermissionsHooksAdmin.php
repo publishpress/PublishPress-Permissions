@@ -37,7 +37,7 @@ class PermissionsHooksAdmin
 
     public function init()
     {
-        if (presspermit()->isPro()) {
+        if (defined('PRESSPERMIT_PRO_VERSION')) {
             require_once(PRESSPERMIT_ABSPATH . '/includes-pro/pro-maint.php');
             Permissions\PressPermitMaint::adminRedirectCheck();
         }
