@@ -237,7 +237,7 @@ class AgentsDynamicUI
         <?php
         if (!$pp->moduleActive('membership') && $pp->getOption('display_extension_hints')) {
             if (0 === strpos($id_suffix, 'read')) {
-                if (defined('PRESSPERMIT_PRO_VERSION')) {
+                if (presspermit()->isPro()) {
                     $msg = __('To set date limits on group membership, activate the Membership module.', 'press-permit-core');
                 } else {
                     $msg = sprintf(

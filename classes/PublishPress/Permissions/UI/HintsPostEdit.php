@@ -46,7 +46,7 @@ class HintsPostEdit
 
             $need_exts = implode(' and ', $need_exts);
 
-            if (defined('PRESSPERMIT_PRO_VERSION')) {
+            if (presspermit()->isPro()) {
                 $msg = sprintf(
                     __('To define publication workflow statuses, %1$sactivate%2$s %3$s.', 'press-permit-core'),
                     '<a href="admin.php?page=presspermit-settings&pp_tab=install">',

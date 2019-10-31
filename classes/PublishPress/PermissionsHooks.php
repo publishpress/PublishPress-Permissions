@@ -32,7 +32,7 @@ class PermissionsHooks
             $this->loadFilters();
         }
 
-		if (defined('PRESSPERMIT_PRO_VERSION')) {
+		if (presspermit()->isPro()) {
         	add_action('admin_init', [$this, 'loadUpdater']);
 		}
     }
