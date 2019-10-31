@@ -1,7 +1,7 @@
 <?php
 
-if (defined('PRESSPERMIT_PRO_VERSION')) {
+if (presspermit()->isPro()) {
     require_once(PRESSPERMIT_ABSPATH . '/includes-pro/SettingsTabInstall.php');
-                    } else {
+} else {
     require_once(PRESSPERMIT_ABSPATH . '/includes/SettingsTabInstall.php');
-    }
+}

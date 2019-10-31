@@ -32,7 +32,7 @@ class PermissionsHooks
             $this->loadFilters();
         }
 
-		if (defined('PRESSPERMIT_PRO_VERSION')) {
+		if (presspermit()->isPro()) {
         	add_action('admin_init', [$this, 'loadUpdater']);
 		}
     }
@@ -116,6 +116,7 @@ class PermissionsHooks
 
     private function interruptInit()
     {
+        /*
         if (
             is_admin() && strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php') && !empty($_POST['attachment_id'])
             && !empty($_POST['fetch']) && (3 == $_POST['fetch'])
@@ -126,6 +127,7 @@ class PermissionsHooks
                     return true;
             }
         }
+        */
     }
 
     public function actSetCurrentUser()

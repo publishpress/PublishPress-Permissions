@@ -6,7 +6,7 @@ class HintsMedia
 {
     public static function fileFilteringPromo()
     {
-        if (defined('PRESSPERMIT_PRO_VERSION')) {
+        if (presspermit()->isPro()) {
             $msg = __('To block direct URL access to attachments of unreadable posts, activate the File Access module.', 'press-permit-core');
         } else {
             $msg = sprintf(
