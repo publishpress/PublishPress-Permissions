@@ -54,6 +54,7 @@ class PageFilters
             'authors' => '',
             'parent' => -1,
             'exclude_tree' => '',
+            'exclude_parent' => '',
             'number' => '',
             'offset' => 0,
             'post_type' => 'page',
@@ -507,6 +508,18 @@ class PageFilters
             $remap_args = compact('child_of', 'parent', 'exclude', 'depth', 'orderby');  // one or more of these args may have been modified after extraction 
 
             \PressShack\Ancestry::remapTree($pages, $ancestors, $remap_args);
+        }
+
+        if (!defined('PRESSPERMIT_GET_PAGES_IGNORE_EXCLUDE_ARGS')) { // installations that rely on pre-2.8.3 behavior can enable this constant
+            foreach ($pages as $key => $page) {
+                if ($exclude && in_array($page->ID, $exclude)) {
+                    unset($pages[$key]);
+                }
+
+                if ($exclude_parent && in_array($page->post_parent, $exclude_parent)) {
+                    unset($pages[$key]);
+                }
+            }
         }
 
         if (!empty($append_page) && !empty($pages)) {
