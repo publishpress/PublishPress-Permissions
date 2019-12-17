@@ -790,7 +790,8 @@ class AgentPermissionsUI
                         $via_type = ($row->via_item_type) ? $row->via_item_type : $row->for_item_type;
             }
 
-            $exceptions[$row->via_item_source][$via_type][$row->for_item_type][$row->operation][$row->mod_type][$row->for_item_status][$row->item_id][$row->assign_for] = $row->eitem_id;
+			$_assign_for = trim($row->assign_for);
+            $exceptions[$row->via_item_source][$via_type][$row->for_item_type][$row->operation][$row->mod_type][$row->for_item_status][$row->item_id][$_assign_for] = $row->eitem_id;
 
             if (!empty($row->inherited_from)) {
                 $exceptions[$row->via_item_source][$via_type][$row->for_item_type][$row->operation][$row->mod_type][$row->for_item_status][$row->item_id]['inherited_from'] = $row->inherited_from;

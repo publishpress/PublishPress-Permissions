@@ -74,6 +74,8 @@ class ItemExceptionsData
         $exc = $pp->getExceptions($args);
 
         foreach ($exc as $row) {
+            $row->assign_for = trim($row->assign_for);  // work around Project Nami issue (enum column values get padded with trailing spaces)
+
             Arr::setElem(
                 $this->current_exceptions,
                 [$row->for_item_type, $row->operation, $row->agent_type, $row->agent_id, $row->assign_for, $row->mod_type]

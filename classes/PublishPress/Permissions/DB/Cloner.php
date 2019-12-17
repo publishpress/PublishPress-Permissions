@@ -69,8 +69,8 @@ class Cloner
 
             $wpdb->insert_id = 0;
             $sql = "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, assigner_id, item_id) SELECT * FROM"
-                . " ( SELECT '$row->assign_for' AS a, '$target_exception_id' AS b, '$current_user_id' AS c, '$row->item_id' AS d ) AS tmp"
-                . " WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = '$row->assign_for'"
+                . " ( SELECT '" . trim($row->assign_for) . "' AS a, '$target_exception_id' AS b, '$current_user_id' AS c, '$row->item_id' AS d ) AS tmp"
+                . " WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = '" . trim($row->assign_for) . "'"
                 . " AND exception_id = '$target_exception_id' AND item_id = '$row->item_id') LIMIT 1";
 
             $wpdb->query($sql);
