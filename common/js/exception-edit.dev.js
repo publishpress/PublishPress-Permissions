@@ -58,16 +58,6 @@ jQuery(document).ready(function ($) {
         presspermitItemCheckboxClick('menu-item', $(this));
     });
 
-    // for group management exceptions
-    $(".pp_group-item-checkbox").click(function () {
-        presspermitItemCheckboxClick('pp_group-item', $(this));
-    });
-
-    // for net group management exceptions
-    $(".pp_net_group-item-checkbox").click(function () {
-        presspermitItemCheckboxClick('pp_net_group-item', $(this));
-    });
-
     var presspermitItemCheckboxClick = function (data_var, t) {
         var expr = data_var + '\\[(\[^\\]\]*)';
         var re = new RegExp(expr);
@@ -102,22 +92,8 @@ jQuery(document).ready(function ($) {
         clearTimeout(presspermitExceptionsTimer);
     });
 
-    //$('.submit-add-item-exception').live('click', function(e) {
     $(document).on('click', '.submit-add-item-exception', function (e) {
         presspermitXaddItemException('menu-item');
-        return false;
-    });
-
-    // group management exceptions
-    //$('.submit-add-pp_group-exception').live('click', function(e) {
-    $(document).on('click', '.submit-add-pp_group-exception', function (e) {
-        presspermitXaddItemException('pp_group-item');
-        return false;
-    });
-
-    // net group management exceptions
-    $(document).on('click', '.submit-add-pp_net_group-exception', function (e) {
-        presspermitXaddItemException('pp_net_group-item');
         return false;
     });
 

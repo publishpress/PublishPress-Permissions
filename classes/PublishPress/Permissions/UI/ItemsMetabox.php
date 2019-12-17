@@ -258,8 +258,8 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
             </div><!-- /.tabs-panel -->
 
-            <div id="<?php echo $post_type_name; ?>-all" class="tabs-panel tabs-panel-view-all <?php
-            echo('all' == $current_tab ? 'tabs-panel-active' : 'tabs-panel-inactive');
+            <div id="<?php echo $post_type_name; ?>-all" class="tabs-panel tabs-panel-view-all<?php
+            echo('all' == $current_tab ? ' tabs-panel-active' : ' tabs-panel-inactive');
             ?>">
 
                 <?php if (!empty($page_links)) : ?>
@@ -365,7 +365,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             'orderby' => 'title',
             'posts_per_page' => $per_page,
             'post_type' => $post_type_name,
-            'suppress_filters' => true,
+            'suppress_filters' => ('pp_group' == $post_type) ? false : true,
             'update_post_term_cache' => false,
             'update_post_meta_cache' => false,
         ];
@@ -469,7 +469,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             </div><!-- /.tabs-panel -->
 
             <div id="<?php echo $post_type_name; ?>-all" class="tabs-panel tabs-panel-view-all<?php
-            echo('all' == $current_tab ? 'tabs-panel-active' : 'tabs-panel-inactive');
+            echo('all' == $current_tab ? ' tabs-panel-active' : ' tabs-panel-inactive');
             ?>">
 
                 <?php if (!empty($page_links)) : ?>
@@ -676,8 +676,8 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
             </div><!-- /.tabs-panel -->
 
-            <div id="tabs-panel-<?php echo $taxonomy_name; ?>-all" class="tabs-panel tabs-panel-view-all <?php
-            echo('all' == $current_tab ? 'tabs-panel-active' : 'tabs-panel-inactive');
+            <div id="tabs-panel-<?php echo $taxonomy_name; ?>-all" class="tabs-panel tabs-panel-view-all<?php
+            echo('all' == $current_tab ? ' tabs-panel-active' : ' tabs-panel-inactive');
             ?>">
 
                 <?php if (!empty($page_links)) : ?>
