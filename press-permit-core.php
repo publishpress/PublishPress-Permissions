@@ -90,7 +90,6 @@ if (!defined('PRESSPERMIT_FILE') && !$pro_active) {
             ) {
                 return;
             }
-
             define('PRESSPERMIT_VERSION', '2.8.7');
 
             require_once(__DIR__ . '/includes/Core.php');
