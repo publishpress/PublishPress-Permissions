@@ -281,7 +281,7 @@ class TermFiltersCount
 			}
 		} elseif ( 'tt_ids' == $fields ) {
 			foreach ( $terms as $term ) {
-				$_terms[] = (int) $term->term_taxonomy_id;
+				$_terms[] = (is_object($term)) ? (int) $term->term_taxonomy_id : (int) $term;
             }
         } elseif ('names' == $fields) {
 			foreach ( $terms as $term ) {
