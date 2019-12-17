@@ -46,7 +46,7 @@ class SettingsAdmin
 
     public function optionCheckbox($option_name, $tab_name, $section_name, $hint_text = '', $trailing_html = '', $args = [])
     {
-        $return = ['in_scope' => false, 'no_storage' => false, 'disabled' => false, 'title' => ''];
+        $return = ['in_scope' => false, 'no_storage' => false, 'disabled' => false, 'title' => '', 'style' => '', 'div_style' => ''];
 
         if (in_array($option_name, $this->form_options[$tab_name][$section_name], true)) {
             if (empty($args['no_storage']))
@@ -59,10 +59,11 @@ class SettingsAdmin
 
             $disabled_clause = (!empty($args['disabled']) || $this->hideNetworkOption($option_name)) ? "disabled='disabled'" : '';
             $style = (!empty($args['style'])) ? $args['style'] : '';
+            $div_style = (!empty($args['div_style'])) ? $args['div_style'] : '';
 
             $title = (!empty($args['title'])) ? " title='" . esc_attr($args['title']) . "'" : '';
 
-            echo "<div class='agp-opt-checkbox $option_name'>"
+            echo "<div class='agp-opt-checkbox $option_name' $div_style>"
                 . "<label for='$option_name'{$title}>"
                 . "<input name='$option_name' type='checkbox' $disabled_clause $style id='$option_name' value='1' " . checked('1', $return['val'], false) . " /> "
                 . $this->option_captions[$option_name]
