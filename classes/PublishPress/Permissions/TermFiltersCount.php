@@ -268,7 +268,16 @@ class TermFiltersCount
             $terms = $_terms;
         } elseif ('names' == $fields) {
             while ($term = array_shift($terms)) {
-                $_terms[] = $term->name;
+                // @todo: track conditions, source for improper array population
+                if (is_object($term)) {
+                    $_terms[] = $term->name;
+                } elseif (is_numeric($term) && count($taxonomies) == 1) {
+                    if ($term = get_term($term, reset($taxonomies))) {
+                        $_terms[] = $term->name;
+                    }
+                } elseif (is_string($term)) {
+                    $_terms[] = $term;
+                }
             }
             $terms = $_terms;
         }
