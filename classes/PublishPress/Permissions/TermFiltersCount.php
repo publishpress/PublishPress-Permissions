@@ -5,11 +5,16 @@ namespace PublishPress\Permissions;
 class TermFiltersCount
 {
     private static $instance = null;
+    var $parent_remap_enabled = true;
 
-    public static function instance() {
+    public static function instance($args = []) {
         if ( is_null( self::$instance ) ) {
             self::$instance = new TermFiltersCount();
             self::$instance->init();
+        }
+
+        if (isset($args['parent_remap_enabled'])) {
+            self::$instance->parent_remap_enabled = $args['parent_remap_enabled'];
         }
 
         return self::$instance;
@@ -253,7 +258,7 @@ class TermFiltersCount
             }
         }
 
-        if ($hierarchical && !$parent && (count($taxonomies) == 1)) {
+        if ($hierarchical && !$parent && (count($taxonomies) == 1) && $this->parent_remap_enabled) {
             require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Ancestry.php');
 
             $ancestors = \PressShack\Ancestry::getTermAncestors(reset($taxonomies)); // array of all ancestor IDs for keyed term_id, with direct parent first
