@@ -325,9 +325,11 @@ class PermissionsHooks
         $default_type = PWP::findPostType();
 
         // buffer all IDs in the results set
-        foreach ($results as $row) {
-            $post_type = (!isset($row->post_type) || ('revision' == $row->post_type)) ? $default_type : $row->post_type;
-            $pp->listed_ids[$post_type][$row->ID] = true;
+        if ($results) { // JReviews plugin sets $results to null under some conditions
+        	foreach ($results as $row) {
+            	$post_type = (!isset($row->post_type) || ('revision' == $row->post_type)) ? $default_type : $row->post_type;
+            	$pp->listed_ids[$post_type][$row->ID] = true;
+        	}
         }
 
         return $results;

@@ -2,9 +2,6 @@
 
 namespace PublishPress\Permissions;
 
-define('PRESSPERMIT_MIN_DATE_STRING', '0000-00-00 00:00:00');
-define('PRESSPERMIT_MAX_DATE_STRING', '2035-01-01 00:00:00');
-
 class Groups
 {
     private $group_types = [];

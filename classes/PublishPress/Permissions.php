@@ -141,6 +141,21 @@ class Permissions
             is_admin() ? ['labels' => (object)['name' => 'Groups', 'singular_name' => 'group']] : []
         );
 
+        if (!defined('PRESSPERMIT_MIN_DATE_STRING')) {
+            global $wpdb;
+
+            if ($wpdb && method_exists($wpdb, 'db_edition') && empty($wpdb->use_mysqli)) {
+                // Project Nami compat
+                define('PRESSPERMIT_MIN_DATE_STRING', '1970-01-01 00:00:01');
+            } else {
+                define('PRESSPERMIT_MIN_DATE_STRING', '0000-00-00 00:00:00');
+            }
+        }
+
+        if (!defined('PRESSPERMIT_MAX_DATE_STRING')) {
+            define('PRESSPERMIT_MAX_DATE_STRING', '2035-01-01 00:00:00');
+        }
+
         $this->loadModules();
 
         require_once(PRESSPERMIT_ABSPATH . '/classes/PublishPress/PermissionsHooks.php');

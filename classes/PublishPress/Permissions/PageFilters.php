@@ -54,6 +54,7 @@ class PageFilters
             'authors' => '',
             'parent' => -1,
             'exclude_tree' => '',
+            'exclude_parent' => '',
             'number' => '',
             'offset' => 0,
             'post_type' => 'page',
@@ -119,6 +120,10 @@ class PageFilters
             && !defined('PP_GET_PAGES_LEGACY_FILTER')
         ) {
             return $results;
+        }
+
+        foreach(['include', 'exclude', 'exclude_parent', 'exclude_tree', 'authors'] as $var) {
+            $r[$var] = wp_parse_id_list($r[$var]);
         }
 
         if ($_filtered_vars = apply_filters('presspermit_get_pages_args', $r)) {  // PPCE filter modifies append_page, exclude_tree, sort_column
@@ -196,7 +201,7 @@ class PageFilters
         if (!empty($include)) {
             $child_of = 0; //ignore child_of, parent, exclude, meta_key, and meta_value params if using include
             $parent = -1;
-            $exclude = '';
+            $exclude = [];
             $meta_key = '';
             $meta_value = '';
             $hierarchical = false;
@@ -507,6 +512,18 @@ class PageFilters
             $remap_args = compact('child_of', 'parent', 'exclude', 'depth', 'orderby');  // one or more of these args may have been modified after extraction 
 
             \PressShack\Ancestry::remapTree($pages, $ancestors, $remap_args);
+        }
+
+        if (!defined('PRESSPERMIT_GET_PAGES_IGNORE_EXCLUDE_ARGS')) { // installations that rely on pre-2.8.3 behavior can enable this constant
+            foreach ($pages as $key => $page) {
+                if ($exclude && in_array($page->ID, $exclude)) {
+                    unset($pages[$key]);
+                }
+
+                if ($exclude_parent && in_array($page->post_parent, $exclude_parent)) {
+                    unset($pages[$key]);
+                }
+            }
         }
 
         if (!empty($append_page) && !empty($pages)) {

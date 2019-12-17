@@ -180,7 +180,7 @@ class ErrorNotice
             echo "<div id='message' class='error fade' $style $class>" . $msg->body . '</div>';
             else :?>
                 <div class='updated' class='<?php echo $class;?>' class='pp_dashboard_message'><p><?php echo $msg->body ?>&nbsp;
-                <a href="javascript:void(0);" class="presspermit-dismiss-notice" id="<?php echo $msg_id;?>"><?php _e("Dismiss", "pp") ?></a>
+                <a href="javascript:void(0);" class="presspermit-dismiss-notice" style="float:right" id="<?php echo $msg_id;?>"><?php _e("Dismiss", "pp") ?></a>
                 </p></div>
         <?php endif;
         }

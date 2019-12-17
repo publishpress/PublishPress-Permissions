@@ -2,9 +2,9 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.9.7
-Tested up to: 5.2.4
+Tested up to: 5.3
 Requires PHP: 5.6.20
-Stable tag: 2.8.2
+Stable tag: 2.8.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -54,6 +54,18 @@ Pro users: download PressPermit Pro from publishpress.com before upgrading to th
 Initial production release
 
 == Changelog ==
+
+= 2.8.7 - 10 Dec 2019 =
+* Fixed : Edit Group Permissions - Category Search on "Add Exceptions" tab did not work
+* Fixed : Edit Group Permissions - when selecting groups for Group Exceptions assignment, redundant UI display (checkboxes for "All" tab not initially hidden)
+* Fixed : Custom get_terms() calls: some "fields" argument values were not supported
+* Fixed : PHP Notice - trying to access property term_name on a non-object, under some configurations
+* Change : Accommodate larger search results set on Ajax user search
+* Compat : White Dot Theme - Exceptions metaboxes on Edit Post screen had broken layout, could not search for users / groups
+* Compat : TwentyTwenty theme modified alignment of PressPermit Settings columns 
+* Compat : JReviews plugin - PHP warning due to 'the_posts' results array being set to null under some conditions
+* Compat : Project Nami - Users could not be added to groups
+* Compat : Project Nami - Exceptions could not be removed
 
 = 2.8.2 - 31 Oct 2019 =
 * Fixed : Supplemental Media Author role - uploader stuck on "Crunching" after uploading a file, could not open it until reloading Media Library

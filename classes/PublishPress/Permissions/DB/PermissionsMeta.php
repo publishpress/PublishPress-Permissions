@@ -28,6 +28,11 @@ class PermissionsMeta
 
         $count = [];
 
+        // Project Nami compat
+        $count_clause = ($wpdb && method_exists($wpdb, 'db_edition') && empty($wpdb->use_mysqli))
+        ? "COUNT(i.item_id)" 
+        : "COUNT(DISTINCT i.exception_id, i.item_id)";
+
         $agent_type = sanitize_key($agent_type);
 
         if (('user' == $agent_type) && $join_groups) {
@@ -57,7 +62,7 @@ class PermissionsMeta
 
                 $_results = $wpdb->get_results(
                     "SELECT gm.$col_member_user as qry_agent_id, e.exception_id, e.for_item_source, e.for_item_type,"
-                    . " e.via_item_type, e.operation, COUNT(DISTINCT i.exception_id, i.item_id) AS exc_count"
+                    . " e.via_item_type, e.operation, $count_clause AS exc_count"
                     . " FROM $wpdb->ppc_exception_items AS i"
                     . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
                     . " INNER JOIN $members_table AS gm ON ( $agent_type_clause )"
@@ -72,7 +77,7 @@ class PermissionsMeta
 
             $results = $wpdb->get_results(
                 "SELECT e.agent_id AS qry_agent_id, e.exception_id, e.for_item_source, e.for_item_type, e.operation,"
-                . " e.via_item_type, COUNT(DISTINCT i.exception_id, i.item_id) AS exc_count"
+                . " e.via_item_type, $count_clause AS exc_count"
                 . " FROM $wpdb->ppc_exception_items AS i"
                 . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
                 . " WHERE i.inherited_from = '0' AND e.agent_type = '$agent_type' $ops_clause $type_clause $agent_clause"

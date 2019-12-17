@@ -258,8 +258,8 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
             </div><!-- /.tabs-panel -->
 
-            <div id="<?php echo $post_type_name; ?>-all" class="tabs-panel tabs-panel-view-all <?php
-            echo('all' == $current_tab ? 'tabs-panel-active' : 'tabs-panel-inactive');
+            <div id="<?php echo $post_type_name; ?>-all" class="tabs-panel tabs-panel-view-all<?php
+            echo('all' == $current_tab ? ' tabs-panel-active' : ' tabs-panel-inactive');
             ?>">
 
                 <?php if (!empty($page_links)) : ?>
@@ -365,7 +365,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             'orderby' => 'title',
             'posts_per_page' => $per_page,
             'post_type' => $post_type_name,
-            'suppress_filters' => true,
+            'suppress_filters' => ('pp_group' == $post_type) ? false : true,
             'update_post_term_cache' => false,
             'update_post_meta_cache' => false,
         ];
@@ -469,7 +469,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             </div><!-- /.tabs-panel -->
 
             <div id="<?php echo $post_type_name; ?>-all" class="tabs-panel tabs-panel-view-all<?php
-            echo('all' == $current_tab ? 'tabs-panel-active' : 'tabs-panel-inactive');
+            echo('all' == $current_tab ? ' tabs-panel-active' : ' tabs-panel-inactive');
             ?>">
 
                 <?php if (!empty($page_links)) : ?>
@@ -523,7 +523,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
                     <img class="waiting" style="display:none"
                         src="<?php echo esc_url(admin_url('images/wpspin_light.gif')); ?>" alt=""/>
 
-                    <input type="submit" <?php disabled($nav_menu_selected_id, 0); ?> class="button-secondary submit-add-<?php
+                    <input type="submit" <?php disabled($nav_menu_selected_id, 0); ?> class="button-secondary submit-add-item-exception submit-add-<?php
                     echo $post_type_name;
                     ?>-exception" value="<?php esc_attr_e('Add Exceptions', 'press-permit-core'); ?>" name="add-post-type-menu-item"
                         id="submit-posttype-<?php echo $post_type_name; ?>"/>
@@ -676,8 +676,8 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
             </div><!-- /.tabs-panel -->
 
-            <div id="tabs-panel-<?php echo $taxonomy_name; ?>-all" class="tabs-panel tabs-panel-view-all <?php
-            echo('all' == $current_tab ? 'tabs-panel-active' : 'tabs-panel-inactive');
+            <div id="tabs-panel-<?php echo $taxonomy_name; ?>-all" class="tabs-panel tabs-panel-view-all<?php
+            echo('all' == $current_tab ? ' tabs-panel-active' : ' tabs-panel-inactive');
             ?>">
 
                 <?php if (!empty($page_links)) : ?>
@@ -744,8 +744,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
                 ?>
                 <p class="quick-search-wrap">
                     <input type="search" class="pp-quick-search input-with-default-title"
-                        title="<?php esc_attr_e('Search'); ?>" value="
-                                                                                                                <?php echo $searched; ?>"
+                        title="<?php esc_attr_e('Search'); ?>" value="<?php echo $searched; ?>"
                         name="quick-search-taxonomy-<?php echo $taxonomy_name; ?>"/>
 
                     <img class="waiting" style="display:none"

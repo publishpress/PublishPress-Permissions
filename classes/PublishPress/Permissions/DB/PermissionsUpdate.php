@@ -189,7 +189,8 @@ class PermissionsUpdate
         $stored_assignments = [];
 
         foreach ($results as $key => $ass) {
-            $stored_assignments[$ass->mod_type][$ass->assign_for][$ass->agent_id] = $ass->exception_id;
+			$_assign_for = trim($ass->assign_for);
+            $stored_assignments[$ass->mod_type][$_assign_for][$ass->agent_id] = $ass->exception_id;
         }
 
         $delete_agents_from_eitem = ['item' => [], 'children' => []];

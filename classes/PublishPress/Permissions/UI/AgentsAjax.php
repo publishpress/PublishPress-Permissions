@@ -174,9 +174,26 @@ class AgentsAjax
                 }
             }
 
+            $limit = (defined('PP_USER_SEARCH_LIMIT')) ? abs(intval(constant('PP_USER_SEARCH_LIMIT'))) : 0;
+            if ($limit) {
+                $limit_clause = "LIMIT $limit";
+            } else {
+                $limit_clause = (defined('PP_USER_SEARCH_UNLIMITED')) ? '' : 'LIMIT 10000';
+            }
+
             $results = $wpdb->get_results(
-                "SELECT ID, user_login, display_name FROM $wpdb->users $join $where ORDER BY $orderby LIMIT 1000"
+                "SELECT ID, user_login, display_name FROM $wpdb->users $join $where ORDER BY $orderby $limit_clause"
             );
+
+            if (defined('PRESSPERMIT_DEBUG_USER_QUERY') && empty($agent_id)) {
+                error_log('PressPermit User Query:');
+                error_log(serialize($_GET));
+                error_log("SELECT ID, user_login, display_name FROM $wpdb->users $join $where ORDER BY $orderby $limit_clause");
+                error_log($wpdb->last_query);
+                $num = count($results);
+                error_log("$num results");
+                error_log($wpdb->last_error);
+            }
 
             if ($results) {
                 $omit_users = [];

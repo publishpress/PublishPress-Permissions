@@ -5,11 +5,16 @@ namespace PublishPress\Permissions;
 class TermFiltersCount
 {
     private static $instance = null;
+    var $parent_remap_enabled = true;
 
-    public static function instance() {
+    public static function instance($args = []) {
         if ( is_null( self::$instance ) ) {
             self::$instance = new TermFiltersCount();
             self::$instance->init();
+        }
+
+        if (isset($args['parent_remap_enabled'])) {
+            self::$instance->parent_remap_enabled = $args['parent_remap_enabled'];
         }
 
         return self::$instance;
@@ -84,17 +89,32 @@ class TermFiltersCount
         if (isset($actual_args['fields'])) {
             switch ($actual_args['fields']) {
                 case 'all':
-                    $selects = ['t.*', 'tt.*'];
+                case 'all_with_object_id':
+                case 'tt_ids':
+                case 'slugs':
+                    $selects = array( 't.*', 'tt.*' );
+                    if ( 'all_with_object_id' === $args['fields'] && ! empty( $args['object_ids'] ) ) {
+                        $selects[] = 'tr.object_id';
+                    }
                     break;
                 case 'ids':
                 case 'id=>parent':
-                    $selects = ['t.term_id', 'tt.parent', 'tt.count'];
+                    $selects = array( 't.term_id', 'tt.parent', 'tt.count', 'tt.taxonomy' );
                     break;
                 case 'names':
-                    $selects = ['t.term_id', 'tt.parent', 'tt.count', 't.name'];
+                    $selects = array( 't.term_id', 'tt.parent', 'tt.count', 't.name', 'tt.taxonomy' );
                     break;
                 case 'count':
-                    $selects = ['COUNT(*)'];
+                    //$orderby = '';
+                    //$order   = '';
+                    $selects = array( 'COUNT(*)' );
+                    break;
+                case 'id=>name':
+                    $selects = array( 't.term_id', 't.name', 'tt.count', 'tt.taxonomy' );
+                    break;
+                case 'id=>slug':
+                    $selects = array( 't.term_id', 't.slug', 'tt.count', 'tt.taxonomy' );
+                    break;
             }
 
             $clauses['fields'] = implode(', ', apply_filters('get_terms_fields', $selects, $args));
@@ -238,7 +258,7 @@ class TermFiltersCount
             }
         }
 
-        if ($hierarchical && !$parent && (count($taxonomies) == 1)) {
+        if ($hierarchical && !$parent && (count($taxonomies) == 1) && $this->parent_remap_enabled) {
             require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Ancestry.php');
 
             $ancestors = \PressShack\Ancestry::getTermAncestors(reset($taxonomies)); // array of all ancestor IDs for keyed term_id, with direct parent first
@@ -257,24 +277,55 @@ class TermFiltersCount
         //
         $_terms = [];
         if ('id=>parent' == $fields) {
-            while ($term = array_shift($terms)) {
+			foreach ( $terms as $term ) {
                 $_terms[$term->term_id] = $term->parent;
             }
-            $terms = $_terms;
         } elseif ('ids' == $fields) {
-            while ($term = array_shift($terms)) {
-                $_terms[] = $term->term_id;
+			foreach ( $terms as $term ) {
+				$_terms[] = (int) $term->term_id;
+			}
+		} elseif ( 'tt_ids' == $fields ) {
+			foreach ( $terms as $term ) {
+				$_terms[] = (is_object($term)) ? (int) $term->term_taxonomy_id : (int) $term;
             }
-            $terms = $_terms;
         } elseif ('names' == $fields) {
-            while ($term = array_shift($terms)) {
-                $_terms[] = $term->name;
+			foreach ( $terms as $term ) {
+                // @todo: track conditions, source for improper array population
+                if (is_object($term)) {
+                    $_terms[] = $term->name;
+                } elseif (is_numeric($term) && count($taxonomies) == 1) {
+                    if ($term = get_term($term, reset($taxonomies))) {
+                        $_terms[] = $term->name;
+                    }
+                } elseif (is_string($term)) {
+                    $_terms[] = $term;
+                }
             }
+		} elseif ( 'slugs' == $fields ) {
+			foreach ( $terms as $term ) {
+				$_terms[] = $term->slug;
+			}
+		} elseif ( 'id=>name' == $fields ) {
+			foreach ( $terms as $term ) {
+				$_terms[ $term->term_id ] = $term->name;
+			}
+		} elseif ( 'id=>slug' == $fields ) {
+			foreach ( $terms as $term ) {
+				$_terms[ $term->term_id ] = $term->slug;
+			}
+		}
+
+        if ( ! empty( $_terms ) ) {
             $terms = $_terms;
         }
 
-        if (0 < $number && intval(@count($terms)) > $number) {
-            $terms = array_slice($terms, $offset, $number);
+        // Hierarchical queries are not limited, so 'offset' and 'number' must be handled now.
+		if ( $hierarchical && $number && is_array( $terms ) ) {
+			if ( $offset >= count( $terms ) ) {
+				$terms = array();
+			} else {
+				$terms = array_slice( $terms, $offset, $number, true );
+			}
         }
         // === end standard WP block ===
 
