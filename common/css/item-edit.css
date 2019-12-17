@@ -1,6 +1,9 @@
 
 .pp-exceptions table {
     margin-top: 5px;
+    /* Prevent breakage by White Dot Theme */
+    table-layout: auto !important;
+    width: auto;
 }
 
 .pp-item-exceptions-ui td {
