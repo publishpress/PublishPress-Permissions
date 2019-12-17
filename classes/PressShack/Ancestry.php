@@ -263,6 +263,8 @@ class Ancestry
             $remap_parents = false;
         }
 
+        $remap_parents = apply_filters('presspermit_enable_parent_remap', $remap_parents, $args);
+
         if ($depth < 0)
             $depth = 0;
 
