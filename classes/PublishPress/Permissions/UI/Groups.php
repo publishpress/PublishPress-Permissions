@@ -54,7 +54,6 @@ class Groups
                 ?>
                 <form action="" method="post" name="updategroups" id="updategroups">
                     <?php wp_nonce_field('pp-bulk-groups');?>
-                    <?php echo $referer; ?>
 
                     <div class="wrap pressshack-admin-wrapper">
                         <?php PluginPage::icon(); ?>
