@@ -20,11 +20,8 @@ class PermissionsHooksAdmin
             new Permissions\Compat\EyesOnlyAdmin();
         }
 
-        // make sure empty terms are included in quick search results in "Add Supplemental Roles" term selection metaboxes
-        if (PWP::isAjax('menu-quick-search')) {
-            add_filter('get_terms_args', 'actTermSelectIncludeEmpty', 50, 2);
-
-        } elseif (PWP::isAjax('pp-menu-quick-search')) {
+        // make sure empty terms are included in quick search results in "Add Exceptions" term selection metaboxes
+        if (PWP::isAjax('pp-menu-quick-search')) {
             require_once(PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
             add_action('wp_ajax_' . sanitize_key($_REQUEST['action']), ['\PublishPress\Permissions\UI\ItemsMetabox', 'ajax_menu_quick_search'], 1);
         }
@@ -78,12 +75,6 @@ class PermissionsHooksAdmin
             new Permissions\UI\AgentsAjax();
             exit;
         }
-    }
-
-    public function actTermSelectIncludeEmpty($args, $taxonomies)
-    {
-        $args['hide_empty'] = 0;
-        return $args;
     }
 
     public function actLoadAjaxHandler()
