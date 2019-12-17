@@ -286,11 +286,11 @@ class Groups
             if ('pp_group' == $agent_type) {
                 foreach ((array)$query_user_ids as $_user_id) {
                     if ($all_group) {
-                        $user_groups[$agent_type][$_user_id][$all_group->ID] = '0000-00-00 00:00:00';
+                        $user_groups[$agent_type][$_user_id][$all_group->ID] = constant('PRESSPERMIT_MIN_DATE_STRING');
                     }
 
                     if ($auth_group) {
-                        $user_groups[$agent_type][$_user_id][$auth_group->ID] = '0000-00-00 00:00:00';
+                        $user_groups[$agent_type][$_user_id][$auth_group->ID] = constant('PRESSPERMIT_MIN_DATE_STRING');
                     }
                 }
             }
