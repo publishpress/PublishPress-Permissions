@@ -33,6 +33,11 @@ class PermissionsHooksAdmin
         if (in_array(basename($_SERVER['PHP_SELF']), ['admin.php', 'admin-ajax.php'])) {
             add_action('wp_ajax_pp_dismiss_msg', [$this, 'dashboardDismissMsg']);
         }
+
+        if (presspermit()->isPro()) {
+            require_once(PRESSPERMIT_ABSPATH . '/includes-pro/admin-load.php');
+            new Permissions\AdminLoadPro();
+        }
     }
 
     public function init()

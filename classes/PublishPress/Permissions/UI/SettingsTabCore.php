@@ -285,6 +285,8 @@ class SettingsTabCore
                 <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
                 <td>
                     <?php
+                    $ui->optionCheckbox('display_branding', $tab, $section, '');
+                    
                     $listable = defined('PP_ADMIN_READONLY_LISTABLE');
 
                     $hint = ($pp->moduleExists('collaboration') && !$listable)
