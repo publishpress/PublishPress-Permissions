@@ -84,17 +84,30 @@ class TermFiltersCount
         if (isset($actual_args['fields'])) {
             switch ($actual_args['fields']) {
                 case 'all':
+                case 'all_with_object_id':
+                case 'tt_ids':
+                case 'slugs':
                     $selects = ['t.*', 'tt.*'];
+                    if ( 'all_with_object_id' === $args['fields'] && ! empty( $args['object_ids'] ) ) {
+                        $selects[] = 'tr.object_id';
+                    }
                     break;
                 case 'ids':
                 case 'id=>parent':
-                    $selects = ['t.term_id', 'tt.parent', 'tt.count'];
+                    $selects = ['t.term_id', 'tt.parent', 'tt.count', 'tt.taxonomy'];
                     break;
                 case 'names':
-                    $selects = ['t.term_id', 'tt.parent', 'tt.count', 't.name'];
+                    $selects = ['t.term_id', 'tt.parent', 'tt.count', 't.name', 'tt.taxonomy'];
                     break;
                 case 'count':
                     $selects = ['COUNT(*)'];
+                    break;
+                case 'id=>name':
+                    $selects = array( 't.term_id', 't.name', 'tt.count', 'tt.taxonomy' );
+                    break;
+                case 'id=>slug':
+                    $selects = array( 't.term_id', 't.slug', 'tt.count', 'tt.taxonomy' );
+                    break;
             }
 
             $clauses['fields'] = implode(', ', apply_filters('get_terms_fields', $selects, $args));
@@ -257,17 +270,19 @@ class TermFiltersCount
         //
         $_terms = [];
         if ('id=>parent' == $fields) {
-            while ($term = array_shift($terms)) {
+			foreach ( $terms as $term ) {
                 $_terms[$term->term_id] = $term->parent;
             }
-            $terms = $_terms;
         } elseif ('ids' == $fields) {
-            while ($term = array_shift($terms)) {
-                $_terms[] = $term->term_id;
+			foreach ( $terms as $term ) {
+				$_terms[] = (int) $term->term_id;
+			}
+		} elseif ( 'tt_ids' == $fields ) {
+			foreach ( $terms as $term ) {
+				$_terms[] = (int) $term->term_taxonomy_id;
             }
-            $terms = $_terms;
         } elseif ('names' == $fields) {
-            while ($term = array_shift($terms)) {
+			foreach ( $terms as $term ) {
                 // @todo: track conditions, source for improper array population
                 if (is_object($term)) {
                     $_terms[] = $term->name;
@@ -279,11 +294,33 @@ class TermFiltersCount
                     $_terms[] = $term;
                 }
             }
+		} elseif ( 'slugs' == $fields ) {
+			foreach ( $terms as $term ) {
+				$_terms[] = $term->slug;
+			}
+		} elseif ( 'id=>name' == $fields ) {
+			foreach ( $terms as $term ) {
+				$_terms[ $term->term_id ] = $term->name;
+			}
+		} elseif ( 'id=>slug' == $fields ) {
+			foreach ( $terms as $term ) {
+				$_terms[ $term->term_id ] = $term->slug;
+			}
+		} else {
+			$is_default_fields_query = true;
+		}
+
+		if (empty($is_default_fields_query)) {
             $terms = $_terms;
         }
 
-        if (0 < $number && intval(@count($terms)) > $number) {
-            $terms = array_slice($terms, $offset, $number);
+        // Hierarchical queries are not limited, so 'offset' and 'number' must be handled now.
+		if ( $hierarchical && $number && is_array( $terms ) ) {
+			if ( $offset >= count( $terms ) ) {
+				$terms = array();
+			} else {
+				$terms = array_slice( $terms, $offset, $number, true );
+			}
         }
         // === end standard WP block ===
 
