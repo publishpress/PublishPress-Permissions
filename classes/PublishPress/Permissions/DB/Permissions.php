@@ -303,7 +303,7 @@ class Permissions
 
     public static function addExceptionClauses($where, $required_operation, $post_type, $args = [])
     {
-        $defaults = ['source_alias' => '', 'apply_term_restrictions' => true, 'append_post_type_clause' => true, 'additions_only' => false, 'query_contexts' => []];
+        $defaults = ['src_table' => '', 'source_alias' => '', 'apply_term_restrictions' => true, 'append_post_type_clause' => true, 'additions_only' => false, 'query_contexts' => []];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -313,7 +313,9 @@ class Permissions
 
         $user = presspermit()->getUser();
 
+        if (!$src_table) {
         $src_table = ($source_alias) ? $source_alias : $wpdb->posts;
+        }
 
         $exc_post_type = apply_filters('presspermit_exception_post_type', $post_type, $required_operation, $args);
 
@@ -544,7 +546,7 @@ class Permissions
                 '1=2',
                 $required_operation, 
                 $apply_object_additions, 
-                ['additions_only' => true, 'apply_term_restrictions' => false]) 
+                ['additions_only' => true, 'apply_term_restrictions' => false, 'src_table' => $src_table]) 
             ) {
                 $post_additions_clause = "OR ( $post_additions_clause )";
             }
