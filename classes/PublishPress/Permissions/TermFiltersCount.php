@@ -87,20 +87,22 @@ class TermFiltersCount
                 case 'all_with_object_id':
                 case 'tt_ids':
                 case 'slugs':
-                    $selects = ['t.*', 'tt.*'];
+                    $selects = array( 't.*', 'tt.*' );
                     if ( 'all_with_object_id' === $args['fields'] && ! empty( $args['object_ids'] ) ) {
                         $selects[] = 'tr.object_id';
                     }
                     break;
                 case 'ids':
                 case 'id=>parent':
-                    $selects = ['t.term_id', 'tt.parent', 'tt.count', 'tt.taxonomy'];
+                    $selects = array( 't.term_id', 'tt.parent', 'tt.count', 'tt.taxonomy' );
                     break;
                 case 'names':
-                    $selects = ['t.term_id', 'tt.parent', 'tt.count', 't.name', 'tt.taxonomy'];
+                    $selects = array( 't.term_id', 'tt.parent', 'tt.count', 't.name', 'tt.taxonomy' );
                     break;
                 case 'count':
-                    $selects = ['COUNT(*)'];
+                    //$orderby = '';
+                    //$order   = '';
+                    $selects = array( 'COUNT(*)' );
                     break;
                 case 'id=>name':
                     $selects = array( 't.term_id', 't.name', 'tt.count', 'tt.taxonomy' );
@@ -306,11 +308,9 @@ class TermFiltersCount
 			foreach ( $terms as $term ) {
 				$_terms[ $term->term_id ] = $term->slug;
 			}
-		} else {
-			$is_default_fields_query = true;
 		}
 
-		if (empty($is_default_fields_query)) {
+        if ( ! empty( $_terms ) ) {
             $terms = $_terms;
         }
 
