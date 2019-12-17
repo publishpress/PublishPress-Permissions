@@ -23,7 +23,6 @@
 /* --- Settings table layout --- */
 
 #pp_settings_form .form-table th {
-    width: auto;
     padding-right:25px;
 }
 
