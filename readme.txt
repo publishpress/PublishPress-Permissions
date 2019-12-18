@@ -47,13 +47,17 @@ PressPermit [Pro](https://publishpress.com/presspermit/) is [available](https://
 	
 == Upgrade Notice ==
 
-= 2.8.2 =
+= 2.8.7 =
 Pro users: download PressPermit Pro from publishpress.com before upgrading to this version.
 
 = 2.1.14 =
 Initial production release
 
 == Changelog ==
+
+= 2.8.8-beta =
+* Compat : Themes that break Gutenberg by making meta boxes steal screen space from editor
+* Fixed : Avoid PHP warnings or unexpected behavior if a post is improperly stored with a zero ID
 
 = 2.8.7 - 10 Dec 2019 =
 * Fixed : Edit Group Permissions - Category Search on "Add Exceptions" tab did not work
