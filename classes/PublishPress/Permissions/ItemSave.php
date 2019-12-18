@@ -83,7 +83,7 @@ class ItemSave
             }
         }
 
-        if (('post' == $via_item_source) && ('post' == $for_item_source)) {
+        if (('post' == $via_item_source) && ('post' == $for_item_source) && $item_id) {
             if ($post = get_post($item_id)) {
                 if ('attachment' == $post->post_type) {  // don't propagate page exceptions to attachments
                     return;
