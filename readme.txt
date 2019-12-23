@@ -2,9 +2,9 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.9.7
-Tested up to: 5.3
+Tested up to: 5.3.2
 Requires PHP: 5.6.20
-Stable tag: 2.8.7
+Stable tag: 2.8.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -47,13 +47,17 @@ PressPermit [Pro](https://publishpress.com/presspermit/) is [available](https://
 	
 == Upgrade Notice ==
 
-= 2.8.2 =
+= 2.8.8 =
 Pro users: download PressPermit Pro from publishpress.com before upgrading to this version.
 
 = 2.1.14 =
 Initial production release
 
 == Changelog ==
+
+= 2.8.8 - 23 Dec 2019 =
+* Compat : Themes that break Gutenberg by making meta boxes steal screen space from editor
+* Fixed : Avoid PHP warnings or unexpected behavior if a post is improperly stored with a zero ID
 
 = 2.8.7 - 10 Dec 2019 =
 * Fixed : Edit Group Permissions - Category Search on "Add Exceptions" tab did not work
@@ -76,6 +80,11 @@ Initial production release
 * Fixed : PHP Notice when Term Exceptions are assigned to enable access (adjustment mode "Also these")
 * Change : On Permissions > Groups list, change "Group" filter link caption to "Custom Group"
 * Change : Plugins screen - Put Settings link next to Activate / Deactivate (was in plugin description area)
+* Change : Added PublishPress footer to plugin screens
+
+= 2.8 - 2 Oct 2019 =
+* Fixed : Category / Term listing: after clicking Universal Exceptions link, category links led to edit screen for type-specific exceptions
+* Change : On Permissions > Groups list, change "Group" filter link to "Custom Group"
 * Change : Added PublishPress footer to plugin screens
 
 = 2.7.14 - 13 Sep 2019 =

@@ -83,6 +83,10 @@ class TermFilters
             if (defined('PP_GET_TERMS_SHORTCUT') && !did_action('wp_head'))  // experimental theme-specific workaround
                 return $terms;
 
+            if (!$post_id) {
+                return $terms;
+            }
+
             if (!$_post = get_post($post_id))
                 return $terms;
 

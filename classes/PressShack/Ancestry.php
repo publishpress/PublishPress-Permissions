@@ -8,6 +8,7 @@ class Ancestry
     {
         $title_caption = '';
 
+        if ($item_id) {
         if ($post = get_post($item_id)) {
             if (is_post_type_hierarchical($post->post_type) && $ancestors = self::getPageAncestors($item_id)) {
                 $arr = [];
@@ -23,6 +24,7 @@ class Ancestry
             } else {
                 $title_caption = $post->post_title;
             }
+        }
         }
 
         return $title_caption;
