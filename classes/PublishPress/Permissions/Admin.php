@@ -208,7 +208,7 @@ class Admin
     public function errorNotice($err_slug, $args)
     {
         require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');
-        return new Permissions\ErrorNotice($err_slug, $args);
+        return new \PublishPress\Permissions\ErrorNotice($err_slug, $args);
     }
 
     public function notice($notice, $msg_id = '')
