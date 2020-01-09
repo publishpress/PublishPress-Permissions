@@ -137,7 +137,7 @@ class Capabilities
 				
 				// If a cap property is used by any other post types, still keep it if it is the custom pluralized type-specific capability form for this post type
 				} else {
-					$plural_type = $this->getPlural($post_type, $wp_post_types[$post_type]);
+					$plural_type = self::getPlural($post_type, $wp_post_types[$post_type]);
 					if (($type_caps[$cap_property] == str_replace("_posts", "_{$plural_type}", $cap_property))
 						|| ($type_caps[$cap_property] == str_replace("_pages", "_{$plural_type}", $cap_property))) {
 
@@ -154,7 +154,7 @@ class Capabilities
 			// Default plural slug
 			//$plural_type = "{$cap_base}s";
 			
-			$plural_type = $this->getPlural($post_type, $wp_post_types[$post_type]);
+			$plural_type = self::getPlural($post_type, $wp_post_types[$post_type]);
 			
 			if ("{$cap_base}s" != $plural_type) {
 				// If any role already has capabilities based on simple plural form, keep using that instead
@@ -222,7 +222,7 @@ class Capabilities
 		$wp_post_types['post']->cap->set_posts_status = 'set_posts_status';
     }
 
-    function getPlural( $slug, $type_obj = false ) {
+    public static function getPlural( $slug, $type_obj = false ) {
         if ($type_obj && ! empty($type_obj->rest_base) && ($type_obj->rest_base != $slug) && ($type_obj->rest_base != "{$slug}s")) {
             // Use plural form from rest_base
             if ($pos = strpos($type_obj->rest_base, '/')) {
