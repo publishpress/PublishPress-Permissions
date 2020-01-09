@@ -123,17 +123,25 @@ class AgentPermissions
                 <?php PluginPage::icon(); ?>
                 <h1><?php
 
-                    if ('user' == $agent_type) ($agent_id) ? _e('Edit User Permissions', 'press-permit-core') : _e('Add User Permissions', 'press-permit-core');
+                    if ('user' == $agent_type) {
+                        ($agent_id) ? _e('Edit User Permissions', 'press-permit-core') : _e('Add User Permissions', 'press-permit-core');
 
-                    elseif ('wp_role' == $metagroup_type)
-                        _e('Edit Permission Group (WP Role)', 'press-permit-core');
-
-                    elseif ('pp_group' == $agent_type)
+                    } elseif ('wp_role' == $metagroup_type) {
+                        if (defined('PUBLISHPRESS_CAPS_VERSION')) {
+                            printf(
+                                __('Edit Permission Group (%sWordPress Role%s)', 'press-permit-core'),
+                                '<a href="' . admin_url("admin.php?page=capsman&action=edit&role={$agent->metagroup_id}") . '" title="' . esc_attr(__('Edit role capabilities directly', 'press-permit-core')) . '">',
+                                '</a>'
+                            );
+                        } else {
+                            _e('Edit Permission Group (WordPress Role)', 'press-permit-core');
+                        }
+                    } elseif ('pp_group' == $agent_type) {
                         _e('Edit Permission Group', 'press-permit-core');
 
-                    elseif ($group_type_obj = $pp_groups->getGroupTypeObject($agent_type))
+                    } elseif ($group_type_obj = $pp_groups->getGroupTypeObject($agent_type)) {
                         printf(__('Edit Permissions (%s)', 'press-permit-core'), $group_type_obj->labels->singular_name);
-
+                    }
                     ?></h1>
                 </header>
 
