@@ -251,14 +251,16 @@ class SettingsTabInstall
                     </span>
                     </p>
 
-                    <br/>
+                    <p>
                     <?php
 
                     global $wp_version;
                     printf(__("WordPress Version: %s", 'press-permit-core'), $wp_version);
                     ?>
-                    <br/>
+                    </p>
+                    <p>
                     <?php printf(__("PHP Version: %s", 'press-permit-core'), phpversion()); ?>
+                    </p>
                 </td>
             </tr>
         <?php

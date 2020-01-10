@@ -13,7 +13,7 @@ class HintsPostEdit
                 $msg = __('To define custom privacy statuses, activate the Status Control module.', 'press-permit-core');
             } else {
                 $msg = sprintf(
-                    __('To define custom privacy statuses, %1$supgrade to PressPermit Pro%2$s and enable the Status Control module.', 'press-permit-core'),
+                    __('To define custom privacy statuses, %1$supgrade to Permissions Pro%2$s and enable the Status Control module.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
@@ -55,7 +55,7 @@ class HintsPostEdit
                 );
             } else {
                 $msg = sprintf(
-                    __('To define publication workflow statuses, %1$supgrade to PressPermit Pro%2$s. Then enable the following modules: %3$s.', 'press-permit-core'),
+                    __('To define publication workflow statuses, %1$supgrade to Permissions Pro%2$s. Then enable the following modules: %3$s.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>',
                     $need_exts

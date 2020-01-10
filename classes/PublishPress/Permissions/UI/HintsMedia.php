@@ -10,7 +10,7 @@ class HintsMedia
             $msg = __('To block direct URL access to attachments of unreadable posts, activate the File Access module.', 'press-permit-core');
         } else {
             $msg = sprintf(
-                __('To block direct URL access to attachments of unreadable posts, %1$supgrade to PressPermit Pro%2$s and enable the File Access module.', 'press-permit-core'),
+                __('To block direct URL access to attachments of unreadable posts, %1$supgrade to Permissions Pro%2$s and enable the File Access module.', 'press-permit-core'),
                 '<a href="https://publishpress.com/pricing/">',
                 '</a>'
             );

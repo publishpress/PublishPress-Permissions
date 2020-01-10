@@ -139,6 +139,11 @@ class PageFilters
             return $results;
         }
 
+		// =========== PressPermit: workaround for Page List plugin
+        if (defined('PAGE_LIST_PLUGIN_VERSION') && !empty($args['item_spacing']) && did_action('get_template_part') && !did_action('get_footer')) {
+            return $results;
+        }
+
         // =========== PressPermit: workaround for CMS Tree Page View (passes post_parent instead of parent)
         if ((-1 == $parent) && isset($args['post_parent'])) {
             $args['parent'] = $args['post_parent'];
@@ -208,10 +213,12 @@ class PageFilters
             $incpages = wp_parse_id_list($include);
             if (!empty($incpages)) {
                 foreach ($incpages as $incpage) {  // @todo: change to IN clause after confirming no issues with PP query parsing
+                    if ($incpage) {
                     if (empty($inclusions))
                         $inclusions = ' AND ( ID = ' . intval($incpage) . ' ';
                     else
                         $inclusions .= ' OR ID = ' . intval($incpage) . ' ';
+                    }
                 }
             }
         }

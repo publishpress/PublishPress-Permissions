@@ -8,7 +8,7 @@ class HintsPro
     {
     ?>
 <div style="margin-top:5px">
-<a href="#pp-pro-info"><?php _e('Show list of PressPermit Pro features and screencasts', 'press-permit-core'); ?></a>
+<a href="#pp-pro-info"><?php _e('Show list of Permissions Pro features and screencasts', 'press-permit-core'); ?></a>
 </div>
 
 <?php

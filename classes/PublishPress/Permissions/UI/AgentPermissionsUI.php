@@ -204,7 +204,7 @@ class AgentPermissionsUI
                 $msg = __('To assign exceptions for editing, parent selection or term assignment, activate the Collaborative Publishing module.', 'press-permit-core');
             else
                 $msg = sprintf(
-                    __('To assign exceptions for editing, parent selection or term assignment, %1$supgrade to PressPermit Pro%2$s and enable the Collaborative Publishing module.', 'press-permit-core'),
+                    __('To assign exceptions for editing, parent selection or term assignment, %1$supgrade to Permissions Pro%2$s and enable the Collaborative Publishing module.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
@@ -222,7 +222,7 @@ class AgentPermissionsUI
                 $msg = __('To assign exceptions for bbPress forums, activate the Compatibility Pack module.', 'press-permit-core');
             else
                 $msg = sprintf(
-                    __('To assign exceptions for bbPress forums, %1$supgrade to PressPermit Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                    __('To assign exceptions for bbPress forums, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
@@ -286,7 +286,7 @@ class AgentPermissionsUI
                 $msg = __('To assign roles for custom post statuses, activate the Status Control module.', 'press-permit-core');
             else
                 $msg = sprintf(
-                    __('To assign roles for custom post statuses, %1$supgrade to PressPermit Pro%2$s and enable the Status Control module.', 'press-permit-core'),
+                    __('To assign roles for custom post statuses, %1$supgrade to Permissions Pro%2$s and enable the Status Control module.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
@@ -301,7 +301,7 @@ class AgentPermissionsUI
                     $msg = __('To assign roles for bbPress forums, activate the Compatibility Pack module.', 'press-permit-core');
                 else
                     $msg = sprintf(
-                        __('To assign roles for bbPress forums, %1$supgrade to PressPermit Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                        __('To assign roles for bbPress forums, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
                         '<a href="https://publishpress.com/pricing/">',
                         '</a>'
                     );
@@ -313,10 +313,10 @@ class AgentPermissionsUI
         <?php
         if (defined('REVISIONARY_VERSION') && (!$pp->moduleActive('collaboration') || !$pp->moduleActive('compatibility')) && $pp->getOption('display_extension_hints')) {
             if (presspermit()->isPro())
-                $msg = __('To assign Revisionary exceptions, activate the Collaborative Publishing and Compatibility Pack modules.', 'press-permit-core');
+                $msg = __('To assign PublishPress Revisions exceptions, activate the Collaborative Publishing and Compatibility Pack modules.', 'press-permit-core');
             else
                 $msg = sprintf(
-                    __('To assign Revisionary exceptions, %1$supgrade to PressPermit Pro%2$s and enable the Collaborative Publishing and Compatibility Pack modules.', 'press-permit-core'),
+                    __('To assign Revisionary exceptions, %1$supgrade to Permissions Pro%2$s and enable the Collaborative Publishing and Compatibility Pack modules.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );

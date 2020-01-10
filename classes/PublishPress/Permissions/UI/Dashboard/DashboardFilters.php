@@ -226,13 +226,23 @@ class DashboardFilters
             //  Manually set menu indexes for positioning below Users menu
             global $menu;
 
-            //$menu_order = (defined('PRESSPERMIT_LEGACY_MENU_POSITION')) ? 72: 26; // enable this to place menu below PublishPress
-
+            /*
             $pp_cred_key = (!defined('PP_DISABLE_MENU_TWEAK') && !defined('OZH_MENU_VER')
                 && isset($menu[70]) && $menu[70][2] == 'users.php' && !isset($menu[72]))
                 ? 72 : null;
+            */
 
             $permissions_title = __('Permissions', 'press-permit-core');
+
+            $menu_order = 72;
+
+            if (defined('PUBLISHPRESS_PERMISSIONS_MENU_GROUPING')) {
+                foreach (get_option('active_plugins') as $plugin_file) {
+                    if ( false !== strpos($plugin_file, 'publishpress.php') ) {
+                        $menu_order = 27;
+                    }
+                }
+            }
 
             add_menu_page(
                 $permissions_title,
@@ -241,7 +251,7 @@ class DashboardFilters
                 $pp_cred_menu,
                 [$this, 'actMenuHandler'],
                 'dashicons-unlock',
-                $pp_cred_key
+                $menu_order
             );
         }
 

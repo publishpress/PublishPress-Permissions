@@ -18,6 +18,14 @@
     vertical-align: middle;
 }
 
+#group-profile-page h1 a {
+    color:  #655997;
+}
+
+#group-profile-page h1 a:hover {
+    text-decoration: underline;
+}
+
 table.pp-agent-profile {
     width: 96%;
     margin-bottom: 20px;

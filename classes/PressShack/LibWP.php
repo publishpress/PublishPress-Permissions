@@ -143,10 +143,12 @@ class LibWP
                     unset($stati[$status]);
             }
 
-            return ('names' == $return) ? array_keys($stati) : $stati;
+            $statuses = ('names' == $return) ? array_keys($stati) : $stati;
         } else {
-            return get_post_stati($args, $return, $operator);
+            $statuses = get_post_stati($args, $return, $operator);
         }
+
+        return apply_filters('presspermit_get_post_statuses', $statuses, $args, $return, $operator);
     }
 
     public static function findPostType($post_id = 0, $return_default = true)

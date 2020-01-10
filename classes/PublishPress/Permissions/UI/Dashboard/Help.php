@@ -35,7 +35,7 @@ class Help
         if (!empty($link_section)) {
             $screen_obj->add_help_tab([
                 'id' => 'presspermit',            //unique id for the tab
-                'title' => __('PressPermit Help', 'press-permit-core'),      //unique visible title for the tab
+                'title' => __('Permissions Help', 'press-permit-core'),      //unique visible title for the tab
                 'content' => '',  //actual help text
                 'callback' => ['\PublishPress\Permissions\UI\Dashboard\Help', 'showContextualHelp'], //optional function to callback
             ]);
@@ -87,7 +87,7 @@ class Help
         <?php endif;
 
         $help .= '<ul><li>' . sprintf(
-                __('%1$s PressPermit Documentation%2$s', 'press-permit-core'),
+                __('%1$s PublishPress Permissions Documentation%2$s', 'press-permit-core'),
                 "<a href='https://publishpress.com/presspermit/' target='_blank'>",
                 '</a>'
             ) . '</li>';

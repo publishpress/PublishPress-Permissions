@@ -229,7 +229,7 @@ class SettingsTabCore
                                             if ($pp->keyActive()) {
                                                 _e('To customize bbPress forum permissions, activate the Compatibility Pack module.', 'press-permit-core');
                                             } else {
-                                                _e('To customize bbPress forum permissions, activate your PressPermit Pro license key.', 'press-permit-core');
+                                                _e('To customize bbPress forum permissions, activate your Permissions Pro license key.', 'press-permit-core');
                                             }
 
                                             ?>
@@ -253,7 +253,7 @@ class SettingsTabCore
                                     $ret = $ui->optionCheckbox('define_media_post_caps', $tab, $section, $hint, '');
                                 }
 
-                                $hint = __('If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types.  <strong>NOTE: You will also need to use a WordPress Role Editor</strong> such as Capability Manager Enhanced to add these capabilities to desired roles.', 'press-permit-core');
+                                $hint = __('If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types.  <strong>NOTE: You will also need to use a WordPress role editor</strong> such as PublishPress Capabilities to add these capabilities to desired roles.', 'press-permit-core');
                                 $ret = $ui->optionCheckbox('define_create_posts_cap', $tab, $section, $hint, '');
                                 echo '</div>';
                             }

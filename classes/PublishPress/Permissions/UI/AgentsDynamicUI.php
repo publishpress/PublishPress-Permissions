@@ -241,7 +241,7 @@ class AgentsDynamicUI
                     $msg = __('To set date limits on group membership, activate the Membership module.', 'press-permit-core');
                 } else {
                     $msg = sprintf(
-                        __('To set date limits on group membership, %1$supgrade to PressPermit Pro%2$s and enable the Membership module.', 'press-permit-core'),
+                        __('To set date limits on group membership, %1$supgrade to Permissions Pro%2$s and enable the Membership module.', 'press-permit-core'),
                         '<a href="https://publishpress.com/pricing/">',
                         '</a>'
                     );

@@ -186,7 +186,7 @@ class AgentsAjax
             );
 
             if (defined('PRESSPERMIT_DEBUG_USER_QUERY') && empty($agent_id)) {
-                error_log('PressPermit User Query:');
+                error_log('PublishPress Permissions User Query:');
                 error_log(serialize($_GET));
                 error_log("SELECT ID, user_login, display_name FROM $wpdb->users $join $where ORDER BY $orderby $limit_clause");
                 error_log($wpdb->last_query);
