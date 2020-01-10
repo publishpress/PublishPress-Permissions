@@ -72,7 +72,7 @@ class PostEdit
                     if (!in_array($post_type, $omit_types, true) && !defined("PP_NO_" . strtoupper($post_type) . "_EXCEPTIONS")) {
                         add_meta_box(
                             "pp_enable_type",
-                            __('PressPermit Settings', 'press-permit-core'),
+                            __('Permissions Settings', 'press-permit-core'),
                             [$this, 'drawSettingsUI'],
                             $post_type,
                             'advanced',

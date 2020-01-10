@@ -234,7 +234,7 @@ class Admin
         <a href="https://wordpress.org/support/plugin/press-permit-core/reviews/#new-post" target="_blank" rel="noopener noreferrer">
         <?php printf( 
             __('If you like %s, please leave us a %s rating. Thank you!', 'press-permit-core'),
-            '<strong>PressPermit</strong>',
+            '<strong>PublishPress Permissions</strong>',
             '<span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>'
             );
         ?>
@@ -244,9 +244,9 @@ class Admin
         <hr>
         <nav>
         <ul>
-        <li><a href="https://publishpress.com/presspermit" target="_blank" rel="noopener noreferrer" title="<?php _e('About PressPermit', 'press-permit-core');?>"><?php _e('About', 'press-permit-core');?>
+        <li><a href="https://publishpress.com/presspermit" target="_blank" rel="noopener noreferrer" title="<?php _e('About PublishPress Permissions', 'press-permit-core');?>"><?php _e('About', 'press-permit-core');?>
         </a></li>
-        <li><a href="https://publishpress.com/documentation/presspermit-start/" target="_blank" rel="noopener noreferrer" title="<?php _e('PressPermit Documentation', 'press-permit-core');?>"><?php _e('Documentation', 'press-permit-core');?>
+        <li><a href="https://publishpress.com/documentation/presspermit-start/" target="_blank" rel="noopener noreferrer" title="<?php _e('Permissions Documentation', 'press-permit-core');?>"><?php _e('Documentation', 'press-permit-core');?>
         </a></li>
         <li><a href="https://publishpress.com/contact" target="_blank" rel="noopener noreferrer" title="<?php _e('Contact the PublishPress team', 'press-permit-core');?>"><?php _e('Contact', 'press-permit-core');?>
         </a></li>

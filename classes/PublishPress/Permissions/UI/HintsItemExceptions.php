@@ -13,7 +13,7 @@ class HintsItemExceptions
                 $msg = __('To block direct access to unreadable files, activate the File Access module.', 'press-permit-core');
             } else {
                 $msg = sprintf(
-                    __('To block direct access to unreadable files, %1$supgrade to PressPermit Pro%2$s and install the File Access module.', 'press-permit-core'),
+                    __('To block direct access to unreadable files, %1$supgrade to Permissions Pro%2$s and install the File Access module.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
@@ -26,7 +26,7 @@ class HintsItemExceptions
                 $msg = __('To customize editing permissions, activate the Collaborative Publishing module.', 'press-permit-core');
             } else {
                 $msg = sprintf(
-                    __('To customize editing permissions, %1$supgrade to PressPermit Pro%2$s and install the Collaborative Publishing module.', 'press-permit-core'),
+                    __('To customize editing permissions, %1$supgrade to Permissions Pro%2$s and install the Collaborative Publishing module.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );

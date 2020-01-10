@@ -228,7 +228,7 @@ class Groups
                             $msg = __('To assign roles or exceptions to BuddyPress groups, activate the Compatibility Pack module', 'press-permit-core');
                         } else {
                             $msg = sprintf(
-                                __('To assign roles or exceptions to BuddyPress groups, %1$supgrade to PressPermit Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                                __('To assign roles or exceptions to BuddyPress groups, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
                                 '<a href="https://publishpress.com/pricing/">',
                                 '</a>'
                             );

@@ -17,7 +17,7 @@ class ErrorNotice
             return;
         }
 
-        $presspermit_title = (defined('PRESSPERMIT_TITLE')) ? PRESSPERMIT_TITLE : 'PressPermit';
+        $presspermit_title = (defined('PRESSPERMIT_TITLE')) ? PRESSPERMIT_TITLE : 'PublishPress Permissions';
 
         $defaults = [
             'module_title' => $presspermit_title,

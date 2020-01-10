@@ -280,7 +280,7 @@ class TermEdit
 
                     add_meta_box(
                         "pp_enable_taxonomy",
-                        __('PressPermit Settings', 'press-permit-core'),
+                        __('Permissions Settings', 'press-permit-core'),
                         [$this, 'drawSettingsUI'],
                         $taxonomy,
                         'advanced',

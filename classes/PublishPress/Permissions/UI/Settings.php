@@ -77,7 +77,7 @@ class Settings
             </div>
             <h1>
                 <?php
-                $title = apply_filters('presspermit_options_form_title', _e('PressPermit Settings', 'press-permit-core'));
+                $title = apply_filters('presspermit_options_form_title', _e('Permissions Settings', 'press-permit-core'));
                 _e($title);
                 ?>
             </h1>
