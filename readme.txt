@@ -1,10 +1,10 @@
-=== PressPermit ===
+=== PublishPress Permissions ===
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.9.7
 Tested up to: 5.3.2
 Requires PHP: 5.6.20
-Stable tag: 2.8.8
+Stable tag: 2.9
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -12,9 +12,9 @@ Advanced and flexible content permissions. Give users or groups type-specific ro
 
 == Description ==
 
-[PressPermit](https://publishpress.com/presspermit/) is an advanced content permissions system, now part of the [PublishPress](https://publishpress.com/) family of professional publishing tools.
+[PublishPress Permissions](https://publishpress.com/presspermit/) is an advanced content permissions system, now part of the [PublishPress](https://publishpress.com/) family of professional publishing tools.
 
-**Important Note for current Pro users:** Download PressPermitPro from publishpress.com before upgrading to this version. PressPermit Pro is now a separate plugin which replaces both Press Permit Core and all PP extension plugins. [Contact us](https://publishpress.com/contact/?pp_topic=presspermit-migration) for assistance in migrating your account.
+**Important Note for current Press Permit Core + PP extension users:** Download PublishPress Permissions Pro from publishpress.com before upgrading to this version. PublishPress Permissions Pro is now a separate plugin which replaces both Press Permit Core and all PP extension plugins. [Contact us](https://publishpress.com/contact/?pp_topic=presspermit-migration) for assistance in migrating your account.
 
 Core Features included in this plugin:
 
@@ -26,7 +26,7 @@ Core Features included in this plugin:
 
   * For any post or category, select who to enable or block
 
-PressPermit [Pro](https://publishpress.com/presspermit/) is [available](https://publishpress.com/pricing/) for [additional access control and features](https://www.youtube.com/playlist?list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3):
+PublishPress Permissions [Pro](https://publishpress.com/presspermit/) is [available](https://publishpress.com/pricing/) for [additional access control and features](https://www.youtube.com/playlist?list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3):
 	
   * Customize editing access for specific posts or terms - [video](https://www.youtube.com/watch?v=0yOEBD8VE9c&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=3)
   * Limit category/term assignment and page parent selection - [video](https://www.youtube.com/watch?v=QqvtxrqLPwY&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=4)
@@ -47,13 +47,17 @@ PressPermit [Pro](https://publishpress.com/presspermit/) is [available](https://
 	
 == Upgrade Notice ==
 
-= 2.8.8 =
-Pro users: download PressPermit Pro from publishpress.com before upgrading to this version.
+= 2.9 =
+Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com before upgrading to this version.
 
 = 2.1.14 =
 Initial production release
 
 == Changelog ==
+
+= 2.9 - 9 Jan 2020 =
+* Change : Renamed to PublishPress Permissions
+* Compat : PublishPress Capabilities
 
 = 2.8.8 - 23 Dec 2019 =
 * Compat : Themes that break Gutenberg by making meta boxes steal screen space from editor
@@ -712,23 +716,23 @@ Permissions can be modified from post edit screens, term edit screens, or the pl
 
 == Compatibility Notes ==
 
-**caching plugins** : disable caching for logged users (unless you only use PressPermit to customize editing access).
+**caching plugins** : disable caching for logged users (unless you only use PublishPress Permissions to customize editing access).
 
 **Custom WP_Query calls** : Often, conflicts can be resolved by specifying a post_type argument. To prevent improper filtering of front-end ajax calls, pass required_operation=read or hook into the pp_unfiltered_ajax filter and add your action to the return array.
 
-**WPML Multilingual CMS** : plugin creates a separate post / page / category for each translation.  The Compatibility Pack module (included in PressPermit Pro) is required to filter the PressPermit Exceptions item selection UI by language and (optionally) to enable mirroring of exceptions to translations.
+**WPML Multilingual CMS** : plugin creates a separate post / page / category for each translation.  The Compatibility Pack module (included in PublishPress Permissions Pro) is required to filter the Permission Exceptions item selection UI by language and (optionally) to enable mirroring of exceptions to translations.
 
 == Frequently Asked Questions ==
 
-= How does PressPermit compare to Capability Manager Enhanced, User Role Editor and other role editor plugins? =
+= How does PublishPress Permissions compare to PublishPress Capabilities, User Role Editor and other role editor plugins? =
 
-PressPermit's functionality is different from and complementary to a basic role editor / user management plugin.  In terms of permissions, those plugins' primary function is to alter WordPress' definition of the capabilities included in each role.  In other words, they expose lots of knobs for the permissions control which WordPress innately supports. That's a valuable task, and in many cases will be all the role customization you need.  Since WP role definitions are stored in the main WordPress database, they remain even said plugin is deactivated. [Capability Manager Enhanced](https://wordpress.org/plugins/capability-manager-enhanced) is a WordPress role editor designed for integration with PressPermit.
+PublishPress Permissions functionality is different from and complementary to a basic role editor / user management plugin.  In terms of permissions, those plugins' primary function is to alter WordPress' definition of the capabilities included in each role.  In other words, they expose lots of knobs for the permissions control which WordPress innately supports. That's a valuable task, and in many cases will be all the role customization you need.  Since WP role definitions are stored in the main WordPress database, they remain even said plugin is deactivated. [PublishPress Capabilities](https://wordpress.org/plugins/capability-manager-enhanced) is a WordPress role editor designed for integration with PublishPress Permissions.
 
-PressPermit can assist you in turning the site-wide capability knobs for desired post types. But it also supercharges your permissions engine. PressPermit it is particularly useful when you want to customize access to a specific post, category or term.  Extension plugins add collaborative editing control, file filtering and other features which are not otherwise possible. The plugin will work with your WP roles as a starting point, whether customized by a role editor or not.  Users of the PP Collaborative Editing extension can (after activating advanced settings) navigate to Permissions > Settings > Role Usage to see (or modify) how PressPermit is using your WP role definitions. PressPermit's modifications remain only while it stays active.
+PublishPress Permissions can assist you in turning the site-wide capability knobs for desired post types. But it also supercharges your permissions engine. PublishPress Permissions is particularly useful when you want to customize access to a specific post, category or term.  Extension plugins add collaborative editing control, file filtering and other features which are not otherwise possible. The plugin will work with your WP roles as a starting point, whether customized by a role editor or not.  Users of the PP Collaborative Editing extension can (after activating advanced settings) navigate to Permissions > Settings > Role Usage to see (or modify) how PublishPress Permissions is using your WP role definitions. PublishPress Permissions modifications remain only while it stays active.
 
-= What extra access control would PressPermit Pro give me? =
+= What extra access control would PublishPress Permissions Pro give me? =
 
-For a detailed comparison, see the [Role Scoper / PressPermit Feature Grid](https://publishpress.com/presspermit-features/). Here are some highlights:
+For a detailed comparison, see the [Role Scoper / PP Feature Grid](https://publishpress.com/presspermit-features/). Here are some highlights:
 
 [youtube https://www.youtube.com/watch?v=0yOEBD8VE9c&rel=0&hd=1]
 Customize editing permissions for specific posts.
@@ -757,21 +761,21 @@ Prevent inappropriate "back door" access by direct file url.
 
 = What about Role Scoper? =
 
-Moving forward, we do not plan any major development of the Role Scoper code base.  If you encounter issues with Role Scoper and need to migrate to a different solution, [PressPermit Pro](https://publishpress.com/presspermit/) provides access to an import script which can (for most installations) automate the majority of your Role Scoper migration.
+Moving forward, we do not plan any major development of the Role Scoper code base.  If you encounter issues with Role Scoper and need to migrate to a different solution, [PublishPress Permissions Pro](https://publishpress.com/presspermit/) provides access to an import script which can (for most installations) automate the majority of your Role Scoper migration.
 
 For a detailed feature comparison, see the [RS/PP Feature Grid](https://publishpress.com/presspermit-features/).
 
 = Can I import settings from Role Scoper? =
 
-Yes. [PressPermit Pro](https://publishpress.com/presspermit/) can import the most Role Scoper groups, roles, restrictions and options.  Some manual followup may be required for some configurations.
+Yes. [PublishPress Permissions Pro](https://publishpress.com/presspermit/) can import the most Role Scoper groups, roles, restrictions and options.  Some manual followup may be required for some configurations.
 
-= Is PressPermit an out-of-the-box membership solution? =
+= Is PublishPress Permissions an out-of-the-box membership solution? =
 
-No, but it can potentially be used in conjunction with an e-commerce or membership plugin. If you have a way to sell users into a WordPress role or BuddyPress group, PressPermit can grant access based on that membership.
+No, but it can potentially be used in conjunction with an e-commerce or membership plugin. If you have a way to sell users into a WordPress role or BuddyPress group, PublishPress Permissions can grant access based on that membership.
 
-= Where does PressPermit store its settings?  How can I completely remove it from my database? =
+= Where does PublishPress Permissions store its settings?  How can I completely remove it from my database? =
 
-PressPermit creates and uses the following tables: pp_groups, pp_group_members, ppc_roles, ppc_exceptions, ppc_exception_items. PressPermit options stored to the WordPress options table have an option name prefixed with "pp_". Due to the potential damage incurred by accidental deletion, no automatic removal is currently available. You can use a SQL editing tool such as phpMyAdmin to drop the tables and delete the pp options.
+PublishPress Permissions creates and uses the following tables: pp_groups, pp_group_members, ppc_roles, ppc_exceptions, ppc_exception_items. PublishPress Permissions options stored to the WordPress options table have an option name prefixed with "pp_". Due to the potential damage incurred by accidental deletion, no automatic removal is currently available. You can use a SQL editing tool such as phpMyAdmin to drop the tables and delete options with option_name LIKE presspermit_%.
 
 == Screenshots ==
 
@@ -783,6 +787,6 @@ PressPermit creates and uses the following tables: pp_groups, pp_group_members, 
 6. Edit Permission Group (custom group enabled to read specific page)
 7. Edit Permission Group (WP role group with supplemental roles)
 8. Edit Permission Group (metagroup blocked from reading a category)
-9. PressPermit Core Settings
-10. PressPermit Advanced Settings
-11. PressPermit Editing Settings (with PressPermit Pro's Collaborative Publishing module)
+9. PublishPress Permissions Core Settings
+10. PublishPress Permissions Advanced Settings
+11. PublishPress Permissions Editing Settings (with PublishPress Permissions Pro's Collaborative Publishing module)
