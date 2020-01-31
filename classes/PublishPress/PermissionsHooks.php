@@ -86,6 +86,11 @@ class PermissionsHooks
         if (did_action('set_current_user')) { // sometimes third party code causes user to be loaded prematurely
             $this->actSetCurrentUser();
         }
+
+        if (defined('PRESSPERMIT_NO_USER_LOCALE')) {
+            // Prevent numerous user queries with Block Editor
+            add_filter('pre_determine_locale', function($locale) {return get_locale();});
+        }
     }
 
     // log request and handler parameters for possible reference by subsequent PP filters; block unpermitted create/edit/delete requests 

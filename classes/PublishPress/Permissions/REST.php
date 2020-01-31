@@ -132,6 +132,29 @@ class REST
                             }
                         }
 
+                        // workaround for superfluous post retrieval by Gutenberg on Parent Page query
+                        if ($this->is_view_method && !$this->post_id) {
+                            $params = $request->get_params();
+
+                            if (!empty($params['exclude']) || !empty($params['parent_exclude'])) {
+                                // Prevent Gutenberg from triggering needless post_name retrieval (for permalink generation) for each item in Page Parent dropdown
+                                if (!empty($_SERVER) && !empty($_SERVER['HTTP_REFERER']) && false !== strpos($_SERVER['HTTP_REFERER'], admin_url())) {
+                                    global $wp_post_types;
+
+                                    if (!$this->post_type) {
+                                        $id = (!empty($params['exclude'])) ? $params['exclude'] : $params['parent_exclude'];
+                                        $this->post_type = get_post_field('post_type', $id);
+                                    }
+
+                                    $wp_post_types[$this->post_type]->publicly_queryable = false;
+                                    $wp_post_types[$this->post_type]->_builtin = false;
+
+                                    // Prevent Gutenberg from triggering revisions retrieval for each item in Page Parent dropdown
+                                    add_filter('wp_revisions_to_keep', function($num, $post) {return 0;}, 10, 2);
+                                }
+                            }
+                        }
+
                         if (!$this->post_type) {
                             if (!$this->post_type = get_post_field('post_type', $this->post_id)) {
                                 return $rest_response;
