@@ -20,34 +20,34 @@ Core Features included in this plugin:
 
   * Permissions model extends the WordPress roles framework
   * Assign supplemental roles and exceptions for custom post types [youtube https://www.youtube.com/watch?v=v7jTkgmjHrw&rel=0&hd=1]
+  * Limit category/term assignment and page parent selection - [video](https://www.youtube.com/watch?v=QqvtxrqLPwY&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=4)
+  * Revisionary: regulate moderated editing of published content - [video](https://www.youtube.com/watch?v=kCD6HQAjUXs&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=12)
   
   * Post-specific control for any user, group or WordPress role
   * Control viewing access to specific categories [youtube https://www.youtube.com/watch?v=SMnybRf5neY&rel=0&hd=1] 
+  * Customize editing access for specific posts or terms - [video](https://www.youtube.com/watch?v=0yOEBD8VE9c&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=3)
 
   * For any post or category, select who to enable or block
 
+  * Import groups, roles and restrictions from Role Scoper
+
 PublishPress Permissions [Pro](https://publishpress.com/presspermit/) is [available](https://publishpress.com/pricing/) for [additional access control and features](https://www.youtube.com/playlist?list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3):
 	
-  * Customize editing access for specific posts or terms - [video](https://www.youtube.com/watch?v=0yOEBD8VE9c&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=3)
-  * Limit category/term assignment and page parent selection - [video](https://www.youtube.com/watch?v=QqvtxrqLPwY&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=4)
   * File Access: regulate direct access to uploaded files - [video](https://www.youtube.com/watch?v=kVusrdlgSps&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=15)
   * Hidden Content Teaser - [video](https://www.youtube.com/watch?v=d_5r8NKjxDQ&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=9)
-  * bbPress: customize viewing, topic creation or reply submission permissions per-forum
-  * bbPress: display a teaser message for unreadable topics or replies
-  * Date-limited membership in Permissions Groups - [video](https://www.youtube.com/watch?v=hMOVvCy_9Ws&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=7)
-  
-  * Moderation statuses control multi-step moderation - [video](https://www.youtube.com/watch?v=v8VyKP3rIvk&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=8)
-  * PublishPress integration - [video](https://www.youtube.com/watch?v=eeZ6CBC5kQI&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=11)
-  * Revisionary: regulate moderated editing of published content - [video](https://www.youtube.com/watch?v=kCD6HQAjUXs&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=12)
   * BuddyPress Permission Groups for additional reading or editing access - [video](https://www.youtube.com/watch?v=oABIT7wki_A&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=14)
   * Circles: block access to content not authored by a fellow group member
-  * WPML integration: mirror post/term permissions to translations
+  * bbPress: customize viewing, topic creation or reply submission permissions per-forum
+  * bbPress: display a teaser message for unreadable topics or replies
   * Define custom post statuses and set corresponding supplemental roles - [video](https://www.youtube.com/watch?v=vM3Iwt3Jdak&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=6)
-  * Import groups, roles and restrictions from Role Scoper
+  * PublishPress integration - [video](https://www.youtube.com/watch?v=eeZ6CBC5kQI&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=11)
+  * Moderation statuses control multi-step moderation - [video](https://www.youtube.com/watch?v=v8VyKP3rIvk&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=8)
+  * Date-limited membership in Permissions Groups - [video](https://www.youtube.com/watch?v=hMOVvCy_9Ws&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=7)
+  * WPML integration: mirror post/term permissions to translations
 	
 == Upgrade Notice ==
 
-= 2.9 =
+= 3.0 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com before upgrading to this version.
 
 = 2.1.14 =
