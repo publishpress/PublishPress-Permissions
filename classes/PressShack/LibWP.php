@@ -222,7 +222,7 @@ class LibWP
 
     public static function getPostID()
     {
-        global $post;
+        global $post, $wp_query;
 
         if (defined('REST_REQUEST') && REST_REQUEST) {
             if ($_post_id = apply_filters('presspermit_rest_post_id', 0)) {
@@ -235,9 +235,7 @@ class LibWP
                 return 0;
             else
                 return $post->ID;
-        } elseif (!is_admin() && is_singular()) {
-            global $wp_query;
-
+        } elseif (!is_admin() && !empty($wp_query) && is_singular()) {
             if (!empty($wp_query)) {
                 if (!empty($wp_query->query_vars) && !empty($wp_query->query_vars['p'])) {
                     return $wp_query->query_vars['p'];
