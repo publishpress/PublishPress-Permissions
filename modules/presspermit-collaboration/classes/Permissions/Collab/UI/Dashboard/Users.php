@@ -45,7 +45,7 @@ class Users
                 elems =
                     '<div id="member_page_adder" class="alignleft actions" style="margin-left:5px;padding-left:5px;margin-bottom:5px">' +
                     '<label class="screen-reader-text" for="member_page_type"><?php _e('Add Author Page&hellip;', 'presspermit') ?></label>' +
-                    '<select name="member_page_type" id="member_page_type" title="<?php _e('make each selected user the author of a new page', 'presspermit'); ?>" autocomplete="off">' +
+                    '<select name="member_page_type" id="member_page_type" title="<?php _e('make each selected user the author of a new page', 'presspermit'); ?>">' +
                     '<option value=""><?php _e('Add Author Page&hellip;', 'presspermit') ?></option>' +
                     <?php
                     $post_types = get_post_types(['public' => true, 'show_ui' => true], 'object', 'or');
