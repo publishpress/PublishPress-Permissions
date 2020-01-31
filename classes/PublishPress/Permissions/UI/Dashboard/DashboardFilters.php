@@ -191,14 +191,6 @@ class DashboardFilters
             $wp_scripts->in_footer[] = 'presspermit-misc'; // otherwise it will not be printed in footer @todo: review
         }
 
-        if (
-            in_array($pagenow, ['post.php', 'post-new.php', 'edit.php', 'users.php', 'upload.php', 'edit-tags.php', 'term.php'])
-            || presspermitPluginPage()
-        ) {
-            require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/Help.php');
-            Help::registerContextualHelp();
-        }
-
         if (('user-edit.php' == $pagenow) && presspermit()->getOption('display_user_profile_groups')) {
             add_thickbox();
         }
