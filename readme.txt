@@ -56,7 +56,7 @@ Initial production release
 == Changelog ==
 
 = 3.0-beta =
-* Feature : Collaborative Pubishing module ported from Pro edition
+* Feature : Collaborative Publishing module ported from Pro edition
 * Feature : Import module (for Role Scoper installations) ported from Pro edition
 * Perf : Edit Page with Block Editor - Prevent needless core queries
 * Fixed : Javascript error when a published post is unpublished in the block editor
