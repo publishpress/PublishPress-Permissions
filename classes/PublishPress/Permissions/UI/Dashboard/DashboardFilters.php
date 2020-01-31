@@ -20,7 +20,7 @@ class DashboardFilters
         do_action('_presspermit_admin_ui');
 
         // ============== UI-related filters ================
-        add_action('admin_menu', [$this, 'actBuildMenu'], 2);
+        add_action('admin_menu', [$this, 'actBuildMenu'], 21);
 
         add_action('show_user_profile', [$this, 'actUserUi'], 2);
         add_action('edit_user_profile', [$this, 'actUserUi'], 2);
