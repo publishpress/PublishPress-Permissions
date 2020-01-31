@@ -63,7 +63,7 @@ class TermEdit
                     $add_boxes[$op]["pp_{$op}_{$taxonomy}_exceptions"]['for_item_type'] = $taxonomy;
                     $add_boxes[$op]["pp_{$op}_{$taxonomy}_exceptions"]['for_item_source'] = 'term'; // $taxonomy;
                     $add_boxes[$op]["pp_{$op}_{$taxonomy}_exceptions"]['title'] = sprintf(
-                        __('%1$s %2$s Exceptions', 'presspermit'), 
+                        __('%1$s %2$s Exceptions', 'press-permit-core'), 
                         $tx->labels->singular_name, $op_obj->noun_label
                     );
                 }

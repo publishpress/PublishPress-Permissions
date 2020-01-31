@@ -23,7 +23,7 @@ class Updated
         if ($prev_version && is_admin()) {
             if (preg_match("/dev|alpha|beta|rc/i", PRESSPERMIT_COLLAB_VERSION) && !preg_match("/dev|alpha|beta|rc/i", $prev_version)) {
                 presspermit()->admin()->notice(
-                    __('You have installed a development / beta version of the PublishPress Collaborative Publishing module. If this is a concern, see Permissions > Settings > Install > Beta Updates.', 'ppce')
+                    __('You have installed a development / beta version of the PublishPress Collaborative Publishing module. If this is a concern, see Permissions > Settings > Install > Beta Updates.', 'press-permit-core')
                 );
             }
         }

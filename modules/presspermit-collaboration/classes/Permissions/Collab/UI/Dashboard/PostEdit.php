@@ -90,8 +90,8 @@ class PostEdit
         if (!presspermit()->isUserUnfiltered()) {
             if ($type_obj = presspermit()->getTypeObject('post', PWP::findPostType())) {
                 if (!current_user_can($type_obj->cap->publish_posts)) {
-                    $messages['post'][6] = __('Post Approved', 'presspermit');
-                    $messages['page'][6] = __('Page Approved', 'presspermit');
+                    $messages['post'][6] = __('Post Approved', 'press-permit-core');
+                    $messages['page'][6] = __('Page Approved', 'press-permit-core');
                 }
             }
             return $messages;
@@ -277,7 +277,7 @@ class PostEdit
         $type_obj = get_post_type_object($post->post_type);
 
         if (current_user_can($type_obj->cap->edit_others_posts)) :
-            $title = __('Author Search / Select', 'ppce');
+            $title = __('Author Search / Select', 'press-permit-core');
 
             $args = [
                 'suppress_extra_prefix' => true,
@@ -304,8 +304,8 @@ class PostEdit
                         '<div id="pp_author_search" class="pp-select-author" style="display:none">' 
                         + $('#pp_author_search_ui_base').attr('id', 'pp_author_search_ui').html() 
                         + '</div>&nbsp;'
-                        + '<a href="#" class="pp-add-author" style="margin-left:8px" title="<?php echo $title; ?>"><?php _e('select other', 'ppce'); ?></a>'
-                        + '<a class="pp-close-add-author" href="#" style="display:none;"><?php _e('close', 'presspermit'); ?></a>'
+                        + '<a href="#" class="pp-add-author" style="margin-left:8px" title="<?php echo $title; ?>"><?php _e('select other', 'press-permit-core'); ?></a>'
+                        + '<a class="pp-close-add-author" href="#" style="display:none;"><?php _e('close', 'press-permit-core'); ?></a>'
                         );
                 });
                 /* ]]> */

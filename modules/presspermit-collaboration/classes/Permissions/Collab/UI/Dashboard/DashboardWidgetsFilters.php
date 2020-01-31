@@ -34,9 +34,9 @@ class DashboardWidgetsFilters
                         $num = number_format_i18n($num_posts->$status_name);
 
                         if (intval($num_posts->$status_name) <= 1) {
-                            $text = sprintf(__('%1$s %2$s', 'presspermit'), $status_obj->label, $post_type_obj->labels->singular_name);
+                            $text = sprintf(__('%1$s %2$s', 'press-permit-core'), $status_obj->label, $post_type_obj->labels->singular_name);
                         } else {
-                            $text = sprintf(__('%1$s %2$s', 'presspermit'), $status_obj->label, $post_type_obj->labels->name);
+                            $text = sprintf(__('%1$s %2$s', 'press-permit-core'), $status_obj->label, $post_type_obj->labels->name);
                         }
                         
                         $type_clause = ('post' == $post_type) ? '' : "&post_type=$post_type";

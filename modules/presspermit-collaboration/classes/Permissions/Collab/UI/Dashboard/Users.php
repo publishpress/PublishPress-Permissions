@@ -19,19 +19,19 @@ class Users
                 <?php if ( !empty($_REQUEST['ppmessage']) ) {
                 switch( $_REQUEST['ppmessage'] ) {
                 case 1: ?>
-                var msg = '<?php printf(_n('%s author page added', '%s author pages added', $_REQUEST['ppcount'], 'presspermit'), $_REQUEST['ppcount']);?>';
+                var msg = '<?php printf(_n('%s author page added', '%s author pages added', $_REQUEST['ppcount'], 'press-permit-core'), $_REQUEST['ppcount']);?>';
                 var cls = 'updated';
                 <?php
                 break;
                 case 2 :
                 ?>
-                var msg = '<?php _e('No users selected', 'presspermit');?>';
+                var msg = '<?php _e('No users selected', 'press-permit-core');?>';
                 var cls = 'error';
                 <?php
                 break;
                 case 3 :
                 ?>
-                var msg = '<?php _e('Selected users already have specified author page', 'presspermit');?>';
+                var msg = '<?php _e('Selected users already have specified author page', 'press-permit-core');?>';
                 var cls = 'error';
                 <?php
                 break;
@@ -44,9 +44,9 @@ class Users
 
                 elems =
                     '<div id="member_page_adder" class="alignleft actions" style="margin-left:5px;padding-left:5px;margin-bottom:5px">' +
-                    '<label class="screen-reader-text" for="member_page_type"><?php _e('Add Author Page&hellip;', 'presspermit') ?></label>' +
-                    '<select name="member_page_type" id="member_page_type" title="<?php _e('make each selected user the author of a new page', 'presspermit'); ?>" autocomplete="off">' +
-                    '<option value=""><?php _e('Add Author Page&hellip;', 'presspermit') ?></option>' +
+                    '<label class="screen-reader-text" for="member_page_type"><?php _e('Add Author Page&hellip;', 'press-permit-core') ?></label>' +
+                    '<select name="member_page_type" id="member_page_type" title="<?php _e('make each selected user the author of a new page', 'press-permit-core'); ?>" autocomplete="off">' +
+                    '<option value=""><?php _e('Add Author Page&hellip;', 'press-permit-core') ?></option>' +
                     <?php
                     $post_types = get_post_types(['public' => true, 'show_ui' => true], 'object', 'or');
                     unset($post_types['attachment']);
@@ -72,13 +72,13 @@ class Users
 
                     $input_name = "member_page_pattern_$post_type";
                     if (!$type_obj->hierarchical)
-                        $title = __('pattern post sets default content and categories for author post', 'presspermit');
+                        $title = __('pattern post sets default content and categories for author post', 'press-permit-core');
                     elseif ('page' == $post_type)
-                        $title = __('pattern post sets parent, default content and template for author page', 'presspermit');
+                        $title = __('pattern post sets parent, default content and template for author page', 'press-permit-core');
                     else
-                        $title = __('pattern page sets parent and default content for author page', 'presspermit');
+                        $title = __('pattern page sets parent and default content for author page', 'press-permit-core');
                     ?>
-                    '<label class="screen-reader-text" for="member_page_pattern_<?php echo $post_type;?>"><?php _e('patterned on&hellip;', 'presspermit') ?></label>' +
+                    '<label class="screen-reader-text" for="member_page_pattern_<?php echo $post_type;?>"><?php _e('patterned on&hellip;', 'press-permit-core') ?></label>' +
                     '<span id="member_page_pattern_div_<?php echo $post_type;?>" class="member-page-pattern" style="display:none;margin-left:10px;" title="<?php echo $title;?>" >' +
                     <?php
                     if ($type_obj->hierarchical && ($total_posts < 200)) {
@@ -86,7 +86,7 @@ class Users
                         $dropdown_args = [
                             'post_type' => $post_type,
                             'name' => $input_name,
-                            'show_option_none' => __('patterned on&hellip;', 'presspermit'),
+                            'show_option_none' => __('patterned on&hellip;', 'press-permit-core'),
                             'sort_column' => 'menu_order, post_title',
                             'echo' => 0,
                             'exclude' => $exclude,
@@ -102,13 +102,13 @@ class Users
                     ?>
                     '<?php echo $pages;?>' +
                     <?php else:?>
-                    '<?php _e('Pattern ID:', 'presspermit');?><input type="text" name="<?php echo $input_name;?>" id="<?php echo $input_name;?>" size="20" placeholder="<?php _e('enter post ID/slug', 'presspermit');?>" /></span>' +
+                    '<?php _e('Pattern ID:', 'press-permit-core');?><input type="text" name="<?php echo $input_name;?>" id="<?php echo $input_name;?>" size="20" placeholder="<?php _e('enter post ID/slug', 'press-permit-core');?>" /></span>' +
                     <?php endif;?>
                     '</span>' +
                     <?php endforeach;?>
 
-                    '<span id="member_page_title" style="display:none;margin-left:10px;margin-right:5px"><?php _e('Title:', 'presspermit');?><input type="text" name="member_page_title" id="member_page_title" value="[username]" title="<?php _e('supported tags are [username] and [userid]', 'presspermit');?>" size="30" /></span>' +
-                    '<span id="member_page_add" style="display:none"><?php submit_button(__('Add Pages', 'presspermit'), 'secondary', 'add_member_page', false); ?></span>' +
+                    '<span id="member_page_title" style="display:none;margin-left:10px;margin-right:5px"><?php _e('Title:', 'press-permit-core');?><input type="text" name="member_page_title" id="member_page_title" value="[username]" title="<?php _e('supported tags are [username] and [userid]', 'press-permit-core');?>" size="30" /></span>' +
+                    '<span id="member_page_add" style="display:none"><?php submit_button(__('Add Pages', 'press-permit-core'), 'secondary', 'add_member_page', false); ?></span>' +
                     '</div>';
 
                 $("select[name='action']").closest('div.top').find('div.tablenav-pages').after($(elems));

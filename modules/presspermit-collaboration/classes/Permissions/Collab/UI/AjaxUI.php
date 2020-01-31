@@ -5,37 +5,37 @@ class AjaxUI
 {
     public static function fltOperationCaptions($op_captions)
     {
-        $op_captions['edit'] = (object)['label' => __('Edit'), 'noun_label' => __('Editing', 'presspermit')];
+        $op_captions['edit'] = (object)['label' => __('Edit'), 'noun_label' => __('Editing', 'press-permit-core')];
 
         if (defined('PP_PUBLISH_EXCEPTIONS'))
-            $op_captions['publish'] = (object)['label' => __('Publish'), 'noun_label' => __('Publishing', 'presspermit')];
+            $op_captions['publish'] = (object)['label' => __('Publish'), 'noun_label' => __('Publishing', 'press-permit-core')];
 
         if (defined('REVISIONARY_VERSION'))
-            $op_captions['revise'] = (object)['label' => __('Revise'), 'noun_label' => __('Revision', 'presspermit')];
+            $op_captions['revise'] = (object)['label' => __('Revise'), 'noun_label' => __('Revision', 'press-permit-core')];
 
         if (class_exists('Fork', false) && !defined('PP_DISABLE_FORKING_SUPPORT'))
-            $op_captions['fork'] = (object)['label' => __('Fork'), 'noun_label' => __('Fork', 'presspermit')];
+            $op_captions['fork'] = (object)['label' => __('Fork'), 'noun_label' => __('Fork', 'press-permit-core')];
 
         $op_captions = array_merge($op_captions, [
             'associate' => (object)[
-                'label' => __('Associate', 'presspermit'), 
-                'noun_label' => __('Association (as Parent)', 'presspermit'), 
-                'agent_label' => __('Associate (as parent)', 'presspermit')
+                'label' => __('Associate', 'press-permit-core'), 
+                'noun_label' => __('Association (as Parent)', 'press-permit-core'), 
+                'agent_label' => __('Associate (as parent)', 'press-permit-core')
             ],
             
             'assign' => (object)[
-                'label' => __('Assign Term', 'presspermit'), 
-                'noun_label' => __('Assignment', 'presspermit')
+                'label' => __('Assign Term', 'press-permit-core'), 
+                'noun_label' => __('Assignment', 'press-permit-core')
             ],
 
             /*'publish' => (object)[
                 'label' => __('Publish'), 
-                'noun_label' => __('Publishing', 'presspermit')
+                'noun_label' => __('Publishing', 'press-permit-core')
             ],*/
 
             'manage' => (object)[
                 'label' => __('Manage'), 
-                'noun_label' => __('Management', 'presspermit')
+                'noun_label' => __('Management', 'press-permit-core')
             ],
         ]);
 
@@ -103,7 +103,7 @@ class AjaxUI
         if (!in_array($operation, ['read', 'publish_topics', 'publish_replies'], true) && ('attachment' != $for_type)) {
             $html .= '<p class="pp-checkbox" style="white-space:nowrap">'
                 . '<input type="checkbox" id="pp_select_cond_post_status_unpub" name="pp_select_x_cond[]" value="post_status:{unpublished}"> '
-                . '<label for="pp_select_cond_post_status_unpub">' . __('(unpublished)', 'presspermit') . '</label>'
+                . '<label for="pp_select_cond_post_status_unpub">' . __('(unpublished)', 'press-permit-core') . '</label>'
                 . '</p>';
         }
 

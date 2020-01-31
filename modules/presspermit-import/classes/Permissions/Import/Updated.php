@@ -7,7 +7,7 @@ class Updated
     {
         if (is_admin()) {
             if (preg_match("/dev|alpha|beta|rc/i", PRESSPERMIT_IMPORT_VERSION) && !preg_match("/dev|alpha|beta|rc/i", PRESSPERMIT_IMPORT_VERSION)) {
-                presspermit()->admin()->notice(__('You have installed a development / beta version of PressPermit Import. If this is a concern, see Permits > Support > Beta Updates.', 'presspermit'), 'updated');
+                presspermit()->admin()->notice(__('You have installed a development / beta version of PressPermit Import. If this is a concern, see Permits > Support > Beta Updates.', 'press-permit-core'), 'updated');
             }
         }
 

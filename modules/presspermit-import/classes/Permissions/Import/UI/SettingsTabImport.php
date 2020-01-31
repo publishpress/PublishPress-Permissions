@@ -19,7 +19,7 @@ class SettingsTabImport
 
     function fltOptionTabs($tabs)
     {
-        $tabs['import'] = __('Import', 'presspermit');
+        $tabs['import'] = __('Import', 'press-permit-core');
         return $tabs;
     }
 
@@ -38,7 +38,7 @@ class SettingsTabImport
             <table class="form-table pp-form-table pp-options-table">
                 <tr>
                     <td>
-                        <h3><?php _e('Role Scoper Import Results:', 'ppi'); ?></h3>
+                        <h3><?php _e('Role Scoper Import Results:', 'press-permit-core'); ?></h3>
                         <?php
 
                         if ($rs_import->timed_out && array_diff($rs_import->num_imported, ['0'])) :
@@ -55,18 +55,18 @@ class SettingsTabImport
 
                         if ($rs_import->sites_examined) :
                             ?>
-                            <h4><?php printf(_n('1 site examined:', '%1$s sites examined:', $rs_import->sites_examined, 'ppi'), $rs_import->sites_examined); ?></h4>
+                            <h4><?php printf(_n('1 site examined:', '%1$s sites examined:', $rs_import->sites_examined, 'press-permit-core'), $rs_import->sites_examined); ?></h4>
                         <?php
                         endif;
 
                         if (!array_diff($rs_import->num_imported, ['0'])) :
                             ?>
-                            <h4 class="pp-warning"><?php _e('Nothing to import!', 'ppi'); ?></h4>
+                            <h4 class="pp-warning"><?php _e('Nothing to import!', 'press-permit-core'); ?></h4>
                         <?php else :
                             foreach ($rs_import->num_imported as $import_type => $num) :
                                 if (!$num) continue;
                                 ?>
-                                <h4 class="pp-success"><?php printf(__('%1$s imported: %2$s', 'ppi'), $rs_import->import_types[$import_type], $num); ?></h4>
+                                <h4 class="pp-success"><?php printf(__('%1$s imported: %2$s', 'press-permit-core'), $rs_import->import_types[$import_type], $num); ?></h4>
                             <?php
                             endforeach;
                         endif;
@@ -84,7 +84,7 @@ class SettingsTabImport
             <table class="form-table pp-form-table pp-options-table">
                 <tr>
                     <td>
-                        <h3><?php _e('Permissions Import Results:', 'ppi'); ?></h3>
+                        <h3><?php _e('Permissions Import Results:', 'press-permit-core'); ?></h3>
                         <?php
 
                         if ($pp_import->timed_out && array_diff($pp_import->num_imported, ['0'])) :
@@ -101,18 +101,18 @@ class SettingsTabImport
 
                         if ($pp_import->sites_examined) :
                             ?>
-                            <h4><?php printf(_n('1 site examined:', '%1$s sites examined:', $pp_import->sites_examined, 'ppi'), $pp_import->sites_examined); ?></h4>
+                            <h4><?php printf(_n('1 site examined:', '%1$s sites examined:', $pp_import->sites_examined, 'press-permit-core'), $pp_import->sites_examined); ?></h4>
                         <?php
                         endif;
 
                         if (!array_diff($pp_import->num_imported, ['0'])) :
                             ?>
-                            <h4 class="pp-warning"><?php _e('Nothing to import!', 'ppi'); ?></h4>
+                            <h4 class="pp-warning"><?php _e('Nothing to import!', 'press-permit-core'); ?></h4>
                         <?php else :
                             foreach ($pp_import->num_imported as $import_type => $num) :
                                 if (!$num) continue;
                                 ?>
-                                <h4 class="pp-success"><?php printf(__('%1$s imported: %2$s', 'ppi'), $pp_import->import_types[$import_type], $num); ?></h4>
+                                <h4 class="pp-success"><?php printf(__('%1$s imported: %2$s', 'press-permit-core'), $pp_import->import_types[$import_type], $num); ?></h4>
                             <?php
                             endforeach;
                         endif;
@@ -128,7 +128,7 @@ class SettingsTabImport
             <table class="form-table pp-form-table pp-options-table">
                 <tr>
                     <td>
-                        <h4 class="pp-success"><?php _e('Previous import values have been deleted', 'ppi'); ?></h4>
+                        <h4 class="pp-success"><?php _e('Previous import values have been deleted', 'press-permit-core'); ?></h4>
                     </td>
                 </tr>
             </table>
@@ -146,11 +146,11 @@ class SettingsTabImport
         if ($offer_rs = $this->hasUnimported('rs')) :
             ?>
             <h3>
-                <?php _e('Role Scoper Import', 'presspermit'); ?>
+                <?php _e('Role Scoper Import', 'press-permit-core'); ?>
             </h3>
 
             <p>
-                <?php _e('Migrates Role Scoper Options, Role Groups, Roles and Restrictions to PressPermit.', 'ppi'); ?>
+                <?php _e('Migrates Role Scoper Options, Role Groups, Roles and Restrictions to PressPermit.', 'press-permit-core'); ?>
             </p>
 
             <br />
@@ -170,18 +170,18 @@ class SettingsTabImport
             
             <br /><br />
             <p>
-            <?php _e('<strong>Notes:</strong>', 'ppi'); ?>
+            <?php _e('<strong>Notes:</strong>', 'press-permit-core'); ?>
 
             <ul class="pp-notes" style="max-width:500px;margin-left:20px">
-                <li><?php _e('The import can be run multiple times if source values change.', 'ppi'); ?></li>
-                <li><?php _e('Configuration items will be imported even if the request exceeds PHP execution time limit. Repeat as necessary until all items are imported.', 'ppi'); ?></li>
-                <li><?php _e('Current Role Scoper configuration is not modified or deleted. You will still be able to restore previous behavior by reactivating Role Scoper if necessary.', 'ppi'); ?></li>
-                <li><?php _e('Following import, you should manually review the results and confirm that permissions are correct. Some manual followup may be required.', 'ppi'); ?></li>
-                <li><?php _e('Category Restrictions on Contributor and Author are converted to Term Assignment Exceptions. If you want a user to be blocked from authoring but able to contribute to a category, manually assign "Post - Assign Term - Also these" exceptions for desired terms, with status "(unpublished)".', 'ppi'); ?></li>
-                <li><?php _e('Category Restrictions on Editor are converted to Post Edit Exceptions. If you want a sitewide Editor to be blocked from editing in some categories but still able to author/contribute to them, you will need to change their sitewide role to Contributor/Author and assign "Post - Edit - Also these" exceptions for the categories which they should be a full Editor in.', 'ppi'); ?></li>
-                <li><?php _e('Role date limits are not currently supported as such. You can assign roles to groups and (with the Membership module activated) apply membership date ranges. But RS role date limits are not imported. If this is an issue, submit a feature development request.', 'ppi'); ?></li>
-                <li><?php _e('Content date ranges for supplemental roles are not currently supported and not imported.', 'ppi'); ?></li>
-                <li><?php _e('NextGen Gallery roles are not currently supported and not imported.', 'ppi'); ?></li>
+                <li><?php _e('The import can be run multiple times if source values change.', 'press-permit-core'); ?></li>
+                <li><?php _e('Configuration items will be imported even if the request exceeds PHP execution time limit. Repeat as necessary until all items are imported.', 'press-permit-core'); ?></li>
+                <li><?php _e('Current Role Scoper configuration is not modified or deleted. You will still be able to restore previous behavior by reactivating Role Scoper if necessary.', 'press-permit-core'); ?></li>
+                <li><?php _e('Following import, you should manually review the results and confirm that permissions are correct. Some manual followup may be required.', 'press-permit-core'); ?></li>
+                <li><?php _e('Category Restrictions on Contributor and Author are converted to Term Assignment Exceptions. If you want a user to be blocked from authoring but able to contribute to a category, manually assign "Post - Assign Term - Also these" exceptions for desired terms, with status "(unpublished)".', 'press-permit-core'); ?></li>
+                <li><?php _e('Category Restrictions on Editor are converted to Post Edit Exceptions. If you want a sitewide Editor to be blocked from editing in some categories but still able to author/contribute to them, you will need to change their sitewide role to Contributor/Author and assign "Post - Edit - Also these" exceptions for the categories which they should be a full Editor in.', 'press-permit-core'); ?></li>
+                <li><?php _e('Role date limits are not currently supported as such. You can assign roles to groups and (with the Membership module activated) apply membership date ranges. But RS role date limits are not imported. If this is an issue, submit a feature development request.', 'press-permit-core'); ?></li>
+                <li><?php _e('Content date ranges for supplemental roles are not currently supported and not imported.', 'press-permit-core'); ?></li>
+                <li><?php _e('NextGen Gallery roles are not currently supported and not imported.', 'press-permit-core'); ?></li>
             </ul>
             </p>
         <?php
@@ -194,11 +194,11 @@ class SettingsTabImport
             <?php endif; ?>
 
             <h3>
-                <?php _e('Press Permit Beta (1.x) Import', 'presspermit'); ?>
+                <?php _e('Press Permit Beta (1.x) Import', 'press-permit-core'); ?>
             </h3>
 
             <p>
-                <?php _e('Migrates Press Permit 1.x Options, Role Groups, Roles and Conditions.', 'ppi'); ?>
+                <?php _e('Migrates Press Permit 1.x Options, Role Groups, Roles and Conditions.', 'press-permit-core'); ?>
             </p>
 
             <br />
@@ -219,22 +219,22 @@ class SettingsTabImport
             <br /><br />
 
             <p>
-            <?php _e('<strong>Notes:</strong>', 'ppi'); ?>
+            <?php _e('<strong>Notes:</strong>', 'press-permit-core'); ?>
 
             <ul class="pp-notes" style="max-width:500px;margin-left:20px">
-                <li><?php _e('The import can be run multiple times if source values change.', 'ppi'); ?></li>
-                <li><?php _e('Configuration items will be imported even if the request exceeds PHP execution time limit. Repeat as necessary until all items are imported.', 'ppi'); ?></li>
-                <li><?php _e('Current Press Permit 0.9/1.x configuration is not modified or deleted. You will still be able to restore previous behavior by reactivating the old version (and associated extensions) if necessary.', 'ppi'); ?></li>
-                <li><?php _e('Following import, you should manually review the results and confirm that permissions are correct. Some manual followup may be required.', 'ppi'); ?></li>
-                <li><?php _e('Editorial conditions are converted to Post Edit Exceptions for specific posts, assigned to applicable WP Role metagroups.', 'ppi'); ?></li>
-                <li><?php _e('Supplemental Editor roles for Editability conditions are converted to Exceptions (Post - Edit - Also these) for specific posts.', 'ppi'); ?></li>
-                <li><?php _e('Contributor Restrict and Author Restrict conditions are converted to Exceptions (all types - Assign Term - Not these), assigned to applicable WP Role metagroups.', 'ppi'); ?></li>
-                <li><?php _e('Supplemental roles for Bypass Contributor Restrict and Bypass Author Restrict are converted to Exceptions (all types - Assign Term - Also these)', 'ppi'); ?></li>
-                <li><?php _e('For WPML, post-specific roles and conditions mirrored to translations are imported. But language-specific sitewide role assignments are no longer supported and not imported.', 'ppi'); ?></li>
-                <li><?php _e('For bbPress, forum-specific Spectator roles are imported as an Exception on the "Read" operation.', 'ppi'); ?></li>
-                <li><?php _e('For bbPress, forum-specific Participant roles are imported as Exceptions on the "Read", "Create Topics", and "Submit Replies" operations.', 'ppi'); ?></li>
-                <li><?php _e('For bbPress, forum-specific Moderator roles are imported as Exceptions on the "Read", "Create Topics", "Submit Replies" and "Edit" operations.', 'ppi'); ?></li>
-                <li><?php _e('Other direct roles assigned to specific terms or posts are not imported. If you modified a Role Usage setting from Pattern Role to Direct-Assigned, manually create exceptions as needed.', 'ppi'); ?></li>
+                <li><?php _e('The import can be run multiple times if source values change.', 'press-permit-core'); ?></li>
+                <li><?php _e('Configuration items will be imported even if the request exceeds PHP execution time limit. Repeat as necessary until all items are imported.', 'press-permit-core'); ?></li>
+                <li><?php _e('Current Press Permit 0.9/1.x configuration is not modified or deleted. You will still be able to restore previous behavior by reactivating the old version (and associated extensions) if necessary.', 'press-permit-core'); ?></li>
+                <li><?php _e('Following import, you should manually review the results and confirm that permissions are correct. Some manual followup may be required.', 'press-permit-core'); ?></li>
+                <li><?php _e('Editorial conditions are converted to Post Edit Exceptions for specific posts, assigned to applicable WP Role metagroups.', 'press-permit-core'); ?></li>
+                <li><?php _e('Supplemental Editor roles for Editability conditions are converted to Exceptions (Post - Edit - Also these) for specific posts.', 'press-permit-core'); ?></li>
+                <li><?php _e('Contributor Restrict and Author Restrict conditions are converted to Exceptions (all types - Assign Term - Not these), assigned to applicable WP Role metagroups.', 'press-permit-core'); ?></li>
+                <li><?php _e('Supplemental roles for Bypass Contributor Restrict and Bypass Author Restrict are converted to Exceptions (all types - Assign Term - Also these)', 'press-permit-core'); ?></li>
+                <li><?php _e('For WPML, post-specific roles and conditions mirrored to translations are imported. But language-specific sitewide role assignments are no longer supported and not imported.', 'press-permit-core'); ?></li>
+                <li><?php _e('For bbPress, forum-specific Spectator roles are imported as an Exception on the "Read" operation.', 'press-permit-core'); ?></li>
+                <li><?php _e('For bbPress, forum-specific Participant roles are imported as Exceptions on the "Read", "Create Topics", and "Submit Replies" operations.', 'press-permit-core'); ?></li>
+                <li><?php _e('For bbPress, forum-specific Moderator roles are imported as Exceptions on the "Read", "Create Topics", "Submit Replies" and "Edit" operations.', 'press-permit-core'); ?></li>
+                <li><?php _e('Other direct roles assigned to specific terms or posts are not imported. If you modified a Role Usage setting from Pattern Role to Direct-Assigned, manually create exceptions as needed.', 'press-permit-core'); ?></li>
             </ul>
             </p>
         <?php
@@ -242,7 +242,7 @@ class SettingsTabImport
 
         if (!$offer_rs && !$offer_pp && empty($_POST['pp_rs_import']) && empty($_POST['pp_pp_import'])) : ?>
             <p>
-                <?php _e('Nothing to import!', 'ppi'); ?>
+                <?php _e('Nothing to import!', 'press-permit-core'); ?>
             </p>
         <?php
         endif;
@@ -251,7 +251,7 @@ class SettingsTabImport
             ?>
             <div class="pp-optionhint">
                 <?php
-                printf(__('Once your import task is complete, you can eliminate this tab by deactivating the %s plugin.', 'ppi'), __('PressPermit Import', 'ppi'));
+                printf(__('Once your import task is complete, you can eliminate this tab by deactivating the %s plugin.', 'press-permit-core'), __('PressPermit Import', 'press-permit-core'));
                 ?>
             </div>
         <?php
@@ -274,11 +274,11 @@ class SettingsTabImport
                 <td>
 
                     <?php
-                    $msg = __("All imported groups, roles, exceptions and options will be deleted. Are you sure?", 'ppi');
+                    $msg = __("All imported groups, roles, exceptions and options will be deleted. Are you sure?", 'press-permit-core');
                     $js_call = "javascript:if (confirm('$msg')) {return true;} else {return false;}";
                     ?>
                     <div style="float:right">
-                        <input name="pp_undo_imports" type="submit" value="<?php _e('Undo All Imports', 'ppi'); ?>"
+                        <input name="pp_undo_imports" type="submit" value="<?php _e('Undo All Imports', 'press-permit-core'); ?>"
                                onclick="<?php echo $js_call; ?>"/>
                     </div>
                 </td>

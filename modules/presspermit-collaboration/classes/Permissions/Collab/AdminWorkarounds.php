@@ -183,16 +183,16 @@ class AdminWorkarounds
             if (empty ($current_user->allcaps['edit_theme_options']) || !empty($use_term_roles['nav_menu'])) {
                 if (!current_user_can($tx->cap->manage_terms, $_REQUEST['menu'])) {
                     if ($_REQUEST['menu'])
-                        wp_die(__('You do not have permission to update that Navigation Menu', 'presspermit'));
+                        wp_die(__('You do not have permission to update that Navigation Menu', 'press-permit-core'));
                     else
-                        wp_die(__('You do not have permission to create new Navigation Menus', 'presspermit'));
+                        wp_die(__('You do not have permission to create new Navigation Menus', 'press-permit-core'));
                 }
             }
         } elseif (false !== strpos($referer_name, 'delete-nav_menu-')) {
             if (!$pp->isUserUnfiltered() 
             && empty($current_user->allcaps['edit_theme_options']) && empty($current_user->allcaps['delete_menus'])) 
             {
-                wp_die(__('You do not have permission to delete that Navigation Menu.', 'presspermit'));
+                wp_die(__('You do not have permission to delete that Navigation Menu.', 'press-permit-core'));
             }
         } elseif (false !== strpos($referer_name, 'delete-menu_item_')) {
             if ($pp->getOption('admin_nav_menu_filter_items')) {

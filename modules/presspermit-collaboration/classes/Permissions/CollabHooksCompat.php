@@ -97,7 +97,7 @@ class CollabHooksCompat
             // custom moderation stati
             register_post_status('approved', [
                 'label' => _x('Approved', 'post'),
-                'labels' => (object)['publish' => __('Approve', 'presspermit')],
+                'labels' => (object)['publish' => __('Approve', 'press-permit-core')],
                 'moderation' => true,
                 'protected' => true,
                 'internal' => false,
@@ -173,15 +173,15 @@ class CollabHooksCompat
 
     function actAdjustDefaultPatternRoles()
     {
-        //presspermit()->registerPatternRole( 'reviewer', ['labels' => (object)['name' => __('Reviewers', 'presspermit'), 'singular_name' => __('Reviewer', 'presspermit')]]);
+        //presspermit()->registerPatternRole( 'reviewer', ['labels' => (object)['name' => __('Reviewers', 'press-permit-core'), 'singular_name' => __('Reviewer', 'press-permit-core')]]);
 
         if (defined('REVISIONARY_VERSION')) {
             presspermit()->registerPatternRole(
                 'revisor', 
                 [
                     'labels' => (object)[
-                        'name' => __('Revisors', 'presspermit'), 
-                        'singular_name' => __('Revisor', 'presspermit')
+                        'name' => __('Revisors', 'press-permit-core'), 
+                        'singular_name' => __('Revisor', 'press-permit-core')
                     ]
                 ]
             );

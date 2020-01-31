@@ -106,8 +106,8 @@ class AdminFilters
         $types['pp_group'] = (object)[
             'name' => 'pp_group', 
             'labels' => (object)[
-                'singular_name' => __('Permission Group', 'presspermit'), 
-                'name' => __('Permission Groups', 'presspermit')
+                'singular_name' => __('Permission Group', 'press-permit-core'), 
+                'name' => __('Permission Groups', 'press-permit-core')
                 ]
             ];
         
@@ -119,7 +119,7 @@ class AdminFilters
         if (empty($args['agent']) || empty($args['agent']->metagroup_id) 
         || !in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all'], true)) 
         {
-            echo "<option value='_term_'>" . __('term (manage)', 'presspermit') . '</option>';
+            echo "<option value='_term_'>" . __('term (manage)', 'press-permit-core') . '</option>';
         }
     }
 
@@ -155,7 +155,7 @@ class AdminFilters
         if (!empty($matches[1])) {
             $taxonomy = $matches[1];
             if ($tx_obj = get_taxonomy($taxonomy))
-                $role_title = sprintf(__('%s Manager', 'presspermit'), $tx_obj->labels->singular_name);
+                $role_title = sprintf(__('%s Manager', 'press-permit-core'), $tx_obj->labels->singular_name);
         }
 
         return $role_title;

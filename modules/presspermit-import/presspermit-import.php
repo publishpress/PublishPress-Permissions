@@ -6,8 +6,6 @@
  * Author:      PublishPress
  * Author URI:  https://publishpress.com
  * Version:     2.7
- * Text Domain: ppi
- * Domain Path: /languages/
  * Min WP Version: 4.7
  */
 
@@ -47,9 +45,7 @@ if (!defined('PRESSPERMIT_IMPORT_FILE')) {
 
             $ext_version = PRESSPERMIT_VERSION;
 
-            @load_plugin_textdomain('ppi', '', dirname(plugin_basename(__FILE__)) . '/languages');
-                
-            $title = __('Import', 'ppi');
+            $title = __('Import', 'press-permit-core');
 
             if (presspermit()->registerModule(
                 'import', $title, dirname(plugin_basename(__FILE__)), $ext_version, ['min_pp_version' => '2.7-beta']

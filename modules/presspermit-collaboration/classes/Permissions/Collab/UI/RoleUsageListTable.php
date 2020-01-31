@@ -53,7 +53,7 @@ class RoleUsageListTable extends \WP_List_Table
 
     function no_items()
     {
-        _e('No matching roles were found.', 'presspermit');
+        _e('No matching roles were found.', 'press-permit-core');
     }
 
     function get_views()
@@ -70,7 +70,7 @@ class RoleUsageListTable extends \WP_List_Table
     {
         $c = [
             'role_name' => PWP::__wp('Role'),
-            'usage' => __('Usage', 'presspermit'),
+            'usage' => __('Usage', 'press-permit-core'),
         ];
 
         return $c;
@@ -156,13 +156,13 @@ class RoleUsageListTable extends \WP_List_Table
                 case 'usage':
                     switch ($role_obj->usage) {
                         case 'direct':
-                            $caption = __('Direct Assignment', 'presspermit');
+                            $caption = __('Direct Assignment', 'press-permit-core');
                             break;
                             
                         default:
                             $caption = (empty($role_obj->usage)) 
-                            ? __('no supplemental assignment', 'presspermit') 
-                            : __('Pattern Role', 'presspermit');
+                            ? __('no supplemental assignment', 'press-permit-core') 
+                            : __('Pattern Role', 'press-permit-core');
                     }
                     $r .= "<td $attributes>$caption</td>";
                     break;

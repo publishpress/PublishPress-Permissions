@@ -5,10 +5,6 @@
  * Description: Supports content-specific editing permissions, term assignment and page parent limitations. In combination with other modules, supports custom moderation statuses, PublishPress, Revisionary and Post Forking.
  * Author:      PublishPress
  * Author URI:  https://publishpress.com/
- * Version:     2.7
- * Text Domain: ppce
- * Domain Path: /languages/
- * Min WP Version: 4.7
  */
 
 /*
@@ -48,8 +44,7 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
             $ext_version = PRESSPERMIT_VERSION;
 
             if (is_admin()) {
-                @load_plugin_textdomain('ppce', '', dirname(plugin_basename(__FILE__)) . '/languages');
-                $title = __('Collaborative Publishing', 'ppce');
+                $title = __('Collaborative Publishing', 'press-permit-core');
             } else {
                 $title = 'Collaborative Publishing';
             }

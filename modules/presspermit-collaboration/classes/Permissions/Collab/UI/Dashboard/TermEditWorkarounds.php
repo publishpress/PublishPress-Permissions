@@ -75,7 +75,7 @@ class TermEditWorkarounds
             }
 
             if (empty($permit)) {
-                wp_die(__('You do not have permission to select that Parent', 'presspermit'));
+                wp_die(__('You do not have permission to select that Parent', 'press-permit-core'));
             }
         }
     }

@@ -33,7 +33,7 @@ class Importer
     {
         if (!empty($_POST['pp_rs_import'])) {
             if (!current_user_can('pp_manage_settings'))
-                wp_die(__('You are not allowed to manage Permissions settings', 'presspermit'));
+                wp_die(__('You are not allowed to manage Permissions settings', 'press-permit-core'));
 
             require_once(PRESSPERMIT_IMPORT_CLASSPATH . '/DB/RoleScoper.php');
             DB\RoleScoper::instance()->doImport();
@@ -41,7 +41,7 @@ class Importer
 
         if (!empty($_POST['pp_pp_import'])) {
             if (!current_user_can('pp_manage_settings'))
-                wp_die(__('You are not allowed to manage Permissions settings', 'presspermit'));
+                wp_die(__('You are not allowed to manage Permissions settings', 'press-permit-core'));
 
             require_once(PRESSPERMIT_IMPORT_CLASSPATH . '/DB/PressPermitBeta.php');
             DB\PressPermitBeta::instance()->doImport();
@@ -49,7 +49,7 @@ class Importer
 
         if (!empty($_POST['pp_undo_imports'])) {
             if (!current_user_can('pp_manage_settings'))
-                wp_die(__('You are not allowed to manage Permissions settings', 'presspermit'));
+                wp_die(__('You are not allowed to manage Permissions settings', 'press-permit-core'));
 
             $importer = new Importer();
 

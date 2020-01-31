@@ -23,7 +23,7 @@ class RoleUsageHelper
         $extra_items = (array)$extra_items;
 
         if (!$title)
-            $title = __('Notes', 'presspermit');
+            $title = __('Notes', 'press-permit-core');
 
         echo '<br /><h4 style="margin-top:0;margin-bottom:0.1em">' . $title . ':</h4><ul class="pp-notes">';
 
@@ -33,13 +33,13 @@ class RoleUsageHelper
             $hint = '';
 
         $hint .= '<li>'
-            . __("The 'posts' capabilities in a WP role determine its function as a Pattern Role for supplemental assignment to Permission Groups. When you assign the 'Author' pattern role for Pages, edit_posts and edit_published_posts become edit_pages and edit_published_pages.", 'presspermit')
+            . __("The 'posts' capabilities in a WP role determine its function as a Pattern Role for supplemental assignment to Permission Groups. When you assign the 'Author' pattern role for Pages, edit_posts and edit_published_posts become edit_pages and edit_published_pages.", 'press-permit-core')
             . '</li>'
             . '<li>'
-            . __("Capabilities formally defined for other post types (i.e. 'edit_others_pages', 'edit_doohickies') apply to primary role assignment and supplemental direct assignment, but not pattern role assignment.", 'presspermit')
+            . __("Capabilities formally defined for other post types (i.e. 'edit_others_pages', 'edit_doohickies') apply to primary role assignment and supplemental direct assignment, but not pattern role assignment.", 'press-permit-core')
             . '</li>'
             . '<li>'
-            . __("If one of the default roles is deleted from the WP database, it will remain available as a pattern role with default WP capabilities (but can be disabled here).", 'presspermit')
+            . __("If one of the default roles is deleted from the WP database, it will remain available as a pattern role with default WP capabilities (but can be disabled here).", 'press-permit-core')
             . '</li>'
             . '</ul><br />';
 

@@ -437,13 +437,13 @@ class CapabilityFiltersAdmin
         if (!current_user_can('edit_post', $post_id)) {
             if ($type_obj = get_post_type_object(get_post_field('post_type', $post_id))) {
                 $edit_link = "<a href='" . admin_url("edit.php?post_type=$type_obj->name") . "'>" 
-                . sprintf(__('Go to %s', 'ppce'), $type_obj->labels->name) 
+                . sprintf(__('Go to %s', 'press-permit-core'), $type_obj->labels->name) 
                 . '</a>';
 
                 if (isset($_POST['save']) || isset($_POST['publish'])) {
                     $arr_msg = [
                         sprintf(
-                            __('The %s was saved, but you can no longer edit it.', 'ppce'), 
+                            __('The %s was saved, but you can no longer edit it.', 'press-permit-core'), 
                             strtolower($type_obj->labels->singular_name)
                         ), 
                         $edit_link
@@ -455,8 +455,8 @@ class CapabilityFiltersAdmin
 
             if (empty($arr_msg)) {
                 $arr_msg = [
-                    __('The requested modification was processed, but you can no longer edit the post.', 'ppce'), 
-                    sprintf(__('Go to %s', 'ppce'), $edit_link)
+                    __('The requested modification was processed, but you can no longer edit the post.', 'press-permit-core'), 
+                    sprintf(__('Go to %s', 'press-permit-core'), $edit_link)
                 ];
             }
             

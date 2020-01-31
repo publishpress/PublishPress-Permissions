@@ -87,8 +87,8 @@ class DashboardFilters
         if (presspermit()->getOption('advanced_options'))
             add_submenu_page(
                 $pp_options_menu, 
-                __('Role Usage', 'presspermit'), 
-                __('Role Usage', 'presspermit'), 
+                __('Role Usage', 'press-permit-core'), 
+                __('Role Usage', 'press-permit-core'), 
                 'read', 
                 'presspermit-role-usage', 
                 $handler
@@ -99,7 +99,7 @@ class DashboardFilters
 
         if (in_array($pp_plugin_page, ['presspermit-role-usage-edit'], true)) {
             $permissions_menu = presspermit()->admin()->getMenuParams('permits');
-            $titles = ['presspermit-role-usage-edit' => __('Edit Role Usage', 'presspermit')];
+            $titles = ['presspermit-role-usage-edit' => __('Edit Role Usage', 'press-permit-core')];
             add_submenu_page($permissions_menu, $titles[$pp_plugin_page], '', 'read', $pp_plugin_page, $handler);
         }
     }
@@ -183,7 +183,7 @@ class DashboardFilters
                 [(object)[
                     'attrib_type' => 'moderation', 
                     'url' => "admin.php?page=presspermit-statuses&attrib_type=moderation", 
-                    'label' => __('Workflow', 'presspermit')
+                    'label' => __('Workflow', 'press-permit-core')
                     ]
                 ],
                 $links

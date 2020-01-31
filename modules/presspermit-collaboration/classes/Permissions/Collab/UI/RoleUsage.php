@@ -18,7 +18,7 @@ class RoleUsage
 
     private function display() {
         if (!current_user_can('pp_manage_settings'))
-            wp_die(__('You are not permitted to do that.', 'presspermit'));
+            wp_die(__('You are not permitted to do that.', 'press-permit-core'));
 
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/RoleUsageListTable.php');
         $role_usage_table = RoleUsageListTable::instance();
@@ -37,7 +37,7 @@ class RoleUsage
         if (isset($_GET['update'])) :
             switch ($_GET['update']) {
                 case 'edit':
-                    $messages[] = '<div id="message" class="updated"><p>' . __('Role Usage edited.', 'presspermit') . '</p></div>';
+                    $messages[] = '<div id="message" class="updated"><p>' . __('Role Usage edited.', 'press-permit-core') . '</p></div>';
                     break;
             }
         endif;
@@ -71,7 +71,7 @@ class RoleUsage
             <h1>
                 <?php
 
-                $caption = __('Edit Role Usage', 'presspermit');
+                $caption = __('Edit Role Usage', 'press-permit-core');
 
                 echo esc_html($caption);
                 ?>
@@ -80,14 +80,14 @@ class RoleUsage
             <?php
             if (presspermit()->getOption('display_hints')) {
                 echo '<div class="pp-hint">';
-                _e("These <strong>optional</strong> settings customize how PublishPress Permissions applies <strong>supplemental roles</strong>. Your existing WP Role Definitions can be applied in two different ways:", 'presspermit');
+                _e("These <strong>optional</strong> settings customize how PublishPress Permissions applies <strong>supplemental roles</strong>. Your existing WP Role Definitions can be applied in two different ways:", 'press-permit-core');
                 
                 echo '<ul style="list-style-type:disc;list-style-position:outside;margin:1em 0 0 2em"><li>' 
-                . __("Pattern Roles convert 'post' capabilities to the corresponding type-specific capability.  In a normal WP installation, this is the easiest solution.", 'presspermit') 
+                . __("Pattern Roles convert 'post' capabilities to the corresponding type-specific capability.  In a normal WP installation, this is the easiest solution.", 'press-permit-core') 
                 . '</li>';
                 
                 echo '<li>' 
-                . __("With Direct Assignment, capabilities are applied without modification (leaving you responsible to add custom type caps to the WP Role Definitions).", 'presspermit') 
+                . __("With Direct Assignment, capabilities are applied without modification (leaving you responsible to add custom type caps to the WP Role Definitions).", 'press-permit-core') 
                 . '</li></ul>';
                 
                 echo '</div>';
@@ -101,11 +101,11 @@ class RoleUsage
             ?>
             <form method="post" action="">
                 <?php
-                $msg = __("All Role Usage settings will be reset to DEFAULTS.  Are you sure?", 'presspermit');
+                $msg = __("All Role Usage settings will be reset to DEFAULTS.  Are you sure?", 'press-permit-core');
                 $js_call = "javascript:if (confirm('$msg')) {return true;} else {return false;}";
                 ?>
                 <p class="submit" style="border:none;float:left">
-                    <input type="submit" name="pp_role_usage_defaults" value="<?php _e('Revert to Defaults', 'presspermit') ?>"
+                    <input type="submit" name="pp_role_usage_defaults" value="<?php _e('Revert to Defaults', 'press-permit-core') ?>"
                         onclick="<?php echo $js_call; ?>"/>
                 </p>
                 <br style="clear:both"/>

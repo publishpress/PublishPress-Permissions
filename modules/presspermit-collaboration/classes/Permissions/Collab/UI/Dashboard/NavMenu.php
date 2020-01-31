@@ -54,7 +54,7 @@ class NavMenu
             unset($wp_meta_boxes['nav-menus']['side']['default']['nav-menu-theme-locations']);
 
             if (strpos($_SERVER['REQUEST_URI'], 'nav-menus.php?action=locations')) {
-                wp_die(__('You are not permitted to manage menu locations', 'presspermit'));
+                wp_die(__('You are not permitted to manage menu locations', 'press-permit-core'));
             }
         }
     }
