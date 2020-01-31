@@ -201,7 +201,7 @@ class AgentPermissionsUI
         <?php
         if (!$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
             if (presspermit()->isPro()) 
-                $msg = __('To assign exceptions for editing, parent selection or term assignment, activate the Collaborative Publishing module.', 'press-permit-core');
+                $msg = __('To assign exceptions for editing, parent selection or term assignment, enable the Collaborative Publishing module.', 'press-permit-core');
             else
                 $msg = sprintf(
                     __('To assign exceptions for editing, parent selection or term assignment, %1$supgrade to Permissions Pro%2$s and enable the Collaborative Publishing module.', 'press-permit-core'),
@@ -313,10 +313,10 @@ class AgentPermissionsUI
         <?php
         if (defined('REVISIONARY_VERSION') && (!$pp->moduleActive('collaboration') || !$pp->moduleActive('compatibility')) && $pp->getOption('display_extension_hints')) {
             if (presspermit()->isPro())
-                $msg = __('To assign PublishPress Revisions exceptions, activate the Collaborative Publishing and Compatibility Pack modules.', 'press-permit-core');
+                $msg = __('To assign PublishPress Revisions exceptions, enable the Collaborative Publishing module.', 'press-permit-core');
             else
                 $msg = sprintf(
-                    __('To assign Revisionary exceptions, %1$supgrade to Permissions Pro%2$s and enable the Collaborative Publishing and Compatibility Pack modules.', 'press-permit-core'),
+                    __('To assign Revisionary exceptions, %1$supgrade to Permissions Pro%2$s and enable the Collaborative Publishing module.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
