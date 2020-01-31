@@ -168,7 +168,7 @@ class SettingsTabEditing
                                         <label for='<?php echo $id; ?>'><?php echo ($type_obj = get_post_type_object($object_type)) ? $type_obj->labels->name : $object_type; ?></label>
                                     </td>
 
-                                    <td><select name='<?php echo $name; ?>' id='<?php echo $id; ?>'>
+                                    <td><select name='<?php echo $name; ?>' id='<?php echo $id; ?>' autocomplete='off'>
                                             <option value=''><?php _e('Public'); ?></option>
                                             <?php foreach (get_post_stati(['private' => true], 'object') as $status_obj) :
                                                 $selected = ($setting === $status_obj->name) ? ' selected="selected"' : '';
@@ -427,7 +427,7 @@ class SettingsTabEditing
                     }
 
                     echo(__('User editing capabilities apply for', 'press-permit-core'));
-                    echo "&nbsp;<select name='$option_name' id='$option_name'>";
+                    echo "&nbsp;<select name='$option_name' id='$option_name' autocomplete='off'>";
 
                     $captions = ['0' => __("any user", 'press-permit-core'), '1' => __("equal or lower role levels", 'press-permit-core'), 'lower_levels' => __("lower role levels", 'press-permit-core')];
                     foreach ($captions as $key => $value) {

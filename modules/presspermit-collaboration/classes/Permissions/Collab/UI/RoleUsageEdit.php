@@ -91,7 +91,7 @@ class RoleUsageEdit {
                                     <?php
                                     $usage = RoleUsageQuery::get_role_usage($role_name);
                                     ?>
-                                    <select id='pp_role_usage' name='pp_role_usage'>
+                                    <select id='pp_role_usage' name='pp_role_usage' autocomplete='off'>
                                     <option value='0' <?php if ($usage == 0) echo 'selected="selected"'; ?>><?php _e('no supplemental assignment', 'presspermit'); ?></option>
                                     <option value='pattern' <?php if ($usage == 'pattern') echo 'selected="selected"'; ?>><?php _e('Pattern Role', 'presspermit'); ?></option>
                                     <option value='direct' <?php if ($usage == 'direct') echo 'selected="selected"'; ?>><?php _e('Direct Assignment', 'presspermit'); ?></option>
