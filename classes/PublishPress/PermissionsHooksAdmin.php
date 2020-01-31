@@ -62,7 +62,6 @@ class PermissionsHooksAdmin
         if (
             !empty($_POST['presspermit_submit']) || !empty($_POST['presspermit_defaults']) || !empty($_POST['pp_role_usage_defaults'])
             || !empty($_REQUEST['presspermit_refresh_updates']) || !empty($_REQUEST['pp_renewal'])
-            || !empty($_REQUEST['pp_upload_config']) || !empty($_REQUEST['pp_help_ticket'])
         ) {
             // For 'settings' admin panels, handle updated options right after current_user load (and before pp_init).
             // By then, check_admin_referer is available, but PP config and WP admin menu has not been loaded yet.
