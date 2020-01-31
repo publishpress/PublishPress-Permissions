@@ -439,8 +439,11 @@ class PageFilters
                 else
                     $_args['required_operation'] = (PWP::isFront() && !is_preview()) ? 'read' : 'edit';
 
-                if ((('edit' == $_args['required_operation'])
-                        && isset($args['post_parent'])) || ('associate' == $alternate_operation)) {  // workaround for CMS Page View
+                $rest_params = (defined('REST_REQUEST') && REST_REQUEST) ? \PublishPress\Permissions\REST::instance()->params : [];
+
+                if (((('edit' == $_args['required_operation']) && (isset($args['post_parent']) || !empty($rest_params['exclude']) || !empty($rest_params['parent_exclude']))))
+                || ('associate' == $alternate_operation)
+                ) {  // workaround for CMS Page View
                     $_args['alternate_required_ops'] = ['associate'];
                 }
 
