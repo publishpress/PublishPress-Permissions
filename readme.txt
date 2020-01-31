@@ -55,6 +55,16 @@ Initial production release
 
 == Changelog ==
 
+= 3.0-beta =
+* Feature : Collaborative Pubishing module ported from Pro edition
+* Feature : Import module (for Role Scoper installations) ported from Pro edition
+* Perf : Edit Page with Block Editor - Prevent needless core queries
+* Fixed : Javascript error when a published post is unpublished in the block editor
+* Fixed : Page Parent display was not filtered correctly under some configurations
+* Compat : Media Library Assistant - PP Permissions were not applied on Media Library thumbnail view or Select Media tab
+* Change : Admin menu ordering - If PublishPress Capabilities is active, display Permissions menu below Capabilities (both under Users)
+* Fixed : Settings screen - dropdown select items sometimes failed to display current setting due to browser autocomplete
+
 = 2.9 - 9 Jan 2020 =
 * Change : Renamed to PublishPress Permissions
 * Compat : PublishPress Capabilities
