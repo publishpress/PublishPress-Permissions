@@ -79,6 +79,19 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
                 require_once(__DIR__ . '/classes/Permissions/CollabHooksCompat.php');
                 new \PublishPress\Permissions\CollabHooksCompat();
 
+                // Divi Page Builder
+                if (!empty($_REQUEST['action']) && ('editpost' == $_REQUEST['action']) && !empty($_REQUEST['et_pb_use_builder']) && !empty($_REQUEST['auto_draft'])) {
+                    return;
+                }
+
+                if (!empty($_REQUEST['action']) && ('edit' == $_REQUEST['action']) && !empty($_REQUEST['post'])) {
+                    if ($_post = get_post($_REQUEST['post'])) {
+                        if ('auto-draft' == $_REQUEST['post']) {
+                            return;
+                        }
+                    }
+                }
+
                 require_once(__DIR__ . '/classes/Permissions/CollabHooks.php');
                 new \PublishPress\Permissions\CollabHooks();
 

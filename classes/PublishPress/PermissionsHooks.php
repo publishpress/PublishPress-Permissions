@@ -123,6 +123,10 @@ class PermissionsHooks
     {
         global $current_user;
 
+        if (presspermit()->checkInitInterrupt()) {
+            return;
+        }
+
         presspermit()->setUser($current_user->ID);
 
         if (isset($this->cap_filters)) {
@@ -331,12 +335,12 @@ class PermissionsHooks
 
         // buffer all IDs in the results set
         if ($results) { // JReviews plugin sets $results to null under some conditions
-        	foreach ($results as $row) {
-            	$post_type = (!isset($row->post_type) || ('revision' == $row->post_type)) ? $default_type : $row->post_type;
-            	$pp->listed_ids[$post_type][$row->ID] = true;
-        	}
+            foreach ($results as $row) {
+                $post_type = (!isset($row->post_type) || ('revision' == $row->post_type)) ? $default_type : $row->post_type;
+                $pp->listed_ids[$post_type][$row->ID] = true;
+            }
         }
-
+        
         return $results;
     }
 

@@ -4,6 +4,29 @@ namespace PublishPress\Permissions;
 class CollabHooks
 {
     function __construct() {
+        // Divi Page Builder
+        if (!empty($_REQUEST['action']) && ('editpost' == $_REQUEST['action']) && !empty($_REQUEST['et_pb_use_builder']) && !empty($_REQUEST['auto_draft'])) {
+            return;
+        }
+        
+        // Divi Page Builder  @todo: test whether these can be implemented with 'presspermit_unfiltered_ajax' filter in PostFilters::fltPostsClauses instead
+        if (strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') 
+        && in_array(
+            $_REQUEST['action'], 
+            apply_filters('presspermit_unfiltered_ajax_actions',
+            ['et_fb_ajax_drop_autosave',
+            'et_builder_resolve_post_content',
+            'et_fb_get_shortcode_from_fb_object',
+            'et_builder_library_get_layout',
+            'et_builder_library_get_layouts_data',
+            'et_fb_update_builder_assets',
+            'et_fb_ajax_save']
+            )
+        )
+        ) {
+            return;
+        }
+
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Capabilities.php');
 
         add_action('init', [$this, 'init']);
@@ -138,6 +161,18 @@ class CollabHooks
 
     function fltMetaCaps($meta_caps)
     {
+        // Divi Page Builder
+		if (defined('ET_BUILDER_THEME')) {
+			if (!empty($_REQUEST['action']) && ('edit' == $_REQUEST['action']) && !empty($_REQUEST['post'])) {
+				if ($_post = get_post($_REQUEST['post'])) {
+					global $current_user;
+					if (in_array($_post->post_status, ['draft', 'auto-draft']) && ($_post->post_author == $current_user->ID) && !$_post->post_name) {
+						return $meta_caps;
+					}
+				}
+			}
+		}
+
         return array_merge($meta_caps, ['edit_post' => 'edit', 'edit_page' => 'edit', 'delete_post' => 'delete', 'delete_page' => 'delete']);
     }
 

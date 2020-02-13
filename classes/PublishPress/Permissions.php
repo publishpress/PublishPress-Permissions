@@ -75,8 +75,23 @@ class Permissions
         return self::instance()->doing_rest;
     }
 
+    public function checkInitInterrupt() {
+        // Divi Page Builder editor init
+		if (!defined('PRESSPERMIT_DISABLE_DIVI_CLEARANCE') && !empty($_REQUEST['et_fb']) && !empty($_REQUEST['et_bfb']) 
+		&& 0 === strpos($_SERVER['REQUEST_URI'], '/?page_id') 
+		&& !is_admin() && !defined('DOING_AJAX') && empty($_REQUEST['action']) 
+        && empty($_REQUEST['post']) && empty($_REQUEST['post_id']) && empty($_REQUEST['post_ID']) && empty($_REQUEST['p'])
+		) {
+			return true;
+		}
+    }
+
     private function load($args = [])
     {
+        if ($this->checkInitInterrupt()) { 
+            return; 
+        }
+
         $this->dbMaint();
 
         $defaults = ['load_filters' => true];
@@ -407,7 +422,7 @@ class Permissions
 				) {
                     $user->allcaps['read'] = true;
                 }
-            }
+            }   
 
             // merge in caps from typecast WP role assignments (and also clear false-valued allcaps entries)
             $this->capCaster();

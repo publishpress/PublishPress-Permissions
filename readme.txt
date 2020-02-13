@@ -22,7 +22,7 @@ Core Features included in this plugin:
   * Assign supplemental roles and exceptions for custom post types [youtube https://www.youtube.com/watch?v=v7jTkgmjHrw&rel=0&hd=1]
   * Limit category/term assignment and page parent selection - [video](https://www.youtube.com/watch?v=QqvtxrqLPwY&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=4)
   * Revisionary: regulate moderated editing of published content - [video](https://www.youtube.com/watch?v=kCD6HQAjUXs&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=12)
-  
+
   * Post-specific control for any user, group or WordPress role
   * Control viewing access to specific categories [youtube https://www.youtube.com/watch?v=SMnybRf5neY&rel=0&hd=1] 
   * Customize editing access for specific posts or terms - [video](https://www.youtube.com/watch?v=0yOEBD8VE9c&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=3)
@@ -61,6 +61,8 @@ Initial production release
 * Perf : Edit Page with Block Editor - Prevent needless core queries
 * Fixed : Javascript error when a published post is unpublished in the block editor
 * Fixed : Page Parent display was not filtered correctly under some configurations
+* Compat : Divi Page Builder - Non-Editors could not edit new page after creating it
+* Compat : Divi Page Builder - Non-Editors could not enter Divi UI
 * Compat : Media Library Assistant - PP Permissions were not applied on Media Library thumbnail view or Select Media tab
 * Change : Admin menu ordering - If PublishPress Capabilities is active, display Permissions menu below Capabilities (both under Users)
 * Fixed : Settings screen - dropdown select items sometimes failed to display current setting due to browser autocomplete
