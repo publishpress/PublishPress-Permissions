@@ -48,7 +48,7 @@ PublishPress Permissions [Pro](https://publishpress.com/presspermit/) is [availa
 == Upgrade Notice ==
 
 = 3.0 =
-Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com before upgrading to this version.
+Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 = 2.1.14 =
 Initial production release
@@ -58,15 +58,18 @@ Initial production release
 = 3.0-beta =
 * Feature : Collaborative Publishing module ported from Pro edition
 * Feature : Import module (for Role Scoper installations) ported from Pro edition
-* Perf : Edit Page with Block Editor - Prevent needless core queries
+* Feature : On activation, detect Role Scoper installation and offer to import it
 * Fixed : Javascript error when a published post is unpublished in the block editor
-* Fixed : Page Parent display was not filtered correctly under some configurations
+* Fixed : Settings screen - dropdown select items sometimes failed to display current setting due to browser autocomplete
 * Compat : Divi Page Builder - Non-Editors could not edit new page after creating it
 * Compat : Divi Page Builder - Non-Editors could not enter Divi UI
+* Compat : Yoast SEO - Admin dashboard access generated two PHP warnings for database error under some configurations
 * Compat : Media Library Assistant - PP Permissions were not applied on Media Library thumbnail view or Select Media tab
 * Compat : Image Source Control - Newly uploaded featured image was not formally attached to post (also apply this compatibility fix if constant PRESSPERMIT_LIMIT_ASYNC_UPLOAD_FILTERING is defined)
 * Change : Admin menu ordering - If PublishPress Capabilities is active, display Permissions menu below Capabilities (both under Users)
-* Fixed : Settings screen - dropdown select items sometimes failed to display current setting due to browser autocomplete
+* Perf : Edit Page with Block Editor - Prevent needless core queries
+* Fixed : Edit Permissions screen styling: alignment of Add Roles / Exceptions tab borders
+
 
 = 2.9 - 9 Jan 2020 =
 * Change : Renamed to PublishPress Permissions
