@@ -72,6 +72,7 @@ div.pp-group_members {
 
 #pp_add_permission_tabs li.agp-selected_agent {
     border: 1px solid black;
+    padding-bottom: 2px;
 }
 
 div.pp-add-permissions {
