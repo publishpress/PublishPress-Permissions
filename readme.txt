@@ -64,6 +64,7 @@ Initial production release
 * Compat : Divi Page Builder - Non-Editors could not edit new page after creating it
 * Compat : Divi Page Builder - Non-Editors could not enter Divi UI
 * Compat : Media Library Assistant - PP Permissions were not applied on Media Library thumbnail view or Select Media tab
+* Compat : Image Source Control - Newly uploaded featured image was not formally attached to post (also apply this compatibility fix if constant PRESSPERMIT_LIMIT_ASYNC_UPLOAD_FILTERING is defined)
 * Change : Admin menu ordering - If PublishPress Capabilities is active, display Permissions menu below Capabilities (both under Users)
 * Fixed : Settings screen - dropdown select items sometimes failed to display current setting due to browser autocomplete
 

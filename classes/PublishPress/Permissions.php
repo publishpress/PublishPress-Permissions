@@ -76,6 +76,16 @@ class Permissions
     }
 
     public function checkInitInterrupt() {
+        if (defined('ISCVERSION') || defined('PRESSPERMIT_LIMIT_ASYNC_UPLOAD_FILTERING')) {
+            if ( is_admin() && strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php') && ! empty($_POST['attachment_id']) && ! empty($_POST['fetch']) && ( 3 == $_POST['fetch']) ) {
+                if ( $att = get_post( $_POST['attachment_id'] ) ) {
+                    global $current_user;
+                    if ( $att->post_author == $current_user->ID && ! defined( 'PP_UPLOADS_FORCE_FILTERING' ) )
+                        return true;
+                }
+            }
+        }
+
         // Divi Page Builder editor init
 		if (!defined('PRESSPERMIT_DISABLE_DIVI_CLEARANCE') && !empty($_REQUEST['et_fb']) && !empty($_REQUEST['et_bfb']) 
 		&& 0 === strpos($_SERVER['REQUEST_URI'], '/?page_id') 

@@ -240,8 +240,24 @@ class AdminFilters
             return $parent_id;
         }
 
+        $orig_parent_id = $parent_id;
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostSaveHierarchical.php');
-        return PostSaveHierarchical::fltPageParent($parent_id);
+        $parent_id = PostSaveHierarchical::fltPageParent($parent_id);
+        
+        // Don't allow media attachment page to be cleared if user has editing capability (conflict with Image Source Control plugin)
+        if (!$parent_id && $orig_parent_id 
+        && (
+            false !== strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php')
+            || ('attachment' == PWP::findPostType())
+            || (false !== strpos($_SERVER['SCRIPT_NAME'], 'admin-ajax.php') && in_array($_REQUEST['action'], ['save-attachment-compat']))
+            )
+        ) {
+            if (current_user_can('edit_post', $orig_parent_id)) {
+                $parent_id = $orig_parent_id;
+            }
+        }
+
+        return $parent_id;
     }
 
     // filter page dropdown contents for Page Parent controls; leave others alone

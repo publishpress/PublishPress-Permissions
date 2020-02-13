@@ -81,6 +81,8 @@ class CollabHooks
         add_filter('presspermit_read_own_attachments', [$this, 'fltReadOwnAttachments'], 10, 2);
         add_filter('presspermit_ajax_edit_actions', [$this, 'fltAjaxEditActions']);
 
+        add_action('attachment_updated', [$this, 'actAttachmentEnsureParentStorage'], 10, 3);
+
         add_action('pre_get_posts', [$this, 'actPreventTrashSuffixing']);
     }
 
@@ -141,6 +143,16 @@ class CollabHooks
         }
 
         return $rest_response;
+    }
+
+    // Safeguard against improper filtering (to zero) of post_parent value. Forces mirroring of postmeta _thumbnail_id <> post_id relationship 
+    function actAttachmentEnsureParentStorage($post_id, $post_after, $post_before) {
+        if ($post_before->post_parent && !$post_after->post_parent) {
+            if ($post_id == get_post_meta($post_before->post_parent, '_thumbnail_id', true)) {
+                global $wpdb;
+                $wpdb->update($wpdb->posts, ['post_parent' => $post_before->post_parent], ['ID' => $post_id]);
+            }
+        }
     }
 
     function actPreventTrashSuffixing($wp_query)
