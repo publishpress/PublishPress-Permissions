@@ -284,7 +284,8 @@ class Permissions
 
     public function getDeactivatedModules()
     {
-        return (array) $this->getOption('deactivated_modules');
+        $modules = (array) $this->getOption('deactivated_modules');
+        return array_intersect_key($modules, array_fill_keys($this->getAvailableModules(), true));
     }
 
     public function getActiveModules()
