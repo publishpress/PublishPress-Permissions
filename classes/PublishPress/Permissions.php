@@ -259,10 +259,10 @@ class Permissions
         }
     }
 
-    public function getAvailableModules()
+    public function getAvailableModules($args = [])
     {
         // @todo: dir()
-        return [
+        $modules = [
             'presspermit-circles',
             'presspermit-collaboration',
             'presspermit-compatibility',
@@ -273,6 +273,8 @@ class Permissions
             'presspermit-sync',
             'presspermit-teaser',
         ];
+
+        return (!empty($args['suppress_filters'])) ? $modules : array_diff($modules, apply_filters('presspermit_unavailable_modules', []));
     }
 
     public function moduleExists($slug)

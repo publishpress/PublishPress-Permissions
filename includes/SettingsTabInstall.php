@@ -17,6 +17,23 @@ class SettingsTabInstall
 
         add_action('presspermit_install_options_pre_ui', [$this, 'optionsPreUI']);
         add_action('presspermit_install_options_ui', [$this, 'optionsUI']);
+
+        add_filter("presspermit_unavailable_modules", 
+            function($modules){
+                return array_merge(
+                    $modules, 
+                    [
+                        'presspermit-circles', 
+                        'presspermit-compatibility', 
+                        'presspermit-file-access', 
+                        'presspermit-membership', 
+                        'presspermit-sync', 
+                        'presspermit-status-control', 
+                        'presspermit-teaser'
+                    ]
+                );
+            }
+        );
     }
 
     public function optionTabs($tabs)
