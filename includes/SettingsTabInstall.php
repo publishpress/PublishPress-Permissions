@@ -205,7 +205,7 @@ class SettingsTabInstall
                         <?php endif;?>
 
                         <?php if ($downgrade_note):?>
-                        <li>
+                        <li class='pp-pro-extensions-migration-note'>
                         <?php
                         printf(
                             __('To temporarily restore Pro features before migrating to a publishpress.com account, delete this version and install <span style="white-space:nowrap"><a href="%s" target="_blank">Press Permit Core 2.6.x</a></span> using Plugins > Add New > Upload.', 'press-permit-core'),

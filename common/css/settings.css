@@ -255,6 +255,10 @@ table.pp-options-table .pp-optionhint {
     display: none;
 }
 
+#pp-install li.pp-pro-extensions-migration-note {
+    max-width: 550px;
+}
+
 /* --- Advanced tab --- */
 .pp-capabilities-caption {
     margin-left: 125px;
