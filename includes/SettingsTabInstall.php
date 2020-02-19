@@ -257,17 +257,6 @@ class SettingsTabInstall
                         <?php printf(__('PublishPress Permissions Version: %1$s %2$s', 'press-permit-core'), PRESSPERMIT_VERSION, $info_link); ?>
                         <br/>
                         <span style="display:none"><?php printf(__("Database Schema Version: %s", 'press-permit-core'), PRESSPERMIT_DB_VERSION); ?><br/></span>
-
-                        <span class="publishpress">
-                        <?php
-
-                        printf(
-                            __('- part of the %1$sPublishPress%2$s family of professional publishing tools', 'press-permit-core'),
-                            '<a href="https://publishpress.com/" target="_blank">',
-                            '</a>'
-                        );
-                        ?>
-                    </span>
                     </p>
 
                     <p>
