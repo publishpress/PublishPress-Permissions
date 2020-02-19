@@ -5,12 +5,6 @@ class Updated
 {
     function __construct($prev_version)
     {
-        if (is_admin()) {
-            if (preg_match("/dev|alpha|beta|rc/i", PRESSPERMIT_IMPORT_VERSION) && !preg_match("/dev|alpha|beta|rc/i", PRESSPERMIT_IMPORT_VERSION)) {
-                presspermit()->admin()->notice(__('You have installed a development / beta version of PressPermit Import. If this is a concern, see Permits > Support > Beta Updates.', 'press-permit-core'), 'updated');
-            }
-        }
-
         // single-pass do loop to easily skip unnecessary version checks
         do {
             if (version_compare($prev_version, '2.1.1', '<')) {
