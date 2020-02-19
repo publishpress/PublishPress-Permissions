@@ -120,107 +120,96 @@ class SettingsTabInstall
         $use_network_admin = $this->useNetworkUpdates();
         $suppress_updates = $use_network_admin && !is_super_admin();
 
-        $section = 'key'; // --- UPDATE KEY SECTION ---
-        if (!empty($ui->form_options[$tab][$section]) && !$suppress_updates) : ?>
-            <tr>
-                <th scope="row">
-                    <span style="font-weight:bold;vertical-align:top"><?php echo $ui->section_captions[$tab][$section]; ?></span>
-                </th>
+        global $activated;
 
-                <td>
-                    <?php
-                    global $activated;
+        $opt_val = is_multisite() ? get_site_option('pp_support_key') : get_option('pp_support_key');
 
-                    $opt_val = is_multisite() ? get_site_option('pp_support_key') : get_option('pp_support_key');
+        if (!is_array($opt_val) || count($opt_val) < 2) {
+            $activated = false;
+            $expired = false;
+            $key = '';
+        } else {
+            $activated = (1 == $opt_val[0]);
+            $expired = (-1 == $opt_val[0]);
+            $key = $opt_val[1];
+        }
 
-                    if (!is_array($opt_val) || count($opt_val) < 2) {
-                        $activated = false;
-                        $expired = false;
-                        $key = '';
-                    } else {
-                        $activated = (1 == $opt_val[0]);
-                        $expired = (-1 == $opt_val[0]);
-                        $key = $opt_val[1];
-                    }
+        if (isset($opt_val['expire_date_gmt'])) {
+            $expire_days = intval((strtotime($opt_val['expire_date_gmt']) - time()) / 86400);
+            if ($expire_days < 0) {
+                $expired = true;
+            }
+        }
 
-                    if (isset($opt_val['expire_date_gmt'])) {
-                        $expire_days = intval((strtotime($opt_val['expire_date_gmt']) - time()) / 86400);
-                        if ($expire_days < 0) {
-                            $expired = true;
-                        }
-                    }
+        $msg = '';
+        $url = 'https://publishpress.com/pricing/';
 
-                    $msg = '';
-                    $url = 'https://publishpress.com/pricing/';
+        $key_string = (is_array($opt_val) && count($opt_val) > 1) ? $opt_val[1] : ''; 
+        $expire_date = (is_array($opt_val) && isset($opt_val['expire_date_gmt'])) ? $opt_val['expire_date_gmt'] : ''; 
 
-                    $key_string = (is_array($opt_val) && count($opt_val) > 1) ? $opt_val[1] : ''; 
-                    $expire_date = (is_array($opt_val) && isset($opt_val['expire_date_gmt'])) ? $opt_val['expire_date_gmt'] : ''; 
+        if ($expired) {
+            if ($expire_days < 365) {
+                $msg = sprintf( 
+                    __('Your presspermit.com key has expired, but a <a href="%s">PublishPress renewal</a> discount may be available.', 'press-permit-core'),
+                    'admin.php?page=presspermit-settings&amp;pp_renewal=1'
+                );
+            }
+        } elseif ($activated) {
+            $url = "https://publishpress.com/contact/?pp_topic=presspermit-migration&presspermit_account=$key_string";
+            
+            $msg = sprintf(
+                __('A presspermit.com key appears to be active. <a href="%s" target="_blank">Contact us</a> for assistance in migrating your account to publishpress.com.', 'press-permit-core'),
+                $url
+            );
+        }
 
-                    if ($expired) {
-                        if ($expire_days < 365) {
-                            $msg = sprintf( 
-                                __('Your presspermit.com key has expired, but a <a href="%s">PublishPress renewal</a> discount may be available.', 'press-permit-core'),
-                                'admin.php?page=presspermit-settings&amp;pp_renewal=1'
-                            );
-                        }
-                    } elseif ($activated) {
-                        $url = "https://publishpress.com/contact/?pp_topic=presspermit-migration&presspermit_account=$key_string";
-                        
-                        $msg = sprintf(
-                            __('A presspermit.com key appears to be active. <a href="%s" target="_blank">Contact us</a> for assistance in migrating your account to publishpress.com.', 'press-permit-core'),
-                            $url
-                        );
-                    }
+        $downgrade_note = (is_array($opt_val) && count($opt_val) > 1) || get_option('ppce_version') || get_option('pps_version') || get_option('ppp_version');
 
-                    $descript = sprintf(
-                        __('This is the free edition of PublishPress Permissions. For more features and priority support, upgrade to <a href="%s" target="_blank">Permissions Pro</a>.', 'press-permit-core'),
-                        'https://publishpress.com/presspermit/'
-                    );
-                    ?>
+        if ($msg || $downgrade_note || $key_string) :
+            $section = 'key'; // --- UPDATE KEY SECTION ---
+            if (!empty($ui->form_options[$tab][$section]) && !$suppress_updates) : ?>
+                <tr>
+                    <th scope="row">
+                        <span style="font-weight:bold;vertical-align:top"><?php echo $ui->section_captions[$tab][$section]; ?></span>
+                    </th>
 
-                    <div id="presspermit-pro-descript" class="activating"><?php echo $descript; ?></div>
-
-                    <?php
-                    $downgrade_note = (is_array($opt_val) && count($opt_val) > 1) || get_option('ppce_version') || get_option('pps_version') || get_option('ppp_version');
-
-                    if ($msg || $downgrade_note || $key_string) :?>
+                    <td>
                         <h4><?php _e('Further details for your installation:', 'press-permit-core');?></h4>
                         <ul id="presspermit-pro-install-details" class="pp-bullet-list">
 
-                        <?php if ($msg):?>
-                        <li>
-                        <?php echo $msg ?>
-                        </li>
-                        <?php endif;?>
-
-                        <?php if ($key_string):?>
-                        <li>
-                        <?php 
-                        if ($expire_date)
-                            printf(__("Original presspermit.com support key hash: <strong>%s</strong> (expires %s)"), $key_string, $expire_date);
-                        else
-                            printf(__("Original presspermit.com support key hash: <strong>%s</strong>"), $key_string, $expire_date);
-                        ?>
-                        </li>
-                        <?php endif;?>
-
-                        <?php if ($downgrade_note):?>
-                        <li class='pp-pro-extensions-migration-note'>
-                        <?php
-                        printf(
-                            __('To temporarily restore Pro features before migrating to a publishpress.com account, delete this version and install <span style="white-space:nowrap"><a href="%s" target="_blank">Press Permit Core 2.6.x</a></span> using Plugins > Add New > Upload.', 'press-permit-core'),
-                            'https://downloads.wordpress.org/plugin/press-permit-core.' . self::LEGACY_VERSION . '.zip'
-                        );
-                        ?>
-                        </li>
-                        <?php endif;?>
-
-                    </ul>
-                    <?php endif;?>
-                </td>
-            </tr>
-            <?php
-        endif; // any options accessable in this section
+	                        <?php if ($msg):?>
+	                        <li>
+	                        <?php echo $msg ?>
+	                        </li>
+	                        <?php endif;?>
+	
+	                        <?php if ($key_string):?>
+	                        <li>
+	                        <?php 
+	                        if ($expire_date)
+	                            printf(__("Original presspermit.com support key hash: <strong>%s</strong> (expires %s)"), $key_string, $expire_date);
+	                        else
+	                            printf(__("Original presspermit.com support key hash: <strong>%s</strong>"), $key_string, $expire_date);
+	                        ?>
+	                        </li>
+	                        <?php endif;?>
+	
+	                        <?php if ($downgrade_note):?>
+	                        <li class='pp-pro-extensions-migration-note'>
+	                        <?php
+	                        printf(
+	                            __('To temporarily restore Pro features before migrating to a publishpress.com account, delete this version and install <span style="white-space:nowrap"><a href="%s" target="_blank">Press Permit Core 2.6.x</a></span> using Plugins > Add New > Upload.', 'press-permit-core'),
+	                            'https://downloads.wordpress.org/plugin/press-permit-core.' . self::LEGACY_VERSION . '.zip'
+	                        );
+	                        ?>
+	                        </li>
+	                        <?php endif;?>
+	                    </ul>
+                	</td>
+            	</tr>
+            	<?php
+        	endif; // any options accessable in this section
+        endif; // any status messages to display
 
         $section = 'version'; // --- VERSION SECTION ---
 
