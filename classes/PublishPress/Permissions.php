@@ -289,7 +289,14 @@ class Permissions
 
     public function getActiveModules()
     {
-        return $this->modules;
+        $available = array_map(
+            function($k) {
+                return str_replace('presspermit-', '', $k);
+            }, 
+            $this->getAvailableModules()
+        );
+
+        return array_intersect_key($this->modules, array_fill_keys($available, true));
     }
 
     public function getAllModules()
