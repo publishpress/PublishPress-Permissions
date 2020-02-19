@@ -10,12 +10,7 @@ class PluginUpdated
         do {
             if (!$prev_version) {
                 if (false === get_option('presspermit_deactivated_modules')) {
-                    $deactivate_modules = array_fill_keys(
-                        ['presspermit-circles', 'presspermit-file-access', 'presspermit-import', 'presspermit-membership', 'presspermit-teaser'], 
-                        (object)[]
-                    );
-                    
-                    update_option('presspermit_deactivated_modules', $deactivate_modules);
+                    self::deactivateModules(['current_deactivations' => []]);
                 }
 
                 if (get_option('pp_version') && !get_option('presspermit_group_index_drop_done')) {  // previous installation of PP < 2.0 ?
@@ -116,6 +111,40 @@ class PluginUpdated
             }
         }
         */
+    }
+
+    public static function deactivateModules($args = []) {
+        $deactivated = (isset($args['current_deactivations'])) 
+        ? $args['current_deactivations'] 
+        : get_option('presspermit_deactivated_modules');
+        
+        if (!$deactivated) {
+            $deactivations = [];
+        }
+
+        if (!empty($args['deactivate'])) {
+            $new_deactivations = array_intersect($args['deactivate'], presspermit()->getAvailableModules());
+        } else {
+            // default deactivations
+            $new_deactivations = [
+                'presspermit-circles', 
+                'presspermit-file-access', 
+                'presspermit-import', 
+                'presspermit-membership', 
+                'presspermit-teaser'
+            ];
+        }
+
+        if (!empty($args['activate'])) {
+            $new_deactivations = array_diff($new_deactivations, $args['activate']);
+        }
+
+        $deactivated = array_merge(
+            $deactivated, 
+            array_fill_keys($new_deactivations, (object)[])
+        );
+        
+        update_option('presspermit_deactivated_modules', $deactivated);
     }
 
     public static function populateRoles($reload_user = false)

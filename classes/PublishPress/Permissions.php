@@ -196,6 +196,8 @@ class Permissions
         // On first-time installation and version change, early assurance that DB tables are present and role capabilities populated
         if ( ! $ver = get_option('presspermitpro_version') ) {
             if ( ! $ver = get_option('presspermit_version') ) {
+                $check_for_rs_migration = true;
+
                 $ver = get_option('pp_c_version');
             }
         }
@@ -206,6 +208,17 @@ class Permissions
             $db_ver = ( isset( $ver['db_version'] ) ) ? $ver['db_version'] : '';
             require_once(PRESSPERMIT_CLASSPATH . '/DB/DatabaseSetup.php');
             new Permissions\DB\DatabaseSetup($ver['db_version']);
+        }
+
+        if (!empty($check_for_rs_migration) || !empty($_REQUEST['rs-migration-check'])) { // support http arg for test / troubleshooting
+            // This is a first-time activation. If Role Scoper was previously installed, enable Import module by default
+            if (get_option('scoper_version')) {
+                update_option('presspermit_offer_rs_migration', true);
+
+                // Set default module deactivations, but leave Import module activated
+                require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
+                Permissions\PluginUpdated::deactivateModules(['activate' => ['presspermit-import']]);  
+            }
         }
 
         if ($ver) {
