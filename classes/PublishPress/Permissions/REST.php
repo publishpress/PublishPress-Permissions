@@ -147,8 +147,8 @@ class REST
                                     }
 
                                     if (!empty($wp_post_types[$this->post_type])) {
-                                    	$wp_post_types[$this->post_type]->publicly_queryable = false;
-                                    	$wp_post_types[$this->post_type]->_builtin = false;
+                                        $wp_post_types[$this->post_type]->publicly_queryable = false;
+                                        $wp_post_types[$this->post_type]->_builtin = false;
                                     }
 
                                     // Prevent Gutenberg from triggering revisions retrieval for each item in Page Parent dropdown
@@ -161,7 +161,7 @@ class REST
                             if (!$this->post_type = get_post_field('post_type', $this->post_id)) {
                                 return $rest_response;
                             }
-                        } else {
+                        } elseif (!empty($args['post_type'])) {
                             $this->post_type = $args['post_type'];
                         }
 
