@@ -146,8 +146,10 @@ class REST
                                         $this->post_type = get_post_field('post_type', $id);
                                     }
 
-                                    $wp_post_types[$this->post_type]->publicly_queryable = false;
-                                    $wp_post_types[$this->post_type]->_builtin = false;
+                                    if (!empty($wp_post_types[$this->post_type])) {
+                                    	$wp_post_types[$this->post_type]->publicly_queryable = false;
+                                    	$wp_post_types[$this->post_type]->_builtin = false;
+                                    }
 
                                     // Prevent Gutenberg from triggering revisions retrieval for each item in Page Parent dropdown
                                     add_filter('wp_revisions_to_keep', function($num, $post) {return 0;}, 10, 2);
