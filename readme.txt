@@ -41,7 +41,7 @@ PublishPress Permissions [Pro](https://publishpress.com/presspermit/) is [availa
   * bbPress: customize viewing, topic creation or reply submission permissions per-forum
   * bbPress: display a teaser message for unreadable topics or replies
   * Define custom post statuses and set corresponding supplemental roles - [video](https://www.youtube.com/watch?v=vM3Iwt3Jdak&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=6)
-  * PublishPress integration - [video](https://www.youtube.com/watch?v=eeZ6CBC5kQI&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=11)
+  * PublishPress custom statuses integration - [video](https://www.youtube.com/watch?v=eeZ6CBC5kQI&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=11)
   * Moderation statuses control multi-step moderation - [video](https://www.youtube.com/watch?v=v8VyKP3rIvk&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=8)
   * Date-limited membership in Permissions Groups - [video](https://www.youtube.com/watch?v=hMOVvCy_9Ws&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=7)
   * WPML integration: mirror post/term permissions to translations
@@ -74,7 +74,6 @@ Initial production release
 * Change : Admin menu ordering - If PublishPress Capabilities is active, display Permissions menu below Capabilities (both under Users)
 * Perf : Edit Page with Block Editor - Prevent needless core queries
 * Fixed : Edit Permissions screen styling: alignment of Add Roles / Exceptions tab borders
-
 
 = 2.9 - 9 Jan 2020 =
 * Change : Renamed to PublishPress Permissions
