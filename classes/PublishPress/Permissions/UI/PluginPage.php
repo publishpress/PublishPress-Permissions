@@ -82,6 +82,8 @@ class PluginPage
                 ]
             );
         }
+
+        add_action('in_admin_header', function() {do_action('presspermit_plugin_page_admin_header');}, 100);
     }
 
     public static function getAgentType($default_type = '') {
