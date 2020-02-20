@@ -399,7 +399,7 @@ class SettingsTabInstall
                                 $slug = str_replace('presspermit-', '', $plugin_slug);
                                 ?>
                                 <tr>
-                                    <td>
+                                    <th>
 
                                     <?php $id = "module_deactivated_{$slug}";?>
 
@@ -408,7 +408,7 @@ class SettingsTabInstall
                                                 name="presspermit_deactivated_modules[<?php echo $plugin_slug;?>]"
                                                 value="1" />
 
-                                        <?php echo $this->prettySlug($slug);?></td>
+                                        <?php echo $this->prettySlug($slug);?></th>
                                     </label>
 
                                     <?php if (!empty($ext_info)) : ?>
