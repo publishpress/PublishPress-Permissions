@@ -67,7 +67,9 @@ class PostFilters
     {
         global $wp_query;
         if ($wp_query->is_single || $wp_query->is_page) {
-            $posts = $this->anon_results;
+            if ($this->anon_results) {
+            	$posts = $this->anon_results;
+			}
         }
 
         return $posts;
