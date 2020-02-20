@@ -1,0 +1,250 @@
+<?php
+namespace PublishPress\Permissions\Collab;
+
+class PostSaveHierarchical
+{
+    public static function fltPageParent($parent_id, $post_type = '')
+    {
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+            return $parent_id;
+
+        if (function_exists('bbp_get_version') && !empty($_REQUEST['action']) 
+        && in_array($_REQUEST['action'], ['bbp-new-topic', 'bbp-new-reply'])
+        ) {
+            return $parent_id;
+        }
+
+        $selected_parent_id = $parent_id;
+        $post_id = PWP::getPostID();
+
+        if (!$post_id && !$post_type && presspermit()->doingREST() && \PublishPress\Permissions\REST::getPostType()) {
+            $post_type = REST::getPostType();
+        }
+
+        // this filter is not intended to regulate attachment parent
+        if (strpos($_SERVER['REQUEST_URI'], 'async-upload.php') && !empty($_REQUEST['action']) && ('upload-attachment' == $_REQUEST['action'])) {
+            return $parent_id;
+        }
+
+        if (!$post_id && !$post_type)  // allow post type to be passed in for pre-filtering of new page creation
+            return $parent_id;
+
+        if (($parent_id == $post_id) && $post_id) {  // normal revision save
+            $_post = get_post($post_id);
+
+            if ($_post && ('revision' == $_post->post_type)) {
+                return $parent_id;
+            }
+        }
+
+        if ($parent_id) {
+            if ($parent_post = get_post($parent_id)) {
+                if (!in_array($parent_post->post_type, presspermit()->getEnabledPostTypes(), true))
+                    return $parent_id;
+            }
+        }
+
+        if ($post_id && !$post_type) {
+            if ($post = get_post($post_id))
+                $post_type = $post->post_type;
+        }
+
+        // If a newly selected parent is invalid due to exceptions or because it's a descendant, revert to last stored setting
+
+        if ($post_type) {
+            if (!in_array($post_type, presspermit()->getEnabledPostTypes(), true))
+                return $parent_id;
+
+            static $return;
+            if (!isset($return)) $return = [];
+            if (isset($return[$post_id])) return $return[$post_id];
+
+            $revert = false;
+
+            $user = presspermit()->getUser();
+
+            $descendants = self::getPageDescendantIds($post_id);
+
+            $additional_ids = $user->getExceptionPosts('associate', 'additional', $post_type);
+
+            if ($include_ids = $user->getExceptionPosts('associate', 'include', $post_type)) {
+                $exclude_ids = false;
+                $include_ids = array_merge($include_ids, $additional_ids);
+                if (!in_array($parent_id, $include_ids))
+                    $revert = true;
+
+            } elseif ($exclude_ids = array_diff($user->getExceptionPosts('associate', 'exclude', $post_type), $additional_ids)) {
+                $exclude_ids []= $post_id;
+
+                if (in_array($parent_id, $exclude_ids))
+                    $revert = true;
+            }
+
+            if ($parent_id) {
+                if (in_array($parent_id, $descendants) || ($post_id == $parent_id)) {
+                    $revert = true;
+                }
+
+                if ($revert) {
+                    $parent_id = self::revertPageParent($post_id, $post_type, compact('descendants', 'include_ids', 'exclude_ids'));
+                }
+            }
+
+            $parent_id = apply_filters(
+                'presspermit_validate_page_parent', 
+                $parent_id, 
+                $post_type, 
+                compact('descendants', 'include_ids', 'exclude_ids')
+            );
+
+            // subsequent filtering is currently just a safeguard against invalid "no parent" posting in violation of lock_top_pages
+            // if ( $parent_id || ( ! $selected_parent_id && Collab::userCanAssociateMain( $post_type ) ) )
+            if ($parent_id || Collab::userCanAssociateMain($post_type))
+                return $parent_id;
+
+            return self::revertPageParent($post_id, $post_type, compact('descendants', 'include_ids', 'exclude_ids'));
+        }
+
+        $return[$post_id] = $parent_id;
+
+        return $parent_id;
+    }
+
+    static function getPageDescendantIds($page_id, $pages = '')
+    {
+        global $wpdb;
+
+        if (empty($pages)) {
+            $pages = $wpdb->get_results(
+                "SELECT ID, post_parent FROM $wpdb->posts WHERE post_parent > 0 AND post_type NOT IN ( 'revision', 'attachment' )"
+            );
+        }
+
+        $descendant_ids = [];
+        foreach ((array)$pages as $page) {
+            if ($page->post_parent == $page_id) {
+                $descendant_ids[] = $page->ID;
+                if ($children = get_page_children($page->ID, $pages)) { // Okay to use unfiltered WP function here since it's only used for excluding
+                    foreach ($children as $_page)
+                        $descendant_ids [] = $_page->ID;
+                }
+            }
+        }
+
+        return $descendant_ids;
+    }
+
+    private static function revertPageParent($post_id, $post_type, $args = [])
+    {
+        $defaults = ['descendants' => [], 'include_ids' => [], 'exclude_ids' => []];
+        $args = array_merge($defaults, $args);
+        foreach (array_keys($defaults) as $var) {
+            $$var = $args[$var];
+        }
+
+        if (!$post_id) {
+            return 0;
+        }
+
+        $post = get_post($post_id);
+
+        global $wpdb;
+        $valid_parents = $wpdb->get_col(
+            "SELECT ID FROM $wpdb->posts WHERE post_type = '" . sanitize_key($post_type) . "' AND post_status NOT IN ('trash') AND ID > 0 ORDER BY post_parent, ID ASC"
+        );
+
+        $valid_parents = array_diff($valid_parents, $descendants, (array)$post_id);
+        $allowed_parents = $valid_parents;
+
+        if (!count($valid_parents)) {
+            // No existing posts qualify as parent, regardless of permissions
+            $parent_id = 0;
+        } else {
+            if ($include_ids) {
+                $allowed_parents = array_intersect($allowed_parents, $include_ids);
+            } elseif ($exclude_ids) {
+                $allowed_parents = array_diff($allowed_parents, $exclude_ids);
+            }
+        }
+
+        if ($post 
+        && ((!$post->post_parent && ($post->post_status != 'auto-draft' || Collab::userCanAssociateMain($post_type)))
+        || in_array($post->post_parent, $allowed_parents)
+		|| in_array($post->post_parent, $valid_parents) && ($post->post_status != 'auto-draft'))
+        ) {
+            $parent_id = $post->post_parent;
+        } else {
+            if ($allowed_parents) {
+                sort($allowed_parents);
+                $parent_id = reset($allowed_parents);
+            } elseif ($valid_parents) {
+                sort($valid_parents);
+                $parent_id = reset($valid_parents);
+            } else {
+                $parent_id = 0;
+            }
+        }
+
+        $_POST['parent_id'] = $parent_id; // for subsequent post_status filter
+
+        return $parent_id;
+    }
+
+    // Filtering of Page Parent submission (applied to post_status filter because fallback on invalid submission 
+    // for a previously unpublished post is to force it to draft status).
+    //
+    // There is currently no way to explictly restrict or grant Page Association rights to Main Page (root). Instead:
+    //  * Require site-wide edit_others_pages cap for association of a page with Main
+    //  * If an unqualified user tries to associate or un-associate a page with Main Page,
+    //    revert page to previously stored parent if possible. Otherwise set status to "unpublished".
+    public static function enforceTopPagesLock($status)
+    {
+        /*
+        // overcome any denials of publishing rights which were not filterable by user_has_cap  @todo: confirm this is no longer necessary
+        if ( ('pending' == $status) && ( ('publish' == $_POST['post_status']) || ('Publish' == $_POST['original_publish'] ) ) )
+            if ( ! empty( $current_user->allcaps['publish_pages'] ) )
+                $status = 'publish';
+        */
+
+        global $post;
+
+        // user can't associate / un-associate a page with Main page unless they have edit_pages site-wide
+        if (!empty($_POST['post_ID'])) {
+            $post_id = (int)$_POST['post_ID'];
+            $selected_parent_id = isset($_POST['parent_id']) ? (int)$_POST['parent_id'] : 0;
+        } elseif (!empty($post)) {
+            $post_id = $post->ID;
+            $selected_parent_id = $post->post_parent;
+        } else
+            return $status;
+
+        $_post = get_post($post_id);
+
+        if ($saved_status_object = get_post_status_object($_post->post_status))
+            $already_published = ($saved_status_object->public || $saved_status_object->private);
+        else
+            $already_published = false;
+
+        // if neither the stored nor selected parent is Main, we have no beef with it
+        if (!empty($selected_parent_id) && (!empty($_post->post_parent) || !$already_published))
+            return $status;
+
+        // if the page is and was associated with Main Page, don't mess
+        if (empty($selected_parent_id) && empty($_post->post_parent) 
+        && ($already_published || defined('PPCE_LIMITED_EDITORS_TOP_LEVEL_PUBLISH'))
+        ) {
+            return $status;
+        }
+
+        if (empty($_POST['parent_id'])) {
+            if (!$already_published) {  // This should only ever happen if the POST data is manually fudged
+                if ($post_status_object = get_post_status_object($status)) {
+                    if ($post_status_object->public || $post_status_object->private)
+                        $status = 'draft';
+                }
+            }
+        }
+
+        return $status;
+    }
+}

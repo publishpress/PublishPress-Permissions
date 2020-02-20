@@ -110,6 +110,10 @@ table.pp-options-table .pp-optionhint {
     margin-bottom: 20px !important;
 }
 
+#pp_settings_form div.updated {
+    margin-right: 120px;
+}
+
 /* --- Install Tab --- */
 #pp-install_table span.publishpress, #pp-install_table span.publishpress a, #pp-install_table span.publishpress a:visited {
     color: #655997;
@@ -253,6 +257,10 @@ table.pp-options-table .pp-optionhint {
 
 #plugin-information-footer {
     display: none;
+}
+
+#pp-install li.pp-pro-extensions-migration-note {
+    max-width: 550px;
 }
 
 /* --- Advanced tab --- */

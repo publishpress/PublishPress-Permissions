@@ -28,45 +28,6 @@ class Settings
             exit;
         }
 
-        if (!empty($_REQUEST['pp_upload_config']) || !empty($_REQUEST['pp_help_ticket'])) {
-            $args = [];
-            if (isset($_REQUEST['post_id']))
-                $args['post_id'] = (int)$_REQUEST['post_id'];
-
-            if (isset($_REQUEST['term_taxonomy_id']))
-                $args['term_taxonomy_id'] = (int)$_REQUEST['term_taxonomy_id'];
-
-            $key = presspermit()->getOption('edd_key');
-
-            if (!empty($_REQUEST['pp_help_ticket'])) {
-                $url = "https://publishpress.com/contact/";
-
-                if ($key && is_array($key) && ('valid' == $key['license_status'])) {
-                    $url = add_query_arg('ppsh', substr($key['license_key'], 0, 16), $url); // partial license key for identification
-                }
-
-                wp_redirect($url);
-            }
-
-            if (presspermit()->isPro() && $key && is_array($key) && !empty($key['license_key'])) {
-                require_once(PRESSPERMIT_ABSPATH . '/includes-pro/Support.php');
-                $success = \PublishPress\Permissions\Support::supportUpload($args);
-            }
-
-            if (empty($_REQUEST['pp_help_ticket'])) {
-                if (-1 === $success)
-                    $flag = 'pp_config_no_change';
-                elseif ($success)
-                    $flag = 'pp_config_uploaded';
-                else
-                    $flag = 'pp_config_failed';
-
-                wp_redirect(admin_url("admin.php?page=presspermit-settings&{$flag}=1"));
-            }
-
-            exit;
-        }
-
         if (isset($_POST['presspermit_submit'])) {
             $this->handleSubmission('update');
 

@@ -23,7 +23,7 @@ class HintsItemExceptions
 
         if (!$pp->moduleActive('collaboration')) {
             if (presspermit()->isPro()) {
-                $msg = __('To customize editing permissions, activate the Collaborative Publishing module.', 'press-permit-core');
+                $msg = __('To customize editing permissions, enable the Collaborative Publishing module.', 'press-permit-core');
             } else {
                 $msg = sprintf(
                     __('To customize editing permissions, %1$supgrade to Permissions Pro%2$s and install the Collaborative Publishing module.', 'press-permit-core'),

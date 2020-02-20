@@ -124,7 +124,7 @@ class AgentPermissionsUI
             <tr>
                 <td>
 
-                    <select name="pp_select_x_for_type">
+                    <select name="pp_select_x_for_type" autocomplete="off">
                         <?php
                         unset($type_objects['attachment']); // may be re-added by module
                         $type_objects = apply_filters('presspermit_append_exception_types', $pp->admin()->orderTypes(apply_filters('presspermit_exception_types', $type_objects)));
@@ -137,10 +137,10 @@ class AgentPermissionsUI
 
                         ?></select></td>
 
-                <td class="pp-select-x-operation" style="display:none"><select name="pp_select_x_operation"></select></td>
-                <td class="pp-select-x-mod-type" style="display:none"><select name="pp_select_x_mod_type"></select></td>
+                <td class="pp-select-x-operation" style="display:none"><select name="pp_select_x_operation" autocomplete="off"></select></td>
+                <td class="pp-select-x-mod-type" style="display:none"><select name="pp_select_x_mod_type" autocomplete="off"></select></td>
 
-                <td class="pp-select-x-via-type" style="display:none"><select name="pp_select_x_via_type"></select>
+                <td class="pp-select-x-via-type" style="display:none"><select name="pp_select_x_via_type" autocomplete="off"></select>
 
                     <div class="pp-select-x-assign-for" id="pp_select_x_assign_for" style="display:none">
                         <p class="pp-checkbox">
@@ -201,7 +201,7 @@ class AgentPermissionsUI
         <?php
         if (!$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
             if (presspermit()->isPro()) 
-                $msg = __('To assign exceptions for editing, parent selection or term assignment, activate the Collaborative Publishing module.', 'press-permit-core');
+                $msg = __('To assign exceptions for editing, parent selection or term assignment, enable the Collaborative Publishing module.', 'press-permit-core');
             else
                 $msg = sprintf(
                     __('To assign exceptions for editing, parent selection or term assignment, %1$supgrade to Permissions Pro%2$s and enable the Collaborative Publishing module.', 'press-permit-core'),
@@ -257,7 +257,7 @@ class AgentPermissionsUI
                         do_action('presspermit_role_types_dropdown');
                         ?></select></td>
 
-                <td class="pp-select-role" style="display:none"><select name="pp_select_role"></select></td>
+                <td class="pp-select-role" style="display:none"><select name="pp_select_role" autocomplete="off"></select></td>
 
                 <td class="pp-select-cond" id="pp_cond_ui" style="display:none">
                     <p class="pp-checkbox">
@@ -313,10 +313,10 @@ class AgentPermissionsUI
         <?php
         if (defined('REVISIONARY_VERSION') && (!$pp->moduleActive('collaboration') || !$pp->moduleActive('compatibility')) && $pp->getOption('display_extension_hints')) {
             if (presspermit()->isPro())
-                $msg = __('To assign PublishPress Revisions exceptions, activate the Collaborative Publishing and Compatibility Pack modules.', 'press-permit-core');
+                $msg = __('To assign PublishPress Revisions exceptions, enable the Collaborative Publishing module.', 'press-permit-core');
             else
                 $msg = sprintf(
-                    __('To assign Revisionary exceptions, %1$supgrade to Permissions Pro%2$s and enable the Collaborative Publishing and Compatibility Pack modules.', 'press-permit-core'),
+                    __('To assign Revisionary exceptions, %1$supgrade to Permissions Pro%2$s and enable the Collaborative Publishing module.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
@@ -1202,7 +1202,7 @@ class AgentPermissionsUI
 
         $pp_only = (array) presspermit()->getOption('supplemental_role_defs');
         ?>
-        <select name="pp_select_role">
+        <select name="pp_select_role" autocomplete="off">
 
             <?php
             foreach ($wp_roles->role_names as $role_name => $role_caption) {

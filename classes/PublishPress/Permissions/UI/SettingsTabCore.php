@@ -243,11 +243,11 @@ class SettingsTabCore
 
                                 if (in_array('attachment', presspermit()->getEnabledPostTypes(), true)) {
                                     if (!presspermit()->isPro()) {
-                                        $hint = __("For most installations, leave this disabled. If enabled, corresponding edit and delete capabilities must be added to existing roles.", 'ppce');
+                                        $hint = __("For most installations, leave this disabled. If enabled, corresponding edit and delete capabilities must be added to existing roles.", 'press-permit-core');
                                     } else {
                                         $hint = defined('PRESSPERMIT_COLLAB_VERSION') 
-                                        ? __("For most installations, leave this disabled. See Editing tab for specialized Media Library permissions.", 'ppce')
-                                        : __("For most installations, leave this disabled. For specialized Media Library permissions, install the Collaborative Publishing module.", 'ppce');
+                                        ? __("For most installations, leave this disabled. See Editing tab for specialized Media Library permissions.", 'press-permit-core')
+                                        : __("For most installations, leave this disabled. For specialized Media Library permissions, install the Collaborative Publishing module.", 'press-permit-core');
                                     }
 
                                     $ret = $ui->optionCheckbox('define_media_post_caps', $tab, $section, $hint, '');

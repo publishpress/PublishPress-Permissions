@@ -270,6 +270,17 @@ option.pp-new-selection {
     white-space: nowrap;
 }
 
+div.pp_dashboard_message {margin-top:20px !important;}
+
+.pp-notice a, .pp-notice a:visited {
+    font-weight: bold;
+    color: #655997;
+}
+
+.pp-notice a:hover {
+    text-decoration: underline !important;
+}
+
 
 /* Admin icon */
 /*

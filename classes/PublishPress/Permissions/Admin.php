@@ -11,6 +11,30 @@ class Admin
     private $last_post_status = [];
     public $errors;
 
+    public function __construct() {
+        add_action('admin_notices', [$this, 'rsMigrationNotice']);
+    }
+
+    public function rsMigrationNotice()
+    {
+        if (!presspermit()->getOption('offer_rs_migration') 
+        || !presspermit()->isAdministrator() 
+        || (apply_filters('presspermit_import_count', 0, 'rs') && empty($_REQUEST['rs-not-imported']))
+        ) {
+            return;
+        }
+
+        $url = admin_url('admin.php?page=presspermit-settings&pp_tab=import');
+        
+        $this->notice(
+            sprintf(
+                __('Role Scoper installation detected. To migrate your groups, roles, restrictions and options to PublishPress Permissions, run the %sImport tool%s.', 'press-permit-core'),
+                '<a href="' . $url . '">',
+                '</a>'
+            ), 'rs-migration'
+        );
+    }
+
     public function getLastPostStatus($post_id)
     {
         return (isset($this->last_post_status[$post_id])) ? $this->last_post_status[$post_id] : false;
@@ -215,7 +239,7 @@ class Admin
     {
 		$dismissals = (array) pp_get_option('dismissals');
 
-		if ($msg_id && isset($dismissals[$msg_id]))
+		if ($msg_id && isset($dismissals[$msg_id]) && (empty($_REQUEST['pp_ignore_dismissal']) || ($msg_id != $_REQUEST['pp_ignore_dismissal'])))
 			return;
 		
         require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');

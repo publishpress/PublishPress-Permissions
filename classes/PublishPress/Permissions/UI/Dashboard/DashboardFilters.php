@@ -20,7 +20,7 @@ class DashboardFilters
         do_action('_presspermit_admin_ui');
 
         // ============== UI-related filters ================
-        add_action('admin_menu', [$this, 'actBuildMenu'], 2);
+        add_action('admin_menu', [$this, 'actBuildMenu'], 21);
 
         add_action('show_user_profile', [$this, 'actUserUi'], 2);
         add_action('edit_user_profile', [$this, 'actUserUi'], 2);
@@ -160,7 +160,7 @@ class DashboardFilters
         }
     }
 
-    public function actMenuHandler()
+    public static function actMenuHandler()
     {
         $pp_page = sanitize_key($_GET['page']);
 
@@ -189,14 +189,6 @@ class DashboardFilters
             $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
             wp_enqueue_script('presspermit-misc', PRESSPERMIT_URLPATH . "/common/js/presspermit{$suffix}.js", ['jquery'], PRESSPERMIT_VERSION, true);
             $wp_scripts->in_footer[] = 'presspermit-misc'; // otherwise it will not be printed in footer @todo: review
-        }
-
-        if (
-            in_array($pagenow, ['post.php', 'post-new.php', 'edit.php', 'users.php', 'upload.php', 'edit-tags.php', 'term.php'])
-            || presspermitPluginPage()
-        ) {
-            require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/Help.php');
-            Help::registerContextualHelp();
         }
 
         if (('user-edit.php' == $pagenow) && presspermit()->getOption('display_user_profile_groups')) {
@@ -249,13 +241,13 @@ class DashboardFilters
                 $permissions_title,
                 'read',
                 $pp_cred_menu,
-                [$this, 'actMenuHandler'],
+                [__CLASS__, 'actMenuHandler'],
                 'dashicons-unlock',
                 $menu_order
             );
         }
 
-        $handler = [$this, 'actMenuHandler'];
+        $handler = [__CLASS__, 'actMenuHandler'];
 
         if ($do_groups) {
             add_submenu_page($pp_cred_menu, __('Groups', 'press-permit-core'), __('Groups', 'press-permit-core'), 'read', 'presspermit-groups', $handler);

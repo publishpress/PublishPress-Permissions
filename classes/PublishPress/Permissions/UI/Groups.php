@@ -71,7 +71,7 @@ class Groups
                                 if ($group = $pp_groups->getGroup($id, $agent_type)) {
                                     if (
                                         empty($group->metagroup_type)
-                                        || ('wp_role' == $group->metagroup_type && DB\Groups::isDeletedRole($group->metagroup_id))
+                                        || ('wp_role' == $group->metagroup_type && \PublishPress\Permissions\DB\Groups::isDeletedRole($group->metagroup_id))
                                     ) {
                                         echo "<li><input type=\"hidden\" name=\"users[]\" value=\"" . esc_attr($id) . "\" />"
                                             . sprintf(__('ID #%1s: %2s'), $id, $group->name)

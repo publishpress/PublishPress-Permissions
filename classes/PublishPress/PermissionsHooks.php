@@ -86,6 +86,11 @@ class PermissionsHooks
         if (did_action('set_current_user')) { // sometimes third party code causes user to be loaded prematurely
             $this->actSetCurrentUser();
         }
+
+        if (defined('PRESSPERMIT_NO_USER_LOCALE')) {
+            // Prevent numerous user queries with Block Editor
+            add_filter('pre_determine_locale', function($locale) {return get_locale();});
+        }
     }
 
     // log request and handler parameters for possible reference by subsequent PP filters; block unpermitted create/edit/delete requests 
@@ -117,6 +122,10 @@ class PermissionsHooks
     public function actSetCurrentUser()
     {
         global $current_user;
+
+        if (presspermit()->checkInitInterrupt()) {
+            return;
+        }
 
         presspermit()->setUser($current_user->ID);
 
@@ -326,12 +335,12 @@ class PermissionsHooks
 
         // buffer all IDs in the results set
         if ($results) { // JReviews plugin sets $results to null under some conditions
-        	foreach ($results as $row) {
-            	$post_type = (!isset($row->post_type) || ('revision' == $row->post_type)) ? $default_type : $row->post_type;
-            	$pp->listed_ids[$post_type][$row->ID] = true;
-        	}
+            foreach ($results as $row) {
+                $post_type = (!isset($row->post_type) || ('revision' == $row->post_type)) ? $default_type : $row->post_type;
+                $pp->listed_ids[$post_type][$row->ID] = true;
+            }
         }
-
+        
         return $results;
     }
 

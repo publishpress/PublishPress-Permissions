@@ -75,8 +75,33 @@ class Permissions
         return self::instance()->doing_rest;
     }
 
+    public function checkInitInterrupt() {
+        if (defined('ISCVERSION') || defined('PRESSPERMIT_LIMIT_ASYNC_UPLOAD_FILTERING')) {
+            if ( is_admin() && strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php') && ! empty($_POST['attachment_id']) && ! empty($_POST['fetch']) && ( 3 == $_POST['fetch']) ) {
+                if ( $att = get_post( $_POST['attachment_id'] ) ) {
+                    global $current_user;
+                    if ( $att->post_author == $current_user->ID && ! defined( 'PP_UPLOADS_FORCE_FILTERING' ) )
+                        return true;
+                }
+            }
+        }
+
+        // Divi Page Builder editor init
+		if (!defined('PRESSPERMIT_DISABLE_DIVI_CLEARANCE') && !empty($_REQUEST['et_fb']) && !empty($_REQUEST['et_bfb']) 
+		&& 0 === strpos($_SERVER['REQUEST_URI'], '/?page_id') 
+		&& !is_admin() && !defined('DOING_AJAX') && empty($_REQUEST['action']) 
+        && empty($_REQUEST['post']) && empty($_REQUEST['post_id']) && empty($_REQUEST['post_ID']) && empty($_REQUEST['p'])
+		) {
+			return true;
+		}
+    }
+
     private function load($args = [])
     {
+        if ($this->checkInitInterrupt()) { 
+            return; 
+        }
+
         $this->dbMaint();
 
         $defaults = ['load_filters' => true];
@@ -171,6 +196,8 @@ class Permissions
         // On first-time installation and version change, early assurance that DB tables are present and role capabilities populated
         if ( ! $ver = get_option('presspermitpro_version') ) {
             if ( ! $ver = get_option('presspermit_version') ) {
+                $check_for_rs_migration = true;
+
                 $ver = get_option('pp_c_version');
             }
         }
@@ -181,6 +208,17 @@ class Permissions
             $db_ver = ( isset( $ver['db_version'] ) ) ? $ver['db_version'] : '';
             require_once(PRESSPERMIT_CLASSPATH . '/DB/DatabaseSetup.php');
             new Permissions\DB\DatabaseSetup($ver['db_version']);
+        }
+
+        if (!empty($check_for_rs_migration) || !empty($_REQUEST['rs-migration-check'])) { // support http arg for test / troubleshooting
+            // This is a first-time activation. If Role Scoper was previously installed, enable Import module by default
+            if (get_option('scoper_version')) {
+                update_option('presspermit_offer_rs_migration', true);
+
+                // Set default module deactivations, but leave Import module activated
+                require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
+                Permissions\PluginUpdated::deactivateModules(['activate' => ['presspermit-import']]);  
+            }
         }
 
         if ($ver) {
@@ -221,10 +259,10 @@ class Permissions
         }
     }
 
-    public function getAvailableModules()
+    public function getAvailableModules($args = [])
     {
         // @todo: dir()
-        return [
+        $modules = [
             'presspermit-circles',
             'presspermit-collaboration',
             'presspermit-compatibility',
@@ -235,6 +273,8 @@ class Permissions
             'presspermit-sync',
             'presspermit-teaser',
         ];
+
+        return (!empty($args['suppress_filters'])) ? $modules : array_diff($modules, apply_filters('presspermit_unavailable_modules', []));
     }
 
     public function moduleExists($slug)
@@ -244,12 +284,20 @@ class Permissions
 
     public function getDeactivatedModules()
     {
-        return (array) $this->getOption('deactivated_modules');
+        $modules = (array) $this->getOption('deactivated_modules');
+        return array_intersect_key($modules, array_fill_keys($this->getAvailableModules(), true));
     }
 
     public function getActiveModules()
     {
-        return $this->modules;
+        $available = array_map(
+            function($k) {
+                return str_replace('presspermit-', '', $k);
+            }, 
+            $this->getAvailableModules()
+        );
+
+        return array_intersect_key($this->modules, array_fill_keys($available, true));
     }
 
     public function getAllModules()
@@ -407,7 +455,7 @@ class Permissions
 				) {
                     $user->allcaps['read'] = true;
                 }
-            }
+            }   
 
             // merge in caps from typecast WP role assignments (and also clear false-valued allcaps entries)
             $this->capCaster();

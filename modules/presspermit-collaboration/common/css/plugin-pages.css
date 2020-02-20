@@ -1,0 +1,41 @@
+/* --- Role Usage Listing / Edit --- */
+div #pp_role_usage_limitations input {
+    width: 1em;
+}
+
+div #pp_role_usage_limitations div {
+    margin-bottom: 0.6em;
+}
+
+#edit_role_usage .form-table th {
+    width: 100px;
+}
+
+#edit_role_usage td.pp-cap_list {
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+}
+
+#edit_role_usage td.pp-cap_list ul {
+    margin-top: 1em;
+    margin-left: 2em;
+    color: #00a;
+}
+
+#edit_role_usage .form-table th {
+    text-align: right;
+    padding-top: 7px;
+    font-weight: bold;
+}
+
+.pp-cap_list {
+    padding-left: 0.4em;
+}
+
+.pp-cap_list li {
+    list-style: none;
+    float: left;
+    width: 20em;
+    height: 2.5em;
+    margin-left: 0.2em;
+}

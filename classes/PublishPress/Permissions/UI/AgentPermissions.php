@@ -68,7 +68,7 @@ class AgentPermissions
         $group_variant = ! empty($_REQUEST['group_variant']) ? $_REQUEST['group_variant'] : 'pp_group';
 
         $groups_link = ($wp_http_referer && strpos($wp_http_referer, 'presspermit-groups')) 
-        ? $wp_http_referer
+        ? add_query_arg('group_variant', $group_variant, $wp_http_referer)
         : admin_url("admin.php?page=presspermit-groups&group_variant=$group_variant"); 
         ?>
 

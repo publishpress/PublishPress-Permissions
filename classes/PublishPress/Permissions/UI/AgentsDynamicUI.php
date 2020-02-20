@@ -107,7 +107,7 @@ class AgentsDynamicUI
                                 echo ' style="display:none;"';
                             }
                             ?>>
-                                <select id="pp_search_user_meta_key_<?php echo $i; ?>_<?php echo $id_suffix; ?>">
+                                <select id="pp_search_user_meta_key_<?php echo $i; ?>_<?php echo $id_suffix; ?>" autocomplete="off">
                                     <option value=""><?php _e('(user field)', 'press-permit-core'); ?></option>
 
                                     <?php foreach ($fields as $field => $lbl) : ?>
@@ -138,7 +138,7 @@ class AgentsDynamicUI
                     <?php endif; ?>
 
                     <?php if (('user' == $agent_type) && $pp->getOption('user_search_by_role')) : ?>
-                        <select id="pp_search_role_<?php echo $id_suffix; ?>" class="pp-search-role">
+                        <select id="pp_search_role_<?php echo $id_suffix; ?>" class="pp-search-role" autocomplete="off">
                             <option value=""><?php _e('(any WP role)', 'press-permit-core'); ?></option>
                             <?php wp_dropdown_roles(); ?>
                         </select>
@@ -162,7 +162,7 @@ class AgentsDynamicUI
 
                     <select id="agent_results_<?php echo $id_suffix; ?>" class="pp_agent_results" <?php
                     if ($multi_select) : ?>multiple="multiple" style="height:160px;<?php else : ?>style="
-                            display:none;<?php endif; ?><?php echo $width; ?>">
+                            display:none;<?php endif; ?><?php echo $width; ?>" autocomplete="off">
                     </select>
 
                     <span id="agent_msg_<?php echo $id_suffix; ?>"></span>
