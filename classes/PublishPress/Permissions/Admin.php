@@ -239,7 +239,7 @@ class Admin
     {
 		$dismissals = (array) pp_get_option('dismissals');
 
-		if ($msg_id && isset($dismissals[$msg_id]))
+		if ($msg_id && isset($dismissals[$msg_id]) && (empty($_REQUEST['pp_ignore_dismissal']) || ($msg_id != $_REQUEST['pp_ignore_dismissal'])))
 			return;
 		
         require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');
