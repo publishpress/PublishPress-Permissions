@@ -61,6 +61,9 @@ Initial production release
 * Feature : On activation, detect Role Scoper installation and offer to import it
 * Fixed : Javascript error when a published post is unpublished in the block editor
 * Fixed : Settings screen - dropdown select items sometimes failed to display current setting due to browser autocomplete
+* Fixed : Edit Permission Group - After new custom group creation, "back to groups list" linked to WP Roles list instead of Custom Groups
+* Fixed : Permission Groups screen - groups corresponding to deleted WordPress roles could not be deleted 
+* Fixed : Collaboration module - Stop filtering page parent dropdown needlessly for Administrators (caused invalid results and browser freeze under rare conditions)
 * Compat : Divi Page Builder - Non-Editors could not edit new page after creating it
 * Compat : Divi Page Builder - Non-Editors could not enter Divi UI
 * Compat : Yoast SEO - Admin dashboard access generated two PHP warnings for database error under some configurations
