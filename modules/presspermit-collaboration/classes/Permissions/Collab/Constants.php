@@ -15,7 +15,7 @@ class Constants
         $type = 'permissions-admin';
         $consts = [
             'PP_PUBLISH_EXCEPTIONS' => __("Assign post-specific publish exceptions separate from edit exceptions", 'press-permit-core'),
-            'PP_NON_EDITORS_SET_EDIT_EXCEPTIONS' => __("Enable post contributors with pp_set_edit_exceptions capability to set edit exceptions even if they can't edit the post once it's published", 'press-permit-core'),
+            'PP_NON_EDITORS_SET_EDIT_EXCEPTIONS' => __("Enable post contributors or authors with pp_set_edit_exceptions capability to set edit exceptions on posts authored by others", 'press-permit-core'),
         ];
         foreach ($consts as $k => $v) $pp_constants[$k] = (object)['descript' => $v, 'type' => $type];
 

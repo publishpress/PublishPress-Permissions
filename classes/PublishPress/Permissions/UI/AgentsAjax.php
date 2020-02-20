@@ -73,7 +73,7 @@ class AgentsAjax
         }
 
         if (empty($verified)) {
-            if (!current_user_can('pp_manage_members')) {
+            if (!current_user_can('pp_manage_members') && !current_user_can('pp_assign_roles')) {
                 die(-1);
             }
         }

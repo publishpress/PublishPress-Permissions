@@ -63,6 +63,7 @@ Initial production release
 * Fixed : Settings screen - dropdown select items sometimes failed to display current setting due to browser autocomplete
 * Fixed : Edit Permission Group - After new custom group creation, "back to groups list" linked to WP Roles list instead of Custom Groups
 * Fixed : Permission Groups screen - groups corresponding to deleted WordPress roles could not be deleted 
+* Fixed : Post editor - Non-administrators with permission assign exceptions got no results from group / user search
 * Fixed : Collaboration module - Stop filtering page parent dropdown needlessly for Administrators (caused invalid results and browser freeze under rare conditions)
 * Compat : Divi Page Builder - Non-Editors could not edit new page after creating it
 * Compat : Divi Page Builder - Non-Editors could not enter Divi UI
