@@ -4,7 +4,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.3.2
 Requires PHP: 5.6.20
-Stable tag: 2.9
+Stable tag: 3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -55,7 +55,7 @@ Initial production release
 
 == Changelog ==
 
-= 3.0-beta =
+= 3.0 - 20 Feb 2020 =
 * Feature : Collaborative Publishing module ported from Pro edition
 * Feature : Import module (for Role Scoper installations) ported from Pro edition
 * Feature : On activation, detect Role Scoper installation and offer to import it
