@@ -81,7 +81,10 @@ class RESTInit
 
             $args['post__in'] = $include_page_ids;
             $args['post_status'] = $post_statuses;
-            $args['nopaging'] = 1;
+
+            if (defined('PP_PAGE_PARENT_NOPAGING')) {
+            	$args['nopaging'] = 1;
+			}
 
             $args['orderby'] = presspermit()->getOption('page_parent_order') ? 'post_title' : 'menu_order';
 
