@@ -384,7 +384,11 @@ class SettingsTabInstall
                                 <?php
                     endif;
 
-                    $pro_modules = array_diff(presspermit()->getAvailableModules(), $active_module_plugin_slugs, array_keys($inactive));
+                    $pro_modules = array_diff(
+                        presspermit()->getAvailableModules(['suppress_filters' => true]), 
+                        $active_module_plugin_slugs, 
+                        array_keys($inactive)
+                    );
 
                     sort($pro_modules);
                     if ($pro_modules) :
