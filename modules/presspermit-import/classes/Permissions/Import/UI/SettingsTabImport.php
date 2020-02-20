@@ -150,7 +150,7 @@ class SettingsTabImport
             </h3>
 
             <p>
-                <?php _e('Migrates Role Scoper Options, Role Groups, Roles and Restrictions to PressPermit.', 'press-permit-core'); ?>
+                <?php _e('Migrates Role Scoper Options, Role Groups, Roles and Restrictions to PublishPress Permissions.', 'press-permit-core'); ?>
             </p>
 
             <br />
@@ -179,9 +179,6 @@ class SettingsTabImport
                 <li><?php _e('Following import, you should manually review the results and confirm that permissions are correct. Some manual followup may be required.', 'press-permit-core'); ?></li>
                 <li><?php _e('Category Restrictions on Contributor and Author are converted to Term Assignment Exceptions. If you want a user to be blocked from authoring but able to contribute to a category, manually assign "Post - Assign Term - Also these" exceptions for desired terms, with status "(unpublished)".', 'press-permit-core'); ?></li>
                 <li><?php _e('Category Restrictions on Editor are converted to Post Edit Exceptions. If you want a sitewide Editor to be blocked from editing in some categories but still able to author/contribute to them, you will need to change their sitewide role to Contributor/Author and assign "Post - Edit - Also these" exceptions for the categories which they should be a full Editor in.', 'press-permit-core'); ?></li>
-                <li><?php _e('Role date limits are not currently supported as such. You can assign roles to groups and (with the Membership module activated) apply membership date ranges. But RS role date limits are not imported. If this is an issue, submit a feature development request.', 'press-permit-core'); ?></li>
-                <li><?php _e('Content date ranges for supplemental roles are not currently supported and not imported.', 'press-permit-core'); ?></li>
-                <li><?php _e('NextGen Gallery roles are not currently supported and not imported.', 'press-permit-core'); ?></li>
             </ul>
             </p>
         <?php
@@ -251,7 +248,7 @@ class SettingsTabImport
             ?>
             <div class="pp-optionhint">
                 <?php
-                printf(__('Once your import task is complete, you can eliminate this tab by deactivating the %s plugin.', 'press-permit-core'), __('PressPermit Import', 'press-permit-core'));
+                printf(__('Once your import task is complete, you can eliminate this tab by disabling the %s module.', 'press-permit-core'), __('Import', 'press-permit-core'));
                 ?>
             </div>
         <?php
