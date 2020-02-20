@@ -110,6 +110,10 @@ table.pp-options-table .pp-optionhint {
     margin-bottom: 20px !important;
 }
 
+#pp_settings_form div.updated {
+    margin-right: 120px;
+}
+
 /* --- Install Tab --- */
 #pp-install_table span.publishpress, #pp-install_table span.publishpress a, #pp-install_table span.publishpress a:visited {
     color: #655997;
