@@ -160,7 +160,7 @@ class DashboardFilters
         }
     }
 
-    public function actMenuHandler()
+    public static function actMenuHandler()
     {
         $pp_page = sanitize_key($_GET['page']);
 
@@ -241,13 +241,13 @@ class DashboardFilters
                 $permissions_title,
                 'read',
                 $pp_cred_menu,
-                [$this, 'actMenuHandler'],
+                [__CLASS__, 'actMenuHandler'],
                 'dashicons-unlock',
                 $menu_order
             );
         }
 
-        $handler = [$this, 'actMenuHandler'];
+        $handler = [__CLASS__, 'actMenuHandler'];
 
         if ($do_groups) {
             add_submenu_page($pp_cred_menu, __('Groups', 'press-permit-core'), __('Groups', 'press-permit-core'), 'read', 'presspermit-groups', $handler);
