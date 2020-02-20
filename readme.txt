@@ -18,6 +18,7 @@ Advanced and flexible content permissions. Give users or groups type-specific ro
 
 Core Features included in this plugin:
 
+  * Post-specific and term-specific editing permissions and restrictions now supported in this free edition
   * Permissions model extends the WordPress roles framework
   * Assign supplemental roles and exceptions for custom post types [youtube https://www.youtube.com/watch?v=v7jTkgmjHrw&rel=0&hd=1]
   * Limit category/term assignment and page parent selection - [video](https://www.youtube.com/watch?v=QqvtxrqLPwY&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=4)
@@ -808,5 +809,4 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 7. Edit Permission Group (WP role group with supplemental roles)
 8. Edit Permission Group (metagroup blocked from reading a category)
 9. PublishPress Permissions Core Settings
-10. PublishPress Permissions Advanced Settings
-11. PublishPress Permissions Editing Settings (with PublishPress Permissions Pro's Collaborative Publishing module)
+10. PublishPress Permissions Editing Settings (included in free edition)
