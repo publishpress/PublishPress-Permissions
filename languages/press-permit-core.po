@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PressPermit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-31 15:59-0500\n"
+"POT-Creation-Date: 2020-02-20 14:32-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: PublishPress <help@publishpress.com>\n"
@@ -52,40 +52,45 @@ msgstr ""
 msgid "Editor"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:96
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:31
+#, php-format
+msgid "Role Scoper installation detected. To migrate your groups, roles, restrictions and options to PublishPress Permissions, run the %sImport tool%s."
+msgstr ""
+
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:120
 msgid "Read"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:96
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:120
 msgid "Reading"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:236
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:260
 #, php-format
 msgid "If you like %s, please leave us a %s rating. Thank you!"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:247
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:271
 msgid "About PublishPress Permissions"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:247
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:271
 msgid "About"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:249
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:273
 msgid "Permissions Documentation"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:249
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:273
 msgid "Documentation"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:251
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:275
 msgid "Contact the PublishPress team"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:251
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:275
 msgid "Contact"
 msgstr ""
 
@@ -399,7 +404,7 @@ msgstr ""
 msgid "Activate your <a href=\"%1$s\">license key</a> for PublishPress Permissions Pro downloads and priority support."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/REST.php:241
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/REST.php:243
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/RESTHelper.php:40
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/RESTLegacy.php:34
 msgid "Sorry, you are not allowed to do that."
@@ -2068,124 +2073,124 @@ msgstr ""
 msgid "<strong>ERROR</strong>: This group name is already registered. Please choose another one."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Handlers/Groups.php:72
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Handlers/Groups.php:73
 msgid "You can&#8217;t delete that group."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:24
+#: F:\snapshot\press-permit-core/includes/Core.php:25
+#: F:\snapshot\press-permit-core/includes/Core.php:26
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/Core.php:50
+#, php-format
+msgid "You're using PublishPress Permissions Free. To unlock more features, consider upgrading to <a href=\"%s\" target=\"_blank\">Permissions Pro</a>."
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:41
 msgid "Installation"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:31
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:48
 msgid "Account"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:32
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:49
 msgid "Version"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:33
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:50
 msgid "Modules"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:45
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:46
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:62
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:63
 msgid "settings"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:70
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:87
 msgid "Configuration data was uploaded."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:76
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:93
 msgid "Configuration data is unchanged since last upload."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:82
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:99
 msgid "Configuration data could not be uploaded."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:90
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:107
 msgid "Version info was refreshed."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:145
-#, php-format
-msgid "Your presspermit.com key has expired, but a <a href=\"%s\">PublishPress renewal</a> discount may be available."
 msgstr ""
 
 #: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:153
 #, php-format
+msgid "Your presspermit.com key has expired, but a <a href=\"%s\">PublishPress renewal</a> discount may be available."
+msgstr ""
+
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:161
+#, php-format
 msgid "A presspermit.com key appears to be active. <a href=\"%s\" target=\"_blank\">Contact us</a> for assistance in migrating your account to publishpress.com."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:159
-#, php-format
-msgid "This is the free edition of PublishPress Permissions. For more features and priority support, upgrade to <a href=\"%s\" target=\"_blank\">Permissions Pro</a>."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:170
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:177
 msgid "Further details for your installation:"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:183
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:190
 #, php-format
 msgid "Original presspermit.com support key hash: <strong>%s</strong> (expires %s)"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:185
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:192
 #, php-format
 msgid "Original presspermit.com support key hash: <strong>%s</strong>"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:194
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:201
 #, php-format
 msgid "To temporarily restore Pro features before migrating to a publishpress.com account, delete this version and install <span style=\"white-space:nowrap\"><a href=\"%s\" target=\"_blank\">Press Permit Core 2.6.x</a></span> using Plugins > Add New > Upload."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:233
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:239
 #, php-format
 msgid "%s&nbsp;details"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:240
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:246
 #, php-format
 msgid "PublishPress Permissions Version: %1$s %2$s"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:242
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:248
 #, php-format
 msgid "Database Schema Version: %s"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:248
-#, php-format
-msgid "- part of the %1$sPublishPress%2$s family of professional publishing tools"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:259
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:254
 #, php-format
 msgid "WordPress Version: %s"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:263
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:258
 #, php-format
 msgid "PHP Version: %s"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:291
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:286
 msgid "<strong>Change Log</strong> (since your current version)"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:294
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:289
 msgid "Active Modules:"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:352
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:347
 msgid "Inactive Modules:"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:397
+#: F:\snapshot\press-permit-core/includes/SettingsTabInstall.php:396
 msgid "Pro Modules:"
 msgstr ""
 
@@ -2267,7 +2272,7 @@ msgid "Assign post-specific publish exceptions separate from edit exceptions"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/Constants.php:18
-msgid "Enable post contributors with pp_set_edit_exceptions capability to set edit exceptions even if they can't edit the post once it's published"
+msgid "Enable post contributors or authors with pp_set_edit_exceptions capability to set edit exceptions on posts authored by others"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/Constants.php:25
@@ -3006,10 +3011,6 @@ msgstr ""
 msgid "You are not allowed to manage Permissions settings"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/Updated.php:10
-msgid "You have installed a development / beta version of PressPermit Import. If this is a concern, see Permits > Support > Beta Updates."
-msgstr ""
-
 #: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:24
 msgid "Sites"
 msgstr ""
@@ -3046,7 +3047,7 @@ msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:64
 #: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:110
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:245
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:242
 msgid "Nothing to import!"
 msgstr ""
 
@@ -3069,7 +3070,7 @@ msgid "Role Scoper Import"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:153
-msgid "Migrates Role Scoper Options, Role Groups, Roles and Restrictions to PressPermit."
+msgid "Migrates Role Scoper Options, Role Groups, Roles and Restrictions to PublishPress Permissions."
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:165
@@ -3078,17 +3079,17 @@ msgid " (%s configuration item previously imported)"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:173
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:222
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:219
 msgid "<strong>Notes:</strong>"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:176
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:225
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:222
 msgid "The import can be run multiple times if source values change."
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:177
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:226
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:223
 msgid "Configuration items will be imported even if the request exceeds PHP execution time limit. Repeat as necessary until all items are imported."
 msgstr ""
 
@@ -3097,7 +3098,7 @@ msgid "Current Role Scoper configuration is not modified or deleted. You will st
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:179
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:228
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:225
 msgid "Following import, you should manually review the results and confirm that permissions are correct. Some manual followup may be required."
 msgstr ""
 
@@ -3109,85 +3110,69 @@ msgstr ""
 msgid "Category Restrictions on Editor are converted to Post Edit Exceptions. If you want a sitewide Editor to be blocked from editing in some categories but still able to author/contribute to them, you will need to change their sitewide role to Contributor/Author and assign \"Post - Edit - Also these\" exceptions for the categories which they should be a full Editor in."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:182
-msgid "Role date limits are not currently supported as such. You can assign roles to groups and (with the Membership module activated) apply membership date ranges. But RS role date limits are not imported. If this is an issue, submit a feature development request."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:183
-msgid "Content date ranges for supplemental roles are not currently supported and not imported."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:184
-msgid "NextGen Gallery roles are not currently supported and not imported."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:197
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:194
 msgid "Press Permit Beta (1.x) Import"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:201
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:198
 msgid "Migrates Press Permit 1.x Options, Role Groups, Roles and Conditions."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:213
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:210
 #, php-format
 msgid "(%s configuration item previously imported)"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:227
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:224
 msgid "Current Press Permit 0.9/1.x configuration is not modified or deleted. You will still be able to restore previous behavior by reactivating the old version (and associated extensions) if necessary."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:229
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:226
 msgid "Editorial conditions are converted to Post Edit Exceptions for specific posts, assigned to applicable WP Role metagroups."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:230
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:227
 msgid "Supplemental Editor roles for Editability conditions are converted to Exceptions (Post - Edit - Also these) for specific posts."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:231
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:228
 msgid "Contributor Restrict and Author Restrict conditions are converted to Exceptions (all types - Assign Term - Not these), assigned to applicable WP Role metagroups."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:232
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:229
 msgid "Supplemental roles for Bypass Contributor Restrict and Bypass Author Restrict are converted to Exceptions (all types - Assign Term - Also these)"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:233
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:230
 msgid "For WPML, post-specific roles and conditions mirrored to translations are imported. But language-specific sitewide role assignments are no longer supported and not imported."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:234
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:231
 msgid "For bbPress, forum-specific Spectator roles are imported as an Exception on the \"Read\" operation."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:235
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:232
 msgid "For bbPress, forum-specific Participant roles are imported as Exceptions on the \"Read\", \"Create Topics\", and \"Submit Replies\" operations."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:236
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:233
 msgid "For bbPress, forum-specific Moderator roles are imported as Exceptions on the \"Read\", \"Create Topics\", \"Submit Replies\" and \"Edit\" operations."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:237
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:234
 msgid "Other direct roles assigned to specific terms or posts are not imported. If you modified a Role Usage setting from Pattern Role to Direct-Assigned, manually create exceptions as needed."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:254
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:251
 #, php-format
-msgid "Once your import task is complete, you can eliminate this tab by deactivating the %s plugin."
+msgid "Once your import task is complete, you can eliminate this tab by disabling the %s module."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:254
-msgid "PressPermit Import"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:277
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:274
 msgid "All imported groups, roles, exceptions and options will be deleted. Are you sure?"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:281
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:278
 msgid "Undo All Imports"
 msgstr ""
 
