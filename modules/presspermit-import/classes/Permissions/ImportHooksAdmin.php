@@ -12,6 +12,20 @@ class ImportHooksAdmin
         add_action('init', [$this, 'actAdminInit'], 90);
         add_filter('presspermit_options_default_tab', [$this, 'fltDefaultTab']);
         add_action('presspermit_options_ui', [$this, 'actOptionsUI']);
+
+        add_filter('presspermit_import_count', [$this, 'fltImportCount'], 10, 2);
+    }
+
+    function fltImportCount($count, $type = 'rs') {
+        global $wpdb;
+
+        if ('rs' == $type) {
+            $count = $wpdb->get_var(
+                "SELECT COUNT(i.ID) FROM $wpdb->ppi_imported AS i INNER JOIN $wpdb->ppi_runs AS r ON i.run_id = r.ID AND r.import_type = 'rs'"
+            );
+        }
+
+        return $count;
     }
 
     function actAdminInit()
