@@ -58,12 +58,20 @@ class AdminFilters
 
     function actSavePost($post_id, $post)
     {
+        if (!empty(presspermit()->flags['ignore_save_post'])) {
+            return;
+        }
+
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
             update_post_meta($post_id, '_pp_is_autodraft', true);
     }
 
     function fltUnloadCurrentUserExceptions($item_id)
     {
+        if (!empty(presspermit()->flags['ignore_save_post'])) {
+            return;
+        }
+
         presspermit()->getUser()->except = []; // force current user exceptions to be reloaded at relevant next capability check
     }
 
