@@ -257,7 +257,7 @@ class AdminFilters
         && (
             false !== strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php')
             || ('attachment' == PWP::findPostType())
-            || (false !== strpos($_SERVER['SCRIPT_NAME'], 'admin-ajax.php') && in_array($_REQUEST['action'], ['save-attachment-compat']))
+            || (false !== strpos($_SERVER['SCRIPT_NAME'], 'admin-ajax.php') && in_array($_REQUEST['action'], ['save-attachment', 'save-attachment-compat']))
             )
         ) {
             if (current_user_can('edit_post', $orig_parent_id)) {
