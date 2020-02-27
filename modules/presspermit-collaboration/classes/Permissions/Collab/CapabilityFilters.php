@@ -35,6 +35,13 @@ class CapabilityFilters
                 }
             } else
                 $return['item_id'] = 0;
+        } elseif ($post_type = PWP::findPostType()) {
+            if ($type_obj = get_post_type_object($post_type)) {
+                if (!empty($type_obj->cap->publish_posts) && ($orig_cap == $type_obj->cap->publish_posts)) {
+                    $return['item_type'] = $post_type;
+                    $return['type_caps'] = [$orig_cap];
+                }
+            }
         }
 
         if ($return)
@@ -52,10 +59,11 @@ class CapabilityFilters
             $type_obj = get_post_type_object($args['item_type']);
 
             if (!defined('PP_PUBLISH_EXCEPTIONS') && $type_obj && (reset($args['orig_reqd_caps']) == $type_obj->cap->publish_posts)) {
-                $stati = [''];
+                $stati[''] = true;
 
-                if (!$item_status || $status_obj->public)
-                    $stati[] = 'post_status:publish';
+                if (!$item_status || $status_obj->public) {
+                    $stati['post_status:publish'] = true;
+            	}
 
                 return $stati;
             }
