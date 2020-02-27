@@ -6,7 +6,7 @@ class Core {
         add_filter('presspermit_options', [$this, 'fltPressPermitOptions'], 15);
 		add_action('presspermit_admin_menu', [$this, 'actAdminMenu'], 999);
 
-        add_action('plugins_loaded', function() {
+        add_action('admin_enqueue_scripts', function() {
             if (presspermitPluginPage()) {
                 wp_enqueue_style('presspermit-settings-free', plugins_url('', PRESSPERMIT_FILE) . '/includes/css/settings.css', [], PRESSPERMIT_VERSION);
             }
