@@ -20,7 +20,7 @@ class CollabHooks
             'et_builder_library_get_layout',
             'et_builder_library_get_layouts_data',
             'et_fb_update_builder_assets',
-            'et_fb_ajax_save']
+            ]
             )
         )
         ) {
