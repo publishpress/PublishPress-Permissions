@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PressPermit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-20 14:32-0500\n"
+"POT-Creation-Date: 2020-02-28 12:10-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: PublishPress <help@publishpress.com>\n"
@@ -2223,11 +2223,11 @@ msgstr ""
 msgid "Revisor"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:122
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:130
 msgid "term (manage)"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:158
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:166
 #, php-format
 msgid "%s Manager"
 msgstr ""
@@ -2248,22 +2248,22 @@ msgstr ""
 msgid "You do not have permission to delete that Navigation Menu."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:440
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:459
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:444
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:463
 #, php-format
 msgid "Go to %s"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:446
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:450
 #, php-format
 msgid "The %s was saved, but you can no longer edit it."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:453
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:457
 msgid "Dashboard"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:458
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:462
 msgid "The requested modification was processed, but you can no longer edit the post."
 msgstr ""
 
