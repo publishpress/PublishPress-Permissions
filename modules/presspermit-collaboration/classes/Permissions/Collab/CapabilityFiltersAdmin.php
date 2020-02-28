@@ -123,6 +123,28 @@ class CapabilityFiltersAdmin
                 $reqd_caps = NavMenuCapabilities::adjustCapRequirement($reqd_caps);
             }
         } else {
+        	// Work around Divi Page Builder requiring excessive or off-type capabilities
+	        if (defined('ET_BUILDER_PLUGIN_VERSION') && ('admin-ajax.php' == $pagenow)) {
+	            $alt_caps = ['edit_posts' => ['edit_pages']];
+	            
+	            if (did_action('wp_ajax_et_fb_ajax_save') 
+	            || (!empty($_REQUEST['action']) && ('heartbeat' == $_REQUEST['action']) && !empty($_REQUEST['et_fb_autosave']))
+	            ) {
+	                $alt_caps = array_merge($alt_caps, ['publish_posts' => ['edit_published_posts', 'edit_published_pages'], 'publish_pages' => ['edit_published_pages'], 'edit_published_posts' => ['edit_published_pages']]);
+	            }
+	
+	            foreach($alt_caps as $divi_requirement => $alt_requirements) {
+	                if ($divi_requirement == $orig_cap) {
+	
+	                	foreach ($alt_requirements as $require_cap) {
+	                    	if (!empty($current_user->allcaps[$require_cap])) {
+	                            return [$require_cap];
+	                        } 
+	                	}
+	                }
+	            }
+	        }
+
             // Work around WP's occasional use of literal 'cap_name' instead of $post_type_object->cap->$cap_name  @todo: review
             // note: cap names for "post" type may be customized too
             //

@@ -20,7 +20,7 @@ class CollabHooks
             'et_builder_library_get_layout',
             'et_builder_library_get_layouts_data',
             'et_fb_update_builder_assets',
-            'et_fb_ajax_save']
+            ]
             )
         )
         ) {
@@ -185,7 +185,17 @@ class CollabHooks
 			}
 		}
 
-        return array_merge($meta_caps, ['edit_post' => 'edit', 'edit_page' => 'edit', 'delete_post' => 'delete', 'delete_page' => 'delete']);
+        return array_merge(
+            $meta_caps, 
+            [
+                'edit_post' => 'edit', 
+                'edit_page' => 'edit', 
+                'delete_post' => 'delete', 
+                'delete_page' => 'delete',
+                'edit_post_meta' => 'edit',
+                'delete_post_meta' => 'delete',
+            ]
+        );
     }
 
     function fltAjaxEditActions($actions)
