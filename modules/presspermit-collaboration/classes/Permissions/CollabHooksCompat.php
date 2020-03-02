@@ -18,7 +18,7 @@ class CollabHooksCompat
     {
         $ops[] = 'edit';
 
-        if (defined('PP_PUBLISH_EXCEPTIONS'))
+        if (presspermit()->getOption('publish_exceptions'))
             $ops[] = 'publish';
 
         if (class_exists('Fork', false) && !defined('PP_DISABLE_FORKING_SUPPORT'))

@@ -67,6 +67,7 @@ class SettingsTabEditing
             'fork_require_edit_others' => __('Forking enforces edit_others_posts capability', 'press-permit-core'),
             'force_taxonomy_cols' => __('Add taxonomy columns to Edit Posts screen', 'press-permit-core'),
             'non_admins_set_edit_exceptions' => __('Non-Administrators can set Editing Exceptions for their editable posts', 'press-permit-core'),
+            'publish_exceptions' => __('Assign Publish exceptions separate from Edit exceptions', 'press-permit-core'),
         ];
 
         return array_merge($captions, $opt);
@@ -93,7 +94,7 @@ class SettingsTabEditing
         $sections[$tab] = (isset($sections[$tab])) ? array_merge($sections[$tab], $new) : $new;
 
         // Advanced tab
-        $new = ['permissions_admin' => ['non_admins_set_edit_exceptions']];
+        $new = ['permissions_admin' => ['non_admins_set_edit_exceptions', 'publish_exceptions']];
 
         $tab = 'advanced';
 
@@ -472,6 +473,8 @@ class SettingsTabEditing
         if (('advanced' == $tab) && ('permissions_admin' == $section)) {
             $hint = __('If enabled, presence of the pp_set_edit_exceptions, pp_set_associate_exceptions, etc. capabilities in the WP role will be honored. See list of capabilities below.', 'press-permit-core');
             \PublishPress\Permissions\UI\SettingsAdmin::instance()->optionCheckbox('non_admins_set_edit_exceptions', 'advanced', 'permissions_admin', $hint);
+
+            \PublishPress\Permissions\UI\SettingsAdmin::instance()->optionCheckbox('publish_exceptions', $tab, $section, '');
         }
     }
 

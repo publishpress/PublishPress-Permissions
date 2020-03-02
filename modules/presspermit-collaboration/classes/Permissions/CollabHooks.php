@@ -120,6 +120,7 @@ class CollabHooks
         $new = [
             'role_usage' => [], // note: this stores user-defined pattern role and direct role enable
             'non_admins_set_edit_exceptions' => 0,
+            'publish_exceptions' => defined('PP_PUBLISH_EXCEPTIONS') ? 1 : 0,  // this setting was previously controlled by define statement
         ];
 
         return array_merge($def, $new);
