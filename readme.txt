@@ -48,13 +48,17 @@ PublishPress Permissions [Pro](https://publishpress.com/presspermit/) is [availa
 	
 == Upgrade Notice ==
 
-= 3.0.1 =
+= 3.0.2 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 = 2.1.14 =
 Initial production release
 
 == Changelog ==
+
+= 3.0.2-beta =
+* Feature : Option to apply Publish exceptions separate from Edit exceptions (Permissions > Settings > Advanced > Permissions Admin). Previously available by constant definition.
+* Compat : Divi Page Builder - Non-editors with page-specific editing exceptions could not access some fields within the Divi editor
 
 = 3.0.1 - 28 Feb 2020 =
 * Fixed : RTL languages - PP Permissions plugin screens were offset to the right, with the Save button and/or captions out of view
