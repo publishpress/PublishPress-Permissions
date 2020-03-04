@@ -33,12 +33,12 @@ class Core {
         $url = 'https://publishpress.com/links/permissions-menu';
         ?>
         <style type="text/css">
-        #toplevel_page_presspermit-groups ul li:last-of-type a {font-weight: bold !important; color: #7064A4 !important;}
+        #toplevel_page_presspermit-groups ul li:last-of-type a {font-weight: bold !important; color: #FDB323 !important;}
         </style>
 
 		<script type="text/javascript">
             jQuery(document).ready(function($) {
-                $('#toplevel_page_presspermit-groups ul li:last a').attr('href', '<?php echo $url;?>').attr('target', '_blank').css('font-weight', 'bold').css('color', '#7064A4');
+                $('#toplevel_page_presspermit-groups ul li:last a').attr('href', '<?php echo $url;?>').attr('target', '_blank').css('font-weight', 'bold').css('color', '#FDB323');
             });
         </script>
 		<?php
