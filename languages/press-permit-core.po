@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PressPermit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-02 15:38-0500\n"
+"POT-Creation-Date: 2020-03-04 16:49-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: PublishPress <help@publishpress.com>\n"
@@ -3011,168 +3011,172 @@ msgstr ""
 msgid "You are not allowed to manage Permissions settings"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:24
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:25
 msgid "Sites"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:24
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:25
 msgid "General Roles"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:24
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:25
 msgid "Term / Object Roles"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:24
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:25
 msgid "Restrictions"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:24
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:25
 msgid "Options"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:41
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:42
 msgid "Role Scoper Import Results:"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:46
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:92
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:48
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:95
 msgid "Import completed partially, but reached time limit. Please run again."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:58
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:104
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:60
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:107
 msgid "1 site examined:"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:64
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:110
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:242
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:66
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:113
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:246
 msgid "Nothing to import!"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:69
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:115
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:71
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:118
 #, php-format
 msgid "%1$s imported: %2$s"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:87
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:90
 msgid "Permissions Import Results:"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:131
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:134
 msgid "Previous import values have been deleted"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:149
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:152
 msgid "Role Scoper Import"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:153
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:156
 msgid "Migrates Role Scoper Options, Role Groups, Roles and Restrictions to PublishPress Permissions."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:165
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:168
 #, php-format
 msgid " (%s configuration item previously imported)"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:173
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:219
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:176
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:223
 msgid "<strong>Notes:</strong>"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:176
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:222
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:179
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:226
 msgid "The import can be run multiple times if source values change."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:177
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:223
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:180
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:227
 msgid "Configuration items will be imported even if the request exceeds PHP execution time limit. Repeat as necessary until all items are imported."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:178
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:181
 msgid "Current Role Scoper configuration is not modified or deleted. You will still be able to restore previous behavior by reactivating Role Scoper if necessary."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:179
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:225
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:182
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:229
 msgid "Following import, you should manually review the results and confirm that permissions are correct. Some manual followup may be required."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:180
-msgid "Category Restrictions on Contributor and Author are converted to Term Assignment Exceptions. If you want a user to be blocked from authoring but able to contribute to a category, manually assign \"Post - Assign Term - Also these\" exceptions for desired terms, with status \"(unpublished)\"."
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:183
+msgid "If your Role Scoper configuration has Category Restrictions on the Author or Editor role, Publish exceptions will be enabled to control publishing permissions separate from editing permissions. Existing Edit Exceptions will be mirrored as Publish exceptions to maintain previous access."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:181
-msgid "Category Restrictions on Editor are converted to Post Edit Exceptions. If you want a sitewide Editor to be blocked from editing in some categories but still able to author/contribute to them, you will need to change their sitewide role to Contributor/Author and assign \"Post - Edit - Also these\" exceptions for the categories which they should be a full Editor in."
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:184
+msgid "Category Restrictions on the Editor role are converted to Edit, Publish and Term Assignment Exceptions. If a Post Editor should be blocked from editing other&apos;s posts within a specified category but still be able to submit / edit / publish their own posts in that category, they will need to be switched to a WordPress role that does not have the \"edit_others_pages\" capability. Then additional editing permissions can be granted per-category with \"Also these\" exceptions."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:194
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:196
 msgid "Press Permit Beta (1.x) Import"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:198
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:200
 msgid "Migrates Press Permit 1.x Options, Role Groups, Roles and Conditions."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:210
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:204
+msgid "This is the pre-2013 Pro-only version which was launched prior to Press Permit Core."
+msgstr ""
+
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:214
 #, php-format
 msgid "(%s configuration item previously imported)"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:224
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:228
 msgid "Current Press Permit 0.9/1.x configuration is not modified or deleted. You will still be able to restore previous behavior by reactivating the old version (and associated extensions) if necessary."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:226
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:230
 msgid "Editorial conditions are converted to Post Edit Exceptions for specific posts, assigned to applicable WP Role metagroups."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:227
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:231
 msgid "Supplemental Editor roles for Editability conditions are converted to Exceptions (Post - Edit - Also these) for specific posts."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:228
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:232
 msgid "Contributor Restrict and Author Restrict conditions are converted to Exceptions (all types - Assign Term - Not these), assigned to applicable WP Role metagroups."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:229
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:233
 msgid "Supplemental roles for Bypass Contributor Restrict and Bypass Author Restrict are converted to Exceptions (all types - Assign Term - Also these)"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:230
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:234
 msgid "For WPML, post-specific roles and conditions mirrored to translations are imported. But language-specific sitewide role assignments are no longer supported and not imported."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:231
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:235
 msgid "For bbPress, forum-specific Spectator roles are imported as an Exception on the \"Read\" operation."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:232
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:236
 msgid "For bbPress, forum-specific Participant roles are imported as Exceptions on the \"Read\", \"Create Topics\", and \"Submit Replies\" operations."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:233
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:237
 msgid "For bbPress, forum-specific Moderator roles are imported as Exceptions on the \"Read\", \"Create Topics\", \"Submit Replies\" and \"Edit\" operations."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:234
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:238
 msgid "Other direct roles assigned to specific terms or posts are not imported. If you modified a Role Usage setting from Pattern Role to Direct-Assigned, manually create exceptions as needed."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:251
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:255
 #, php-format
 msgid "Once your import task is complete, you can eliminate this tab by disabling the %s module."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:274
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:278
 msgid "All imported groups, roles, exceptions and options will be deleted. Are you sure?"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:278
+#: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:282
 msgid "Undo All Imports"
 msgstr ""
 
