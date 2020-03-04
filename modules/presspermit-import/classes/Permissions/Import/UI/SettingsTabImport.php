@@ -38,40 +38,43 @@ class SettingsTabImport
             <table class="form-table pp-form-table pp-options-table">
                 <tr>
                     <td>
-                        <h3><?php _e('Role Scoper Import Results:', 'press-permit-core'); ?></h3>
+                        <div class='rsu-issue'>
+                        <h4><?php _e('Role Scoper Import Results:', 'press-permit-core'); ?></h4>
+                        <ul>
                         <?php
 
                         if ($rs_import->timed_out && array_diff($rs_import->num_imported, ['0'])) :
                             ?>
-                            <h4 class="pp-warning"><?php _e('Import completed partially, but reached time limit. Please run again.'); ?></h4>
+                            <li class="pp-warning"><?php _e('Import completed partially, but reached time limit. Please run again.'); ?></li>
                         <?php
                         endif;
 
                         if (!empty($rs_import->return_error) && (defined('PRESSPERMIT_DEBUG') || defined('WP_DEBUG'))) :
                             ?>
-                            <h4 class="pp-warning"><?php echo $rs_import->return_error; ?></h4>
+                            <li class="pp-warning"><?php echo $rs_import->return_error; ?></li>
                         <?php
                         endif;
 
                         if ($rs_import->sites_examined) :
                             ?>
-                            <h4><?php printf(_n('1 site examined:', '%1$s sites examined:', $rs_import->sites_examined, 'press-permit-core'), $rs_import->sites_examined); ?></h4>
+                            <li><?php printf(_n('1 site examined:', '%1$s sites examined:', $rs_import->sites_examined, 'press-permit-core'), $rs_import->sites_examined); ?></li>
                         <?php
                         endif;
 
                         if (!array_diff($rs_import->num_imported, ['0'])) :
                             ?>
-                            <h4 class="pp-warning"><?php _e('Nothing to import!', 'press-permit-core'); ?></h4>
+                            <li class="pp-warning"><?php _e('Nothing to import!', 'press-permit-core'); ?></li>
                         <?php else :
                             foreach ($rs_import->num_imported as $import_type => $num) :
                                 if (!$num) continue;
                                 ?>
-                                <h4 class="pp-success"><?php printf(__('%1$s imported: %2$s', 'press-permit-core'), $rs_import->import_types[$import_type], $num); ?></h4>
+                                <li class="pp-success"><?php printf(__('%1$s imported: %2$s', 'press-permit-core'), $rs_import->import_types[$import_type], $num); ?></li>
                             <?php
                             endforeach;
                         endif;
                         ?>
-
+                        </ul>
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -161,7 +164,7 @@ class SettingsTabImport
             global $wpdb;
             if ($count = $wpdb->get_var("SELECT COUNT(i.ID) FROM $wpdb->ppi_imported AS i INNER JOIN $wpdb->ppi_runs AS r ON i.run_id = r.ID AND r.import_type = 'rs'")) :
                 ?>
-                <span>
+                <span class='prev-imports'>
                 <?php printf(_n(' (%s configuration item previously imported)', ' (%s configuration items previously imported)', $count), $count); ?>
             </span>
             <?php
@@ -169,10 +172,10 @@ class SettingsTabImport
             ?>
             
             <br /><br />
-            <p>
+            <div class='rsu-issue rsu-notes'>
             <?php _e('<strong>Notes:</strong>', 'press-permit-core'); ?>
 
-            <ul class="pp-notes" style="max-width:500px;margin-left:20px">
+            <ul class="pp-notes">
                 <li><?php _e('The import can be run multiple times if source values change.', 'press-permit-core'); ?></li>
                 <li><?php _e('Configuration items will be imported even if the request exceeds PHP execution time limit. Repeat as necessary until all items are imported.', 'press-permit-core'); ?></li>
                 <li><?php _e('Current Role Scoper configuration is not modified or deleted. You will still be able to restore previous behavior by reactivating Role Scoper if necessary.', 'press-permit-core'); ?></li>
@@ -180,13 +183,12 @@ class SettingsTabImport
                 <li><?php _e('If your Role Scoper configuration has Category Restrictions on the Author or Editor role, Publish exceptions will be enabled to control publishing permissions separate from editing permissions. Existing Edit Exceptions will be mirrored as Publish exceptions to maintain previous access.', 'press-permit-core'); ?></li>
                 <li><?php _e('Category Restrictions on the Editor role are converted to Edit, Publish and Term Assignment Exceptions. If a Post Editor should be blocked from editing other&apos;s posts within a specified category but still be able to submit / edit / publish their own posts in that category, they will need to be switched to a WordPress role that does not have the "edit_others_pages" capability. Then additional editing permissions can be granted per-category with "Also these" exceptions.', 'press-permit-core'); ?></li>
             </ul>
-            </p>
+            </div>
         <?php
         endif;
 
         if ($offer_pp = presspermit()->isPro() && $this->hasUnimported('pp')) : ?>
             <?php if ($this->hasUnimported('rs')) : ?>
-                <br/>
                 <hr/>
             <?php endif; ?>
 
@@ -198,7 +200,9 @@ class SettingsTabImport
                 <?php _e('Migrates Press Permit 1.x Options, Role Groups, Roles and Conditions.', 'press-permit-core'); ?>
             </p>
 
-            <br />
+            <div class="pp-subtext">
+                <?php _e('This is the pre-2013 Pro-only version which was launched prior to Press Permit Core.', 'press-permit-core'); ?>
+            </div>
 
             <input name="pp_pp_import" type="submit" value="Do Import"/>
 
@@ -215,7 +219,7 @@ class SettingsTabImport
 
             <br /><br />
 
-            <p>
+            <div class='rsu-issue rsu-notes'>
             <?php _e('<strong>Notes:</strong>', 'press-permit-core'); ?>
 
             <ul class="pp-notes" style="max-width:500px;margin-left:20px">
@@ -233,7 +237,7 @@ class SettingsTabImport
                 <li><?php _e('For bbPress, forum-specific Moderator roles are imported as Exceptions on the "Read", "Create Topics", "Submit Replies" and "Edit" operations.', 'press-permit-core'); ?></li>
                 <li><?php _e('Other direct roles assigned to specific terms or posts are not imported. If you modified a Role Usage setting from Pattern Role to Direct-Assigned, manually create exceptions as needed.', 'press-permit-core'); ?></li>
             </ul>
-            </p>
+            </div>
         <?php
         endif;
 
