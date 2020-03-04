@@ -1022,7 +1022,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                 break;
 
             case 'associate':
-                $data['operation'] = 'parent';
+                $data['operation'] = 'associate';
                 break;
 
             case 'reader':
