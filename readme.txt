@@ -56,9 +56,12 @@ Initial production release
 
 == Changelog ==
 
-= 3.0.2-beta =
+= 3.0.2 =
 * Feature : Option to apply Publish exceptions separate from Edit exceptions (Permissions > Settings > Advanced > Permissions Admin). Previously available by constant definition.
 * Compat : Divi Page Builder - Non-editors with page-specific editing exceptions could not access some fields within the Divi editor
+* Fixed : Import module - corrections to import of RS Category Restrictions on the Post Contributor, Post Author and Post Editor roles
+* Fixed : Import module - corrections to import of Page Associate Restrictions
+* Change : Import module - styling improvements
 
 = 3.0.1 - 28 Feb 2020 =
 * Fixed : RTL languages - PP Permissions plugin screens were offset to the right, with the Save button and/or captions out of view
