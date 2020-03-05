@@ -35,6 +35,13 @@ class CapabilityFilters
                 }
             } else
                 $return['item_id'] = 0;
+        } elseif ($post_type = PWP::findPostType()) {
+            if ($type_obj = get_post_type_object($post_type)) {
+                if (!empty($type_obj->cap->publish_posts) && ($orig_cap == $type_obj->cap->publish_posts)) {
+                    $return['item_type'] = $post_type;
+                    $return['type_caps'] = [$orig_cap];
+                }
+            }
         }
 
         if ($return)
@@ -51,11 +58,12 @@ class CapabilityFilters
             // don't grant publish cap based on a status-specific term addition (such as "unpublished")
             $type_obj = get_post_type_object($args['item_type']);
 
-            if (!defined('PP_PUBLISH_EXCEPTIONS') && $type_obj && (reset($args['orig_reqd_caps']) == $type_obj->cap->publish_posts)) {
-                $stati = [''];
+            if (!presspermit()->getOption('publish_exceptions') && $type_obj && (reset($args['orig_reqd_caps']) == $type_obj->cap->publish_posts)) {
+                $stati[''] = true;
 
-                if (!$item_status || $status_obj->public)
-                    $stati[] = 'post_status:publish';
+                if (!$item_status || $status_obj->public) {
+                    $stati['post_status:publish'] = true;
+            	}
 
                 return $stati;
             }
@@ -79,7 +87,7 @@ class CapabilityFilters
                 $op = 'edit';
                 break;
             case $type_obj->cap->publish_posts:
-                $op = (defined('PP_PUBLISH_EXCEPTIONS')) ? 'publish' : 'edit';
+                $op = (presspermit()->getOption('publish_exceptions')) ? 'publish' : 'edit';
                 break;
             case $type_obj->cap->delete_posts:
                 $op = 'delete';

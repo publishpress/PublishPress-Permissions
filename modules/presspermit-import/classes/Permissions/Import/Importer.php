@@ -220,8 +220,6 @@ class Importer
             $rs_netwide_groups => 12,
             $wpdb->user2role2object_rs => 15,
             $wpdb->role_scope_rs => 16,
-            $wpdb->pp_roles => 25,
-            $wpdb->pp_conditions => 26,
             $wpdb->pp_groups => 30,
             $wpdb->pp_group_members => 31,
             $pp_netwide_groups => 32,
@@ -229,6 +227,15 @@ class Importer
             $wpdb->ppc_exceptions => 36,
             $wpdb->ppc_exception_items => 37,
         ];
+
+        // For Legacy PressPermit 1.0 beta import (circa 2011). To avoid confusion, this is handled by Permissions Pro only.
+        if (!empty($wpdb->pp_roles)) {
+            $this->table_codes[$wpdb->pp_roles] = 25;
+        }
+
+        if (!empty($wpdb->pp_conditions)) {
+            $this->table_codes[$wpdb->pp_conditions] = 26;
+        }
     }
 
     function updateTablecodes()

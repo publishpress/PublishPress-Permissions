@@ -20,7 +20,7 @@ class CollabHooks
             'et_builder_library_get_layout',
             'et_builder_library_get_layouts_data',
             'et_fb_update_builder_assets',
-            'et_fb_ajax_save']
+            ]
             )
         )
         ) {
@@ -120,6 +120,7 @@ class CollabHooks
         $new = [
             'role_usage' => [], // note: this stores user-defined pattern role and direct role enable
             'non_admins_set_edit_exceptions' => 0,
+            'publish_exceptions' => defined('PP_PUBLISH_EXCEPTIONS') ? 1 : 0,  // this setting was previously controlled by define statement
         ];
 
         return array_merge($def, $new);
@@ -185,7 +186,17 @@ class CollabHooks
 			}
 		}
 
-        return array_merge($meta_caps, ['edit_post' => 'edit', 'edit_page' => 'edit', 'delete_post' => 'delete', 'delete_page' => 'delete']);
+        return array_merge(
+            $meta_caps, 
+            [
+                'edit_post' => 'edit', 
+                'edit_page' => 'edit', 
+                'delete_post' => 'delete', 
+                'delete_page' => 'delete',
+                'edit_post_meta' => 'edit',
+                'delete_post_meta' => 'delete',
+            ]
+        );
     }
 
     function fltAjaxEditActions($actions)

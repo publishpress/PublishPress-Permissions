@@ -7,6 +7,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 {
     private $all_post_ids = [];
     private $tt_ids_by_taxonomy = [];
+    private $importing_publish_exceptions;
 
     private static $instance = null;
 
@@ -422,6 +423,11 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
             if ($data['via_item_type'] && !post_type_exists($data['via_item_type']) && !taxonomy_exists($data['via_item_type']))
                 continue;
 
+            $operations = (array) $data['operation'];
+
+            foreach($operations as $operation) {
+                $data['operation'] = $operation;
+
             if (!empty($data['need_site_role']))
                 unset($data['need_site_role']);    // should never be set for restriction import
 
@@ -469,6 +475,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                 }
             }
         }
+        }
 
         // convert inherited_from values from role_scope_rs.requirement_id to ppc_exception_items.eitem_id
         foreach ($rs_inherited_from as $eitem_id => $rs_id) {
@@ -502,6 +509,11 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
             $data['mod_type'] = 'include';
             $data['agent_type'] = 'pp_group';
 
+            $operations = (array) $data['operation'];
+
+            foreach($operations as $operation) {
+                $data['operation'] = $operation;
+
             foreach ($wp_role_restrictions[$row->role_name] as $wp_rolename) {
                 $data['agent_id'] = $pp_agent_id[$wp_rolename];
 
@@ -524,6 +536,11 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                     $log_populated_exceptions[$exception_id] = true;
                 }
             }
+        }
+        }
+
+        if ($this->importing_publish_exceptions) {
+            $this->establish_publish_exceptions();
         }
         // === end RS restrictions import ===
     }
@@ -971,7 +988,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                 } else {
                     if ($importing_rs_restriction) { // mod_type: exclude or include
                         if ('term' == $scope) {
-                            $data['operation'] = 'assign';
+                            $data['operation'] = ['assign', 'edit'];
                         } else {
                             $data['operation'] = 'edit';
                         }
@@ -997,7 +1014,8 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
             case 'author':
                 if ($importing_rs_restriction) { // mod_type: exclude or include
                     if ('term' == $scope) {
-                        $data['operation'] = 'assign';
+                        $data['operation'] = 'publish';
+                        $this->importing_publish_exceptions = true;
                     } else {
                         $data['operation'] = 'edit';
                     }
@@ -1018,11 +1036,16 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                 break;
 
             case 'editor':
+            	if ('term' == $scope) {
+                	$data['operation'] = ['assign', 'edit', 'publish'];
+                	$this->importing_publish_exceptions = true;
+            	} else {
                 $data['operation'] = 'edit';
+            	}
                 break;
 
             case 'associate':
-                $data['operation'] = 'parent';
+                $data['operation'] = 'associate';
                 break;
 
             case 'reader':
@@ -1056,7 +1079,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
         return $data;
     }
 
-    private function get_exception_id(&$stored_exceptions, $data, $restriction_id)
+    private function get_exception_id(&$stored_exceptions, $data, $restriction_id = 0)
     {
         global $blog_id;
 
@@ -1086,10 +1109,103 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
             $stored_exceptions[] = (object)$data;
 
+            if ($restriction_id) {
             $log_data = ['run_id' => $this->run_id, 'source_tbl' => $this->getTableCode($wpdb->role_scope_rs), 'source_id' => $restriction_id, 'import_tbl' => $this->getTableCode($wpdb->ppc_exceptions), 'import_id' => $exception_id, 'site' => $blog_id];
             $wpdb->insert($wpdb->ppi_imported, $log_data);
         }
+        }
 
         return $exception_id;
+    }
+
+    // When importing restrictions as publish exceptions, ensure that PP publish exceptions are enabled.
+    // Also mirror any enabling editing exceptions to corresponding publish exceptions
+    function establish_publish_exceptions() {
+        global $wpdb;
+        
+        update_option('presspermit_publish_exceptions', true);
+
+        $edit_exceptions = $wpdb->get_results(
+            "SELECT * FROM $wpdb->ppc_exceptions WHERE mod_type = 'additional' AND operation = 'edit'"
+        );
+        
+        $publish_exceptions = $wpdb->get_results(
+            "SELECT * FROM $wpdb->ppc_exceptions WHERE mod_type = 'additional' AND operation = 'publish'"
+        );
+        
+        foreach ($edit_exceptions as $exc) {
+            $exc->operation = 'publish';
+            $edit_exception_id = $exc->exception_id;
+            $publish_exception_id = 0;
+
+            // For this exception row, find a corresponding publish exception row
+            foreach ($publish_exceptions as $pub_exc) {
+                foreach ($pub_exc as $key => $val) {
+                    if (!in_array($key, ['exception_id', 'assigner_id']) && ($val != $exc->$key)) {
+                        continue 2;
+                    }
+                }
+
+                $publish_exception_id = $pub_exc->exception_id;
+                break;
+            }
+
+            //pp_errlog("edit exception_id $edit_exception_id, publish exception_id $publish_exception_id");
+
+            // If a corresponding publish exception row is not stored, insert one
+            if (!$publish_exception_id) {
+                $data = (array) $exc;
+                unset($data['exception_id']);
+                $wpdb->insert($wpdb->ppc_exceptions, $data);
+                $publish_exception_id = (int)$wpdb->insert_id;
+            }
+
+            if ($edit_items = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM $wpdb->ppc_exception_items WHERE exception_id = %d", 
+                    $edit_exception_id
+                )
+            )) {
+                $publish_items = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT * FROM $wpdb->ppc_exception_items WHERE exception_id = %d", 
+                        $publish_exception_id
+                    )
+                );
+            
+                // For each existing editing exception item, check whether a corresponding publish exception item is already stored
+                $missing_items = [];
+                foreach($edit_items as $e) {
+                    $matched = false;
+                    foreach($publish_items as $p) {
+                        if (($e->item_id == $p->item_id) 
+                        && ($e->assign_for == $p->assign_for)
+                        && ($e->inherited_from == $p->inherited_from)
+                        ) {
+                            $matched = true;
+                            break;
+                        }
+                    }
+
+                    if (!$matched) {
+                        $missing_items[]= $e;
+                    }
+                }
+
+                // Insert publish exception items as needed
+                if ($missing_items) {
+                    $query = "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, assigner_id, item_id, inherited_from) VALUES";
+                    
+                    foreach($missing_items as $e) {
+                        $query .= "('$e->assign_for', $publish_exception_id, $e->assigner_id, $e->item_id, $e->inherited_from),";
+                    }
+
+                    $query = rtrim($query, ',');
+                    //pp_errlog($query);
+
+                    $wpdb->query($query);
+                }
+            }
+        }
     }
 }

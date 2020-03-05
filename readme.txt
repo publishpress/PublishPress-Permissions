@@ -4,7 +4,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.3.2
 Requires PHP: 5.6.20
-Stable tag: 3.0
+Stable tag: 3.0.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -48,13 +48,28 @@ PublishPress Permissions [Pro](https://publishpress.com/presspermit/) is [availa
 	
 == Upgrade Notice ==
 
-= 3.0 =
+= 3.0.2 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 = 2.1.14 =
 Initial production release
 
 == Changelog ==
+
+= 3.0.2 =
+* Feature : Option to apply Publish exceptions separate from Edit exceptions (Permissions > Settings > Advanced > Permissions Admin). Previously available by constant definition.
+* Compat : Divi Page Builder - Non-editors with page-specific editing exceptions could not access some fields within the Divi editor
+* Fixed : Import module - corrections to import of RS Category Restrictions on the Post Contributor, Post Author and Post Editor roles
+* Fixed : Import module - corrections to import of Page Associate Restrictions
+* Change : Import module - styling improvements
+
+= 3.0.1 - 28 Feb 2020 =
+* Fixed : RTL languages - PP Permissions plugin screens were offset to the right, with the Save button and/or captions out of view
+* Fixed : Featured Images were not properly attached to post if they have an alt text value
+* Fixed : Post editing exceptions did not grant post meta editing capabilities
+* Fixed : Publish capability was not credited from assigned exceptions in some scenarios
+* Compat : PublishPress Revisions 2.2.1 - if set to trigger save_post action on revision publication, do not execute normal Permissions action handlers
+* Compat : Divi Page Builder - Non-editors with page-specific editing exceptions could not use Divi editor
 
 = 3.0 - 20 Feb 2020 =
 * Feature : Collaborative Publishing module ported from Pro edition

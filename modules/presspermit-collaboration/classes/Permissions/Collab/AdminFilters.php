@@ -58,12 +58,20 @@ class AdminFilters
 
     function actSavePost($post_id, $post)
     {
+        if (!empty(presspermit()->flags['ignore_save_post'])) {
+            return;
+        }
+
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
             update_post_meta($post_id, '_pp_is_autodraft', true);
     }
 
     function fltUnloadCurrentUserExceptions($item_id)
     {
+        if (!empty(presspermit()->flags['ignore_save_post'])) {
+            return;
+        }
+
         presspermit()->getUser()->except = []; // force current user exceptions to be reloaded at relevant next capability check
     }
 
@@ -249,7 +257,7 @@ class AdminFilters
         && (
             false !== strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php')
             || ('attachment' == PWP::findPostType())
-            || (false !== strpos($_SERVER['SCRIPT_NAME'], 'admin-ajax.php') && in_array($_REQUEST['action'], ['save-attachment-compat']))
+            || (false !== strpos($_SERVER['SCRIPT_NAME'], 'admin-ajax.php') && in_array($_REQUEST['action'], ['save-attachment', 'save-attachment-compat']))
             )
         ) {
             if (current_user_can('edit_post', $orig_parent_id)) {

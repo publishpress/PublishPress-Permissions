@@ -6,7 +6,7 @@ class Core {
         add_filter('presspermit_options', [$this, 'fltPressPermitOptions'], 15);
 		add_action('presspermit_admin_menu', [$this, 'actAdminMenu'], 999);
 
-        add_action('plugins_loaded', function() {
+        add_action('admin_enqueue_scripts', function() {
             if (presspermitPluginPage()) {
                 wp_enqueue_style('presspermit-settings-free', plugins_url('', PRESSPERMIT_FILE) . '/includes/css/settings.css', [], PRESSPERMIT_VERSION);
             }
@@ -33,12 +33,12 @@ class Core {
         $url = 'https://publishpress.com/links/permissions-menu';
         ?>
         <style type="text/css">
-        #toplevel_page_presspermit-groups ul li:last-of-type a {font-weight: bold !important; color: #7064A4 !important;}
+        #toplevel_page_presspermit-groups ul li:last-of-type a {font-weight: bold !important; color: #FDB323 !important;}
         </style>
 
 		<script type="text/javascript">
             jQuery(document).ready(function($) {
-                $('#toplevel_page_presspermit-groups ul li:last a').attr('href', '<?php echo $url;?>').attr('target', '_blank').css('font-weight', 'bold').css('color', '#7064A4');
+                $('#toplevel_page_presspermit-groups ul li:last a').attr('href', '<?php echo $url;?>').attr('target', '_blank').css('font-weight', 'bold').css('color', '#FDB323');
             });
         </script>
 		<?php
