@@ -27,3 +27,9 @@ position: relative;
 color:#655997;
 font-weight: bold;
 }
+
+body.toplevel_page_presspermit-groups #show-settings-link, body.permissions_page_presspermit-role-usage #show-settings-link {
+position: absolute;
+left: -138px;
+top: 6px;
+}

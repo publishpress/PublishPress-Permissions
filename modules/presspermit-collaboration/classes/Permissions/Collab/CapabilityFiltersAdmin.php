@@ -124,11 +124,12 @@ class CapabilityFiltersAdmin
             }
         } else {
         	// Work around Divi Page Builder requiring excessive or off-type capabilities
-	        if (defined('ET_BUILDER_PLUGIN_VERSION') && ('admin-ajax.php' == $pagenow)) {
+	        if (defined('ET_BUILDER_PLUGIN_VERSION') && strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php')) {
 	            $alt_caps = ['edit_posts' => ['edit_pages']];
 	            
 	            if (did_action('wp_ajax_et_fb_ajax_save') 
 	            || (!empty($_REQUEST['action']) && ('heartbeat' == $_REQUEST['action']) && !empty($_REQUEST['et_fb_autosave']))
+                || (!empty($_REQUEST['action']) && ('et_pb_get_backbone_template' == $_REQUEST['action']))
 	            ) {
 	                $alt_caps = array_merge($alt_caps, ['publish_posts' => ['edit_published_posts', 'edit_published_pages'], 'publish_pages' => ['edit_published_pages'], 'edit_published_posts' => ['edit_published_pages']]);
 	            }

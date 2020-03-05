@@ -7,7 +7,7 @@ class AjaxUI
     {
         $op_captions['edit'] = (object)['label' => __('Edit'), 'noun_label' => __('Editing', 'press-permit-core')];
 
-        if (defined('PP_PUBLISH_EXCEPTIONS'))
+        if (presspermit()->getOption('publish_exceptions'))
             $op_captions['publish'] = (object)['label' => __('Publish'), 'noun_label' => __('Publishing', 'press-permit-core')];
 
         if (defined('REVISIONARY_VERSION'))
@@ -50,7 +50,7 @@ class AjaxUI
             $op_obj = $pp->admin()->getOperationObject('edit', $for_item_type);
             $ops['edit'] = $op_obj->label; //, 'delete' => __('Delete') );
 
-            if (defined('PP_PUBLISH_EXCEPTIONS')) {
+            if (presspermit()->getOption('publish_exceptions')) {
                 $op_obj = $pp->admin()->getOperationObject('publish', $for_item_type);
                 $ops['publish'] = $op_obj->label; //, 'delete' => __('Delete') );
             }

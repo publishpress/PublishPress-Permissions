@@ -77,7 +77,7 @@ class PostEdit
                 $operations[$op] = true;
             }
 
-            if (defined('PP_PUBLISH_EXCEPTIONS') && !empty($operations['edit'])) {
+            if (presspermit()->getOption('publish_exceptions') && !empty($operations['edit'])) {
                 $operations['publish'] = true;
             }
         }

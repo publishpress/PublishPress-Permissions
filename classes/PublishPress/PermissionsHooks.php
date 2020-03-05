@@ -198,6 +198,9 @@ class PermissionsHooks
 
         // already loaded these early, so apply filter again for modules
         $pp->default_options = apply_filters('presspermit_default_options', $pp->default_options);
+        $pp->default_advanced_options = apply_filters('presspermit_default_advanced_options', $pp->default_advanced_options);
+        $pp->default_options = array_merge($pp->default_options, $pp->default_advanced_options);
+
         $pp->site_options = apply_filters('presspermit_options', $pp->site_options);
 
         if (is_multisite()) {
