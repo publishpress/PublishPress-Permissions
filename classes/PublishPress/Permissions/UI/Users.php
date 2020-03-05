@@ -8,13 +8,15 @@ class Users
 
         ?>
         <div class="wrap presspermit-groups">
-            <?php PluginPage::icon(); ?>
-            <h1>
-                <?php
-                _e('User Permissions', 'press-permit-core');
-                ?>
-            </h1>
-
+            <header>
+                <?php PluginPage::icon(); ?>
+                <h1>
+                    <?php
+                    _e('User Permissions', 'press-permit-core');
+                    ?>
+                </h1>
+            </header>
+            
             <div class="pp-bulk-user-perm">
                 <h4>
                     <?php
