@@ -38,7 +38,7 @@ class Core {
 
 		<script type="text/javascript">
             jQuery(document).ready(function($) {
-                $('#toplevel_page_presspermit-groups ul li:last a').attr('href', '<?php echo $url;?>').attr('target', '_blank').css('font-weight', 'bold').css('color', '#FDB323');
+                $('#toplevel_page_presspermit-groups ul li:last a').attr('href', '<?php echo $url;?>').attr('target', '_blank').css('font-weight', 'bold').css('color', '#FEB123');
             });
         </script>
 		<?php
