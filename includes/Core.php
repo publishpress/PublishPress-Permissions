@@ -33,7 +33,7 @@ class Core {
         $url = 'https://publishpress.com/links/permissions-menu';
         ?>
         <style type="text/css">
-        #toplevel_page_presspermit-groups ul li:last-of-type a {font-weight: bold !important; color: #FDB323 !important;}
+        #toplevel_page_presspermit-groups ul li:last-of-type a {font-weight: bold !important; color: #FEB123 !important;}
         </style>
 
 		<script type="text/javascript">
