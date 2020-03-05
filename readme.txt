@@ -4,7 +4,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.3.2
 Requires PHP: 5.6.20
-Stable tag: 3.0.1
+Stable tag: 3.0.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -56,7 +56,7 @@ Initial production release
 
 == Changelog ==
 
-= 3.0.2 =
+= 3.0.2 - 5 Mar 2020 =
 * Feature : Option to apply Publish exceptions separate from Edit exceptions (Permissions > Settings > Advanced > Permissions Admin). Previously available by constant definition.
 * Compat : Divi Page Builder - Non-editors with page-specific editing exceptions could not access some fields within the Divi editor
 * Fixed : Import module - corrections to import of RS Category Restrictions on the Post Contributor, Post Author and Post Editor roles
