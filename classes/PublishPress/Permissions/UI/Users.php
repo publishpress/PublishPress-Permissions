@@ -16,7 +16,7 @@ class Users
                     ?>
                 </h1>
             </header>
-            
+
             <div class="pp-bulk-user-perm">
                 <h4>
                     <?php
