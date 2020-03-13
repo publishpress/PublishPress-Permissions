@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PressPermit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-04 16:49-0500\n"
+"POT-Creation-Date: 2020-03-13 00:34-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: PublishPress <help@publishpress.com>\n"
@@ -20,36 +20,45 @@ msgstr ""
 msgid "<strong>This plugin can be deleted.</strong>"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:117
+#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:119
 msgid "Subscribers"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:117
+#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:119
 msgid "Subscriber"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:118
+#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:120
 msgid "Contributors"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:118
+#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:120
 msgid "Contributor"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:119
+#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:121
 msgid "Authors"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:119
+#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:121
 msgid "Author"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:120
+#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:122
 msgid "Editors"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:120
+#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:122
 msgid "Editor"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:138
+#, php-format
+msgid "Please %senable the Collaborative Publishing module%s for PublishPress Revisions integration."
+msgstr ""
+
+#: F:\snapshot\press-permit-core/classes/PublishPress/PermissionsHooksAdmin.php:142
+msgid "PublishPress Revisions integration requires the Collaborative Publishing module. Please notify your Administrator."
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Admin.php:31
@@ -203,7 +212,7 @@ msgid "Leave Media Library with normal access criteria based on user's role capa
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Constants.php:71
-msgid "On Users listing, PressPermit groups in custom column are list filter links instead of group edit links"
+msgid "On Users listing, Permission groups in custom column are list filter links instead of group edit links"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/Constants.php:72
@@ -1916,11 +1925,16 @@ msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:98
 #, php-format
-msgid "%s Exceptions"
+msgid "Permissions: Select this %s as Parent"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:141
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:307
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:102
+#, php-format
+msgid "Permissions: %s this %s"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:150
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:311
 #, php-format
 msgid "enable custom permissions for %s"
 msgstr ""
@@ -1966,59 +1980,55 @@ msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:127
 #, php-format
-msgid "%1$s %2$s %3$s Exceptions"
+msgid "Permissions: Assign this %2$s to %3$s"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:133
 #, php-format
-msgid "%1$s %2$s Exceptions (all post types)"
+msgid "Permissions: Assign this %2$s"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:140
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:153
 #, php-format
-msgid "%1$s %2$s Exceptions (all post statuses)"
+msgid "Permissions: %1$s %2$s in this %3$s"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:145
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:146
 #, php-format
-msgid "%1$s Exceptions (all post types, statuses)"
+msgid "Permissions: %1$s all content in this %2$s"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:151
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:159
 #, php-format
-msgid "%1$s %2$s Exceptions"
+msgid "Permissions: %1$s this %2$s"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:156
-#, php-format
-msgid "%1$s Exceptions (all post types)"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:233
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:237
 msgid "Update"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:342
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:346
 #, php-format
 msgid "Displayed exceptions are those assigned for the \"%1$s\" type. You can also %2$sdefine universal %3$s exceptions which apply to all related post types%4$s."
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermsListing.php:41
 #, php-format
-msgid "Listed exceptions are those assigned for the \"%1$s\" type. You can also %2$sdefine universal %3$s exceptions which apply to all related post types%4$s."
+msgid "Listed permissions are those assigned for the \"%1$s\" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s."
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermsListing.php:61
-msgid "Click to list/edit universal exceptions"
+msgid "Click to list/edit universal permissions"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermsListing.php:63
 #, php-format
-msgid "%1$s Exceptions %2$s*%3$s"
+msgid "%1$s Permissions %2$s*%3$s"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/TermsListing.php:65
-msgid "Universal Exceptions"
+msgid "Universal Permissions"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/UsersListing.php:63
@@ -2276,7 +2286,7 @@ msgid "Don't try to integrate with the Post Forking plugin"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/Constants.php:25
-msgid "PressPermit setting 'Pages can be set or removed from Top Level by' applies to 'page' type only"
+msgid "Permissions setting 'Pages can be set or removed from Top Level by' applies to 'page' type only"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/Constants.php:26
@@ -2360,7 +2370,7 @@ msgid "Eliminate extra filtering queries on Nav Menu update, even for non-Admini
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/Constants.php:58
-msgid "Don't allow non-Administrators to see others' unattached uploads, regardless of PressPermit settings.  Their own unattached uploads are still accessible unless option 'own_attachments_always_editable' is set false"
+msgid "Don't allow non-Administrators to see others' unattached uploads, regardless of Permissions settings.  Their own unattached uploads are still accessible unless option 'own_attachments_always_editable' is set false"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/Constants.php:65
@@ -2380,11 +2390,11 @@ msgid "Count users as a member of a BuddyPress Permissions Group only if they ar
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/Constants.php:83
-msgid "When searching for users via PressPermit ajax, return return only users registered to current site"
+msgid "When searching for users via Permissions ajax, return return only users registered to current site"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/Constants.php:84
-msgid "If user is a super admin or has 'pp_manage_network_members' capability, user searches via PressPermit ajax return users from all sites"
+msgid "If user is a super admin or has 'pp_manage_network_members' capability, user searches via Permissions ajax return users from all sites"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/Constants.php:92
@@ -2932,6 +2942,11 @@ msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:307
 msgid "select other"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/TermEdit.php:65
+#, php-format
+msgid "Permissions: Select this %1$s as Parent"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/TermEditWorkarounds.php:78
