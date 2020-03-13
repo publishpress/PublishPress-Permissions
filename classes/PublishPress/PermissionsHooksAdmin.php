@@ -35,6 +35,8 @@ class PermissionsHooksAdmin
             require_once(PRESSPERMIT_ABSPATH . '/includes-pro/admin-load.php');
             new Permissions\AdminLoadPro();
         }
+
+        add_action('presspermit_admin_ui', [$this, 'act_revisions_dependency']);
     }
 
     public function init()
@@ -120,6 +122,28 @@ class PermissionsHooksAdmin
         $roles['editor']->labels = (object)['name' => __('Editors', 'press-permit-core'), 'singular_name' => __('Editor', 'press-permit-core')];
 
         return $roles;
+    }
+
+    function act_revisions_dependency() {
+        global $pagenow;
+
+        if (defined('REVISIONARY_VERSION')) {
+            if (!defined('PRESSPERMIT_COLLAB_VERSION')) {
+                if (!presspermitPluginPage() && (empty($_REQUEST['page']) || !in_array($_REQUEST['page'], ['revisionary-q', 'revisionary-settings'])) && ('edit.php' !== $pagenow)) {
+                    return;
+                }
+
+                $msg = current_user_can('pp_manage_settings')
+                ? sprintf(
+                    __('Please %senable the Collaborative Publishing module%s for PublishPress Revisions integration.', 'press-permit-core'),
+                    '<a href="' . admin_url('admin.php?page=presspermit-settings') . '" style="text-decoration:underline">',
+                    '</a>'
+                )
+                : __('PublishPress Revisions integration requires the Collaborative Publishing module. Please notify your Administrator.', 'press-permit-core');
+
+                presspermit()->admin()->notice($msg);
+            }
+        }
     }
 
     // For old extensions linking to page=pp-settings.php, redirect to page=presspermit-settings, preserving other request args
