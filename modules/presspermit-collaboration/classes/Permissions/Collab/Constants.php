@@ -22,7 +22,7 @@ class Constants
         $type = 'editing';
         $consts = [
             'PP_DISABLE_FORKING_SUPPORT' => __("Don't try to integrate with the Post Forking plugin", 'press-permit-core'),
-            'PP_LOCK_OPTION_PAGES_ONLY' => __("PressPermit setting 'Pages can be set or removed from Top Level by' applies to 'page' type only", 'press-permit-core'),
+            'PP_LOCK_OPTION_PAGES_ONLY' => __("Permissions setting 'Pages can be set or removed from Top Level by' applies to 'page' type only", 'press-permit-core'),
             'PPCE_LIMITED_EDITORS_TOP_LEVEL_PUBLISH' => __("If user cannot generally save pages to top level but a page they are editing is already there, allow it to stay at top level even if not yet published ", 'press-permit-core'),
             'PPC_ASSOCIATION_NOFILTER' => __("Circle membership does not limit page association (page parent setting) ability", 'press-permit-core'),
             'PP_AUTO_DEFAULT_TERM' => __("When saving a post, if default term (of any taxonomy) is not in user's subset of assignable terms, substitute first available", 'press-permit-core'),
@@ -55,7 +55,7 @@ class Constants
 
         $type = 'media';
         $consts = [
-            'PP_BLOCK_UNATTACHED_UPLOADS' => __("Don't allow non-Administrators to see others' unattached uploads, regardless of PressPermit settings.  Their own unattached uploads are still accessible unless option 'own_attachments_always_editable' is set false", 'press-permit-core'),
+            'PP_BLOCK_UNATTACHED_UPLOADS' => __("Don't allow non-Administrators to see others' unattached uploads, regardless of Permissions settings.  Their own unattached uploads are still accessible unless option 'own_attachments_always_editable' is set false", 'press-permit-core'),
         ];
         foreach ($consts as $k => $v) $pp_constants[$k] = (object)['descript' => $v, 'type' => $type];
 
@@ -80,8 +80,8 @@ class Constants
         if (is_multisite()) {
             $type = 'user-selection';
             $consts = [
-                'PP_NETWORK_GROUPS_SITE_USERS_ONLY' => __("When searching for users via PressPermit ajax, return return only users registered to current site", 'press-permit-core'),
-                'PP_NETWORK_GROUPS_MAIN_SITE_ALL_USERS' => __("If user is a super admin or has 'pp_manage_network_members' capability, user searches via PressPermit ajax return users from all sites", 'press-permit-core'),
+                'PP_NETWORK_GROUPS_SITE_USERS_ONLY' => __("When searching for users via Permissions ajax, return return only users registered to current site", 'press-permit-core'),
+                'PP_NETWORK_GROUPS_MAIN_SITE_ALL_USERS' => __("If user is a super admin or has 'pp_manage_network_members' capability, user searches via Permissions ajax return users from all sites", 'press-permit-core'),
             ];
             foreach ($consts as $k => $v) $pp_constants[$k] = (object)['descript' => $v, 'type' => $type];
         }

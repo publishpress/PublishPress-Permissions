@@ -68,7 +68,7 @@ foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 
 
 $type = 'admin';
 $consts = [
-    'PP_USERS_UI_GROUP_FILTER_LINK' => __("On Users listing, PressPermit groups in custom column are list filter links instead of group edit links", 'press-permit-core'),
+    'PP_USERS_UI_GROUP_FILTER_LINK' => __("On Users listing, Permission groups in custom column are list filter links instead of group edit links", 'press-permit-core'),
     'PP_ADMIN_READONLY_LISTABLE' => __("Unlock Permissions > Settings > Core > Admin Back End > 'Hide non-editable posts'", 'press-permit-core'),
     'PP_UPLOADS_FORCE_FILTERING' => __("Within the async-upload.php script, filtering author's retrieval of the attachment they just uploaded", 'press-permit-core'),
     'PP_NO_COMMENT_FILTERING' => __("Don't filter comment display or moderation within wp-admin", 'press-permit-core'),
