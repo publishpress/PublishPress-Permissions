@@ -51,12 +51,33 @@ class LibWP
             return $buffer[$post_type];
         }
 
-        $pluginsState = [
-            'classic-editor' => class_exists('Classic_Editor'), // is.php'),
-            'gutenberg' => function_exists('the_gutenberg.php'),
-        ];
+        if (class_exists('Classic_Editor')) {
+			if (isset($_REQUEST['classic-editor__forget']) && isset($_REQUEST['classic'])) {
+				return false;
+			} elseif (isset($_REQUEST['classic-editor__forget']) && !isset($_REQUEST['classic'])) {
+				return true;
+			} elseif (get_option('classic-editor-allow-users') === 'allow') {
+				if ($post_id = self::getPostID()) {
+					$which = get_post_meta( $post_id, 'classic-editor-remember', true );
+
+					if ('block-editor' == $which) {
+						return true;
+					} elseif ('classic-editor' == $which) {
+						return false;
+					}
+				}
+			}
+		}
+
+		$pluginsState = array(
+			'classic-editor' => class_exists( 'Classic_Editor' ), // is_plugin_active('classic-editor/classic-editor.php'),
+			'gutenberg'      => function_exists( 'the_gutenberg_project' ), //is_plugin_active('gutenberg/gutenberg.php'),
+			'gutenberg-ramp' => class_exists('Gutenberg_Ramp'),
+		);
 
         $conditions = [];
+
+        if ($suppress_filter) remove_filter('use_block_editor_for_post_type', $suppress_filter, 10, 2);
 
         /**
          * 5.0:
@@ -64,23 +85,28 @@ class LibWP
          * Classic editor either disabled or enabled (either via an option or with GET argument).
          * It's a hairy conditional :(
          */
-
-        if ($suppress_filter) remove_filter('use_block_editor_for_post_type', $suppress_filter, 10, 2);
-
         // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.Security.NonceVerification.NoNonceVerification
         $conditions[] = self::isWp5()
             && !$pluginsState['classic-editor']
-            && apply_filters('use_block_editor_for_post_type', true, $post_type);
+						&& ! $pluginsState['gutenberg-ramp']
+						&& apply_filters('use_block_editor_for_post_type', true, $post_type, PHP_INT_MAX);
 
-        global $wp_filter;
+		$conditions[] = self::isWp5()
+                        && $pluginsState['classic-editor']
+                        && (get_option('classic-editor-replace') === 'block'
+                            && ! isset($_GET['classic-editor__forget']));
 
-        if ($suppress_filter) add_filter('use_block_editor_for_post_type', $suppress_filter, 10, 2);
+        $conditions[] = self::isWp5()
+                        && $pluginsState['classic-editor']
+                        && (get_option('classic-editor-replace') === 'classic'
+                            && isset($_GET['classic-editor__forget']));
 
         /**
          * < 5.0 but Gutenberg plugin is active.
          */
-        $conditions[] = !self::isWp5() && $pluginsState['gutenberg'];
+		$conditions[] = !self::isWp5() && ($pluginsState['gutenberg'] || $pluginsState['gutenberg-ramp']);
 
+		// Returns true if at least one condition is true.
         $result = count(
                 array_filter($conditions,
                     function ($c) {
