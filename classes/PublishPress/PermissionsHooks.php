@@ -137,7 +137,13 @@ class PermissionsHooks
             // reload certain filters and configuration data on user change
             $this->actInitUser();
         } else {
-            add_action('init', [$this, 'actInitUser'], 70);  // late priority because actInit() and 3rd party filters related to type / taxonomy / cap definitions must execute first
+            // Deal with plugins that apply a post metacap check on the init action
+            if (apply_filters('presspermit_early_init', defined('WPB_VC_VERSION') || defined('PRESSPERMIT_EARLY_INIT'))) {
+                add_action('init', [$this, 'actInitUser'], -1);
+            }
+
+            // late priority because actInit() and 3rd party filters related to type / taxonomy / cap definitions must execute first
+            add_action('init', [$this, 'actInitUser'], 70);
         }
     }
 
