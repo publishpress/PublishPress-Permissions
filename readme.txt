@@ -48,13 +48,17 @@ PublishPress Permissions [Pro](https://publishpress.com/presspermit/) is [availa
 	
 == Upgrade Notice ==
 
-= 3.0.2 =
+= 3.0.3 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
-= 2.1.14 =
-Initial production release
-
 == Changelog ==
+
+= 3.0.3-beta =
+* Change : Metaboxes in Post, Term editors recaptioned as "Permissions: Read this Page", "Permissions: Edit Posts in this Category" etc.
+* Fixed : Non-editors with editing exceptions did not see Edit link on front end Admin Bar if Classic Editor plugin active with "Allow users to switch" setting disabled
+* Compat : Ubermenu - Intermittant failure to retrieve top level menu items broke front end rendering on some sites
+* Compat : WP Bakery Page Builder - Editing exceptions were not effective for users lacking role capabilities
+* Compat : PublishPress Revisions - If Collaborative Publishing module is not enabled, notify about need for it.
 
 = 3.0.2 - 5 Mar 2020 =
 * Feature : Option to apply Publish exceptions separate from Edit exceptions (Permissions > Settings > Advanced > Permissions Admin). Previously available by constant definition.
