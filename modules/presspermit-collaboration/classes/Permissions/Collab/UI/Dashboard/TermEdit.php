@@ -59,13 +59,22 @@ class TermEdit
 
             foreach (['manage', 'associate'] as $op) {
                 if ($op_obj = presspermit()->admin()->getOperationObject($op, $typenow)) {
+
+                    $caption = ('associate' == $op) 
+                    ? sprintf(
+                        __('Permissions: Select this %1$s as Parent', 'press-permit-core'), 
+                        $tx->labels->singular_name
+                    )
+                    : sprintf(
+                        __('Permissions: %1$s this %2$s', 'press-permit-core'), 
+                        $op_obj->label, 
+                        $tx->labels->singular_name
+                    );
+
                     Arr::setElem($add_boxes, [$op, "pp_{$op}_{$taxonomy}_exceptions"]);
                     $add_boxes[$op]["pp_{$op}_{$taxonomy}_exceptions"]['for_item_type'] = $taxonomy;
                     $add_boxes[$op]["pp_{$op}_{$taxonomy}_exceptions"]['for_item_source'] = 'term'; // $taxonomy;
-                    $add_boxes[$op]["pp_{$op}_{$taxonomy}_exceptions"]['title'] = sprintf(
-                        __('%1$s %2$s Exceptions', 'press-permit-core'), 
-                        $tx->labels->singular_name, $op_obj->noun_label
-                    );
+                    $add_boxes[$op]["pp_{$op}_{$taxonomy}_exceptions"]['title'] = $caption;
                 }
             }
 
