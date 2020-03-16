@@ -137,8 +137,8 @@ class AgentPermissionsUI
 
                         ?></select></td>
 
-                <td class="pp-select-x-operation" style="display:none"><select name="pp_select_x_operation" autocomplete="off"></select></td>
-                <td class="pp-select-x-mod-type" style="display:none"><select name="pp_select_x_mod_type" autocomplete="off"></select></td>
+                <td class="pp-select-x-operation" style="display:none"></td>
+                <td class="pp-select-x-mod-type" style="display:none"></td>
 
                 <td class="pp-select-x-via-type" style="display:none"><select name="pp_select_x_via_type" autocomplete="off"></select>
 
