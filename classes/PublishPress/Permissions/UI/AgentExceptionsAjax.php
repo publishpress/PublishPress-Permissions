@@ -53,7 +53,7 @@ class AgentExceptionsAjax
             case 'get_operation_options':
                 // @todo: deal with login timeout in JS to avoid multiple messages
                 if (!is_user_logged_in()) {
-                    echo '<span>' . __('(login timed out)', 'press-permit-core') . '</span>';
+                    echo '<option>' . __('(login timed out)', 'press-permit-core') . '</option>';
                     exit;
                 }
 
@@ -67,18 +67,19 @@ class AgentExceptionsAjax
                     }
                 }
 
-                $html = '<div>';
-                foreach ($ops as $val => $title) {
-                    $html .= "<label><input type='radio' name='pp_select_x_operation' class='pp-select-x-operation' value='$val'> <span>$title</span></label><br />";
+                if (count($ops) > 1) {
+                    $html .= "<option class='pp-opt-none' value=''>" . __('select...', 'press-permit-core') . "</option>";
                 }
-                $html .= '</div>';
 
+                foreach ($ops as $val => $title) {
+                    $html .= "<option value='$val'>$title</option>";
+                }
                 break;
 
             case 'get_mod_options':
                 // @todo: deal with login timeout in JS to avoid multiple messages
                 if (!is_user_logged_in()) {
-                    echo '<span>' . __('(login timed out)', 'press-permit-core') . '</span>';
+                    echo '<option>' . __('(login timed out)', 'press-permit-core') . '</option>';
                     exit;
                 }
 
@@ -105,11 +106,9 @@ class AgentExceptionsAjax
 
                 $modes = apply_filters('presspermit_exception_modes', $modes, $for_source_name, $for_type, $operation);
 
-                $html = '<div>';
                 foreach ($modes as $val => $title) {
-                    $html .= "<label><input type='radio' name='pp_select_x_mod_type' class='pp-select-x-mod-type' value='$val'> <span>$title</span></label><br />";
+                    $html .= "<option value='$val'>$title</option>";
                 }
-                $html .= '</div>';
                 break;
 
             case 'get_via_type_options':
