@@ -39,13 +39,13 @@ class AgentPermissionsUI
         $vars = [
             'addExceptions' => __('Set Specific Permissions', 'press-permit-core'),
             'clearException' => __('clear', 'press-permit-core'),
-            'pleaseReview' => __('Review selection(s) below, then click Save.', 'press-permit-core'),
+            'pleaseReview' => __('Review selection(s) below, then click Save. Saved permissions can be mirrored to other operations by bulk edit.', 'press-permit-core'),
             'alreadyException' => __('Permission already selected!', 'press-permit-core'),
             'noAction' => __('No Action selected!', 'press-permit-core'),
             'submissionMsg' => __('Permissions submission in progress...', 'press-permit-core'),
             'reloadRequired' => __('Reload form for further changes to this permission', 'press-permit-core'),
             'mirrorDone' => __('Permissions mirrored. Reload form to view newly saved permissions.', 'press-permit-core'),
-            'noMode' => __('No Assignment Mode selected!', 'press-permit-core'),
+            'noMode' => __('No Qualification selected!', 'press-permit-core'),
             'ajaxurl' => admin_url(''),
         ];
 

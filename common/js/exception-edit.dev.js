@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-    // ========== Begin "Add Exceptions" UI scripts ==========
+    // ========== Begin "Set Specific Permissions" UI scripts ==========
     var presspermitItemPath = new Object;
     var presspermitAllExceptionData = [];
     var presspermitXid = -1;
@@ -629,7 +629,7 @@ jQuery(document).ready(function ($) {
         $('.categorychecklist', panel).html($items);
         $('img.waiting', panel).hide();
     }
-    // ========== End "Add Exceptions" UI scripts ==========
+    // ========== End "Set Specific Permissions" UI scripts ==========
 
 
     // ========== Begin "Edit Exception" Submission scripts ==========
