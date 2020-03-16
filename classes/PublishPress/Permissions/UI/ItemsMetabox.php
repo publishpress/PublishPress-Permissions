@@ -334,7 +334,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
                     <input type="submit" <?php disabled($nav_menu_selected_id, 0); ?> class="button-secondary submit-add-item-exception"
                         value="<?php
-                        esc_attr_e('Add Exceptions', 'press-permit-core'); ?>" name="add-post-type-menu-item"
+                        esc_attr_e('Add Selected', 'press-permit-core'); ?>" name="add-post-type-menu-item"
                         id="submit-posttype-<?php echo $post_type_name; ?>"/>
 
                 </span>
@@ -525,7 +525,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
                     <input type="submit" <?php disabled($nav_menu_selected_id, 0); ?> class="button-secondary submit-add-item-exception submit-add-<?php
                     echo $post_type_name;
-                    ?>-exception" value="<?php esc_attr_e('Add Exceptions', 'press-permit-core'); ?>" name="add-post-type-menu-item"
+                    ?>-exception" value="<?php esc_attr_e('Add Selected', 'press-permit-core'); ?>" name="add-post-type-menu-item"
                         id="submit-posttype-<?php echo $post_type_name; ?>"/>
 
                 </span>
@@ -788,7 +788,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
                         src="<?php echo esc_url(admin_url('images/wpspin_light.gif')); ?>" alt=""/>
 
                     <input type="submit" <?php disabled($nav_menu_selected_id, 0); ?> class="button-secondary submit-add-item-exception"
-                        value="<?php esc_attr_e('Add Exceptions', 'press-permit-core'); ?>" name="add-taxonomy-menu-item"
+                        value="<?php esc_attr_e('Add Selected', 'press-permit-core'); ?>" name="add-taxonomy-menu-item"
                         id="submit-taxonomy-<?php echo $taxonomy_name; ?>"/>
                 </span>
             </p>

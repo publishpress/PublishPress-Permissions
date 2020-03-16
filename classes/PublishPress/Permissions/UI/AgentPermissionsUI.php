@@ -37,12 +37,12 @@ class AgentPermissionsUI
     public static function exceptionAssignmentScripts()
     {
         $vars = [
-            'addExceptions' => __('Add Exceptions', 'press-permit-core'),
+            'addExceptions' => __('Set Specific Permissions', 'press-permit-core'),
             'clearException' => __('clear', 'press-permit-core'),
             'pleaseReview' => __('Review selection(s) below, then click Save.', 'press-permit-core'),
             'alreadyException' => __('Exception already selected!', 'press-permit-core'),
             'noAction' => __('No Action selected!', 'press-permit-core'),
-            'submissionMsg' => __('Exception submission in progress...', 'press-permit-core'),
+            'submissionMsg' => __('Permissions submission in progress...', 'press-permit-core'),
             'reloadRequired' => __('Reload form for further changes to this exception', 'press-permit-core'),
             'noMode' => __('No Assignment Mode selected!', 'press-permit-core'),
             'ajaxurl' => admin_url(''),
@@ -457,7 +457,7 @@ class AgentPermissionsUI
         if (empty($group) || !in_array($group->metagroup_id, ['wp_anon', 'wp_all']) || defined('PP_ALL_ANON_ROLES'))
             $perms['roles'] = __('Add Supplemental Roles', 'press-permit-core');
 
-        $perms['exceptions'] = __('Add Exceptions', 'press-permit-core');
+        $perms['exceptions'] = __('Set Specific Permissions', 'press-permit-core');
 
         if (!isset($perms['roles']))
             $current_tab = 'pp-add-exceptions';
@@ -729,8 +729,8 @@ class AgentPermissionsUI
 
         if (!$caption) {
             $caption = ('user' == $agent_type)
-                ? sprintf(__('Exceptions %1$s(for user)%2$s', 'press-permit-core'), '<small>', '</small>')
-                : __('Exceptions', 'press-permit-core');
+                ? sprintf(__('Specific Permissions %1$s(for user)%2$s', 'press-permit-core'), '<small>', '</small>')
+                : __('Specific Permissions', 'press-permit-core');
         }
 
         require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Ancestry.php');
@@ -1082,11 +1082,11 @@ class AgentPermissionsUI
                     if (empty($_REQUEST['show_propagated'])) {
                         if ('term' == $via_src) {
                             echo '<div class="pp-current-roles-note">'
-                                . sprintf(__('note: Exceptions inherited from parent %1$s are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')
+                                . sprintf(__('note: Permissions inherited from parent %1$s are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')
                                 . '</div>';
                         } else {
                             echo '<div class="pp-current-roles-note">'
-                                . sprintf(__('note: Exceptions inherited from parent %1$s or terms are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')
+                                . sprintf(__('note: Permissions inherited from parent %1$s or terms are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')
                                 . '</div>';
                         }
                     }

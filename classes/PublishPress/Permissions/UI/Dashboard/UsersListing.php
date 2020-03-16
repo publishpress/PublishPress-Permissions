@@ -112,7 +112,7 @@ class UsersListing
         $style = (!empty($_REQUEST['pp_has_exceptions'])) ? 'style="font-weight:bold; color:black"' : '';
 
         $defaults['pp_exceptions'] = sprintf(
-            __('Exceptions %1$s*%2$s', 'press-permit-core'),
+            __('Specific Permissions %1$s*%2$s', 'press-permit-core'),
             "<a href='?pp_has_exceptions=1' title='$title' $style>",
             '</a>'
         );

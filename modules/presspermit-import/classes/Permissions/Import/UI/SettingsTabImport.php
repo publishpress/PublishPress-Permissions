@@ -180,8 +180,8 @@ class SettingsTabImport
                 <li><?php _e('Configuration items will be imported even if the request exceeds PHP execution time limit. Repeat as necessary until all items are imported.', 'press-permit-core'); ?></li>
                 <li><?php _e('Current Role Scoper configuration is not modified or deleted. You will still be able to restore previous behavior by reactivating Role Scoper if necessary.', 'press-permit-core'); ?></li>
                 <li><?php _e('Following import, you should manually review the results and confirm that permissions are correct. Some manual followup may be required.', 'press-permit-core'); ?></li>
-                <li><?php _e('If your Role Scoper configuration has Category Restrictions on the Author or Editor role, Publish exceptions will be enabled to control publishing permissions separate from editing permissions. Existing Edit Exceptions will be mirrored as Publish exceptions to maintain previous access.', 'press-permit-core'); ?></li>
-                <li><?php _e('Category Restrictions on the Editor role are converted to Edit, Publish and Term Assignment Exceptions. If a Post Editor should be blocked from editing other&apos;s posts within a specified category but still be able to submit / edit / publish their own posts in that category, they will need to be switched to a WordPress role that does not have the "edit_others_pages" capability. Then additional editing permissions can be granted per-category with "Also these" exceptions.', 'press-permit-core'); ?></li>
+                <li><?php _e('If your Role Scoper configuration has Category Restrictions on the Author or Editor role, specific Publish Permissions will be enabled to control publishing permissions separate from editing permissions. Existing specific Edit Permissions will be mirrored as specific Publish Permissions to maintain previous access.', 'press-permit-core'); ?></li>
+                <li><?php _e('Category Restrictions on the Editor role are converted to specific Edit, Publish and Term Assignment Permissions. If a Post Editor should be blocked from editing other&apos;s posts within a specified category but still be able to submit / edit / publish their own posts in that category, they will need to be switched to a WordPress role that does not have the "edit_others_pages" capability. Then specific editing permissions can be granted per-category.', 'press-permit-core'); ?></li>
             </ul>
             </div>
         <?php
@@ -227,15 +227,15 @@ class SettingsTabImport
                 <li><?php _e('Configuration items will be imported even if the request exceeds PHP execution time limit. Repeat as necessary until all items are imported.', 'press-permit-core'); ?></li>
                 <li><?php _e('Current Press Permit 0.9/1.x configuration is not modified or deleted. You will still be able to restore previous behavior by reactivating the old version (and associated extensions) if necessary.', 'press-permit-core'); ?></li>
                 <li><?php _e('Following import, you should manually review the results and confirm that permissions are correct. Some manual followup may be required.', 'press-permit-core'); ?></li>
-                <li><?php _e('Editorial conditions are converted to Post Edit Exceptions for specific posts, assigned to applicable WP Role metagroups.', 'press-permit-core'); ?></li>
+                <li><?php _e('Editorial conditions are converted to Post Edit Permissions for specific posts, assigned to applicable WP Role metagroups.', 'press-permit-core'); ?></li>
                 <li><?php _e('Supplemental Editor roles for Editability conditions are converted to Exceptions (Post - Edit - Also these) for specific posts.', 'press-permit-core'); ?></li>
                 <li><?php _e('Contributor Restrict and Author Restrict conditions are converted to Exceptions (all types - Assign Term - Not these), assigned to applicable WP Role metagroups.', 'press-permit-core'); ?></li>
                 <li><?php _e('Supplemental roles for Bypass Contributor Restrict and Bypass Author Restrict are converted to Exceptions (all types - Assign Term - Also these)', 'press-permit-core'); ?></li>
                 <li><?php _e('For WPML, post-specific roles and conditions mirrored to translations are imported. But language-specific sitewide role assignments are no longer supported and not imported.', 'press-permit-core'); ?></li>
-                <li><?php _e('For bbPress, forum-specific Spectator roles are imported as an Exception on the "Read" operation.', 'press-permit-core'); ?></li>
-                <li><?php _e('For bbPress, forum-specific Participant roles are imported as Exceptions on the "Read", "Create Topics", and "Submit Replies" operations.', 'press-permit-core'); ?></li>
-                <li><?php _e('For bbPress, forum-specific Moderator roles are imported as Exceptions on the "Read", "Create Topics", "Submit Replies" and "Edit" operations.', 'press-permit-core'); ?></li>
-                <li><?php _e('Other direct roles assigned to specific terms or posts are not imported. If you modified a Role Usage setting from Pattern Role to Direct-Assigned, manually create exceptions as needed.', 'press-permit-core'); ?></li>
+                <li><?php _e('For bbPress, forum-specific Spectator roles are imported as forum-specific Permissions on the "Read" operation.', 'press-permit-core'); ?></li>
+                <li><?php _e('For bbPress, forum-specific Participant roles are imported as forum-specific Permissions on the "Read", "Create Topics", and "Submit Replies" operations.', 'press-permit-core'); ?></li>
+                <li><?php _e('For bbPress, forum-specific Moderator roles are imported as forum-specific Permissions on the "Read", "Create Topics", "Submit Replies" and "Edit" operations.', 'press-permit-core'); ?></li>
+                <li><?php _e('Other direct roles assigned to specific terms or posts are not imported. If you modified a Role Usage setting from Pattern Role to Direct-Assigned, manually create specific permissions as needed.', 'press-permit-core'); ?></li>
             </ul>
             </div>
         <?php

@@ -19,17 +19,17 @@ $consts = [
     'PP_RESTRICTION_PRIORITY' => __("Force exclusions ('Not these' / 'Blocked') to take priority over additions ('Also these' / 'Enabled')", 'press-permit-core'),
     'PP_GROUP_RESTRICTIONS' => __("'Not these' / 'Blocked' exceptions (mod_type='exclude') can be applied to custom-defined groups", 'press-permit-core'),
     'PP_ALL_ANON_ROLES' => __("Supplemental roles assignment available for {All} and {Anonymous} metagroups", 'press-permit-core'),
-    'PP_ALL_ANON_FULL_EXCEPTIONS' => __("Allow the {All} and {Anonymous} metagroups to be granted reading exceptions for private content", 'press-permit-core'),
-    'PP_EDIT_EXCEPTIONS_ALLOW_DELETION' => __("PRO: Users who have an editing exception for a post or attachment can also delete it", 'press-permit-core'),
-    'PP_EDIT_EXCEPTIONS_ALLOW_ATTACHMENT_DELETION' => __("PRO: Users who have an editing exception for an attachment can also delete it", 'press-permit-core'),
+    'PP_ALL_ANON_FULL_EXCEPTIONS' => __("Allow the {All} and {Anonymous} metagroups to be granted specific reading permissions for private content", 'press-permit-core'),
+    'PP_EDIT_EXCEPTIONS_ALLOW_DELETION' => __("PRO: Users who have specific editing permissions for a post or attachment can also delete it", 'press-permit-core'),
+    'PP_EDIT_EXCEPTIONS_ALLOW_ATTACHMENT_DELETION' => __("PRO: Users who have custom editing permissions for an attachment can also delete it", 'press-permit-core'),
     'PP_ALLOW_UNFILTERED_FRONT' => __("Disable front end filtering if logged user is a content administrator (normally filter to force inclusion of readable private posts in get_pages() listing, post counts, etc.", 'press-permit-core'),
     'PP_UNFILTERED_FRONT' => __("Disable front end filtering for all users (subject to limitation by PP_UNFILTERED_FRONT_TYPES)", 'press-permit-core'),
     'PP_UNFILTERED_FRONT_TYPES' => __("Comma-separated list of post types to limit the effect of PP_UNFILTERED_FRONT and apply_filters( 'presspermit_skip_cap_filtering' )", 'press-permit-core'),
     'PP_NO_ADDITIONAL_ACCESS' => __("'Also these' / 'Enabled' exceptions (mod_type='additional') are not applied (and cannot be assigned)", 'press-permit-core'),
-    'PP_POST_NO_EXCEPTIONS' => __("Don't assign or apply exceptions for the 'post' type", 'press-permit-core'),
-    'PP_PAGE_NO_EXCEPTIONS' => __("Don't assign or apply exceptions for the 'page' type", 'press-permit-core'),
-    'PP_MEDIA_NO_EXCEPTIONS' => __("Don't assign or apply exceptions for the 'media' type", 'press-permit-core'),
-    'PP_MY_CUSTOM_TYPE_NO_EXCEPTIONS' => __("Don't assign or apply exceptions for the specified custom post type", 'press-permit-core'),
+    'PP_POST_NO_EXCEPTIONS' => __("Don't assign or apply specific permissions for the 'post' type", 'press-permit-core'),
+    'PP_PAGE_NO_EXCEPTIONS' => __("Don't assign or apply specific permissions for the 'page' type", 'press-permit-core'),
+    'PP_MEDIA_NO_EXCEPTIONS' => __("Don't assign or apply specific permissions for the 'media' type", 'press-permit-core'),
+    'PP_MY_CUSTOM_TYPE_NO_EXCEPTIONS' => __("Don't assign or apply specific permissions for the specified custom post type", 'press-permit-core'),
 ];
 foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 'type' => $type];
 
@@ -78,8 +78,8 @@ foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 
 $type = 'permissions-admin';
 $consts = [
     'PP_DISABLE_BULK_ROLES' => "",
-    'PP_FORCE_EXCEPTION_OVERWRITE' => __("If propagating exceptions are assigned to a page branch, overwrite any explicitly assigned exceptions in sub-pages", 'press-permit-core'),
-    'PP_EXCEPTIONS_MAX_INSERT_ROWS' => __("Max number of exceptions to insert in a single database query (default 1000)", 'press-permit-core'),
+    'PP_FORCE_EXCEPTION_OVERWRITE' => __("If propagating permissions are assigned to a page branch, overwrite any explicitly assigned permissions in sub-pages", 'press-permit-core'),
+    'PP_EXCEPTIONS_MAX_INSERT_ROWS' => __("Max number of specific permissions to insert in a single database query (default 1000)", 'press-permit-core'),
     'PP_DISABLE_MENU_TWEAK' => __("Don't tweak the admin menu indexes to position Permissions menu under Users", 'press-permit-core'),
     'PP_FORCE_USERS_MENU' => __("Don't add a Permissions menu. Instead, add menu items to the Users and Settings menus.", 'press-permit-core'),
 ];

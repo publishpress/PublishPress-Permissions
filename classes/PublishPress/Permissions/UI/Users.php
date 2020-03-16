@@ -26,7 +26,7 @@ class Users
                     <?php
                     $url = "users.php";
                     printf(
-                        __('To assign supplemental roles and exceptions directly to a single user, click their "Site Role" cell on the %1$sUsers%2$s screen. The Users listing can be filtered by the following links:', 'press-permit-core'),
+                        __('To assign Supplemental Roles and Specific Permissions directly to a single user, click their "Site Role" cell on the %1$sUsers%2$s screen. The Users listing can be filtered by the following links:', 'press-permit-core'),
                         "<a href='$url'>",
                         '</a>'
                     );
@@ -42,14 +42,14 @@ class Users
                     <br/>
                     <ul class="pp-notes">
                         <li><?php printf(__('%1$sUsers who have Supplemental Roles assigned directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_roles=1'>", '</a>'); ?></li>
-                        <li><?php printf(__('%1$sUsers who have Exceptions assigned directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_exceptions=1'>", '</a>'); ?></li>
-                        <li><?php printf(__('%1$sUsers who have Supplemental Roles or Exceptions directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_perms=1'>", '</a>'); ?></li>
+                        <li><?php printf(__('%1$sUsers who have Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_exceptions=1'>", '</a>'); ?></li>
+                        <li><?php printf(__('%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_perms=1'>", '</a>'); ?></li>
                     </ul>
                     <br/>
                     <ul class="pp-notes">
                         <li><?php printf(__('%1$sUsers who have Supplemental Roles (directly or via group)%2$s', 'press-permit-core'), "<a href='$url?pp_has_roles=1'>", '</a>'); ?></li>
-                        <li><?php printf(__('%1$sUsers who have Exceptions  (directly or via group)%2$s', 'press-permit-core'), "<a href='$url?pp_has_exceptions=1'>", '</a>'); ?></li>
-                        <li><?php printf(__('%1$sUsers who have Supplemental Roles or Exceptions  (directly or via group)%2$s', 'press-permit-core'), "<a href='$url?pp_has_perms=1'>", '</a>'); ?></li>
+                        <li><?php printf(__('%1$sUsers who have Specific Permissions (directly or via group)%2$s', 'press-permit-core'), "<a href='$url?pp_has_exceptions=1'>", '</a>'); ?></li>
+                        <li><?php printf(__('%1$sUsers who have Supplemental Roles or Specific Permissions (directly or via group)%2$s', 'press-permit-core'), "<a href='$url?pp_has_perms=1'>", '</a>'); ?></li>
                     </ul>
                 </div>
 

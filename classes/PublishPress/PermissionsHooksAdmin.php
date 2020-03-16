@@ -20,7 +20,7 @@ class PermissionsHooksAdmin
             new Permissions\Compat\EyesOnlyAdmin();
         }
 
-        // make sure empty terms are included in quick search results in "Add Exceptions" term selection metaboxes
+        // make sure empty terms are included in quick search results in "Set Specific Permissions" term selection metaboxes
         if (PWP::isAjax('pp-menu-quick-search')) {
             require_once(PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
             add_action('wp_ajax_' . sanitize_key($_REQUEST['action']), ['\PublishPress\Permissions\UI\ItemsMetabox', 'ajax_menu_quick_search'], 1);
