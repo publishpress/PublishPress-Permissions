@@ -114,7 +114,7 @@ class AgentPermissionsUI
         <thead>
             <tr>
                 <th><?php _e('Post Type', 'press-permit-core'); ?></th>
-                <th class="pp-select-x-operation" style="display:none"><?php _e('Post Operation', 'press-permit-core'); ?></th>
+                <th class="pp-select-x-operation" style="display:none"><?php _e('Operation', 'press-permit-core'); ?></th>
                 <th class="pp-select-x-mod-type" style="display:none"><?php _e('Adjustment', 'press-permit-core'); ?></th>
                 <th class="pp-select-x-via-type" style="display:none"><?php _e('Qualification', 'press-permit-core'); ?></th>
                 <th class="pp-select-x-status" style="display:none"><?php _e('Statuses', 'press-permit-core'); ?></th>
@@ -444,7 +444,7 @@ class AgentPermissionsUI
             -->
 
             <p class="submit">
-                <input id="submit_exc" class="button button-primary" type="submit" value="<?php _e('Save Exceptions', 'press-permit-core'); ?>" name="submit">
+                <input id="submit_exc" class="button button-primary" type="submit" value="<?php _e('Save Permissions', 'press-permit-core'); ?>" name="submit">
             </p>
 
         </div>
@@ -1327,12 +1327,12 @@ class AgentPermissionsUI
 
         if (!isset($mod_types)) {
             $mod_types = [
-                'include' => (object)['label' => __('Only these:', 'press-permit-core')],
-                'exclude' => (object)['label' => __('Not these:', 'press-permit-core')],
+                'include' => (object)['label' => __('Limit to:', 'press-permit-core')],
+                'exclude' => (object)['label' => __('Blocked:', 'press-permit-core')],
             ];
 
             if (!defined('PP_NO_ADDITIONAL_ACCESS')) {
-                $mod_types['additional'] = (object)['label' => __('Also these:', 'press-permit-core')];
+                $mod_types['additional'] = (object)['label' => __('Enabled:', 'press-permit-core')];
             }
         }
         return (isset($mod_types[$mod_type])) ? $mod_types[$mod_type] : (object)[];
