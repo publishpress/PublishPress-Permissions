@@ -44,6 +44,7 @@ class AgentPermissionsUI
             'noAction' => __('No Action selected!', 'press-permit-core'),
             'submissionMsg' => __('Permissions submission in progress...', 'press-permit-core'),
             'reloadRequired' => __('Reload form for further changes to this permission', 'press-permit-core'),
+            'mirrorDone' => __('Permissions mirrored. Reload form to view newly saved permissions.', 'press-permit-core'),
             'noMode' => __('No Assignment Mode selected!', 'press-permit-core'),
             'ajaxurl' => admin_url(''),
         ];
@@ -432,6 +433,16 @@ class AgentPermissionsUI
 
         <div id="pp_save_exceptions"><?php
                                         ?>
+            <!--
+            <p class="mirror-wrap">
+                <div class="mirror-label">
+                    <?php _e('Mirror all selections to other operation(s)', 'press-permit-core');?>
+                </div>
+                <div class='pp_mirror_to_operations'>    
+                </div>
+            </p>
+            -->
+
             <p class="submit">
                 <input id="submit_exc" class="button button-primary" type="submit" value="<?php _e('Save Exceptions', 'press-permit-core'); ?>" name="submit">
             </p>
@@ -1036,6 +1047,68 @@ class AgentPermissionsUI
                                 . '</option>';
                         }
 
+                        if ('associate' == $operation) {
+                            $_op = ('term' == $via_src) ? 'term_associate' : 'post_associate';
+                        } else {
+                            $_op = $operation;
+                        }
+
+                        if (in_array($via_src, ['post', 'term'])) {
+                            switch ($_op) {
+                                case 'read':
+                                case 'edit':
+                                case 'publish':
+                                case 'post_associate':
+                                case 'assign':
+                                    $mirror_ops = ['read', 'edit'];
+
+                                    if ($pp->getOption('publish_exceptions')) {
+                                        $mirror_ops []= 'publish';
+                                    }
+
+                                    if ('term' == $via_src) {
+                                        $mirror_ops []= 'assign';
+                                    }
+
+                                    if ($for_type_obj->hierarchical) {
+                                        $mirror_ops []= 'associate';
+                                    }
+                                    
+                                    break;
+
+                                case 'manage':
+                                case 'term_associate':
+                                    $mirror_ops = ['manage'];
+
+                                    if ($for_type_obj->hierarchical) {
+                                        $mirror_ops []= 'associate';
+                                    }
+
+                                    break;
+                            }
+
+                            $mirror_ops = array_diff($mirror_ops, [$operation]);
+
+                            foreach($mirror_ops as $op) {
+                                $op_obj = $pp_admin->getOperationObject($op);
+
+                                $caption = (('assign' == $op) || !$for_type || ('term' == $for_type)) 
+                                ? sprintf(
+                                    __('Mirror to %s', 'press-permit-core'),
+                                    $op_obj->label
+                                )
+                                : sprintf(
+                                    __('Mirror to %s %s', 'press-permit-core'),
+                                    $op_obj->label,
+                                    $for_type_obj->labels->singular_name
+                                );
+
+                                echo "<option value='mirror_$op'>"
+                                    . $caption
+                                    . '</option>';
+                            }
+                        }
+
                         echo '</select>';
                         ?>
                         <input type="submit" name="" class="button submit-edit-item-exception" value="<?php _e('Apply', 'press-permit-core'); ?>" />
@@ -1043,6 +1116,10 @@ class AgentPermissionsUI
                         echo '<img class="waiting" style="display:none;" src="'
                             . esc_url(admin_url('images/wpspin_light.gif'))
                             . '" alt="" />';
+
+                        ?>
+                        <div class="mirror-confirm" style="display:none"></div>
+                        <?php
 
                         echo '</div>';  // pp-exception-bulk-edit
 

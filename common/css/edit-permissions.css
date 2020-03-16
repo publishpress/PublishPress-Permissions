@@ -232,6 +232,38 @@ div.pp-add-clone {
     margin-right: 10px;
 }
 
+#pp_review_exceptions div.mirror-label {
+    font-weight: bold;
+}
+
+div.mirror-confirm {
+    border-left-color: #46b450 !important;
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-left-color: rgb(204, 208, 212);
+    border-left-width: 1px;
+    border-left-width: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    margin: 5px 15px 2px 0;
+    padding: 1px 12px;
+}
+
+/* @todo?
+#pp_review_exceptions div.pp_mirror_to_operations {
+    padding-left: 10px;
+    padding-top: 4px;
+}
+
+#pp_review_exceptions div.pp_mirror_to_operations label {
+    margin-left: 10px;
+    margin-right: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+*/
+
 /*---- Bulk Edit Exceptions ----*/
 .pp-role-bulk-edit, .pp-exception-bulk-edit {
     margin: 0.5em 0 2em 2em;
@@ -371,6 +403,10 @@ label.role_both:after {
     color: #777;
 }
 
+input.exc-copied {
+    background-color: #afa !important;
+    border: 1px solid black !important;
+}
 label.role_ch:after {
     content: " *";
 }

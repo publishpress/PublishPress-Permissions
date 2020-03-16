@@ -94,6 +94,17 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', '.submit-add-item-exception', function (e) {
         presspermitXaddItemException('menu-item');
+
+        /* Possible future development: mirror on initial creation of exceptions
+        var mops = '';
+
+        $('td.pp-select-x-operation input').each(function(i) {
+            mops += ' <label><input type="checkbox" name="pp_add_exceptions_mirror_ops[]" value="' + $(this).val() + '" /><span>' + $(this).next('span').html() + '</span></label>';
+        });
+
+        $('div.pp_mirror_to_operations').html(mops);
+        */
+
         return false;
     });
 
@@ -690,6 +701,9 @@ jQuery(document).ready(function ($) {
             case 'exceptions_children_only':
                 set_class = 'role_ch';
                 break;
+            case 'exceptions_mirror':
+                set_class = 'exc-copied';
+                break;
             default:
                 return;
         }
@@ -698,6 +712,12 @@ jQuery(document).ready(function ($) {
 
         $.each(edited_eitem_ids, function (index, value) {
             cbid = $('#pp_current_exceptions input[name="pp_edit_exception[]"][value="' + value + '"]').attr('id');
+            
+            if ('exceptions_mirror' == operation) {
+                $('#' + cbid).closest('div').find('label input').attr('class', set_class);
+                $('#' + cbid).prop('checked', false);
+                $('#' + cbid).closest('div.pp-current-type-roles').find('div.pp-exception-bulk-edit div.mirror-confirm').html(ppRestrict.mirrorDone).show();
+            } else {
             $('#' + cbid).closest('div').find('label').attr('class', set_class);
 
             // temp workaround for Ajax UI limitation
@@ -705,6 +725,7 @@ jQuery(document).ready(function ($) {
                 $('#' + cbid).closest('div').find('input').prop('checked', false);
                 $('#' + cbid).closest('div').find('input').prop('disabled', true);
                 $('#' + cbid).closest('div').find('label').attr('title', ppRestrict.reloadRequired);
+                }
             }
         });
     }
