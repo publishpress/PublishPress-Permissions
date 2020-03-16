@@ -35,6 +35,8 @@ class PermissionsHooks
 		if (presspermit()->isPro()) {
         	add_action('admin_init', [$this, 'loadUpdater']);
 		}
+        
+        add_action('user_has_cap', [$this, 'fltEarlyUserHasCap'], 50, 3);
     }
 
 	public function loadUpdater() {
@@ -137,14 +139,24 @@ class PermissionsHooks
             // reload certain filters and configuration data on user change
             $this->actInitUser();
         } else {
-            // Deal with plugins that apply a post metacap check on the init action
-            if (apply_filters('presspermit_early_init', defined('WPB_VC_VERSION') || defined('PRESSPERMIT_EARLY_INIT'))) {
-                add_action('init', [$this, 'actInitUser'], -1);
+            // late priority because actInit() and 3rd party filters related to type / taxonomy / cap definitions must execute first
+            add_action('init', [$this, 'actNormalInitUser'], 70);
+        }
+    }
+
+    public function fltEarlyUserHasCap($wp_sitecaps, $orig_reqd_caps, $args)
+    {
+        // Deal with plugins (WP Bakery Page Builder) that apply an 'edit_post' metacap check on the init action
+        if (isset($args[0]) && in_array($args[0], ['edit_post']) && !did_action('presspermit_init_user_complete')) {
+            $this->actInitUser();
             }
 
-            // late priority because actInit() and 3rd party filters related to type / taxonomy / cap definitions must execute first
-            add_action('init', [$this, 'actInitUser'], 70);
+        return $wp_sitecaps;
         }
+
+    public function actNormalInitUser() {
+        $this->actInitUser();
+        do_action('presspermit_init_user_complete');
     }
 
     // executes late on the 'init' action (priority 50)
