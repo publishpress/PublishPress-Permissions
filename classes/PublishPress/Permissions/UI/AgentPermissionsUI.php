@@ -252,7 +252,7 @@ class AgentPermissionsUI
         <tbody>
             <tr>
                 <td>
-                    <select name="pp_select_type">
+                    <select name="pp_select_type" autocomplete="off">
                         <?php
                         self::drawTypeOptions($type_objects, ['option_na' => true]);
                         do_action('presspermit_role_types_dropdown');
@@ -996,7 +996,7 @@ class AgentPermissionsUI
                                         } else {
                                             $edit_url = admin_url("post.php?post=$item_id&action=edit");
                                         }
-                                        echo "<div><label for='$cb_id' $lbl_class><input id='$cb_id' type='checkbox' name='pp_edit_exception[]' value='$ass_id' $class> " . $item_path . '</label><a href="' . $edit_url . '">' . __('edit') . '</a></div>';
+                                        echo "<div><label for='$cb_id' $lbl_class><input id='$cb_id' type='checkbox' name='pp_edit_exception[]' value='$ass_id' $class autocomplete='off'> " . $item_path . '</label><a href="' . $edit_url . '">' . __('edit') . '</a></div>';
                                     }
                                 } // end foreach item
 
@@ -1018,7 +1018,7 @@ class AgentPermissionsUI
 
                         echo '<div class="pp-exception-bulk-edit" style="display:none">';
 
-                        echo "<select><option value=''>" . PWP::__wp('Bulk Actions')
+                        echo "<select autocomplete='off'><option value='' autocomplete='off'>" . PWP::__wp('Bulk Actions')
                             . "</option><option value='remove'>" . __('Remove', 'press-permit-core') . '</option>';
 
                         if (('post' == $via_src) && (!$via_type || $via_type_obj->hierarchical)) {
