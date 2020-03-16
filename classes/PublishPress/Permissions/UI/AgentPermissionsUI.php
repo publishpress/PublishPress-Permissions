@@ -182,8 +182,8 @@ class AgentPermissionsUI
 
                 var handle_anon_warning = function()
                 {
-                    if (('read' == $('select[name="pp_select_x_operation"]').val()) &&
-                        ('additional' != $('select[name="pp_select_x_mod_type"]').val()) &&
+                    if (('read' == $('input[name="pp_select_x_operation"]').val()) &&
+                        ('additional' != $('input[name="pp_select_x_mod_type"]').val()) &&
                         ('pp-post-object' == $('select[name="pp_select_x_via_type"] option:selected').attr('class'))) {
                         $('#pp-all-anon-warning').show();
                     } else {
