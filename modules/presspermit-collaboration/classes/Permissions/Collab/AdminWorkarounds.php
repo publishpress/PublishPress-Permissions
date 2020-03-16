@@ -246,7 +246,7 @@ class AdminWorkarounds
                     'ug_clause' => $ug_clause]
                 );
 
-                // block term creation if user is bound by "Only these" exceptions for term management (but allow if a propagating exception for selected term parent will apply)
+                // block term creation if user is bound by "Limit to" exceptions for term management (but allow if a propagating exception for selected term parent will apply)
                 if ($includes = $user->getExceptionTerms('manage', 'include', $post_type, $taxonomy, ['merge_universals' => true])) {
                     if (!$term_parent || !$new_term_exceptions || (
                         empty($new_term_exceptions['manage_term']['term'][$taxonomy]['include']) 

@@ -367,9 +367,9 @@ class AgentPermissions
                         echo '<div class="pp_exceptions_notes">';
                         echo '<div><strong>' . __('Specific Permissions Explained:', 'press-permit-core') . '</strong>';
                         echo "<ul>";
-                        echo "<li>" . __('Not These : Specified items are not accessible unless an "Also These" exception is also stored.', 'press-permit-core') . '</li>';
-                        echo "<li>" . __('Only These : Item access as defined by user / group role(s) is further limited by these selections. Users will still need sufficient capabilities in their primary or supplemental roles.', 'press-permit-core') . '</li>';
-                        echo "<li>" . __('Also These : Specified items are accessible regardless of role(s) and other exceptions.', 'press-permit-core') . '</li>';
+                        echo "<li>" . __('"Block" : Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core') . '</li>';
+                        echo "<li>" . __('"Limit to" : Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.', 'press-permit-core') . '</li>';
+                        echo "<li>" . __('"Enable" : Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core') . '</li>';
                         echo "</ul>";
                         echo '</div>';
 

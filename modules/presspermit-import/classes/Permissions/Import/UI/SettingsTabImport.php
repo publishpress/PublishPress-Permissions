@@ -228,9 +228,9 @@ class SettingsTabImport
                 <li><?php _e('Current Press Permit 0.9/1.x configuration is not modified or deleted. You will still be able to restore previous behavior by reactivating the old version (and associated extensions) if necessary.', 'press-permit-core'); ?></li>
                 <li><?php _e('Following import, you should manually review the results and confirm that permissions are correct. Some manual followup may be required.', 'press-permit-core'); ?></li>
                 <li><?php _e('Editorial conditions are converted to Post Edit Permissions for specific posts, assigned to applicable WP Role metagroups.', 'press-permit-core'); ?></li>
-                <li><?php _e('Supplemental Editor roles for Editability conditions are converted to Exceptions (Post - Edit - Also these) for specific posts.', 'press-permit-core'); ?></li>
-                <li><?php _e('Contributor Restrict and Author Restrict conditions are converted to Exceptions (all types - Assign Term - Not these), assigned to applicable WP Role metagroups.', 'press-permit-core'); ?></li>
-                <li><?php _e('Supplemental roles for Bypass Contributor Restrict and Bypass Author Restrict are converted to Exceptions (all types - Assign Term - Also these)', 'press-permit-core'); ?></li>
+                <li><?php _e('Supplemental Editor roles for Editability conditions are converted to Specific Permissions (Post - Edit - Enabled) for all relevant posts.', 'press-permit-core'); ?></li>
+                <li><?php _e('Contributor Restrict and Author Restrict conditions are converted to Specific Permissions (all types - Assign Term - Blocked), assigned to applicable WP Role metagroups.', 'press-permit-core'); ?></li>
+                <li><?php _e('Supplemental roles for Bypass Contributor Restrict and Bypass Author Restrict are converted to Specific Permissions (all types - Assign Term - Enabled)', 'press-permit-core'); ?></li>
                 <li><?php _e('For WPML, post-specific roles and conditions mirrored to translations are imported. But language-specific sitewide role assignments are no longer supported and not imported.', 'press-permit-core'); ?></li>
                 <li><?php _e('For bbPress, forum-specific Spectator roles are imported as forum-specific Permissions on the "Read" operation.', 'press-permit-core'); ?></li>
                 <li><?php _e('For bbPress, forum-specific Participant roles are imported as forum-specific Permissions on the "Read", "Create Topics", and "Submit Replies" operations.', 'press-permit-core'); ?></li>

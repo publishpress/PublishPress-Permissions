@@ -95,14 +95,14 @@ class AgentExceptionsAjax
                         || defined('PP_ALL_ANON_FULL_EXCEPTIONS'))
                     && !defined('PP_NO_ADDITIONAL_ACCESS')
                 ) {
-                    $modes['additional'] = __('Also these:', 'press-permit-core');
+                    $modes['additional'] = __('Enable:', 'press-permit-core');
                 }
 
                 if (('user' == $agent_type) || $is_wp_role || ('assign' == $operation) || defined('PP_GROUP_RESTRICTIONS')) {
-                    $modes['exclude'] = __('Not these:', 'press-permit-core');
+                    $modes['exclude'] = __('Block:', 'press-permit-core');
                 }
 
-                $modes['include'] = __('Only these:', 'press-permit-core');
+                $modes['include'] = __('Limit to:', 'press-permit-core');
 
                 $modes = apply_filters('presspermit_exception_modes', $modes, $for_source_name, $for_type, $operation);
 

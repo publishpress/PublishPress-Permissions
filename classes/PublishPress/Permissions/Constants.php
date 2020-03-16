@@ -16,8 +16,8 @@ class Constants
 private function loadConstants() {
 $type = 'filtering-switches';
 $consts = [
-    'PP_RESTRICTION_PRIORITY' => __("Force exclusions ('Not these' / 'Blocked') to take priority over additions ('Also these' / 'Enabled')", 'press-permit-core'),
-    'PP_GROUP_RESTRICTIONS' => __("'Not these' / 'Blocked' exceptions (mod_type='exclude') can be applied to custom-defined groups", 'press-permit-core'),
+    'PP_RESTRICTION_PRIORITY' => __("Specific Permissions: restrictions ('Blocked') take priority over additions ('Enabled')", 'press-permit-core'),
+    'PP_GROUP_RESTRICTIONS' => __("Specific Permissions: restrictions ('Blocked') can be applied to custom-defined groups", 'press-permit-core'),
     'PP_ALL_ANON_ROLES' => __("Supplemental roles assignment available for {All} and {Anonymous} metagroups", 'press-permit-core'),
     'PP_ALL_ANON_FULL_EXCEPTIONS' => __("Allow the {All} and {Anonymous} metagroups to be granted specific reading permissions for private content", 'press-permit-core'),
     'PP_EDIT_EXCEPTIONS_ALLOW_DELETION' => __("PRO: Users who have specific editing permissions for a post or attachment can also delete it", 'press-permit-core'),
@@ -25,7 +25,7 @@ $consts = [
     'PP_ALLOW_UNFILTERED_FRONT' => __("Disable front end filtering if logged user is a content administrator (normally filter to force inclusion of readable private posts in get_pages() listing, post counts, etc.", 'press-permit-core'),
     'PP_UNFILTERED_FRONT' => __("Disable front end filtering for all users (subject to limitation by PP_UNFILTERED_FRONT_TYPES)", 'press-permit-core'),
     'PP_UNFILTERED_FRONT_TYPES' => __("Comma-separated list of post types to limit the effect of PP_UNFILTERED_FRONT and apply_filters( 'presspermit_skip_cap_filtering' )", 'press-permit-core'),
-    'PP_NO_ADDITIONAL_ACCESS' => __("'Also these' / 'Enabled' exceptions (mod_type='additional') are not applied (and cannot be assigned)", 'press-permit-core'),
+    'PP_NO_ADDITIONAL_ACCESS' => __("Specific Permissions: additions ('Enabled') are not applied, cannot be assigned", 'press-permit-core'),
     'PP_POST_NO_EXCEPTIONS' => __("Don't assign or apply specific permissions for the 'post' type", 'press-permit-core'),
     'PP_PAGE_NO_EXCEPTIONS' => __("Don't assign or apply specific permissions for the 'page' type", 'press-permit-core'),
     'PP_MEDIA_NO_EXCEPTIONS' => __("Don't assign or apply specific permissions for the 'media' type", 'press-permit-core'),
