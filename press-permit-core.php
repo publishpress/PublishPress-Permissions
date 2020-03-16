@@ -96,6 +96,11 @@ if (!defined('PRESSPERMIT_FILE') && !$pro_active) {
             require_once(__DIR__ . '/includes/Core.php');
             new \PublishPress\Permissions\Core();
 
+            if (is_admin()) {
+                require_once(__DIR__ . '/includes/CoreAdmin.php');
+                new \PublishPress\Permissions\CoreAdmin();
+            }
+
             if (!defined('PRESSPERMIT_LEGACY_HOOKS')) {
                 define('PRESSPERMIT_LEGACY_HOOKS', false);
             }
