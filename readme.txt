@@ -4,7 +4,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.3.2
 Requires PHP: 5.6.20
-Stable tag: 3.0.2
+Stable tag: 3.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -53,7 +53,7 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.1-beta =
+= 3.1 - 16 Mar 2020 =
 * Change : Metaboxes in Post, Term editors recaptioned as "Permissions: Read this Page", "Permissions: Edit Posts in this Category" etc.
 * Change : Edit Group / User Permissions - Exceptions recaptioned as "Specific Permissions"
 * Change : Edit Group / User Permissions - "Also these / Not these / Only these" recaptioned as "Enable / Block / Limit to"
