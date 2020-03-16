@@ -48,13 +48,21 @@ PublishPress Permissions [Pro](https://publishpress.com/presspermit/) is [availa
 	
 == Upgrade Notice ==
 
-= 3.0.3 =
+= 3.1 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
-= 3.0.3-beta =
+= 3.1-beta =
 * Change : Metaboxes in Post, Term editors recaptioned as "Permissions: Read this Page", "Permissions: Edit Posts in this Category" etc.
+* Change : Edit Group / User Permissions - Exceptions recaptioned as "Specific Permissions"
+* Change : Edit Group / User Permissions - "Also these / Not these / Only these" recaptioned as "Enable / Block / Limit to"
+* Change : Edit Group / User Permissions - "Associate (as Parent)" operation recaptioned as "Set as Parent"
+* Change : Edit Group / User Permissions - Operation and Adjustment selection UI uses radio buttons (for new Specific Permissions) instead of dropdown select
+* Change : Edit Group / User Permissions - Operation, Adjustment and Qualification selections persist (for new Specific Permissions) until changed
+* Change : Edit Group / User Permissions - Minor styling improvements
+* Feature : Edit Group / User Permissions - Mirror currently stored Specific Permissions to another operation (new bulk edit action). Example: copy "Edit Page" restrictions as "Set as Parent" restrictions. 
+* Fixed : Edit Group / User Permissions - Bulk edit checkboxes were re-selected by browser autocomplete
 * Fixed : Non-editors with editing exceptions did not see Edit link on front end Admin Bar if Classic Editor plugin active with "Allow users to switch" setting disabled
 * Compat : Ubermenu - Intermittant failure to retrieve top level menu items broke front end rendering on some sites
 * Compat : WP Bakery Page Builder - Editing exceptions were not effective for users lacking role capabilities
