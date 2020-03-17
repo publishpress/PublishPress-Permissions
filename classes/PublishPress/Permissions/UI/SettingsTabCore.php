@@ -52,7 +52,7 @@ class SettingsTabCore
             'display_user_profile_roles' => __('Supplemental Roles on User Profile', 'press-permit-core'),
             'new_user_groups_ui' => __('Select Permission Groups at User creation', 'press-permit-core'),
             'admin_hide_uneditable_posts' => __('Hide non-editable posts', 'press-permit-core'),
-            'post_blockage_priority' => __('Post-assigned Exceptions take priority', 'press-permit-core'),
+            'post_blockage_priority' => __('Post-specific Permissions take priority', 'press-permit-core'),
         ];
 
         return array_merge($captions, $opt);
@@ -98,7 +98,7 @@ class SettingsTabCore
                 <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
                 <td>
                     <?php
-                    $hint = __('If disabled, manually "blocked" posts can be unblocked by Category / Term Exceptions.  Enabling this setting will provide more intuitive behavior, but may require configuration review and testing on prior installations.', 'press-permit-core');
+                    $hint = __('If disabled, manually "blocked" posts can be unblocked by specific Category / Term Permissions.  Enabling this setting will provide more intuitive behavior, but may require configuration review and testing on prior installations.', 'press-permit-core');
                     $ui->optionCheckbox('post_blockage_priority', $tab, $section, $hint);
                     ?>
                 </td>

@@ -4,7 +4,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.3.2
 Requires PHP: 5.6.20
-Stable tag: 3.0.2
+Stable tag: 3.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -48,13 +48,25 @@ PublishPress Permissions [Pro](https://publishpress.com/presspermit/) is [availa
 	
 == Upgrade Notice ==
 
-= 3.0.2 =
+= 3.1 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
-= 2.1.14 =
-Initial production release
-
 == Changelog ==
+
+= 3.1 - 16 Mar 2020 =
+* Change : Metaboxes in Post, Term editors recaptioned as "Permissions: Read this Page", "Permissions: Edit Posts in this Category" etc.
+* Change : Edit Group / User Permissions - Exceptions recaptioned as "Specific Permissions"
+* Change : Edit Group / User Permissions - "Also these / Not these / Only these" recaptioned as "Enable / Block / Limit to"
+* Change : Edit Group / User Permissions - "Associate (as Parent)" operation recaptioned as "Set as Parent"
+* Change : Edit Group / User Permissions - Operation and Adjustment selection UI uses radio buttons (for new Specific Permissions) instead of dropdown select
+* Change : Edit Group / User Permissions - Operation, Adjustment and Qualification selections persist (for new Specific Permissions) until changed
+* Change : Edit Group / User Permissions - Minor styling improvements
+* Feature : Edit Group / User Permissions - Mirror currently stored Specific Permissions to another operation (new bulk edit action). Example: copy "Edit Page" restrictions as "Set as Parent" restrictions. 
+* Fixed : Edit Group / User Permissions - Bulk edit checkboxes were re-selected by browser autocomplete
+* Fixed : Non-editors with editing exceptions did not see Edit link on front end Admin Bar if Classic Editor plugin active with "Allow users to switch" setting disabled
+* Compat : Ubermenu - Intermittant failure to retrieve top level menu items broke front end rendering on some sites
+* Compat : WP Bakery Page Builder - Editing exceptions were not effective for users lacking role capabilities
+* Compat : PublishPress Revisions - If Collaborative Publishing module is not enabled, notify about need for it.
 
 = 3.0.2 - 5 Mar 2020 =
 * Feature : Option to apply Publish exceptions separate from Edit exceptions (Permissions > Settings > Advanced > Permissions Admin). Previously available by constant definition.

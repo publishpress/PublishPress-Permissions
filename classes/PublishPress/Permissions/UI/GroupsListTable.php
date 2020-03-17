@@ -167,7 +167,7 @@ class GroupsListTable extends GroupsListTableBase
             'group_name' => __('Name', 'press-permit-core'),
             'num_users' => _x('Users', 'count', 'press-permit-core'),
             'roles' => _x('Roles', 'count', 'press-permit-core'),
-            'exceptions' => _x('Exceptions', 'count', 'press-permit-core'),
+            'exceptions' => _x('Permissions', 'count', 'press-permit-core'),
             'description' => __('Description', 'press-permit-core'),
         ];
 

@@ -169,7 +169,7 @@ class Groups
                             if (defined('PP_GROUPS_HINT')) {
                                 echo esc_html(PP_GROUPS_HINT);
                             } else {
-                                echo esc_html(__("Permission Groups adjust user access with type-specific Roles and content-specific Exceptions. To customize permissions for a single user instead, click their Role in the Users listing.", 'press-permit-core'));
+                                echo esc_html(__("Permission Groups adjust user access with type-specific Roles and item-specific Permissions. To customize permissions for a single user instead, click their Role in the Users listing.", 'press-permit-core'));
                             }
 
                             echo '</div><br />';

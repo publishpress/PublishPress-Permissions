@@ -18,9 +18,9 @@ class AjaxUI
 
         $op_captions = array_merge($op_captions, [
             'associate' => (object)[
-                'label' => __('Associate', 'press-permit-core'), 
-                'noun_label' => __('Association (as Parent)', 'press-permit-core'), 
-                'agent_label' => __('Associate (as parent)', 'press-permit-core')
+                'label' => __('Set as Parent', 'press-permit-core'), 
+                'noun_label' => __('Set as Parent', 'press-permit-core'), 
+                'agent_label' => __('Set as Parent', 'press-permit-core')
             ],
             
             'assign' => (object)[

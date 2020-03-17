@@ -57,12 +57,12 @@ class SettingsTabAdvanced
         if ($this->enabled) {
             $opt = array_merge($opt, [
                 'anonymous_unfiltered' => sprintf(__('%1$sDisable%2$s all filtering for anonymous users', 'press-permit-core'), '<strong>', '</strong>'),
-                'suppress_administrator_metagroups' => sprintf(__('%1$sDisable%2$s metagroup exceptions for Administrators', 'press-permit-core'), '<strong>', '</strong>'),
+                'suppress_administrator_metagroups' => sprintf(__('%1$sDo not apply%2$s metagroup permissions for Administrators', 'press-permit-core'), '<strong>', '</strong>'),
                 'user_search_by_role' => __('User Search: Filter by WP role', 'press-permit-core'),
                 'display_hints' => __('Display Administrative Hints', 'press-permit-core'),
                 'display_extension_hints' => __('Display Module Hints', 'press-permit-core'),
                 'dynamic_wp_roles' => __('Detect Dynamically Mapped WP Roles', 'press-permit-core'),
-                'non_admins_set_read_exceptions' => __('Non-Administrators can set Reading Exceptions for their editable posts', 'press-permit-core'),
+                'non_admins_set_read_exceptions' => __('Non-Administrators can set Reading Permissions for their editable posts', 'press-permit-core'),
                 'users_bulk_groups' => __('Bulk Add / Remove Groups on Users Screen', 'press-permit-core'),
             ]);
         }
@@ -252,39 +252,15 @@ class SettingsTabAdvanced
                         <?php
                         $pp_caps = [
                             'pp_manage_settings' => __('Modify these Permissions settings', 'press-permit-core'),
-                            'pp_unfiltered' => __('PublishPress Permissions does not apply any supplemental roles or exceptions to limit or expand viewing or editing access', 'press-permit-core'),
-                            'pp_administer_content' => __('PublishPress Permissions implicitly grants capabilities for all post types and statuses, but does not apply exceptions', 'press-permit-core'),
-                            'pp_associate_any_page' => __('(Permissions Pro capability)', 'press-permit-core'),
+                            'pp_unfiltered' => __('PublishPress Permissions does not apply any Supplemental Roles or Specific Permissions to limit or expand viewing or editing access', 'press-permit-core'),
+                            'pp_administer_content' => __('PublishPress Permissions implicitly grants capabilities for all post types and statuses, but does not apply Specific Permissions', 'press-permit-core'),
                             'pp_create_groups' => __('Can create Permission Groups', 'press-permit-core'),
-                            'pp_edit_groups' => __('Can edit all Permission Groups (barring Exceptions)', 'press-permit-core'),
+                            'pp_edit_groups' => __('Can edit all Permission Groups (barring Specific Permissions)', 'press-permit-core'),
                             'pp_delete_groups' => __('Can delete Permission Groups', 'press-permit-core'),
                             'pp_manage_members' => __('If group editing is allowed, can also modify group membership', 'press-permit-core'),
-                            'pp_assign_roles' => __('Assign supplemental Roles or Exceptions. Other capabilities may also be required.', 'press-permit-core'),
-                            'pp_set_read_exceptions' => __('Set Reading Exceptions for editable posts on Edit Post/Term screen (for non-Administrators lacking edit_users capability; may be disabled by Permissions Settings)', 'press-permit-core'),
+                            'pp_assign_roles' => __('Assign Supplemental Roles or Specific Permissions. Other capabilities may also be required.', 'press-permit-core'),
+                            'pp_set_read_exceptions' => __('Set Read Permissions for specific posts on Edit Post/Term screen (for non-Administrators lacking edit_users capability; may be disabled by Permissions Settings)', 'press-permit-core'),
                         ];
-
-                        if (!$pp->moduleActive('collaboration') && !$pp->keyActive()) {
-                            if (class_exists('Fork')) {
-                                $pp_caps['pp_set_fork_exceptions'] = __('(Permissions Pro capability)', 'press-permit-core');
-                            }
-
-                            if (defined('REVISIONARY_VERSION')) {
-                                $pp_caps['pp_set_revise_exceptions'] = __('(Permissions Pro capability)', 'press-permit-core');
-                            }
-
-                            $pp_caps = array_merge(
-                                $pp_caps,
-                                [
-                                    'pp_set_edit_exceptions' => __('(Permissions Pro capability)', 'press-permit-core'),
-                                    'pp_set_associate_exceptions' => __('(Permissions Pro capability)', 'press-permit-core'),
-                                    'pp_set_term_assign_exceptions' => __('(Permissions Pro capability)', 'press-permit-core'),
-                                    'pp_set_term_manage_exceptions' => __('(Permissions Pro capability)', 'press-permit-core'),
-                                    'pp_set_term_associate_exceptions' => __('(Permissions Pro capability)', 'press-permit-core'),
-                                    'list_others_unattached_files' => __('(Permissions Pro capability)', 'press-permit-core'),
-                                    'edit_own_attachments' => __('(Permissions Pro capability)', 'press-permit-core'),
-                                ]
-                            );
-                        }
 
                         if (!$pp->moduleActive('status-control') && !$pp->keyActive()) {
                             $pp_caps = array_merge(

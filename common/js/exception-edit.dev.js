@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-    // ========== Begin "Add Exceptions" UI scripts ==========
+    // ========== Begin "Set Specific Permissions" UI scripts ==========
     var presspermitItemPath = new Object;
     var presspermitAllExceptionData = [];
     var presspermitXid = -1;
@@ -94,6 +94,17 @@ jQuery(document).ready(function ($) {
 
     $(document).on('click', '.submit-add-item-exception', function (e) {
         presspermitXaddItemException('menu-item');
+
+        /* Possible future development: mirror on initial creation of exceptions
+        var mops = '';
+
+        $('td.pp-select-x-operation input').each(function(i) {
+            mops += ' <label><input type="checkbox" name="pp_add_exceptions_mirror_ops[]" value="' + $(this).val() + '" /><span>' + $(this).next('span').html() + '</span></label>';
+        });
+
+        $('div.pp_mirror_to_operations').html(mops);
+        */
+
         return false;
     });
 
@@ -102,7 +113,7 @@ jQuery(document).ready(function ($) {
 
         var items = $('#menu-settings-column').find('.tabs-panel-active .categorychecklist li input:checked');
 
-        if (!$('select[name="pp_select_x_operation"]').val()) {
+        if (!$('input[name="pp_select_x_operation"]').val()) {
             $('#pp_item_selection_msg').html(ppRestrict.noOp);
             $('#pp_item_selection_msg').addClass('pp-error-note');
             $('#pp_item_selection_msg').show();
@@ -149,15 +160,15 @@ jQuery(document).ready(function ($) {
         }
 
         var for_type = $('select[name="pp_select_x_for_type"]').val();
-        var op = $('select[name="pp_select_x_operation"]').val();
+        var op = $('input[name="pp_select_x_operation"]:checked').val();
         var via_type = $('select[name="pp_select_x_via_type"]').val();
-        var mod_type = $('select[name="pp_select_x_mod_type"]').val();
+        var mod_type = $('input[name="pp_select_x_mod_type"]:checked').val();
 
         var for_type_caption = $('select[name="pp_select_x_for_type"] option:selected').html()
-        var op_caption = $('select[name="pp_select_x_operation"] option:selected').html()
-        var via_type_caption = $('select[name="pp_select_x_via_type"] option:selected').html()
-        var mod_type_caption = $('select[name="pp_select_x_mod_type"] option:selected').html();
-        var assign_for_captions = $('select[name="pp_select_x_mod_type"] option:selected').html()
+        var op_caption = $('input[name="pp_select_x_operation"]:checked').next('span').html()
+        var via_type_caption = $('select[name="pp_select_x_via_type"] :selected').html()
+        var mod_type_caption = $('input[name="pp_select_x_mod_type"]:checked').next('span').html();
+        var assign_for_captions = $('input[name="pp_select_x_mod_type"]:checked').next('span').html()
 
         var conds = $('td.pp-select-x-status').find('input[name="pp_select_x_cond[]"]:checked');
 
@@ -277,14 +288,14 @@ jQuery(document).ready(function ($) {
     }
 
     var presspermitReloadViaType = function () {
-        if ($('select[name="pp_select_x_operation"]').val())
+        if ($('input[name="pp_select_x_operation"]').val())
             presspermitXajaxUI('get_via_type_options', presspermitDrawViaTypes);
         else
             $('.pp-select-x-via-type').hide();
     }
 
     var presspermitReloadModificationType = function () {
-        if ($('select[name="pp_select_x_operation"]').val()) {
+        if ($('input[name="pp_select_x_operation"]').val()) {
             //presspermitXajaxUI('get_mod_options',presspermitDrawModificationTypes);
             setTimeout(function () {
                 presspermitXajaxUI('get_mod_options', presspermitDrawModificationTypes)
@@ -304,8 +315,8 @@ jQuery(document).ready(function ($) {
     }
 
     var presspermitReloadStatus = function () {
-        var op = $('select[name="pp_select_x_operation"]').val();
-        var mod_type = $('select[name="pp_select_x_mod_type"]').val();
+        var op = $('input[name="pp_select_x_operation"]').val();
+        var mod_type = $('input[name="pp_select_x_mod_type"]').val();
         if (mod_type && op) {
             //presspermitXajaxUI('get_status_ui',presspermitDrawStatus);
             setTimeout(function () {
@@ -339,11 +350,24 @@ jQuery(document).ready(function ($) {
         $('#pp_add_exception').css('width', 'auto');
     });
 
-    $('select[name="pp_select_x_operation"]').bind('change', presspermitReloadViaType);
-    $('select[name="pp_select_x_operation"]').bind('change', presspermitReloadModificationType);
-    $('select[name="pp_select_x_operation"]').bind('change', presspermitReloadStatus);
+    $('td.pp-select-x-operation').click(function() {
+        var sel = $(this).find('input:checked').val();
+        if (sel) {
+            presspermitLastOp = sel;
+        }
+        presspermitReloadViaType();
+    });
 
-    $('select[name="pp_select_x_mod_type"]').bind('change', presspermitReloadStatus);
+    $('td.pp-select-x-operation').bind('click', presspermitReloadModificationType);
+    $('td.pp-select-x-operation').bind('click', presspermitReloadStatus);
+
+    $('td.pp-select-x-mod-type').click(function() {
+        var sel = $(this).find('input:checked').val();
+        if (sel) {
+            presspermitLastModType = sel;
+        }
+        presspermitReloadStatus();
+    });
 
     $('select[name="pp_select_x_via_type"]').bind('change', presspermitReloadStatus);
     $('select[name="pp_select_x_via_type"]').bind('change', presspermitReloadAssignFor);
@@ -364,15 +388,19 @@ jQuery(document).ready(function ($) {
         $('input.menu-item-checkbox').prop('checked', false);
     });
 
+    $('select[name="pp_select_x_via_type"]').click(function () {
+        presspermitLastViaType = $(this).val();
+    });
+
     var presspermitUpdateItemNoneCaption = function() {
         if ($('select[name="pp_select_x_for_type"]').val() == '_term_') {
-            if ($('select[name="pp_select_x_operation"]').val() == 'associate' && $('select[name="pp_select_x_mod_type"]').val() != 'additional') {
+            if ($('input[name="pp_select_x_operation"]').val() == 'associate' && $('input[name="pp_select_x_mod_type"]').val() != 'additional') {
                 $('#select-exception-' + $('select[name="pp_select_x_via_type"]').val()).find('input.menu-item-checkbox[value="0"]').siblings('label').first().html(ppRestrict.noParent);
             } else {
                 $('#select-exception-' + $('select[name="pp_select_x_via_type"]').val()).find('input.menu-item-checkbox[value="0"]').siblings('label').first().html(ppRestrict.none);
             }
         } else {
-            if ($('select[name="pp_select_x_operation"]').val() == 'associate' && $('select[name="pp_select_x_mod_type"]').val() != 'additional') {
+            if ($('input[name="pp_select_x_operation"]').val() == 'associate' && $('input[name="pp_select_x_mod_type"]').val() != 'additional') {
                 $('#select-exception-' + $('select[name="pp_select_x_for_type"]').val()).find('input.menu-item-checkbox[value="0"]').siblings('label').first().html(ppRestrict.noParent);
             } else {
                 $('#select-exception-' + $('select[name="pp_select_x_for_type"]').val()).find('input.menu-item-checkbox[value="0"]').siblings('label').first().html(ppRestrict.none);
@@ -380,13 +408,34 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    $('select[name="pp_select_x_mod_type"]').bind('change', presspermitUpdateItemNoneCaption);
+    $('input[name="pp_select_x_mod_type"]').bind('change', presspermitUpdateItemNoneCaption);
+
+    $(document).on('click', '#pp_select_x_item_assign', function(e){
+        presspermitLastItemAssign = $(this).prop('checked');
+    });
+
+    $(document).on('click', '#pp_select_x_child_assign', function(e){
+        presspermitLastChildAssign = $(this).prop('checked');
+    });
+
+    var presspermitLastOp = '';
+    var presspermitLastModType = '';
+    var presspermitLastViaType = '';
+    var presspermitLastItemAssign = '';
+    var presspermitLastChildAssign = '';
 
     var presspermitDrawOperations = function (data, txtStatus) {
-        sel = $('select[name="pp_select_x_operation"]');
+        sel = $('td.pp-select-x-operation');
         sel.html(data);
         sel.triggerHandler('change');
         $('.pp-select-x-operation').show();
+
+        if (presspermitLastOp && $('input[name="pp_select_x_operation"][value="' + presspermitLastOp + '"]').length) {
+            $('input[name="pp_select_x_operation"][value="' + presspermitLastOp + '"]').click();
+        } else {
+            $('input[name="pp_select_x_operation"]').first().click();
+        }
+
         presspermitXajaxUI_done();
     }
 
@@ -395,14 +444,26 @@ jQuery(document).ready(function ($) {
         sel.html(data);
         sel.triggerHandler('change');
         $('.pp-select-x-via-type').show();
+
+        if (presspermitLastViaType && $('select[name="pp_select_x_via_type"] option[value="' + presspermitLastViaType + '"]').length) {
+            $('select[name="pp_select_x_via_type"]').val(presspermitLastViaType).change();
+        }
+
         presspermitXajaxUI_done();
     }
 
     var presspermitDrawModificationTypes = function (data, txtStatus) {
-        sel = $('select[name="pp_select_x_mod_type"]');
+        sel = $('td.pp-select-x-mod-type');
         sel.html(data);
         sel.triggerHandler('change');
         $('.pp-select-x-mod-type').show();
+
+        if (presspermitLastModType && $('input[name="pp_select_x_mod_type"][value="' + presspermitLastModType + '"]').length) {
+            $('input[name="pp_select_x_mod_type"][value="' + presspermitLastModType + '"]').click();
+        } else {
+            $('input[name="pp_select_x_mod_type"]').first().click();
+        }
+
         presspermitXajaxUI_done();
     }
 
@@ -414,6 +475,14 @@ jQuery(document).ready(function ($) {
             $('.pp-select-x-assign-for').show();
         else
             $('.pp-select-x-assign-for').hide();
+
+        if (typeof presspermitLastItemAssign === 'boolean' && $('#pp_select_x_item_assign:visible').length) {
+            $('#pp_select_x_item_assign:visible').prop('checked', presspermitLastItemAssign);
+        }
+
+        if ($('#pp_select_x_child_assign:visible').length) {
+            $('#pp_select_x_child_assign:visible').prop('checked', presspermitLastChildAssign);
+        }
 
         presspermitXajaxUI_done();
     }
@@ -446,9 +515,9 @@ jQuery(document).ready(function ($) {
         var data = {
             'pp_ajax_agent_exceptions': op,
             'pp_for_type': $('select[name="pp_select_x_for_type"]').val(),
-            'pp_operation': $('select[name="pp_select_x_operation"]').val(),
+            'pp_operation': $('input[name="pp_select_x_operation"]').val(),
             'pp_via_type': $('select[name="pp_select_x_via_type"]').val(),
-            'pp_mod_type': $('select[name="pp_select_x_mod_type"]').val(),
+            'pp_mod_type': $('input[name="pp_select_x_mod_type"]').val(),
             'pp_agent_id': ppRestrict.agentID,
             'pp_agent_type': ppRestrict.agentType,
             'pp_item_id': item_id
@@ -560,7 +629,7 @@ jQuery(document).ready(function ($) {
         $('.categorychecklist', panel).html($items);
         $('img.waiting', panel).hide();
     }
-    // ========== End "Add Exceptions" UI scripts ==========
+    // ========== End "Set Specific Permissions" UI scripts ==========
 
 
     // ========== Begin "Edit Exception" Submission scripts ==========
@@ -632,6 +701,9 @@ jQuery(document).ready(function ($) {
             case 'exceptions_children_only':
                 set_class = 'role_ch';
                 break;
+            case 'exceptions_mirror':
+                set_class = 'exc-copied';
+                break;
             default:
                 return;
         }
@@ -640,6 +712,12 @@ jQuery(document).ready(function ($) {
 
         $.each(edited_eitem_ids, function (index, value) {
             cbid = $('#pp_current_exceptions input[name="pp_edit_exception[]"][value="' + value + '"]').attr('id');
+            
+            if ('exceptions_mirror' == operation) {
+                $('#' + cbid).closest('div').find('label input').attr('class', set_class);
+                $('#' + cbid).prop('checked', false);
+                $('#' + cbid).closest('div.pp-current-type-roles').find('div.pp-exception-bulk-edit div.mirror-confirm').html(ppRestrict.mirrorDone).show();
+            } else {
             $('#' + cbid).closest('div').find('label').attr('class', set_class);
 
             // temp workaround for Ajax UI limitation
@@ -647,6 +725,7 @@ jQuery(document).ready(function ($) {
                 $('#' + cbid).closest('div').find('input').prop('checked', false);
                 $('#' + cbid).closest('div').find('input').prop('disabled', true);
                 $('#' + cbid).closest('div').find('label').attr('title', ppRestrict.reloadRequired);
+                }
             }
         });
     }

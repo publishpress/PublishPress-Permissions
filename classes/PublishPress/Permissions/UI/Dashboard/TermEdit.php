@@ -124,37 +124,41 @@ class TermEdit
                 if ('assign' == $op) {
                     $title = ($post_type)
                         ? sprintf(
-                            __('%1$s %2$s %3$s Exceptions', 'press-permit-core'),
-                            $type_obj->labels->singular_name,
+                            __('Permissions: Assign this %2$s to %3$s', 'press-permit-core'),
+                            $op_obj->label,
                             $tx->labels->singular_name,
-                            $op_obj->noun_label
+                            $type_obj->labels->name
                         )
                         : sprintf(
-                            __('%1$s %2$s Exceptions (all post types)', 'press-permit-core'),
-                            $tx->labels->singular_name,
-                            $op_obj->noun_label
+                            __('Permissions: Assign this %2$s', 'press-permit-core'),
+                            $op_obj->label,
+                            $tx->labels->singular_name
                         );
                 } elseif (in_array($op, ['read', 'edit'], true)) {
                     $title = ($post_type)
                         ? sprintf(
-                            __('%1$s %2$s Exceptions (all post statuses)', 'press-permit-core'),
-                            $type_obj->labels->singular_name,
-                            $op_obj->noun_label
+                            __('Permissions: %1$s %2$s in this %3$s', 'press-permit-core'),
+                            $op_obj->label,
+                            $type_obj->labels->name,
+                            $tx->labels->singular_name
                         )
                         : sprintf(
-                            __('%1$s Exceptions (all post types, statuses)', 'press-permit-core'),
-                            $op_obj->noun_label
+                            __('Permissions: %1$s all content in this %2$s', 'press-permit-core'),
+                            $op_obj->label,
+                            $tx->labels->singular_name
                         );
                 } else {
                     $title = ($post_type)
                         ? sprintf(
-                            __('%1$s %2$s Exceptions', 'press-permit-core'),
-                            $type_obj->labels->singular_name,
-                            $op_obj->noun_label
+                            __('Permissions: %1$s %2$s in this %3$s', 'press-permit-core'),
+                            $op_obj->label,
+                            $type_obj->labels->name,
+                            $tx->labels->singular_name
                         )
                         : sprintf(
-                            __('%1$s Exceptions (all post types)', 'press-permit-core'),
-                            $op_obj->noun_label
+                            __('Permissions: %1$s this %2$s', 'press-permit-core'),
+                            $op_obj->label,
+                            $tx->labels->singular_name
                         );
                 }
 

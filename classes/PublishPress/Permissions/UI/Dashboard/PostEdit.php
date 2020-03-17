@@ -63,9 +63,10 @@ class PostEdit
 
         $pp = presspermit();
 
+        $type_obj = get_post_type_object($post_type);
+
         if (!in_array($post_type, $pp->getEnabledPostTypes(['layer' => 'exceptions']), true)) {
             if (!in_array($post_type, ['revision']) && $pp->getOption('display_hints')) {
-                $type_obj = get_post_type_object($post_type);
                 if ($type_obj->public) {
                     $omit_types = apply_filters('presspermit_unfiltered_post_types', ['wp_block']);
 
@@ -92,12 +93,20 @@ class PostEdit
 
         foreach (array_keys($operations) as $op) {
             if ($op_obj = $pp->admin()->getOperationObject($op, $post_type)) {
+                $caption = ('associate' == $op) 
+                ? sprintf(
+                    __('Permissions: Select this %s as Parent', 'press-permit-core'),
+                    $type_obj->labels->singular_name
+                )
+                : sprintf(
+                    __('Permissions: %s this %s', 'press-permit-core'),
+                    $op_obj->label,
+                    $type_obj->labels->singular_name
+                );
+                
                 add_meta_box(
                     "pp_{$op}_{$post_type}_exceptions",
-                    sprintf(
-                        __('%s Exceptions', 'press-permit-core'),
-                        $op_obj->noun_label
-                    ),
+                    $caption,
                     [$this, 'drawExceptionsUI'],
                     $post_type,
                     'advanced',

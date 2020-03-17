@@ -56,6 +56,7 @@ div.pp-group_members {
 
 #pp_add_permission_tabs {
     margin-bottom: -3px;
+    padding-bottom: 1px;
 }
 
 #pp_add_permission_tabs .agp-unselected_agent, #pp_add_permission_tabs .agp-unselected_agent a {
@@ -108,8 +109,12 @@ div.pp-add-roles {
 }
 
 #pp_add_role .pp-checkbox, #pp_add_exception .pp-checkbox {
-    margin-top: 0.5em;
-    margin-bottom: 1em;
+    margin-top: 2px;
+    margin-bottom: 10px;
+}
+
+#pp_select_x_assign_for .pp-checkbox label {
+    vertical-align: baseline;
 }
 
 #pp_add_permission_tabs li.pp-add-clone {
@@ -135,6 +140,27 @@ div.pp-add-exceptions {
 
 #wpbody-content #pp_add_exception #menu-settings-column {
     padding-top: 3px;
+}
+
+#pp_add_exception th.pp-select-x-operation, #pp_add_exception th.pp-select-x-mod-type {
+    text-align: left;
+    padding-left: 15px;
+}
+
+#pp_add_exception td.pp-select-x-operation, #pp_add_exception td.pp-select-x-mod-type, #pp_add_exception td.pp-select-x-via-type {
+    padding-top: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#pp_add_exception td.pp-select-x-via-type {
+    padding-left: 20px;
+    padding-right: 10px;
+}
+
+#pp_add_exception td.pp-select-x-operation label, #pp_add_exception td.pp-select-x-mod-type label {
+    padding-bottom: 20px;
+    white-space: nowrap;
 }
 
 #pp_add_exception #select-role-item {
@@ -231,6 +257,38 @@ div.pp-add-clone {
     margin-left: 10px;
     margin-right: 10px;
 }
+
+#pp_review_exceptions div.mirror-label {
+    font-weight: bold;
+}
+
+div.mirror-confirm {
+    border-left-color: #46b450 !important;
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-left-color: rgb(204, 208, 212);
+    border-left-width: 1px;
+    border-left-width: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    margin: 5px 15px 2px 0;
+    padding: 1px 12px;
+}
+
+/* @todo?
+#pp_review_exceptions div.pp_mirror_to_operations {
+    padding-left: 10px;
+    padding-top: 4px;
+}
+
+#pp_review_exceptions div.pp_mirror_to_operations label {
+    margin-left: 10px;
+    margin-right: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+*/
 
 /*---- Bulk Edit Exceptions ----*/
 .pp-role-bulk-edit, .pp-exception-bulk-edit {
@@ -371,6 +429,15 @@ label.role_both:after {
     color: #777;
 }
 
+input.exc-copied {
+    background-color: #afa !important;
+    border: 1px solid black !important;
+}
+
+#pp_current_exceptions input.submit-edit-item-exception {
+    margin-top:5px;
+}
+
 label.role_ch:after {
     content: " *";
 }
@@ -455,4 +522,8 @@ ul.categorychecklist span {
 #nav-menus-frame .add-to-menu {
     float: none;
     margin-left: 15px;
+}
+
+td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
+    vertical-align: baseline;
 }
