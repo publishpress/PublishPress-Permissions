@@ -150,7 +150,6 @@ class AgentPermissionsUI
                         </p>
 
                     </div>
-
                 </td>
 
                 <td class="pp-select-x-status" style="display:none">
@@ -919,7 +918,7 @@ class AgentPermissionsUI
                                 if (('exclude' == $mod_type) && !empty($exceptions[$via_src][$via_type][$for_type][$operation]['include'])) {
                                     $tr_class = ' class="pp_faded"';
                                     $mod_caption = sprintf(__('* %s', 'press-permit-core'), $mod_caption);
-                                    $any_faded = true;
+                                    $any_redundant = true;
                                 } else
                                     $tr_class = '';
 
@@ -1111,6 +1110,7 @@ class AgentPermissionsUI
 
                         echo '</select>';
                         ?>
+
                         <input type="submit" name="" class="button submit-edit-item-exception" value="<?php _e('Apply', 'press-permit-core'); ?>" />
                         <?php
                         echo '<img class="waiting" style="display:none;" src="'
