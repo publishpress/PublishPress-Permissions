@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PressPermit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-17 11:01-0500\n"
+"POT-Creation-Date: 2020-03-17 11:06-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: PublishPress <help@publishpress.com>\n"
@@ -2089,11 +2089,11 @@ msgstr ""
 msgid "%s&nbsp;more"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:293
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:297
 msgid "<strong>ERROR</strong>: Please enter a group name."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:298
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:302
 msgid "<strong>ERROR</strong>: This group name is already registered. Please choose another one."
 msgstr ""
 
