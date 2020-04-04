@@ -200,15 +200,7 @@ class AgentPermissionsUI
     <div class='pp-ext-promo'>
         <?php
         if (!$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
-            if (presspermit()->isPro()) 
-                $msg = __('To assign exceptions for editing, parent selection or term assignment, enable the Collaborative Publishing module.', 'press-permit-core');
-            else
-                $msg = sprintf(
-                    __('To assign exceptions for editing, parent selection or term assignment, %1$supgrade to Permissions Pro%2$s and enable the Collaborative Publishing module.', 'press-permit-core'),
-                    '<a href="https://publishpress.com/pricing/">',
-                    '</a>'
-                );
-
+            $msg = __('To assign exceptions for editing, parent selection or term assignment, enable the Collaborative Publishing module.', 'press-permit-core');
             echo "<div>$msg</div>";
         }
         ?>
@@ -281,7 +273,7 @@ class AgentPermissionsUI
 
     <div class='pp-ext-promo'>
         <?php
-        if (!$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
+        if (!$pp->moduleActive('status-control') && $pp->getOption('display_extension_hints')) {
             if (presspermit()->isPro())
                 $msg = __('To assign roles for custom post statuses, activate the Status Control module.', 'press-permit-core');
             else
@@ -311,16 +303,8 @@ class AgentPermissionsUI
         ?>
 
         <?php
-        if (defined('REVISIONARY_VERSION') && (!$pp->moduleActive('collaboration') || !$pp->moduleActive('compatibility')) && $pp->getOption('display_extension_hints')) {
-            if (presspermit()->isPro())
-                $msg = __('To assign PublishPress Revisions exceptions, enable the Collaborative Publishing module.', 'press-permit-core');
-            else
-                $msg = sprintf(
-                    __('To assign Revisionary exceptions, %1$supgrade to Permissions Pro%2$s and enable the Collaborative Publishing module.', 'press-permit-core'),
-                    '<a href="https://publishpress.com/pricing/">',
-                    '</a>'
-                );
-
+        if (defined('REVISIONARY_VERSION') && !$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
+            $msg = __('To assign PublishPress Revisions exceptions, enable the Collaborative Publishing module.', 'press-permit-core');
             echo "<div>$msg</div>";
         }
         ?>
