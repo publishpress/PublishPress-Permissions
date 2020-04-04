@@ -223,7 +223,10 @@ class TermFilters
             }
         }
 
-        if (empty($args['required_operation'])) {
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            $args['required_operation'] = 'assign';
+            
+        } elseif (empty($args['required_operation'])) {
             $args['required_operation'] = apply_filters(
                 'presspermit_get_terms_operation',
                 PWP::isFront() ? 'read' : 'assign',

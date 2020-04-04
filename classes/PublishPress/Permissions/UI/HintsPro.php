@@ -163,13 +163,9 @@ ul.pro-pplinks li.spacer {
     </ul>
 
     <ul class="pro-pplinks" style="display:none">
-        <li><a class="pp-screencasts" href="https://publishpress.com/presspermit-tutorial/"
-            target="_blank"><?php _e('Screencasts', 'press-permit-core'); ?></a></li>
+        <li><a class="pp-screencasts" href="https://publishpress.com/permissions-start/" target="_blank"><?php _e('Knowledge Base', 'press-permit-core'); ?></a></li>
         <li class="spacer">&bull;</li>
-        <li><a href="https://publishpress.com/presspermit-features/"
-            target="_blank"><?php _e('Feature Grid', 'press-permit-core'); ?></a></li>
-        <li class="spacer">&bull;</li>
-        <li><a href="https://publishpress.com/presspermit-faq/" target="_blank"><?php _e('FAQs', 'press-permit-core'); ?></a></li>
+        <li><a href="https://publishpress.com/wp-content/uploads/2020/03/RoleScoper-Permissions-Feature-Grid.pdf" target="_blank"><?php _e('Detailed Feature Grid', 'press-permit-core'); ?></a></li>
         <li class="spacer">&bull;</li>
         <li><a href="https://publishpress.com/contact/" target="_blank"><?php _e('Contact Us', 'press-permit-core'); ?></a></li>
         <li class="spacer">&bull;</li>

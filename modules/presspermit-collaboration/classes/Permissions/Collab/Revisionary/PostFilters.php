@@ -12,6 +12,18 @@ class PostFilters
         add_filter('presspermit_meta_cap', [$this, 'flt_meta_cap']);
 
         add_filter('revisionary_require_edit_others_drafts', [$this, 'fltRequireEditOthersDrafts'], 10, 4);
+
+        add_filter('presspermit_base_cap_replacements', [$this, 'fltBaseCapReplacements'], 10, 3);
+    }
+
+    function fltBaseCapReplacements($replace_caps, $reqd_caps, $post_type) {
+        if ($type_obj = get_post_type_object($post_type)) {
+            if (!empty($type_obj->cap->edit_posts)) {
+                $replace_caps['list_others_revisions'] = $type_obj->cap->edit_posts;
+            }
+        }
+
+        return $replace_caps;
     }
 
     function fltRequireEditOthersDrafts($require, $post_type, $post_status, $args) {

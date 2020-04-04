@@ -23,8 +23,7 @@ class TemplateLoaderTest extends \Codeception\TestCase\WPTestCase
         // Before...
         parent::setUp();
 
-        $templatePath = PP_VERSION_NOTICES_BASE_PATH . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . '_data' .
-            DIRECTORY_SEPARATOR . 'dumb-templates';
+        $templatePath = PP_VERSION_NOTICES_BASE_PATH . '/tests/_data/dumb-templates';
 
         $this->templateLoader = new TemplateLoader($templatePath);
     }

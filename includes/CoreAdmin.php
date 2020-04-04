@@ -13,13 +13,12 @@ class CoreAdmin {
 
         add_action('admin_print_scripts', [$this, 'setUpgradeMenuLink'], 50);
 
-        $autoloadPath = PRESSPERMIT_ABSPATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+        $autoloadPath = PRESSPERMIT_ABSPATH . '/vendor/autoload.php';
         if (file_exists($autoloadPath)) {
             require_once $autoloadPath;
         }
 
-        require_once PRESSPERMIT_ABSPATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'publishpress' . DIRECTORY_SEPARATOR
-                        . 'wordpress-version-notices' . DIRECTORY_SEPARATOR . 'includes.php';
+        require_once PRESSPERMIT_ABSPATH . '/vendor/publishpress/wordpress-version-notices/includes.php';
 
         add_filter(\PPVersionNotices\Module\TopNotice\Module::SETTINGS_FILTER, function ($settings) {
             $settings['press-permit-core'] = [

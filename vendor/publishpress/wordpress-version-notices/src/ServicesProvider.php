@@ -35,7 +35,7 @@ class ServicesProvider implements ServiceProviderInterface
     public function register(Container $pimple)
     {
         $pimple['TEMPLATES_PATH'] = function (Container $c) {
-            return PP_VERSION_NOTICES_BASE_PATH . DIRECTORY_SEPARATOR . 'templates';
+            return PP_VERSION_NOTICES_BASE_PATH . '/templates';
         };
 
         $pimple['module_top_notice'] = function (Container $c) {

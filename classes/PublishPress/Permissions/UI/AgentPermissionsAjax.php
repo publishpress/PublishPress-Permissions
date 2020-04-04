@@ -207,8 +207,6 @@ class AgentPermissionsAjax
 
                             $edited_input_ids[] = $id_csv;
                         }
-
-                        pp_errlog(serialize($results));
                     }
 
                     echo '<!--ppResponse-->' . 'exceptions_mirror' . '~' . implode('|', $edited_input_ids) . '<--ppResponse-->';

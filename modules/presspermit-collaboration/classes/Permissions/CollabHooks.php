@@ -59,6 +59,11 @@ class CollabHooks
 
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Compat/MultipleAuthors.php'); // load this early to block rolecap addition if necessary
         new Collab\Compat\MultipleAuthors();
+
+        // Filtering of terms selection:
+        add_filter('pre_post_tax_input', [$this, 'fltTaxInput'], 50, 1);
+        add_filter('pre_post_category', [$this, 'fltPrePostTerms'], 50, 1);
+        add_filter('presspermit_pre_object_terms', [$this, 'fltPrePostTerms'], 50, 2);
     }
 
     function init()
@@ -425,4 +430,23 @@ class CollabHooks
             ]
         );
     }
+
+    function fltTaxInput($tax_input)
+    {
+        require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
+        return Collab\PostTermsSave::fltTaxInput($tax_input);
+    }
+
+    function fltPrePostTerms($terms, $taxonomy = 'category')
+    {
+        require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
+        return Collab\PostTermsSave::fltPreObjectTerms($terms, $taxonomy);
+    }
+
+    /* // this is now handled by fltPreObjectTerms instead
+    function flt_default_term( $default_term_id, $taxonomy = 'category' ) {
+        require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
+        return PostTermsSave::flt_default_term( $default_term_id, $taxonomy );
+    }
+    */
 }

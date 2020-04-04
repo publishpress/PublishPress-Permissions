@@ -268,9 +268,9 @@ class Admin
         <hr>
         <nav>
         <ul>
-        <li><a href="https://publishpress.com/presspermit" target="_blank" rel="noopener noreferrer" title="<?php _e('About PublishPress Permissions', 'press-permit-core');?>"><?php _e('About', 'press-permit-core');?>
+        <li><a href="https://publishpress.com/permissions" target="_blank" rel="noopener noreferrer" title="<?php _e('About PublishPress Permissions', 'press-permit-core');?>"><?php _e('About', 'press-permit-core');?>
         </a></li>
-        <li><a href="https://publishpress.com/documentation/presspermit-start/" target="_blank" rel="noopener noreferrer" title="<?php _e('Permissions Documentation', 'press-permit-core');?>"><?php _e('Documentation', 'press-permit-core');?>
+        <li><a href="https://publishpress.com/documentation/permissions-start/" target="_blank" rel="noopener noreferrer" title="<?php _e('Permissions Documentation', 'press-permit-core');?>"><?php _e('Documentation', 'press-permit-core');?>
         </a></li>
         <li><a href="https://publishpress.com/contact" target="_blank" rel="noopener noreferrer" title="<?php _e('Contact the PublishPress team', 'press-permit-core');?>"><?php _e('Contact', 'press-permit-core');?>
         </a></li>

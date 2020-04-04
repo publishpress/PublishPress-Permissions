@@ -221,7 +221,7 @@ class Groups
 
                     <?php
                     if (
-                        defined('BP_VERSION') && !$pp->moduleActive('collaboration')
+                        defined('BP_VERSION') && !$pp->moduleActive('compatibility')
                         && $pp->getOption('display_extension_hints')
                     ) {
                         if (presspermit()->isPro()) {

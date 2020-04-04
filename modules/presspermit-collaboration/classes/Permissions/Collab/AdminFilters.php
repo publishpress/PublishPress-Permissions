@@ -41,11 +41,6 @@ class AdminFilters
         // called by agent-edit-handler
         add_filter('presspermit_add_exception', [$this, 'fltAddException']);
 
-        // Filtering of terms selection:
-        add_filter('pre_post_tax_input', [$this, 'fltTaxInput'], 50, 1);
-        add_filter('pre_post_category', [$this, 'fltPrePostTerms'], 50, 1);
-        add_filter('presspermit_pre_object_terms', [$this, 'fltPrePostTerms'], 50, 2);
-
         // Track autodrafts by postmeta in case WP sets their post_status to draft
         add_action('save_post', [$this, 'actSavePost'], 10, 2);
         add_filter('wp_insert_post_empty_content', [$this, 'fltLogInsertPost'], 10, 2);
@@ -192,25 +187,6 @@ class AdminFilters
 
         return $type_roles;
     }
-
-    function fltTaxInput($tax_input)
-    {
-        require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
-        return PostTermsSave::fltTaxInput($tax_input);
-    }
-
-    function fltPrePostTerms($terms, $taxonomy = 'category')
-    {
-        require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
-        return PostTermsSave::fltPreObjectTerms($terms, $taxonomy);
-    }
-
-    /* // this is now handled by fltPreObjectTerms instead
-    function flt_default_term( $default_term_id, $taxonomy = 'category' ) {
-        require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
-        return PostTermsSave::flt_default_term( $default_term_id, $taxonomy );
-    }
-    */
 
     // Optionally, prevent anyone from editing or deleting a user whose level is higher than their own
     function fltHasEditUserCap($wp_sitecaps, $orig_reqd_caps, $args)

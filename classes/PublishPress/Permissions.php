@@ -113,6 +113,7 @@ class Permissions
             'define_media_post_caps' => 0,
             'define_create_posts_cap' => 0,
             'strip_private_caption' => 1,
+            'force_nav_menu_filter' => 0,
             'display_user_profile_groups' => 0,
             'display_user_profile_roles' => 0,
             'new_user_groups_ui' => 1,

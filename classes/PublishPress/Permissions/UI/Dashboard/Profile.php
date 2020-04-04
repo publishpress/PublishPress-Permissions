@@ -220,7 +220,7 @@ class Profile
                 ?>
                 <p>
                     <?php if (!$all_groups && $force_display) :
-                        _e('This user is not a member of any Permission Groups.', 'press-permit-core');
+                        _e('This user is not a member of any custom Permission Groups.', 'press-permit-core');
                         ?>&nbsp;&bull;&nbsp;
                     <?php endif; ?>
 
