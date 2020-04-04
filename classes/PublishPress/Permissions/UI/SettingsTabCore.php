@@ -48,6 +48,7 @@ class SettingsTabCore
             'define_media_post_caps' => __('Enforce distinct edit, delete capability requirements for Media', 'press-permit-core'),
             'define_create_posts_cap' => __('Use create_posts capability', 'press-permit-core'),
             'strip_private_caption' => __('Suppress "Private:" Caption', 'press-permit-core'),
+            'force_nav_menu_filter' => __('Filter Menu Items', 'press-permit-core'),
             'display_user_profile_groups' => __('Permission Groups on User Profile', 'press-permit-core'),
             'display_user_profile_roles' => __('Supplemental Roles on User Profile', 'press-permit-core'),
             'new_user_groups_ui' => __('Select Permission Groups at User creation', 'press-permit-core'),
@@ -64,7 +65,7 @@ class SettingsTabCore
             'taxonomies' => ['enabled_taxonomies'],
             'post_types' => ['enabled_post_types', 'define_media_post_caps', 'define_create_posts_cap'],
             'permissions' => ['post_blockage_priority'],
-            'front_end' => ['strip_private_caption'],
+            'front_end' => ['strip_private_caption', 'force_nav_menu_filter'],
             'admin' => ['admin_hide_uneditable_posts'],
             'user_profile' => ['new_user_groups_ui', 'display_user_profile_groups', 'display_user_profile_roles'],
         ];
@@ -272,6 +273,11 @@ class SettingsTabCore
                     <?php
                     $hint = __('Remove the "Private:" and "Protected" prefix from Post, Page titles', 'press-permit-core');
                     $ui->optionCheckbox('strip_private_caption', $tab, $section, $hint);
+
+                    if (defined('UBERMENU_VERSION')) {
+                        $hint = __('Remove unreadable Menu Items. If menu rendering problems occur with a third party plugin, disable this setting.', 'press-permit-core');
+                        $ui->optionCheckbox('force_nav_menu_filter', $tab, $section, $hint);
+                    }
                     ?>
                 </td>
             </tr>
