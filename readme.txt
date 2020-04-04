@@ -135,7 +135,6 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 * Compat : Ubermenu - Enable Nav Menu filtering if Permissions > Settings > Core > Front End > Filter Menu Items is switched on
 * Compat : Nested Pages - Suppress all filtering on Nested Pages listing, due to incompatible NP handling of filtered query results
 * Fixed : Some informational captions for Pro functionality were applied for the wrong conditions
-* API: New filter 'presspermit_workflow_button_label' allows those who cannot publish to see a custom label on the Pre-Publish button instead of "Workflow..."  
 
 = 3.1 - 16 Mar 2020 =
 * Change : Metaboxes in Post, Term editors recaptioned as "Permissions: Read this Page", "Permissions: Edit Posts in this Category" etc.
