@@ -214,10 +214,10 @@ class PageFilters
             if (!empty($incpages)) {
                 foreach ($incpages as $incpage) {  // @todo: change to IN clause after confirming no issues with PP query parsing
                     if ($incpage) {
-                    if (empty($inclusions))
-                        $inclusions = ' AND ( ID = ' . intval($incpage) . ' ';
-                    else
-                        $inclusions .= ' OR ID = ' . intval($incpage) . ' ';
+                        if (empty($inclusions))
+                            $inclusions = ' AND ( ID = ' . intval($incpage) . ' ';
+                        else
+                            $inclusions .= ' OR ID = ' . intval($incpage) . ' ';
                     }
                 }
             }

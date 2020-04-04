@@ -428,53 +428,53 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
             foreach($operations as $operation) {
                 $data['operation'] = $operation;
 
-            if (!empty($data['need_site_role']))
-                unset($data['need_site_role']);    // should never be set for restriction import
+                if (!empty($data['need_site_role']))
+                    unset($data['need_site_role']);    // should never be set for restriction import
 
-            if ('both' == $row->require_for)
-                $arr_assign_for = ['item', 'children'];
-            else
-                $arr_assign_for = ('entity' == $row->require_for) ? ['item'] : ['children'];
+                if ('both' == $row->require_for)
+                    $arr_assign_for = ['item', 'children'];
+                else
+                    $arr_assign_for = ('entity' == $row->require_for) ? ['item'] : ['children'];
 
-            foreach ($arr_assign_for as $assign_for) {
-                if (('exclude' == $data['mod_type']) && ('read' == $data['operation']) && in_array('subscriber', $wp_role_restrictions[$row->role_name]) && !in_array('wp_anon', $wp_role_restrictions[$row->role_name])) {
-                    // if WP Subscribers will be excluded due to exceptions, also exclude Anonymous
-                    $wp_role_restrictions[$row->role_name][] = 'wp_anon';
-                }
+                foreach ($arr_assign_for as $assign_for) {
+                    if (('exclude' == $data['mod_type']) && ('read' == $data['operation']) && in_array('subscriber', $wp_role_restrictions[$row->role_name]) && !in_array('wp_anon', $wp_role_restrictions[$row->role_name])) {
+                        // if WP Subscribers will be excluded due to exceptions, also exclude Anonymous
+                        $wp_role_restrictions[$row->role_name][] = 'wp_anon';
+                    }
 
-                foreach ($wp_role_restrictions[$row->role_name] as $wp_rolename) {
-                    $data['agent_id'] = $pp_agent_id[$wp_rolename];
+                    foreach ($wp_role_restrictions[$row->role_name] as $wp_rolename) {
+                        $data['agent_id'] = $pp_agent_id[$wp_rolename];
 
-                    $inherited_from = ($row->inherited_from && isset($log_eitem_ids[$row->inherited_from])) ? $log_eitem_ids[$row->inherited_from] : 0;
+                        $inherited_from = ($row->inherited_from && isset($log_eitem_ids[$row->inherited_from])) ? $log_eitem_ids[$row->inherited_from] : 0;
 
-                    $exception_id = $this->get_exception_id($stored_exceptions, $data, $row->source_id);
+                        $exception_id = $this->get_exception_id($stored_exceptions, $data, $row->source_id);
 
-                    $wpdb->insert_id = 0;
-                    $sql = "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, item_id, inherited_from) SELECT * FROM ( SELECT '$assign_for' AS a, '$exception_id' AS b, '$row->item_id' AS c, '$inherited_from' AS d ) AS tmp WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = '$assign_for' AND exception_id = '$exception_id' AND item_id = '$row->item_id') LIMIT 1";
-                    
-                    //var_dump($sql);
-                    
-                    $wpdb->query($sql);
-                    if ($wpdb->insert_id) {
-                        $eitem_id = (int)$wpdb->insert_id;
+                        $wpdb->insert_id = 0;
+                        $sql = "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, item_id, inherited_from) SELECT * FROM ( SELECT '$assign_for' AS a, '$exception_id' AS b, '$row->item_id' AS c, '$inherited_from' AS d ) AS tmp WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = '$assign_for' AND exception_id = '$exception_id' AND item_id = '$row->item_id') LIMIT 1";
+                        
+                        //var_dump($sql);
+                        
+                        $wpdb->query($sql);
+                        if ($wpdb->insert_id) {
+                            $eitem_id = (int)$wpdb->insert_id;
 
-                        $log_eitem_ids[$row->source_id] = $eitem_id;
+                            $log_eitem_ids[$row->source_id] = $eitem_id;
 
-                        if ($row->inherited_from) {
-                            $rs_inherited_from[$eitem_id] = $row->inherited_from;
+                            if ($row->inherited_from) {
+                                $rs_inherited_from[$eitem_id] = $row->inherited_from;
+                            }
+
+                            $log_populated_exceptions[$exception_id] = true;
+
+                            $log_data = ['run_id' => $this->run_id, 'source_tbl' => $this->getTableCode($wpdb->role_scope_rs), 'source_id' => $row->source_id, 'import_tbl' => $this->getTableCode($wpdb->ppc_exception_items), 'import_id' => $eitem_id, 'site' => $blog_id];
+                            $wpdb->insert($wpdb->ppi_imported, $log_data);
+
+                            $this->total_imported++;
+                            $this->num_imported['restrictions']++;
                         }
-
-                        $log_populated_exceptions[$exception_id] = true;
-
-                        $log_data = ['run_id' => $this->run_id, 'source_tbl' => $this->getTableCode($wpdb->role_scope_rs), 'source_id' => $row->source_id, 'import_tbl' => $this->getTableCode($wpdb->ppc_exception_items), 'import_id' => $eitem_id, 'site' => $blog_id];
-                        $wpdb->insert($wpdb->ppi_imported, $log_data);
-
-                        $this->total_imported++;
-                        $this->num_imported['restrictions']++;
                     }
                 }
             }
-        }
         }
 
         // convert inherited_from values from role_scope_rs.requirement_id to ppc_exception_items.eitem_id
@@ -514,29 +514,29 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
             foreach($operations as $operation) {
                 $data['operation'] = $operation;
 
-            foreach ($wp_role_restrictions[$row->role_name] as $wp_rolename) {
-                $data['agent_id'] = $pp_agent_id[$wp_rolename];
+                foreach ($wp_role_restrictions[$row->role_name] as $wp_rolename) {
+                    $data['agent_id'] = $pp_agent_id[$wp_rolename];
 
-                $exception_id = $this->get_exception_id($stored_exceptions, $data, $row->source_id);
-                if (!isset($log_populated_exceptions[$exception_id])) {
-                    // if any default restrictions did not have a corresponding unrestriction imported, create an exception and "none" exception_item
-                    $wpdb->insert_id = 0;
-                    $sql = "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, item_id) SELECT * FROM ( SELECT 'item' AS a, '$exception_id' AS b, '0' AS c ) AS tmp WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = 'item' AND exception_id = '$exception_id' AND item_id = '0') LIMIT 1";
-                    $wpdb->query($sql);
-                    if ($wpdb->insert_id) {
-                        $eitem_id = (int)$wpdb->insert_id;
+                    $exception_id = $this->get_exception_id($stored_exceptions, $data, $row->source_id);
+                    if (!isset($log_populated_exceptions[$exception_id])) {
+                        // if any default restrictions did not have a corresponding unrestriction imported, create an exception and "none" exception_item
+                        $wpdb->insert_id = 0;
+                        $sql = "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, item_id) SELECT * FROM ( SELECT 'item' AS a, '$exception_id' AS b, '0' AS c ) AS tmp WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = 'item' AND exception_id = '$exception_id' AND item_id = '0') LIMIT 1";
+                        $wpdb->query($sql);
+                        if ($wpdb->insert_id) {
+                            $eitem_id = (int)$wpdb->insert_id;
 
-                        $log_data = ['run_id' => $this->run_id, 'source_tbl' => $this->getTableCode($wpdb->role_scope_rs), 'source_id' => $row->source_id, 'import_tbl' => $this->getTableCode($wpdb->ppc_exception_items), 'import_id' => $eitem_id, 'site' => $blog_id];
-                        $wpdb->insert($wpdb->ppi_imported, $log_data);
+                            $log_data = ['run_id' => $this->run_id, 'source_tbl' => $this->getTableCode($wpdb->role_scope_rs), 'source_id' => $row->source_id, 'import_tbl' => $this->getTableCode($wpdb->ppc_exception_items), 'import_id' => $eitem_id, 'site' => $blog_id];
+                            $wpdb->insert($wpdb->ppi_imported, $log_data);
 
-                        $this->total_imported++;
-                        $this->num_imported['restrictions']++;
+                            $this->total_imported++;
+                            $this->num_imported['restrictions']++;
+                        }
+
+                        $log_populated_exceptions[$exception_id] = true;
                     }
-
-                    $log_populated_exceptions[$exception_id] = true;
                 }
             }
-        }
         }
 
         if ($this->importing_publish_exceptions) {
@@ -1040,7 +1040,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                 	$data['operation'] = ['assign', 'edit', 'publish'];
                 	$this->importing_publish_exceptions = true;
             	} else {
-                $data['operation'] = 'edit';
+            		$data['operation'] = 'edit';
             	}
                 break;
 
@@ -1110,9 +1110,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
             $stored_exceptions[] = (object)$data;
 
             if ($restriction_id) {
-            $log_data = ['run_id' => $this->run_id, 'source_tbl' => $this->getTableCode($wpdb->role_scope_rs), 'source_id' => $restriction_id, 'import_tbl' => $this->getTableCode($wpdb->ppc_exceptions), 'import_id' => $exception_id, 'site' => $blog_id];
-            $wpdb->insert($wpdb->ppi_imported, $log_data);
-        }
+                $log_data = ['run_id' => $this->run_id, 'source_tbl' => $this->getTableCode($wpdb->role_scope_rs), 'source_id' => $restriction_id, 'import_tbl' => $this->getTableCode($wpdb->ppc_exceptions), 'import_id' => $exception_id, 'site' => $blog_id];
+                $wpdb->insert($wpdb->ppi_imported, $log_data);
+            }
         }
 
         return $exception_id;

@@ -34,7 +34,7 @@ class PermissionsHooks
 
 		if (presspermit()->isPro()) {
         	add_action('admin_init', [$this, 'loadUpdater']);
-		}
+        }
         
         add_action('user_has_cap', [$this, 'fltEarlyUserHasCap'], 50, 3);
     }
@@ -149,10 +149,10 @@ class PermissionsHooks
         // Deal with plugins (WP Bakery Page Builder) that apply an 'edit_post' metacap check on the init action
         if (isset($args[0]) && in_array($args[0], ['edit_post']) && !did_action('presspermit_init_user_complete')) {
             $this->actInitUser();
-            }
+        }
 
         return $wp_sitecaps;
-        }
+    }
 
     public function actNormalInitUser() {
         $this->actInitUser();

@@ -120,7 +120,7 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 7. Synchronize content to users
 8. Create your own Workflow Statuses
 9. Create your own Privacy Statuses
-	
+
 == Upgrade Notice ==
 
 = 3.1.2 =

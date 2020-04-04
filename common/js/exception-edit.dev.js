@@ -718,13 +718,13 @@ jQuery(document).ready(function ($) {
                 $('#' + cbid).prop('checked', false);
                 $('#' + cbid).closest('div.pp-current-type-roles').find('div.pp-exception-bulk-edit div.mirror-confirm').html(ppRestrict.mirrorDone).show();
             } else {
-            $('#' + cbid).closest('div').find('label').attr('class', set_class);
+                $('#' + cbid).closest('div').find('label').attr('class', set_class);
 
-            // temp workaround for Ajax UI limitation
-            if (('exceptions_children_only' == operation) || ('exceptions_unpropagate' == operation)) {
-                $('#' + cbid).closest('div').find('input').prop('checked', false);
-                $('#' + cbid).closest('div').find('input').prop('disabled', true);
-                $('#' + cbid).closest('div').find('label').attr('title', ppRestrict.reloadRequired);
+                // temp workaround for Ajax UI limitation
+                if (('exceptions_children_only' == operation) || ('exceptions_unpropagate' == operation)) {
+                    $('#' + cbid).closest('div').find('input').prop('checked', false);
+                    $('#' + cbid).closest('div').find('input').prop('disabled', true);
+                    $('#' + cbid).closest('div').find('label').attr('title', ppRestrict.reloadRequired);
                 }
             }
         });

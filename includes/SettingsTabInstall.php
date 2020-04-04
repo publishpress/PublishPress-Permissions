@@ -177,38 +177,38 @@ class SettingsTabInstall
                         <h4><?php _e('Further details for your installation:', 'press-permit-core');?></h4>
                         <ul id="presspermit-pro-install-details" class="pp-bullet-list">
 
-	                        <?php if ($msg):?>
-	                        <li>
-	                        <?php echo $msg ?>
-	                        </li>
-	                        <?php endif;?>
-	
-	                        <?php if ($key_string):?>
-	                        <li>
-	                        <?php 
-	                        if ($expire_date)
-	                            printf(__("Original presspermit.com support key hash: <strong>%s</strong> (expires %s)"), $key_string, $expire_date);
-	                        else
-	                            printf(__("Original presspermit.com support key hash: <strong>%s</strong>"), $key_string, $expire_date);
-	                        ?>
-	                        </li>
-	                        <?php endif;?>
-	
-	                        <?php if ($downgrade_note):?>
-	                        <li class='pp-pro-extensions-migration-note'>
-	                        <?php
-	                        printf(
-	                            __('To temporarily restore Pro features before migrating to a publishpress.com account, delete this version and install <span style="white-space:nowrap"><a href="%s" target="_blank">Press Permit Core 2.6.x</a></span> using Plugins > Add New > Upload.', 'press-permit-core'),
-	                            'https://downloads.wordpress.org/plugin/press-permit-core.' . self::LEGACY_VERSION . '.zip'
-	                        );
-	                        ?>
-	                        </li>
-	                        <?php endif;?>
-	                    </ul>
-                	</td>
-            	</tr>
-            	<?php
-        	endif; // any options accessable in this section
+                            <?php if ($msg):?>
+                            <li>
+                            <?php echo $msg ?>
+                            </li>
+                            <?php endif;?>
+
+                            <?php if ($key_string):?>
+                            <li>
+                            <?php 
+                            if ($expire_date)
+                                printf(__("Original presspermit.com support key hash: <strong>%s</strong> (expires %s)"), $key_string, $expire_date);
+                            else
+                                printf(__("Original presspermit.com support key hash: <strong>%s</strong>"), $key_string, $expire_date);
+                            ?>
+                            </li>
+                            <?php endif;?>
+
+                            <?php if ($downgrade_note):?>
+                            <li class='pp-pro-extensions-migration-note'>
+                            <?php
+                            printf(
+                                __('To temporarily restore Pro features before migrating to a publishpress.com account, delete this version and install <span style="white-space:nowrap"><a href="%s" target="_blank">Press Permit Core 2.6.x</a></span> using Plugins > Add New > Upload.', 'press-permit-core'),
+                                'https://downloads.wordpress.org/plugin/press-permit-core.' . self::LEGACY_VERSION . '.zip'
+                            );
+                            ?>
+                            </li>
+                            <?php endif;?>
+                        </ul>
+                    </td>
+                </tr>
+                <?php
+            endif; // any options accessable in this section
         endif; // any status messages to display
 
         $section = 'version'; // --- VERSION SECTION ---
@@ -296,7 +296,7 @@ class SettingsTabInstall
                                 <tr>
                                     <td <?php if ($alert) {
                                         echo 'colspan="2"';
-                        }
+                                    }
                                     ?>>
                                         <?php $id = "module_active_{$slug}";?>
 
@@ -311,7 +311,7 @@ class SettingsTabInstall
                                         <?php
                                             echo ' <span class="pp-gray">'
                                                 . "</span> $info_link $update_link $alert"
-                        ?>
+                                        ?>
                                     </td>
 
                                     <?php if (!empty($ext_info) && !$alert) : ?>
@@ -345,25 +345,25 @@ class SettingsTabInstall
                         <h4 style="margin-top:5px">
                             <?php
                             _e('Inactive Modules:', 'press-permit-core')
-                    ?>
+                            ?>
                         </h4>
 
                         <table class="pp-extensions">
                             <?php foreach ($inactive as $plugin_slug => $module_info) :
                                 $slug = str_replace('presspermit-', '', $plugin_slug);
                                 ?>
-            <tr>
-                <td>
-
+                                <tr>
+                                    <td>
+                                    
                                     <?php $id = "module_deactivated_{$slug}";?>
 
-                                        <label for="<?php echo $id; ?>">
-                                            <input type="checkbox" id="<?php echo $id; ?>"
+                                    <label for="<?php echo $id; ?>">
+                                        <input type="checkbox" id="<?php echo $id; ?>"
                                                 name="presspermit_deactivated_modules[<?php echo $plugin_slug;?>]"
                                                 value="1" />
 
                                         <?php echo (!empty($ext_info->title[$slug])) ? $ext_info->title[$slug] : $this->prettySlug($slug);?></td>
-                                        </label>
+                                    </label>
 
                                     <?php if (!empty($ext_info)) : ?>
                                         <td>
@@ -381,7 +381,7 @@ class SettingsTabInstall
                                 </tr>
                             <?php endforeach; ?>
                         </table>
-                                <?php
+                    <?php
                     endif;
 
                     $pro_modules = array_diff(
@@ -392,7 +392,7 @@ class SettingsTabInstall
 
                     sort($pro_modules);
                     if ($pro_modules) :
-                                ?>
+                        ?>
                         <h4><?php _e('Pro Modules:', 'press-permit-core'); ?></h4>
                         <table class="pp-extensions">
                             <?php foreach ($pro_modules as $plugin_slug) :
@@ -400,7 +400,7 @@ class SettingsTabInstall
                                 ?>
                                 <tr>
                                     <th>
-
+                                    
                                     <?php $id = "module_deactivated_{$slug}";?>
 
                                     <label for="<?php echo $id; ?>">
@@ -428,11 +428,11 @@ class SettingsTabInstall
                             <?php endforeach; ?>
                         </table>
                         <p style="padding-left:15px;">
-                        <?php
+                            <?php
 
                             ?>
                         </p>
-                        <?php
+                    <?php
                     endif;
                     ?>
                 </td>

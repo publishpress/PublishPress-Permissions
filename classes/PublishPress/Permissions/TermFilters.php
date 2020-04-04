@@ -184,7 +184,7 @@ class TermFilters
 
         if (('all' == $args['fields']) || $args['hide_empty'] || $args['pad_counts']) {
             if (apply_filters('presspermit_apply_term_count_filters', true, $args, $taxonomies)) {
-            require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
+                require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
                 $this->count_filters_obj = TermFiltersCount::instance(['parent_remap_enabled' => $this->parent_remap_enabled]);
                 $args = $this->count_filters_obj->fltGetTermsArgs($args);
             }
@@ -217,7 +217,7 @@ class TermFilters
         if (('all' == $args['fields']) || $args['hide_empty'] || $args['pad_counts']) {
             // adds get_terms filter to adjust post counts based on current user's access and pad_counts setting
             if (apply_filters('presspermit_apply_term_count_filters', true, $args, $taxonomies)) {
-            require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
+                require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
                 $this->count_filters_obj = TermFiltersCount::instance(['parent_remap_enabled' => $this->parent_remap_enabled]);
                 $clauses = $this->count_filters_obj->fltTermsClauses($clauses, $args);
             }

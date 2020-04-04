@@ -74,20 +74,20 @@ class LibWP
 			'gutenberg'      => function_exists( 'the_gutenberg_project' ), //is_plugin_active('gutenberg/gutenberg.php'),
 			'gutenberg-ramp' => class_exists('Gutenberg_Ramp'),
 		);
-
-        $conditions = [];
+		
+		$conditions = [];
 
         if ($suppress_filter) remove_filter('use_block_editor_for_post_type', $suppress_filter, 10, 2);
 
-        /**
-         * 5.0:
-         *
-         * Classic editor either disabled or enabled (either via an option or with GET argument).
-         * It's a hairy conditional :(
-         */
-        // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.Security.NonceVerification.NoNonceVerification
-        $conditions[] = self::isWp5()
-            && !$pluginsState['classic-editor']
+		/**
+		 * 5.0:
+		 *
+		 * Classic editor either disabled or enabled (either via an option or with GET argument).
+		 * It's a hairy conditional :(
+		 */
+		// phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.Security.NonceVerification.NoNonceVerification
+		$conditions[] = self::isWp5()
+						&& ! $pluginsState['classic-editor']
 						&& ! $pluginsState['gutenberg-ramp']
 						&& apply_filters('use_block_editor_for_post_type', true, $post_type, PHP_INT_MAX);
 
@@ -101,20 +101,20 @@ class LibWP
                         && (get_option('classic-editor-replace') === 'classic'
                             && isset($_GET['classic-editor__forget']));
 
-        /**
-         * < 5.0 but Gutenberg plugin is active.
-         */
+		/**
+		 * < 5.0 but Gutenberg plugin is active.
+		 */
 		$conditions[] = !self::isWp5() && ($pluginsState['gutenberg'] || $pluginsState['gutenberg-ramp']);
 
 		// Returns true if at least one condition is true.
-        $result = count(
-                array_filter($conditions,
-                    function ($c) {
-                        return (bool)$c;
-                    }
-                )
-            ) > 0;
-
+		$result = count(
+				   array_filter($conditions,
+					   function ($c) {
+						   return (bool)$c;
+					   }
+				   )
+               ) > 0;
+        
         if (!$suppress_filter) {
             $buffer[$post_type] = $result;
         }

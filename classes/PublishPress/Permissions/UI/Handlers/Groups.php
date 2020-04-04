@@ -58,7 +58,7 @@ class Groups
                     if ($group_obj = $pp_groups->getGroup($id, $agent_type)) {
                         if (!empty($group_obj->metagroup_id) || ('wp_role' == $group_obj->metagroup_type)) {
                             if (!\PublishPress\Permissions\DB\Groups::isDeletedRole($group_obj->metagroup_id)) {
-                            continue;
+                                continue;
                             } else {
                                 $wp_role_count++;
                             }
