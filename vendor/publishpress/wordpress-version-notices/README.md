@@ -17,8 +17,7 @@ Due to a conflict in the tests we didn't register the include file in the Compos
 
 ```php
 if (!defined('PP_VERSION_NOTICES_LOADED')) {
-    require_once __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'publishpress' . DIRECTORY_SEPARATOR
-        . 'wordpress-version-notices' . DIRECTORY_SEPARATOR . 'includes.php';
+    require_once __DIR__ . '/vendor/publishpress/wordpress-version-notices/includes.php';
 }
 
 add_filter(\PPVersionNotices\Module\TopNotice\Module::SETTINGS_FILTER, function ($settings) {
