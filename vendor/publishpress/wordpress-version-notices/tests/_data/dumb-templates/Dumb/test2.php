@@ -1,1 +1,0 @@
-<h1>Test2: <?php echo $foo1; ?>, <?php echo $foo2; ?></h1>

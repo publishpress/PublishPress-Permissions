@@ -58,8 +58,7 @@ class TemplateLoader implements TemplateLoaderInterface
         $templatePath = $this->templatesPath . '/' . $moduleName . '/' . $templateName . '.php';
 
         if (!file_exists($templatePath)) {
-            //throw new TemplateNotFoundException('Template file not found');
-            return false;
+            throw new TemplateNotFoundException('Template file not found: ' . $templatePath);
         }
 
         if ($return) {

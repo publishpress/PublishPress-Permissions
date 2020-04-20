@@ -128,6 +128,9 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
+= 3.1.4-beta =
+* Compat : PublishPress Revisions - Support suppression of Permissions metaboxes on Edit Revision screen
+
 = 3.1.3 - 6 Apr 2020 =
 * Fixed : Possible fatal error loading Permissions screens on a small percentage of installations
 
