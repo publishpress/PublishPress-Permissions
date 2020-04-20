@@ -23,7 +23,6 @@
 /* --- Settings table layout --- */
 
 #pp_settings_form .form-table th {
-    width: auto;
     padding-right:25px;
 }
 
@@ -86,7 +85,6 @@ table.pp-options-table .pp-optionhint {
     font-weight: bold;
     color: white;
 }
-
 
 #pp_settings_form .activating, #pp_settings_form .activating, #pp-install .activating, #tab-panel-pp .activating {
     border-width: 1px;
@@ -254,6 +252,10 @@ table.pp-options-table .pp-optionhint {
 
 #plugin-information-footer {
     display: none;
+}
+
+#pp-install li.pp-pro-extensions-migration-note {
+    max-width: 550px;
 }
 
 /* --- Advanced tab --- */
@@ -434,4 +436,114 @@ div.pp-settings-code textarea {
 
 #pp_defined_constants th, #pp_available_constants th {
     width: auto;
+}
+
+#pp-import div.rsu-issue {
+	margin-top:10px;
+}
+#pp-import div.rsu-issue > h4 {
+	background: #eee;
+	color: #222;
+	font-size: 1.2em;
+	padding: 8px 10px;
+	margin: 0;
+}
+#pp-import div.rsu-issue > h4 a {
+	text-decoration: none;
+	display: block;
+	color: #222;
+}
+#pp-import div.rsu-issue > h4 a:hover,
+#pp-import div.rsu-issue > h4 a:focus,
+#pp-import div.rsu-issue > h4 a:active {
+	text-decoration: none;
+	color: #222;
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+}
+#pp-import div.rsu-issue ul {
+	margin: 0 0 20px 0;
+	border-width: 0 1px;
+	border-color: #eee;
+	border-style: solid;
+}
+#pp-import div.rsu-issue ul li {
+	margin: 0 0 0px 0;
+	list-style: none;
+	border-bottom: 1px solid #eee;
+    padding: 8px 10px;
+    background-color: white;
+}
+#pp-import div.rsu-notes ul {
+    max-width: 650px;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+#pp-import div.rsu-notes ul li {
+    list-style: disc;
+    padding-left: 10px;
+    margin-left: 5px;
+}
+#pp-import input {
+    padding: 5px;
+}
+
+#pp-import span.prev-imports {
+    padding: 5px;
+}
+
+#pp-import div.rsu-issue {
+	margin-top:10px;
+}
+#pp-import div.rsu-issue > h4 {
+	background: #eee;
+	color: #222;
+	font-size: 1.2em;
+	padding: 8px 10px;
+	margin: 0;
+}
+#pp-import div.rsu-issue > h4 a {
+	text-decoration: none;
+	display: block;
+	color: #222;
+}
+#pp-import div.rsu-issue > h4 a:hover,
+#pp-import div.rsu-issue > h4 a:focus,
+#pp-import div.rsu-issue > h4 a:active {
+	text-decoration: none;
+	color: #222;
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+}
+#pp-import div.rsu-issue ul {
+	margin: 0 0 20px 0;
+	border-width: 0 1px;
+	border-color: #eee;
+	border-style: solid;
+}
+#pp-import div.rsu-issue ul li {
+	margin: 0 0 0px 0;
+	list-style: none;
+	border-bottom: 1px solid #eee;
+    padding: 8px 10px;
+    background-color: white;
+}
+#pp-import div.rsu-notes ul {
+    max-width: 650px;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+#pp-import div.rsu-notes ul li {
+    list-style: disc;
+    padding-left: 10px;
+    margin-left: 5px;
+}
+#pp-import input {
+    padding: 5px;
+}
+
+#pp-import span.prev-imports {
+    padding: 5px;
 }

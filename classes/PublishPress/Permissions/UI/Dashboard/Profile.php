@@ -34,7 +34,7 @@ class Profile
             ]
         );
 
-        $caption = sprintf(__('Exceptions %1$s(for user)%2$s', 'press-permit-core'), '<small>', '</small>');
+        $caption = sprintf(__('Specific Permissions %1$s(for user)%2$s', 'press-permit-core'), '<small>', '</small>');
         $new_permissions_link = true;
         $maybe_display_note = !$has_user_roles;
         $display_limit = 12;
@@ -101,7 +101,7 @@ class Profile
             [
                 'edit_url' => '',
                 'class' => 'pp-group-roles',
-                'caption' => __('Exceptions (from primary role or group membership)', 'press-permit-core'),
+                'caption' => __('Specific Permissions (from primary role or group membership)', 'press-permit-core'),
                 'join_groups' => 'groups_only',
                 'display_limit' => 12
             ]
@@ -220,7 +220,7 @@ class Profile
                 ?>
                 <p>
                     <?php if (!$all_groups && $force_display) :
-                        _e('This user is not a member of any Permission Groups.', 'press-permit-core');
+                        _e('This user is not a member of any custom Permission Groups.', 'press-permit-core');
                         ?>&nbsp;&bull;&nbsp;
                     <?php endif; ?>
 

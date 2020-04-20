@@ -8,23 +8,25 @@ class Ancestry
     {
         $title_caption = '';
 
-        if ($post = get_post($item_id)) {
-            if (is_post_type_hierarchical($post->post_type) && $ancestors = self::getPageAncestors($item_id)) {
-                $arr = [];
-                foreach ($ancestors as $id) {
-                    if ($_ancestor = get_post($id)) {
-                        $arr[] = $_ancestor->post_title;
+        if ($item_id) {
+            if ($post = get_post($item_id)) {
+                if (is_post_type_hierarchical($post->post_type) && $ancestors = self::getPageAncestors($item_id)) {
+                    $arr = [];
+                    foreach ($ancestors as $id) {
+                        if ($_ancestor = get_post($id)) {
+                            $arr[] = $_ancestor->post_title;
+                        }
                     }
-                }
-                $arr = array_reverse($arr);
+                    $arr = array_reverse($arr);
 
-                $arr[] = $post->post_title;
-                $title_caption = implode(' / ', $arr);
-            } else {
-                $title_caption = $post->post_title;
+                    $arr[] = $post->post_title;
+                    $title_caption = implode(' / ', $arr);
+                } else {
+                    $title_caption = $post->post_title;
+                }
             }
         }
-
+        
         return $title_caption;
     }
 
@@ -262,6 +264,8 @@ class Ancestry
         } elseif (($child_of && !defined('PPC_FORCE_TERM_REMAP')) || defined('PPC_NO_TERM_REMAP')) {
             $remap_parents = false;
         }
+
+        $remap_parents = apply_filters('presspermit_enable_parent_remap', $remap_parents, $args);
 
         if ($depth < 0)
             $depth = 0;

@@ -67,7 +67,9 @@ class PostFilters
     {
         global $wp_query;
         if ($wp_query->is_single || $wp_query->is_page) {
-            $posts = $this->anon_results;
+            if ($this->anon_results) {
+            	$posts = $this->anon_results;
+			}
         }
 
         return $posts;
@@ -143,7 +145,7 @@ class PostFilters
 
         if (
             defined('PP_MEDIA_LIB_UNFILTERED') && (('upload.php' == $pagenow)
-                || (defined('DOING_AJAX') && DOING_AJAX && ('query-attachments' == $action)))
+                || (defined('DOING_AJAX') && DOING_AJAX && in_array($action, ['query-attachments', 'mla-query-attachments'])))
         ) {
             return $clauses;
         }

@@ -1,6 +1,17 @@
+.block-editor .editor-styles-wrapper {
+    overflow-x: visible !important;
+}
 
 .pp-exceptions table {
     margin-top: 5px;
+
+    /* Prevent breakage by White Dot Theme */
+    table-layout: auto !important;
+    width: auto;
+}
+
+.pp-exceptions table, .pp-exceptions table table th, .pp-exceptions table td {
+    border: none;
 }
 
 .pp-item-exceptions-ui td {

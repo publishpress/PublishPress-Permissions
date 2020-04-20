@@ -122,6 +122,10 @@ class PageFilters
             return $results;
         }
 
+        foreach(['include', 'exclude', 'exclude_parent', 'exclude_tree', 'authors'] as $var) {
+            $r[$var] = wp_parse_id_list($r[$var]);
+        }
+
         if ($_filtered_vars = apply_filters('presspermit_get_pages_args', $r)) {  // PPCE filter modifies append_page, exclude_tree, sort_column
             foreach (array_keys($defaults) as $var) {
                 if (isset($_filtered_vars[$var])) {
@@ -132,6 +136,11 @@ class PageFilters
 
         // =========== PressPermit: workaround for CMS Tree Page View
         if ('ids' == $fields && isset($args['xsuppress_filters']) && !empty($args['ignore_sticky_posts'])) {
+            return $results;
+        }
+
+		// =========== PressPermit: workaround for Page List plugin
+        if (defined('PAGE_LIST_PLUGIN_VERSION') && !empty($args['item_spacing']) && did_action('get_template_part') && !did_action('get_footer')) {
             return $results;
         }
 
@@ -197,17 +206,19 @@ class PageFilters
         if (!empty($include)) {
             $child_of = 0; //ignore child_of, parent, exclude, meta_key, and meta_value params if using include
             $parent = -1;
-            $exclude = '';
+            $exclude = [];
             $meta_key = '';
             $meta_value = '';
             $hierarchical = false;
             $incpages = wp_parse_id_list($include);
             if (!empty($incpages)) {
                 foreach ($incpages as $incpage) {  // @todo: change to IN clause after confirming no issues with PP query parsing
-                    if (empty($inclusions))
-                        $inclusions = ' AND ( ID = ' . intval($incpage) . ' ';
-                    else
-                        $inclusions .= ' OR ID = ' . intval($incpage) . ' ';
+                    if ($incpage) {
+                        if (empty($inclusions))
+                            $inclusions = ' AND ( ID = ' . intval($incpage) . ' ';
+                        else
+                            $inclusions .= ' OR ID = ' . intval($incpage) . ' ';
+                    }
                 }
             }
         }
@@ -428,8 +439,11 @@ class PageFilters
                 else
                     $_args['required_operation'] = (PWP::isFront() && !is_preview()) ? 'read' : 'edit';
 
-                if ((('edit' == $_args['required_operation'])
-                        && isset($args['post_parent'])) || ('associate' == $alternate_operation)) {  // workaround for CMS Page View
+                $rest_params = (defined('REST_REQUEST') && REST_REQUEST) ? \PublishPress\Permissions\REST::instance()->params : [];
+
+                if (((('edit' == $_args['required_operation']) && (isset($args['post_parent']) || !empty($rest_params['exclude']) || !empty($rest_params['parent_exclude']))))
+                || ('associate' == $alternate_operation)
+                ) {  // workaround for CMS Page View
                     $_args['alternate_required_ops'] = ['associate'];
                 }
 

@@ -50,17 +50,18 @@ class Groups
 
                 $update = 'del';
                 $delete_ids = [];
+                $wp_role_count = 0;
 
                 foreach ((array)$groupids as $id) {
                     $id = (int)$id;
 
                     if ($group_obj = $pp_groups->getGroup($id, $agent_type)) {
-                        if (
-                            !empty($group_obj->metagroup_id)
-                            || (('wp_role' == $group_obj->metagroup_type)
-                                && DB\Groups::isDeletedRole($group_obj->metagroup_id))
-                        ) {
-                            continue;
+                        if (!empty($group_obj->metagroup_id) || ('wp_role' == $group_obj->metagroup_type)) {
+                            if (!\PublishPress\Permissions\DB\Groups::isDeletedRole($group_obj->metagroup_id)) {
+                                continue;
+                            } else {
+                                $wp_role_count++;
+                            }
                         }
                     }
 
@@ -72,6 +73,10 @@ class Groups
                     wp_die(__('You can&#8217;t delete that group.', 'press-permit-core'));
 
                 $redirect = add_query_arg(['delete_count' => count($delete_ids), 'update' => $update], $redirect);
+
+                if ($wp_role_count == count($delete_ids)) {
+                    $redirect = remove_query_arg('group_variant', $redirect);
+                }
 
                 wp_redirect($redirect);
                 exit();

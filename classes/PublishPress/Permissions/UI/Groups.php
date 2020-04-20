@@ -71,7 +71,7 @@ class Groups
                                 if ($group = $pp_groups->getGroup($id, $agent_type)) {
                                     if (
                                         empty($group->metagroup_type)
-                                        || ('wp_role' == $group->metagroup_type && DB\Groups::isDeletedRole($group->metagroup_id))
+                                        || ('wp_role' == $group->metagroup_type && \PublishPress\Permissions\DB\Groups::isDeletedRole($group->metagroup_id))
                                     ) {
                                         echo "<li><input type=\"hidden\" name=\"users[]\" value=\"" . esc_attr($id) . "\" />"
                                             . sprintf(__('ID #%1s: %2s'), $id, $group->name)
@@ -169,7 +169,7 @@ class Groups
                             if (defined('PP_GROUPS_HINT')) {
                                 echo esc_html(PP_GROUPS_HINT);
                             } else {
-                                echo esc_html(__("Permission Groups adjust user access with type-specific Roles and content-specific Exceptions. To customize permissions for a single user instead, click their Role in the Users listing.", 'press-permit-core'));
+                                echo esc_html(__("Permission Groups adjust user access with type-specific Roles and item-specific Permissions. To customize permissions for a single user instead, click their Role in the Users listing.", 'press-permit-core'));
                             }
 
                             echo '</div><br />';
@@ -221,14 +221,14 @@ class Groups
 
                     <?php
                     if (
-                        defined('BP_VERSION') && !$pp->moduleActive('collaboration')
+                        defined('BP_VERSION') && !$pp->moduleActive('compatibility')
                         && $pp->getOption('display_extension_hints')
                     ) {
                         if (presspermit()->isPro()) {
                             $msg = __('To assign roles or exceptions to BuddyPress groups, activate the Compatibility Pack module', 'press-permit-core');
                         } else {
                             $msg = sprintf(
-                                __('To assign roles or exceptions to BuddyPress groups, %1$supgrade to PressPermit Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                                __('To assign roles or exceptions to BuddyPress groups, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
                                 '<a href="https://publishpress.com/pricing/">',
                                 '</a>'
                             );

@@ -1,0 +1,35 @@
+#pp-install_table th {
+width: auto;
+}
+
+#pp-install_table .pp-extensions th {
+font-weight: normal;
+white-space: nowrap;
+background-color: white;
+padding-top: 8px;
+padding-bottom: 8px;
+}
+
+#presspermit-pro-notice {
+max-height: 100px;
+width: 102%;
+padding: 7px;
+margin-left: -20px;
+margin-bottom: -5px;
+text-align: center;
+overflow: hidden;
+background-color:#ddd;
+color: #555;
+position: relative;
+}
+
+#presspermit-pro-notice a, #presspermit-pro-notice a:visited, #presspermit-pro-notice a:link, #presspermit-pro-notice a:hover {
+color:#655997;
+font-weight: bold;
+}
+
+body.toplevel_page_presspermit-groups #show-settings-link, body.permissions_page_presspermit-role-usage #show-settings-link {
+position: absolute;
+left: -138px;
+top: 6px;
+}

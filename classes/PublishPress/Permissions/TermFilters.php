@@ -13,6 +13,9 @@ namespace PublishPress\Permissions;
 
 class TermFilters
 {
+    private $parent_remap_enabled = true;
+    private $count_filters_obj;
+
     public function __construct()
     {
         add_filter('get_terms_args', [$this, 'fltGetTermsArgs'], 50, 2);
@@ -24,6 +27,30 @@ class TermFilters
         // Avoid redundant filtering when called from within a get_posts() call
         // (PP filters already use posts_clauses filter to apply term exceptions via join)
         add_action('pre_get_posts', [$this, 'actDisableFiltering']);
+
+        // By default, don't remap term parent when get_terms() was called by wp_get_object_terms()
+        add_filter('wp_get_object_terms_args', [$this, 'fltDisableTermRemap']);
+        add_filter('get_object_terms', [$this, 'fltEnableTermRemap']);
+    }
+
+    public function fltDisableTermRemap($arg) {
+        $this->parent_remap_enabled = false;
+
+        if (!empty($this->count_filters_obj)) {
+            $this->count_filters_obj->parent_remap_enabled = false;
+        }
+
+        return $arg;
+    }
+
+    public function fltEnableTermRemap($arg) {
+        $this->parent_remap_enabled = true;
+
+        if (!empty($this->count_filters_obj)) {
+            $this->count_filters_obj->parent_remap_enabled = true;
+        }
+
+        return $arg;
     }
 
     public function actDisableFiltering()
@@ -55,6 +82,10 @@ class TermFilters
 
             if (defined('PP_GET_TERMS_SHORTCUT') && !did_action('wp_head'))  // experimental theme-specific workaround
                 return $terms;
+
+            if (!$post_id) {
+                return $terms;
+            }
 
             if (!$_post = get_post($post_id))
                 return $terms;
@@ -152,9 +183,11 @@ class TermFilters
         $args = wp_parse_args($args, $defaults);
 
         if (('all' == $args['fields']) || $args['hide_empty'] || $args['pad_counts']) {
-            require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
-            $filters_obj = TermFiltersCount::instance();
-            $args = $filters_obj->fltGetTermsArgs($args);
+            if (apply_filters('presspermit_apply_term_count_filters', true, $args, $taxonomies)) {
+                require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
+                $this->count_filters_obj = TermFiltersCount::instance(['parent_remap_enabled' => $this->parent_remap_enabled]);
+                $args = $this->count_filters_obj->fltGetTermsArgs($args);
+            }
         }
 
         if (presspermit()->doing_rest) {
@@ -183,12 +216,17 @@ class TermFilters
 
         if (('all' == $args['fields']) || $args['hide_empty'] || $args['pad_counts']) {
             // adds get_terms filter to adjust post counts based on current user's access and pad_counts setting
-            require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
-            $filters_obj = TermFiltersCount::instance();
-            $clauses = $filters_obj->fltTermsClauses($clauses, $args);
+            if (apply_filters('presspermit_apply_term_count_filters', true, $args, $taxonomies)) {
+                require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
+                $this->count_filters_obj = TermFiltersCount::instance(['parent_remap_enabled' => $this->parent_remap_enabled]);
+                $clauses = $this->count_filters_obj->fltTermsClauses($clauses, $args);
+            }
         }
 
-        if (empty($args['required_operation'])) {
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            $args['required_operation'] = 'assign';
+            
+        } elseif (empty($args['required_operation'])) {
             $args['required_operation'] = apply_filters(
                 'presspermit_get_terms_operation',
                 PWP::isFront() ? 'read' : 'assign',

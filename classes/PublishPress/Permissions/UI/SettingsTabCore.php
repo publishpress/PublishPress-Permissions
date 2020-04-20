@@ -48,11 +48,12 @@ class SettingsTabCore
             'define_media_post_caps' => __('Enforce distinct edit, delete capability requirements for Media', 'press-permit-core'),
             'define_create_posts_cap' => __('Use create_posts capability', 'press-permit-core'),
             'strip_private_caption' => __('Suppress "Private:" Caption', 'press-permit-core'),
+            'force_nav_menu_filter' => __('Filter Menu Items', 'press-permit-core'),
             'display_user_profile_groups' => __('Permission Groups on User Profile', 'press-permit-core'),
             'display_user_profile_roles' => __('Supplemental Roles on User Profile', 'press-permit-core'),
             'new_user_groups_ui' => __('Select Permission Groups at User creation', 'press-permit-core'),
             'admin_hide_uneditable_posts' => __('Hide non-editable posts', 'press-permit-core'),
-            'post_blockage_priority' => __('Post-assigned Exceptions take priority', 'press-permit-core'),
+            'post_blockage_priority' => __('Post-specific Permissions take priority', 'press-permit-core'),
         ];
 
         return array_merge($captions, $opt);
@@ -64,7 +65,7 @@ class SettingsTabCore
             'taxonomies' => ['enabled_taxonomies'],
             'post_types' => ['enabled_post_types', 'define_media_post_caps', 'define_create_posts_cap'],
             'permissions' => ['post_blockage_priority'],
-            'front_end' => ['strip_private_caption'],
+            'front_end' => ['strip_private_caption', 'force_nav_menu_filter'],
             'admin' => ['admin_hide_uneditable_posts'],
             'user_profile' => ['new_user_groups_ui', 'display_user_profile_groups', 'display_user_profile_roles'],
         ];
@@ -98,7 +99,7 @@ class SettingsTabCore
                 <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
                 <td>
                     <?php
-                    $hint = __('If disabled, manually "blocked" posts can be unblocked by Category / Term Exceptions.  Enabling this setting will provide more intuitive behavior, but may require configuration review and testing on prior installations.', 'press-permit-core');
+                    $hint = __('If disabled, manually "blocked" posts can be unblocked by specific Category / Term Permissions.  Enabling this setting will provide more intuitive behavior, but may require configuration review and testing on prior installations.', 'press-permit-core');
                     $ui->optionCheckbox('post_blockage_priority', $tab, $section, $hint);
                     ?>
                 </td>
@@ -229,7 +230,7 @@ class SettingsTabCore
                                             if ($pp->keyActive()) {
                                                 _e('To customize bbPress forum permissions, activate the Compatibility Pack module.', 'press-permit-core');
                                             } else {
-                                                _e('To customize bbPress forum permissions, activate your PressPermit Pro license key.', 'press-permit-core');
+                                                _e('To customize bbPress forum permissions, activate your Permissions Pro license key.', 'press-permit-core');
                                             }
 
                                             ?>
@@ -243,17 +244,17 @@ class SettingsTabCore
 
                                 if (in_array('attachment', presspermit()->getEnabledPostTypes(), true)) {
                                     if (!presspermit()->isPro()) {
-                                        $hint = __("For most installations, leave this disabled. If enabled, corresponding edit and delete capabilities must be added to existing roles.", 'ppce');
+                                        $hint = __("For most installations, leave this disabled. If enabled, corresponding edit and delete capabilities must be added to existing roles.", 'press-permit-core');
                                     } else {
                                         $hint = defined('PRESSPERMIT_COLLAB_VERSION') 
-                                        ? __("For most installations, leave this disabled. See Editing tab for specialized Media Library permissions.", 'ppce')
-                                        : __("For most installations, leave this disabled. For specialized Media Library permissions, install the Collaborative Publishing module.", 'ppce');
+                                        ? __("For most installations, leave this disabled. See Editing tab for specialized Media Library permissions.", 'press-permit-core')
+                                        : __("For most installations, leave this disabled. For specialized Media Library permissions, install the Collaborative Publishing module.", 'press-permit-core');
                                     }
 
                                     $ret = $ui->optionCheckbox('define_media_post_caps', $tab, $section, $hint, '');
                                 }
 
-                                $hint = __('If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types.  <strong>NOTE: You will also need to use a WordPress Role Editor</strong> such as Capability Manager Enhanced to add these capabilities to desired roles.', 'press-permit-core');
+                                $hint = __('If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types.  <strong>NOTE: You will also need to use a WordPress role editor</strong> such as PublishPress Capabilities to add these capabilities to desired roles.', 'press-permit-core');
                                 $ret = $ui->optionCheckbox('define_create_posts_cap', $tab, $section, $hint, '');
                                 echo '</div>';
                             }
@@ -272,6 +273,11 @@ class SettingsTabCore
                     <?php
                     $hint = __('Remove the "Private:" and "Protected" prefix from Post, Page titles', 'press-permit-core');
                     $ui->optionCheckbox('strip_private_caption', $tab, $section, $hint);
+
+                    if (defined('UBERMENU_VERSION')) {
+                        $hint = __('Remove unreadable Menu Items. If menu rendering problems occur with a third party plugin, disable this setting.', 'press-permit-core');
+                        $ui->optionCheckbox('force_nav_menu_filter', $tab, $section, $hint);
+                    }
                     ?>
                 </td>
             </tr>
@@ -285,6 +291,8 @@ class SettingsTabCore
                 <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
                 <td>
                     <?php
+                    $ui->optionCheckbox('display_branding', $tab, $section, '');
+                    
                     $listable = defined('PP_ADMIN_READONLY_LISTABLE');
 
                     $hint = ($pp->moduleExists('collaboration') && !$listable)

@@ -51,7 +51,7 @@ class PostEdit
         // ========= register WP-rendered metaboxes ============
         $post_type = PWP::findPostType();
 
-        if (!current_user_can('pp_assign_roles') || apply_filters('presspermit_disable_exception_ui', false, 'post', 0, $post_type)) {
+        if (!current_user_can('pp_assign_roles') || apply_filters('presspermit_disable_exception_ui', false, 'post', PWP::getPostID(), $post_type)) {
             return;
         }
 
@@ -63,16 +63,17 @@ class PostEdit
 
         $pp = presspermit();
 
+        $type_obj = get_post_type_object($post_type);
+
         if (!in_array($post_type, $pp->getEnabledPostTypes(['layer' => 'exceptions']), true)) {
             if (!in_array($post_type, ['revision']) && $pp->getOption('display_hints')) {
-                $type_obj = get_post_type_object($post_type);
                 if ($type_obj->public) {
                     $omit_types = apply_filters('presspermit_unfiltered_post_types', ['wp_block']);
 
                     if (!in_array($post_type, $omit_types, true) && !defined("PP_NO_" . strtoupper($post_type) . "_EXCEPTIONS")) {
                         add_meta_box(
                             "pp_enable_type",
-                            __('PressPermit Settings', 'press-permit-core'),
+                            __('Permissions Settings', 'press-permit-core'),
                             [$this, 'drawSettingsUI'],
                             $post_type,
                             'advanced',
@@ -92,12 +93,20 @@ class PostEdit
 
         foreach (array_keys($operations) as $op) {
             if ($op_obj = $pp->admin()->getOperationObject($op, $post_type)) {
+                $caption = ('associate' == $op) 
+                ? sprintf(
+                    __('Permissions: Select this %s as Parent', 'press-permit-core'),
+                    $type_obj->labels->singular_name
+                )
+                : sprintf(
+                    __('Permissions: %s this %s', 'press-permit-core'),
+                    $op_obj->label,
+                    $type_obj->labels->singular_name
+                );
+                
                 add_meta_box(
                     "pp_{$op}_{$post_type}_exceptions",
-                    sprintf(
-                        __('%s Exceptions', 'press-permit-core'),
-                        $op_obj->noun_label
-                    ),
+                    $caption,
                     [$this, 'drawExceptionsUI'],
                     $post_type,
                     'advanced',

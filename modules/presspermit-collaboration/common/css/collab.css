@@ -1,0 +1,42 @@
+/* --- users.php --- */
+#member_page_adder input[placeholder] {
+    color: #aaa;
+}
+
+table.agp-vtight_input {
+    margin-bottom: 0;
+}
+
+table.agp-vtight_input tr, table.agp-vtight_input tr td {
+    border-bottom: none;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+table.agp-rlabel tr td.rlabel {
+    text-align: right;
+    padding-right: 0;
+    margin-right: 0;
+}
+
+
+.pp-select-author input {
+    vertical-align: top;
+}
+
+.pp-select-author button {
+    padding-top: 0;
+}
+
+.pp-select-author button.pp_add {
+    float: none;
+}
+
+.pp-select-author h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.pp-select-author .pp-agents-selection select {
+    min-width: 170px;
+}

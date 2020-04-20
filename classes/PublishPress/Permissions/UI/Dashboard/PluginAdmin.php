@@ -17,7 +17,7 @@ class PluginAdmin
             }
         }
 
-        if (!presspermit()->isPro() && ( get_option('ppce_version') || get_option('pps_version') || get_option('ppp_version'))) {
+        if (!presspermit()->isPro()) {
             $this->proNotice();
         }
     }
@@ -31,7 +31,7 @@ class PluginAdmin
                 $url = admin_url('admin.php?page=presspermit-settings');
 
                 $message = sprintf(
-                    __('PressPermit needs directions. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered.', 'press-permit-core'),
+                    __('PublishPress Permissions needs directions. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered.', 'press-permit-core'),
                     '<a href="' . $url . '">',
                     '</a>'
                 );
@@ -89,7 +89,7 @@ class PluginAdmin
     {
         if (!$this->typeUsageStored() && !is_network_admin()) {
             $url = admin_url('admin.php?page=presspermit-settings');
-			$plugin_title = (presspermit()->isPro()) ? 'PressPermit Pro' : 'PressPermit';            
+			$plugin_title = (presspermit()->isPro()) ? 'PublishPress Permissions Pro' : 'PublishPress Permissions';            
 
             presspermit()->admin()->notice(
                 sprintf(
@@ -108,7 +108,7 @@ class PluginAdmin
         
         presspermit()->admin()->notice(
             sprintf(
-                __('For Pro features, replace the PressPermit plugin with Press Permit Pro. See %sPermissions > Settings > Install%s for details.', 'press-permit-core'),
+                __('For Pro features, replace the PublishPress Permissions plugin with PublishPress Permissions Pro. See %sPermissions > Settings > Install%s for details.', 'press-permit-core'),
                 '<a href="' . $url . '">',
                 '</a>'
             ), 'pro-info'

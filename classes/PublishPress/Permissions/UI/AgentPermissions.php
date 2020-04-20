@@ -68,7 +68,7 @@ class AgentPermissions
         $group_variant = ! empty($_REQUEST['group_variant']) ? $_REQUEST['group_variant'] : 'pp_group';
 
         $groups_link = ($wp_http_referer && strpos($wp_http_referer, 'presspermit-groups')) 
-        ? $wp_http_referer
+        ? add_query_arg('group_variant', $group_variant, $wp_http_referer)
         : admin_url("admin.php?page=presspermit-groups&group_variant=$group_variant"); 
         ?>
 
@@ -80,7 +80,7 @@ class AgentPermissions
                         <strong><?php _e('Roles updated.', 'press-permit-core') ?>&nbsp;</strong>
 
                     <?php elseif (!empty($_REQUEST['pp_exc'])) : ?>
-                        <strong><?php _e('Exceptions updated.', 'press-permit-core') ?>&nbsp;</strong>
+                        <strong><?php _e('Specific Permissions updated.', 'press-permit-core') ?>&nbsp;</strong>
 
                     <?php elseif (!empty($_REQUEST['pp_cloned'])) : ?>
                         <strong><?php _e('Permissions cloned.', 'press-permit-core') ?>&nbsp;</strong>
@@ -123,17 +123,25 @@ class AgentPermissions
                 <?php PluginPage::icon(); ?>
                 <h1><?php
 
-                    if ('user' == $agent_type) ($agent_id) ? _e('Edit User Permissions', 'press-permit-core') : _e('Add User Permissions', 'press-permit-core');
+                    if ('user' == $agent_type) {
+                        ($agent_id) ? _e('Edit User Permissions', 'press-permit-core') : _e('Add User Permissions', 'press-permit-core');
 
-                    elseif ('wp_role' == $metagroup_type)
-                        _e('Edit Permission Group (WP Role)', 'press-permit-core');
-
-                    elseif ('pp_group' == $agent_type)
+                    } elseif ('wp_role' == $metagroup_type) {
+                        if (defined('PUBLISHPRESS_CAPS_VERSION')) {
+                            printf(
+                                __('Edit Permission Group (%sWordPress Role%s)', 'press-permit-core'),
+                                '<a href="' . admin_url("admin.php?page=capsman&action=edit&role={$agent->metagroup_id}") . '" title="' . esc_attr(__('Edit role capabilities directly', 'press-permit-core')) . '">',
+                                '</a>'
+                            );
+                        } else {
+                            _e('Edit Permission Group (WordPress Role)', 'press-permit-core');
+                        }
+                    } elseif ('pp_group' == $agent_type) {
                         _e('Edit Permission Group', 'press-permit-core');
 
-                    elseif ($group_type_obj = $pp_groups->getGroupTypeObject($agent_type))
+                    } elseif ($group_type_obj = $pp_groups->getGroupTypeObject($agent_type)) {
                         printf(__('Edit Permissions (%s)', 'press-permit-core'), $group_type_obj->labels->singular_name);
-
+                    }
                     ?></h1>
                 </header>
 
@@ -328,7 +336,7 @@ class AgentPermissions
                                 }
 
                                 $role_group_caption = sprintf(
-                                    __('Exceptions %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
+                                    __('Specific Permissions %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
                                     '<small>',
                                     "<a class='pp-show-groups' href='#'>",
                                     '</a>',
@@ -346,8 +354,8 @@ class AgentPermissions
                                 </h4>
                                 <ul class="pp-notes">
                                     <li><?php printf(__('%1$sUsers who have Supplemental Roles assigned directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_roles=1'>", '</a>'); ?></li>
-                                    <li><?php printf(__('%1$sUsers who have Exceptions assigned directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_exceptions=1'>", '</a>'); ?></li>
-                                    <li><?php printf(__('%1$sUsers who have Supplemental Roles or Exceptions directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_perms=1'>", '</a>'); ?></li>
+                                    <li><?php printf(__('%1$sUsers who have Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_exceptions=1'>", '</a>'); ?></li>
+                                    <li><?php printf(__('%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_perms=1'>", '</a>'); ?></li>
                                 </ul>
                                 <?php
                             }
@@ -357,16 +365,16 @@ class AgentPermissions
 
                     if ($pp_admin->bulkRolesEnabled()) {
                         echo '<div class="pp_exceptions_notes">';
-                        echo '<div><strong>' . __('Exceptions Explained:', 'press-permit-core') . '</strong>';
+                        echo '<div><strong>' . __('Specific Permissions Explained:', 'press-permit-core') . '</strong>';
                         echo "<ul>";
-                        echo "<li>" . __('Not These : Specified items are not accessible unless an "Also These" exception is also stored.', 'press-permit-core') . '</li>';
-                        echo "<li>" . __('Only These : Item access as defined by user / group role(s) is further limited by these selections. Users will still need sufficient capabilities in their primary or supplemental roles.', 'press-permit-core') . '</li>';
-                        echo "<li>" . __('Also These : Specified items are accessible regardless of role(s) and other exceptions.', 'press-permit-core') . '</li>';
+                        echo "<li>" . __('"Block" : Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core') . '</li>';
+                        echo "<li>" . __('"Limit to" : Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.', 'press-permit-core') . '</li>';
+                        echo "<li>" . __('"Enable" : Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core') . '</li>';
                         echo "</ul>";
                         echo '</div>';
 
                         echo '<div>';
-                        _e('Keep in mind that roles and exceptions can be assigned to WP Roles, BuddyPress Groups, Custom Groups and/or individual Users.  "Not These" and "Only These" exceptions are unavailable for groups in some contexts.', 'press-permit-core');
+                        _e('Keep in mind that Roles and Specific Permissions can be assigned to WP Roles, BuddyPress Groups, Custom Groups and/or individual Users.  "Enable" and "Limit to" adjustments are unavailable for groups in some contexts.', 'press-permit-core');
                         echo '</div>';
                         echo '</div>';
                     }

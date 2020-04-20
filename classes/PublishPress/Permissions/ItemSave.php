@@ -37,6 +37,8 @@ class ItemSave
         $pp = presspermit();
         $pp_admin = $pp->admin();
 
+        do_action("presspermit_process_exceptions_{$via_item_source}_{$item_id}");
+
         if ($can_assign_roles = current_user_can('pp_assign_roles')) {
             if (apply_filters('presspermit_disable_exception_edit', false, $via_item_source, $item_id)) {
                 $can_assign_roles = false;
@@ -83,7 +85,7 @@ class ItemSave
             }
         }
 
-        if (('post' == $via_item_source) && ('post' == $for_item_source)) {
+        if (('post' == $via_item_source) && ('post' == $for_item_source) && $item_id) {
             if ($post = get_post($item_id)) {
                 if ('attachment' == $post->post_type) {  // don't propagate page exceptions to attachments
                     return;
@@ -92,6 +94,8 @@ class ItemSave
         }
 
         self::inheritParentExceptions($item_id, compact('via_item_source', 'via_item_type', 'set_parent', 'last_parent', 'is_new'));
+
+        do_action('presspermit_processed_exceptions', $via_item_source, $item_id);
     } // end function
 
     public static function inheritParentExceptions($item_id, $args = [])

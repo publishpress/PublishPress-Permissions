@@ -11,6 +11,30 @@ class Admin
     private $last_post_status = [];
     public $errors;
 
+    public function __construct() {
+        add_action('admin_notices', [$this, 'rsMigrationNotice']);
+    }
+
+    public function rsMigrationNotice()
+    {
+        if (!presspermit()->getOption('offer_rs_migration') 
+        || !presspermit()->isAdministrator() 
+        || (apply_filters('presspermit_import_count', 0, 'rs') && empty($_REQUEST['rs-not-imported']))
+        ) {
+            return;
+        }
+
+        $url = admin_url('admin.php?page=presspermit-settings&pp_tab=import');
+        
+        $this->notice(
+            sprintf(
+                __('Role Scoper installation detected. To migrate your groups, roles, restrictions and options to PublishPress Permissions, run the %sImport tool%s.', 'press-permit-core'),
+                '<a href="' . $url . '">',
+                '</a>'
+            ), 'rs-migration'
+        );
+    }
+
     public function getLastPostStatus($post_id)
     {
         return (isset($this->last_post_status[$post_id])) ? $this->last_post_status[$post_id] : false;
@@ -47,7 +71,7 @@ class Admin
     // allow lockdown to non-Administrators (while still allowing item-specific role editing for those who have assign_roles capability)
     public function bulkRolesEnabled()
     {
-        return (current_user_can('pp_assign_roles') && current_user_can('pp_administer_content')
+        return (current_user_can('pp_assign_roles') && (current_user_can('pp_administer_content') || current_user_can('pp_assign_bulk_roles'))
                 && !defined('PP_DISABLE_BULK_ROLES')) || (current_user_can('edit_users'));
     }
 
@@ -208,14 +232,14 @@ class Admin
     public function errorNotice($err_slug, $args)
     {
         require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');
-        return new Permissions\ErrorNotice($err_slug, $args);
+        return new \PublishPress\Permissions\ErrorNotice($err_slug, $args);
     }
 
     public function notice($notice, $msg_id = '')
     {
 		$dismissals = (array) pp_get_option('dismissals');
 
-		if ($msg_id && isset($dismissals[$msg_id]))
+		if ($msg_id && isset($dismissals[$msg_id]) && (empty($_REQUEST['pp_ignore_dismissal']) || ($msg_id != $_REQUEST['pp_ignore_dismissal'])))
 			return;
 		
         require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');
@@ -224,6 +248,9 @@ class Admin
     }
 
     function publishpressFooter() {
+        if (presspermit()->isPro() && !presspermit()->getOption('display_branding')) {
+            return;
+        }
     ?>
         <footer>
 
@@ -231,7 +258,7 @@ class Admin
         <a href="https://wordpress.org/support/plugin/press-permit-core/reviews/#new-post" target="_blank" rel="noopener noreferrer">
         <?php printf( 
             __('If you like %s, please leave us a %s rating. Thank you!', 'press-permit-core'),
-            '<strong>PressPermit</strong>',
+            '<strong>PublishPress Permissions</strong>',
             '<span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>'
             );
         ?>
@@ -241,9 +268,9 @@ class Admin
         <hr>
         <nav>
         <ul>
-        <li><a href="https://publishpress.com/presspermit" target="_blank" rel="noopener noreferrer" title="<?php _e('About PressPermit', 'press-permit-core');?>"><?php _e('About', 'press-permit-core');?>
+        <li><a href="https://publishpress.com/permissions" target="_blank" rel="noopener noreferrer" title="<?php _e('About PublishPress Permissions', 'press-permit-core');?>"><?php _e('About', 'press-permit-core');?>
         </a></li>
-        <li><a href="https://publishpress.com/documentation/presspermit-start/" target="_blank" rel="noopener noreferrer" title="<?php _e('PressPermit Documentation', 'press-permit-core');?>"><?php _e('Documentation', 'press-permit-core');?>
+        <li><a href="https://publishpress.com/documentation/permissions-start/" target="_blank" rel="noopener noreferrer" title="<?php _e('Permissions Documentation', 'press-permit-core');?>"><?php _e('Documentation', 'press-permit-core');?>
         </a></li>
         <li><a href="https://publishpress.com/contact" target="_blank" rel="noopener noreferrer" title="<?php _e('Contact the PublishPress team', 'press-permit-core');?>"><?php _e('Contact', 'press-permit-core');?>
         </a></li>

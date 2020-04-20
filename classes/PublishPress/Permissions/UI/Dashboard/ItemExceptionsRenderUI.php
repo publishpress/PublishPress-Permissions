@@ -197,7 +197,7 @@ class ItemExceptionsRenderUI
                 $for_type = ($for_item_type) ? $for_item_type : '(all)';
                 ?>
                 <td class="<?php echo ('children' == $assign_for) ? 'pp-exc-children' : 'pp-exc-item'; ?>">
-                    <select name='pp_exceptions<?php echo "[$for_type][$op][$agent_type][$assign_for][$agent_id]'{$this->opt_class[$current_val]}"; ?><?php echo $disabled; ?>>
+                    <select name='pp_exceptions<?php echo "[$for_type][$op][$agent_type][$assign_for][$agent_id]'{$this->opt_class[$current_val]}"; ?><?php echo $disabled; ?> autocomplete="off">
                                         <?php
                     foreach ($this->options[$option_set] as $val => $lbl) :
                     if (('wp_role' == $agent_type) 

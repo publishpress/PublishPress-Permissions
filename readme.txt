@@ -1,62 +1,229 @@
-=== PressPermit ===
+=== PublishPress Permissions: Control Access for Posts, Pages, Categories, Tags ===
+
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
-Requires at least: 4.7
-Tested up to: 5.2.2
-Stable tag: 2.8
+Requires at least: 4.9.7
+Tested up to: 5.4
+Requires PHP: 5.6.20
+Stable tag: 3.1.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
+With PublishPress Permissions you can enable or block access to specific posts, pages, categories and other content on your site. You can apply these permissions for roles, individual users, and even custom groups.
 
 == Description ==
 
-[PressPermit](https://publishpress.com/presspermit/) is an advanced content permissions system, now part of the [PublishPress](https://publishpress.com/) family of professional publishing tools.
+[PublishPress Permissions](https://publishpress.com/permissions) is the plugin for advanced WordPress permissions. It goes far beyond the options you'll find in the WordPress core. With PublishPress Permissions you can enable or block access to specific posts, pages, categories and other content on your site. You can apply these permissions for roles, individual users, and even custom groups.
 
-**Important Note for current Pro users:** Download PressPermitPro from publishpress.com before upgrading to this version. PressPermit Pro is now a separate plugin which replaces both Press Permit Core and all PP extension plugins. [Contact us](https://publishpress.com/contact/?pp_topic=presspermit-migration) for assistance in migrating your account.
+There are too many features to mention in a short introduction, but here's one example: PublishPress Permissions allows you to customize viewing and editing access for almost any content built on the WordPress post types platform. Open a Post, Page or custom post type, and you'll be able to decide which roles, users or custom groups can view and edit that content.
+[Click here for your quick start guide to PublishPress Permissions](https://publishpress.com/knowledge-base/permissions-start/).
 
-Core Features included in this plugin:
+= Control Viewing Permissions for WordPress Content = 
 
-  * Permissions model extends the WordPress roles framework
-  * Assign supplemental roles and exceptions for custom post types [youtube https://www.youtube.com/watch?v=v7jTkgmjHrw&rel=0&hd=1]
-  
-  * Post-specific control for any user, group or WordPress role
-  * Control viewing access to specific categories [youtube https://www.youtube.com/watch?v=SMnybRf5neY&rel=0&hd=1] 
+PublishPress Permissions enables you to customize viewing access for WordPress content. Open any post and you'll see a box with the label, "Permissions: Read this Post". This box allows you to choose "Enabled" or "Blocked" for any user role or individual user. You can also set permissions for all users who are guests, and those who are logged in.
+[Click here to see how to create custom viewing permissions](https://publishpress.com/knowledge-base/viewing-permissions/).
 
-  * For any post or category, select who to enable or block
+= Control Editing Permissions for WordPress Content = 
 
-PressPermit [Pro](https://publishpress.com/presspermit/) is [available](https://publishpress.com/pricing/) for [additional access control and features](https://www.youtube.com/playlist?list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3):
-	
-  * Customize editing access for specific posts or terms - [video](https://www.youtube.com/watch?v=0yOEBD8VE9c&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=3)
-  * Limit category/term assignment and page parent selection - [video](https://www.youtube.com/watch?v=QqvtxrqLPwY&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=4)
-  * File Access: regulate direct access to uploaded files - [video](https://www.youtube.com/watch?v=kVusrdlgSps&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=15)
-  * Hidden Content Teaser - [video](https://www.youtube.com/watch?v=d_5r8NKjxDQ&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=9)
-  * bbPress: customize viewing, topic creation or reply submission permissions per-forum
-  * bbPress: display a teaser message for unreadable topics or replies
-  * Date-limited membership in Permissions Groups - [video](https://www.youtube.com/watch?v=hMOVvCy_9Ws&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=7)
-  
-  * Moderation statuses control multi-step moderation - [video](https://www.youtube.com/watch?v=v8VyKP3rIvk&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=8)
-  * PublishPress integration - [video](https://www.youtube.com/watch?v=eeZ6CBC5kQI&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=11)
-  * Revisionary: regulate moderated editing of published content - [video](https://www.youtube.com/watch?v=kCD6HQAjUXs&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=12)
-  * BuddyPress Permission Groups for additional reading or editing access - [video](https://www.youtube.com/watch?v=oABIT7wki_A&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=14)
-  * Circles: block access to content not authored by a fellow group member
-  * WPML integration: mirror post/term permissions to translations
-  * Define custom post statuses and set corresponding supplemental roles - [video](https://www.youtube.com/watch?v=vM3Iwt3Jdak&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=6)
-  * Import groups, roles and restrictions from Role Scoper
-	
+PublishPress Permissions allows you to customize the editing permissions for all your content. Open a Post, Page, Category, Tag, or custom post type and you can decide who is allowed to edit that content.
+[Click here to see how to create editing viewing permissions](https://publishpress.com/knowledge-base/editing-permissions/).
+
+= Create Your Own User Groups =
+
+PublishPress Permissions allows you to create your own user groups. Imagine you want to give some users access to a single Post. Instead of creating a new user role and applying all the permissions, you can easily add those users to a group. This is a simple and more flexible alternative to user roles.
+[Click here to see how to utilize custom user groups](https://publishpress.com/knowledge-base/groups/).
+
+= Manage Access to the Media Library = 
+PublishPress Permissions gives you detailed control over access to media on your WordPress site. You decide who gets to edit and view files in your Media Library. For example, you can set up WordPress so that users only have access to files that they uploaded. Or you can add an exception so users can edit other people's media files if they are attached to a post they can edit.
+[Click here to see how to manage access to your media files](https://publishpress.com/knowledge-base/permissions-media-files/).
+
+= Show Content Teasers =
+
+PublishPress Permissions Pro allows you to display a teaser for unreadable content. This is perfect for making small snippets of your content available to the public. You can have teaser text that is publicly available, followed by private content that is only visible for your site's users. If you choose to display a login form, the redirect will go to the originally requested content.
+[Click here to see how to display content teasers](https://publishpress.com/knowledge-base/how-to-create-a-teaser-for-private-content-in-wordpress/).
+
+= Automatically Create Posts for Users =
+
+This Pro feature allows you to automatically create content for your users. For example, you can sync your staff members to Pages. This would allow your staff to each have their own page to edit and update. You can use this feature to automatically create posts, WooCommerce products, or any other post type that is defined on your site.
+[Click here to see how to automatically create posts for users](https://publishpress.com/knowledge-base/how-to-create-a-personal-page-for-each-wordpress-user/).
+
+= Create Your Own Workflow Statuses =
+
+WordPress provides some status options including "Draft", "Pending Review" and "Published". Permissions Pro enables you to design a far more advanced workflow. Each status you create can have its own unique capability requirements.
+[Click here to see how to build your own workflow statuses](https://publishpress.com/knowledge-base/multi-step-moderation/).
+
+= Create Your Own Visibility Statuses =
+
+With PublishPress Permissions Pro, you can create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. Another example is a "Staff" status, for the people who run your site.
+[Click here to see how to build your own visibility statuses](https://publishpress.com/knowledge-base/custom-post-visibility/).
+
+= How to Upgrade from Press Permit =
+This plugin was previously called "Press Permit". [Contact us](https://publishpress.com/contact/) for assistance in migrating to the new version of this plugin.
+
+= Join PublishPress and get the Pro plugins =
+
+The Pro versions of the PublishPress plugins are well worth your investment. The Pro versions have extra features and faster support. [Click here to join PublishPress](https://publishpress.com/pricing/).
+Join PublishPress and you'll get access to these six Pro plugins:
+
+* [PublishPress Authors Pro](https://publishpress.com/authors) allows you to add multiple authors and guest authors to WordPress posts.
+* [PublishPress Capabilities Pro](https://publishpress.com/capabilities) is the plugin to manage your WordPress user roles, permissions, and capabilities.
+* [PublishPress Checklists Pro](https://publishpress.com/checklists) enables you to define tasks that must be completed before content is published.
+* [PublishPress Permissions Pro](https://publishpress.com/permissions) is the plugin for advanced WordPress permissions.
+* [PublishPress Pro](https://publishpress.com/publishpress) is the plugin for managing and scheduling WordPress content.
+* [PublishPress Revisions Pro](https://publishpress.com/revisions) allows you to update your published pages with teamwork and precision.
+
+Together, these plugins are a suite of powerful publishing tools for WordPress. If you need to create a professional workflow in WordPress, with moderation, revisions, permissions and more, then you should try PublishPress.
+
+= Bug Reports =
+Bug reports for PublishPress Permissions are welcomed in our [repository on GitHub](https://github.com/publishpress/publishpress-permissions). Please note that GitHub is not a support forum, and that issues that aren't properly qualified as bugs will be closed.
+
+= Follow the PublishPress team =
+
+Follow PublishPress on [Facebook](https://www.facebook.com/publishpress), [Twitter](https://www.twitter.com/publishpresscom) and [YouTube](https://www.youtube.com/publishpress)
+
+== Frequently Asked Questions ==
+
+= How does PublishPress Permissions compare to PublishPress Capabilities, User Role Editor and other role editor plugins? =
+
+PublishPress Permissions can be used in addition to a basic role editor / user management plugin.  Those plugins are designed to modify existing WordPress permissions. That's a valuable task, and in many cases will be all the role customization you need. We do recommend [PublishPress Capabilities](https://wordpress.org/plugins/capability-manager-enhanced) which is a WordPress role editor designed for integration with PublishPress Permissions.
+
+PublishPress Permissions can supercharge your permissions engine and goes much further than the basic role editor plugins. PublishPress Permissions is particularly useful when you want to customize access to a specific post, category or term. PublishPress Permissions adds content-specific editing permissions, custom post status permissions, file access restriction, and other features which are not possible in default WordPress. 
+
+= Important Note for Pro users upgrading from Press Permit Core 2.6.x =
+
+In June 2019, with version 2.7, the Pro plugin packaging changed. Pro users previously running Press Permit Core + PP extensions should download PublishPress Permissions Pro from publishpress.com before upgrading a 2.6.x site to this version. PublishPress Permissions Pro is now a separate plugin which replaces both Press Permit Core and all PP extension plugins. Contact us for assistance in migrating your account. 
+
+= What about Role Scoper? =
+
+Moving forward, we do not plan any major development of the Role Scoper code base. If you encounter issues with Role Scoper and need to migrate to a different solution, [PublishPress Permissions](https://publishpress.com/permissions) provides access to an import script which can automate the majority of your Role Scoper migration.
+
+= Can I import settings from Role Scoper? =
+
+Yes. [PublishPress Permissions](https://publishpress.com/permissions) can import the most Role Scoper groups, roles, restrictions and options.  Some manual follow up may be required for some configurations.
+
+= Is PublishPress Permissions an out-of-the-box membership solution? =
+
+No, but it can potentially be used in conjunction with an e-commerce or membership plugin. If you have a way to sell users into a WordPress role or BuddyPress group, PublishPress Permissions can grant access based on that membership.
+
+= Where does PublishPress Permissions store its settings?  How can I completely remove it from my database? =
+
+PublishPress Permissions creates and uses the following tables: pp_groups, pp_group_members, ppc_roles, ppc_exceptions, ppc_exception_items. PublishPress Permissions options stored to the WordPress options table have an option name prefixed with "presspermit_". Due to the potential damage incurred by accidental deletion, no automatic removal is currently available. You can use a SQL editing tool such as phpMyAdmin to drop the tables and delete options with option_name LIKE presspermit_%.
+
+== Screenshots ==
+
+1. Custom viewing permissions
+2. Custom editing permissions
+3. Content creation permissions
+4. Create custom groups
+5. Manage media library access
+6. Show content teasers
+7. Synchronize content to users
+8. Create your own Workflow Statuses
+9. Create your own Privacy Statuses
+
 == Upgrade Notice ==
 
-= 2.7.14 =
-Pro users: download PressPermit Pro from publishpress.com before upgrading to this version.
-
-= 2.1.14 =
-Initial production release
+= 3.1.3 =
+Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
-= 2.8 = 2 Oct 2019 =
+= 3.1.4-beta =
+* Compat : PublishPress Revisions - Support suppression of Permissions metaboxes on Edit Revision screen
+
+= 3.1.3 - 6 Apr 2020 =
+* Fixed : Possible fatal error loading Permissions screens on a small percentage of installations
+
+= 3.1.2 - 2 Apr 2020 =
+* Fixed : Limited editors with editing permissions in limited categories lost access to new post when autosave assigned inaccessible default category
+* Fixed : Possible fatal error on Permissions screens on a small percentage of installations
+* Compat : PublishPress Revisions - Slider on Compare Pending Revisions screen did not work for non-Editors
+* Compat : Ubermenu - Enable Nav Menu filtering if Permissions > Settings > Core > Front End > Filter Menu Items is switched on
+* Compat : Nested Pages - Suppress all filtering on Nested Pages listing, due to incompatible NP handling of filtered query results
+* Fixed : Some informational captions for Pro functionality were applied for the wrong conditions
+
+= 3.1 - 16 Mar 2020 =
+* Change : Metaboxes in Post, Term editors recaptioned as "Permissions: Read this Page", "Permissions: Edit Posts in this Category" etc.
+* Change : Edit Group / User Permissions - Exceptions recaptioned as "Specific Permissions"
+* Change : Edit Group / User Permissions - "Also these / Not these / Only these" recaptioned as "Enable / Block / Limit to"
+* Change : Edit Group / User Permissions - "Associate (as Parent)" operation recaptioned as "Set as Parent"
+* Change : Edit Group / User Permissions - Operation and Adjustment selection UI uses radio buttons (for new Specific Permissions) instead of dropdown select
+* Change : Edit Group / User Permissions - Operation, Adjustment and Qualification selections persist (for new Specific Permissions) until changed
+* Change : Edit Group / User Permissions - Minor styling improvements
+* Feature : Edit Group / User Permissions - Mirror currently stored Specific Permissions to another operation (new bulk edit action). Example: copy "Edit Page" restrictions as "Set as Parent" restrictions. 
+* Fixed : Edit Group / User Permissions - Bulk edit checkboxes were re-selected by browser autocomplete
+* Fixed : Non-editors with editing exceptions did not see Edit link on front end Admin Bar if Classic Editor plugin active with "Allow users to switch" setting disabled
+* Compat : Ubermenu - Intermittant failure to retrieve top level menu items broke front end rendering on some sites
+* Compat : WP Bakery Page Builder - Editing exceptions were not effective for users lacking role capabilities
+* Compat : PublishPress Revisions - If Collaborative Publishing module is not enabled, notify about need for it.
+
+= 3.0.2 - 5 Mar 2020 =
+* Feature : Option to apply Publish exceptions separate from Edit exceptions (Permissions > Settings > Advanced > Permissions Admin). Previously available by constant definition.
+* Compat : Divi Page Builder - Non-editors with page-specific editing exceptions could not access some fields within the Divi editor
+* Fixed : Import module - corrections to import of RS Category Restrictions on the Post Contributor, Post Author and Post Editor roles
+* Fixed : Import module - corrections to import of Page Associate Restrictions
+* Change : Import module - styling improvements
+
+= 3.0.1 - 28 Feb 2020 =
+* Fixed : RTL languages - PP Permissions plugin screens were offset to the right, with the Save button and/or captions out of view
+* Fixed : Featured Images were not properly attached to post if they have an alt text value
+* Fixed : Post editing exceptions did not grant post meta editing capabilities
+* Fixed : Publish capability was not credited from assigned exceptions in some scenarios
+* Compat : PublishPress Revisions 2.2.1 - if set to trigger save_post action on revision publication, do not execute normal Permissions action handlers
+* Compat : Divi Page Builder - Non-editors with page-specific editing exceptions could not use Divi editor
+
+= 3.0 - 20 Feb 2020 =
+* Feature : Collaborative Publishing module ported from Pro edition
+* Feature : Import module (for Role Scoper installations) ported from Pro edition
+* Feature : On activation, detect Role Scoper installation and offer to import it
+* Fixed : Javascript error when a published post is unpublished in the block editor
+* Fixed : Settings screen - dropdown select items sometimes failed to display current setting due to browser autocomplete
+* Fixed : Edit Permission Group - After new custom group creation, "back to groups list" linked to WP Roles list instead of Custom Groups
+* Fixed : Permission Groups screen - groups corresponding to deleted WordPress roles could not be deleted 
+* Fixed : Post editor - Non-administrators with permission assign exceptions got no results from group / user search
+* Fixed : Collaboration module - Stop filtering page parent dropdown needlessly for Administrators (caused invalid results and browser freeze under rare conditions)
+* Compat : Divi Page Builder - Non-Editors could not edit new page after creating it
+* Compat : Divi Page Builder - Non-Editors could not enter Divi UI
+* Compat : Yoast SEO - Admin dashboard access generated two PHP warnings for database error under some configurations
+* Compat : Media Library Assistant - PP Permissions were not applied on Media Library thumbnail view or Select Media tab
+* Compat : Image Source Control - Newly uploaded featured image was not formally attached to post (also apply this compatibility fix if constant PRESSPERMIT_LIMIT_ASYNC_UPLOAD_FILTERING is defined)
+* Change : Admin menu ordering - If PublishPress Capabilities is active, display Permissions menu below Capabilities (both under Users)
+* Perf : Edit Page with Block Editor - Prevent needless core queries
+* Fixed : Edit Permissions screen styling: alignment of Add Roles / Exceptions tab borders
+
+= 2.9 - 9 Jan 2020 =
+* Change : Renamed to PublishPress Permissions
+* Compat : PublishPress Capabilities
+
+= 2.8.8 - 23 Dec 2019 =
+* Compat : Themes that break Gutenberg by making meta boxes steal screen space from editor
+* Fixed : Avoid PHP warnings or unexpected behavior if a post is improperly stored with a zero ID
+
+= 2.8.7 - 10 Dec 2019 =
+* Fixed : Edit Group Permissions - Category Search on "Add Exceptions" tab did not work
+* Fixed : Edit Group Permissions - when selecting groups for Group Exceptions assignment, redundant UI display (checkboxes for "All" tab not initially hidden)
+* Fixed : Custom get_terms() calls: some "fields" argument values were not supported
+* Fixed : PHP Notice - trying to access property term_name on a non-object, under some configurations
+* Change : Accommodate larger search results set on Ajax user search
+* Compat : White Dot Theme - Exceptions metaboxes on Edit Post screen had broken layout, could not search for users / groups
+* Compat : TwentyTwenty theme modified alignment of PressPermit Settings columns 
+* Compat : JReviews plugin - PHP warning due to 'the_posts' results array being set to null under some conditions
+* Compat : Project Nami - Users could not be added to groups
+* Compat : Project Nami - Exceptions could not be removed
+
+= 2.8.2 - 31 Oct 2019 =
+* Fixed : Supplemental Media Author role - uploader stuck on "Crunching" after uploading a file, could not open it until reloading Media Library
 * Fixed : Category / Term listing: after clicking Universal Exceptions link, category links led to edit screen for type-specific exceptions
-* Fixed : PHP Notice when Term Exceptions are assigned to enable access (adjustment mode "Also these") 
+* Fixed : Edit Permissions screen - when selecting Media for Exception assignment, paging did not work in the Select Media metabox
+* Fixed : Edit Permissions screen - Page / Category Exceptions - fatal error on update if item "(none)" was selected with "sub-Items" checkbox selected
+* Fixed : Edit Permissions screen - Improper UI handling for editing existing exceptions if Apply button is clicked twice or without any items selected
+* Fixed : PHP Notice when Term Exceptions are assigned to enable access (adjustment mode "Also these")
+* Change : On Permissions > Groups list, change "Group" filter link caption to "Custom Group"
+* Change : Plugins screen - Put Settings link next to Activate / Deactivate (was in plugin description area)
+* Change : Added PublishPress footer to plugin screens
+
+= 2.8 - 2 Oct 2019 =
+* Fixed : Category / Term listing: after clicking Universal Exceptions link, category links led to edit screen for type-specific exceptions
 * Change : On Permissions > Groups list, change "Group" filter link to "Custom Group"
 * Change : Added PublishPress footer to plugin screens
 
@@ -676,86 +843,3 @@ Initial production release
 * Initial production release
 * Change : Info link on Install tab for screencast links and other PP Pro promotional info if license key inactive or expired
 * Lang : updated .po file
-
-== Setup ==
-
-After plugin activation, go to Permissions > Settings > Core. Select the post types and taxonomies for which permissions should be customized, then click the Update button.
-
-Permissions can be modified from post edit screens, term edit screens, or the plugin's Edit Permissions screens. The Edit Permissions screens are linked from Users, User Profile, and Permission Groups.
-
-== Compatibility Notes ==
-
-**caching plugins** : disable caching for logged users (unless you only use PressPermit to customize editing access).
-
-**Custom WP_Query calls** : Often, conflicts can be resolved by specifying a post_type argument. To prevent improper filtering of front-end ajax calls, pass required_operation=read or hook into the pp_unfiltered_ajax filter and add your action to the return array.
-
-**WPML Multilingual CMS** : plugin creates a separate post / page / category for each translation.  The Compatibility Pack module (included in PressPermit Pro) is required to filter the PressPermit Exceptions item selection UI by language and (optionally) to enable mirroring of exceptions to translations.
-
-== Frequently Asked Questions ==
-
-= How does PressPermit compare to Capability Manager Enhanced, User Role Editor and other role editor plugins? =
-
-PressPermit's functionality is different from and complementary to a basic role editor / user management plugin.  In terms of permissions, those plugins' primary function is to alter WordPress' definition of the capabilities included in each role.  In other words, they expose lots of knobs for the permissions control which WordPress innately supports. That's a valuable task, and in many cases will be all the role customization you need.  Since WP role definitions are stored in the main WordPress database, they remain even said plugin is deactivated. [Capability Manager Enhanced](https://wordpress.org/plugins/capability-manager-enhanced) is a WordPress role editor designed for integration with PressPermit.
-
-PressPermit can assist you in turning the site-wide capability knobs for desired post types. But it also supercharges your permissions engine. PressPermit it is particularly useful when you want to customize access to a specific post, category or term.  Extension plugins add collaborative editing control, file filtering and other features which are not otherwise possible. The plugin will work with your WP roles as a starting point, whether customized by a role editor or not.  Users of the PP Collaborative Editing extension can (after activating advanced settings) navigate to Permissions > Settings > Role Usage to see (or modify) how PressPermit is using your WP role definitions. PressPermit's modifications remain only while it stays active.
-
-= What extra access control would PressPermit Pro give me? =
-
-For a detailed comparison, see the [Role Scoper / PressPermit Feature Grid](https://publishpress.com/presspermit-features/). Here are some highlights:
-
-[youtube https://www.youtube.com/watch?v=0yOEBD8VE9c&rel=0&hd=1]
-Customize editing permissions for specific posts.
-
-&nbsp;
-
-[youtube https://www.youtube.com/watch?v=QqvtxrqLPwY&rel=0&hd=1]
-Control which categories or terms users can post to.
-
-&nbsp;
-
-[youtube https://www.youtube.com/watch?v=v8VyKP3rIvk&rel=0&hd=1]
-Define custom post statuses for access-controlled multi-step moderation.
-
-&nbsp;
-
-[youtube https://www.youtube.com/watch?v=eeZ6CBC5kQI&rel=0&hd=1]
-PublishPress integration.
-
-&nbsp;
-
-[youtube https://www.youtube.com/watch?v=kVusrdlgSps&rel=0&hd=1]
-Prevent inappropriate "back door" access by direct file url.
-
-&nbsp;
-
-= What about Role Scoper? =
-
-Moving forward, we do not plan any major development of the Role Scoper code base.  If you encounter issues with Role Scoper and need to migrate to a different solution, [PressPermit Pro](https://publishpress.com/presspermit/) provides access to an import script which can (for most installations) automate the majority of your Role Scoper migration.
-
-For a detailed feature comparison, see the [RS/PP Feature Grid](https://publishpress.com/presspermit-features/).
-
-= Can I import settings from Role Scoper? =
-
-Yes. [PressPermit Pro](https://publishpress.com/presspermit/) can import the most Role Scoper groups, roles, restrictions and options.  Some manual followup may be required for some configurations.
-
-= Is PressPermit an out-of-the-box membership solution? =
-
-No, but it can potentially be used in conjunction with an e-commerce or membership plugin. If you have a way to sell users into a WordPress role or BuddyPress group, PressPermit can grant access based on that membership.
-
-= Where does PressPermit store its settings?  How can I completely remove it from my database? =
-
-PressPermit creates and uses the following tables: pp_groups, pp_group_members, ppc_roles, ppc_exceptions, ppc_exception_items. PressPermit options stored to the WordPress options table have an option name prefixed with "pp_". Due to the potential damage incurred by accidental deletion, no automatic removal is currently available. You can use a SQL editing tool such as phpMyAdmin to drop the tables and delete the pp options.
-
-== Screenshots ==
-
-1. Edit Page screen: enable or block groups
-2. Edit Page screen: enable or block users
-3. Edit Page screen: enable or block WP roles
-4. Edit Category screen: enable or block groups
-5. Permission Groups listing
-6. Edit Permission Group (custom group enabled to read specific page)
-7. Edit Permission Group (WP role group with supplemental roles)
-8. Edit Permission Group (metagroup blocked from reading a category)
-9. PressPermit Core Settings
-10. PressPermit Advanced Settings
-11. PressPermit Editing Settings (with PressPermit Pro's Collaborative Publishing module)

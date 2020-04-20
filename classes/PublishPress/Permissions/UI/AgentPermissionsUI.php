@@ -37,14 +37,15 @@ class AgentPermissionsUI
     public static function exceptionAssignmentScripts()
     {
         $vars = [
-            'addExceptions' => __('Add Exceptions', 'press-permit-core'),
+            'addExceptions' => __('Set Specific Permissions', 'press-permit-core'),
             'clearException' => __('clear', 'press-permit-core'),
-            'pleaseReview' => __('Review selection(s) below, then click Save.', 'press-permit-core'),
-            'alreadyException' => __('Exception already selected!', 'press-permit-core'),
+            'pleaseReview' => __('Review selection(s) below, then click Save. Saved permissions can be mirrored to other operations by bulk edit.', 'press-permit-core'),
+            'alreadyException' => __('Permission already selected!', 'press-permit-core'),
             'noAction' => __('No Action selected!', 'press-permit-core'),
-            'submissionMsg' => __('Exception submission in progress...', 'press-permit-core'),
-            'reloadRequired' => __('Reload form for further changes to this exception', 'press-permit-core'),
-            'noMode' => __('No Assignment Mode selected!', 'press-permit-core'),
+            'submissionMsg' => __('Permissions submission in progress...', 'press-permit-core'),
+            'reloadRequired' => __('Reload form for further changes to this permission', 'press-permit-core'),
+            'mirrorDone' => __('Permissions mirrored. Reload form to view newly saved permissions.', 'press-permit-core'),
+            'noMode' => __('No Qualification selected!', 'press-permit-core'),
             'ajaxurl' => admin_url(''),
         ];
 
@@ -113,7 +114,7 @@ class AgentPermissionsUI
         <thead>
             <tr>
                 <th><?php _e('Post Type', 'press-permit-core'); ?></th>
-                <th class="pp-select-x-operation" style="display:none"><?php _e('Post Operation', 'press-permit-core'); ?></th>
+                <th class="pp-select-x-operation" style="display:none"><?php _e('Operation', 'press-permit-core'); ?></th>
                 <th class="pp-select-x-mod-type" style="display:none"><?php _e('Adjustment', 'press-permit-core'); ?></th>
                 <th class="pp-select-x-via-type" style="display:none"><?php _e('Qualification', 'press-permit-core'); ?></th>
                 <th class="pp-select-x-status" style="display:none"><?php _e('Statuses', 'press-permit-core'); ?></th>
@@ -124,7 +125,7 @@ class AgentPermissionsUI
             <tr>
                 <td>
 
-                    <select name="pp_select_x_for_type">
+                    <select name="pp_select_x_for_type" autocomplete="off">
                         <?php
                         unset($type_objects['attachment']); // may be re-added by module
                         $type_objects = apply_filters('presspermit_append_exception_types', $pp->admin()->orderTypes(apply_filters('presspermit_exception_types', $type_objects)));
@@ -137,10 +138,10 @@ class AgentPermissionsUI
 
                         ?></select></td>
 
-                <td class="pp-select-x-operation" style="display:none"><select name="pp_select_x_operation"></select></td>
-                <td class="pp-select-x-mod-type" style="display:none"><select name="pp_select_x_mod_type"></select></td>
+                <td class="pp-select-x-operation" style="display:none"></td>
+                <td class="pp-select-x-mod-type" style="display:none"></td>
 
-                <td class="pp-select-x-via-type" style="display:none"><select name="pp_select_x_via_type"></select>
+                <td class="pp-select-x-via-type" style="display:none"><select name="pp_select_x_via_type" autocomplete="off"></select>
 
                     <div class="pp-select-x-assign-for" id="pp_select_x_assign_for" style="display:none">
                         <p class="pp-checkbox">
@@ -149,7 +150,6 @@ class AgentPermissionsUI
                         </p>
 
                     </div>
-
                 </td>
 
                 <td class="pp-select-x-status" style="display:none">
@@ -182,8 +182,8 @@ class AgentPermissionsUI
 
                 var handle_anon_warning = function()
                 {
-                    if (('read' == $('select[name="pp_select_x_operation"]').val()) &&
-                        ('additional' != $('select[name="pp_select_x_mod_type"]').val()) &&
+                    if (('read' == $('input[name="pp_select_x_operation"]').val()) &&
+                        ('additional' != $('input[name="pp_select_x_mod_type"]').val()) &&
                         ('pp-post-object' == $('select[name="pp_select_x_via_type"] option:selected').attr('class'))) {
                         $('#pp-all-anon-warning').show();
                     } else {
@@ -200,15 +200,7 @@ class AgentPermissionsUI
     <div class='pp-ext-promo'>
         <?php
         if (!$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
-            if (presspermit()->isPro()) 
-                $msg = __('To assign exceptions for editing, parent selection or term assignment, activate the Collaborative Publishing module.', 'press-permit-core');
-            else
-                $msg = sprintf(
-                    __('To assign exceptions for editing, parent selection or term assignment, %1$supgrade to PressPermit Pro%2$s and enable the Collaborative Publishing module.', 'press-permit-core'),
-                    '<a href="https://publishpress.com/pricing/">',
-                    '</a>'
-                );
-
+            $msg = __('To assign exceptions for editing, parent selection or term assignment, enable the Collaborative Publishing module.', 'press-permit-core');
             echo "<div>$msg</div>";
         }
         ?>
@@ -222,7 +214,7 @@ class AgentPermissionsUI
                 $msg = __('To assign exceptions for bbPress forums, activate the Compatibility Pack module.', 'press-permit-core');
             else
                 $msg = sprintf(
-                    __('To assign exceptions for bbPress forums, %1$supgrade to PressPermit Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                    __('To assign exceptions for bbPress forums, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
@@ -251,13 +243,13 @@ class AgentPermissionsUI
         <tbody>
             <tr>
                 <td>
-                    <select name="pp_select_type">
+                    <select name="pp_select_type" autocomplete="off">
                         <?php
                         self::drawTypeOptions($type_objects, ['option_na' => true]);
                         do_action('presspermit_role_types_dropdown');
                         ?></select></td>
 
-                <td class="pp-select-role" style="display:none"><select name="pp_select_role"></select></td>
+                <td class="pp-select-role" style="display:none"><select name="pp_select_role" autocomplete="off"></select></td>
 
                 <td class="pp-select-cond" id="pp_cond_ui" style="display:none">
                     <p class="pp-checkbox">
@@ -281,12 +273,12 @@ class AgentPermissionsUI
 
     <div class='pp-ext-promo'>
         <?php
-        if (!$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
+        if (!$pp->moduleActive('status-control') && $pp->getOption('display_extension_hints')) {
             if (presspermit()->isPro())
                 $msg = __('To assign roles for custom post statuses, activate the Status Control module.', 'press-permit-core');
             else
                 $msg = sprintf(
-                    __('To assign roles for custom post statuses, %1$supgrade to PressPermit Pro%2$s and enable the Status Control module.', 'press-permit-core'),
+                    __('To assign roles for custom post statuses, %1$supgrade to Permissions Pro%2$s and enable the Status Control module.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
@@ -301,7 +293,7 @@ class AgentPermissionsUI
                     $msg = __('To assign roles for bbPress forums, activate the Compatibility Pack module.', 'press-permit-core');
                 else
                     $msg = sprintf(
-                        __('To assign roles for bbPress forums, %1$supgrade to PressPermit Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                        __('To assign roles for bbPress forums, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
                         '<a href="https://publishpress.com/pricing/">',
                         '</a>'
                     );
@@ -311,16 +303,8 @@ class AgentPermissionsUI
         ?>
 
         <?php
-        if (defined('REVISIONARY_VERSION') && (!$pp->moduleActive('collaboration') || !$pp->moduleActive('compatibility')) && $pp->getOption('display_extension_hints')) {
-            if (presspermit()->isPro())
-                $msg = __('To assign Revisionary exceptions, activate the Collaborative Publishing and Compatibility Pack modules.', 'press-permit-core');
-            else
-                $msg = sprintf(
-                    __('To assign Revisionary exceptions, %1$supgrade to PressPermit Pro%2$s and enable the Collaborative Publishing and Compatibility Pack modules.', 'press-permit-core'),
-                    '<a href="https://publishpress.com/pricing/">',
-                    '</a>'
-                );
-
+        if (defined('REVISIONARY_VERSION') && !$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
+            $msg = __('To assign PublishPress Revisions exceptions, enable the Collaborative Publishing module.', 'press-permit-core');
             echo "<div>$msg</div>";
         }
         ?>
@@ -432,8 +416,18 @@ class AgentPermissionsUI
 
         <div id="pp_save_exceptions"><?php
                                         ?>
+            <!--
+            <p class="mirror-wrap">
+                <div class="mirror-label">
+                    <?php _e('Mirror all selections to other operation(s)', 'press-permit-core');?>
+                </div>
+                <div class='pp_mirror_to_operations'>    
+                </div>
+            </p>
+            -->
+
             <p class="submit">
-                <input id="submit_exc" class="button button-primary" type="submit" value="<?php _e('Save Exceptions', 'press-permit-core'); ?>" name="submit">
+                <input id="submit_exc" class="button button-primary" type="submit" value="<?php _e('Save Permissions', 'press-permit-core'); ?>" name="submit">
             </p>
 
         </div>
@@ -457,7 +451,7 @@ class AgentPermissionsUI
         if (empty($group) || !in_array($group->metagroup_id, ['wp_anon', 'wp_all']) || defined('PP_ALL_ANON_ROLES'))
             $perms['roles'] = __('Add Supplemental Roles', 'press-permit-core');
 
-        $perms['exceptions'] = __('Add Exceptions', 'press-permit-core');
+        $perms['exceptions'] = __('Set Specific Permissions', 'press-permit-core');
 
         if (!isset($perms['roles']))
             $current_tab = 'pp-add-exceptions';
@@ -729,8 +723,8 @@ class AgentPermissionsUI
 
         if (!$caption) {
             $caption = ('user' == $agent_type)
-                ? sprintf(__('Exceptions %1$s(for user)%2$s', 'press-permit-core'), '<small>', '</small>')
-                : __('Exceptions', 'press-permit-core');
+                ? sprintf(__('Specific Permissions %1$s(for user)%2$s', 'press-permit-core'), '<small>', '</small>')
+                : __('Specific Permissions', 'press-permit-core');
         }
 
         require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Ancestry.php');
@@ -908,7 +902,7 @@ class AgentPermissionsUI
                                 if (('exclude' == $mod_type) && !empty($exceptions[$via_src][$via_type][$for_type][$operation]['include'])) {
                                     $tr_class = ' class="pp_faded"';
                                     $mod_caption = sprintf(__('* %s', 'press-permit-core'), $mod_caption);
-                                    $any_faded = true;
+                                    $any_redundant = true;
                                 } else
                                     $tr_class = '';
 
@@ -985,7 +979,7 @@ class AgentPermissionsUI
                                         } else {
                                             $edit_url = admin_url("post.php?post=$item_id&action=edit");
                                         }
-                                        echo "<div><label for='$cb_id' $lbl_class><input id='$cb_id' type='checkbox' name='pp_edit_exception[]' value='$ass_id' $class> " . $item_path . '</label><a href="' . $edit_url . '">' . __('edit') . '</a></div>';
+                                        echo "<div><label for='$cb_id' $lbl_class><input id='$cb_id' type='checkbox' name='pp_edit_exception[]' value='$ass_id' $class autocomplete='off'> " . $item_path . '</label><a href="' . $edit_url . '">' . __('edit') . '</a></div>';
                                     }
                                 } // end foreach item
 
@@ -1007,7 +1001,7 @@ class AgentPermissionsUI
 
                         echo '<div class="pp-exception-bulk-edit" style="display:none">';
 
-                        echo "<select><option value=''>" . PWP::__wp('Bulk Actions')
+                        echo "<select autocomplete='off'><option value='' autocomplete='off'>" . PWP::__wp('Bulk Actions')
                             . "</option><option value='remove'>" . __('Remove', 'press-permit-core') . '</option>';
 
                         if (('post' == $via_src) && (!$via_type || $via_type_obj->hierarchical)) {
@@ -1036,13 +1030,80 @@ class AgentPermissionsUI
                                 . '</option>';
                         }
 
+                        if ('associate' == $operation) {
+                            $_op = ('term' == $via_src) ? 'term_associate' : 'post_associate';
+                        } else {
+                            $_op = $operation;
+                        }
+
+                        if (in_array($via_src, ['post', 'term'])) {
+                            switch ($_op) {
+                                case 'read':
+                                case 'edit':
+                                case 'publish':
+                                case 'post_associate':
+                                case 'assign':
+                                    $mirror_ops = ['read', 'edit'];
+
+                                    if ($pp->getOption('publish_exceptions')) {
+                                        $mirror_ops []= 'publish';
+                                    }
+
+                                    if ('term' == $via_src) {
+                                        $mirror_ops []= 'assign';
+                                    }
+
+                                    if ($for_type_obj->hierarchical) {
+                                        $mirror_ops []= 'associate';
+                                    }
+                                    
+                                    break;
+
+                                case 'manage':
+                                case 'term_associate':
+                                    $mirror_ops = ['manage'];
+
+                                    if ($for_type_obj->hierarchical) {
+                                        $mirror_ops []= 'associate';
+                                    }
+
+                                    break;
+                            }
+
+                            $mirror_ops = array_diff($mirror_ops, [$operation]);
+
+                            foreach($mirror_ops as $op) {
+                                $op_obj = $pp_admin->getOperationObject($op);
+
+                                $caption = (('assign' == $op) || !$for_type || ('term' == $for_type)) 
+                                ? sprintf(
+                                    __('Mirror to %s', 'press-permit-core'),
+                                    $op_obj->label
+                                )
+                                : sprintf(
+                                    __('Mirror to %s %s', 'press-permit-core'),
+                                    $op_obj->label,
+                                    $for_type_obj->labels->singular_name
+                                );
+
+                                echo "<option value='mirror_$op'>"
+                                    . $caption
+                                    . '</option>';
+                            }
+                        }
+
                         echo '</select>';
                         ?>
+
                         <input type="submit" name="" class="button submit-edit-item-exception" value="<?php _e('Apply', 'press-permit-core'); ?>" />
                         <?php
                         echo '<img class="waiting" style="display:none;" src="'
                             . esc_url(admin_url('images/wpspin_light.gif'))
                             . '" alt="" />';
+
+                        ?>
+                        <div class="mirror-confirm" style="display:none"></div>
+                        <?php
 
                         echo '</div>';  // pp-exception-bulk-edit
 
@@ -1082,11 +1143,11 @@ class AgentPermissionsUI
                     if (empty($_REQUEST['show_propagated'])) {
                         if ('term' == $via_src) {
                             echo '<div class="pp-current-roles-note">'
-                                . sprintf(__('note: Exceptions inherited from parent %1$s are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')
+                                . sprintf(__('note: Permissions inherited from parent %1$s are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')
                                 . '</div>';
                         } else {
                             echo '<div class="pp-current-roles-note">'
-                                . sprintf(__('note: Exceptions inherited from parent %1$s or terms are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')
+                                . sprintf(__('note: Permissions inherited from parent %1$s or terms are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')
                                 . '</div>';
                         }
                     }
@@ -1202,7 +1263,7 @@ class AgentPermissionsUI
 
         $pp_only = (array) presspermit()->getOption('supplemental_role_defs');
         ?>
-        <select name="pp_select_role">
+        <select name="pp_select_role" autocomplete="off">
 
             <?php
             foreach ($wp_roles->role_names as $role_name => $role_caption) {
@@ -1250,12 +1311,12 @@ class AgentPermissionsUI
 
         if (!isset($mod_types)) {
             $mod_types = [
-                'include' => (object)['label' => __('Only these:', 'press-permit-core')],
-                'exclude' => (object)['label' => __('Not these:', 'press-permit-core')],
+                'include' => (object)['label' => __('Limit to:', 'press-permit-core')],
+                'exclude' => (object)['label' => __('Blocked:', 'press-permit-core')],
             ];
 
             if (!defined('PP_NO_ADDITIONAL_ACCESS')) {
-                $mod_types['additional'] = (object)['label' => __('Also these:', 'press-permit-core')];
+                $mod_types['additional'] = (object)['label' => __('Enabled:', 'press-permit-core')];
             }
         }
         return (isset($mod_types[$mod_type])) ? $mod_types[$mod_type] : (object)[];

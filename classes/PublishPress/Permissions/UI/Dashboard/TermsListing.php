@@ -38,7 +38,7 @@ class TermsListing
                 <p>
                     <?php
                     printf(
-                        __('Listed exceptions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s exceptions which apply to all related post types%4$s.', 'press-permit-core'),
+                        __('Listed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
                         $type_obj->labels->singular_name,
                         "<a href='$url'>",
                         $tx_obj->labels->singular_name,
@@ -58,11 +58,11 @@ class TermsListing
         if (empty($_REQUEST['pp_universal'])) {
             $taxonomy = sanitize_key($_REQUEST['taxonomy']);
             $type_obj = get_post_type_object($typenow);
-            $title = __('Click to list/edit universal exceptions', 'press-permit-core');
+            $title = __('Click to list/edit universal permissions', 'press-permit-core');
             $lbl = ($type_obj && $type_obj->labels) ? $type_obj->labels->singular_name : '';
-            $caption = sprintf(__('%1$s Exceptions %2$s*%3$s', 'press-permit-core'), $lbl, "<a href='edit-tags.php?taxonomy=$taxonomy&pp_universal=1' title='$title'>", '</a>');
+            $caption = sprintf(__('%1$s Permissions %2$s*%3$s', 'press-permit-core'), $lbl, "<a href='edit-tags.php?taxonomy=$taxonomy&pp_universal=1' title='$title'>", '</a>');
         } else {
-            $caption = __('Universal Exceptions', 'press-permit-core');
+            $caption = __('Universal Permissions', 'press-permit-core');
         }
 
         if (defined('PRESSPERMIT_DEBUG')) {

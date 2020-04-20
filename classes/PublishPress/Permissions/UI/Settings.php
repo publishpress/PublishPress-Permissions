@@ -72,12 +72,12 @@ class Settings
         <header>
             <?php PluginPage::icon(); ?>
 
-            <div class="submit pp-submit" style="border:none;position:absolute;right:20px;top:25px;">
+            <div class="submit pp-submit" style="border:none;position:absolute;right:20px;top:0;">
                 <input type="submit" name="presspermit_submit" class="button-primary" value="<?php _e('Save Changes', 'press-permit-core'); ?>"/>
             </div>
             <h1>
                 <?php
-                $title = apply_filters('presspermit_options_form_title', _e('PressPermit Settings', 'press-permit-core'));
+                $title = apply_filters('presspermit_options_form_title', _e('Permissions Settings', 'press-permit-core'));
                 _e($title);
                 ?>
             </h1>

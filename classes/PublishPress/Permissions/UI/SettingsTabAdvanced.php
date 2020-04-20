@@ -38,7 +38,7 @@ class SettingsTabAdvanced
             $new = array_merge($new, [
                 'anonymous' => __('Content Filtering', 'press-permit-core'),
                 'permissions_admin' => __('Permissions Admin', 'press-permit-core'),
-                'capabilities' => __('PressPermit Capabilities', 'press-permit-core'),
+                'capabilities' => __('Permissions Capabilities', 'press-permit-core'),
                 'role_integration' => __('Role Integration', 'press-permit-core'),
                 'constants' => __('Constants', 'press-permit-core'),
                 'misc' => __('Miscellaneous', 'press-permit-core'),
@@ -57,12 +57,12 @@ class SettingsTabAdvanced
         if ($this->enabled) {
             $opt = array_merge($opt, [
                 'anonymous_unfiltered' => sprintf(__('%1$sDisable%2$s all filtering for anonymous users', 'press-permit-core'), '<strong>', '</strong>'),
-                'suppress_administrator_metagroups' => sprintf(__('%1$sDisable%2$s metagroup exceptions for Administrators', 'press-permit-core'), '<strong>', '</strong>'),
+                'suppress_administrator_metagroups' => sprintf(__('%1$sDo not apply%2$s metagroup permissions for Administrators', 'press-permit-core'), '<strong>', '</strong>'),
                 'user_search_by_role' => __('User Search: Filter by WP role', 'press-permit-core'),
                 'display_hints' => __('Display Administrative Hints', 'press-permit-core'),
                 'display_extension_hints' => __('Display Module Hints', 'press-permit-core'),
                 'dynamic_wp_roles' => __('Detect Dynamically Mapped WP Roles', 'press-permit-core'),
-                'non_admins_set_read_exceptions' => __('Non-Administrators can set Reading Exceptions for their editable posts', 'press-permit-core'),
+                'non_admins_set_read_exceptions' => __('Non-Administrators can set Reading Permissions for their editable posts', 'press-permit-core'),
                 'users_bulk_groups' => __('Bulk Add / Remove Groups on Users Screen', 'press-permit-core'),
             ]);
         }
@@ -132,7 +132,7 @@ class SettingsTabAdvanced
                 <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
                 <td>
                     <?php
-                    _e('To regulate direct access to Media Library files, install the PressPermit File Access module.', 'press-permit-core');
+                    _e('To regulate direct access to Media Library files, enable the File Access module.', 'press-permit-core');
                     echo '<br />';
                     ?>
                 </td>
@@ -146,7 +146,7 @@ class SettingsTabAdvanced
                     <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
                     <td>
                         <?php
-                        $hint = sprintf(__('Disable PressPermit filtering for users who are not logged in. %1$sNote that this performance enhancement will make reading exceptions ineffective%2$s.', 'press-permit-core'), '<span class="pp-warning"><strong>', '</strong></span>');
+                        $hint = sprintf(__('Disable Permissions filtering for users who are not logged in. %1$sNote that this performance enhancement will make reading exceptions ineffective%2$s.', 'press-permit-core'), '<span class="pp-warning"><strong>', '</strong></span>');
                         $ui->optionCheckbox('anonymous_unfiltered', $tab, $section, $hint);
 
                         $hint = __('If checked, pages blocked from the "All" or "Authenticated" groups will still be listed to Administrators.', 'press-permit-core');
@@ -200,7 +200,7 @@ class SettingsTabAdvanced
                         $ui->optionCheckbox('display_hints', $tab, $section, $hint);
 
                         if (presspermit()->isPro()) {
-                            $hint = __('Display descriptive captions for additional functionality provided by missing or deactivated modules (PressPermit Pro package).', 'press-permit-core');
+                            $hint = __('Display descriptive captions for additional functionality provided by missing or deactivated modules (Permissions Pro package).', 'press-permit-core');
                             $ui->optionCheckbox('display_extension_hints', $tab, $section, $hint);
                         }
                         ?>
@@ -223,15 +223,15 @@ class SettingsTabAdvanced
                             if (PWP::isPluginActive('capsman-enhanced')) {
                                 $url = 'admin.php?page=capsman';
                                 printf(
-                                    __('You can customize PressPermit administration capabilities %1$s for any WP role%2$s:', 'press-permit-core'),
+                                    __('You can customize Permissions administration capabilities %1$s for any WP role%2$s:', 'press-permit-core'),
                                     '<a href="' . $url . '">',
                                     '</a>'
                                 );
                             } else {
                                 printf(
-                                    __('You can customize PressPermit administration capabilities by using a WP role editor such as %1$s:', 'press-permit-core'),
+                                    __('You can customize Permissions administration capabilities by using a WP role editor such as %1$s:', 'press-permit-core'),
                                     '<span class="plugins update-message"><a href="' . Settings::pluginInfoURL('capability-manager-enhanced')
-                                    . '" class="thickbox" title=" Capability Manager Enhanced">Capability&nbsp;Manager&nbsp;Enhanced</a></span>'
+                                    . '" class="thickbox" title=" PublishPress Capabilities">PublishPress&nbsp;Capabilities</a></span>'
                                 );
                             }
                             ?>
@@ -251,50 +251,26 @@ class SettingsTabAdvanced
 
                         <?php
                         $pp_caps = [
-                            'pp_manage_settings' => __('Modify these PressPermit settings', 'press-permit-core'),
-                            'pp_unfiltered' => __('PressPermit does not apply any supplemental roles or exceptions to limit or expand viewing or editing access', 'press-permit-core'),
-                            'pp_administer_content' => __('PressPermit implicitly grants capabilities for all post types and statuses, but does not apply exceptions', 'press-permit-core'),
-                            'pp_associate_any_page' => __('(PressPermit Pro capability)', 'press-permit-core'),
+                            'pp_manage_settings' => __('Modify these Permissions settings', 'press-permit-core'),
+                            'pp_unfiltered' => __('PublishPress Permissions does not apply any Supplemental Roles or Specific Permissions to limit or expand viewing or editing access', 'press-permit-core'),
+                            'pp_administer_content' => __('PublishPress Permissions implicitly grants capabilities for all post types and statuses, but does not apply Specific Permissions', 'press-permit-core'),
                             'pp_create_groups' => __('Can create Permission Groups', 'press-permit-core'),
-                            'pp_edit_groups' => __('Can edit all Permission Groups (barring Exceptions)', 'press-permit-core'),
+                            'pp_edit_groups' => __('Can edit all Permission Groups (barring Specific Permissions)', 'press-permit-core'),
                             'pp_delete_groups' => __('Can delete Permission Groups', 'press-permit-core'),
                             'pp_manage_members' => __('If group editing is allowed, can also modify group membership', 'press-permit-core'),
-                            'pp_assign_roles' => __('Assign supplemental Roles or Exceptions. Other capabilities may also be required.', 'press-permit-core'),
-                            'pp_set_read_exceptions' => __('Set Reading Exceptions for editable posts on Edit Post/Term screen (for non-Administrators lacking edit_users capability; may be disabled by PressPermit Settings)', 'press-permit-core'),
+                            'pp_assign_roles' => __('Assign Supplemental Roles or Specific Permissions. Other capabilities may also be required.', 'press-permit-core'),
+                            'pp_set_read_exceptions' => __('Set Read Permissions for specific posts on Edit Post/Term screen (for non-Administrators lacking edit_users capability; may be disabled by Permissions Settings)', 'press-permit-core'),
                         ];
-
-                        if (!$pp->moduleActive('collaboration') && !$pp->keyActive()) {
-                            if (class_exists('Fork')) {
-                                $pp_caps['pp_set_fork_exceptions'] = __('(PressPermit Pro capability)', 'press-permit-core');
-                            }
-
-                            if (defined('REVISIONARY_VERSION')) {
-                                $pp_caps['pp_set_revise_exceptions'] = __('(PressPermit Pro capability)', 'press-permit-core');
-                            }
-
-                            $pp_caps = array_merge(
-                                $pp_caps,
-                                [
-                                    'pp_set_edit_exceptions' => __('(PressPermit Pro capability)', 'press-permit-core'),
-                                    'pp_set_associate_exceptions' => __('(PressPermit Pro capability)', 'press-permit-core'),
-                                    'pp_set_term_assign_exceptions' => __('(PressPermit Pro capability)', 'press-permit-core'),
-                                    'pp_set_term_manage_exceptions' => __('(PressPermit Pro capability)', 'press-permit-core'),
-                                    'pp_set_term_associate_exceptions' => __('(PressPermit Pro capability)', 'press-permit-core'),
-                                    'list_others_unattached_files' => __('(PressPermit Pro capability)', 'press-permit-core'),
-                                    'edit_own_attachments' => __('(PressPermit Pro capability)', 'press-permit-core'),
-                                ]
-                            );
-                        }
 
                         if (!$pp->moduleActive('status-control') && !$pp->keyActive()) {
                             $pp_caps = array_merge(
                                 $pp_caps,
                                 [
-                                    'pp_define_post_status' => __('(PressPermit Pro capability)', 'press-permit-core'),
-                                    'pp_define_moderation' => __('(PressPermit Pro capability)', 'press-permit-core'),
-                                    'pp_define_privacy' => __('(PressPermit Pro capability)', 'press-permit-core'),
-                                    'set_posts_status' => __('(PressPermit Pro capability)', 'press-permit-core'),
-                                    'pp_moderate_any' => __('(PressPermit Pro capability)', 'press-permit-core'),
+                                    'pp_define_post_status' => __('(Permissions Pro capability)', 'press-permit-core'),
+                                    'pp_define_moderation' => __('(Permissions Pro capability)', 'press-permit-core'),
+                                    'pp_define_privacy' => __('(Permissions Pro capability)', 'press-permit-core'),
+                                    'set_posts_status' => __('(Permissions Pro capability)', 'press-permit-core'),
+                                    'pp_moderate_any' => __('(Permissions Pro capability)', 'press-permit-core'),
                                 ]
                             );
                         }

@@ -199,6 +199,10 @@ class AgentEdit
             // note: group editing capability already verified at this point
             $pp = presspermit();
 
+            /* @todo - possible future implementation of mirroring new selections to other op(s)
+            $mirror_to_ops = (!empty($_REQUEST['pp_add_exceptions_mirror_ops'])) ? $_REQUEST['pp_add_exceptions_mirror_ops'] : [];
+			*/
+
             foreach ($_POST['pp_add_exception'] as $exc) {
                 $exc = apply_filters('presspermit_add_exception', $exc);
 

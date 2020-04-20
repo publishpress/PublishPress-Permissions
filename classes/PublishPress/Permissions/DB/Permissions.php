@@ -314,7 +314,7 @@ class Permissions
         $user = presspermit()->getUser();
 
         if (!$src_table) {
-        $src_table = ($source_alias) ? $source_alias : $wpdb->posts;
+            $src_table = ($source_alias) ? $source_alias : $wpdb->posts;
         }
 
         $exc_post_type = apply_filters('presspermit_exception_post_type', $post_type, $required_operation, $args);

@@ -34,7 +34,9 @@ class PermissionsHooks
 
 		if (presspermit()->isPro()) {
         	add_action('admin_init', [$this, 'loadUpdater']);
-		}
+        }
+        
+        add_action('user_has_cap', [$this, 'fltEarlyUserHasCap'], 50, 3);
     }
 
 	public function loadUpdater() {
@@ -86,6 +88,11 @@ class PermissionsHooks
         if (did_action('set_current_user')) { // sometimes third party code causes user to be loaded prematurely
             $this->actSetCurrentUser();
         }
+
+        if (defined('PRESSPERMIT_NO_USER_LOCALE')) {
+            // Prevent numerous user queries with Block Editor
+            add_filter('pre_determine_locale', function($locale) {return get_locale();});
+        }
     }
 
     // log request and handler parameters for possible reference by subsequent PP filters; block unpermitted create/edit/delete requests 
@@ -118,6 +125,10 @@ class PermissionsHooks
     {
         global $current_user;
 
+        if (presspermit()->checkInitInterrupt()) {
+            return;
+        }
+
         presspermit()->setUser($current_user->ID);
 
         if (isset($this->cap_filters)) {
@@ -128,8 +139,24 @@ class PermissionsHooks
             // reload certain filters and configuration data on user change
             $this->actInitUser();
         } else {
-            add_action('init', [$this, 'actInitUser'], 70);  // late priority because actInit() and 3rd party filters related to type / taxonomy / cap definitions must execute first
+            // late priority because actInit() and 3rd party filters related to type / taxonomy / cap definitions must execute first
+            add_action('init', [$this, 'actNormalInitUser'], 70);
         }
+    }
+
+    public function fltEarlyUserHasCap($wp_sitecaps, $orig_reqd_caps, $args)
+    {
+        // Deal with plugins (WP Bakery Page Builder) that apply an 'edit_post' metacap check on the init action
+        if (isset($args[0]) && in_array($args[0], ['edit_post']) && !did_action('presspermit_init_user_complete')) {
+            $this->actInitUser();
+        }
+
+        return $wp_sitecaps;
+    }
+
+    public function actNormalInitUser() {
+        $this->actInitUser();
+        do_action('presspermit_init_user_complete');
     }
 
     // executes late on the 'init' action (priority 50)
@@ -189,6 +216,9 @@ class PermissionsHooks
 
         // already loaded these early, so apply filter again for modules
         $pp->default_options = apply_filters('presspermit_default_options', $pp->default_options);
+        $pp->default_advanced_options = apply_filters('presspermit_default_advanced_options', $pp->default_advanced_options);
+        $pp->default_options = array_merge($pp->default_options, $pp->default_advanced_options);
+
         $pp->site_options = apply_filters('presspermit_options', $pp->site_options);
 
         if (is_multisite()) {
@@ -325,11 +355,13 @@ class PermissionsHooks
         $default_type = PWP::findPostType();
 
         // buffer all IDs in the results set
-        foreach ($results as $row) {
-            $post_type = (!isset($row->post_type) || ('revision' == $row->post_type)) ? $default_type : $row->post_type;
-            $pp->listed_ids[$post_type][$row->ID] = true;
+        if ($results) { // JReviews plugin sets $results to null under some conditions
+            foreach ($results as $row) {
+                $post_type = (!isset($row->post_type) || ('revision' == $row->post_type)) ? $default_type : $row->post_type;
+                $pp->listed_ids[$post_type][$row->ID] = true;
+            }
         }
-
+        
         return $results;
     }
 

@@ -53,7 +53,7 @@ class AgentExceptionsAjax
             case 'get_operation_options':
                 // @todo: deal with login timeout in JS to avoid multiple messages
                 if (!is_user_logged_in()) {
-                    echo '<option>' . __('(login timed out)', 'press-permit-core') . '</option>';
+                    echo '<span>' . __('(login timed out)', 'press-permit-core') . '</span>';
                     exit;
                 }
 
@@ -67,19 +67,18 @@ class AgentExceptionsAjax
                     }
                 }
 
-                if (count($ops) > 1) {
-                    $html .= "<option class='pp-opt-none' value=''>" . __('select...', 'press-permit-core') . "</option>";
-                }
-
+                $html = '<div>';
                 foreach ($ops as $val => $title) {
-                    $html .= "<option value='$val'>$title</option>";
+                    $html .= "<label><input type='radio' name='pp_select_x_operation' class='pp-select-x-operation' value='$val'> <span>$title</span></label><br />";
                 }
+                $html .= '</div>';
+
                 break;
 
             case 'get_mod_options':
                 // @todo: deal with login timeout in JS to avoid multiple messages
                 if (!is_user_logged_in()) {
-                    echo '<option>' . __('(login timed out)', 'press-permit-core') . '</option>';
+                    echo '<span>' . __('(login timed out)', 'press-permit-core') . '</span>';
                     exit;
                 }
 
@@ -95,20 +94,22 @@ class AgentExceptionsAjax
                         || defined('PP_ALL_ANON_FULL_EXCEPTIONS'))
                     && !defined('PP_NO_ADDITIONAL_ACCESS')
                 ) {
-                    $modes['additional'] = __('Also these:', 'press-permit-core');
+                    $modes['additional'] = __('Enable:', 'press-permit-core');
                 }
 
                 if (('user' == $agent_type) || $is_wp_role || ('assign' == $operation) || defined('PP_GROUP_RESTRICTIONS')) {
-                    $modes['exclude'] = __('Not these:', 'press-permit-core');
+                    $modes['exclude'] = __('Block:', 'press-permit-core');
                 }
 
-                $modes['include'] = __('Only these:', 'press-permit-core');
+                $modes['include'] = __('Limit to:', 'press-permit-core');
 
                 $modes = apply_filters('presspermit_exception_modes', $modes, $for_source_name, $for_type, $operation);
 
+                $html = '<div>';
                 foreach ($modes as $val => $title) {
-                    $html .= "<option value='$val'>$title</option>";
+                    $html .= "<label><input type='radio' name='pp_select_x_mod_type' class='pp-select-x-mod-type' value='$val'> <span>$title</span></label><br />";
                 }
+                $html .= '</div>';
                 break;
 
             case 'get_via_type_options':
@@ -134,7 +135,7 @@ class AgentExceptionsAjax
                         if ($taxonomies) {
                             $tax_types = [];
                             foreach ($taxonomies as $_taxonomy => $tx) {
-                                $tax_types[$_taxonomy] = $tx->labels->name;
+                                $tax_types[$_taxonomy] = sprintf(__('%s:', 'press-permit-core'), $tx->labels->name);
                             }
 
                             uasort($tax_types, 'strnatcasecmp');  // sort by values without resetting keys
@@ -146,13 +147,15 @@ class AgentExceptionsAjax
                         $aff_types = (array)apply_filters('presspermit_parent_types', [$for_type], $for_type);
 
                         foreach ($aff_types as $_type) {
-                            if ($type_obj = get_post_type_object($_type))
-                                $types[$_type] = $type_obj->labels->name;
+                            if ($type_obj = get_post_type_object($_type)) {
+                                $types[$_type] =  sprintf(__('%s:', 'press-permit-core'), $type_obj->labels->name);
+                            }
                         }
                     }
                 } elseif (in_array($for_source_name, ['pp_group', 'pp_net_group'], true)) {
-                    if ($group_type_obj = $pp->groups()->getGroupTypeObject($for_source_name))
-                        $types[$for_source_name] = $group_type_obj->labels->name;
+                    if ($group_type_obj = $pp->groups()->getGroupTypeObject($for_source_name)) {
+                        $types[$for_source_name] = sprintf(__('%s:', 'press-permit-core'), $group_type_obj->labels->name);
+                    }
                 }
 
                 $types = apply_filters('presspermit_exception_via_types', $types, $for_source_name, $for_type, $operation, $mod_type);
@@ -186,7 +189,7 @@ class AgentExceptionsAjax
                         && apply_filters('presspermit_do_assign_for_children_ui', true, $for_type, compact('operation', 'mod_type'))
                     ) {
                         if (!$caption = apply_filters('presspermit_assign_for_children_caption', '', $for_type)) {
-                            $caption = sprintf(__('sub-%s of:', 'press-permit-core'), $type_obj->labels->name);
+                            $caption = sprintf(__('sub-%s:', 'press-permit-core'), $type_obj->labels->name);
                         }
 
                         $checked = (apply_filters('presspermit_assign_for_children_checked', false, $for_type, compact('operation', 'mod_type')))

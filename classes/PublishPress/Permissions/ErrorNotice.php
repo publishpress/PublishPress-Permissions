@@ -17,7 +17,7 @@ class ErrorNotice
             return;
         }
 
-        $presspermit_title = (defined('PRESSPERMIT_TITLE')) ? PRESSPERMIT_TITLE : 'PressPermit';
+        $presspermit_title = (defined('PRESSPERMIT_TITLE')) ? PRESSPERMIT_TITLE : 'PublishPress Permissions';
 
         $defaults = [
             'module_title' => $presspermit_title,
@@ -158,8 +158,8 @@ class ErrorNotice
         if (!empty($args['id'])) {
             $this->notices[$args['id']] = (object)array_merge(compact('body'), $args);
         } else {
-        $this->notices[] = (object)array_merge(compact('body'), $args);
-    }
+            $this->notices[] = (object)array_merge(compact('body'), $args);
+        }
     }
 
     public function actDoNotices()
@@ -177,9 +177,9 @@ class ErrorNotice
 			    $class .= ' pp-admin-notice-plugin';
 
             if (is_numeric($msg_id)) :  // if no msg_id was provided, notice is not dismissible
-            echo "<div id='message' class='error fade' $style $class>" . $msg->body . '</div>';
+                echo "<div id='message' class='error fade' $style $class>" . $msg->body . '</div>';
             else :?>
-                <div class='updated' class='<?php echo $class;?>' class='pp_dashboard_message'><p><?php echo $msg->body ?>&nbsp;
+                <div class='updated <?php echo $class;?> pp_dashboard_message'><p><span class="pp-notice"><?php echo $msg->body ?></span>&nbsp;
                 <a href="javascript:void(0);" class="presspermit-dismiss-notice" style="float:right" id="<?php echo $msg_id;?>"><?php _e("Dismiss", "pp") ?></a>
                 </p></div>
         <?php endif;

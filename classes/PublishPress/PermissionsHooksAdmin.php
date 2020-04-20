@@ -20,11 +20,8 @@ class PermissionsHooksAdmin
             new Permissions\Compat\EyesOnlyAdmin();
         }
 
-        // make sure empty terms are included in quick search results in "Add Supplemental Roles" term selection metaboxes
-        if (PWP::isAjax('menu-quick-search')) {
-            add_filter('get_terms_args', 'actTermSelectIncludeEmpty', 50, 2);
-
-        } elseif (PWP::isAjax('pp-menu-quick-search')) {
+        // make sure empty terms are included in quick search results in "Set Specific Permissions" term selection metaboxes
+        if (PWP::isAjax('pp-menu-quick-search')) {
             require_once(PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
             add_action('wp_ajax_' . sanitize_key($_REQUEST['action']), ['\PublishPress\Permissions\UI\ItemsMetabox', 'ajax_menu_quick_search'], 1);
         }
@@ -33,6 +30,13 @@ class PermissionsHooksAdmin
         if (in_array(basename($_SERVER['PHP_SELF']), ['admin.php', 'admin-ajax.php'])) {
             add_action('wp_ajax_pp_dismiss_msg', [$this, 'dashboardDismissMsg']);
         }
+
+        if (presspermit()->isPro()) {
+            require_once(PRESSPERMIT_ABSPATH . '/includes-pro/admin-load.php');
+            new Permissions\AdminLoadPro();
+        }
+
+        add_action('presspermit_admin_ui', [$this, 'act_revisions_dependency']);
     }
 
     public function init()
@@ -60,7 +64,6 @@ class PermissionsHooksAdmin
         if (
             !empty($_POST['presspermit_submit']) || !empty($_POST['presspermit_defaults']) || !empty($_POST['pp_role_usage_defaults'])
             || !empty($_REQUEST['presspermit_refresh_updates']) || !empty($_REQUEST['pp_renewal'])
-            || !empty($_REQUEST['pp_upload_config']) || !empty($_REQUEST['pp_help_ticket'])
         ) {
             // For 'settings' admin panels, handle updated options right after current_user load (and before pp_init).
             // By then, check_admin_referer is available, but PP config and WP admin menu has not been loaded yet.
@@ -73,12 +76,6 @@ class PermissionsHooksAdmin
             new Permissions\UI\AgentsAjax();
             exit;
         }
-    }
-
-    public function actTermSelectIncludeEmpty($args, $taxonomies)
-    {
-        $args['hide_empty'] = 0;
-        return $args;
     }
 
     public function actLoadAjaxHandler()
@@ -125,6 +122,28 @@ class PermissionsHooksAdmin
         $roles['editor']->labels = (object)['name' => __('Editors', 'press-permit-core'), 'singular_name' => __('Editor', 'press-permit-core')];
 
         return $roles;
+    }
+
+    function act_revisions_dependency() {
+        global $pagenow;
+
+        if (defined('REVISIONARY_VERSION')) {
+            if (!defined('PRESSPERMIT_COLLAB_VERSION')) {
+                if (!presspermitPluginPage() && (empty($_REQUEST['page']) || !in_array($_REQUEST['page'], ['revisionary-q', 'revisionary-settings'])) && ('edit.php' !== $pagenow)) {
+                    return;
+                }
+
+                $msg = current_user_can('pp_manage_settings')
+                ? sprintf(
+                    __('Please %senable the Collaborative Publishing module%s for PublishPress Revisions integration.', 'press-permit-core'),
+                    '<a href="' . admin_url('admin.php?page=presspermit-settings') . '" style="text-decoration:underline">',
+                    '</a>'
+                )
+                : __('PublishPress Revisions integration requires the Collaborative Publishing module. Please notify your Administrator.', 'press-permit-core');
+
+                presspermit()->admin()->notice($msg);
+            }
+        }
     }
 
     // For old extensions linking to page=pp-settings.php, redirect to page=presspermit-settings, preserving other request args

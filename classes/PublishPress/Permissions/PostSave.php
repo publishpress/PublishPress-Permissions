@@ -12,6 +12,10 @@ class PostSave
 
         // WP always passes post object into do_action('save_post')
         if (!is_object($post)) {
+            if (!$post_id) {
+                return;
+            }
+            
             if (!$post = get_post($post_id)) {
                 return;
             }
@@ -90,8 +94,12 @@ class PostSave
 
     public static function getPostParentInfo($post_id, $post_obj = false, $update_meta = false)
     {
-        if (!$post_obj) {
+        if (!$post_obj && $post_id) {
             $post_obj = get_post($post_id);
+        }
+
+        if (!$post_obj) {
+            return array_fill_keys(['last_parent', 'set_parent'], 0);
         }
 
         // parent settings can affect the auto-assignment of propagating roles / conditions

@@ -162,6 +162,57 @@ class AgentPermissionsAjax
 
                 echo '<!--ppResponse-->' . $_GET['pp_ajax_agent_permissions'] . '~' . implode('|', $edited_input_ids) . '<--ppResponse-->';
                 break;
+
+            default:
+                // mirror specified existing exception items to specified operation
+                if (0 === strpos($action, 'exceptions_mirror_')) {
+                    if (empty($_GET['pp_eitem_ids'])) {
+                        exit;
+                    }
+
+                    $arr = explode('_', $action);
+
+                    if (count($arr) < 3) {
+                        break;
+                    }
+
+                    $mirror_op = $arr[2];
+
+                    if (!$op_obj = $pp_admin->getOperationObject($mirror_op)) {
+                        break;
+                    }
+
+                    $edited_input_ids = [];
+
+                    $input_vals = explode('|', PWP::sanitizeCSV($_GET['pp_eitem_ids']));
+
+                    foreach ($input_vals as $id_csv) {
+                        $eitem_ids = $this->editableEitemIDs(explode(',', $id_csv));
+
+                        if ($agent_type && $agent_id) {
+                            $agent_clause = "e.agent_type = '$agent_type' AND e.agent_id = '$agent_id' AND";
+                        } else {
+                            $agent_clause = '';
+                        }
+
+                        foreach ($results = $wpdb->get_results(
+                            "SELECT * FROM $wpdb->ppc_exception_items AS i"
+                            . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
+                            . " WHERE $agent_clause eitem_id IN ('" . implode("','", $eitem_ids) . "')"
+                        ) as $row) {
+                            $args = (array)$row;
+                            $args['operation'] = $mirror_op;
+                            $agents = [$row->assign_for => [$agent_id => true]];
+                            $pp->assignExceptions($agents, $agent_type, $args);
+
+                            $edited_input_ids[] = $id_csv;
+                        }
+                    }
+
+                    echo '<!--ppResponse-->' . 'exceptions_mirror' . '~' . implode('|', $edited_input_ids) . '<--ppResponse-->';
+                    break;
+                }
+
         } // end switch
     }
 

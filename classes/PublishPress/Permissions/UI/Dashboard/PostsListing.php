@@ -51,7 +51,7 @@ class PostsListing
             }
 
             if ($this->exceptions) {
-                $columns['pp_exceptions'] = __('Exceptions', 'press-permit-core');
+                $columns['pp_exceptions'] = __('Permissions', 'press-permit-core');
             }
         }
 

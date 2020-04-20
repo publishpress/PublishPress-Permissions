@@ -119,6 +119,10 @@ class Triggers
             return;
         }
 
+        if (!empty(presspermit()->flags['ignore_save_post'])) {
+            return;
+        }
+
         require_once(PRESSPERMIT_CLASSPATH . '/PostSave.php');
         PostSave::actSaveItem('post', $post_id, $post);
     }

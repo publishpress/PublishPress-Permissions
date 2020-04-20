@@ -20,7 +20,7 @@ class DashboardFilters
         do_action('_presspermit_admin_ui');
 
         // ============== UI-related filters ================
-        add_action('admin_menu', [$this, 'actBuildMenu'], 2);
+        add_action('admin_menu', [$this, 'actBuildMenu'], 21);
 
         add_action('show_user_profile', [$this, 'actUserUi'], 2);
         add_action('edit_user_profile', [$this, 'actUserUi'], 2);
@@ -160,7 +160,7 @@ class DashboardFilters
         }
     }
 
-    public function actMenuHandler()
+    public static function actMenuHandler()
     {
         $pp_page = sanitize_key($_GET['page']);
 
@@ -191,14 +191,6 @@ class DashboardFilters
             $wp_scripts->in_footer[] = 'presspermit-misc'; // otherwise it will not be printed in footer @todo: review
         }
 
-        if (
-            in_array($pagenow, ['post.php', 'post-new.php', 'edit.php', 'users.php', 'upload.php', 'edit-tags.php', 'term.php'])
-            || presspermitPluginPage()
-        ) {
-            require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/Help.php');
-            Help::registerContextualHelp();
-        }
-
         if (('user-edit.php' == $pagenow) && presspermit()->getOption('display_user_profile_groups')) {
             add_thickbox();
         }
@@ -226,26 +218,36 @@ class DashboardFilters
             //  Manually set menu indexes for positioning below Users menu
             global $menu;
 
-            //$menu_order = (defined('PRESSPERMIT_LEGACY_MENU_POSITION')) ? 72: 26; // enable this to place menu below PublishPress
-
+            /*
             $pp_cred_key = (!defined('PP_DISABLE_MENU_TWEAK') && !defined('OZH_MENU_VER')
                 && isset($menu[70]) && $menu[70][2] == 'users.php' && !isset($menu[72]))
                 ? 72 : null;
+            */
 
             $permissions_title = __('Permissions', 'press-permit-core');
+
+            $menu_order = 72;
+
+            if (defined('PUBLISHPRESS_PERMISSIONS_MENU_GROUPING')) {
+                foreach (get_option('active_plugins') as $plugin_file) {
+                    if ( false !== strpos($plugin_file, 'publishpress.php') ) {
+                        $menu_order = 27;
+                    }
+                }
+            }
 
             add_menu_page(
                 $permissions_title,
                 $permissions_title,
                 'read',
                 $pp_cred_menu,
-                [$this, 'actMenuHandler'],
+                [__CLASS__, 'actMenuHandler'],
                 'dashicons-unlock',
-                $pp_cred_key
+                $menu_order
             );
         }
 
-        $handler = [$this, 'actMenuHandler'];
+        $handler = [__CLASS__, 'actMenuHandler'];
 
         if ($do_groups) {
             add_submenu_page($pp_cred_menu, __('Groups', 'press-permit-core'), __('Groups', 'press-permit-core'), 'read', 'presspermit-groups', $handler);

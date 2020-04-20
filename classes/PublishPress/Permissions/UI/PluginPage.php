@@ -82,6 +82,8 @@ class PluginPage
                 ]
             );
         }
+
+        add_action('in_admin_header', function() {do_action('presspermit_plugin_page_admin_header');}, 100);
     }
 
     public static function getAgentType($default_type = '') {
@@ -95,7 +97,12 @@ class PluginPage
     }
 
     public static function getGroupVariant() {
-        $group_variant = (isset($_REQUEST['group_variant'])) ? sanitize_key($_REQUEST['group_variant']) : 'wp_role';
+        if (empty($_REQUEST['group_variant']) && !current_user_can('edit_users')) {
+            $group_variant = 'pp_group';
+        } else {
+            $group_variant = (isset($_REQUEST['group_variant'])) ? sanitize_key($_REQUEST['group_variant']) : 'wp_role';
+        }
+
         return apply_filters('presspermit_query_group_variant', $group_variant);
     }
 }

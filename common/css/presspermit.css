@@ -57,7 +57,6 @@
 
 .pp-admin-notice-plugin {
     margin-top: 30px;
-    margin-right: 120px;
 }
 
 #pp_dashboard_message, .pp-admin-notice, .pp-admin-notice-plugin {
@@ -268,6 +267,17 @@ option.pp-new-selection {
 
 .pp-user-meta-search {
     white-space: nowrap;
+}
+
+div.pp_dashboard_message {margin-top:20px !important;}
+
+.pp-notice a, .pp-notice a:visited {
+    font-weight: bold;
+    color: #655997;
+}
+
+.pp-notice a:hover {
+    text-decoration: underline !important;
 }
 
 
