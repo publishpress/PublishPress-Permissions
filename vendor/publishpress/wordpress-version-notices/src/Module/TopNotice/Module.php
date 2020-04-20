@@ -28,6 +28,7 @@ namespace PPVersionNotices\Module\TopNotice;
 use PPVersionNotices\Module\AdInterface;
 use PPVersionNotices\Template\TemplateLoaderInterface;
 use PPVersionNotices\Template\TemplateInvalidArgumentsException;
+use PPVersionNotices\Template\TemplateNotFoundException;
 
 /**
  * Class Module
@@ -44,6 +45,11 @@ class Module implements AdInterface
      * @var TemplateLoaderInterface
      */
     private $templateLoader;
+
+    /**
+     * @var array
+     */
+    private $exceptions = [];
 
     /**
      * @var array
@@ -74,16 +80,24 @@ class Module implements AdInterface
      */
     public function display($message = '', $linkURL = '')
     {
-        if (empty($message) || empty($linkURL)) {
-            throw new TemplateInvalidArgumentsException();
+        try {
+            if (empty($message) || empty($linkURL)) {
+                throw new TemplateInvalidArgumentsException();
+            }
+
+            $context = [
+                'message' => $message,
+                'linkURL' => $linkURL
+            ];
+
+            $this->templateLoader->displayOutput('top-notice', 'notice', $context);
+        } catch (\Exception $e) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                $this->exceptions[] = $e->getMessage();
+
+                add_action('admin_notices', [$this, 'showNoticeWithException']);
+            }
         }
-
-        $context = [
-            'message' => $message,
-            'linkURL' => $linkURL
-        ];
-
-        $this->templateLoader->displayOutput('top-notice', 'notice', $context);
     }
 
     /**
@@ -93,21 +107,23 @@ class Module implements AdInterface
     {
         $screen = get_current_screen();
 
-        foreach ($this->settings as $pluginName => $setting) {
-            foreach ($setting['screens'] as $screenParams) {
-                if ($screenParams === true) {
-                    return $setting;
-                }
-
-                $validVars = 0;
-                foreach ($screenParams as $var => $value) {
-                    if (isset($screen->$var) && $screen->$var === $value) {
-                        $validVars++;
+        if (!empty($screen)) {
+            foreach ($this->settings as $pluginName => $setting) {
+                foreach ($setting['screens'] as $screenParams) {
+                    if ($screenParams === true) {
+                        return $setting;
                     }
-                }
 
-                if ($validVars === count($screenParams)) {
-                    return $setting;
+                    $validVars = 0;
+                    foreach ($screenParams as $var => $value) {
+                        if (isset($screen->$var) && $screen->$var === $value) {
+                            $validVars++;
+                        }
+                    }
+
+                    if ($validVars === count($screenParams)) {
+                        return $setting;
+                    }
                 }
             }
         }
@@ -132,5 +148,13 @@ class Module implements AdInterface
         if ($settings = $this->isValidScreen()) {
             do_action(self::DISPLAY_ACTION, $settings['message'], $settings['link']);
         }
+    }
+
+    public function showNoticeWithException()
+    {
+        $class   = 'notice notice-error';
+        $message = implode("<br>", $this->exceptions);
+
+        printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
     }
 }
