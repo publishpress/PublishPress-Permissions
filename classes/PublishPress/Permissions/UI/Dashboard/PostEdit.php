@@ -51,7 +51,7 @@ class PostEdit
         // ========= register WP-rendered metaboxes ============
         $post_type = PWP::findPostType();
 
-        if (!current_user_can('pp_assign_roles') || apply_filters('presspermit_disable_exception_ui', false, 'post', 0, $post_type)) {
+        if (!current_user_can('pp_assign_roles') || apply_filters('presspermit_disable_exception_ui', false, 'post', PWP::getPostID(), $post_type)) {
             return;
         }
 
