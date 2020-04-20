@@ -123,10 +123,13 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.1.2 =
+= 3.1.3 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
+
+= 3.1.3 - 6 Apr 2020 =
+* Fixed : Possible fatal error loading Permissions screens on a small percentage of installations
 
 = 3.1.2 - 2 Apr 2020 =
 * Fixed : Limited editors with editing permissions in limited categories lost access to new post when autosave assigned inaccessible default category
