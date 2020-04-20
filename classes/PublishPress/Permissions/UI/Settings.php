@@ -117,7 +117,7 @@ class Settings
             $default_tab = apply_filters('presspermit_options_default_tab', $default_tab);
 
             // @todo: prevent line breaks in these links
-            echo "<ul class='pp-list_horiz' style='margin-bottom:-0.1em'>";
+            echo "--2--<ul class='pp-list_horiz' style='margin-bottom:-0.1em'>";
 
             foreach ($ui->tab_captions as $tab => $caption) {
                 if (!empty($ui->form_options[$tab])) {
