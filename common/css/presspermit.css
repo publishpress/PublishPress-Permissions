@@ -135,10 +135,22 @@ div.pp-custom-privacy-promo, div.pp-file-filtering-promo {
 
 /* --- User / Group display and selection (on several pages) --- */
 .pp-agents {
-    background-color: #FFFEEB;
+    background-color: #fff;
     padding: 0 0 0.2em 0.3em;
     border: 1px solid #ccc;
-    margin-top: 0;
+    border: 1px solid #ccc;
+    margin: 0;
+    padding: 20px;
+}
+
+.pp-agents a {
+    color: #655997;
+}
+
+.pp-agents a:hover
+.pp-agents a:focus,
+.pp-agents a:focus {
+    color: #483f6b;
 }
 
 .pp-agents input {
@@ -146,32 +158,52 @@ div.pp-custom-privacy-promo, div.pp-file-filtering-promo {
 }
 
 .agp-agent {
-    padding: 0.2em 0.5em 0.2em 0.5em;
+    margin: 0 -1px 0 0 !important;
 }
 
+.agp-agent a {
+    text-decoration: none;
+    color: #666;
+    padding: 10px 14px 10px;
+    display: block;
+}
+
+.agp-agent a:hover,
+.agp-agent a:focus,
+.agp-agent a:active {
+    text-decoration: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    color: #666;
+}
+
+
 .agp-unselected_agent {
-    border: none;
-    background: none;
+    border: 1px solid #ccc;
+    background: #f1f1f1;
+}
+
+.agp-unselected_agent a {
+    color: #666;
+}
+
+.agp-unselected_agent:hover,
+.agp-unselected_agent:active,
+.agp-unselected_agent:focus {
+    background: #fff;
+    color: #222;
 }
 
 .agp-selected_agent {
     border: 1px solid #ccc;
-    background-color: #FFFEEB;
-    border-bottom: 1px solid #FFFEEB;
+    background-color: #fff;
+    border-bottom: 1px solid #fff;
 }
 
 .agp-selected_agent a {
-    color: black;
-    text-decoration: none;
-    font-weight: bold;
+    color: #222;
 }
-
-.agp-unselected_agent a {
-    color: #00019b;
-    text-decoration: default;
-    font-weight: normal;
-}
-
 
 /* --- edit-tags.php (PP Exception metaboxes) --- */
 #edittag div.meta-box-sortables {

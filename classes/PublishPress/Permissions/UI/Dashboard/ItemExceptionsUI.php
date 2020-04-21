@@ -97,7 +97,7 @@ class ItemExceptionsUI
         $class = "class='pp-agents pp-exceptions'";
 
         //need effective line break here if not IE
-        echo "<div style='clear:both;margin:0 0 0.3em 0' $class>";
+        echo "<div style='clear:both;' $class>";
 
         foreach (array_keys($agent_types) as $agent_type) {
             $hide_class = ($toggle_agents && ($agent_type != $default_agent_type)) ? ' class="hide-if-js"' : '';
