@@ -251,17 +251,6 @@ class DashboardFilters
 
         if ($do_groups) {
             add_submenu_page($pp_cred_menu, __('Groups', 'press-permit-core'), __('Groups', 'press-permit-core'), 'read', 'presspermit-groups', $handler);
-
-            if (current_user_can('pp_create_groups')) {
-                add_submenu_page(
-                    $pp_cred_menu,
-                    __('Add New Permission Group', 'press-permit-core'),
-                    '- ' . PWP::__wp('Add New'),
-                    'read',
-                    'presspermit-group-new',
-                    $handler
-                );
-            }
         }
 
         if (current_user_can('list_users') && current_user_can('pp_administer_content')) {
