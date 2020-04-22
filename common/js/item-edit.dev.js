@@ -20,23 +20,6 @@ jQuery(document).ready(function ($) {
         });
     });
 
-    $('.pp-exception-actions a.pp-select-exception-agents').click(function () {
-        $(this).closest('tbody').find('td.pp-select-exception-agents').show();
-        $(this).hide();
-        $(this).parent().find('a.pp-close-select-exception-agents').show();
-        $(this).closest('tbody').find('td.pp-select-exception-agents input').focus();
-
-        $(this).closest('tbody').find('td.pp-current-item-exceptions div').scrollTop(0);
-        return false;
-    });
-
-    $('.pp-exception-actions a.pp-close-select-exception-agents').click(function () {
-        $(this).closest('tbody').find('td.pp-select-exception-agents').hide();
-        $(this).hide();
-        $(this).parent().find('a.pp-select-exception-agents').show();
-        return false;
-    });
-
     $(document).on('change', 'td.pp-exc-item select', function () {
         $(this).closest('tr').find('td.pp-exc-children select[disabled="disabled"]').val($(this).val()).trigger('change');
         $(this).closest('tr').find('td.pp-exc-children input[type="hidden"]').val($(this).val());

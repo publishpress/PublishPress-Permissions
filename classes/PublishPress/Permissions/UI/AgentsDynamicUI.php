@@ -235,21 +235,6 @@ class AgentsDynamicUI
             </tr>
         </table>
         <?php
-        if (!$pp->moduleActive('membership') && $pp->getOption('display_extension_hints')) {
-            if (0 === strpos($id_suffix, 'read')) {
-                if (presspermit()->isPro()) {
-                    $msg = __('To set date limits on group membership, activate the Membership module.', 'press-permit-core');
-                } else {
-                    $msg = sprintf(
-                        __('To set date limits on group membership, %1$supgrade to Permissions Pro%2$s and enable the Membership module.', 'press-permit-core'),
-                        '<a href="https://publishpress.com/pricing/">',
-                        '</a>'
-                    );
-                }
-                echo "<div class='pp-ext-promo'>$msg</div>";
-            }
-        }
-
         $csv = ($current_selections) ? implode(',', array_keys($current_selections)) : '';
         $csv = apply_filters('presspermit_agents_selection_ui_csv', $csv, $id_suffix, $current_selections);
         ?>
