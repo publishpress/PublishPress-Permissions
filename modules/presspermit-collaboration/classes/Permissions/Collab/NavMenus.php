@@ -10,7 +10,12 @@ class NavMenus
         add_filter('get_user_option_nav_menu_recently_edited', [$this, 'fltNavMenuRecent']);
         
         add_filter('pre_update_option_nav_menu_options', [$this, 'fltUpdateNavMenuOptions'], 10, 2);
-        add_filter('update_post_metadata', [$this, 'fltUpdateNavMenuItemParent'], 10, 5);        
+
+        if (!defined('PP_NAV_MENU_DISABLE_POSTMETA_FILTER') && (!class_exists('NestedPages') || defined('PP_NAV_MENU_ENABLE_POSTMETA_FILTER'))) {
+        	add_filter('update_post_metadata', [$this, 'fltUpdateNavMenuItemParent'], 10, 5);        
+        }
+
+        do_action('presspermit_nav_menu_filters');
     }
 
     public function fltNavMenuRecent($opt)
