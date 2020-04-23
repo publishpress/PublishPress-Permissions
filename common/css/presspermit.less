@@ -424,3 +424,109 @@ text-decoration: underline;
 color:#00a0d2;
 text-decoration: underline;
 }
+
+// Search user and groups
+.pp-select-exception-agents  {
+
+  select[id*="agent_results_"] {
+    width: 240px;
+
+    @media (max-width: 782px)  {
+      width: 240px;
+    }
+  }
+
+  input[id*="agent_search_text_"] {
+    width: 170px;
+
+    @media (max-width: 782px) {
+      width: 170px;
+    }
+  }
+}
+
+// Override WP core elements
+.wp-core-ui {
+
+  /* Buttons */
+
+  .pp-default-button {
+    border-color: #655997;
+    color: #655997;
+    border-width: 1px;
+
+    &:focus {
+      color: #483f6b;
+      border-color: #483f6b;
+      box-shadow: 0 0 0 1px #483f6b;
+      -moz-box-shadow: 0 0 0 1px #483f6b;
+      -webkit-box-shadow: 0 0 0 1px #483f6b;
+    }
+
+    &:hover,
+    &:active {
+      color: #483f6b;
+      border-color: #483f6b;
+    }
+  }
+
+  .pp-primary-button {
+    background: #655997;
+    color: #fff;
+    border-color: #655997;
+    border-width: 1px;
+
+    &:focus {
+      background: #483f6b;
+      color: #fff;
+      border-color: #483f6b;
+      box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
+      -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
+      -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
+    }
+
+    &:hover,
+    &:active {
+      background: #483f6b;
+      color: #fff;
+      border-color: #483f6b;
+    }
+  }
+
+  .pp-pro-button {
+    background: #feb123;
+    color: #222;
+    border-color: #feb123;
+    border-width: 1px;
+
+    &:focus {
+      background: #febe47;
+      color: #222;
+      border-color: #febe47;
+      box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
+      -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
+      -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
+    }
+
+    &:hover,
+    &:active {
+      background: #febe47;
+      color: #222;
+      border-color: #febe47;
+    }
+  }
+
+  /* Input fields */
+
+  input[type=text],
+  select,
+  textarea {
+
+    &:focus {
+      border-color: #483f6b;
+      box-shadow: 0 0 0 1px #483f6b;
+      -moz-box-shadow: 0 0 0 1px #483f6b;
+      -webkit-box-shadow: 0 0 0 1px #483f6b;
+    }
+  }
+}

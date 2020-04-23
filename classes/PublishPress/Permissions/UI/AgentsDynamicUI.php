@@ -61,19 +61,21 @@ class AgentsDynamicUI
                     $search_caption = __(ucwords(str_replace('_', ' ', $default_search_field)), 'press-permit-core');
                     $label_headline = sprintf(__('Find Users by %s', 'press-permit-core'), $search_caption);
                 } else {
-                    $label_headline = __('Find Users', 'press-permit-core');
+                    $label_headline = __('Search Users', 'press-permit-core');
                 }
             } else {
-                $label_headline = __('Select Groups', 'press-permit-core');
+                $label_headline = __('Search Custom Groups', 'press-permit-core');
             }
         }
         ?>
+        <div>
+
+        </div>
         <table id="pp-agent-selection_<?php echo $id_suffix; ?>-wrapper" class="pp-agents-selection">
             <tr>
                 <td id="pp-agent-selection_<?php echo $id_suffix; ?> " style="vertical-align:top">
-                    <h4><?php echo $label_headline; ?></h4>
-                    <input id="agent_search_text_<?php echo $id_suffix; ?>" type="text" size="8"/>
-                    <button type="button" class="pp-agent-search-submit"
+                    <input id="agent_search_text_<?php echo $id_suffix; ?>" placeholder="<?php echo $label_headline; ?>" type="text" size="18"/>
+                    <button type="button" class="pp-agent-search-submit button pp-primary-button"
                             id="agent_submit_<?php echo $id_suffix; ?>"><?php echo PWP::__wp("Search") ?></button>
 
                     <?php if (('user' == $agent_type)) : ?>
@@ -114,7 +116,6 @@ class AgentsDynamicUI
                                         <option value="<?php echo $field; ?>"><?php echo $lbl; ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                                &nbsp;
 
                                 <input id="pp_search_user_meta_val_<?php echo $i; ?>_<?php echo $id_suffix; ?>"
                                        type="text" <?php
@@ -217,8 +218,8 @@ class AgentsDynamicUI
                 <?php do_action('presspermit_agents_selection_ui_select_pre', $id_suffix); ?>
 
                 <td>
-                    <button type="button" id="select_agents_<?php echo $id_suffix; ?>" class="pp_add"
-                            style="float:right;margin-right:50px<?php if (!$multi_select) : ?>;display:none;<?php endif; ?>">
+                    <button type="button" id="select_agents_<?php echo $id_suffix; ?>" class="pp_add button pp-default-button"
+                            style="<?php if (!$multi_select) : ?>;display:none;<?php endif; ?>">
 
                         <?php echo $label_select; ?>
                     </button>
