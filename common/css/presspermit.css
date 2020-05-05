@@ -84,18 +84,6 @@
 #change_log.pp-update li {
   margin-bottom: 10px;
 }
-.pp-list_horiz {
-  width: 100%;
-  clear: both;
-  float: left;
-  margin: 0;
-  padding: 0;
-}
-.pp-list_horiz li {
-  list-style: none;
-  float: left;
-  margin: 0;
-}
 .agp-vspaced_input {
   margin-top: 5px;
   margin-bottom: 10px;
@@ -138,45 +126,6 @@ div.pp-file-filtering-promo {
 }
 .pp-agents input {
   vertical-align: text-bottom;
-}
-.agp-agent {
-  margin: 0 -1px 0 0 !important;
-}
-.agp-agent a {
-  text-decoration: none;
-  color: #666;
-  padding: 10px 14px 10px;
-  display: block;
-}
-.agp-agent a:hover,
-.agp-agent a:focus,
-.agp-agent a:active {
-  text-decoration: none;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  color: #222;
-}
-.agp-unselected_agent {
-  border: 1px solid #ccc;
-  background: #f1f1f1;
-}
-.agp-unselected_agent a {
-  color: #666;
-}
-.agp-unselected_agent:hover,
-.agp-unselected_agent:active,
-.agp-unselected_agent:focus {
-  background: #fff;
-  color: #222;
-}
-.agp-selected_agent {
-  border: 1px solid #ccc;
-  background-color: #fff;
-  border-bottom: 1px solid #fff;
-}
-.agp-selected_agent a {
-  color: #222;
 }
 /* --- edit-tags.php (PP Exception metaboxes) --- */
 #edittag div.meta-box-sortables {
@@ -385,6 +334,7 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
 .wp-core-ui {
   /* Buttons */
   /* Input fields */
+  /* Tabs */
 }
 .wp-core-ui .pp-default-button {
   border-color: #655997;
@@ -450,4 +400,49 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   box-shadow: 0 0 0 1px #483f6b;
   -moz-box-shadow: 0 0 0 1px #483f6b;
   -webkit-box-shadow: 0 0 0 1px #483f6b;
+}
+.wp-core-ui ul.pp-list_horiz {
+  width: 100%;
+  clear: both;
+  float: left;
+  margin: 0 0 -1px 0;
+  padding: 0;
+}
+.wp-core-ui ul.pp-list_horiz li {
+  list-style: none;
+  float: left;
+  margin: 0;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-agent {
+  margin: 0 -1px 0 0;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-agent a {
+  text-decoration: none;
+  color: #666;
+  padding: 10px 14px 10px;
+  display: block;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-agent a:hover,
+.wp-core-ui ul.pp-list_horiz li.agp-agent a:focus,
+.wp-core-ui ul.pp-list_horiz li.agp-agent a:active {
+  text-decoration: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  color: #222;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-selected_agent {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-selected_agent a {
+  color: #222;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-unselected_agent {
+  border: 1px solid #ccc;
+  background: #f1f1f1;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-unselected_agent a {
+  color: #666;
 }
