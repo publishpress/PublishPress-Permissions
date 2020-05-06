@@ -479,7 +479,7 @@ class AgentPermissionsUI
         $first_perm_type = reset($arr);
         foreach (array_keys($perms) as $perm_type) {
             $display_style = ("pp-add-$perm_type" == $current_tab) ? '' : ';display:none';
-            echo "<div class='pp-group-box pp-add-permissions pp-add-$perm_type' style='clear:both{$display_style}'>";
+            echo "<div class='pp-agents pp-group-box pp-add-permissions pp-add-$perm_type' style='clear:both{$display_style}'>";
             echo '<div>';
 
             if ('roles' == $perm_type) {
