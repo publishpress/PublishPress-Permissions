@@ -2,6 +2,8 @@
  * This file is licensed under the GNU GPL.
  */
 
+@import "_elements";
+
 /* --- Colors --- */
 .pp-gray, .pp-gray a, .pp-gray a:link, .pp-gray a:visited {
     color: #888;
@@ -383,177 +385,11 @@ text-decoration: underline;
   }
 }
 
-// Override WP core elements
+// Design consistency
 .wp-core-ui {
 
-  /* Buttons */
-
-  .pp-default-button {
-    border-color: #655997;
-    color: #655997;
-    border-width: 1px;
-
-    &:focus {
-      color: #483f6b;
-      border-color: #483f6b;
-      box-shadow: 0 0 0 1px #483f6b;
-      -moz-box-shadow: 0 0 0 1px #483f6b;
-      -webkit-box-shadow: 0 0 0 1px #483f6b;
-    }
-
-    &:hover,
-    &:active {
-      color: #483f6b;
-      border-color: #483f6b;
-    }
-  }
-
-  .pp-primary-button {
-    background: #655997;
-    color: #fff;
-    border-color: #655997;
-    border-width: 1px;
-
-    &:focus {
-      background: #483f6b;
-      color: #fff;
-      border-color: #483f6b;
-      box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
-      -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
-      -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
-    }
-
-    &:hover,
-    &:active {
-      background: #483f6b;
-      color: #fff;
-      border-color: #483f6b;
-    }
-  }
-
-  .pp-pro-button {
-    background: #feb123;
-    color: #222;
-    border-color: #feb123;
-    border-width: 1px;
-
-    &:focus {
-      background: #febe47;
-      color: #222;
-      border-color: #febe47;
-      box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
-      -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
-      -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
-    }
-
-    &:hover,
-    &:active {
-      background: #febe47;
-      color: #222;
-      border-color: #febe47;
-    }
-  }
-
-  /* Input fields */
-
-  input[type=text],
-  select,
-  textarea {
-
-    &:focus {
-      border-color: #483f6b;
-      box-shadow: 0 0 0 1px #483f6b;
-      -moz-box-shadow: 0 0 0 1px #483f6b;
-      -webkit-box-shadow: 0 0 0 1px #483f6b;
-    }
-  }
-
-  /* Tabs */
-  ul {
-
-    &.pp-list_horiz {
-      width: 100%;
-      clear: both;
-      float: left;
-      margin: 0 0 -1px 0;
-      padding: 0;
-
-      li {
-        list-style: none;
-        float: left;
-        margin: 0;
-
-        &:hover,
-        &:focus,
-        &:active {
-          outline: none;
-        }
-
-        &.agp-agent {
-          margin: 0 -1px 0 0;
-
-          a {
-            text-decoration: none;
-            color: #666;
-            padding: 10px 14px 10px;
-            display: block;
-
-            &:hover,
-            &:focus,
-            &:active {
-              text-decoration: none;
-              -webkit-box-shadow: none;
-              -moz-box-shadow: none;
-              box-shadow: none;
-              color: #222;
-            }
-          }
-        }
-
-        // Selected tab
-        &.agp-selected_agent {
-          border: 1px solid #ccc;
-          background-color: #fff;
-          border-bottom: 1px solid #fff;
-
-          a {
-            color: #222;
-          }
-        }
-
-        // Non selected tab
-        &.agp-unselected_agent {
-          border: 1px solid #ccc;
-          background: #f1f1f1;
-
-          a {
-            color: #666;
-          }
-        }
-      }
-    }
-  }
-
-  .pp-agents {
-    background-color: #fff;
-    padding: 0 0 0.2em 0.3em;
-    border: 1px solid #ccc;
-    margin: 0;
-    padding: 20px;
-
-    a {
-      color: #655997;
-
-      &:hover
-      &:focus,
-      &:focus {
-        color: #483f6b;
-      }
-    }
-
-    input {
-      vertical-align: text-bottom;
-    }
-  }
+  .ppButtons();
+  .ppInputFields();
+  .ppTabs();
 
 }

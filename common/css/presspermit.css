@@ -1,6 +1,9 @@
 /* PressPermit. Copyright (c) 2019 PublishPress.
  * This file is licensed under the GNU GPL.
  */
+/* Buttons */
+/* Input fields */
+/* Tabs */
 /* --- Colors --- */
 .pp-gray,
 .pp-gray a,
@@ -335,11 +338,6 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   .pp-select-exception-agents input[id*="agent_search_text_"] {
     width: 170px;
   }
-}
-.wp-core-ui {
-  /* Buttons */
-  /* Input fields */
-  /* Tabs */
 }
 .wp-core-ui .pp-default-button {
   border-color: #655997;
