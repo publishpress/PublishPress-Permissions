@@ -264,7 +264,7 @@ class AgentPermissionsUI
                 </td>
 
                 <td class="pp-add-site-role" style="display:none">
-                    <input id="pp_add_site_role" class="button-secondary" type="submit" name="pp_add_site_role" value="<?php _e('Add Role', 'press-permit-core'); ?>" />
+                    <input id="pp_add_site_role" class="button-secondary pp-default-button" type="submit" name="pp_add_site_role" value="<?php _e('Add Role', 'press-permit-core'); ?>" />
                 </td>
 
             </tr>
@@ -382,7 +382,7 @@ class AgentPermissionsUI
 
         <div id="pp_save_roles">
             <p class="submit">
-                <input id="submit_roles" class="button button-primary" type="submit" value="<?php _e('Save Roles', 'press-permit-core'); ?>" name="submit">
+                <input id="submit_roles" class="button button-primary pp-primary-button" type="submit" value="<?php _e('Save Roles', 'press-permit-core'); ?>" name="submit">
             </p>
         </div>
     </div>
