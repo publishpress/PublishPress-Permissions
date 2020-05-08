@@ -173,30 +173,30 @@
 .fs-secure-notice {
   display: none;
 }
-.wp-core-ui .pp-default-button {
+#pp-permissions-wrapper .pp-default-button {
   border-color: #655997;
   color: #655997;
   border-width: 1px;
 }
-.wp-core-ui .pp-default-button:focus {
+#pp-permissions-wrapper .pp-default-button:focus {
   color: #483f6b;
   border-color: #483f6b;
   box-shadow: 0 0 0 1px #483f6b;
   -moz-box-shadow: 0 0 0 1px #483f6b;
   -webkit-box-shadow: 0 0 0 1px #483f6b;
 }
-.wp-core-ui .pp-default-button:hover,
-.wp-core-ui .pp-default-button:active {
+#pp-permissions-wrapper .pp-default-button:hover,
+#pp-permissions-wrapper .pp-default-button:active {
   color: #483f6b;
   border-color: #483f6b;
 }
-.wp-core-ui .pp-primary-button {
+#pp-permissions-wrapper .pp-primary-button {
   background: #655997;
   color: #fff;
   border-color: #655997;
   border-width: 1px;
 }
-.wp-core-ui .pp-primary-button:focus {
+#pp-permissions-wrapper .pp-primary-button:focus {
   background: #483f6b;
   color: #fff;
   border-color: #483f6b;
@@ -204,19 +204,19 @@
   -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
   -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
 }
-.wp-core-ui .pp-primary-button:hover,
-.wp-core-ui .pp-primary-button:active {
+#pp-permissions-wrapper .pp-primary-button:hover,
+#pp-permissions-wrapper .pp-primary-button:active {
   background: #483f6b;
   color: #fff;
   border-color: #483f6b;
 }
-.wp-core-ui .pp-pro-button {
+#pp-permissions-wrapper .pp-pro-button {
   background: #feb123;
   color: #222;
   border-color: #feb123;
   border-width: 1px;
 }
-.wp-core-ui .pp-pro-button:focus {
+#pp-permissions-wrapper .pp-pro-button:focus {
   background: #febe47;
   color: #222;
   border-color: #febe47;
@@ -224,84 +224,84 @@
   -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
   -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
 }
-.wp-core-ui .pp-pro-button:hover,
-.wp-core-ui .pp-pro-button:active {
+#pp-permissions-wrapper .pp-pro-button:hover,
+#pp-permissions-wrapper .pp-pro-button:active {
   background: #febe47;
   color: #222;
   border-color: #febe47;
 }
-.wp-core-ui input[type=text]:focus,
-.wp-core-ui select:focus,
-.wp-core-ui textarea:focus {
+#pp-permissions-wrapper input[type=text]:focus,
+#pp-permissions-wrapper select:focus,
+#pp-permissions-wrapper textarea:focus {
   border-color: #483f6b;
   box-shadow: 0 0 0 1px #483f6b;
   -moz-box-shadow: 0 0 0 1px #483f6b;
   -webkit-box-shadow: 0 0 0 1px #483f6b;
 }
-.wp-core-ui ul.pp-list_horiz {
+#pp-permissions-wrapper ul.pp-list_horiz {
   width: 100%;
   clear: both;
   float: left;
   margin: 0 0 -1px 0;
   padding: 0;
 }
-.wp-core-ui ul.pp-list_horiz li {
+#pp-permissions-wrapper ul.pp-list_horiz li {
   list-style: none;
   float: left;
   margin: 0;
 }
-.wp-core-ui ul.pp-list_horiz li:hover,
-.wp-core-ui ul.pp-list_horiz li:focus,
-.wp-core-ui ul.pp-list_horiz li:active {
+#pp-permissions-wrapper ul.pp-list_horiz li:hover,
+#pp-permissions-wrapper ul.pp-list_horiz li:focus,
+#pp-permissions-wrapper ul.pp-list_horiz li:active {
   outline: none;
 }
-.wp-core-ui ul.pp-list_horiz li.agp-agent {
+#pp-permissions-wrapper ul.pp-list_horiz li.agp-agent {
   margin: 0 -1px 0 0;
 }
-.wp-core-ui ul.pp-list_horiz li.agp-agent a {
+#pp-permissions-wrapper ul.pp-list_horiz li.agp-agent a {
   text-decoration: none;
   color: #666;
   padding: 10px 14px 10px;
   display: block;
 }
-.wp-core-ui ul.pp-list_horiz li.agp-agent a:hover,
-.wp-core-ui ul.pp-list_horiz li.agp-agent a:focus,
-.wp-core-ui ul.pp-list_horiz li.agp-agent a:active {
+#pp-permissions-wrapper ul.pp-list_horiz li.agp-agent a:hover,
+#pp-permissions-wrapper ul.pp-list_horiz li.agp-agent a:focus,
+#pp-permissions-wrapper ul.pp-list_horiz li.agp-agent a:active {
   text-decoration: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
   color: #222;
 }
-.wp-core-ui ul.pp-list_horiz li.agp-selected_agent {
+#pp-permissions-wrapper ul.pp-list_horiz li.agp-selected_agent {
   border: 1px solid #ccc;
   background-color: #fff;
   border-bottom: 1px solid #fff;
 }
-.wp-core-ui ul.pp-list_horiz li.agp-selected_agent a {
+#pp-permissions-wrapper ul.pp-list_horiz li.agp-selected_agent a {
   color: #222;
 }
-.wp-core-ui ul.pp-list_horiz li.agp-unselected_agent {
+#pp-permissions-wrapper ul.pp-list_horiz li.agp-unselected_agent {
   border: 1px solid #ccc;
   background: #f1f1f1;
 }
-.wp-core-ui ul.pp-list_horiz li.agp-unselected_agent a {
+#pp-permissions-wrapper ul.pp-list_horiz li.agp-unselected_agent a {
   color: #666;
 }
-.wp-core-ui .pp-agents {
+#pp-permissions-wrapper .pp-agents {
   background-color: #fff;
   padding: 0 0 0.2em 0.3em;
   border: 1px solid #ccc;
   margin: 0;
   padding: 20px;
 }
-.wp-core-ui .pp-agents a {
+#pp-permissions-wrapper .pp-agents a {
   color: #655997;
 }
-.wp-core-ui .pp-agents a:hover .wp-core-ui .pp-agents a:focus,
-.wp-core-ui .pp-agents a:focus {
+#pp-permissions-wrapper .pp-agents a:hover #pp-permissions-wrapper .pp-agents a:focus,
+#pp-permissions-wrapper .pp-agents a:focus {
   color: #483f6b;
 }
-.wp-core-ui .pp-agents input {
+#pp-permissions-wrapper .pp-agents input {
   vertical-align: text-bottom;
 }
