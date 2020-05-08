@@ -16,10 +16,10 @@
   width: 100px;
   vertical-align: middle;
 }
-#group-profile-page h1 a {
+#pp-permissions-wrapper h1 a {
   color: #655997;
 }
-#group-profile-page h1 a:hover {
+#pp-permissions-wrapper h1 a:hover {
   text-decoration: underline;
 }
 table.pp-agent-profile {
