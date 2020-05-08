@@ -44,7 +44,6 @@
 /* --- Misc Admin --- */
 .pp-hint {
   margin-top: 0.2em;
-  /*color: #393*/
 }
 .pp-notes {
   margin-top: 0.2em;
@@ -113,29 +112,6 @@ div.pp-custom-privacy-promo,
 div.pp-file-filtering-promo {
   margin-left: 5px;
 }
-/* --- User / Group display and selection (on several pages) --- */
-/*.pp-agents {
-    background-color: #fff;
-    padding: 0 0 0.2em 0.3em;
-    border: 1px solid #ccc;
-    border: 1px solid #ccc;
-    margin: 0;
-    padding: 20px;
-}
-
-.pp-agents a {
-    color: #655997;
-}
-
-.pp-agents a:hover
-.pp-agents a:focus,
-.pp-agents a:focus {
-    color: #483f6b;
-}
-
-.pp-agents input {
-    vertical-align: text-bottom;
-}*/
 /* --- edit-tags.php (PP Exception metaboxes) --- */
 #edittag div.meta-box-sortables {
   min-width: 420px;
@@ -230,21 +206,6 @@ div.pp_dashboard_message {
 .pp-notice a:hover {
   text-decoration: underline !important;
 }
-/* Admin icon */
-/*
-#toplevel_page_presspermit-groups .dashicons-before::before,
-#toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before {
-    background-image: url(../img/menu/menu-icon.png);
-    background-repeat: no-repeat;
-    background-position: 0 8px;
-    background-size: 19px auto;
-    content: " ";
-    transition: none;
-    -moz-transition: none;
-    -webkit-transition: none;
-    -o-transition: none;
-}
-*/
 /* Admin icon customized per admin theme, excluding the default and light */
 .admin-color-blue #toplevel_page_presspermit-groups .dashicons-before::before,
 .admin-color-coffee #toplevel_page_presspermit-groups .dashicons-before::before,

@@ -117,53 +117,6 @@
   -o-transition: color 200ms ease-in-out;
   transition: color 200ms ease-in-out;
 }
-/*.pressshack-admin-wrapper button:not(.notice-dismiss),
-.pressshack-admin-wrapper .button:not(.notice-dismiss) {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    text-shadow: initial;
-    -webkit-box-shadow: initial;
-    -moz-box-shadow: initial;
-    box-shadow: initial;
-    vertical-align: middle;
-    line-height: 0;
-    min-height: 28px;
-    text-decoration: none;
-    padding: 15px 10px;
-    border-width: 2px;
-    border-style: solid;
-}
-
-.pressshack-admin-wrapper .button-primary {
-    background-color: #FFB300;
-    border-color: #C58C07;
-    color: #754D26;
-    
-    text-shadow: none;
-}
-
-.pressshack-admin-wrapper .button-primary:hover,
-.pressshack-admin-wrapper .button-primary:active,
-.pressshack-admin-wrapper .button-primary:focus {
-    background-color: #F3AC04;
-    border-color: #C58C07;
-    color: #333;
-    outline: none;
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-    -o-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.pressshack-admin-wrapper .button:not(.notice-dismiss):hover,
-.pressshack-admin-wrapper .button:not(.notice-dismiss):active,
-.pressshack-admin-wrapper .button:not(.notice-dismiss):focus {
-    outline: none;
-    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-}*/
 .pressshack-admin-wrapper .pp-pressshack-logo img {
   width: 170px;
 }
