@@ -1282,7 +1282,7 @@ class AgentPermissionsUI
 
         <br />
         <div>
-            <input id="pp_clone_permissions" class="button button-primary" type="submit" name="pp_clone_permissions" value="<?php _e('Do Clone'); ?>">
+            <input id="pp_clone_permissions" class="button pp-primary-button" type="submit" name="pp_clone_permissions" value="<?php _e('Do Clone'); ?>">
         </div>
     <?php
     }

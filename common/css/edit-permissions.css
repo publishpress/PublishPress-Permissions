@@ -1,3 +1,7 @@
+/* Buttons */
+/* Input fields */
+/* Tabs */
+/* Tables */
 #pp_cred_wrap h3 {
   font-size: 15px;
 }
@@ -45,13 +49,22 @@ div.pp-group_members {
   background-color: #eee;
   border-bottom: none;
 }
-#pp_add_role thead tr th,
-#pp_add_role tbody tr td,
-#pp_add_exception thead tr th,
-#pp_add_exception tbody tr td {
-  padding-right: 1em;
-  vertical-align: top;
-}
+/*#pp_add_role {
+  border-collapse: collapse;
+
+  thead tr th,
+  #pp_add_role tbody tr td,
+  #pp_add_exception thead tr th,
+  #pp_add_exception tbody tr td {
+    padding-right: 1em;
+    vertical-align: top;
+    text-align: left;
+  }
+
+  td.pp-add-site-role {
+    vertical-align: top;
+  }
+}*/
 #pp_add_role select,
 #pp_add_exception select {
   min-width: 9em;
@@ -85,7 +98,7 @@ div.pp-add-exceptions {
   padding-right: 15px;
 }
 #pp_add_exception td.pp-select-x-via-type {
-  padding-left: 20px;
+  padding-left: 0;
   padding-right: 10px;
 }
 #pp_add_exception td.pp-select-x-operation label,
@@ -134,8 +147,11 @@ span.nav-tab {
 .pp-error-note {
   color: #c00;
 }
-#pp_review_roles {
+#pp-permissions-wrapper #pp_review_roles {
   margin-top: 0;
+}
+#pp-permissions-wrapper #pp_review_roles table {
+  border-collapse: separate;
 }
 #pp_tbl_role_selections,
 #pp_tbl_exception_selections {
@@ -154,7 +170,6 @@ span.nav-tab {
 #pp_tbl_exception_selections div.pp_clear {
   text-align: right;
 }
-#group-roles-selections,
 #group-exceptions-selections {
   margin-left: 10px;
   margin-right: 10px;
@@ -315,11 +330,10 @@ label.pp_faded {
   font-style: italic;
 }
 .pp_exceptions_notes {
-  margin: 2em 1em 1em 1em;
+  margin: 2em 0em;
   padding: 1em 2em 1em 2em;
   background-color: #FFFFE0;
   border: 1px solid #E6DB55;
-  margin-right: 2em;
 }
 .pp_exceptions_notes ul {
   list-style-type: circle;
@@ -379,4 +393,12 @@ ul.categorychecklist span {
 }
 td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   vertical-align: baseline;
+}
+#pp-permissions-wrapper table {
+  border-collapse: collapse;
+}
+#pp-permissions-wrapper table tr th,
+#pp-permissions-wrapper table tr td {
+  text-align: left;
+  vertical-align: top;
 }

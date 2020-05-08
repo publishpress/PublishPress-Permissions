@@ -1,11 +1,12 @@
+@import "_elements";
+
 #pp_cred_wrap h3 {
-    font-size: 15px;
+  font-size: 15px;
 }
 
 #pp_cred_wrap h4, #pp_cred_wrap th, #pp_cred_wrap td, #pp_cred_wrap select {
-    font-size: 13px;
+  font-size: 13px;
 }
-
 
 #agent-profile .form-table td, #agent-profile .form-table th {
     line-height: 1.5em;
@@ -53,10 +54,22 @@ div.pp-group_members {
     border-bottom: none;
 }
 
-#pp_add_role thead tr th, #pp_add_role tbody tr td, #pp_add_exception thead tr th, #pp_add_exception tbody tr td {
+/*#pp_add_role {
+  border-collapse: collapse;
+
+  thead tr th,
+  #pp_add_role tbody tr td,
+  #pp_add_exception thead tr th,
+  #pp_add_exception tbody tr td {
     padding-right: 1em;
     vertical-align: top;
-}
+    text-align: left;
+  }
+
+  td.pp-add-site-role {
+    vertical-align: top;
+  }
+}*/
 
 #pp_add_role select, #pp_add_exception select {
     min-width: 9em;
@@ -93,7 +106,7 @@ div.pp-add-exceptions {
 }
 
 #pp_add_exception td.pp-select-x-via-type {
-    padding-left: 20px;
+    padding-left: 0;
     padding-right: 10px;
 }
 
@@ -154,8 +167,12 @@ span.nav-tab {
 }
 
 
-#pp_review_roles {
+#pp-permissions-wrapper #pp_review_roles {
     margin-top: 0;
+
+  table {
+    border-collapse: separate;
+  }
 }
 
 #pp_tbl_role_selections, #pp_tbl_exception_selections {
@@ -173,7 +190,7 @@ span.nav-tab {
     text-align: right;
 }
 
-#group-roles-selections, #group-exceptions-selections {
+#group-exceptions-selections {
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -365,11 +382,10 @@ tr.pp_faded td, label.pp_faded {
 }
 
 .pp_exceptions_notes {
-    margin: 2em 1em 1em 1em;
+    margin: 2em 0em;
     padding: 1em 2em 1em 2em;
     background-color: #FFFFE0;
     border: 1px solid #E6DB55;
-    margin-right: 2em;
 }
 
 .pp_exceptions_notes ul {
@@ -440,4 +456,9 @@ ul.categorychecklist span {
 
 td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
     vertical-align: baseline;
+}
+
+// Design consistency
+#pp-permissions-wrapper {
+  .ppTables();
 }
