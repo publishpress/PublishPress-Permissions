@@ -48,7 +48,7 @@
 .pressshack-admin-wrapper a,
 .pressshack-admin-wrapper a div,
 .pressshack-admin-wrapper a p {
-    color: #655997;
+    color: @main_color;
 }
 
 .pressshack-admin-wrapper a:hover,
@@ -64,7 +64,6 @@
 .pressshack-admin-wrapper a:focus .dashicons:before,
 .pressshack-admin-wrapper a:active .dashicons:before {
     color: #5A4F87;
-    box-shadow: none;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     -o-box-shadow: none;
@@ -85,8 +84,8 @@
 .pressshack-admin-wrapper .nav-tab-wrapper .nav-tab:hover,
 .pressshack-admin-wrapper .nav-tab-wrapper .nav-tab:active,
 .pressshack-admin-wrapper .nav-tab-wrapper .nav-tab:focus {
-    border-top-color: #655997;
-    color: #655997;
+    border-top-color: @main_color;
+    color: @main_color;
 }
 
 .pressshack-admin-wrapper > footer {
@@ -148,7 +147,7 @@
 #pp-permissions-wrapper {
 
   .ppButtons();
-  .ppInputFields();
+  .ppFormFields();
   .ppTabs();
 
 }

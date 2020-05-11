@@ -26,6 +26,7 @@
  * You should have received a copy of the GNU General Public License
  * along with PublishPress.  If not, see <http://www.gnu.org/licenses/>.
  */
+/* Vars */
 /* Buttons */
 /* Input fields */
 /* Tabs */
@@ -62,7 +63,6 @@
 .pressshack-admin-wrapper a:focus .dashicons:before,
 .pressshack-admin-wrapper a:active .dashicons:before {
   color: #5A4F87;
-  box-shadow: none;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
   -o-box-shadow: none;
@@ -154,9 +154,7 @@
   background: #483f6b;
   color: #fff;
   border-color: #483f6b;
-  box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
-  -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
-  -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
+  box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #483f6b;
 }
 #pp-permissions-wrapper .pp-primary-button:hover,
 #pp-permissions-wrapper .pp-primary-button:active {
@@ -174,9 +172,9 @@
   background: #febe47;
   color: #222;
   border-color: #febe47;
-  box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
-  -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
-  -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
+  box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #febe47;
+  -moz-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #febe47;
+  -webkit-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #febe47;
 }
 #pp-permissions-wrapper .pp-pro-button:hover,
 #pp-permissions-wrapper .pp-pro-button:active {
@@ -184,6 +182,10 @@
   color: #222;
   border-color: #febe47;
 }
+#pp-permissions-wrapper input[type=checkbox]:focus {
+  outline: 2px solid transparent;
+}
+#pp-permissions-wrapper input[type=checkbox]:focus,
 #pp-permissions-wrapper input[type=text]:focus,
 #pp-permissions-wrapper select:focus,
 #pp-permissions-wrapper textarea:focus {

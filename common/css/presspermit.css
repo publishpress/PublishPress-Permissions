@@ -1,6 +1,7 @@
 /* PressPermit. Copyright (c) 2019 PublishPress.
  * This file is licensed under the GNU GPL.
  */
+/* Vars */
 /* Buttons */
 /* Input fields */
 /* Tabs */
@@ -331,9 +332,7 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   background: #483f6b;
   color: #fff;
   border-color: #483f6b;
-  box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
-  -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
-  -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
+  box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #483f6b;
 }
 .wp-core-ui .pp-primary-button:hover,
 .wp-core-ui .pp-primary-button:active {
@@ -351,9 +350,9 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   background: #febe47;
   color: #222;
   border-color: #febe47;
-  box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
-  -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
-  -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
+  box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #febe47;
+  -moz-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #febe47;
+  -webkit-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #febe47;
 }
 .wp-core-ui .pp-pro-button:hover,
 .wp-core-ui .pp-pro-button:active {
@@ -361,6 +360,10 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   color: #222;
   border-color: #febe47;
 }
+.wp-core-ui input[type=checkbox]:focus {
+  outline: 2px solid transparent;
+}
+.wp-core-ui input[type=checkbox]:focus,
 .wp-core-ui input[type=text]:focus,
 .wp-core-ui select:focus,
 .wp-core-ui textarea:focus {

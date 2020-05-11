@@ -1,85 +1,98 @@
+/* Vars */
+@main_color: #655997;
+@main_color_hover: #483f6b;
+@important_color: #feb123;
+@important_color_hover: #febe47;
+
 /* Buttons */
 
 .ppButtons() {
   .pp-default-button {
-    border-color: #655997;
-    color: #655997;
+    border-color: @main_color;
+    color: @main_color;
     border-width: 1px;
 
     &:focus {
-      color: #483f6b;
-      border-color: #483f6b;
-      box-shadow: 0 0 0 1px #483f6b;
-      -moz-box-shadow: 0 0 0 1px #483f6b;
-      -webkit-box-shadow: 0 0 0 1px #483f6b;
+      color: @main_color_hover;
+      border-color: @main_color_hover;
+      box-shadow: 0 0 0 1px @main_color_hover;
+      -moz-box-shadow: 0 0 0 1px @main_color_hover;
+      -webkit-box-shadow: 0 0 0 1px @main_color_hover;
     }
 
     &:hover,
     &:active {
-      color: #483f6b;
-      border-color: #483f6b;
+      color: @main_color_hover;
+      border-color: @main_color_hover;
     }
   }
 
   .pp-primary-button {
-    background: #655997;
+    background: @main_color;
     color: #fff;
-    border-color: #655997;
+    border-color: @main_color;
     border-width: 1px;
 
     &:focus {
-      background: #483f6b;
+      background: @main_color_hover;
       color: #fff;
-      border-color: #483f6b;
-      box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
-      -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
-      -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
+      border-color: @main_color_hover;
+      box-shadow: 0 0 0 1px #fff, 0 0 0 3px @main_color_hover;
     }
 
     &:hover,
     &:active {
-      background: #483f6b;
+      background: @main_color_hover;
       color: #fff;
-      border-color: #483f6b;
+      border-color: @main_color_hover;
     }
   }
 
   .pp-pro-button {
-    background: #feb123;
+    background: @important_color;
     color: #222;
-    border-color: #feb123;
+    border-color: @important_color;
     border-width: 1px;
 
     &:focus {
-      background: #febe47;
+      background: @important_color_hover;
       color: #222;
-      border-color: #febe47;
-      box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
-      -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
-      -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
+      border-color: @important_color_hover;
+      box-shadow: 0 0 0 1px #fff, 0 0 0 3px @important_color_hover;
+      -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px @important_color_hover;
+      -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px @important_color_hover;
     }
 
     &:hover,
     &:active {
-      background: #febe47;
+      background: @important_color_hover;
       color: #222;
-      border-color: #febe47;
+      border-color: @important_color_hover;
     }
   }
 }
 
 /* Input fields */
 
-.ppInputFields() {
+.ppFormFields() {
+
+  input[type=checkbox] {
+
+    &:focus {
+      outline: 2px solid transparent;
+    }
+  }
+
+  input[type=checkbox],
   input[type=text],
   select,
   textarea {
 
     &:focus {
-      border-color: #483f6b;
-      box-shadow: 0 0 0 1px #483f6b;
-      -moz-box-shadow: 0 0 0 1px #483f6b;
-      -webkit-box-shadow: 0 0 0 1px #483f6b;
+      border-color: @main_color_hover;
+      box-shadow: 0 0 0 1px @main_color_hover;
+      -moz-box-shadow: 0 0 0 1px @main_color_hover;
+      -webkit-box-shadow: 0 0 0 1px @main_color_hover;
     }
   }
 }
@@ -160,12 +173,12 @@
     padding: 20px;
 
     a {
-      color: #655997;
+      color: @main_color;
 
       &:hover
       &:focus,
       &:focus {
-        color: #483f6b;
+        color: @main_color_hover;
       }
     }
 
