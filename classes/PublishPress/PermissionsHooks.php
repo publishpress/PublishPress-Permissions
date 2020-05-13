@@ -384,7 +384,9 @@ class PermissionsHooks
         $uri = $page->post_name;
 
         foreach ($page->ancestors as $parent) {
-            $uri = get_post($parent)->post_name . '/' . $uri;
+            if ($_post = get_post($parent)) {
+                $uri = $_post->post_name . '/' . $uri;
+            }
         }
 
         return $uri;
