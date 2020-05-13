@@ -62,7 +62,7 @@ class Settings
         }
 
         ?>
-        <div class="pressshack-admin-wrapper wrap">
+        <div class="pressshack-admin-wrapper wrap" id="pp-permissions-wrapper">
             <?php
             echo '<form id="pp_settings_form" action="" method="post">';
             wp_nonce_field('pp-update-options');
