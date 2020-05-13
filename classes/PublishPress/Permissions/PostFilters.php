@@ -17,11 +17,13 @@ class PostFilters
     var $skip_teaser;  // for use by templates making a direct call to query_posts for non-teased results
     var $anon_results = [];
 
-    public static function instance($args) {
+    public static function instance($args = []) {
         if ( ! isset(self::$instance)) {
-            self::$instance = new PostFilters($args);
+            self::$instance = new PostFilters();
             self::$instance->init();
         }
+
+        return self::$instance;
     }
 
     private function __construct()
@@ -29,7 +31,7 @@ class PostFilters
         
     }
 
-    private function init($args = [])
+    private function init()
     {
         require_once(PRESSPERMIT_CLASSPATH . '/DB/Permissions.php');
 
@@ -470,7 +472,7 @@ class PostFilters
 
     // determines status usage, calls generate_where_clause() for each applicable post_type and appends resulting clauses
     //
-    public static function getPostsWhere($args)
+    public function getPostsWhere($args)
     {
         $defaults = [
             'post_types' => [],

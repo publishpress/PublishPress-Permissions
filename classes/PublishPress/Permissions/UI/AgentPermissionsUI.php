@@ -974,8 +974,11 @@ class AgentPermissionsUI
                                         $lbl_class = ($classes) ? "class='" . implode(' ', $classes) . "'" : '';
 
                                         if ('term' == $via_src) {
-                                            $edit_url = admin_url("term.php?taxonomy={$via_type}&tag_ID="
-                                                . PWP::ttidToTermid($item_id, $via_type) . "&post_type=$for_type");
+                                            $term_id = PWP::ttidToTermid($item_id, $via_type);
+
+                                            $edit_url = ('nav_menu' == $via_type)
+                                            ? admin_url("nav-menus.php?action=edit&menu=172")
+                                            : admin_url("term.php?taxonomy={$via_type}&tag_ID=$term_id&post_type=$for_type");
                                         } else {
                                             $edit_url = admin_url("post.php?post=$item_id&action=edit");
                                         }

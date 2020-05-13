@@ -57,7 +57,7 @@ class CollabHooksAdmin
 
         add_filter('presspermit_posts_clauses_intercept', [$this, 'fltEditNavMenuFilterDisable'], 10, 2);
 
-        if (class_exists('NestedPages') && !empty($_REQUEST['page'] && ('nestedpages' == $_REQUEST['page']))) {
+        if (!defined('PP_NESTED_PAGES_ENABLE_FILTERING') && class_exists('NestedPages') && !empty($_REQUEST['page']) && ('nestedpages' == $_REQUEST['page'])) {
             add_filter(
                 'presspermit_posts_clauses_intercept', 
                 function ($clauses, $orig_clauses) {

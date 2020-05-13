@@ -388,8 +388,19 @@ class Permissions
         }
 
         $additional_ttids = [];
+        $revise_ttids = ['{published}' => []];
+
         foreach (presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
             $tt_ids = $user->getExceptionTerms($required_operation, 'additional', $post_type, $taxonomy, ['status' => true, 'merge_universals' => true]);
+
+            if ('edit' == $required_operation) {
+                if (!empty($user->except['revise_post']['term'][$taxonomy]['additional'][$post_type][''])) {
+                    if (!empty($tt_ids[''])) {
+                        $revise_ttids['{published}'] = array_merge($revise_ttids['{published}'], $user->except['revise_post']['term'][$taxonomy]['additional'][$post_type]['']);
+                        $tt_ids[''] = array_diff($tt_ids[''], $revise_ttids['{published}']);
+                    }
+                }
+            }
 
             // merge this taxonomy exceptions with other taxonomies
             foreach (array_keys($tt_ids) as $_status) {
@@ -399,6 +410,23 @@ class Permissions
 
                 $additional_ttids[$_status] = array_merge($additional_ttids[$_status], $tt_ids[$_status]);
             }
+        }
+
+        if (('edit' == $required_operation) && !empty($revise_ttids['{published}'])) {
+            $in_clause = "IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $revise_ttids['{published}']) . "') )";
+
+            $additions['{published}'][] = apply_filters(
+                'presspermit_additions_clause',
+                "$src_table.ID $in_clause",
+                'revise',
+                $post_type,
+                [   'via_item_source' => 'term', 
+                    'status' => '{published}', 
+                    'in_clause' => $in_clause, 
+                    'src_table' => $src_table,
+                    'ids' => $revise_ttids['{published}']
+                ]
+            );
         }
 
         if ($additional_ttids) {
@@ -428,6 +456,15 @@ class Permissions
 
         foreach (array_keys($additions) as $_status) {
             switch ($_status) {
+                case '{published}':
+                    $_stati = array_merge(
+                        PWP::getPostStatuses(['public' => true, 'post_type' => $post_type]),
+                        PWP::getPostStatuses(['private' => true, 'post_type' => $post_type])
+                    );
+
+                    $_status_clause = "$src_table.post_status IN ('" . implode("','", $_stati) . "') AND ";
+                    break;
+                
                 case '':
                     $_status_clause = '';
                     break;
