@@ -39,7 +39,7 @@ class TermQuery
 
         if ( class_exists('\PublishPress\Permissions\PostFilters') && ! presspermit()->isUserUnfiltered() ) {
             // need to apply term restrictions in case post is restricted by another taxonomy
-            $type_status_clause = PostFilters::getPostsWhere(
+            $type_status_clause = \PublishPress\Permissions\PostFilters::instance()->getPostsWhere(
                 ['post_types' => $object_types, 'required_operation' => $required_operation]
             );
         } else {
