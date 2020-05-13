@@ -5,7 +5,7 @@ class Users
 {
     public function __construct() {
         // called by Dashboard\DashboardFilters::actMenuHandler
-
+        // Link to this page remove from menu!
         ?>
         <div class="wrap presspermit-groups">
             <?php PluginPage::icon(); ?>

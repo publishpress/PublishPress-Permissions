@@ -165,7 +165,7 @@ class DashboardFilters
         $pp_page = sanitize_key($_GET['page']);
 
         if (in_array($pp_page, [
-            'presspermit-settings', 'presspermit-groups', 'presspermit-users',
+            'presspermit-settings', 'presspermit-groups',
             'presspermit-edit-permissions', 'presspermit-group-new',
         ], true)) {
             $class_name = ('presspermit-edit-permissions' == $pp_page)
@@ -251,10 +251,6 @@ class DashboardFilters
 
         if ($do_groups) {
             add_submenu_page($pp_cred_menu, __('Groups', 'press-permit-core'), __('Groups', 'press-permit-core'), 'read', 'presspermit-groups', $handler);
-        }
-
-        if (current_user_can('list_users') && current_user_can('pp_administer_content')) {
-            add_submenu_page($pp_cred_menu, __('Users', 'press-permit-core'), __('Users', 'press-permit-core'), 'read', 'presspermit-users', $handler);
         }
 
         if ($do_settings) {
