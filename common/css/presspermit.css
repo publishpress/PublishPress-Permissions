@@ -189,6 +189,7 @@ option.pp-new-selection {
 .pp-usermeta-field-more {
   font-size: 20px;
   font-weight: bold;
+  cursor: pointer;
 }
 .pp-user-meta-search {
   white-space: nowrap;
@@ -298,7 +299,7 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   }
 }
 .pp-select-exception-agents input[id*="agent_search_text_"] {
-  width: 170px;
+  width: 100%;
 }
 .wp-core-ui .pp-default-button {
   border-color: #655997;

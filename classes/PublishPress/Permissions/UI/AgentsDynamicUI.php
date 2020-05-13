@@ -75,8 +75,6 @@ class AgentsDynamicUI
             <tr>
                 <td id="pp-agent-selection_<?php echo $id_suffix; ?> " style="vertical-align:top">
                     <input id="agent_search_text_<?php echo $id_suffix; ?>" placeholder="<?php echo $label_headline; ?>" type="text" size="18"/>
-                    <button type="button" class="pp-agent-search-submit button pp-primary-button"
-                            id="agent_submit_<?php echo $id_suffix; ?>"><?php echo PWP::__wp("Search") ?></button>
 
                     <?php if (('user' == $agent_type)) : ?>
                         <br/>
