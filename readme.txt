@@ -123,10 +123,15 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.1.4 =
+= 3.1.7 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
+
+= 3.1.7 - 13 May 2020 =
+* Compat : PublishPress Revisions - Authors were enabled to edit other users' drafts
+* Fixed : Edit Permission Group screen - invalid Edit link displayed for currently stored Nav Menu Permissions
+* Fixed : Classic Editor - Fatal error due to incorrect parameter count on preview_post_link filter
 
 = 3.1.4 - 23 Apr 2020 =
 * Compat : PublishPress Revisions - Support suppression of Permissions metaboxes on Edit Revision screen
