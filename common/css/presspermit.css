@@ -300,11 +300,6 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
 .pp-select-exception-agents input[id*="agent_search_text_"] {
   width: 170px;
 }
-@media (max-width: 782px) {
-  .pp-select-exception-agents input[id*="agent_search_text_"] {
-    width: 170px;
-  }
-}
 .wp-core-ui .pp-default-button {
   border-color: #655997;
   color: #655997;
