@@ -74,7 +74,10 @@ class AgentsDynamicUI
         <table id="pp-agent-selection_<?php echo $id_suffix; ?>-wrapper" class="pp-agents-selection">
             <tr>
                 <td id="pp-agent-selection_<?php echo $id_suffix; ?> " style="vertical-align:top">
-                    <input id="agent_search_text_<?php echo $id_suffix; ?>" placeholder="<?php echo $label_headline; ?>" type="text" size="18"/>
+                    <div class="pp-search-box-with-icon-wrapper">
+                        <input id="agent_search_text_<?php echo $id_suffix; ?>" placeholder="<?php echo $label_headline; ?>" type="text" size="18"/>
+                        <i class="dashicons dashicons-search"></i>
+                    </div>
 
                     <?php if (('user' == $agent_type)) : ?>
                         <br/>

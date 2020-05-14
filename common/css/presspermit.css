@@ -298,6 +298,15 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
     width: 240px;
   }
 }
+.pp-select-exception-agents .pp-search-box-with-icon-wrapper {
+  position: relative;
+}
+.pp-select-exception-agents .pp-search-box-with-icon-wrapper i {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  color: #999;
+}
 .pp-select-exception-agents input[id*="agent_search_text_"] {
   width: 100%;
 }
