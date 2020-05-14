@@ -260,10 +260,12 @@
 }
 #pp-permissions-wrapper .pp-agents a {
   color: #655997;
+  text-decoration: none;
 }
 #pp-permissions-wrapper .pp-agents a:hover #pp-permissions-wrapper .pp-agents a:focus,
 #pp-permissions-wrapper .pp-agents a:focus {
   color: #483f6b;
+  text-decoration: none;
 }
 #pp-permissions-wrapper .pp-agents input {
   vertical-align: text-bottom;
