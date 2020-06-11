@@ -303,15 +303,33 @@ class TermFiltersCount
             }
 		} elseif ( 'slugs' == $fields ) {
 			foreach ( $terms as $term ) {
-				$_terms[] = $term->slug;
+                if (is_object($term)) {
+					$_terms[] = $term->slug;
+                } elseif (is_numeric($term) && count($taxonomies) == 1) {
+                    if ($term = get_term($term, reset($taxonomies))) {
+                        $_terms[] = $term->slug;
+                    }
+                }
 			}
 		} elseif ( 'id=>name' == $fields ) {
 			foreach ( $terms as $term ) {
-				$_terms[ $term->term_id ] = $term->name;
+                if (is_object($term)) {
+					$_terms[ $term->term_id ] = $term->name;
+                } elseif (is_numeric($term) && count($taxonomies) == 1) {
+                    if ($term = get_term($term, reset($taxonomies))) {
+                        $_terms[ $term->term_id ] = $term->name;
+                    }
+                }
 			}
 		} elseif ( 'id=>slug' == $fields ) {
 			foreach ( $terms as $term ) {
-				$_terms[ $term->term_id ] = $term->slug;
+                if (is_object($term)) {
+                    $_terms[ $term->term_id ] = $term->slug;
+                } elseif (is_numeric($term) && count($taxonomies) == 1) {
+                    if ($term = get_term($term, reset($taxonomies))) {
+						$_terms[ $term->term_id ] = $term->slug;
+                    }
+                }
 			}
 		}
 
