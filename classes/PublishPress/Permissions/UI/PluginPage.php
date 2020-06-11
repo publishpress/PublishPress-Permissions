@@ -97,9 +97,18 @@ class PluginPage
     }
 
     public static function getGroupVariant() {
-        if (empty($_REQUEST['group_variant']) && !current_user_can('edit_users')) {
+        if (empty($_REQUEST['group_variant']) && !empty($_REQUEST['s']) && !empty($_REQUEST['_wp_http_referer'])) {
+            $matches = [];
+            if (preg_match("/group_variant=([0-9a-zA-Z_\-]+)/", urldecode($_REQUEST['_wp_http_referer']), $matches)) {
+                if ($matches[1]) {
+                    $group_variant = $matches[1];
+                }
+            }
+        } elseif (empty($_REQUEST['group_variant']) && !current_user_can('edit_users')) {
             $group_variant = 'pp_group';
-        } else {
+        }
+
+        if (empty($group_variant)) {
             $group_variant = (isset($_REQUEST['group_variant'])) ? sanitize_key($_REQUEST['group_variant']) : 'wp_role';
         }
 
