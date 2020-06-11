@@ -122,18 +122,26 @@ class SettingsTabCore
                         $option_name = 'enabled_taxonomies';
                         _e('Modify permissions for these Taxonomies:', 'press-permit-core');
                         echo '<br />';
-                        $types = get_taxonomies(['public' => true], 'object');
+                        
+                        $_args = (defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) ? [] : ['public' => true];
+                        $types = get_taxonomies($_args, 'object');
 
                         $omit_types = apply_filters('presspermit_unfiltered_taxonomies', ['post_status', 'topic-tag']);
 
                         if ($omit_types) // avoid confusion with PublishPress administrative taxonomy
                         {
-                            $types = array_diff_key($types, array_fill_keys((array)$omit_types, true));
+                            if (!defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) {
+	                            $types = array_diff_key($types, array_fill_keys((array)$omit_types, true));
+	                        }
                         }
 
                         $hidden_types = apply_filters('presspermit_hidden_taxonomies', []);
 
-                        $types = $pp->admin()->orderTypes($types);
+                        if (defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) {
+                            $hidden_types = [];
+                        } else {
+                        	$types = $pp->admin()->orderTypes($types);
+                        }
                     } else {
                         $option_name = 'enabled_post_types';
                         _e('Modify permissions for these Post Types:', 'press-permit-core');

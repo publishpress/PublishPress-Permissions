@@ -437,7 +437,7 @@ class PageFilters
                 if ($required_operation)
                     $_args['required_operation'] = $required_operation;
                 else
-                    $_args['required_operation'] = (PWP::isFront() && !is_preview()) ? 'read' : 'edit';
+                    $_args['required_operation'] = (PWP::isFront() && !presspermit_is_preview()) ? 'read' : 'edit';
 
                 $rest_params = (defined('REST_REQUEST') && REST_REQUEST) ? \PublishPress\Permissions\REST::instance()->params : [];
 

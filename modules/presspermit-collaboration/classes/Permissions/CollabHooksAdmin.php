@@ -44,7 +44,7 @@ class CollabHooksAdmin
 
         if (defined('PRESSPERMIT_ENABLE_PAGE_TEMPLATE_LIMITER') && PRESSPERMIT_ENABLE_PAGE_TEMPLATE_LIMITER) {
             if (strpos($_SERVER['REQUEST_URI'], 'wp-admin/post.php') || strpos($_SERVER['REQUEST_URI'], 'wp-admin/post-new.php')) {   
-                require_once(PRESSPERMIT_ABSPATH . '/includes-pro/PageTemplateLimiter.php');
+                require_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/PageTemplateLimiter.php');
                 new \PublishPress\Permissions\PageTemplateLimiter();
             }
         }

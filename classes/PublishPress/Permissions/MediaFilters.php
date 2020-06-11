@@ -57,10 +57,12 @@ class MediaFilters
 
                         break;
                     default:
-                        require_once(PRESSPERMIT_CLASSPATH . '/MediaEdit.php');
+                        if (!presspermit()->doing_rest) {
+                        	require_once(PRESSPERMIT_CLASSPATH . '/MediaEdit.php');
 
-                        $args = array_merge($args, compact('post', 'post_status', 'post_type', 'post_author_id'));
-                        $caps = MediaEdit::mapMetaCap($caps, $cap, $user_id, $args);
+                        	$args = array_merge($args, compact('post', 'post_status', 'post_type', 'post_author_id'));
+                        	$caps = MediaEdit::mapMetaCap($caps, $cap, $user_id, $args);
+                        }
                 }
             }
         }

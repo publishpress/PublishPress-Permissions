@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.4
 Requires PHP: 5.6.20
-Stable tag: 3.1.4
+Stable tag: 3.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,13 +123,23 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.1.7 =
+= 3.1.8 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
+= 3.2 - 29 May 2020 =
+* Fixed : Contributors could not set Featured Image in post editor
+* Fixed : Permission Groups search returned only WP role group results, not any custom groups
+* Fixed : custom get_terms() call with fields=slugs caused a PHP Notice on front end 
+* Compat : Elementor - Non-administrator could not edit draft with Elementor editor
+
+= 3.1.8 - 14 May 2020 =
+* Compat : PublishPress Permissions - Fatal error on post creation
+
 = 3.1.7 - 13 May 2020 =
 * Compat : PublishPress Revisions - Authors were enabled to edit other users' drafts
+* Compat : PublishPress Revisions - Term-Specific Permissions for Revise operation were not correctly applied
 * Fixed : Edit Permission Group screen - invalid Edit link displayed for currently stored Nav Menu Permissions
 * Fixed : Classic Editor - Fatal error due to incorrect parameter count on preview_post_link filter
 

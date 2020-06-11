@@ -49,7 +49,7 @@ class TermQuery
         }
 
         if (!$required_operation) {
-            $required_operation = (PWP::isFront() && !is_preview()) ? 'read' : 'edit';
+            $required_operation = (PWP::isFront() && !presspermit_is_preview()) ? 'read' : 'edit';
         }
 
         $results = $wpdb->get_results(

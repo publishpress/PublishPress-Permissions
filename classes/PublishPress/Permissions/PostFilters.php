@@ -309,7 +309,7 @@ class PostFilters
                             $required_operation = 'read';
                         }
                     } else {
-                        $required_operation = (PWP::isFront() && !is_preview()) ? 'read' : 'edit';
+                        $required_operation = (PWP::isFront() && !presspermit_is_preview()) ? 'read' : 'edit';
                     }
                 }
             }
@@ -339,7 +339,7 @@ class PostFilters
         if (
             defined('PP_UNFILTERED_FRONT') && (
                 ('read' == $required_operation)
-                || (!$required_operation && PWP::isFront() && !is_preview()))
+                || (!$required_operation && PWP::isFront() && !presspermit_is_preview()))
         ) {
             if (defined('PP_UNFILTERED_FRONT_TYPES')) {
                 $unfiltered_types = str_replace(' ', '', PP_UNFILTERED_FRONT_TYPES);
@@ -420,7 +420,7 @@ class PostFilters
 
         if (is_array($alternate_required_ops)) {
             if (!$required_operation) {
-                $required_operation = ((PWP::isFront() || (defined('REST_REQUEST') && REST_REQUEST)) && !is_preview())
+                $required_operation = ((PWP::isFront() || (defined('REST_REQUEST') && REST_REQUEST)) && !presspermit_is_preview())
                     ? 'read' : 'edit';
             }
 
@@ -514,7 +514,7 @@ class PostFilters
                     $required_operation = 'read';
                 }
             } else {
-                $required_operation = (PWP::isFront() && !is_preview()) ? 'read' : 'edit';
+                $required_operation = (PWP::isFront() && !presspermit_is_preview()) ? 'read' : 'edit';
             }
             
             $args['required_operation'] = $required_operation;

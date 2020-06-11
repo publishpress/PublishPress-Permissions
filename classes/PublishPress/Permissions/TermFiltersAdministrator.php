@@ -16,7 +16,7 @@ class TermFiltersAdministrator
                 require_once(PRESSPERMIT_CLASSPATH . '/TermQuery.php');
 
                 // pp_tallyTermCounts() is PP equivalent to WP _pad_term_counts()
-                $args['required_operation'] = (PWP::isFront() && !is_preview()) ? 'read' : 'edit';
+                $args['required_operation'] = (PWP::isFront() && !presspermit_is_preview()) ? 'read' : 'edit';
                 $taxonomies = (array)$taxonomies;  // avoid PHP warning if taxonomies argument is corrupted upstream
                 TermQuery::tallyTermCounts($terms, reset($taxonomies), $args);
             }
