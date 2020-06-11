@@ -47,7 +47,7 @@ class PermissionsUser extends \WP_User
             $this->getSiteRoles();
         }
 
-        //add_filter('map_meta_cap', [$this, 'reinstateCaps'], 99, 3);
+        add_filter('map_meta_cap', [$this, 'reinstateCaps'], 99, 3);
 
         //pp_log_mem_usage( 'new User done' );
     }
