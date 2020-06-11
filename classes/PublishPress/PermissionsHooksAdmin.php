@@ -31,18 +31,13 @@ class PermissionsHooksAdmin
             add_action('wp_ajax_pp_dismiss_msg', [$this, 'dashboardDismissMsg']);
         }
 
-        if (presspermit()->isPro()) {
-            require_once(PRESSPERMIT_ABSPATH . '/includes-pro/admin-load.php');
-            new Permissions\AdminLoadPro();
-        }
-
         add_action('presspermit_admin_ui', [$this, 'act_revisions_dependency']);
     }
 
     public function init()
     {
         if (presspermit()->isPro()) {
-            require_once(PRESSPERMIT_ABSPATH . '/includes-pro/pro-maint.php');
+            require_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/pro-maint.php');
             Permissions\PressPermitMaint::adminRedirectCheck();
         }
 

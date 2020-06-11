@@ -253,11 +253,15 @@ class Permissions
 
         // @todo: dir()
 
-        foreach($this->getAvailableModules() as $module) {
+        $available_modules = $this->getAvailableModules();
+
+        foreach($available_modules as $module) {
             if (empty($inactive_modules[$module]) && file_exists("$dir/$module/$module.php")) {
                 include_once("$dir/$module/$module.php");
             }
         }
+
+        do_action('presspermit_load_modules', compact('available_modules', 'inactive_modules'));
     }
 
     public function getAvailableModules($args = [])

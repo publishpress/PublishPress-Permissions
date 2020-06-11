@@ -39,6 +39,12 @@ if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 $pro_active = false;
 
+global $presspermit_loaded_by_pro;
+
+$presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'vendor/publishpress/');
+
+// Detect separate Pro plugin activation, but not self-activation (this file loaded in vendor library by Pro)
+if (false === $presspermit_loaded_by_pro) {
 foreach ((array)get_option('active_plugins') as $plugin_file) {
     if (false !== strpos($plugin_file, 'presspermit-pro.php')) {
         $pro_active = true;
@@ -54,12 +60,17 @@ if (!$pro_active && is_multisite()) {
         }
     }
 }
+}
 
-if (!defined('PRESSPERMIT_FILE') && !$pro_active) {
+if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro) {
     define('PRESSPERMIT_FILE', __FILE__);
     define('PRESSPERMIT_ABSPATH', __DIR__);
     define('PRESSPERMIT_CLASSPATH', __DIR__ . '/classes/PublishPress/Permissions');
+
+    if (!defined('PRESSPERMIT_CLASSPATH_COMMON')) {
     define('PRESSPERMIT_CLASSPATH_COMMON', __DIR__ . '/classes/PressShack');
+    }
+
     define('PRESSPERMIT_DB_VERSION', '2.0.1');
 
     if (!defined('PRESSPERMIT_DEBUG')) {
@@ -68,12 +79,8 @@ if (!defined('PRESSPERMIT_FILE') && !$pro_active) {
 
     include_once(constant('PRESSPERMIT_DEBUG') ? __DIR__ . '/library/debug.php' : __DIR__ . '/library/debug_shell.php');
 
-    // negative priority to precede any default WP action handlers
-    add_action(
-        'plugins_loaded', 
-        function()
-        {
-            global $wp_version;
+    function presspermit_load() {
+	    global $wp_version, $presspermit_loaded_by_pro;
 
             $min_wp_version = '4.9.7';
             $min_php_version = '5.6.20';
@@ -93,6 +100,7 @@ if (!defined('PRESSPERMIT_FILE') && !$pro_active) {
 
             define('PRESSPERMIT_VERSION', '3.1.7');
 
+	    if (!$presspermit_loaded_by_pro) {
             require_once(__DIR__ . '/includes/Core.php');
             new \PublishPress\Permissions\Core();
 
@@ -100,6 +108,7 @@ if (!defined('PRESSPERMIT_FILE') && !$pro_active) {
                 require_once(__DIR__ . '/includes/CoreAdmin.php');
                 new \PublishPress\Permissions\CoreAdmin();
             }
+	    }
 
             if (!defined('PRESSPERMIT_LEGACY_HOOKS')) {
                 define('PRESSPERMIT_LEGACY_HOOKS', false);
@@ -133,8 +142,13 @@ if (!defined('PRESSPERMIT_FILE') && !$pro_active) {
 
             presspermit();
         }
-        , -10
-    );
+
+	// negative priority to precede any default WP action handlers
+    if ($presspermit_loaded_by_pro) {
+    	presspermit_load();	// Pro support
+	} else {
+    	add_action('plugins_loaded', 'presspermit_load', -10);
+	}
     
     register_activation_hook(
         __FILE__, 
@@ -151,7 +165,7 @@ if (!defined('PRESSPERMIT_FILE') && !$pro_active) {
             return new \PublishPress\Permissions\ErrorNotice($err_slug, $args);
         }
     }
-} elseif (defined('PRESSPERMIT_FILE')) {
+} elseif (defined('PRESSPERMIT_FILE') && !defined('PRESSPERMIT_PRO_FILE')) {
     if (is_admin()) {
         global $pagenow;
         if (('plugins.php' == $pagenow) && !strpos(urldecode($_SERVER['REQUEST_URI']), 'deactivate')) {
