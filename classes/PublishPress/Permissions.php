@@ -977,7 +977,7 @@ class Permissions
     public function load_updater()
     {
 		if ($this->isPro()) {
-        	require_once(PRESSPERMIT_ABSPATH . '/includes-pro/library/Factory.php');
+        	require_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/library/Factory.php');
         	$container = \PublishPress\Permissions\Factory::get_container();
 			return $container['edd_container']['update_manager'];
 		}
@@ -986,7 +986,7 @@ class Permissions
     public function keyStatus($refresh = false)
     {
         if ($this->isPro()) {
-            require_once(PRESSPERMIT_ABSPATH . '/includes-pro/pro-key.php');
+            require_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/pro-key.php');
             return _presspermit_key_status($refresh);
         } else {
             require_once(PRESSPERMIT_ABSPATH . '/includes/key.php');
