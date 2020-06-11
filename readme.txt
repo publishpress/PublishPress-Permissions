@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.4
 Requires PHP: 5.6.20
-Stable tag: 3.2
+Stable tag: 3.2.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,10 +123,14 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.1.8 =
+= 3.2.1 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
+
+= 3.2.1 - 1 Jun 2020 =
+* Fixed : Supplemental roles were not effective on some sites
+* Fixed : Menu management limitations were not applied
 
 = 3.2 - 29 May 2020 =
 * Fixed : Contributors could not set Featured Image in post editor

@@ -25,6 +25,8 @@ class NavMenu
 
         add_action('admin_head', [$this, 'act_disable_uneditable_items_ui']);
 
+        add_filter('get_user_option_nav_menu_recently_edited', [$this, 'fltNavMenuRecent']);
+
         if (!empty($_POST)) {
             add_action('pre_post_update', [$this, 'act_police_menu_item_edit']);
             add_action('presspermit_delete_object', [$this, 'act_police_menu_item_deletion'], 10, 3);
@@ -32,6 +34,40 @@ class NavMenu
         }
 
         add_action('admin_head', [$this, 'act_nav_menu_ui']);
+    }
+
+    public function fltNavMenuRecent($opt)
+    {
+        if ($tx_obj = get_taxonomy('nav_menu')) {
+            $menu_tt_id = PWP::termidToTtid((int)$opt, 'nav_menu');
+
+            $user = presspermit()->getUser();
+
+            $exclude_tt_ids = $user->getExceptionTerms('manage', 'exclude', 'nav_menu', 'nav_menu');
+
+            $include_tt_ids = $user->getExceptionTerms('manage', 'include', 'nav_menu', 'nav_menu');
+
+            if (!current_user_can($tx_obj->cap->manage_terms, $menu_tt_id)
+            || in_array($menu_tt_id, $exclude_tt_ids) 
+            || ($include_tt_ids && !in_array($menu_tt_id, $include_tt_ids))
+            ) {
+                $user = presspermit()->getUser();
+
+                // note: item_type is taxonomy here
+                if ($tt_ids = $user->getExceptionTerms('manage', 'additional', 'nav_menu', 'nav_menu')) {
+                    if (!in_array($menu_tt_id, $tt_ids)) {
+                        $tx_by_ref_arg = '';
+                        $opt = PWP::ttidToTermid(reset($tt_ids), $tx_by_ref_arg);
+                        update_user_option($user->ID, 'nav_menu_recently_edited', $opt);
+                    }
+                } else {
+                    delete_user_option($user->ID, 'nav_menu_recently_edited');
+                    $opt = 0;
+                }
+            }
+        }
+
+        return $opt;
     }
 
     function posts_where_limit_statuses($limit_statuses, $post_types)
