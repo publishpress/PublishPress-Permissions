@@ -292,7 +292,7 @@ class Admin
                 $revision_uris [] = 'index.php';
             //}
 
-            if (is_preview() || in_array($pagenow, $revision_uris, true) || in_array(presspermitPluginPage(), $revision_uris, true) || in_array($plugin_page, $revision_uris, true)) {
+            if (presspermit_is_preview() || in_array($pagenow, $revision_uris, true) || in_array(presspermitPluginPage(), $revision_uris, true) || in_array($plugin_page, $revision_uris, true)) {
                 $strip_capreqs = [];
 
                 foreach ((array)$object_type as $_object_type) {

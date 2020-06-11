@@ -16,3 +16,13 @@ function presspermitPluginPage()
 
     return $pp_plugin_page;
 }
+
+function presspermit_is_preview() {
+    if (!$is_preview = is_preview()) {
+        if (defined('ELEMENTOR_VERSION')) {
+           $is_preview = !empty($_REQUEST['elementor-preview']);
+        }
+    }
+
+    return apply_filters('presspermit_is_preview', $is_preview);
+}
