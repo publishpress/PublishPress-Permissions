@@ -754,7 +754,9 @@ class Permissions
             $object_type = '';
         }
 
-        $args['public'] = true;
+        if (!defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) {
+        	$args['public'] = true;
+        }
 
         if (false === $object_type) {
             $taxonomies = get_taxonomies($args);
