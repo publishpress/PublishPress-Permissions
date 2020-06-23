@@ -628,13 +628,30 @@ class PostFilters
                     }
 
                     if ($reqd_caps) {  // note: this function is called only for listing query filters (not for user_has_cap filter)
-                        if (apply_filters(
+                        if ($missing_caps = apply_filters(
                             'presspermit_query_missing_caps',
                             array_diff($reqd_caps, array_keys($user->allcaps)),
                             $reqd_caps,
                             $post_type,
                             $meta_cap
                         )) {
+                            // Support list_posts, list_others_posts, list_pitch_pages etc. for listing uneditable posts on Posts screen
+                            if (('edit' == $required_operation) && empty($args['has_cap_check']) && empty(presspermit()->flags['cap_filter_in_process'])) {
+                                foreach($reqd_caps as $key => $cap) {
+                                    if (in_array($cap, $missing_caps)) {
+                                        $list_cap = str_replace('edit_', 'list_', $cap);
+
+                                        if (!empty($user->allcaps[$list_cap])) {
+                                            $reqd_caps[$key] = $list_cap;
+                                        }
+                                    }
+                                }
+
+                                if (!array_diff($reqd_caps, array_keys($user->allcaps))) {
+                                    $have_site_caps['user'][] = $status;
+                                }
+                            }
+
                             // remove "others" and "private" cap requirements for post author
                             $owner_reqd_caps = self::getBaseCaps($reqd_caps, $post_type);
 
