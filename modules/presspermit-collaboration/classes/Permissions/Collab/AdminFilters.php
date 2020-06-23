@@ -42,7 +42,7 @@ class AdminFilters
         add_filter('presspermit_add_exception', [$this, 'fltAddException']);
 
         // Track autodrafts by postmeta in case WP sets their post_status to draft
-        add_action('save_post', [$this, 'actSavePost'], 10, 2);
+        add_action('save_post', [$this, 'actSavePost'], 10, 3);
         add_filter('wp_insert_post_empty_content', [$this, 'fltLogInsertPost'], 10, 2);
 
         add_filter('save_post', [$this, 'fltUnloadCurrentUserExceptions']);
@@ -51,14 +51,29 @@ class AdminFilters
         add_filter('editable_roles', [$this, 'fltEditableRoles'], 99);
     }
 
-    function actSavePost($post_id, $post)
+    function actSavePost($post_id, $post, $update)
     {
         if (!empty(presspermit()->flags['ignore_save_post'])) {
             return;
         }
 
-        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             update_post_meta($post_id, '_pp_is_autodraft', true);
+
+        } elseif (!$update) {
+            // For configurations that limit access by term selection, need to default to an allowed term
+            if (!presspermit()->isAdministrator()) {
+                require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
+        
+                foreach(get_object_taxonomies($post->post_type) as $taxonomy) {
+                    if (!$terms = wp_get_object_terms($post->ID, $taxonomy, ['fields' => 'ids'])) {
+                        if ($terms = PostTermsSave::fltPreObjectTerms($terms, $taxonomy)) {
+                            wp_set_post_terms($post->ID, $terms, $taxonomy);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     function fltUnloadCurrentUserExceptions($item_id)
