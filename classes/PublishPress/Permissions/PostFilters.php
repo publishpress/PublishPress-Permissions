@@ -511,7 +511,7 @@ class PostFilters
                 if (isset($_REQUEST['context']) && ('edit' == $_REQUEST['context'])) {
                     $required_operation = (!empty($_REQUEST['parent_exclude'])) ? 'associate' : 'edit'; // @todo: better criteria
                 } else {
-                    $required_operation = 'read';
+                    $required_operation = (presspermit_is_preview()) ? 'edit' : 'read';
                 }
             } else {
                 $required_operation = (PWP::isFront() && !presspermit_is_preview()) ? 'read' : 'edit';
