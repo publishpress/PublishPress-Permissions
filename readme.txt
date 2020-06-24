@@ -128,9 +128,10 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.2.2-rc =
+= 3.2.2-rc2 =
 * Fixed : New post creation locked author out of further editing if editing permission restricted by term and necessary term was not selected (now auto-select allowed term if none selected)
 * Feature : Support capabilities list_posts, list_others_posts, list_pitch_pages, etc. for inclusion in Posts / Pages listing without ability to edit
+* Fixed : Permissions > Settings > Install displayed instructions for restoring a Press Permit Pro 2.6.x installation, even if none was installed (since 3.0) 
 * Compat : Divi - non-Administrators could not edit new page on front end
 
 = 3.2.1 - 1 Jun 2020 =
