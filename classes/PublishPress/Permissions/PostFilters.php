@@ -153,8 +153,12 @@ class PostFilters
         }
 
         if (
+            // This solution is deprecated in favor of capability support for list_posts, list_others_pages, etc.  
+            // But with removal of settings checkbox, need to maintain support for sites that rely on this previous workaround, which was enabled by constant PP_ADMIN_READONLY_LISTABLE
+            //  (1) Sites that have the admin_hide_uneditable_posts option stored with false value
+            //  (2) Sites that inadvertantly set options to defaults but want to restore this workaround. Now supporting an additional constant definition (disclosed by support as needed) rather than the checkbox UI.
             is_admin() && (!$pp->moduleActive('collaboration') || defined('PP_ADMIN_READONLY_LISTABLE'))
-            && !$pp->getOption('admin_hide_uneditable_posts')
+            && (!$pp->getOption('admin_hide_uneditable_posts') || defined('PP_ADMIN_NO_FILTER'))
         ) {
             return $clauses;
         }
