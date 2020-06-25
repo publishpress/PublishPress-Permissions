@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.4
 Requires PHP: 5.6.20
-Stable tag: 3.2.1
+Stable tag: 3.2.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,12 +123,12 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.2.1 =
+= 3.2.2 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
-= 3.2.2-rc2 =
+= 3.2.2 - 29 Jun 2020 =
 * Fixed : New post creation locked author out of further editing if editing permission restricted by term and necessary term was not selected (now auto-select allowed term if none selected)
 * Feature : Support capabilities list_posts, list_others_posts, list_pitch_pages, etc. for inclusion in Posts / Pages listing without ability to edit
 * Fixed : Permissions > Settings > Install displayed instructions for restoring a Press Permit Pro 2.6.x installation, even if none was installed (since 3.0) 
