@@ -148,7 +148,7 @@ class Admin
 						}
 						
 						if ( $revise_ids ) {
-                            $status_csv = "'" . implode("','", get_post_stati(['public' => true, 'private' => true]), 'names', 'or') . "'";
+                            $status_csv = "'" . implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'or')) . "'";
 
                             $parent_clause []= "( {$args['src_table']}.post_author = $user->ID" 
                             . " AND {$args['src_table']}.comment_count IN ('" . implode("','", $revise_ids) . "') AND {$args['src_table']}.post_status IN ($status_csv) )";
