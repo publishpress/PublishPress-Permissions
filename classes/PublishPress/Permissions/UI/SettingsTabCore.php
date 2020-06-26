@@ -303,7 +303,7 @@ class SettingsTabCore
                     if (defined('PP_ADMIN_READONLY_LISTABLE') && (!$pp->getOption('admin_hide_uneditable_posts') || defined('PP_ADMIN_POSTS_NO_FILTER'))) {
                         $hint = __('Unmodified from WordPress default behavior. To enable filtering, remove constant definition PP_ADMIN_READONLY_LISTABLE.', 'press-permit-core');
                     } else {
-                        $hint = (!$pp->moduleActive('collaboration'))
+                        $hint = ($pp->moduleActive('collaboration'))
                             ? __('Uneditable posts are hidden from wp-admin listings. To expose them, use a role editor to add desired capabilities: list_posts, list_other_pages etc.', 'press-permit-core')
                             : __('To customize editing permissions, enable the Collaborative Publishing module.', 'press-permit-core');
                     }
