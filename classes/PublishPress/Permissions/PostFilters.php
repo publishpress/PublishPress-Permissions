@@ -386,7 +386,7 @@ class PostFilters
                         $valid_stati['future'] = 'future';
                     }
                 } else {
-                    $valid_stati = PWP::getPostStatuses(['internal' => false, 'post_type' => $post_types], 'names');
+                    $valid_stati = PWP::getPostStatuses(['internal' => false, 'post_type' => $post_types], 'names', '', ['context' => 'edit']);
                 }
 
                 if (in_array('attachment', $post_types, true)) {
@@ -551,7 +551,7 @@ class PostFilters
                 $use_statuses = array_merge($use_statuses, $limit_statuses);
             }
         } else {
-            $use_statuses = PWP::getPostStatuses(['internal' => false, 'post_type' => $post_types], 'object');
+            $use_statuses = PWP::getPostStatuses(['internal' => false, 'post_type' => $post_types], '', 'object', ['context' => 'edit']);
         }
 
         $use_statuses = apply_filters('presspermit_query_post_statuses', $use_statuses, $args );
