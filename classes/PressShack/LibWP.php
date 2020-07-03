@@ -157,7 +157,7 @@ class LibWP
     }
 
     // support array matching for post type
-    public static function getPostStatuses($args, $return = 'names', $operator = 'and')
+    public static function getPostStatuses($args, $return = 'names', $operator = 'and', $params = [])
     {
         if (isset($args['post_type'])) {
             $post_type = $args['post_type'];
@@ -174,7 +174,7 @@ class LibWP
             $statuses = get_post_stati($args, $return, $operator);
         }
 
-        return apply_filters('presspermit_get_post_statuses', $statuses, $args, $return, $operator);
+        return apply_filters('presspermit_get_post_statuses', $statuses, $args, $return, $operator, $params);
     }
 
     public static function findPostType($post_id = 0, $return_default = true)
