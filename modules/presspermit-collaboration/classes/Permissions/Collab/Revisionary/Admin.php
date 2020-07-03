@@ -15,6 +15,8 @@ class Admin
 
         add_filter('presspermit_get_exception_items', [$this, 'flt_get_exception_items'], 10, 5);
 
+        add_filter('presspermit_term_restrictions_clause', [$this, 'fltTermRestrictionsClause'], 10, 2);
+
         add_filter('presspermit_additions_clause', [$this, 'flt_additions_clause'], 10, 4);
 
         add_filter('presspermit_administrator_caps', [$this, 'flt_pp_administrator_caps'], 5);
@@ -229,6 +231,11 @@ class Admin
                 $$var = $args[$var];
             }
 
+            if ('term' == $via_item_source) {
+                // Don't implement term exceptions by merging with edit_post exceptions, due to complication of applying revision exceptions for published posts only
+                return $exception_items;
+            }
+
             $user = presspermit()->getUser();
 
             if (!isset($user->except['revise_post'])) {
@@ -260,6 +267,82 @@ class Admin
         }
 
         return $exception_items;
+    }
+
+    // Apply term revision restrictions separately with status clause to avoid removing unpublished posts from the listing 
+    function fltTermRestrictionsClause($where, $args) {
+        global $wpdb;
+
+        $defaults = array_fill_keys(
+            ['required_operation',
+            'post_type', 
+            'src_table', 
+            'merge_additions', 
+            'exempt_post_types', 
+            'mod_types', 
+            'tx_args',
+            'additional_ttids', 
+            'apply_object_additions', 
+            'term_additions_clause', 
+            'post_additions_clause', 
+            'type_exemption_clause'
+            ], ''
+        );
+
+        $args = array_merge($defaults, $args);
+        foreach (array_keys($defaults) as $var) {
+            $$var = $args[$var];
+        }
+
+        $user = presspermit()->getUser();
+
+        $excluded_ttids_published = [];
+
+        foreach (presspermit()->getEnabledTaxonomies($tx_args) as $taxonomy) {
+            $tx_additional_ids = ($merge_additions)
+                ? $user->getExceptionTerms($required_operation, 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
+                : [];
+
+            foreach ($mod_types as $mod) {
+                if ($tt_ids = $user->getExceptionTerms('revise', $mod, $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])) {    
+                    $tx_additional_ids = ($merge_additions)
+                    ? $user->getExceptionTerms('revise', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
+                    : [];
+                    
+                    $published_stati_csv = implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'OR' ));
+
+                    if ('include' == $mod) {
+                        if ($tx_additional_ids) {
+                            $tt_ids = array_merge($tt_ids, $tx_additional_ids);
+                        }
+
+                        $term_include_clause = apply_filters(
+                            'presspermit_term_include_clause',
+                            "( $src_table.post_status NOT IN ('$published_stati_csv') OR $src_table.ID IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $tt_ids) . "') ) )",
+                            compact('tt_ids', 'src_table')
+                        );
+                
+                        $where .= " AND ( $term_include_clause $term_additions_clause $post_additions_clause $type_exemption_clause )";
+                        continue 2;
+
+                    } else {
+                        if ($tx_additional_ids) {
+                            $tt_ids = array_diff($tt_ids, $tx_additional_ids);
+                        }
+
+                        $excluded_ttids_published = array_merge($excluded_ttids_published, $tt_ids);
+                    }
+                }
+            }
+        }
+
+        if ($excluded_ttids_published) {
+            $where .= " AND ( ($src_table.post_status NOT IN ('$published_stati_csv') OR $src_table.ID NOT IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('"
+                . implode("','", $excluded_ttids_published)
+                . "') ) $type_exemption_clause ) $term_additions_clause $post_additions_clause )";
+        }
+
+        return $where;
     }
 
     public static function adjust_revision_reqd_caps($reqd_caps, $object_type)

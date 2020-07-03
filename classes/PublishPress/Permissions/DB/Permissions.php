@@ -395,10 +395,7 @@ class Permissions
 
             if ('edit' == $required_operation) {
                 if (!empty($user->except['revise_post']['term'][$taxonomy]['additional'][$post_type][''])) {
-                    if (!empty($tt_ids[''])) {
                         $revise_ttids['{published}'] = array_merge($revise_ttids['{published}'], $user->except['revise_post']['term'][$taxonomy]['additional'][$post_type]['']);
-                        $tt_ids[''] = array_diff($tt_ids[''], $revise_ttids['{published}']);
-                    }
                 }
             }
 
@@ -626,7 +623,22 @@ class Permissions
                 . "') ) $type_exemption_clause ) $term_additions_clause $post_additions_clause )";
         }
 
-        return $where;
+        $args = compact(
+            'required_operation', 
+            'post_type', 
+            'src_table', 
+            'merge_additions', 
+            'exempt_post_types', 
+            'mod_types', 
+            'tx_args',
+            'additional_ttids', 
+            'apply_object_additions', 
+            'term_additions_clause', 
+            'post_additions_clause', 
+            'type_exemption_clause'
+        );
+       
+        return apply_filters('presspermit_term_restrictions_clause', $where, $args);
     }
 
     // returns propagated exceptions items for which (a) the base eitem no longer exists, or (b) the base eitem was changed to "item only"
