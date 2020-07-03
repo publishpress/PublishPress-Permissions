@@ -94,80 +94,75 @@ class Admin
         && !in_array($post_type, apply_filters('presspermit_unrevisable_types', []), true)) {
             $user = presspermit()->getUser();
 
-			if ( isset($args['ids']) ) { // PressPermit Core >= 2.6.2  @todo: eliminate else case?
+            if ('post' == $args['via_item_source']) {
                 $hide_others_revisions = rvy_get_option('revisor_lock_others_revisions') 
                 && (
-                    (!empty($type_obj->cap->edit_others_posts) && empty($type_obj->cap->edit_others_posts))
+                    (!empty($type_obj->cap->edit_posts) && empty($type_obj->cap->edit_others_posts))
                     || (!empty($type_obj->cap->edit_others_posts) && empty($user->allcaps[$type_obj->cap->edit_others_posts]))
                 );
 
-				// If we are hiding other revisions from revisors, need to distinguish 
-				// between 'edit' exceptions and 'revise' exceptions (which are merged upstream for other reasons).
-				if ($hide_others_revisions && empty($user->allcaps['edit_others_revisions'])) {
+                // If we are hiding other revisions from revisors, need to distinguish 
+                // between 'edit' exceptions and 'revise' exceptions (which are merged upstream for other reasons).
+                if ($hide_others_revisions && empty($user->allcaps['edit_others_revisions'])) {
                     $revise_ids = [];
-                    
-                    switch ($args['via_item_source']) {
-						case 'post':
-							$via_item_type = (isset($args['via_item_type'])) ? $args['via_item_type'] : $post_type;
-							$revise_ids = $user->getExceptionPosts( 
-                                'revise', 
-                                'additional', 
-                                $via_item_type, 
-                                ['status' => $args['status']]
-                            );
-                            
-							break;
-						
-						case 'term':
-                            // @todo
 
-                            /*
-							foreach(presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
-								$tt_ids = $user->getExceptionTerms( 
-                                    'revise', 
-                                    'additional', 
-                                    $post_type, 
-                                    $taxonomy, 
-                                    ['status' => $args['status'], 'merge_universals' => true]
-                                );
-                                
-                                $revise_ids = array_merge($revise_ids, $tt_ids);
-							}
-*/
-							
-							break;
-					}
+                    $via_item_type = (isset($args['via_item_type'])) ? $args['via_item_type'] : $post_type;
+                    $revise_ids = $user->getExceptionPosts( 
+                        'revise', 
+                        'additional', 
+                        $via_item_type, 
+                        ['status' => $args['status']]
+                    );
+
+                    $edit_ids = ($revise_ids) ? array_diff($args['ids'], $revise_ids) : $args['ids'];
                     
-					$edit_ids = ($revise_ids) ? array_diff($args['ids'], $revise_ids) : $args['ids'];
-                    
-					if ( $edit_ids || $revise_ids ) {
-						$parent_clause = array();
-						
-						if ( $edit_ids ) {
-							$parent_clause []= "( {$args['src_table']}.comment_count IN ('" . implode("','", $edit_ids) . "') )";
-						}
-						
-						if ( $revise_ids ) {
-                            $status_csv = "'" . implode("','", get_post_stati(['public' => true, 'private' => true]), 'names', 'or') . "'";
+                    if ( $edit_ids || $revise_ids ) {
+                        $parent_clause = [];
+                        
+                        if ( $edit_ids ) {
+                            $parent_clause []= "( {$args['src_table']}.comment_count IN ('" . implode("','", $edit_ids) . "') )";
+                        }
+                        
+                        if ( $revise_ids ) {
+                            $status_csv = "'" . implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'or')) . "'";
 
                             $parent_clause []= "( {$args['src_table']}.post_author = $user->ID" 
                             . " AND {$args['src_table']}.comment_count IN ('" . implode("','", $revise_ids) . "') AND {$args['src_table']}.post_status IN ($status_csv) )";
-						}
-						
-						$parent_clause = 'AND (' . Arr::implode(' OR ', $parent_clause) . ' )';
-						
+                        }
+                        
+                        $parent_clause = 'AND (' . Arr::implode(' OR ', $parent_clause) . ' )';
+                        
                         $append_clause .= " OR ( {$args['src_table']}.post_status IN ('pending-revision', 'future-revision') $parent_clause )";
-					}
-				} else {
-					// Not hiding other users' revisions from Revisors, so list all posts with 'edit' or 'revise' exceptions regardless of author.
+                    }
+                } else {
+                    // Not hiding other users' revisions from Revisors, so list all posts with 'edit' or 'revise' exceptions regardless of author.
                     $append_clause .= " OR ( {$args['src_table']}.post_status IN ('pending-revision', 'future-revision')"
                     . " AND {$args['src_table']}.comment_count {$args['in_clause']} )";
-				}
-			} else {
-				// Older PP Core version doesn't pass ids, so can't distinguish between 'edit' and 'revise' exceptions; retain previous behavior.
-                $append_clause .= " OR ( {$args['src_table']}.post_status IN ('pending-revision', 'future-revision')"
-                . " AND {$args['src_table']}.post_author = " . presspermit()->getUser()->ID 
-                . " AND {$args['src_table']}.comment_count {$args['in_clause']} )";
+                }
+            } elseif ('term' == $args['via_item_source']) {
+                $revise_tt_ids = [];
+
+                foreach(presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
+                    $tt_ids = $user->getExceptionTerms( 
+                        'revise', 
+                        'additional', 
+                        $post_type, 
+                        $taxonomy, 
+                        ['status' => $args['status'], 'merge_universals' => true]
+                    );
+                    
+                    $revise_tt_ids = array_merge($revise_tt_ids, $tt_ids);
+                }
+
+                if ($revise_tt_ids) {
+                    global $wpdb;
+
+                    $status_csv = "'" . implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'or')) . "'";
+
+                    $parent_tt_clause = "( {$args['src_table']}.comment_count IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $revise_tt_ids) . "') ) )";
+                
+                    $append_clause .= " OR ( {$args['src_table']}.post_status IN ('pending-revision', 'future-revision') AND $parent_tt_clause )";
+                }
 			}
 		}
 
