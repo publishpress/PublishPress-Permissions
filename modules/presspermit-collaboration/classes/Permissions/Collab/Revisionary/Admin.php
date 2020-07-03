@@ -12,7 +12,7 @@ class Admin
         }
 
         add_filter('map_meta_cap', [$this, 'flt_mapMetaCap'], 1, 4);
-        //add_filter('pre_post_parent', [$this, 'fltPageParent']);
+
         add_filter('presspermit_get_exception_items', [$this, 'flt_get_exception_items'], 10, 5);
 
         add_filter('presspermit_additions_clause', [$this, 'flt_additions_clause'], 10, 4);
@@ -71,18 +71,6 @@ class Admin
         
         return $clause;
     }
-
-    /*
-    public function fltPageParent($parent_id)
-    {
-        global $revisionary;
-        if (!empty($revisionary->admin->revision_save_in_progress)) {
-            do_action('presspermit_disable_page_parent_filter');
-        }
-
-        return $parent_id;
-    }
-    */
 
     public function flt_additions_clause($clause, $operation, $post_type, $args)
     {
