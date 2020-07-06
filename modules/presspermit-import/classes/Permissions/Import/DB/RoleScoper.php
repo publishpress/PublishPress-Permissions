@@ -185,9 +185,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
         $blog_id = get_current_blog_id();
 
         /*--------- group config and mapping setup ---------*/
-        $rs_groups_table = (MULTISITE && get_site_option('scoper_mu_sitewide_groups')) ? $wpdb->base_prefix . 'groups_rs' : $wpdb->groups_rs;
-        $pp_groups_table = (MULTISITE && get_site_option('presspermit_netwide_groups')) ? $wpdb->base_prefix . 'pp_groups' : $wpdb->pp_groups;
-        $group_agent_type = (MULTISITE && get_site_option('presspermit_netwide_groups')) ? 'pp_net_group' : 'pp_group';
+        $rs_groups_table = (is_multisite() && get_site_option('scoper_mu_sitewide_groups')) ? $wpdb->base_prefix . 'groups_rs' : $wpdb->groups_rs;
+        $pp_groups_table = (is_multisite() && get_site_option('presspermit_netwide_groups')) ? $wpdb->base_prefix . 'pp_groups' : $wpdb->pp_groups;
+        $group_agent_type = (is_multisite() && get_site_option('presspermit_netwide_groups')) ? 'pp_net_group' : 'pp_group';
 
         $imported_pp_groups = $wpdb->get_results($wpdb->prepare("SELECT source_id, import_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d AND import_tbl = %d", $this->getTableCode($rs_groups_table), $this->getTableCode($pp_groups_table)), OBJECT_K);
         $role_metagroups_rs = $wpdb->get_results("SELECT ID, group_meta_id FROM $rs_groups_table WHERE group_meta_id LIKE 'wp_role_%' OR group_meta_id = 'wp_anon'", OBJECT_K);
