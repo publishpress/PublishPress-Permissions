@@ -153,7 +153,7 @@ class Importer
             $blog_ids = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs ORDER BY blog_id");
             $orig_blog_id = get_current_blog_id();
         } else {
-            $blog_ids = ['1'];
+            $blog_ids = [get_main_site_id()];
         }
         
         foreach ($blog_ids as $id) {
