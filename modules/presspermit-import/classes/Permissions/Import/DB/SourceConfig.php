@@ -78,10 +78,10 @@ class SourceConfig
     }
 
     function hasUnimported($install_code) {
-        global $wpdb, $blog_id;
+        global $wpdb;
 
         if (!$this->hasInstallation($install_code)) {
-            if (!MULTISITE || (1 != $blog_id)) {
+            if (!is_multisite() || !is_main_site()) {
                 return false;
             }
         }
@@ -89,14 +89,15 @@ class SourceConfig
         switch ($install_code) {
             case 'rs' :
                 if (!$this->hasTable($wpdb->role_scope_rs)) {
-                    if (!MULTISITE || !is_main_site())
+                    if (!is_multisite() || !is_main_site()) {
                         return false;
+                }
                 }
 
                 require_once(PRESSPERMIT_IMPORT_CLASSPATH . '/DB/RoleScoper.php');
                 $importer = RoleScoper::instance();
 
-                if (MULTISITE) {
+                if (is_multisite()) {
                     if (is_main_site()) {
                         return true;
 					}
@@ -128,7 +129,7 @@ class SourceConfig
                 if (!$wpdb->get_results("SHOW TABLES LIKE '$wpdb->pp_roles'"))
                     return false;
 
-                if (MULTISITE && is_main_site()) {
+                if (is_multisite() && is_main_site()) {
                     return true;
                 }
 

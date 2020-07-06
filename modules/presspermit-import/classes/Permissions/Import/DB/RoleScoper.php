@@ -41,7 +41,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
             $this->tt_ids_by_taxonomy[$row->taxonomy][$row->term_id] = $row->term_taxonomy_id;
         }
 
-        if (MULTISITE && (1 === intval($blog_id))) {
+        if (is_multisite() && is_main_site()) {
             $blog_ids = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs ORDER BY blog_id");
             $orig_blog_id = $blog_id;
             $this->sites_examined = 0;
@@ -559,9 +559,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
         $log_eitem_ids = [];
 
         /*--------- group config and mapping setup ---------*/
-        $rs_groups_table = (MULTISITE && get_site_option('scoper_mu_sitewide_groups')) ? $wpdb->base_prefix . 'groups_rs' : $wpdb->groups_rs;
-        $pp_groups_table = (MULTISITE && get_site_option('presspermit_netwide_groups')) ? $wpdb->base_prefix . 'pp_groups' : $wpdb->pp_groups;
-        $group_agent_type = (MULTISITE && get_site_option('presspermit_netwide_groups')) ? 'pp_net_group' : 'pp_group';
+        $rs_groups_table = (is_multisite() && get_site_option('scoper_mu_sitewide_groups')) ? $wpdb->base_prefix . 'groups_rs' : $wpdb->groups_rs;
+        $pp_groups_table = (is_multisite() && get_site_option('presspermit_netwide_groups')) ? $wpdb->base_prefix . 'pp_groups' : $wpdb->pp_groups;
+        $group_agent_type = (is_multisite() && get_site_option('presspermit_netwide_groups')) ? 'pp_net_group' : 'pp_group';
         $imported_pp_groups = $wpdb->get_results($wpdb->prepare("SELECT source_id, import_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d AND import_tbl = %d", $this->getTableCode($rs_groups_table), $this->getTableCode($pp_groups_table)), OBJECT_K);
         $role_metagroups_rs = $wpdb->get_results("SELECT ID, group_meta_id FROM $rs_groups_table WHERE group_meta_id LIKE 'wp_role_%' OR group_meta_id = 'wp_anon'", OBJECT_K);  // TODO: review role metagroup storage with netwide groups
         $role_metagroups_pp = $wpdb->get_results("SELECT metagroup_id, ID FROM $wpdb->pp_groups WHERE metagroup_type = 'wp_role'", OBJECT_K);
@@ -886,7 +886,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
         }
 
 
-        if (MULTISITE) {
+        if (is_multisite()) {
             $rs_netwide = (int)get_site_option('scoper_mu_sitewide_groups');
             $pp_netwide = (int)get_site_option('presspermit_netwide_groups');
 
