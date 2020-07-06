@@ -149,7 +149,7 @@ class Importer
     {
         global $wpdb, $blog_id;
 
-        if (is_multisite() && (1 === intval($blog_id))) {
+        if (is_multisite() && is_main_site()) {
             $blog_ids = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs ORDER BY blog_id");
             $orig_blog_id = $blog_id;
         } else {
@@ -196,7 +196,7 @@ class Importer
         global $wpdb, $blog_id;
 
         if (is_multisite())
-            $site_clause = (1 === intval($blog_id)) ? "AND site > 0" : "AND site = '$blog_id'";  // if on main site, will undo import for all sites
+            $site_clause = (is_main_site()) ? "AND site > 0" : "AND site = '$blog_id'";  // if on main site, will undo import for all sites
         else
             $site_clause = '';
 

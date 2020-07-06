@@ -266,7 +266,7 @@ class SettingsTabImport
         global $wpdb, $blog_id;
 
         if (is_multisite())
-            $site_clause = (1 === intval($blog_id)) ? "AND site > 0" : "AND site = '$blog_id'";  // if on main site, will undo import for all sites
+            $site_clause = (is_main_site()) ? "AND site > 0" : "AND site = '$blog_id'";  // if on main site, will undo import for all sites
         else
             $site_clause = '';
 
