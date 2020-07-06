@@ -39,10 +39,8 @@ class GroupQuery
     public function __construct($query = null)
     {
         if (!empty($query)) {
-            global $blog_id;
-
             $this->query_vars = wp_parse_args($query, [
-                'blog_id' => $blog_id,
+                'blog_id' => get_current_blog_id(),
                 'include' => [],
                 'exclude' => [],
                 'search' => '',

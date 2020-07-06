@@ -263,14 +263,21 @@ class SettingsTabImport
         </tr>
 
         <?php
-        global $wpdb, $blog_id;
+        global $wpdb;
 
-        if (is_multisite())
-            $site_clause = (is_main_site()) ? "AND site > 0" : "AND site = '$blog_id'";  // if on main site, will undo import for all sites
-        else
+        if (is_multisite()) {
+            $site_clause = (is_main_site()) ? "AND site > 0" : "AND site = %d";  // if on main site, will undo import for all sites
+        } else {
             $site_clause = '';
+        }
 
-        if ($wpdb->get_col("SELECT run_id FROM $wpdb->ppi_imported WHERE run_id > 0 $site_clause")) : ?>
+        if ($wpdb->get_col(
+                $wpdb->prepare(
+                    "SELECT run_id FROM $wpdb->ppi_imported WHERE run_id > 0 $site_clause",
+                    get_current_blog_id()
+                )
+            ) 
+        ) : ?>
             <tr>
                 <td>
 

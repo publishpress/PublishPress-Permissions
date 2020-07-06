@@ -27,7 +27,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
     function doImport($import_type = 'rs')
     {
-        global $wpdb, $blog_id;
+        global $wpdb;
+
+        $blog_id = get_current_blog_id();
 
         parent::doImport('rs');
 
@@ -95,7 +97,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
     private function import_rs_groups()
     {
-        global $wpdb, $blog_id;
+        global $wpdb;
+
+        $blog_id = get_current_blog_id();
 
         // if groups were set to netwide, sites may not have their own RS groups/members tables
         if (!$wpdb->get_results("SHOW TABLES LIKE '$wpdb->groups_rs'") || !$wpdb->get_results("SHOW TABLES LIKE '$wpdb->user2group_rs'"))
@@ -176,7 +180,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
     private function import_rs_site_roles()
     {
-        global $wpdb, $blog_id;
+        global $wpdb;
+
+        $blog_id = get_current_blog_id();
 
         /*--------- group config and mapping setup ---------*/
         $rs_groups_table = (MULTISITE && get_site_option('scoper_mu_sitewide_groups')) ? $wpdb->base_prefix . 'groups_rs' : $wpdb->groups_rs;
@@ -284,7 +290,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
     private function import_rs_restrictions()
     {
-        global $wpdb, $wp_roles, $blog_id;
+        global $wpdb, $wp_roles;
+
+        $blog_id = get_current_blog_id();
 
         $post_types = get_post_types(['public' => true, 'show_ui' => true], 'object', 'or');
         $log_eitem_ids = [];        // conversion of role_scope_rs.requirement_id to pp_conditions.assignment_id
@@ -547,7 +555,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
     private function import_rs_item_roles()
     {
-        global $wpdb, $wp_roles, $blog_id;
+        global $wpdb, $wp_roles;
+
+        $blog_id = get_current_blog_id();
 
         $cap_caster = presspermit()->capCaster();
 
@@ -897,7 +907,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
     private function import_option($opt_name, $opt_value, $source_opt_name, $imported_options)
     {
-        global $wpdb, $blog_id;
+        global $wpdb;
+
+        $blog_id = get_current_blog_id();
 
         if ($row = $wpdb->get_row("SELECT option_id, option_value FROM $wpdb->options WHERE option_name = '$source_opt_name' LIMIT 1")) {
             $source_id = $row->option_id;
@@ -1081,8 +1093,6 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
     private function get_exception_id(&$stored_exceptions, $data, $restriction_id = 0)
     {
-        global $blog_id;
-
         $exception_id = 0;
 
         // safeguard against invalid exception specs
@@ -1110,7 +1120,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
             $stored_exceptions[] = (object)$data;
 
             if ($restriction_id) {
-                $log_data = ['run_id' => $this->run_id, 'source_tbl' => $this->getTableCode($wpdb->role_scope_rs), 'source_id' => $restriction_id, 'import_tbl' => $this->getTableCode($wpdb->ppc_exceptions), 'import_id' => $exception_id, 'site' => $blog_id];
+                $log_data = ['run_id' => $this->run_id, 'source_tbl' => $this->getTableCode($wpdb->role_scope_rs), 'source_id' => $restriction_id, 'import_tbl' => $this->getTableCode($wpdb->ppc_exceptions), 'import_id' => $exception_id, 'site' => get_current_blog_id()];
                 $wpdb->insert($wpdb->ppi_imported, $log_data);
             }
         }
