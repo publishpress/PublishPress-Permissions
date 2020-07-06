@@ -147,13 +147,13 @@ class Importer
 
     private function undoImport($run_id)
     {
-        global $wpdb, $blog_id;
+        global $wpdb;
 
-        if (is_multisite() && (1 === intval($blog_id))) {
+        if (is_multisite() && is_main_site()) {
             $blog_ids = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs ORDER BY blog_id");
-            $orig_blog_id = $blog_id;
+            $orig_blog_id = get_current_blog_id();
         } else {
-            $blog_ids = ['1'];
+            $blog_ids = [get_main_site_id()];
         }
         
         foreach ($blog_ids as $id) {
@@ -193,14 +193,21 @@ class Importer
 
     private function undoAllImports()
     {
-        global $wpdb, $blog_id;
+        global $wpdb;
 
-        if (is_multisite())
-            $site_clause = (1 === intval($blog_id)) ? "AND site > 0" : "AND site = '$blog_id'";  // if on main site, will undo import for all sites
-        else
+        if (is_multisite()) {
+            $site_clause = (is_main_site()) ? "AND site > 0" : "AND site = %d";  // if on main site, will undo import for all sites
+        } else {
             $site_clause = '';
+        }
 
-        $run_ids = $wpdb->get_col("SELECT run_id FROM $wpdb->ppi_imported WHERE run_id > 0 $site_clause");
+        $run_ids = $wpdb->get_col(
+            $wpdb->prepare(
+                "SELECT run_id FROM $wpdb->ppi_imported WHERE run_id > 0 $site_clause",
+                get_current_blog_id()
+            )
+        );
+
         foreach ($run_ids as $run_id) {
             $this->undoImport($run_id);
         }
