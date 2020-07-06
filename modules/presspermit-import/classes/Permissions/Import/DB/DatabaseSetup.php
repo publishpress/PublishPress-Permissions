@@ -6,7 +6,7 @@ class DatabaseSetup
     function __construct($last_db_ver) {
         require_once(PRESSPERMIT_IMPORT_ABSPATH . '/db-config.php');
 
-        if (MULTISITE) {
+        if (is_multisite()) {
             add_action('switch_blog', [$this, 'actMultisiteSupport']);
         }
 
