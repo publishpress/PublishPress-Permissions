@@ -1,12 +1,19 @@
 {
     "name": "publishpress/publishpress-permissions",
     "type": "wordpress-plugin",
-    "description": "",
+    "description": "WordPress plugin: control permissions for publishing workflow and presentation",
+    "homepage": "https://publishpress.com/",
     "license": "GPL-2",
     "authors": [
       {
         "name": "PublishPress",
         "email": "help@publishpress.com"
+      },
+      {
+        "name": "Kevin Behrens",
+        "email": "kevin@agapetry.net",
+        "homepage": "https://agapetry.net",
+        "role": "Lead Developer"
       }
     ],
     "config": {
