@@ -189,21 +189,6 @@ class CapabilityFiltersAdmin
                 if (empty($current_user->allcaps['upload_files']) && !empty($current_user->allcaps['edit_files']))
                     $reqd_caps[$key] = 'edit_files';
             }
-
-            // PublishPress workaround (literal edit_posts capability required for dashboard widgets)  @todo: still needed?
-            if (is_blog_admin() && in_array($pagenow, ['edit.php']) && !did_action('admin_enqueue_scripts')) {
-                $_reqd_caps = $reqd_caps;
-                
-                foreach (get_post_types(['public' => true, 'show_ui' => true], 'object', 'or') as $post_type => $type_obj) {
-                    if (!empty($current_user->allcaps[$type_obj->cap->edit_posts])) {
-                        $key = array_search('edit_posts', $reqd_caps);
-                        if (false !== $key) {
-                            $reqd_caps[$key] = $type_obj->cap->edit_posts;
-                            break;
-                        }
-                    }
-                }
-            }
         }
 
         //===============================
