@@ -497,6 +497,9 @@ class SettingsTabEditing
         $pp_caps['pp_associate_any_page'] = __('Disregard association exceptions (for all hierarchical post types)', 'press-permit-core');
 
         $pp_caps['pp_list_all_files'] = __('Do not alter the Media Library listing provided by WordPress', 'press-permit-core');
+        $pp_caps['list_posts'] = __('On the Posts screen, satisfy a missing edit_posts capability by listing uneditable drafts', 'press-permit-core');
+        $pp_caps['list_others_posts'] = __("On the Posts screen, satisfy a missing edit_others_posts capability by listing other user's uneditable posts", 'press-permit-core');
+        $pp_caps['list_private_pages'] = __('On the Pages screen, satisfy a missing edit_private_pages capability by listing uneditable private pages', 'press-permit-core');
         $pp_caps['pp_force_quick_edit'] = __('Make Quick Edit and Bulk Edit available to non-Administrators even though some inappropriate selections may be possible', 'press-permit-core');
 
         return $pp_caps;
