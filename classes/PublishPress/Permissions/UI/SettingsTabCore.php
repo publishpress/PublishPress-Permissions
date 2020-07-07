@@ -308,11 +308,13 @@ class SettingsTabCore
                             : __('To customize editing permissions, enable the Collaborative Publishing module.', 'press-permit-core');
                     }
                     ?>
+                    <!--
                     <p style="margin-top:20px">
                     <?php
                     printf(__('%sPosts / Pages Listing:%s %s', 'press-permit-core'), '<b>', '</b>', $hint);
                     ?>
                     </p>
+                    -->
                 </td>
             </tr>
         <?php
