@@ -128,7 +128,7 @@ class Permissions
 
         // need these keyed in separate array to force defaults if advanced options are disabled
         $this->default_advanced_options = [
-            'display_hints' => 0,
+            'display_hints' => 1,
             'display_extension_hints' => 1,
             'dynamic_wp_roles' => 0,
             'non_admins_set_read_exceptions' => 1,
