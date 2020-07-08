@@ -23,6 +23,6 @@
     "prefer-stable": true,
     "require": {
       "php": ">=5.6.20",
-      "publishpress/wordpress-version-notices": "^1"
+      "publishpress/wordpress-version-notices": "1.1.1"
     }
   }
