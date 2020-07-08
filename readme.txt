@@ -128,7 +128,7 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.2.2 - 7 Jul 2020 =
+= 3.2.2 - 8 Jul 2020 =
 * Fixed : New post creation locked author out of further editing if editing permission restricted by term and necessary term was not selected (now auto-select allowed term if none selected)
 * Fixed : Multisite - Permissions menu was not displayed if plugin network-activated and main site ID is not 1
 * Fixed : Term-specific Permissions were not applied correctly in some configurations
