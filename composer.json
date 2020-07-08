@@ -1,28 +1,28 @@
 {
-    "name": "publishpress/publishpress-permissions",
-    "type": "wordpress-plugin",
-    "description": "WordPress plugin: control permissions for publishing workflow and presentation",
-    "homepage": "https://publishpress.com/",
-    "license": "GPL-2",
-    "authors": [
-      {
-        "name": "PublishPress",
-        "email": "help@publishpress.com"
-      },
-      {
-        "name": "Kevin Behrens",
-        "email": "kevin@agapetry.net",
-        "homepage": "https://agapetry.net",
-        "role": "Lead Developer"
-      }
-    ],
-    "config": {
-      "preferred-install": "dist"
+  "name": "publishpress/publishpress-permissions",
+  "type": "wordpress-plugin",
+  "description": "WordPress plugin: control permissions for publishing workflow and presentation",
+  "homepage": "https://publishpress.com/",
+  "license": "GPL-2",
+  "authors": [
+    {
+      "name": "PublishPress",
+      "email": "help@publishpress.com"
     },
-    "minimum-stability": "stable",
-    "prefer-stable": true,
-    "require": {
-      "php": ">=5.6.20",
-      "publishpress/wordpress-version-notices": "1.1.1"
+    {
+      "name": "Kevin Behrens",
+      "email": "kevin@agapetry.net",
+      "homepage": "https://agapetry.net",
+      "role": "Lead Developer"
     }
+  ],
+  "config": {
+    "preferred-install": "dist"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=5.6.20",
+    "publishpress/wordpress-version-notices": "1.1.1"
   }
+}
