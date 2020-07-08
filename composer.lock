@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b3e978061b9f6b0e1bd46295babac473",
+    "content-hash": "23a40e2c0056e01b9964bfb1b46b0743",
     "packages": [
         {
             "name": "pimple/pimple",
@@ -107,16 +107,16 @@
         },
         {
             "name": "publishpress/wordpress-version-notices",
-            "version": "dev-master",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/publishpress/WordPress-Version-Notices.git",
-                "reference": "45e6cb0f302165f3df820ff01c4f267f0b22517d"
+                "reference": "ba2b8eba33577d8c9351a9437e09af0e8f601a2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/publishpress/WordPress-Version-Notices/zipball/45e6cb0f302165f3df820ff01c4f267f0b22517d",
-                "reference": "45e6cb0f302165f3df820ff01c4f267f0b22517d",
+                "url": "https://api.github.com/repos/publishpress/WordPress-Version-Notices/zipball/ba2b8eba33577d8c9351a9437e09af0e8f601a2c",
+                "reference": "ba2b8eba33577d8c9351a9437e09af0e8f601a2c",
                 "shasum": ""
             },
             "require": {
@@ -145,16 +145,14 @@
                 }
             ],
             "description": "Library for displaying version notices for Pro plugins in WordPress.",
-            "time": "2020-04-08T13:59:53+00:00"
+            "time": "2020-04-08T13:59:35+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "publishpress/wordpress-version-notices": 20
-    },
-    "prefer-stable": false,
+    "stability-flags": [],
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": ">=5.6.20"
