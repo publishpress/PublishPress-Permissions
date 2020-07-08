@@ -27,7 +27,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
     function doImport($import_type = 'rs')
     {
-        global $wpdb, $blog_id;
+        global $wpdb;
+
+        $blog_id = get_current_blog_id();
 
         parent::doImport('rs');
 
@@ -41,7 +43,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
             $this->tt_ids_by_taxonomy[$row->taxonomy][$row->term_id] = $row->term_taxonomy_id;
         }
 
-        if (MULTISITE && (1 === intval($blog_id))) {
+        if (is_multisite() && is_main_site()) {
             $blog_ids = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs ORDER BY blog_id");
             $orig_blog_id = $blog_id;
             $this->sites_examined = 0;
@@ -95,7 +97,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
     private function import_rs_groups()
     {
-        global $wpdb, $blog_id;
+        global $wpdb;
+
+        $blog_id = get_current_blog_id();
 
         // if groups were set to netwide, sites may not have their own RS groups/members tables
         if (!$wpdb->get_results("SHOW TABLES LIKE '$wpdb->groups_rs'") || !$wpdb->get_results("SHOW TABLES LIKE '$wpdb->user2group_rs'"))
@@ -176,12 +180,14 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
     private function import_rs_site_roles()
     {
-        global $wpdb, $blog_id;
+        global $wpdb;
+
+        $blog_id = get_current_blog_id();
 
         /*--------- group config and mapping setup ---------*/
-        $rs_groups_table = (MULTISITE && get_site_option('scoper_mu_sitewide_groups')) ? $wpdb->base_prefix . 'groups_rs' : $wpdb->groups_rs;
-        $pp_groups_table = (MULTISITE && get_site_option('presspermit_netwide_groups')) ? $wpdb->base_prefix . 'pp_groups' : $wpdb->pp_groups;
-        $group_agent_type = (MULTISITE && get_site_option('presspermit_netwide_groups')) ? 'pp_net_group' : 'pp_group';
+        $rs_groups_table = (is_multisite() && get_site_option('scoper_mu_sitewide_groups')) ? $wpdb->base_prefix . 'groups_rs' : $wpdb->groups_rs;
+        $pp_groups_table = (is_multisite() && get_site_option('presspermit_netwide_groups')) ? $wpdb->base_prefix . 'pp_groups' : $wpdb->pp_groups;
+        $group_agent_type = (is_multisite() && get_site_option('presspermit_netwide_groups')) ? 'pp_net_group' : 'pp_group';
 
         $imported_pp_groups = $wpdb->get_results($wpdb->prepare("SELECT source_id, import_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d AND import_tbl = %d", $this->getTableCode($rs_groups_table), $this->getTableCode($pp_groups_table)), OBJECT_K);
         $role_metagroups_rs = $wpdb->get_results("SELECT ID, group_meta_id FROM $rs_groups_table WHERE group_meta_id LIKE 'wp_role_%' OR group_meta_id = 'wp_anon'", OBJECT_K);
@@ -284,7 +290,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
     private function import_rs_restrictions()
     {
-        global $wpdb, $wp_roles, $blog_id;
+        global $wpdb, $wp_roles;
+
+        $blog_id = get_current_blog_id();
 
         $post_types = get_post_types(['public' => true, 'show_ui' => true], 'object', 'or');
         $log_eitem_ids = [];        // conversion of role_scope_rs.requirement_id to pp_conditions.assignment_id
@@ -547,7 +555,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
     private function import_rs_item_roles()
     {
-        global $wpdb, $wp_roles, $blog_id;
+        global $wpdb, $wp_roles;
+
+        $blog_id = get_current_blog_id();
 
         $cap_caster = presspermit()->capCaster();
 
@@ -559,9 +569,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
         $log_eitem_ids = [];
 
         /*--------- group config and mapping setup ---------*/
-        $rs_groups_table = (MULTISITE && get_site_option('scoper_mu_sitewide_groups')) ? $wpdb->base_prefix . 'groups_rs' : $wpdb->groups_rs;
-        $pp_groups_table = (MULTISITE && get_site_option('presspermit_netwide_groups')) ? $wpdb->base_prefix . 'pp_groups' : $wpdb->pp_groups;
-        $group_agent_type = (MULTISITE && get_site_option('presspermit_netwide_groups')) ? 'pp_net_group' : 'pp_group';
+        $rs_groups_table = (is_multisite() && get_site_option('scoper_mu_sitewide_groups')) ? $wpdb->base_prefix . 'groups_rs' : $wpdb->groups_rs;
+        $pp_groups_table = (is_multisite() && get_site_option('presspermit_netwide_groups')) ? $wpdb->base_prefix . 'pp_groups' : $wpdb->pp_groups;
+        $group_agent_type = (is_multisite() && get_site_option('presspermit_netwide_groups')) ? 'pp_net_group' : 'pp_group';
         $imported_pp_groups = $wpdb->get_results($wpdb->prepare("SELECT source_id, import_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d AND import_tbl = %d", $this->getTableCode($rs_groups_table), $this->getTableCode($pp_groups_table)), OBJECT_K);
         $role_metagroups_rs = $wpdb->get_results("SELECT ID, group_meta_id FROM $rs_groups_table WHERE group_meta_id LIKE 'wp_role_%' OR group_meta_id = 'wp_anon'", OBJECT_K);  // TODO: review role metagroup storage with netwide groups
         $role_metagroups_pp = $wpdb->get_results("SELECT metagroup_id, ID FROM $wpdb->pp_groups WHERE metagroup_type = 'wp_role'", OBJECT_K);
@@ -886,7 +896,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
         }
 
 
-        if (MULTISITE) {
+        if (is_multisite()) {
             $rs_netwide = (int)get_site_option('scoper_mu_sitewide_groups');
             $pp_netwide = (int)get_site_option('presspermit_netwide_groups');
 
@@ -897,7 +907,9 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
     private function import_option($opt_name, $opt_value, $source_opt_name, $imported_options)
     {
-        global $wpdb, $blog_id;
+        global $wpdb;
+
+        $blog_id = get_current_blog_id();
 
         if ($row = $wpdb->get_row("SELECT option_id, option_value FROM $wpdb->options WHERE option_name = '$source_opt_name' LIMIT 1")) {
             $source_id = $row->option_id;
@@ -1081,8 +1093,6 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
     private function get_exception_id(&$stored_exceptions, $data, $restriction_id = 0)
     {
-        global $blog_id;
-
         $exception_id = 0;
 
         // safeguard against invalid exception specs
@@ -1110,7 +1120,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
             $stored_exceptions[] = (object)$data;
 
             if ($restriction_id) {
-                $log_data = ['run_id' => $this->run_id, 'source_tbl' => $this->getTableCode($wpdb->role_scope_rs), 'source_id' => $restriction_id, 'import_tbl' => $this->getTableCode($wpdb->ppc_exceptions), 'import_id' => $exception_id, 'site' => $blog_id];
+                $log_data = ['run_id' => $this->run_id, 'source_tbl' => $this->getTableCode($wpdb->role_scope_rs), 'source_id' => $restriction_id, 'import_tbl' => $this->getTableCode($wpdb->ppc_exceptions), 'import_id' => $exception_id, 'site' => get_current_blog_id()];
                 $wpdb->insert($wpdb->ppi_imported, $log_data);
             }
         }

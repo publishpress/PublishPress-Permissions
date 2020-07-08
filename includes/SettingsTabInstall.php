@@ -154,6 +154,10 @@ class SettingsTabInstall
                     'admin.php?page=presspermit-settings&amp;pp_renewal=1'
                 );
             }
+
+        } elseif ($modern_pro_version = get_option('presspermitpro_version')) {
+            $msg = __('Permissions Pro was previously active. You are now running the free version, with fewer features.', 'press-permit-core');
+
         } elseif ($activated) {
             $url = "https://publishpress.com/contact/?pp_topic=presspermit-migration&presspermit_account=$key_string";
             
@@ -163,7 +167,7 @@ class SettingsTabInstall
             );
         }
 
-        $downgrade_note = (is_array($opt_val) && count($opt_val) > 1) || get_option('ppce_version') || get_option('pps_version') || get_option('ppp_version');
+        $downgrade_note = empty($modern_pro_version) && ((is_array($opt_val) && count($opt_val) > 1) || get_option('pps_version') || get_option('ppp_version'));
 
         if ($msg || $downgrade_note || $key_string) :
             $section = 'key'; // --- UPDATE KEY SECTION ---
