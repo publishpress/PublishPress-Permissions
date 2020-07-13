@@ -128,6 +128,9 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
+= 3.2.3-beta - 10 Jul 2020 =
+* Fixed : REST API - When context argument is used with include argument in a GET posts query, include value is ignored
+
 = 3.2.2 - 8 Jul 2020 =
 * Fixed : New post creation locked author out of further editing if editing permission restricted by term and necessary term was not selected (now auto-select allowed term if none selected)
 * Fixed : Multisite - Permissions menu was not displayed if plugin network-activated and main site ID is not 1
