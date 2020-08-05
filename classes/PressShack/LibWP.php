@@ -52,9 +52,9 @@ class LibWP
         }
 
         if (class_exists('Classic_Editor')) {
-			if (isset($_REQUEST['classic-editor__forget']) && isset($_REQUEST['classic'])) {
+			if (isset($_REQUEST['classic-editor__forget']) && (isset($_REQUEST['classic']) || isset($_REQUEST['classic-editor']))) {
 				return false;
-			} elseif (isset($_REQUEST['classic-editor__forget']) && !isset($_REQUEST['classic'])) {
+			} elseif (isset($_REQUEST['classic-editor__forget']) && !isset($_REQUEST['classic']) && !isset($_REQUEST['classic-editor'])) {
 				return true;
 			} elseif (get_option('classic-editor-allow-users') === 'allow') {
 				if ($post_id = self::getPostID()) {
