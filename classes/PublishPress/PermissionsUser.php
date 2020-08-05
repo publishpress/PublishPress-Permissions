@@ -29,7 +29,7 @@ class PermissionsUser extends \WP_User
 
         parent::__construct($id, $name);
 
-        // without this, logged users have no read access to sites they're not registered for
+        // without this, logged in users have no read access to sites they're not registered for
         if (is_multisite() && $id && !is_admin() && empty($this->allcaps)) {
             $this->caps['read'] = true;
         }
