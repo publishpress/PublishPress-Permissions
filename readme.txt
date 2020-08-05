@@ -123,12 +123,13 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.2.2 =
+= 3.2.3 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
-= 3.2.3-beta - 10 Jul 2020 =
+= 3.2.3 - 6 Aug 2020 =
+* Fixed : Fatal error on new installations if Import module is activated
 * Fixed : REST API - When context argument is used with include argument in a GET posts query, include value is ignored
 
 = 3.2.2 - 8 Jul 2020 =
