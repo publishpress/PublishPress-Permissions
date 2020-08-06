@@ -42,7 +42,6 @@ jQuery(document).ready(function ($) {
         $('#pp_add_role').remove();
     });
 
-    //$("#pp_tbl_role_selections .pp_clear").live( 'click', function(e) {
     $(document).on('click', "#pp_tbl_role_selections .pp_clear", function (e) {
         var presspermitEID = $(this).closest('tr').find('input[name="pp_presspermitEID[]"]').val();
 

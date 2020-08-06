@@ -59,9 +59,12 @@ class ImportHooksAdmin
     {
         $ver_change = false;
 
+        $pp_ver = get_option('presspermit_version');
         $ver = get_option('ppi_version');
 
-        if (empty($ver['db_version']) || version_compare(PRESSPERMIT_IMPORT_DB_VERSION, $ver['db_version'], '!=')) {
+        if (empty($ver['db_version']) || version_compare(PRESSPERMIT_IMPORT_DB_VERSION, $ver['db_version'], '!=')
+        || ($pp_ver && version_compare($pp_ver['version'], '3.2.3', '<'))
+        ) {
             $ver_change = true;
 
             // set_current_user may have triggered DB setup already

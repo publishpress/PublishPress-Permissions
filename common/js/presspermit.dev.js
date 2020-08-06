@@ -40,7 +40,6 @@ jQuery(document).ready(function ($) {
         $(this).siblings(".hide-if-js").show();
     });
 
-    //$('#userprofile_groupsdiv_pp ul.pp-agents-list li label').live('mouseenter', function() {
     $(document).on('mouseenter', '#userprofile_groupsdiv_pp ul.pp-agents-list li label', function () {
         var func = function (lbl) {
             //if ( $(lbl).is(':hover') )
