@@ -29,7 +29,7 @@ class RESTInit
     function page_parent_query_args($args, $request) {
         $params = $request->get_params();
 
-        if (is_array($params) && !empty($args['parent_exclude']) && !empty($params['context'] && ('edit' == $params['context']))) {
+        if (is_array($params) && !empty($params['parent_exclude']) && !empty($params['context'] && ('edit' == $params['context']))) {
             $post_statuses = apply_filters(
                 'presspermit_guten_parent_statuses', 
                 PWP::getPostStatuses(['internal' => false, 'post_type' => $args['post_type']], 'names'),
