@@ -177,8 +177,11 @@ class TermsListing
             $cap_name = 'manage_categories';
         }
 
-        if (!empty(presspermit()->getUser()->allcaps)) {
-            return;
+        if (!empty(presspermit()->getUser()->allcaps[$cap_name])
+        ) {
+            if (!presspermit()->getUser()->getExceptionTerms('manage', 'include', $_REQUEST['taxonomy'], $_REQUEST['taxonomy'], ['merge_universals' => true])) {
+            	return;
+            }
         }
         ?>
         <script type="text/javascript">
