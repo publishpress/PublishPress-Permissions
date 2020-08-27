@@ -3,9 +3,9 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.9.7
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 5.6.20
-Stable tag: 3.2.4
+Stable tag: 3.2.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,13 +123,19 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.2.4 =
+= 3.2.5 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
+= 3.2.5 - 13 Aug 2020 =
+* Fixed : WP 5.5 - Javascript error in Classic Editor if Default Privacy is set to a non-public status
+* Fixed : WP object cache was cleared when a non-Administrator accessed wp-admin Pages listing
+* Fixed : Pro - Post Status dropdown in Gutenberg editor was pushed into bad alignment if PublishPress 2.2 active
+* Fixed : Classic Editor plugin - Block editor usage was not properly detected if user selection of default editor is enabled and set to Block 
+
 = 3.2.4 - 7 Aug 2020 =
-* Fixed : Page Parent could not be viewed or changed in Gutenberg editor (since 3.2.4)
+* Fixed : Page Parent could not be viewed or changed in Gutenberg editor (since 3.2.3)
 
 = 3.2.3 - 6 Aug 2020 =
 * Fixed : Fatal error on new installations if Import module is activated

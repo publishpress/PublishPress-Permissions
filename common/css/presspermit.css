@@ -359,10 +359,6 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
     display: none;
 }
 
-.publishpress-extended-post-status select {
-    width: 120px;
-}
-
 .pressshack-admin-wrapper p.submit {
     padding-bottom:0;
 }

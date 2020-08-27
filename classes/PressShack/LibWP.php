@@ -65,6 +65,9 @@ class LibWP
 					} elseif ('classic-editor' == $which) {
 						return false;
 					}
+				} else {
+                    $use_block = ('block' == get_user_meta($current_user->ID, 'wp_classic-editor-settings'));
+                    return $use_block && apply_filters('use_block_editor_for_post_type', $use_block, $post_type, PHP_INT_MAX);
 				}
 			}
 		}

@@ -6,8 +6,10 @@ class PostsListingNonAdministrator
     function __construct() {
         add_filter('posts_results', [$this, 'flt_posts_results'], 50, 3);
 
-        // prevent construction of erroneous view link url when relative hierarchy is preserved by remapping pages around inaccessable ancestors
-        add_action('all_admin_notices', [$this, 'act_flush_page_cache'], 50);
+        if (defined('PRESSPERMIT_PAGE_LISTING_FLUSH_CACHE')) { // make this an opt-in to avoid conflicts with persistent caching
+        	// prevent construction of erroneous view link url when relative hierarchy is preserved by remapping pages around inaccessable ancestors
+        	add_action('all_admin_notices', [$this, 'act_flush_page_cache'], 50);
+        }
     }
 
     public function act_flush_page_cache()

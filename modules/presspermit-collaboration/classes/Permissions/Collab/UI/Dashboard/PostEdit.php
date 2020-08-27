@@ -158,9 +158,15 @@ class PostEdit
             jQuery(document).ready(function ($) {
                 $('#visibility-radio-<?php echo $set_visibility; ?>').click();
 
-                $('#post-visibility-display').html(
-                    postL10n[$('#post-visibility-select input:radio:checked').val()]
-                );
+                if (typeof(postL10n) != 'undefined') {
+	                $('#post-visibility-display').html(
+	                    postL10n[$('#post-visibility-select input:radio:checked').val()]
+	                );
+                } else {
+                    $('#post-visibility-display').html(
+                        $('#visibility-radio-<?php echo $set_visibility; ?>').next('label').html()
+                    );
+                }
             });
             /* ]]> */
         </script>
