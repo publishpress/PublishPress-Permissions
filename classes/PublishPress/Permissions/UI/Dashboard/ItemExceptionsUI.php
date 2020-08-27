@@ -198,14 +198,16 @@ class ItemExceptionsUI
                                     if ('wp_role' == $agent_type) {
                                         foreach ($current_exceptions[$op][$agent_type] as $agent_id => $agent_exceptions) {
                                             if ($agent_id && isset($this->data->agent_info[$agent_type][$agent_id])) {
-                                                $this->render->drawRow(
-                                                    $agent_type,
-                                                    $agent_id,
-                                                    $current_exceptions[$op][$agent_type][$agent_id],
-                                                    $this->data->inclusions_active,
-                                                    $this->data->agent_info[$agent_type][$agent_id],
-                                                    compact('for_item_type', 'op', 'reqd_caps', 'hierarchical')
-                                                );
+                                                if ((false === strpos($this->data->agent_info[$agent_type][$agent_id]->name, '[WP ')) || defined('PRESSPERMIT_DELETED_ROLE_EXCEPTIONS_UI')) {
+	                                                $this->render->drawRow(
+	                                                    $agent_type,
+	                                                    $agent_id,
+	                                                    $current_exceptions[$op][$agent_type][$agent_id],
+	                                                    $this->data->inclusions_active,
+	                                                    $this->data->agent_info[$agent_type][$agent_id],
+	                                                    compact('for_item_type', 'op', 'reqd_caps', 'hierarchical')
+	                                                );
+                                                }
                                             }
                                         }
                                     } else {

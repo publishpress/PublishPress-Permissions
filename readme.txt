@@ -128,8 +128,15 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.2.5 - 11 Aug 2020 =
+= 3.3-beta =
+* Fixed : Deleted WordPress roles were still listed in Permissions metaboxes of Post/Term editor
+* Fixed : Limited term managers could not view some of their manageable terms under some configurations
+* Fixed : Term managers who are limited to managing a fixed set of terms had "None" category listed in Parent dropdown, even though they cannot add a top-level category
+
+= 3.2.5 - 13 Aug 2020 =
+* Fixed : WP 5.5 - Javascript error in Classic Editor if Default Privacy is set to a non-public status
 * Fixed : WP object cache was cleared when a non-Administrator accessed wp-admin Pages listing
+* Fixed : Pro - Post Status dropdown in Gutenberg editor was pushed into bad alignment if PublishPress 2.2 active
 
 = 3.2.4 - 7 Aug 2020 =
 * Fixed : Page Parent could not be viewed or changed in Gutenberg editor (since 3.2.3)
