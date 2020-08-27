@@ -176,6 +176,8 @@ class TermFilters
 
     public function fltGetTermsArgs($args, $taxonomies)
     {
+        global $pagenow;
+
         if ($this->skipFiltering($taxonomies, $args))
             return $args;
 
@@ -183,7 +185,9 @@ class TermFilters
         $args = wp_parse_args($args, $defaults);
 
         if (('all' == $args['fields']) || $args['hide_empty'] || $args['pad_counts']) {
-            if (apply_filters('presspermit_apply_term_count_filters', true, $args, $taxonomies)) {
+            if (apply_filters('presspermit_apply_term_count_filters', true, $args, $taxonomies) 
+            && (empty($pagenow) || ('edit-tags.php' != $pagenow) || defined('PRESSPERMIT_LEGACY_ADMIN_TERM_COUNT_FILTER'))
+            ) {
                 require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
                 $this->count_filters_obj = TermFiltersCount::instance(['parent_remap_enabled' => $this->parent_remap_enabled]);
                 $args = $this->count_filters_obj->fltGetTermsArgs($args);

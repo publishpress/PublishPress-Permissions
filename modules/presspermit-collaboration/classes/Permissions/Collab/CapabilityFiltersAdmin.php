@@ -408,7 +408,9 @@ class CapabilityFiltersAdmin
     {
         global $pagenow;
 
-        if (is_admin() && in_array($pagenow, ['edit-tags.php', 'term.php']) && !empty($_REQUEST['tag_ID'])) {
+        if (is_admin() && in_array($pagenow, ['edit-tags.php', 'term.php']) && !empty($_REQUEST['tag_ID'])
+        && (empty($_REQUEST['action']) || ('editedtag' != $_REQUEST['action']))
+        ) {
             $tx_obj = get_taxonomy(reset($taxonomies));
             if ($tx_obj->hierarchical) {
                 global $wpdb;
