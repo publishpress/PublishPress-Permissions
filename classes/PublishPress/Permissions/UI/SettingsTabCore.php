@@ -125,9 +125,7 @@ class SettingsTabCore
                         $_args = (defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) ? [] : ['public' => true];
                         $types = get_taxonomies($_args, 'object');
 
-                        $omit_types = apply_filters('presspermit_unfiltered_taxonomies', ['post_status', 'topic-tag']);
-
-                        if ($omit_types) // avoid confusion with PublishPress administrative taxonomy
+                        if ($omit_types = $pp->getUnfilteredTaxonomies()) // avoid confusion with PublishPress administrative taxonomy
                         {
                             if (!defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) {
 	                            $types = array_diff_key($types, array_fill_keys((array)$omit_types, true));
