@@ -97,7 +97,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    ) {
 	        return;
 	    }
-	
+
 	    define('PRESSPERMIT_VERSION', '3.2.5');
 		
 	    if (!$presspermit_loaded_by_pro) {
