@@ -47,6 +47,16 @@ class PluginUpdated
                 self::syncWordPressRoles();
             }
 
+            if (version_compare($prev_version, '3.3.3', '<')) {
+                // Activation of invalid "Custom permissions for Authors" setting on Edit Author screen broke Authors > Authors listing and editing access
+                if ($taxs = get_option('presspermit_enabled_taxonomies')) {
+                    if (!empty($taxs['author'])) {
+                        unset($taxs['author']);
+                        update_option('presspermit_enabled_taxonomies', $taxs);
+                    }
+                }
+            } else break;
+
             if ((presspermit()->isPro() && version_compare($prev_version, '2.7.11', '<')) || (!presspermit()->isPro() && version_compare($prev_version, '2.7.3', '<'))) {
                 // 2.7 and 2.7.1 incorrectly defaulted this array to ['pp-import'] instead of ['presspermit-import']
                 // PressPermit Core 2.7.2 fixed the bug, but did not apply this database patch.
