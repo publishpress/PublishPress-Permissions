@@ -4,6 +4,12 @@ namespace PublishPress\Permissions\Collab;
 class RESTInit
 {
     function __construct() {
+        add_action('init', [$this, 'add_post_type_filters'], 99);
+
+        add_filter("rest_post_collection_params", [$this, 'post_collection_params'], 1, 2);
+    }
+
+    function add_post_type_filters() {
         foreach (presspermit()->getEnabledPostTypes() as $post_type) {
             add_filter("rest_{$post_type}_collection_params", [$this, 'post_collection_params'], 99, 2);
 
@@ -11,8 +17,6 @@ class RESTInit
                 add_filter("rest_{$post_type}_query", [$this, 'page_parent_query_args'], 10, 2);
             }
         }
-
-        add_filter("rest_post_collection_params", [$this, 'post_collection_params'], 1, 2);
     }
 
     function post_collection_params($params, $post_type_obj)
