@@ -46,8 +46,6 @@ class PostFilters
         add_filter('presspermit_posts_request', [$this, 'fltDoPostsRequest'], 2, 2);
         add_filter('presspermit_posts_where', [$this, 'fltPostsWhere'], 10, 2);
         
-        add_filter('posts_distinct', [$this, 'fltPostsDistinct'], 10, 2);
-
         add_filter('presspermit_force_post_metacap_check', [$this, 'fltForcePostMetacapCheck'], 10, 2);
 
         //add_filter( 'posts_request', [$this, 'flt_debug_query'], 999 );
@@ -94,14 +92,6 @@ class PostFilters
                 add_filter('the_posts', [$this, 'fltReinstateAnonResults']);
             }
         }
-    }
-
-    public function fltPostsDistinct($distinct, $query_obj) {
-        if (!$distinct && defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION')) {
-            $distinct = 'DISTINCT';
-        }
-
-        return $distinct;
     }
 
     public function fltForcePostMetacapCheck($force, $args)
@@ -265,9 +255,6 @@ class PostFilters
 
     public function fltDoPostsClauses($clauses, $args = [])
     {
-        $clauses['join'] = $this->fltPostsJoin($clauses['join'], $args);
-        $args['join'] = $clauses['join'];
-
         $args['where'] = $clauses['where'];
         $clauses['where'] = apply_filters('presspermit_posts_clauses_where', $this->fltPostsWhere($clauses['where'], $args), $clauses, $args);
 
@@ -297,7 +284,6 @@ class PostFilters
             'include_trash' => 0,
             'query_contexts' => [],
             'force_types' => false,
-            'join' => '',
         ];
         $args = array_merge($defaults, (array)$args);
         foreach (array_keys($defaults) as $var) {
@@ -475,9 +461,6 @@ class PostFilters
         $defaults = array_fill_keys(['distinct', 'join', 'where', 'groupby', 'orderby', 'limits'], '');
         $defaults['fields'] = '*';
         $clauses = array_merge($defaults, $clauses);
-
-        $clauses['join'] = self::$instance->fltPostsJoin($clauses['join'], $args);
-        $args['join'] = $clauses['join'];
         $clauses['where'] .= self::$instance->getPostsWhere($args);
 
         $clauses = apply_filters('presspermit_construct_posts_request_clauses', $clauses, $args);
@@ -489,41 +472,6 @@ class PostFilters
         $found_rows = ($limits) ? 'SQL_CALC_FOUND_ROWS' : '';
 
         return "SELECT $found_rows $distinct $fields FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
-    }
-
-    public function fltPostsJoin($join, $args = []) {
-        if (!defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION')) {
-            return $join;
-        }
-        
-        $defaults = [
-            'source_alias' => false,
-            'src_table' => '',
-        ];
-        $args = array_merge($defaults, (array)$args);
-        foreach (array_keys($defaults) as $var) {
-            $$var = $args[$var];
-        }
-
-        global $wpdb;
-
-        $user = presspermit()->getUser();
-
-        if (!$src_table) {
-            $src_table = ($source_alias) ? $source_alias : $wpdb->posts;
-            //$args['src_table'] = $src_table;
-        }
-
-        $ppma_join = 
-            " LEFT JOIN $wpdb->term_relationships AS ppma_tr ON ppma_tr.object_id = $src_table.ID"
-          . " LEFT JOIN $wpdb->term_taxonomy AS ppma_tt ON ppma_tt.term_taxonomy_id = ppma_tr.term_taxonomy_id AND ppma_tt.taxonomy = 'author'"
-          . " LEFT JOIN $wpdb->terms AS ppma_t ON ppma_t.term_id = ppma_tt.term_id AND ppma_t.name =  '$user->user_login'";
-
-        if (false === strpos($join, $ppma_join)) {
-            $join .= $ppma_join;
-        }
-
-        return $join;
     }
 
     // determines status usage, calls generate_where_clause() for each applicable post_type and appends resulting clauses
@@ -541,8 +489,7 @@ class PostFilters
             'skip_teaser' => false,
             'query_contexts' => [],
             'force_types' => false,
-            'limit_post_types' => false,
-            'join' => '',
+            'limit_post_types' => false
         ];
         $args = array_merge($defaults, (array)$args);
         foreach (array_keys($defaults) as $var) {
@@ -758,10 +705,9 @@ class PostFilters
                         !empty($args['skip_stati_usage_clause']) && !$limit_statuses
                         && !array_diff_key($use_statuses, array_flip($have_site_caps['owner']))
                     ) {
-                        $where_arr[$post_type]['owner'] = "$parent_clause ( " . PWP::postAuthorClause($args) . " )";
-                        
+                        $where_arr[$post_type]['owner'] = "$parent_clause ( $src_table.post_author = $user->ID )";
                     } else {
-                        $where_arr[$post_type]['owner'] = "$parent_clause ( " . PWP::postAuthorClause($args) . " )"
+                        $where_arr[$post_type]['owner'] = "$parent_clause ( $src_table.post_author = $user->ID )"
                             . " AND $src_table.post_status IN ('" . implode("','", array_unique($have_site_caps['owner'])) . "')";
                     }
                 }
@@ -822,8 +768,7 @@ class PostFilters
                     'merge_additions' => true, 
                     'exempt_post_types' => $tease_otypes, 
                     'additional_ttids' => $additional_ttids, 
-                    'apply_object_additions' => defined('PP_RESTRICTION_PRIORITY') ? false : PWP::findPostType(),
-                    'join' => $join,
+                    'apply_object_additions' => defined('PP_RESTRICTION_PRIORITY') ? false : PWP::findPostType()
                 ]
             )) {
                 $pp_where = "( $pp_where ) $term_exc_where";

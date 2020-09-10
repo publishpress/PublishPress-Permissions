@@ -303,7 +303,7 @@ class Permissions
 
     public static function addExceptionClauses($where, $required_operation, $post_type, $args = [])
     {
-        $defaults = ['src_table' => '', 'source_alias' => '', 'apply_term_restrictions' => true, 'append_post_type_clause' => true, 'additions_only' => false, 'query_contexts' => [], 'join' => ''];
+        $defaults = ['src_table' => '', 'source_alias' => '', 'apply_term_restrictions' => true, 'append_post_type_clause' => true, 'additions_only' => false, 'query_contexts' => []];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -382,8 +382,7 @@ class Permissions
                     'status' => $_status, 
                     'in_clause' => $in_clause, 
                     'src_table' => $src_table,
-                    'ids' => $_ids,
-                    'join' => $join,
+                    'ids' => $_ids
                 ]
             );
         }
@@ -422,8 +421,7 @@ class Permissions
                     'status' => '{published}', 
                     'in_clause' => $in_clause, 
                     'src_table' => $src_table,
-                    'ids' => $revise_ttids['{published}'],
-                    'join' => $join,
+                    'ids' => $revise_ttids['{published}']
                 ]
             );
         }
@@ -447,8 +445,7 @@ class Permissions
                         'status' => $_status, 
                         'in_clause' => $in_clause, 
                         'src_table' => $src_table,
-                        'ids' => $_ttids,
-                        'join' => $join,
+                        'ids' => $_ttids
                     ]
                 );
             }
@@ -507,11 +504,11 @@ class Permissions
             }
 
             if ($apply_term_restrictions && defined('PP_RESTRICTION_PRIORITY') && PP_RESTRICTION_PRIORITY) {
-                    $restriction_clause .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table, ['mod_types' => 'exclude']);
-                }
+                $restriction_clause .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table, ['mod_types' => 'exclude']);
+            }
 
-                if ($restriction_clause != '1=1') {
-                    $where = "( $where ) AND ( $restriction_clause )";
+            if ($restriction_clause != '1=1') {
+                $where = "( $where ) AND ( $restriction_clause )";
             }
 
             if (!empty($post_blockage_clause)) {
@@ -532,7 +529,7 @@ class Permissions
     {
         global $wpdb;
 
-        $defaults = ['merge_additions' => false, 'exempt_post_types' => [], 'mod_types' => ['include', 'exclude'], 'additional_ttids' => [], 'apply_object_additions' => false, 'join' => ''];
+        $defaults = ['merge_additions' => false, 'exempt_post_types' => [], 'mod_types' => ['include', 'exclude'], 'additional_ttids' => [], 'apply_object_additions' => false];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -564,8 +561,7 @@ class Permissions
                     'status' => '', 
                     'in_clause' => $in_clause, 
                     'src_table' => $src_table,
-                    'ids' => $additional_ttids,
-                    'join' => $join,
+                    'ids' => $additional_ttids
                 ]
             );
 
@@ -585,7 +581,7 @@ class Permissions
                 '1=2',
                 $required_operation, 
                 $apply_object_additions, 
-                ['additions_only' => true, 'apply_term_restrictions' => false, 'src_table' => $src_table, 'join' => $join]) 
+                ['additions_only' => true, 'apply_term_restrictions' => false, 'src_table' => $src_table]) 
             ) {
                 $post_additions_clause = "OR ( $post_additions_clause )";
             }

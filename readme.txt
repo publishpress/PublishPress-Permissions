@@ -133,8 +133,8 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 * Fixed : Limited term managers could not view some of their manageable terms under some configurations
 * Fixed : Term managers who are limited to managing a fixed set of terms had "None" category listed in Parent dropdown, even though they cannot add a top-level category
 * Fixed : Parent selection for custom post types was not properly filtered in Gutenberg editor
-* Compat : PublishPress Authors - activation of invalid "Custom permissions for Authors" setting on Edit Author screen (using a previous Permissions version) broke Authors > Authors listing and editing access
 * Fixed : Setting "Post-specific Permissions take priority" ineffective under some configurations
+* Compat : PublishPress Authors - activation of invalid "Custom permissions for Authors" setting on Edit Author screen (using a previous Permissions version) broke Authors > Authors listing and editing access
 * Compat : Nested Pages - Enable Permissions filtering, but disable Quick Edit and Context Menu for non-Administrators by default. Available constants: PP_NESTED_PAGES_DISABLE_FILTERING, PP_NESTED_PAGES_QUICKEDIT_ROLES, PP_NESTED_PAGES_CONTEXT_MENU_ROLES
 * Compat : WooCommerce - When editing a product, variation additions were blocked inappropriately
 

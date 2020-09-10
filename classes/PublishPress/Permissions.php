@@ -791,15 +791,11 @@ class Permissions
             $taxonomies = array_intersect($taxonomies, array_keys(array_filter($enabled)));
         }
 
-        if ($omit_types = $this->getUnfilteredTaxonomies()) {
-            $taxonomies = array_diff($taxonomies, $omit_types);
+        if ($omit_types = apply_filters('presspermit_unfiltered_taxonomies', [])) {
+            $taxonomies = array_diff_key($taxonomies, $omit_types);
         }
 
         return $taxonomies;
-    }
-
-    public function getUnfilteredTaxonomies() {
-    	return apply_filters('presspermit_unfiltered_taxonomies', ['post_status', 'topic-tag', 'author']);
     }
 
     public function isTaxonomyEnabled($taxonomy)
