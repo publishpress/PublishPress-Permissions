@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PressPermit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-10 15:29-0500\n"
+"POT-Creation-Date: 2020-07-08 12:55-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: PublishPress <help@publishpress.com>\n"
@@ -1885,35 +1885,35 @@ msgstr ""
 msgid "Sub-%s"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:233
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:231
 msgid "default all"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:233
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:231
 msgid "clear all"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:251
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:249
 msgid "No access customizations stored."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:260
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:258
 msgid "select users"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:260
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:258
 msgid "select groups"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:264
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:262
 msgid "close"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:272
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:270
 msgid "create group"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:295
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:293
 msgid "To customize <strong>for a specific post status</strong>, edit the desired role / group / user permissions directly (Permissions > Groups or Users)"
 msgstr ""
 
@@ -2221,7 +2221,7 @@ msgstr ""
 msgid "Collaborative Publishing"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/CollabHooksAdmin.php:243
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/CollabHooksAdmin.php:215
 msgid "access denied"
 msgstr ""
 
@@ -2266,22 +2266,22 @@ msgstr ""
 msgid "You do not have permission to delete that Navigation Menu."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:450
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:469
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:448
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:467
 #, php-format
 msgid "Go to %s"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:456
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:454
 #, php-format
 msgid "The %s was saved, but you can no longer edit it."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:463
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:461
 msgid "Dashboard"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:468
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:466
 msgid "The requested modification was processed, but you can no longer edit the post."
 msgstr ""
 
@@ -2950,11 +2950,11 @@ msgstr ""
 msgid "Page Approved"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:286
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:280
 msgid "Author Search / Select"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:313
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:307
 msgid "select other"
 msgstr ""
 
@@ -3217,9 +3217,5 @@ msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:289
 msgid "Undo All Imports"
-msgstr ""
-
-#: F:\snapshot\press-permit-core/press-permit-core/vendor/publishpress/wordpress-version-notices/src/Module/MenuLink/Module.php:129
-msgid "Amazing! We are redirecting you to our site..."
 msgstr ""
 

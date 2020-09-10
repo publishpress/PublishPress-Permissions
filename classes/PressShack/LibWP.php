@@ -285,8 +285,6 @@ class LibWP
             return (int)$_REQUEST['post_ID'];
         } elseif (isset($_REQUEST['post_id'])) {
             return (int)$_REQUEST['post_id'];
-        } elseif (defined('WOOCOMMERCE_VERSION') && !empty($_REQUEST['product_id'])) {
-            return (int)$_REQUEST['product_id'];
         }
     }
 
