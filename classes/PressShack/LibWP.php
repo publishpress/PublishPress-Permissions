@@ -474,4 +474,38 @@ class LibWP
             || (did_action('admin_head') && !did_action('adminmenu'))  // menu display
         );
     }
+
+    public static function postAuthorClause($args = []) {
+        global $wpdb, $current_user;
+
+        $defaults = [
+            'user_id' => $current_user->ID,
+            'compare' => '=',
+        ];
+
+        if ($ppma_active = defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') && !empty($args['join'])) {
+            $defaults['join_table'] = 'ppma_t';
+        }
+
+        $args = array_merge($defaults, $args);
+        foreach (array_keys($defaults) as $var) {
+            $$var = $args[$var];
+        }
+
+        if (empty($args['src_table'])) {
+            $src_table = (!empty($args['source_alias'])) ? $args['source_alias'] : $wpdb->posts;
+            $args['src_table'] = $src_table;
+        } else {
+            $src_table = $args['src_table'];
+        }
+
+        if ($ppma_active && $join_table) {
+            $join_where = ($compare == '=') ? "OR $join_table.term_id > 0" : "AND $join_table.term_id IS NULL";
+            $clause = "( $src_table.post_author $compare '$user_id' $join_where )";
+        } else {
+            $clause = "$src_table.post_author $compare $user_id";
+        }
+
+        return $clause;
+    }
 }

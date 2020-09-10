@@ -269,7 +269,10 @@ class TermEdit
     {
         global $taxonomy, $typenow;
 
-        if ($typenow && !in_array($typenow, presspermit()->getEnabledPostTypes(), true)) {
+        if (($typenow && !in_array($typenow, presspermit()->getEnabledPostTypes(), true))
+        || presspermit()->isTaxonomyEnabled($taxonomy)
+        || in_array($taxonomy, presspermit()->getUnfilteredTaxonomies())
+        ) {
             return;
         }
 

@@ -303,7 +303,7 @@ class Permissions
 
     public static function addExceptionClauses($where, $required_operation, $post_type, $args = [])
     {
-        $defaults = ['src_table' => '', 'source_alias' => '', 'apply_term_restrictions' => true, 'append_post_type_clause' => true, 'additions_only' => false, 'query_contexts' => []];
+        $defaults = ['src_table' => '', 'source_alias' => '', 'apply_term_restrictions' => true, 'append_post_type_clause' => true, 'additions_only' => false, 'query_contexts' => [], 'join' => ''];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -382,7 +382,8 @@ class Permissions
                     'status' => $_status, 
                     'in_clause' => $in_clause, 
                     'src_table' => $src_table,
-                    'ids' => $_ids
+                    'ids' => $_ids,
+                    'join' => $join,
                 ]
             );
         }
@@ -421,7 +422,8 @@ class Permissions
                     'status' => '{published}', 
                     'in_clause' => $in_clause, 
                     'src_table' => $src_table,
-                    'ids' => $revise_ttids['{published}']
+                    'ids' => $revise_ttids['{published}'],
+                    'join' => $join,
                 ]
             );
         }
@@ -445,7 +447,8 @@ class Permissions
                         'status' => $_status, 
                         'in_clause' => $in_clause, 
                         'src_table' => $src_table,
-                        'ids' => $_ttids
+                        'ids' => $_ttids,
+                        'join' => $join,
                     ]
                 );
             }
@@ -529,7 +532,7 @@ class Permissions
     {
         global $wpdb;
 
-        $defaults = ['merge_additions' => false, 'exempt_post_types' => [], 'mod_types' => ['include', 'exclude'], 'additional_ttids' => [], 'apply_object_additions' => false];
+        $defaults = ['merge_additions' => false, 'exempt_post_types' => [], 'mod_types' => ['include', 'exclude'], 'additional_ttids' => [], 'apply_object_additions' => false, 'join' => ''];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -561,7 +564,8 @@ class Permissions
                     'status' => '', 
                     'in_clause' => $in_clause, 
                     'src_table' => $src_table,
-                    'ids' => $additional_ttids
+                    'ids' => $additional_ttids,
+                    'join' => $join,
                 ]
             );
 
@@ -581,7 +585,7 @@ class Permissions
                 '1=2',
                 $required_operation, 
                 $apply_object_additions, 
-                ['additions_only' => true, 'apply_term_restrictions' => false, 'src_table' => $src_table]) 
+                ['additions_only' => true, 'apply_term_restrictions' => false, 'src_table' => $src_table, 'join' => $join]) 
             ) {
                 $post_additions_clause = "OR ( $post_additions_clause )";
             }
