@@ -426,7 +426,7 @@ class AgentPermissionsUI
             </p>
             -->
 
-                <input id="submit_exc" class="button button-primary" type="submit" value="<?php _e('Save Permissions', 'press-permit-core'); ?>" name="submit">
+                <input id="submit_exc" class="button button-primary pp-primary-button" type="submit" value="<?php _e('Save Permissions', 'press-permit-core'); ?>" name="submit">
 
         </div>
     </div>
