@@ -236,7 +236,7 @@ class AgentPermissionsUI
             <tr>
                 <th><?php _e('Post Type', 'press-permit-core'); ?></th>
                 <th class="pp-select-role" style="display:none"><?php echo __('Role', 'press-permit-core'); ?></th>
-                <th class="pp-select-cond" style="display:none"><?php _e('for Statuses', 'press-permit-core'); ?></th>
+                <th class="pp-select-cond" style="display:none"><?php _e('For Statuses', 'press-permit-core'); ?></th>
                 <th class="pp-add-site-role" style="display:none"></th>
             </tr>
         </thead>
@@ -264,7 +264,7 @@ class AgentPermissionsUI
                 </td>
 
                 <td class="pp-add-site-role" style="display:none">
-                    <input id="pp_add_site_role" class="button-secondary" type="submit" name="pp_add_site_role" value="<?php _e('Add Role', 'press-permit-core'); ?>" />
+                    <input id="pp_add_site_role" class="button-secondary pp-default-button" type="submit" name="pp_add_site_role" value="<?php _e('Add Role', 'press-permit-core'); ?>" />
                 </td>
 
             </tr>
@@ -382,7 +382,7 @@ class AgentPermissionsUI
 
         <div id="pp_save_roles">
             <p class="submit">
-                <input id="submit_roles" class="button button-primary" type="submit" value="<?php _e('Save Roles', 'press-permit-core'); ?>" name="submit">
+                <input id="submit_roles" class="button button-primary pp-primary-button" type="submit" value="<?php _e('Save Roles', 'press-permit-core'); ?>" name="submit">
             </p>
         </div>
     </div>
@@ -426,9 +426,7 @@ class AgentPermissionsUI
             </p>
             -->
 
-            <p class="submit">
                 <input id="submit_exc" class="button button-primary" type="submit" value="<?php _e('Save Permissions', 'press-permit-core'); ?>" name="submit">
-            </p>
 
         </div>
     </div>
@@ -479,7 +477,7 @@ class AgentPermissionsUI
         $first_perm_type = reset($arr);
         foreach (array_keys($perms) as $perm_type) {
             $display_style = ("pp-add-$perm_type" == $current_tab) ? '' : ';display:none';
-            echo "<div class='pp-group-box pp-add-permissions pp-add-$perm_type' style='clear:both{$display_style}'>";
+            echo "<div class='pp-agents pp-group-box pp-add-permissions pp-add-$perm_type' style='clear:both{$display_style}'>";
             echo '<div>';
 
             if ('roles' == $perm_type) {
@@ -1215,7 +1213,7 @@ class AgentPermissionsUI
 
         $captions['member'] = apply_filters('presspermit_group_members_caption', __('Group Members', 'press-permit-core'));
 
-        echo '<div class="pp-group-box pp-group_members" style="display:none;float:left;">';
+        echo '<div class="pp-group-box pp-group_members" style="display:none;">';
 
         if (!$suppress_caption) {
             echo '<h3>';
@@ -1285,7 +1283,7 @@ class AgentPermissionsUI
 
         <br />
         <div>
-            <input id="pp_clone_permissions" class="button button-primary" type="submit" name="pp_clone_permissions" value="<?php _e('Do Clone'); ?>">
+            <input id="pp_clone_permissions" class="button button-primary pp-primary-button" type="submit" name="pp_clone_permissions" value="<?php _e('Do Clone'); ?>">
         </div>
     <?php
     }

@@ -118,7 +118,7 @@ class AgentPermissions
             </div>
         <?php endif; ?>
 
-            <div class="wrap pressshack-admin-wrapper" id="group-profile-page">
+            <div class="wrap pressshack-admin-wrapper" id="pp-permissions-wrapper">
                 <header>
                 <?php PluginPage::icon(); ?>
                 <h1><?php
@@ -220,26 +220,24 @@ class AgentPermissions
                                                     <label for="description"><?php echo PWP::__wp('Description:', 'press-permit-core'); ?></label>
                                                 </th>
                                                 <td>
-                                                    <input type="text" name="description" id="description"
-                                                        value="<?php echo esc_attr($agent->group_description) ?>"
-                                                        class="regular-text" <?php echo $disabled; ?> style="width:95%"/>
+                                                    <textarea name="description" id="description" rows="3" cols="40" class="regular-text <?php echo $disabled; ?>"><?php echo esc_attr($agent->group_description) ?></textarea>
                                                 </td>
                                             </tr>
                                         <?php endif; ?>
                                     </table>
                                 </td>
 
-                                <td>
-                                    <div class="pp-submit" style="text-align:right">
+                                <td style="text-align:right">
                                         <?php
                                         if (
                                             $pp_groups->groupTypeEditable($agent_type) && (empty($agent->metagroup_type) || !in_array($agent->metagroup_type, ['wp_role', 'meta_role'], true)
                                                 || apply_filters('presspermit_metagroup_editable', false, $agent->metagroup_type, $agent_id))
                                         ) {
-                                            submit_button(__('Update Group', 'press-permit-core'));
+	                                        ?>
+	                                        <input type="submit" name="submit" id="submit" class="button button-primary pp-primary-button" value="<?php echo __('Update Group', 'press-permit-core') ?>">
+	                                        <?php
                                         }
                                         ?>
-                                    </div>
                                 </td>
                             </tr>
                         </table>

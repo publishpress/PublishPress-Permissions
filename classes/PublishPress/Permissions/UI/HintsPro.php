@@ -41,10 +41,6 @@ jQuery(document).ready(function ($) {
     background-color: white
 }
 
-div.pp-logo {
-    padding-top:20px;
-}
-
 div.pp-logo,
 div.pp-logo img {
     text-align: left;
@@ -55,7 +51,7 @@ ul.pp-features {
     list-style: none;
     padding-top: 10px;
     text-align: left;
-    margin-left: 25px;
+    margin-left: 50px;
     margin-top: 0;
 }
 
@@ -89,8 +85,9 @@ ul.pro-pplinks li.spacer {
 </style>
 
 <div id="pp_features" style="display:none">
-<div class="pp-logo">
-    <p></p>
+<div class="pp-logo"><a href="https://publishpress.com">
+        <img src="<?php echo $img_url; ?>pp-logo.png"/></a>
+
     <ul class="pp-features">
 
         <li>
