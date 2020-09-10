@@ -128,15 +128,25 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.3-beta =
+= 3.4-alpha =
+* Compat : PublishPress Authors - integration of multiple authors in Permissions filtering
+
+= 3.3.3-beta4 =
 * Fixed : Deleted WordPress roles were still listed in Permissions metaboxes of Post/Term editor
 * Fixed : Limited term managers could not view some of their manageable terms under some configurations
 * Fixed : Term managers who are limited to managing a fixed set of terms had "None" category listed in Parent dropdown, even though they cannot add a top-level category
+* Fixed : Parent selection for custom post types was not properly filtered in Gutenberg editor
+* Compat : PublishPress Authors - activation of invalid "Custom permissions for Authors" setting on Edit Author screen (using a previous Permissions version) broke Authors > Authors listing and editing access
+* Compat : Public Post Preview + PublishPress Revisions: Public previews of pending and scheduled revisions were blocked
+* Fixed : Setting "Post-specific Permissions take priority" ineffective under some configurations
+* Compat : Nested Pages - Enable Permissions filtering, but disable Quick Edit and Context Menu for non-Administrators by default. Available constants: PP_NESTED_PAGES_DISABLE_FILTERING, PP_NESTED_PAGES_QUICKEDIT_ROLES, PP_NESTED_PAGES_CONTEXT_MENU_ROLES
+* Compat : WooCommerce - When editing a product, variation additions were blocked inappropriately
 
 = 3.2.5 - 13 Aug 2020 =
 * Fixed : WP 5.5 - Javascript error in Classic Editor if Default Privacy is set to a non-public status
 * Fixed : WP object cache was cleared when a non-Administrator accessed wp-admin Pages listing
 * Fixed : Pro - Post Status dropdown in Gutenberg editor was pushed into bad alignment if PublishPress 2.2 active
+* Fixed : Classic Editor plugin - Block editor usage was not properly detected if user selection of default editor is enabled and set to Block 
 
 = 3.2.4 - 7 Aug 2020 =
 * Fixed : Page Parent could not be viewed or changed in Gutenberg editor (since 3.2.3)
