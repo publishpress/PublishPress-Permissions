@@ -490,7 +490,9 @@ class Permissions
         if ($additions = apply_filters('presspermit_apply_additions', $additions, $where, $required_operation, $post_type, $args)) {
             $where = "( $where ) OR ( " . Arr::implode(' OR ', $additions) . " )";
 
-            if (defined('PP_RESTRICTION_PRIORITY') && PP_RESTRICTION_PRIORITY) {  // this constant forces exclusions to take priority over additions
+            $restriction_clause = '1=1';
+
+            if (presspermit()->getOption('post_blockage_priority')) {
                 if ($ids = $user->getExceptionPosts($required_operation, 'exclude', $exc_post_type)) {
                     $_args = array_merge($args, ['mod' => 'exclude', 'ids' => $ids, 'src_table' => $src_table, 'logic' => "NOT IN"]);
 
@@ -501,16 +503,15 @@ class Permissions
                         $post_type,
                         $_args
                     );
-                } else
-                    $restriction_clause = '1=1';
+                }
+            }
 
-                if ($apply_term_restrictions) {
+            if ($apply_term_restrictions && defined('PP_RESTRICTION_PRIORITY') && PP_RESTRICTION_PRIORITY) {
                     $restriction_clause .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table, ['mod_types' => 'exclude']);
                 }
 
                 if ($restriction_clause != '1=1') {
                     $where = "( $where ) AND ( $restriction_clause )";
-                }
             }
 
             if (!empty($post_blockage_clause)) {

@@ -49,7 +49,7 @@ class MediaQuery
         $type_obj = get_post_type_object('attachment');
 
         if ('delete' == $required_operation)
-            $reqd_cap = ($type_obj->cap->delete_others_posts != 'edit_others_posts') ? $type_obj->cap->edit_others_posts : 'delete_others_files';
+            $reqd_cap = ($type_obj->cap->delete_others_posts != 'edit_others_posts') ? $type_obj->cap->delete_others_posts : 'delete_others_files';
         else
             $reqd_cap = ($type_obj->cap->edit_others_posts != 'edit_others_posts') ? $type_obj->cap->edit_others_posts : 'edit_others_files';
 
