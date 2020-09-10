@@ -57,44 +57,16 @@ class CollabHooksAdmin
 
         add_filter('presspermit_posts_clauses_intercept', [$this, 'fltEditNavMenuFilterDisable'], 10, 2);
 
-        if (class_exists('NestedPages') && !empty($_REQUEST['page']) && ('nestedpages' == $_REQUEST['page'])) {
-            if (defined('PP_NESTED_PAGES_DISABLE_FILTERING') && !defined('PP_NESTED_PAGES_ENABLE_FILTERING')) {
-	            add_filter(
-	                'presspermit_posts_clauses_intercept', 
-	                function ($clauses, $orig_clauses) {
-	                    return $orig_clauses;
-	                }, 10, 2
-	            );
-            } else {
-                add_action('admin_print_scripts', [$this, 'NestedPagesDisableQuickEdit']);
-            }
+        if (!defined('PP_NESTED_PAGES_ENABLE_FILTERING') && class_exists('NestedPages') && !empty($_REQUEST['page']) && ('nestedpages' == $_REQUEST['page'])) {
+            add_filter(
+                'presspermit_posts_clauses_intercept', 
+                function ($clauses, $orig_clauses) {
+                    return $orig_clauses;
+                }, 10, 2
+            );
         }
 
         add_action('admin_menu', [$this, 'actSettingsPageMaybeRedirect'], 999);
-    }
-
-    function NestedPagesDisableQuickEdit() {
-        global $current_user;
-
-        $allow_quickedit_roles = (defined('PP_NESTED_PAGES_QUICKEDIT_ROLES')) ? explode(',', str_replace(' ', '', strtolower(constant('PP_NESTED_PAGES_QUICKEDIT_ROLES')))) : [];
-        $allow_context_menu_roles = (defined('PP_NESTED_PAGES_CONTEXT_MENU_ROLES')) ? explode(',', str_replace(' ', '', strtolower(constant('PP_NESTED_PAGES_CONTEXT_MENU_ROLES')))) : [];
-
-        $hide_quickedit = !presspermit()->isUserUnfiltered() && !array_intersect($current_user->roles, $allow_quickedit_roles);
-        $hide_context_menu = !presspermit()->isUserUnfiltered() && !array_intersect($current_user->roles, $allow_context_menu_roles);
-
-        if ($hide_quickedit || $hide_context_menu) {
-            ?>
-            <style type="text/css">
-            <?php if ($hide_quickedit):?>
-            a.np-quick-edit {display:none;}
-            <?php endif;?>
-            
-            <?php if ($hide_context_menu):?>
-            div.nestedpages-dropdown a {display:none;}
-            <?php endif;?>
-            </style>
-            <?php
-        }
     }
 
     // For old extensions linking to page=pp-settings.php, redirect to page=presspermit-settings, preserving other request args

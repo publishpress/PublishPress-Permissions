@@ -1,4 +1,4 @@
-# PublishPress Permissions
+# PressPermit
 
 
 ## Description
