@@ -1,0 +1,365 @@
+/* PressPermit. Copyright (c) 2020 PublishPress.
+ * This file is licensed under the GNU GPL.
+ */
+
+@import "_elements";
+
+/* --- Colors --- */
+.pp-gray, .pp-gray a, .pp-gray a:link, .pp-gray a:visited {
+  color: #888;
+}
+
+.pp-blue, .pp-blue a, .pp-blue a:link, .pp-blue a:visited {
+  color: blue;
+}
+
+.pp-green, .pp-green a, .pp-green a:link, .pp-green a:visited {
+  color: #0a0;
+}
+
+.pp-red, .pp-red a, .pp-red a:link, .pp-red a:visited {
+  color: #d00;
+}
+
+.pp-bg-gray {
+  background-color: #ededed;
+}
+
+.pp-subtext {
+  color: #777;
+  font-style: italic;
+  margin-top: 3px;
+}
+
+.pp-settings-caption {
+  margin-top: 10px;
+}
+
+/* --- Misc Admin --- */
+.pp-hint {
+  margin-top: 0.2em;
+}
+
+.pp-notes {
+  margin-top: 0.2em;
+  list-style-type: circle;
+}
+
+.pp-notes li {
+  margin-bottom: 1em;
+  margin-left: 1.5em;
+}
+
+.pp-admin-notice {
+  padding: 10px;
+  line-height: 18px;
+  position: relative;
+}
+
+.pp-admin-notice-plugin {
+  margin-top: 30px;
+}
+
+#pp_dashboard_message, .pp-admin-notice, .pp-admin-notice-plugin {
+  padding: 10px;
+}
+
+.pp-ext-promo {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  margin-top: 1em;
+  color: #777;
+}
+
+.pp-ext-promo div {
+  margin-top: 0.3em;
+}
+
+#the-list a span.pp_nolink {
+  color: black;
+  text-decoration: none
+}
+
+#change_log.pp-update {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 540px;
+}
+
+#change_log.pp-update li {
+  margin-bottom: 10px
+}
+
+.agp-vspaced_input {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.agp-opt-checkbox {
+  margin-bottom: 10px;
+}
+
+.agp-vtight_input {
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+
+span.pp-key-expired {
+  font-weight: bold;
+  color: #c00;
+  vertical-align: bottom;
+  margin-right: 0.5em
+}
+
+/* Contextual Help */
+#tab-panel-pp div {
+  margin-left: 20px;
+}
+
+div.pp-custom-privacy-promo, div.pp-file-filtering-promo {
+  margin-left: 5px;
+}
+
+/* --- edit-tags.php (PP Exception metaboxes) --- */
+#edittag div.meta-box-sortables {
+  min-width: 420px;
+  max-width: 800px;
+}
+
+
+/* --- Users, Groups Listing --- */
+div.presspermit-groups .pp-group-site-roles {
+  font-weight: bold;
+}
+
+th.column-pp_no_groups, td.column-pp_no_groups, th.column-pp_no_groups a {
+  width: 30px;
+  text-align: right;
+  padding-right: 2px;
+}
+
+th.column-pp_groups, td.column-pp_groups, th.column-pp_groups a {
+  padding-left: 2px;
+  text-align: left;
+}
+
+div.pp-bulk-user-perm, p.pp-bulk-user-perm {
+  margin-top: 50px;
+}
+
+/* --- User Profile --- */
+#userprofile_groupsdiv_pp fieldset {
+  width: 90%;
+}
+
+#userprofile_groupsdiv_pp fieldset input {
+  width: auto;
+}
+
+
+/* --- User Profile and Permissions Edit --- */
+.pp-group-box {
+  margin: 0 0 20px !important;
+  padding: 20px !important;
+  border: 1px solid #ccc;
+
+  h3 {
+    margin: 0 0 20px 0;
+    padding: 0;
+  }
+}
+
+#poststuff .pp-group-box h3 {
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0.5em 0 0.5em 0;
+}
+
+.pp-group_members {
+  background-color: #fff;
+  margin-right: 20px;
+}
+
+.pp-user-roles {
+  background-color: #EAF7F7;
+}
+
+.pp-current-roles-note {
+  color: #777;
+  margin-top: 0.4em;
+  margin-left: 4em;
+}
+
+option.pp-new-selection {
+  color: #00c;
+}
+
+.pp-bulk-groups {
+  margin-left: 14px;
+}
+
+.pp-usermeta-field-more {
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.pp-user-meta-search {
+  white-space: nowrap;
+  margin-top: 2px;
+  margin-bottom: 2px;
+
+  input {
+    vertical-align: middle !important;
+  }
+}
+
+div.pp_dashboard_message {margin-top:20px !important;}
+
+.pp-notice a, .pp-notice a:visited {
+  font-weight: bold;
+  color: @main_color;
+}
+
+.pp-notice a:hover {
+  text-decoration: underline !important;
+}
+
+/* Admin icon customized per admin theme, excluding the default and light */
+.admin-color-blue #toplevel_page_presspermit-groups .dashicons-before::before,
+.admin-color-coffee #toplevel_page_presspermit-groups .dashicons-before::before,
+.admin-color-ectoplasm #toplevel_page_presspermit-groups .dashicons-before::before,
+.admin-color-midnight #toplevel_page_presspermit-groups .dashicons-before::before,
+.admin-color-ocean #toplevel_page_presspermit-groups .dashicons-before::before,
+.admin-color-sunrise #toplevel_page_presspermit-groups .dashicons-before::before,
+.admin-color-blue #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
+.admin-color-coffee #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
+.admin-color-ectoplasm #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
+.admin-color-midnight #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
+.admin-color-ocean #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
+.admin-color-sunrise #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
+.admin-color-blue #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+.admin-color-coffee #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+.admin-color-ectoplasm #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+.admin-color-midnight #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+.admin-color-ocean #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+.admin-color-sunrise #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+.admin-color-blue #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
+.admin-color-coffee #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
+.admin-color-ectoplasm #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
+.admin-color-midnight #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
+.admin-color-ocean #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
+.admin-color-sunrise #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+
+#toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+#toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 -26px;
+}
+
+/* Customize the icon for "Light" admin theme's hover and active states */
+.admin-color-light #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+.admin-color-light #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 8px;
+}
+
+#toplevel_page_presspermit-groups .wp-menu-open .dashicons-before::before,
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups .dashicons-before::before,
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups:hover .dashicons-before::before
+{
+  background-position: 0 -60px;
+}
+
+#toplevel_page_presspermit-groups > a.wp-menu-open,
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > a {
+  background: @main_color !important;
+}
+
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > a > div,
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > li:hover,
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > li a:focus
+{
+  color: #fff;
+}
+
+#toplevel_page_presspermit-groups ul li a[href*="presspermit-edit-permissions"] {
+  display: none;
+}
+
+.publishpress-extended-post-status select {
+  width: 120px;
+}
+
+.pressshack-admin-wrapper p.submit {
+  padding-bottom:0;
+}
+
+.pressshack-admin-wrapper .button-primary {
+  text-shadow: none !important;
+}
+
+#wpbody-content .pressshack-admin-wrapper p.pp-submit {
+  float:right;
+}
+
+#wpbody-content .pressshack-admin-wrapper > footer > div.pp-rating {
+  margin-top:5px;
+}
+
+.pressshack-admin-wrapper footer {
+  margin-top:25px;
+}
+
+.pressshack-admin-wrapper .activating a, .pressshack-admin-wrapper .activating a:link, .pressshack-admin-wrapper .activating a:visited {
+  color:rgb(0, 115, 170);
+  text-decoration: underline;
+}
+
+.pressshack-admin-wrapper .activating a:active, .pressshack-admin-wrapper .activating a:hover {
+  color:#00a0d2;
+  text-decoration: underline;
+}
+
+// Search user and groups
+.pp-select-exception-agents,
+.pp-agents-selection {
+
+  select[id*="agent_results_"] {
+    width: 240px;
+
+    @media (max-width: 782px)  {
+      width: 240px;
+    }
+  }
+
+  .pp-search-box-with-icon-wrapper {
+    position: relative;
+
+    i {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      color: #999;
+    }
+  }
+
+  input[id*="agent_search_text_"],
+  #agent_search_text_member {
+    width: 100%;
+  }
+
+  td select {
+    width: 170px;
+  }
+}
+
+// Design consistency
+.wp-core-ui {
+
+  .ppButtons();
+  .ppFormFields();
+  .ppTabs();
+
+}

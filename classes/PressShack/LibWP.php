@@ -52,9 +52,9 @@ class LibWP
         }
 
         if (class_exists('Classic_Editor')) {
-			if (isset($_REQUEST['classic-editor__forget']) && isset($_REQUEST['classic'])) {
+			if (isset($_REQUEST['classic-editor__forget']) && (isset($_REQUEST['classic']) || isset($_REQUEST['classic-editor']))) {
 				return false;
-			} elseif (isset($_REQUEST['classic-editor__forget']) && !isset($_REQUEST['classic'])) {
+			} elseif (isset($_REQUEST['classic-editor__forget']) && !isset($_REQUEST['classic']) && !isset($_REQUEST['classic-editor'])) {
 				return true;
 			} elseif (get_option('classic-editor-allow-users') === 'allow') {
 				if ($post_id = self::getPostID()) {
@@ -65,6 +65,9 @@ class LibWP
 					} elseif ('classic-editor' == $which) {
 						return false;
 					}
+				} else {
+                    $use_block = ('block' == get_user_meta($current_user->ID, 'wp_classic-editor-settings'));
+                    return $use_block && apply_filters('use_block_editor_for_post_type', $use_block, $post_type, PHP_INT_MAX);
 				}
 			}
 		}
@@ -157,7 +160,7 @@ class LibWP
     }
 
     // support array matching for post type
-    public static function getPostStatuses($args, $return = 'names', $operator = 'and')
+    public static function getPostStatuses($args, $return = 'names', $operator = 'and', $params = [])
     {
         if (isset($args['post_type'])) {
             $post_type = $args['post_type'];
@@ -174,7 +177,7 @@ class LibWP
             $statuses = get_post_stati($args, $return, $operator);
         }
 
-        return apply_filters('presspermit_get_post_statuses', $statuses, $args, $return, $operator);
+        return apply_filters('presspermit_get_post_statuses', $statuses, $args, $return, $operator, $params);
     }
 
     public static function findPostType($post_id = 0, $return_default = true)
@@ -282,6 +285,8 @@ class LibWP
             return (int)$_REQUEST['post_ID'];
         } elseif (isset($_REQUEST['post_id'])) {
             return (int)$_REQUEST['post_id'];
+        } elseif (defined('WOOCOMMERCE_VERSION') && !empty($_REQUEST['product_id'])) {
+            return (int)$_REQUEST['product_id'];
         }
     }
 
@@ -468,5 +473,39 @@ class LibWP
             (did_action('_admin_menu') && !did_action('admin_menu'))  // menu construction
             || (did_action('admin_head') && !did_action('adminmenu'))  // menu display
         );
+    }
+
+    public static function postAuthorClause($args = []) {
+        global $wpdb, $current_user;
+
+        $defaults = [
+            'user_id' => $current_user->ID,
+            'compare' => '=',
+        ];
+
+        if ($ppma_active = defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') && !empty($args['join'])) {
+            $defaults['join_table'] = 'ppma_t';
+        }
+
+        $args = array_merge($defaults, $args);
+        foreach (array_keys($defaults) as $var) {
+            $$var = $args[$var];
+        }
+
+        if (empty($args['src_table'])) {
+            $src_table = (!empty($args['source_alias'])) ? $args['source_alias'] : $wpdb->posts;
+            $args['src_table'] = $src_table;
+        } else {
+            $src_table = $args['src_table'];
+        }
+
+        if ($ppma_active && $join_table) {
+            $join_where = ($compare == '=') ? "OR $join_table.term_id > 0" : "AND $join_table.term_id IS NULL";
+            $clause = "( $src_table.post_author $compare '$user_id' $join_where )";
+        } else {
+            $clause = "$src_table.post_author $compare $user_id";
+        }
+
+        return $clause;
     }
 }

@@ -49,7 +49,7 @@ class MediaQuery
         $type_obj = get_post_type_object('attachment');
 
         if ('delete' == $required_operation)
-            $reqd_cap = ($type_obj->cap->delete_others_posts != 'edit_others_posts') ? $type_obj->cap->edit_others_posts : 'delete_others_files';
+            $reqd_cap = ($type_obj->cap->delete_others_posts != 'edit_others_posts') ? $type_obj->cap->delete_others_posts : 'delete_others_files';
         else
             $reqd_cap = ($type_obj->cap->edit_others_posts != 'edit_others_posts') ? $type_obj->cap->edit_others_posts : 'edit_others_files';
 
@@ -68,10 +68,12 @@ class MediaQuery
         }
 
         // optionally hide other users' unattached uploads, but not from site-wide Editors
-        if ($admin_others_unattached || $can_edit_others_sitewide)
+        if ($admin_others_unattached || $can_edit_others_sitewide) {
             $author_clause = '';
-        else
-            $author_clause = "AND $src_table.post_author = {$current_user->ID}";
+        } else {
+            //$author_clause = "AND $src_table.post_author = {$current_user->ID}";
+            $author_clause = "AND " . PWP::postAuthorClause($args);
+        }
 
         if (!$subqry && $author_clause && !$admin_others_unattached && !$admin_others_attached && !$can_edit_others_sitewide) {
             $where .= " AND ( 1=1 $author_clause )";
@@ -88,17 +90,20 @@ class MediaQuery
                 $parent_subquery = "( $parent_subquery OR $src_table.post_parent IN ( $readable_parents_subqry ) )";
             }
 
-            if (is_admin() && (!defined('PP_BLOCK_UNATTACHED_UPLOADS') || !PP_BLOCK_UNATTACHED_UPLOADS))
+            if (is_admin() && (!defined('PP_BLOCK_UNATTACHED_UPLOADS') || !PP_BLOCK_UNATTACHED_UPLOADS)) {
                 $unattached_clause = "( $src_table.post_parent = 0 $author_clause ) OR";
-            else
+            } else {
                 $unattached_clause = '';
+            }
+
+            $author_clause = PWP::postAuthorClause($args);
 
             $attached_clause = ($admin_others_attached || $can_edit_others_sitewide || $admin_others_attached_to_readable) 
             ? '' 
-            : "AND $src_table.post_author = {$current_user->ID}";
+            : "AND $author_clause";
 
             $own_clause = ($pp->getOption('own_attachments_always_editable') || !empty($current_user->allcaps['edit_own_attachments'])) 
-            ? "$src_table.post_author = {$current_user->ID} OR " 
+            ? "$author_clause OR " 
             : '';
             
             $where .= " AND ( {$own_clause}$unattached_clause ( $parent_subquery $attached_clause ) )";

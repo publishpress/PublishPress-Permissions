@@ -6,7 +6,7 @@ class DatabaseSetup
     function __construct($last_db_ver) {
         require_once(PRESSPERMIT_IMPORT_ABSPATH . '/db-config.php');
 
-        if (MULTISITE) {
+        if (is_multisite()) {
             add_action('switch_blog', [$this, 'actMultisiteSupport']);
         }
 
@@ -75,10 +75,9 @@ class DatabaseSetup
         ;
         ";
 
-        require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Database.php');
+        require_once(PRESSPERMIT_CLASSPATH . '/DB/DatabaseSetup.php');
                 
         // apply all table definitions
-        \PressShack\Database::dbDelta($tabledefs);
-
+        \PublishPress\Permissions\DB\DatabaseSetup::dbDelta($tabledefs);
     }
 }

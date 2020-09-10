@@ -55,7 +55,7 @@ class GroupNew
             </div>
         <?php endif; ?>
 
-            <div class="wrap pressshack-admin-wrapper" id="group-profile-page">
+            <div class="wrap pressshack-admin-wrapper" id="pp-permissions-wrapper">
                 <header>
                 <?php
                 PluginPage::icon();

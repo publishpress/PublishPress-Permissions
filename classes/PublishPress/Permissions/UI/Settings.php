@@ -25,7 +25,7 @@ class Settings
         $wp_scripts->in_footer[] = 'presspermit-settings';  // otherwise it will not be printed in footer  @todo: review
 
         if (presspermit()->isPro()) {
-            wp_enqueue_script('presspermit-pro-settings', PRESSPERMIT_URLPATH . "/includes-pro/settings-pro{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
+            wp_enqueue_script('presspermit-pro-settings', plugins_url('', PRESSPERMIT_PRO_FILE) . "/includes-pro/settings-pro{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_PRO_VERSION, true);
             $wp_scripts->in_footer[] = 'presspermit-pro-settings';  // otherwise it will not be printed in footer  @todo: review
         }
 
@@ -62,7 +62,7 @@ class Settings
         }
 
         ?>
-        <div class="pressshack-admin-wrapper wrap">
+        <div class="pressshack-admin-wrapper wrap" id="pp-permissions-wrapper">
             <?php
             echo '<form id="pp_settings_form" action="" method="post">';
             wp_nonce_field('pp-update-options');

@@ -173,8 +173,10 @@ class PermissionsHooks
 
         // --- version check ---
         if ( ! $ver = get_option('presspermitpro_version') ) {
-            if ( ! $ver = get_option('presspermit_version') ) {
-                $ver = get_option('pp_c_version');
+            if (!defined('PRESSPERMIT_PRO_VERSION')) {
+            	if ( ! $ver = get_option('presspermit_version') ) {
+                	$ver = get_option('pp_c_version');
+                }
             }
         }
 
@@ -188,7 +190,10 @@ class PermissionsHooks
             }
 
             update_option('presspermit_version', ['version' => PRESSPERMIT_VERSION, 'db_version' => PRESSPERMIT_DB_VERSION]);
-            update_option('presspermitpro_version', ['version' => PRESSPERMIT_VERSION, 'db_version' => PRESSPERMIT_DB_VERSION]);
+
+            if (defined('PRESSPERMIT_PRO_VERSION')) {
+                update_option('presspermitpro_version', ['version' => PRESSPERMIT_PRO_VERSION, 'db_version' => PRESSPERMIT_DB_VERSION]);
+            }
         }
 
         if ($ver && !empty($ver['version'])) {
@@ -197,7 +202,10 @@ class PermissionsHooks
                 require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
                 new Permissions\PluginUpdated($ver['version']);
                 update_option('presspermit_version', ['version' => PRESSPERMIT_VERSION, 'db_version' => PRESSPERMIT_DB_VERSION]);
-                update_option('presspermitpro_version', ['version' => PRESSPERMIT_VERSION, 'db_version' => PRESSPERMIT_DB_VERSION]);
+
+                if (defined('PRESSPERMIT_PRO_VERSION')) {
+                    update_option('presspermitpro_version', ['version' => PRESSPERMIT_PRO_VERSION, 'db_version' => PRESSPERMIT_DB_VERSION]);
+                }
             }
 
             if (is_multisite() && !$pp->getOption('wp_role_sync')) {
@@ -384,7 +392,9 @@ class PermissionsHooks
         $uri = $page->post_name;
 
         foreach ($page->ancestors as $parent) {
-            $uri = get_post($parent)->post_name . '/' . $uri;
+            if ($_post = get_post($parent)) {
+                $uri = $_post->post_name . '/' . $uri;
+            }
         }
 
         return $uri;

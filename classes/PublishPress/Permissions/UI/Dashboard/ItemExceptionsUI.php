@@ -97,7 +97,7 @@ class ItemExceptionsUI
         $class = "class='pp-agents pp-exceptions'";
 
         //need effective line break here if not IE
-        echo "<div style='clear:both;margin:0 0 0.3em 0' $class>";
+        echo "<div style='clear:both;' $class>";
 
         foreach (array_keys($agent_types) as $agent_type) {
             $hide_class = ($toggle_agents && ($agent_type != $default_agent_type)) ? ' class="hide-if-js"' : '';
@@ -142,7 +142,7 @@ class ItemExceptionsUI
             <table class="pp-item-exceptions-ui pp-exc-<?php echo $agent_type; ?>" style="width:100%">
                 <tr>
                     <?php if ('wp_role' != $agent_type) : ?>
-                        <td class="pp-select-exception-agents" style="display:none;">
+                        <td class="pp-select-exception-agents">
                             <?php
                             // Select Groups / Users UI
 
@@ -198,14 +198,16 @@ class ItemExceptionsUI
                                     if ('wp_role' == $agent_type) {
                                         foreach ($current_exceptions[$op][$agent_type] as $agent_id => $agent_exceptions) {
                                             if ($agent_id && isset($this->data->agent_info[$agent_type][$agent_id])) {
-                                                $this->render->drawRow(
-                                                    $agent_type,
-                                                    $agent_id,
-                                                    $current_exceptions[$op][$agent_type][$agent_id],
-                                                    $this->data->inclusions_active,
-                                                    $this->data->agent_info[$agent_type][$agent_id],
-                                                    compact('for_item_type', 'op', 'reqd_caps', 'hierarchical')
-                                                );
+                                                if ((false === strpos($this->data->agent_info[$agent_type][$agent_id]->name, '[WP ')) || defined('PRESSPERMIT_DELETED_ROLE_EXCEPTIONS_UI')) {
+                                                    $this->render->drawRow(
+                                                        $agent_type,
+                                                        $agent_id,
+                                                        $current_exceptions[$op][$agent_type][$agent_id],
+                                                        $this->data->inclusions_active,
+                                                        $this->data->agent_info[$agent_type][$agent_id],
+                                                        compact('for_item_type', 'op', 'reqd_caps', 'hierarchical')
+                                                    );
+                                                }
                                             }
                                         }
                                     } else {
@@ -245,31 +247,6 @@ class ItemExceptionsUI
 
                         </div>
 
-                        <?php if (!$any_stored) : ?>
-                            <div class="pp-no-exceptions"><?php _e('No access customizations stored.', 'press-permit-core'); ?></div>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="pp-exception-actions" <?php echo $colspan; ?>>
-                        <?php if ('wp_role' != $agent_type) : ?>
-                            <a class="pp-select-exception-agents" href="#">
-                                <?php ('user' == $agent_type) ? _e('select users', 'press-permit-core') : _e('select groups', 'press-permit-core'); ?>
-                            </a>
-
-                            <a class="pp-close-select-exception-agents" href="#"
-                               style="display:none;"><?php _e('close', 'press-permit-core'); ?></a>
-                        <?php
-                        endif;
-                        if ($pp_groups->groupTypeEditable($agent_type) && $pp_groups->userCan('pp_create_groups', 0, $agent_type)) :
-                            ?>
-                            &nbsp;&bull;&nbsp;
-                            <a class="pp-create-exception-agent" href="admin.php?page=presspermit-group-new"
-                               target="_blank">
-                                <?php _e('create group', 'press-permit-core'); ?>
-                            </a>
-                        <?php endif; ?>
                     </td>
                 </tr>
             </table>

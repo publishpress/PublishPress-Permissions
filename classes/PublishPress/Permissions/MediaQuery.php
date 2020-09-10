@@ -73,7 +73,7 @@ class MediaQuery
                 $_args
             );
 
-            $own_clause = (apply_filters('presspermit_read_own_attachments', false, $args)) ? "$src_table.post_author = '{$current_user->ID}' OR " : '';
+            $own_clause = (apply_filters('presspermit_read_own_attachments', false, $args)) ? PWP::postAuthorClause($args) . ' OR ' : '';
 
             if (apply_filters('presspermit_attachments_allow_unfiltered_parent', class_exists('SlideDeckPlugin', false))) {
                 $pp_type_csv = implode("','", array_merge(presspermit()->getEnabledPostTypes(), ['revision', 'attachment']));

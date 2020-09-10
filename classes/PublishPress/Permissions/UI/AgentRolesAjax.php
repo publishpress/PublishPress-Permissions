@@ -107,7 +107,7 @@ class AgentRolesAjax
                     }
 
                     if ($direct_assignment) {
-                        continue;
+                        break;
                     }
 
                     $html = apply_filters('presspermit_permission_status_ui', $html, $for_item_type, $type_caps, $role_name);

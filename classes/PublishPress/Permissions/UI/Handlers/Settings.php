@@ -20,7 +20,7 @@ class Settings
 
         if (!empty($_REQUEST['pp_renewal'])) {
             if (presspermit()->isPro()) {
-                include_once(PRESSPERMIT_ABSPATH . '/includes-pro/pro-renewal-redirect.php');
+                include_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/pro-renewal-redirect.php');
             } else {
                 include_once(PRESSPERMIT_ABSPATH . '/includes/renewal-redirect.php');
             }

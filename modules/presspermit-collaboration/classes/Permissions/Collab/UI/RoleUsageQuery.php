@@ -20,18 +20,14 @@ class RoleUsageQuery
     var $total_roles = 0;
 
     /**
-     * PHP5 constructor
      *
      * @param string|array $args The query variables
      * @return WP_Group_Query
      */
     function __construct($query = null)
     {
-        //if ( !empty( $query ) ) {
-        global $blog_id;
-
         $this->query_vars = wp_parse_args($query, [
-            'blog_id' => $blog_id,
+            'blog_id' => get_current_blog_id(),
             'include' => [],
             'exclude' => [],
             'search' => '',
@@ -44,7 +40,6 @@ class RoleUsageQuery
 
         $this->prepare_query();
         $this->query();
-        //}
     }
 
     function prepare_query()

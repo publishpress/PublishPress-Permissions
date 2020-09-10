@@ -65,7 +65,7 @@ class RoleUsage
         }
         ?>
 
-        <div class="wrap pressshack-admin-wrapper presspermit-role-usage">
+        <div class="wrap pressshack-admin-wrapper presspermit-role-usage" id="pp-permissions-wrapper">
             <header>
             <?php \PublishPress\Permissions\UI\PluginPage::icon(); ?>
             <h1>

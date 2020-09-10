@@ -52,7 +52,6 @@ class SettingsTabCore
             'display_user_profile_groups' => __('Permission Groups on User Profile', 'press-permit-core'),
             'display_user_profile_roles' => __('Supplemental Roles on User Profile', 'press-permit-core'),
             'new_user_groups_ui' => __('Select Permission Groups at User creation', 'press-permit-core'),
-            'admin_hide_uneditable_posts' => __('Hide non-editable posts', 'press-permit-core'),
             'post_blockage_priority' => __('Post-specific Permissions take priority', 'press-permit-core'),
         ];
 
@@ -122,18 +121,24 @@ class SettingsTabCore
                         $option_name = 'enabled_taxonomies';
                         _e('Modify permissions for these Taxonomies:', 'press-permit-core');
                         echo '<br />';
-                        $types = get_taxonomies(['public' => true], 'object');
+                        
+                        $_args = (defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) ? [] : ['public' => true];
+                        $types = get_taxonomies($_args, 'object');
 
-                        $omit_types = apply_filters('presspermit_unfiltered_taxonomies', ['post_status', 'topic-tag']);
-
-                        if ($omit_types) // avoid confusion with PublishPress administrative taxonomy
+                        if ($omit_types = $pp->getUnfilteredTaxonomies()) // avoid confusion with PublishPress administrative taxonomy
                         {
-                            $types = array_diff_key($types, array_fill_keys((array)$omit_types, true));
+                            if (!defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) {
+	                            $types = array_diff_key($types, array_fill_keys((array)$omit_types, true));
+	                        }
                         }
 
                         $hidden_types = apply_filters('presspermit_hidden_taxonomies', []);
 
-                        $types = $pp->admin()->orderTypes($types);
+                        if (defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) {
+                            $hidden_types = [];
+                        } else {
+                        	$types = $pp->admin()->orderTypes($types);
+                        }
                     } else {
                         $option_name = 'enabled_post_types';
                         _e('Modify permissions for these Post Types:', 'press-permit-core');
@@ -293,18 +298,21 @@ class SettingsTabCore
                     <?php
                     $ui->optionCheckbox('display_branding', $tab, $section, '');
                     
-                    $listable = defined('PP_ADMIN_READONLY_LISTABLE');
-
-                    $hint = ($pp->moduleExists('collaboration') && !$listable)
-                        ? __('Note: To allow listing of uneditable posts in wp-admin, define constant PP_ADMIN_READONLY_LISTABLE', 'press-permit-core')
-                        : '';
-
-                    $args = ($pp->moduleActive('collaboration') && !$listable)
-                        ? ['val' => 1, 'disabled' => true, 'no_storage' => true]
-                        : [];
-
-                    $ui->optionCheckbox('admin_hide_uneditable_posts', $tab, $section, $hint, '', $args);
+                    if (defined('PP_ADMIN_READONLY_LISTABLE') && (!$pp->getOption('admin_hide_uneditable_posts') || defined('PP_ADMIN_POSTS_NO_FILTER'))) {
+                        $hint = __('Unmodified from WordPress default behavior. To enable filtering, remove constant definition PP_ADMIN_READONLY_LISTABLE.', 'press-permit-core');
+                    } else {
+                        $hint = ($pp->moduleActive('collaboration'))
+                            ? __('Uneditable posts are hidden from wp-admin listings. To expose them, use a role editor to add desired capabilities: list_posts, list_other_pages etc.', 'press-permit-core')
+                            : __('To customize editing permissions, enable the Collaborative Publishing module.', 'press-permit-core');
+                    }
                     ?>
+                    <!--
+                    <p style="margin-top:20px">
+                    <?php
+                    printf(__('%sPosts / Pages Listing:%s %s', 'press-permit-core'), '<b>', '</b>', $hint);
+                    ?>
+                    </p>
+                    -->
                 </td>
             </tr>
         <?php

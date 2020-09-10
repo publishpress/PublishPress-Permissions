@@ -253,11 +253,15 @@ class Permissions
 
         // @todo: dir()
 
-        foreach($this->getAvailableModules() as $module) {
+        $available_modules = $this->getAvailableModules();
+
+        foreach($available_modules as $module) {
             if (empty($inactive_modules[$module]) && file_exists("$dir/$module/$module.php")) {
                 include_once("$dir/$module/$module.php");
             }
         }
+
+        do_action('presspermit_load_modules', compact('available_modules', 'inactive_modules'));
     }
 
     public function getAvailableModules($args = [])
@@ -750,7 +754,9 @@ class Permissions
             $object_type = '';
         }
 
-        $args['public'] = true;
+        if (!defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) {
+        	$args['public'] = true;
+        }
 
         if (false === $object_type) {
             $taxonomies = get_taxonomies($args);
@@ -785,11 +791,15 @@ class Permissions
             $taxonomies = array_intersect($taxonomies, array_keys(array_filter($enabled)));
         }
 
-        if ($omit_types = apply_filters('presspermit_unfiltered_taxonomies', [])) {
-            $taxonomies = array_diff_key($taxonomies, $omit_types);
+        if ($omit_types = $this->getUnfilteredTaxonomies()) {
+            $taxonomies = array_diff($taxonomies, $omit_types);
         }
 
         return $taxonomies;
+    }
+
+    public function getUnfilteredTaxonomies() {
+    	return apply_filters('presspermit_unfiltered_taxonomies', ['post_status', 'topic-tag', 'author']);
     }
 
     public function isTaxonomyEnabled($taxonomy)
@@ -971,7 +981,7 @@ class Permissions
     public function load_updater()
     {
 		if ($this->isPro()) {
-        	require_once(PRESSPERMIT_ABSPATH . '/includes-pro/library/Factory.php');
+        	require_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/library/Factory.php');
         	$container = \PublishPress\Permissions\Factory::get_container();
 			return $container['edd_container']['update_manager'];
 		}
@@ -980,7 +990,7 @@ class Permissions
     public function keyStatus($refresh = false)
     {
         if ($this->isPro()) {
-            require_once(PRESSPERMIT_ABSPATH . '/includes-pro/pro-key.php');
+            require_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/pro-key.php');
             return _presspermit_key_status($refresh);
         } else {
             require_once(PRESSPERMIT_ABSPATH . '/includes/key.php');

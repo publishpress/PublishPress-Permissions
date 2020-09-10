@@ -4,15 +4,21 @@ namespace PublishPress\Permissions\Collab;
 class RESTInit
 {
     function __construct() {
-        foreach (presspermit()->getEnabledPostTypes() as $post_type) {
-            add_filter("rest_{$post_type}_collection_params", [$this, 'post_collection_params'], 99, 2);
-
-            add_filter("rest_{$post_type}_query", [$this, 'page_parent_query_args'], 10, 2);
-        }
+        add_action('init', [$this, 'add_post_type_filters'], 99);
 
         add_filter("rest_post_collection_params", [$this, 'post_collection_params'], 1, 2);
     }
-    
+
+    function add_post_type_filters() {
+        foreach (presspermit()->getEnabledPostTypes() as $post_type) {
+            add_filter("rest_{$post_type}_collection_params", [$this, 'post_collection_params'], 99, 2);
+
+            if (is_post_type_hierarchical($post_type)) {
+                add_filter("rest_{$post_type}_query", [$this, 'page_parent_query_args'], 10, 2);
+            }
+        }
+    }
+
     function post_collection_params($params, $post_type_obj)
     {
         if (!presspermit()->isContentAdministrator()) {
@@ -27,7 +33,7 @@ class RESTInit
     function page_parent_query_args($args, $request) {
         $params = $request->get_params();
 
-        if (is_array($params) && !empty($params['context'] && ('edit' == $params['context']))) {
+        if (is_array($params) && !empty($params['parent_exclude']) && !empty($params['context'] && ('edit' == $params['context']))) {
             $post_statuses = apply_filters(
                 'presspermit_guten_parent_statuses', 
                 PWP::getPostStatuses(['internal' => false, 'post_type' => $args['post_type']], 'names'),

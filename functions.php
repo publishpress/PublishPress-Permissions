@@ -16,3 +16,15 @@ function presspermitPluginPage()
 
     return $pp_plugin_page;
 }
+
+function presspermit_is_preview() {
+    if (!$is_preview = is_preview()) {
+        if (defined('ELEMENTOR_VERSION')) {
+           $is_preview = !empty($_REQUEST['elementor-preview']);
+        } elseif (defined('ET_CORE')) {
+            $is_preview = !empty($_REQUEST['et_fb']);
+        }
+    }
+
+    return apply_filters('presspermit_is_preview', $is_preview);
+}

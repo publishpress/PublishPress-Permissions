@@ -7,35 +7,13 @@ class NavMenus
         add_filter('presspermit_terms_skip_filtering', [$this, 'fltTermsSkipFiltering'], 10, 3);
         add_filter('get_terms_args', [$this, 'fltTermsArgs'], 40, 2);  // pp core filtering is at priority 50
         
-        add_filter('get_user_option_nav_menu_recently_edited', [$this, 'fltNavMenuRecent']);
-        
         add_filter('pre_update_option_nav_menu_options', [$this, 'fltUpdateNavMenuOptions'], 10, 2);
-        add_filter('update_post_metadata', [$this, 'fltUpdateNavMenuItemParent'], 10, 5);        
-    }
 
-    public function fltNavMenuRecent($opt)
-    {
-        if ($tx_obj = get_taxonomy('nav_menu')) {
-            $menu_tt_id = PWP::termidToTtid((int)$opt, 'nav_menu');
-
-            if (!current_user_can($tx_obj->cap->manage_terms, $menu_tt_id)) {
-                $user = presspermit()->getUser();
-
-                // note: item_type is taxonomy here
-                if ($tt_ids = $user->getExceptionTerms('manage', 'additional', 'nav_menu', 'nav_menu')) {
-                    if (!in_array($menu_tt_id, $tt_ids)) {
-                        $tx_by_ref_arg = '';
-                        $opt = PWP::ttidToTermid(reset($tt_ids), $tx_by_ref_arg);
-                        update_user_option($user->ID, 'nav_menu_recently_edited', $opt);
-                    }
-                } else {
-                    delete_user_option($user->ID, 'nav_menu_recently_edited');
-                    $opt = 0;
-                }
-            }
+        if (!defined('PP_NAV_MENU_DISABLE_POSTMETA_FILTER') && (!class_exists('NestedPages') || defined('PP_NAV_MENU_ENABLE_POSTMETA_FILTER'))) {
+        	add_filter('update_post_metadata', [$this, 'fltUpdateNavMenuItemParent'], 10, 5);        
         }
 
-        return $opt;
+        do_action('presspermit_nav_menu_filters');
     }
 
     public function fltTermsSkipFiltering($skip, $taxonomies, $args)

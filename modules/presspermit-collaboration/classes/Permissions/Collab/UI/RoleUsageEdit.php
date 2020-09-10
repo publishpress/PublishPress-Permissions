@@ -67,7 +67,7 @@ class RoleUsageEdit {
             </div>
         <?php endif; ?>
 
-        <div class="wrap pressshack-admin-wrapper" id="usage-profile-page">
+        <div class="wrap pressshack-admin-wrapper" id="pp-permissions-wrapper">
             <header>
             <?php \PublishPress\Permissions\UI\PluginPage::icon(); ?>
             <h1><?php echo esc_html(sprintf(__('Role Usage: %s', 'press-permit-core'), $role_obj->labels->singular_name));

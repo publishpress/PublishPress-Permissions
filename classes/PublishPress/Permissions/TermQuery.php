@@ -38,23 +38,28 @@ class TermQuery
         $object_types = ($post_type) ? (array)$post_type : (array)esc_sql($tax_obj->object_type);
 
         if ( class_exists('\PublishPress\Permissions\PostFilters') && ! presspermit()->isUserUnfiltered() ) {
+            // will default to src_table $wpdb->posts
+            $join = \PublishPress\Permissions\PostFilters::instance()->fltPostsJoin('', []);
+
             // need to apply term restrictions in case post is restricted by another taxonomy
-            $type_status_clause = PostFilters::getPostsWhere(
-                ['post_types' => $object_types, 'required_operation' => $required_operation]
+            $type_status_clause = \PublishPress\Permissions\PostFilters::instance()->getPostsWhere(
+                ['post_types' => $object_types, 'required_operation' => $required_operation, 'join' => $join]
             );
         } else {
+            $join = '';
             $stati = get_post_stati(['public' => true, 'private' => true], 'names', 'or');
             $status_clause = ($stati) ? "AND post_status IN ('" . implode("', '", $stati) . "')" : '';
             $type_status_clause = "AND post_type IN ('" . implode("', '", $object_types) . "') $status_clause";
         }
 
         if (!$required_operation) {
-            $required_operation = (PWP::isFront() && !is_preview()) ? 'read' : 'edit';
+            $required_operation = (PWP::isFront() && !presspermit_is_preview()) ? 'read' : 'edit';
         }
 
         $results = $wpdb->get_results(
-            "SELECT object_id, term_taxonomy_id FROM $wpdb->term_relationships INNER JOIN $wpdb->posts ON object_id = ID"
-            . " WHERE term_taxonomy_id IN ('" . implode("','", array_keys($term_ids)) . "') $type_status_clause"
+            "SELECT tr.object_id, tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
+            . " INNER JOIN $wpdb->posts ON object_id = $wpdb->posts.ID $join"
+            . " WHERE tr.term_taxonomy_id IN ('" . implode("','", array_keys($term_ids)) . "') $type_status_clause"
         );
 
         foreach ($results as $row) {

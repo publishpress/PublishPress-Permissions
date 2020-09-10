@@ -67,11 +67,11 @@ class ErrorNotice
                 define('PRESSPERMIT_DISABLE_QUERYFILTERS', true);
             
                 $args = (isset($_REQUEST['page']) && (0 === strpos($_REQUEST['page'], 'presspermit-')))
-                    ? ['style' => 'margin-top:30px;color:black']
+                    ? ['style' => 'color:black']
                     : [];
 
                 $this->addNotice(
-                    sprintf('%s is running in configuration only mode. Access filtering will not be applied until Role Scoper is deactivated.', $presspermit_title),
+                    sprintf('%1$s%2$s is running in configuration only mode. Access filtering will not be applied until Role Scoper is deactivated.%3$s', '<p>', $presspermit_title, '</p>'),
                     $args
                 );
 

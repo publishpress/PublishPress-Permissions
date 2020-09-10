@@ -1,21 +1,35 @@
-/* PressPermit. Copyright (c) 2019 PublishPress.
+/* PressPermit. Copyright (c) 2020 PublishPress.
  * This file is licensed under the GNU GPL.
  */
-
+/* Vars */
+/* Buttons */
+/* Input fields */
+/* Tabs */
+/* Tables */
+/* Alert boxes */
 /* --- Colors --- */
-.pp-gray, .pp-gray a, .pp-gray a:link, .pp-gray a:visited {
+.pp-gray,
+.pp-gray a,
+.pp-gray a:link,
+.pp-gray a:visited {
     color: #888;
 }
-
-.pp-blue, .pp-blue a, .pp-blue a:link, .pp-blue a:visited {
+.pp-blue,
+.pp-blue a,
+.pp-blue a:link,
+.pp-blue a:visited {
     color: blue;
 }
-
-.pp-green, .pp-green a, .pp-green a:link, .pp-green a:visited {
+.pp-green,
+.pp-green a,
+.pp-green a:link,
+.pp-green a:visited {
     color: #0a0;
 }
-
-.pp-red, .pp-red a, .pp-red a:link, .pp-red a:visited {
+.pp-red,
+.pp-red a,
+.pp-red a:link,
+.pp-red a:visited {
     color: #d00;
 }
 
@@ -36,7 +50,6 @@
 /* --- Misc Admin --- */
 .pp-hint {
     margin-top: 0.2em;
-    /*color: #393*/
 }
 
 .pp-notes {
@@ -58,8 +71,9 @@
 .pp-admin-notice-plugin {
     margin-top: 30px;
 }
-
-#pp_dashboard_message, .pp-admin-notice, .pp-admin-notice-plugin {
+#pp_dashboard_message,
+.pp-admin-notice,
+.pp-admin-notice-plugin {
     padding: 10px;
 }
 
@@ -76,7 +90,7 @@
 
 #the-list a span.pp_nolink {
     color: black;
-    text-decoration: none
+  text-decoration: none;
 }
 
 #change_log.pp-update {
@@ -86,21 +100,7 @@
 }
 
 #change_log.pp-update li {
-    margin-bottom: 10px
-}
-
-.pp-list_horiz {
-    width: 100%;
-    clear: both;
-    float: left;
-    margin: 0;
-    padding: 0;
-}
-
-.pp-list_horiz li {
-    list-style: none;
-    float: left;
-    margin: 0;
+  margin-bottom: 10px;
 }
 
 .agp-vspaced_input {
@@ -121,58 +121,17 @@ span.pp-key-expired {
     font-weight: bold;
     color: #c00;
     vertical-align: bottom;
-    margin-right: 0.5em
+  margin-right: 0.5em;
 }
 
 /* Contextual Help */
 #tab-panel-pp div {
     margin-left: 20px;
 }
-
-div.pp-custom-privacy-promo, div.pp-file-filtering-promo {
+div.pp-custom-privacy-promo,
+div.pp-file-filtering-promo {
     margin-left: 5px;
 }
-
-/* --- User / Group display and selection (on several pages) --- */
-.pp-agents {
-    background-color: #FFFEEB;
-    padding: 0 0 0.2em 0.3em;
-    border: 1px solid #ccc;
-    margin-top: 0;
-}
-
-.pp-agents input {
-    vertical-align: text-bottom;
-}
-
-.agp-agent {
-    padding: 0.2em 0.5em 0.2em 0.5em;
-}
-
-.agp-unselected_agent {
-    border: none;
-    background: none;
-}
-
-.agp-selected_agent {
-    border: 1px solid #ccc;
-    background-color: #FFFEEB;
-    border-bottom: 1px solid #FFFEEB;
-}
-
-.agp-selected_agent a {
-    color: black;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.agp-unselected_agent a {
-    color: #00019b;
-    text-decoration: default;
-    font-weight: normal;
-}
-
-
 /* --- edit-tags.php (PP Exception metaboxes) --- */
 #edittag div.meta-box-sortables {
     min-width: 420px;
@@ -184,19 +143,21 @@ div.pp-custom-privacy-promo, div.pp-file-filtering-promo {
 div.presspermit-groups .pp-group-site-roles {
     font-weight: bold;
 }
-
-th.column-pp_no_groups, td.column-pp_no_groups, th.column-pp_no_groups a {
+th.column-pp_no_groups,
+td.column-pp_no_groups,
+th.column-pp_no_groups a {
     width: 30px;
     text-align: right;
     padding-right: 2px;
 }
-
-th.column-pp_groups, td.column-pp_groups, th.column-pp_groups a {
+th.column-pp_groups,
+td.column-pp_groups,
+th.column-pp_groups a {
     padding-left: 2px;
     text-align: left;
 }
-
-div.pp-bulk-user-perm, p.pp-bulk-user-perm {
+div.pp-bulk-user-perm,
+p.pp-bulk-user-perm {
     margin-top: 50px;
 }
 
@@ -212,13 +173,14 @@ div.pp-bulk-user-perm, p.pp-bulk-user-perm {
 
 /* --- User Profile and Permissions Edit --- */
 .pp-group-box {
-    margin: 2em 0 2em 0;
-    padding: 0 0.5em 0.5em 0.5em;
-    border: 1px solid black;
+  margin: 0 0 20px !important;
+  padding: 20px !important;
+  border: 1px solid #ccc;
 }
 
 .pp-group-box h3 {
-    margin-top: 0.6em !important;
+  margin: 0 0 20px 0;
+  padding: 0;
 }
 
 #poststuff .pp-group-box h3 {
@@ -227,21 +189,10 @@ div.pp-bulk-user-perm, p.pp-bulk-user-perm {
     font-size: 14px;
     margin: 0.5em 0 0.5em 0;
 }
-
-.pp-group_members h3 {
-    margin-bottom: 0;
-}
-
 .pp-group_members {
-    background-color: #eee;
+  background-color: #fff;
     margin-right: 20px;
 }
-
-.pp-group-roles {
-    background-color: #F3F9C4;
-    margin-bottom: 2em;
-}
-
 .pp-user-roles {
     background-color: #EAF7F7;
 }
@@ -263,15 +214,22 @@ option.pp-new-selection {
 .pp-usermeta-field-more {
     font-size: 20px;
     font-weight: bold;
+  cursor: pointer;
 }
 
 .pp-user-meta-search {
     white-space: nowrap;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
-
-div.pp_dashboard_message {margin-top:20px !important;}
-
-.pp-notice a, .pp-notice a:visited {
+.pp-user-meta-search input {
+  vertical-align: middle !important;
+}
+div.pp_dashboard_message {
+  margin-top: 20px !important;
+}
+.pp-notice a,
+.pp-notice a:visited {
     font-weight: bold;
     color: #655997;
 }
@@ -279,24 +237,6 @@ div.pp_dashboard_message {margin-top:20px !important;}
 .pp-notice a:hover {
     text-decoration: underline !important;
 }
-
-
-/* Admin icon */
-/*
-#toplevel_page_presspermit-groups .dashicons-before::before,
-#toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before {
-    background-image: url(../img/menu/menu-icon.png);
-    background-repeat: no-repeat;
-    background-position: 0 8px;
-    background-size: 19px auto;
-    content: " ";
-    transition: none;
-    -moz-transition: none;
-    -webkit-transition: none;
-    -o-transition: none;
-}
-*/
-
 /* Admin icon customized per admin theme, excluding the default and light */
 .admin-color-blue #toplevel_page_presspermit-groups .dashicons-before::before,
 .admin-color-coffee #toplevel_page_presspermit-groups .dashicons-before::before,
@@ -338,8 +278,7 @@ div.pp_dashboard_message {margin-top:20px !important;}
 
 #toplevel_page_presspermit-groups .wp-menu-open .dashicons-before::before,
 body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups .dashicons-before::before,
-body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups:hover .dashicons-before::before
-{
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups:hover .dashicons-before::before {
     background-position: 0 -60px;
 }
 
@@ -350,17 +289,12 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
 
 body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > a > div,
 body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > li:hover,
-body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > li a:focus
-{
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > li a:focus {
     color: #fff;
 }
 
 #toplevel_page_presspermit-groups ul li a[href*="presspermit-edit-permissions"] {
     display: none;
-}
-
-.publishpress-extended-post-status select {
-    width: 120px;
 }
 
 .pressshack-admin-wrapper p.submit {
@@ -382,13 +316,188 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
 .pressshack-admin-wrapper footer {
 margin-top:25px;
 }
-
-.pressshack-admin-wrapper .activating a, .pressshack-admin-wrapper .activating a:link, .pressshack-admin-wrapper .activating a:visited {
-color:rgb(0, 115, 170);
+.pressshack-admin-wrapper .activating a,
+.pressshack-admin-wrapper .activating a:link,
+.pressshack-admin-wrapper .activating a:visited {
+  color: #0073aa;
 text-decoration: underline;
 }
-
-.pressshack-admin-wrapper .activating a:active, .pressshack-admin-wrapper .activating a:hover {
+.pressshack-admin-wrapper .activating a:active,
+.pressshack-admin-wrapper .activating a:hover {
 color:#00a0d2;
 text-decoration: underline;
+}
+.pp-select-exception-agents select[id*="agent_results_"],
+.pp-agents-selection select[id*="agent_results_"] {
+  width: 240px;
+}
+@media (max-width: 782px) {
+  .pp-select-exception-agents select[id*="agent_results_"],
+  .pp-agents-selection select[id*="agent_results_"] {
+    width: 240px;
+  }
+}
+.pp-select-exception-agents .pp-search-box-with-icon-wrapper,
+.pp-agents-selection .pp-search-box-with-icon-wrapper {
+  position: relative;
+}
+.pp-select-exception-agents .pp-search-box-with-icon-wrapper i,
+.pp-agents-selection .pp-search-box-with-icon-wrapper i {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  color: #999;
+}
+.pp-select-exception-agents input[id*="agent_search_text_"],
+.pp-agents-selection input[id*="agent_search_text_"],
+.pp-select-exception-agents #agent_search_text_member,
+.pp-agents-selection #agent_search_text_member {
+  width: 100%;
+}
+.pp-select-exception-agents td select,
+.pp-agents-selection td select {
+  width: 170px;
+}
+.wp-core-ui .pp-default-button {
+  border-color: #655997;
+  color: #655997;
+  border-width: 1px;
+}
+.wp-core-ui .pp-default-button:focus {
+  color: #483f6b;
+  border-color: #483f6b;
+  box-shadow: 0 0 0 1px #483f6b;
+  -moz-box-shadow: 0 0 0 1px #483f6b;
+  -webkit-box-shadow: 0 0 0 1px #483f6b;
+}
+.wp-core-ui .pp-default-button:hover,
+.wp-core-ui .pp-default-button:active {
+  color: #483f6b;
+  border-color: #483f6b;
+}
+.wp-core-ui .pp-primary-button {
+  background: #655997;
+  color: #fff;
+  border-color: #655997;
+  border-width: 1px;
+}
+.wp-core-ui .pp-primary-button:focus {
+  background: #483f6b;
+  color: #fff;
+  border-color: #483f6b;
+  box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #483f6b;
+}
+.wp-core-ui .pp-primary-button:hover,
+.wp-core-ui .pp-primary-button:active {
+  background: #483f6b;
+  color: #fff;
+  border-color: #483f6b;
+}
+.wp-core-ui .pp-pro-button {
+  background: #feb123;
+  color: #222;
+  border-color: #feb123;
+  border-width: 1px;
+}
+.wp-core-ui .pp-pro-button:focus {
+  background: #febe47;
+  color: #222;
+  border-color: #febe47;
+  box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #febe47;
+  -moz-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #febe47;
+  -webkit-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #febe47;
+}
+.wp-core-ui .pp-pro-button:hover,
+.wp-core-ui .pp-pro-button:active {
+  background: #febe47;
+  color: #222;
+  border-color: #febe47;
+}
+.wp-core-ui input[type=radio]:checked::before {
+  background-color: #655997;
+}
+.wp-core-ui input[type=checkbox]:checked::before {
+  content: url(data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.83%204.89l1.34.94-5.81%208.38H9.02L5.78%209.67l1.34-1.25%202.57%202.4z%27%20fill%3D%27%23655997%27%2F%3E%3C%2Fsvg%3E);
+}
+.wp-core-ui input[type=checkbox]:focus {
+  outline: 2px solid transparent;
+}
+.wp-core-ui input[type=radio]:focus,
+.wp-core-ui input[type=checkbox]:focus,
+.wp-core-ui input[type=text]:focus,
+.wp-core-ui select:focus,
+.wp-core-ui textarea:focus {
+  border-color: #483f6b;
+  box-shadow: 0 0 0 1px #483f6b;
+  -moz-box-shadow: 0 0 0 1px #483f6b;
+  -webkit-box-shadow: 0 0 0 1px #483f6b;
+}
+.wp-core-ui ul.pp-list_horiz {
+  width: 100%;
+  clear: both;
+  float: left;
+  margin: 0 0 -1px 0;
+  padding: 0;
+}
+.wp-core-ui ul.pp-list_horiz li {
+  list-style: none;
+  float: left;
+  margin: 0;
+}
+.wp-core-ui ul.pp-list_horiz li:hover,
+.wp-core-ui ul.pp-list_horiz li:focus,
+.wp-core-ui ul.pp-list_horiz li:active {
+  outline: none;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-agent {
+  margin: 0 -1px 0 0;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-agent a {
+  text-decoration: none;
+  color: #666;
+  padding: 10px 14px 10px;
+  display: block;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-agent a:hover,
+.wp-core-ui ul.pp-list_horiz li.agp-agent a:focus,
+.wp-core-ui ul.pp-list_horiz li.agp-agent a:active {
+  text-decoration: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  color: #222;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-selected_agent {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-selected_agent a {
+  color: #222;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-unselected_agent {
+  border: 1px solid #ccc;
+  background: #f1f1f1;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-unselected_agent a {
+  color: #666;
+}
+.wp-core-ui .pp-agents {
+  background-color: #fff;
+  padding: 0 0 0.2em 0.3em;
+  border: 1px solid #ccc;
+  margin: 0;
+  padding: 20px;
+}
+.wp-core-ui .pp-agents a {
+  color: #655997;
+  text-decoration: none;
+}
+.wp-core-ui .pp-agents a:hover .wp-core-ui .pp-agents a:focus,
+.wp-core-ui .pp-agents a:focus {
+  color: #483f6b;
+  text-decoration: none;
+}
+.wp-core-ui .pp-agents input {
+  vertical-align: text-bottom;
 }

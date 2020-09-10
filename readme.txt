@@ -3,9 +3,9 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.9.7
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 5.6.20
-Stable tag: 3.1.2
+Stable tag: 3.2.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,13 +123,71 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.1.3 =
+= 3.2.5 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
-= 3.1.4-beta =
+= 3.4-alpha =
+* Compat : PublishPress Authors - integration of multiple authors in Permissions filtering
+
+= 3.3.3-beta4 =
+* Fixed : Deleted WordPress roles were still listed in Permissions metaboxes of Post/Term editor
+* Fixed : Limited term managers could not view some of their manageable terms under some configurations
+* Fixed : Term managers who are limited to managing a fixed set of terms had "None" category listed in Parent dropdown, even though they cannot add a top-level category
+* Fixed : Parent selection for custom post types was not properly filtered in Gutenberg editor
+* Compat : PublishPress Authors - activation of invalid "Custom permissions for Authors" setting on Edit Author screen (using a previous Permissions version) broke Authors > Authors listing and editing access
+* Compat : Public Post Preview + PublishPress Revisions: Public previews of pending and scheduled revisions were blocked
+* Fixed : Setting "Post-specific Permissions take priority" ineffective under some configurations
+* Compat : Nested Pages - Enable Permissions filtering, but disable Quick Edit and Context Menu for non-Administrators by default. Available constants: PP_NESTED_PAGES_DISABLE_FILTERING, PP_NESTED_PAGES_QUICKEDIT_ROLES, PP_NESTED_PAGES_CONTEXT_MENU_ROLES
+* Compat : WooCommerce - When editing a product, variation additions were blocked inappropriately
+
+= 3.2.5 - 13 Aug 2020 =
+* Fixed : WP 5.5 - Javascript error in Classic Editor if Default Privacy is set to a non-public status
+* Fixed : WP object cache was cleared when a non-Administrator accessed wp-admin Pages listing
+* Fixed : Pro - Post Status dropdown in Gutenberg editor was pushed into bad alignment if PublishPress 2.2 active
+* Fixed : Classic Editor plugin - Block editor usage was not properly detected if user selection of default editor is enabled and set to Block 
+
+= 3.2.4 - 7 Aug 2020 =
+* Fixed : Page Parent could not be viewed or changed in Gutenberg editor (since 3.2.3)
+
+= 3.2.3 - 6 Aug 2020 =
+* Fixed : Fatal error on new installations if Import module is activated
+* Fixed : REST API - When context argument is used with include argument in a GET posts query, include value is ignored
+
+= 3.2.2 - 8 Jul 2020 =
+* Fixed : New post creation locked author out of further editing if editing permission restricted by term and necessary term was not selected (now auto-select allowed term if none selected)
+* Fixed : Multisite - Permissions menu was not displayed if plugin network-activated and main site ID is not 1
+* Fixed : Term-specific Permissions were not applied correctly in some configurations
+* Fixed : Restrictive term-specific Permissions were not correctly negated by permissive term-specific restrictions assigned to another role or group for the same user
+* Compat : Revisions - Revision Permissions assigned for specific categories did not enable editing of existing revisions
+* Compat : Divi - non-Administrators could not edit new page on front end
+* Compat : PublishPress Authors - invalid error message for minimum PressPermit Pro version (note: Permissions is still not fully compatible with PublishPress Authors)
+* Feature : Support capabilities list_posts, list_others_posts, list_pitch_pages, etc. for inclusion in Posts / Pages listing without ability to edit
+* Fixed : Permissions > Settings > Install displayed instructions for restoring a Press Permit Pro 2.6.x installation, even if none was installed (since 3.0) 
+
+= 3.2.1 - 1 Jun 2020 =
+* Fixed : Supplemental roles were not effective on some sites
+* Fixed : Menu management limitations were not applied
+
+= 3.2 - 29 May 2020 =
+* Fixed : Contributors could not set Featured Image in post editor
+* Fixed : Permission Groups search returned only WP role group results, not any custom groups
+* Fixed : custom get_terms() call with fields=slugs caused a PHP Notice on front end 
+* Compat : Elementor - Non-administrator could not edit draft with Elementor editor
+
+= 3.1.8 - 14 May 2020 =
+* Compat : PublishPress Permissions - Fatal error on post creation
+
+= 3.1.7 - 13 May 2020 =
+* Compat : PublishPress Revisions - Authors were enabled to edit other users' drafts
+* Compat : PublishPress Revisions - Term-Specific Permissions for Revise operation were not correctly applied
+* Fixed : Edit Permission Group screen - invalid Edit link displayed for currently stored Nav Menu Permissions
+* Fixed : Classic Editor - Fatal error due to incorrect parameter count on preview_post_link filter
+
+= 3.1.4 - 23 Apr 2020 =
 * Compat : PublishPress Revisions - Support suppression of Permissions metaboxes on Edit Revision screen
+* Compat : Nested Pages - Error on Nav Menu edit
 
 = 3.1.3 - 6 Apr 2020 =
 * Fixed : Possible fatal error loading Permissions screens on a small percentage of installations
