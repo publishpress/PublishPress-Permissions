@@ -17,7 +17,7 @@
 }
 
 #pp_settings_form ul.pp-list_horiz li.pp-backtan a {
-    color: white;
+    background: white;
 }
 
 /* --- Settings table layout --- */
@@ -79,11 +79,6 @@ table.pp-options-table .pp-optionhint {
 
 #wpbody-content li.agp-selected_agent {
     border-bottom: none;
-}
-
-#wpbody-content li.agp-selected_agent a {
-    font-weight: bold;
-    color: white;
 }
 
 #pp_settings_form .activating, #pp_settings_form .activating, #pp-install .activating, #tab-panel-pp .activating {

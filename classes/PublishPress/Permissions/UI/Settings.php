@@ -73,7 +73,7 @@ class Settings
             <?php PluginPage::icon(); ?>
 
             <div class="submit pp-submit" style="border:none;position:absolute;right:20px;top:0;">
-                <input type="submit" name="presspermit_submit" class="button-primary" value="<?php _e('Save Changes', 'press-permit-core'); ?>"/>
+                <input type="submit" name="presspermit_submit" class="button button-primary pp-primary-button" value="<?php _e('Save Changes', 'press-permit-core'); ?>"/>
             </div>
             <h1>
                 <?php
@@ -174,7 +174,7 @@ class Settings
             ?>
 
             <p class="submit pp-submit" style="border:none;">
-                <input type="submit" name="presspermit_submit" class="button-primary" value="<?php _e('Save Changes', 'press-permit-core'); ?>"/>
+                <input type="submit" name="presspermit_submit" class="button button-primary pp-primary-button" value="<?php _e('Save Changes', 'press-permit-core'); ?>"/>
                 <input type="hidden" name="pp_tab"
                         value="<?php if (!empty($_REQUEST['pp_tab'])) echo esc_attr($_REQUEST['pp_tab']); ?>"/>
             </p>
