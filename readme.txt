@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.5
 Requires PHP: 5.6.20
-Stable tag: 3.2.5
+Stable tag: 3.3.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,20 +123,29 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.2.5 =
+= 3.3.4 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
-= 3.3-beta =
+= 3.3.4 - 11 Sep 2020 =
+* Fixed : Post access was improperly blocked under some configurations if Permissions > Settings > Core > "Post-specific Permissions take priority" enabled
+
+= 3.3.3 - 10 Sep 2020 =
 * Fixed : Deleted WordPress roles were still listed in Permissions metaboxes of Post/Term editor
 * Fixed : Limited term managers could not view some of their manageable terms under some configurations
 * Fixed : Term managers who are limited to managing a fixed set of terms had "None" category listed in Parent dropdown, even though they cannot add a top-level category
+* Fixed : Parent selection for custom post types was not properly filtered in Gutenberg editor
+* Fixed : Setting "Post-specific Permissions take priority" ineffective under some configurations
+* Compat : PublishPress Authors - activation of invalid "Custom permissions for Authors" setting on Edit Author screen (using a previous Permissions version) broke Authors > Authors listing and editing access
+* Compat : Nested Pages - Enable Permissions filtering, but disable Quick Edit and Context Menu for non-Administrators by default. Available constants: PP_NESTED_PAGES_DISABLE_FILTERING, PP_NESTED_PAGES_QUICKEDIT_ROLES, PP_NESTED_PAGES_CONTEXT_MENU_ROLES
+* Compat : WooCommerce - When editing a product, variation additions were blocked inappropriately
 
 = 3.2.5 - 13 Aug 2020 =
 * Fixed : WP 5.5 - Javascript error in Classic Editor if Default Privacy is set to a non-public status
 * Fixed : WP object cache was cleared when a non-Administrator accessed wp-admin Pages listing
 * Fixed : Pro - Post Status dropdown in Gutenberg editor was pushed into bad alignment if PublishPress 2.2 active
+* Fixed : Classic Editor plugin - Block editor usage was not properly detected if user selection of default editor is enabled and set to Block 
 
 = 3.2.4 - 7 Aug 2020 =
 * Fixed : Page Parent could not be viewed or changed in Gutenberg editor (since 3.2.3)
