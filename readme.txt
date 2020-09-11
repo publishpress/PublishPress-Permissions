@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.5
 Requires PHP: 5.6.20
-Stable tag: 3.3.3
+Stable tag: 3.3.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,10 +123,13 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.3.3 =
+= 3.3.4 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
+
+= 3.3.4 - 11 Sep 2020 =
+* Fixed : Post access was improperly blocked under some configurations if Permissions > Settings > Core > "Post-specific Permissions take priority" enabled
 
 = 3.3.3 - 10 Sep 2020 =
 * Fixed : Deleted WordPress roles were still listed in Permissions metaboxes of Post/Term editor

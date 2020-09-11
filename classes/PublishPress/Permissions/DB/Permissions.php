@@ -319,45 +319,6 @@ class Permissions
 
         $exc_post_type = apply_filters('presspermit_exception_post_type', $post_type, $required_operation, $args);
 
-        if (!$additions_only) {
-            if ($where) {  // where clause already indicates sitewide caps for one or more statuses (or just want the exceptions clause generated)
-                if ($append_clause = apply_filters('presspermit_append_query_clause', '', $post_type, $required_operation, $args)) {
-                    $where .= $append_clause;
-                }
-
-                $post_blockage_priority = presspermit()->getOption('post_blockage_priority');
-                $post_blockage_clause = '';
-
-                foreach (['include' => 'IN', 'exclude' => 'NOT IN'] as $mod => $logic) {
-                    if ($ids = $user->getExceptionPosts($required_operation, $mod, $exc_post_type)) {
-                        $_args = array_merge($args, compact('mod', 'ids', 'src_table', 'logic'));
-
-                        $clause_var = ($post_blockage_priority) ? 'post_blockage_clause' : 'where';
-
-                        $$clause_var .= " AND " . apply_filters(
-                                'presspermit_exception_clause',
-                                "$src_table.ID $logic ('" . implode("','", $ids) . "')",
-                                $required_operation,
-                                $post_type,
-                                $_args
-                            );
-
-                        break;  // don't use both include and exclude clauses
-                    }
-                }
-
-                // term restrictions which apply only to this post type
-                if ($apply_term_restrictions) {
-                    $where .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table);
-                }
-            } elseif (in_array('comments', $args['query_contexts'], true) && defined('REST_REQUEST') && REST_REQUEST) {
-                // if PPCE is not activated, don't filter comments
-                $where = '1=1';
-            } else {
-                $where = '1=2';
-            }
-        }
-
         $additions = [];
         $additional_ids = $user->getExceptionPosts($required_operation, 'additional', $exc_post_type, ['status' => true]);
 
@@ -385,6 +346,49 @@ class Permissions
                     'ids' => $_ids
                 ]
             );
+        }
+
+		if (!$additions_only) {
+            if ($where) {  // where clause already indicates sitewide caps for one or more statuses (or just want the exceptions clause generated)
+                if ($append_clause = apply_filters('presspermit_append_query_clause', '', $post_type, $required_operation, $args)) {
+                    $where .= $append_clause;
+                }
+
+                $post_blockage_priority = presspermit()->getOption('post_blockage_priority');
+                $post_blockage_clause = '';
+
+                foreach (['include' => 'IN', 'exclude' => 'NOT IN'] as $mod => $logic) {
+                    if ($ids = $user->getExceptionPosts($required_operation, $mod, $exc_post_type)) {
+                        if (!defined('PP_RESTRICTION_PRIORITY') && !empty($additional_ids['']) && !defined('PP_LEGACY_POST_BLOCKAGE')) {
+                        	$ids = array_diff($ids, $additional_ids['']);
+                    	}
+                        
+                        $_args = array_merge($args, compact('mod', 'ids', 'src_table', 'logic'));
+
+                        $clause_var = ($post_blockage_priority) ? 'post_blockage_clause' : 'where';
+
+                        $$clause_var .= " AND " . apply_filters(
+                                'presspermit_exception_clause',
+                                "$src_table.ID $logic ('" . implode("','", $ids) . "')",
+                                $required_operation,
+                                $post_type,
+                                $_args
+                            );
+
+                        break;  // don't use both include and exclude clauses
+                    }
+                }
+
+                // term restrictions which apply only to this post type
+                if ($apply_term_restrictions) {
+                    $where .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table);
+                }
+            } elseif (in_array('comments', $args['query_contexts'], true) && defined('REST_REQUEST') && REST_REQUEST) {
+                // if PPCE is not activated, don't filter comments
+                $where = '1=1';
+            } else {
+                $where = '1=2';
+            }
         }
 
         $additional_ttids = [];
@@ -487,9 +491,7 @@ class Permissions
         if ($additions = apply_filters('presspermit_apply_additions', $additions, $where, $required_operation, $post_type, $args)) {
             $where = "( $where ) OR ( " . Arr::implode(' OR ', $additions) . " )";
 
-            $restriction_clause = '1=1';
-
-            if (presspermit()->getOption('post_blockage_priority')) {
+            if (defined('PP_RESTRICTION_PRIORITY') && PP_RESTRICTION_PRIORITY) {  // this constant forces exclusions to take priority over additions
                 if ($ids = $user->getExceptionPosts($required_operation, 'exclude', $exc_post_type)) {
                     $_args = array_merge($args, ['mod' => 'exclude', 'ids' => $ids, 'src_table' => $src_table, 'logic' => "NOT IN"]);
 
@@ -500,27 +502,36 @@ class Permissions
                         $post_type,
                         $_args
                     );
+                } else {
+                    $restriction_clause = '1=1';
+				        }
+
+                if ($apply_term_restrictions) {
+                	$restriction_clause .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table, ['mod_types' => 'exclude']);
+            	  }
+
+            	  if ($restriction_clause != '1=1') {
+                	$where = "( $where ) AND ( $restriction_clause )";
                 }
-            }
 
-            if ($apply_term_restrictions && defined('PP_RESTRICTION_PRIORITY') && PP_RESTRICTION_PRIORITY) {
-                $restriction_clause .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table, ['mod_types' => 'exclude']);
-            }
-
-            if ($restriction_clause != '1=1') {
-                $where = "( $where ) AND ( $restriction_clause )";
             }
 
             if (!empty($post_blockage_clause)) {
-                $post_blockage_clause = "AND ( ( 1=1 $post_blockage_clause ) OR ( " . Arr::implode(' OR ', $additions) . " ) )";
+            	 if (defined('PP_LEGACY_POST_BLOCKAGE')) {
+                	$post_blockage_clause = "AND ( ( 1=1 $post_blockage_clause ) OR ( " . Arr::implode(' OR ', $additions) . " ) )";
+            	 } else {
+                	$post_blockage_clause = "AND ( 1=1 $post_blockage_clause )";
+            	 }
             }
         }
 
-        if (!empty($post_blockage_clause))
+        if (!empty($post_blockage_clause)) {
             $where = "( $where ) $post_blockage_clause";
+		}
 
-        if ($append_post_type_clause)
+        if ($append_post_type_clause) {
             $where = "$src_table.post_type = '$post_type' AND ( $where )";
+		}
 
         return $where;
     }
