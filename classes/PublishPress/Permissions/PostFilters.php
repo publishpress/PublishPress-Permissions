@@ -517,7 +517,7 @@ class PostFilters
         $ppma_join = 
             " LEFT JOIN $wpdb->term_relationships AS ppma_tr ON ppma_tr.object_id = $src_table.ID"
           . " LEFT JOIN $wpdb->term_taxonomy AS ppma_tt ON ppma_tt.term_taxonomy_id = ppma_tr.term_taxonomy_id AND ppma_tt.taxonomy = 'author'"
-          . " LEFT JOIN $wpdb->terms AS ppma_t ON ppma_t.term_id = ppma_tt.term_id AND ppma_t.name =  '$user->user_login'";
+          . " LEFT JOIN $wpdb->terms AS ppma_t ON ppma_t.term_id = ppma_tt.term_id AND ppma_t.slug =  '$user->user_login'";
 
         if (false === strpos($join, $ppma_join)) {
             $join .= $ppma_join;
