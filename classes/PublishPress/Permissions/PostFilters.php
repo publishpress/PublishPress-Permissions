@@ -389,7 +389,9 @@ class PostFilters
                     $valid_stati = PWP::getPostStatuses(['internal' => false, 'post_type' => $post_types], 'names', '', ['context' => 'edit']);
                 }
 
-                if (in_array('attachment', $post_types, true)) {
+                global $wp_query;
+
+                if (in_array('attachment', $post_types, true) && (empty($wp_query->query_vars['s']) || presspermit()->getOption('media_search_results'))) {
                     $valid_stati[] = 'inherit';
                 }
 
@@ -556,7 +558,9 @@ class PostFilters
 
         $use_statuses = apply_filters('presspermit_query_post_statuses', $use_statuses, $args );
 
-        if (in_array('attachment', $post_types, true)) {
+        global $wp_query;
+
+        if (in_array('attachment', $post_types, true) && (empty($wp_query->query_vars['s']) || presspermit()->getOption('media_search_results'))) {
             $use_statuses['inherit'] = (object)[];
         }
 
