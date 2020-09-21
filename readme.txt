@@ -128,8 +128,10 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.3.5-beta =
+= 3.3.5-beta2 =
 * Fixed : Media items were always included in search results if filtering enabled. Now controlled by Settings > Core > Front End > Search Results include Media
+* Fixed : Edit Permission Group - In Posts / Pages selector, "(none)" item was not available unless paging links clicked (since 3.1)
+* Compat : Gutenberg Ramp - Revision submission UI did not load for post types that have Gutenberg enabled
 
 = 3.3.4 - 11 Sep 2020 =
 * Fixed : Post access was improperly blocked under some configurations if Permissions > Settings > Core > "Post-specific Permissions take priority" enabled
