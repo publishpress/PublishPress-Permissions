@@ -42,17 +42,27 @@ class FrontFilters
 
     public function fltHideEmptyMenus()
     {
-        if (!wp_script_is('jquery')) {
-            return;
-        }
-        ?>
+        // For hierarchical custom nav menus, hide sub-lists for which all items are unreadable
+        // Note: this does not apply to Nav Menus that follow standard structure and class naming convention
+        if (!defined('PRESSPERMIT_NO_NAV_MENU_SCRIPTS')):?>
         <script type="text/javascript">
             /* <![CDATA[ */
-            jQuery(document).ready(function ($) {
-                $("ul.nav-menu").not(":has(li)").hide().closest('div').hide();
-            });
+           document.querySelectorAll("ul.nav-menu").forEach(
+               ulist => { 
+                    if (ulist.querySelectorAll("li").length == 0) {
+                        ulist.style.display = "none";
+
+                        <?php if (defined('PRESSPERMIT_HIDE_EMPTY_NAV_MENU_DIV')) /* legacy nav menu support */ :?>
+                            if (ulist.parentElement.nodeName == "DIV") {
+                                ulist.parentElement.style.display = "none";
+                            }
+                        <?php endif;?>
+                    } 
+                }
+           );
             /* ]]> */
-        </script><?php
+        </script>
+        <?php endif;
     }
 
     public function fltTitle($title)
