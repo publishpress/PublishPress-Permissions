@@ -11,7 +11,7 @@ class Admin
             add_action('init', [$this, 'init_rvy_interface'], 2);
         }
 
-        add_filter('map_meta_cap', [$this, 'flt_mapMetaCap'], 1, 4);
+        add_filter('map_meta_cap', [$this, 'flt_mapMetaCap'], 3, 4);
 
         add_filter('presspermit_get_exception_items', [$this, 'flt_get_exception_items'], 10, 5);
 
@@ -399,9 +399,14 @@ class Admin
         if (!defined('DOING_AJAX') || !DOING_AJAX) {
             // don't need to fudge the capreq for post.php unless existing post has public/private status
             $status = get_post_field('post_status', $post_id, 'post');
-            $status_obj = get_post_status_object($status);
 
-            if (empty($status_obj->public) && empty($status_obj->private) && ('future' != $status)) {
+            $adjust_statuses = apply_filters(
+                'revisionary_main_post_statuses', 
+                get_post_stati( ['public' => true, 'private' => true], 'names', 'or' ),
+                'names'
+            );
+
+            if (!in_array($status, $adjust_statuses)) {
                 return $rs_reqd_caps;
             }
         }
