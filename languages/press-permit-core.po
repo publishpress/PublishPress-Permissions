@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PressPermit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-10 15:29-0500\n"
+"POT-Creation-Date: 2020-10-01 11:39-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: PublishPress <help@publishpress.com>\n"
@@ -1249,7 +1249,7 @@ msgid "To block direct access to unreadable files, %1$supgrade to Permissions Pr
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/HintsItemExceptions.php:25
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:308
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:309
 msgid "To customize editing permissions, enable the Collaborative Publishing module."
 msgstr ""
 
@@ -1682,101 +1682,105 @@ msgid "Use create_posts capability"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:50
-msgid "Suppress \"Private:\" Caption"
+msgid "Search Results include Media"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:51
-msgid "Filter Menu Items"
+msgid "Suppress \"Private:\" Caption"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:52
-msgid "Permission Groups on User Profile"
+msgid "Filter Menu Items"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:53
-msgid "Supplemental Roles on User Profile"
+msgid "Permission Groups on User Profile"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:54
-msgid "Select Permission Groups at User creation"
+msgid "Supplemental Roles on User Profile"
 msgstr ""
 
 #: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:55
+msgid "Select Permission Groups at User creation"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:56
 msgid "Post-specific Permissions take priority"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:81
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:82
 msgid "Basic settings for content filtering, management and presentation."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:101
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:102
 msgid "If disabled, manually \"blocked\" posts can be unblocked by specific Category / Term Permissions.  Enabling this setting will provide more intuitive behavior, but may require configuration review and testing on prior installations."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:122
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:123
 msgid "Modify permissions for these Taxonomies:"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:146
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:145
 msgid "Modify permissions for these Post Types:"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:206
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:205
 #, php-format
 msgid "%s capabilities"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:224
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:223
 #, php-format
 msgid "<span class=\"pp-important\">Note</span>: Custom post types enabled here require type-specific capabilities for editing (\"edit_things\" instead of \"edit_posts\").  You can %1$sassign corresponding supplemental roles%2$s to grant these capabilities. Adding the type-specific capabilities directly to a WordPress role definition also works."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:238
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:237
 msgid "To customize bbPress forum permissions, activate the Compatibility Pack module."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:240
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:239
 msgid "To customize bbPress forum permissions, activate your Permissions Pro license key."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:254
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:253
 msgid "For most installations, leave this disabled. If enabled, corresponding edit and delete capabilities must be added to existing roles."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:257
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:256
 msgid "For most installations, leave this disabled. See Editing tab for specialized Media Library permissions."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:258
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:257
 msgid "For most installations, leave this disabled. For specialized Media Library permissions, install the Collaborative Publishing module."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:264
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:263
 msgid "If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types.  <strong>NOTE: You will also need to use a WordPress role editor</strong> such as PublishPress Capabilities to add these capabilities to desired roles."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:281
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:282
 msgid "Remove the \"Private:\" and \"Protected\" prefix from Post, Page titles"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:285
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:286
 msgid "Remove unreadable Menu Items. If menu rendering problems occur with a third party plugin, disable this setting."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:304
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:305
 msgid "Unmodified from WordPress default behavior. To enable filtering, remove constant definition PP_ADMIN_READONLY_LISTABLE."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:307
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:308
 msgid "Uneditable posts are hidden from wp-admin listings. To expose them, use a role editor to add desired capabilities: list_posts, list_other_pages etc."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:314
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:315
 #, php-format
 msgid "%sPosts / Pages Listing:%s %s"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:336
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/SettingsTabCore.php:337
 msgid "note: Groups and Roles are always displayed in \"Edit User\""
 msgstr ""
 
@@ -1893,27 +1897,28 @@ msgstr ""
 msgid "clear all"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:251
-msgid "No access customizations stored."
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:254
+#, php-format
+msgid "%s permissions have not been added or blocked for any %s."
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:260
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:265
 msgid "select users"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:260
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:265
 msgid "select groups"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:264
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:269
 msgid "close"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:272
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:277
 msgid "create group"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:295
+#: F:\snapshot\press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:300
 msgid "To customize <strong>for a specific post status</strong>, edit the desired role / group / user permissions directly (Permissions > Groups or Users)"
 msgstr ""
 
@@ -2233,11 +2238,11 @@ msgstr ""
 msgid "Approve"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/CollabHooksCompat.php:183
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/CollabHooksCompat.php:184
 msgid "Revisors"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/CollabHooksCompat.php:184
+#: F:\snapshot\press-permit-core/modules/presspermit-collaboration/classes/Permissions/CollabHooksCompat.php:185
 msgid "Revisor"
 msgstr ""
 
@@ -3217,6 +3222,10 @@ msgstr ""
 
 #: F:\snapshot\press-permit-core/modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:289
 msgid "Undo All Imports"
+msgstr ""
+
+#: F:\snapshot\press-permit-core/press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:251
+msgid "No access customizations stored."
 msgstr ""
 
 #: F:\snapshot\press-permit-core/press-permit-core/vendor/publishpress/wordpress-version-notices/src/Module/MenuLink/Module.php:129
