@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.5
 Requires PHP: 5.6.20
-Stable tag: 3.3.4
+Stable tag: 3.3.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,10 +123,17 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.3.4 =
+= 3.3.5 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
+
+= 3.3.5 - 1 Oct 2020 =
+* Fixed : Javascript error "jQuery is not defined" on some sites
+* Fixed : Media items were always included in search results if filtering enabled. Now controlled by Settings > Core > Front End > Search Results include Media
+* Fixed : Edit Permission Group - In Posts / Pages selector, "(none)" item was not available unless paging links clicked (since 3.1)
+* Change : Friendlier caption in Permissions metaboxes, "Editing permissions have not been added or blocked for any Custom Group"
+* Compat : Gutenberg Ramp - Revision submission UI did not load for post types that have Gutenberg enabled
 
 = 3.3.4 - 11 Sep 2020 =
 * Fixed : Post access was improperly blocked under some configurations if Permissions > Settings > Core > "Post-specific Permissions take priority" enabled
