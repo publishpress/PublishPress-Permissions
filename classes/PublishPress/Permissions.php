@@ -120,6 +120,7 @@ class Permissions
             'beta_updates' => false,        // @todo: EDD integration, or eliminate
             'admin_hide_uneditable_posts' => 1,
             'post_blockage_priority' => get_option('presspermit_legacy_exception_handling') ? 0 : 1,
+            'media_search_results' => 1,
             'advanced_options' => 0,
             'edd_key' => false,
             'supplemental_role_defs' => [], // stored by Capability Manager Enhanced
@@ -791,11 +792,15 @@ class Permissions
             $taxonomies = array_intersect($taxonomies, array_keys(array_filter($enabled)));
         }
 
-        if ($omit_types = apply_filters('presspermit_unfiltered_taxonomies', [])) {
-            $taxonomies = array_diff_key($taxonomies, $omit_types);
+        if ($omit_types = $this->getUnfilteredTaxonomies()) {
+            $taxonomies = array_diff($taxonomies, $omit_types);
         }
 
         return $taxonomies;
+    }
+
+    public function getUnfilteredTaxonomies() {
+    	return apply_filters('presspermit_unfiltered_taxonomies', ['post_status', 'topic-tag', 'author']);
     }
 
     public function isTaxonomyEnabled($taxonomy)
