@@ -128,11 +128,14 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
+= 3.3.6 - 5 Oct 2020 =
+* Fixed : Post-specific permissions did not correctly enable access under some configurations with "Post-specific Permissions take priority" setting enabled
+
 = 3.3.5 - 1 Oct 2020 =
+* Change : Friendlier caption in Permissions metaboxes, "Editing permissions have not been added or blocked for any Custom Group"
 * Fixed : Javascript error "jQuery is not defined" on some sites
 * Fixed : Media items were always included in search results if filtering enabled. Now controlled by Settings > Core > Front End > Search Results include Media
 * Fixed : Edit Permission Group - In Posts / Pages selector, "(none)" item was not available unless paging links clicked (since 3.1)
-* Change : Friendlier caption in Permissions metaboxes, "Editing permissions have not been added or blocked for any Custom Group"
 * Compat : Gutenberg Ramp - Revision submission UI did not load for post types that have Gutenberg enabled
 
 = 3.3.4 - 11 Sep 2020 =
