@@ -128,7 +128,7 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.3.6 - 5 Oct 2020 =
+= 3.3.6 - 8 Oct 2020 =
 * Fixed : Post-specific permissions did not correctly enable access under some configurations with "Post-specific Permissions take priority" setting enabled
 
 = 3.3.5 - 1 Oct 2020 =
