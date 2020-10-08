@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PressPermit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-01 11:39-0500\n"
+"POT-Creation-Date: 2020-10-08 11:20-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: PublishPress <help@publishpress.com>\n"
@@ -3224,11 +3224,7 @@ msgstr ""
 msgid "Undo All Imports"
 msgstr ""
 
-#: F:\snapshot\press-permit-core/press-permit-core/classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:251
-msgid "No access customizations stored."
-msgstr ""
-
-#: F:\snapshot\press-permit-core/press-permit-core/vendor/publishpress/wordpress-version-notices/src/Module/MenuLink/Module.php:129
+#: F:\snapshot\press-permit-core/vendor/publishpress/wordpress-version-notices/src/Module/MenuLink/Module.php:129
 msgid "Amazing! We are redirecting you to our site..."
 msgstr ""
 
