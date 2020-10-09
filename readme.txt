@@ -128,7 +128,8 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.3.7-beta =
+= 3.3.7-beta2 =
+* Compat : PublishPress Revisions - On new post creation, Revisors had Submit button replaced by a Publish button, which failed. The only way to submit was to Save Draft first.
 * Compat : PublishPress Revisions - Existing "Edit Page" Permissions could not be mirrored as "Revise Page" Permissions using bulk action dropdown
 * Compat : PublishPress Revisions - Existing "Revise Page" Permissions could not be mirrored as "Edit Page" Permissions using bulk action dropdown
 * Compat : PublishPress Revisions - PHP warning on Edit Group Permissions screen if any Specific Permissions are stored for the Revise operation
