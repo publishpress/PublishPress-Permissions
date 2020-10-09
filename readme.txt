@@ -128,6 +128,11 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
+= 3.3.7-beta =
+* Compat : PublishPress Revisions - Existing "Edit Page" Permissions could not be mirrored as "Revise Page" Permissions using bulk action dropdown
+* Compat : PublishPress Revisions - Existing "Revise Page" Permissions could not be mirrored as "Edit Page" Permissions using bulk action dropdown
+* Compat : PublishPress Revisions - PHP warning on Edit Group Permissions screen if any Specific Permissions are stored for the Revise operation
+
 = 3.3.6 - 8 Oct 2020 =
 * Fixed : Post-specific permissions did not correctly enable access under some configurations with "Post-specific Permissions take priority" setting enabled
 
