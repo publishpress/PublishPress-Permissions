@@ -123,12 +123,12 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.3.6 =
+= 3.3.7 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
-= 3.3.7-beta2 =
+= 3.3.7 - 9 Oct 2020 =
 * Compat : PublishPress Revisions - On new post creation, Revisors had Submit button replaced by a Publish button, which failed. The only way to submit was to Save Draft first.
 * Compat : PublishPress Revisions - Existing "Edit Page" Permissions could not be mirrored as "Revise Page" Permissions using bulk action dropdown
 * Compat : PublishPress Revisions - Existing "Revise Page" Permissions could not be mirrored as "Edit Page" Permissions using bulk action dropdown
