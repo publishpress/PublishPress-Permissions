@@ -87,7 +87,8 @@ class CapabilityFilters
                 $op = 'edit';
                 break;
             case $type_obj->cap->publish_posts:
-                $op = (presspermit()->getOption('publish_exceptions')) ? 'publish' : 'edit';
+                global $pagenow;
+                $op = (presspermit()->getOption('publish_exceptions') || (!empty($pagenow && ('post-new.php' == $pagenow)))) ? 'publish' : 'edit';
                 break;
             case $type_obj->cap->delete_posts:
                 $op = 'delete';
