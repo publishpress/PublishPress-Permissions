@@ -1043,10 +1043,15 @@ class AgentPermissionsUI
                             switch ($_op) {
                                 case 'read':
                                 case 'edit':
+                                case 'revise':
                                 case 'publish':
                                 case 'post_associate':
                                 case 'assign':
                                     $mirror_ops = ['read', 'edit'];
+
+                                    if (defined('REVISIONARY_VERSION')) {
+                                        $mirror_ops []= 'revise';
+                                    }
 
                                     if ($pp->getOption('publish_exceptions')) {
                                         $mirror_ops []= 'publish';
