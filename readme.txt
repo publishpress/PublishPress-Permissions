@@ -123,10 +123,23 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.3.7 =
+= 3.3.8 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
+
+= 3.3.8 - 22 Oct 2020 =
+* Fixed: REST tag / term queries returned all terms, ignoring per_page parameter
+* Compat : Gutenberg block embedding - for users lacking edit_posts capability, allow based on upload_files (or other capability per 'presspermit_embed_capability' filter)
+* Compat : Revisions - "Prevent Revisors from editing others' revisions" setting was not applied (also requires Revisions 2.4.2)
+* Compat : Revisions - Category-Specific Revise Permissions allowed an Author to fully edit posts in specified categories
+* Compat : Revisions - Category-Specific Revise Permissions allowed an Author to restore past revisions
+* Compat : Revisions - If Revisors are blocked from editing other users' drafts, those can now be included (unclickable) in Edit Pages if the list_others_pages capability is granted 
+* Compat : Revisions - Specific Permissions to enable the Revise operation were ineffective for Contributors and Authors in some cases
+* Fixed : ODBC installations - No confirmation or redirect screen after revision creation, due to database error
+* Fixed : PHP Warning for undefined index on first-time activation
+* Fixed : PHP Warning on Edit Category page, for deprecated action name
+* Change : Some settings captions referred to "PressPermit"
 
 = 3.3.7 - 9 Oct 2020 =
 * Compat : PublishPress Revisions - On new post creation, Revisors had Submit button replaced by a Publish button, which failed. The only way to submit was to Save Draft first.
