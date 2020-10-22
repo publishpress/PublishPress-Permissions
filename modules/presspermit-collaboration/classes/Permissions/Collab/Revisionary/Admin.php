@@ -210,7 +210,13 @@ class Admin
                     return $caps;
                 }
 
-                $caps[] = 'edit_others_drafts';
+                if (!presspermit()->doing_cap_check && empty($current_user->allcaps['edit_others_drafts']) && $post_type_obj) {
+                    if (!empty($post_type_obj->cap->edit_others_posts) && empty($current_user->allcaps[$post_type_obj->cap->edit_others_posts])) {
+                        $caps[] = str_replace('edit_', 'list_', $post_type_obj->cap->edit_others_posts);
+                    }
+                } else {
+                	$caps[] = "edit_others_drafts";
+                }
             }
         }
         return $caps;
