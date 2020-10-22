@@ -352,6 +352,12 @@ class Admin
         if (empty($revisionary->skip_revision_allowance)) {
             global $pagenow, $plugin_page;
 
+            $user = presspermit()->getUser();
+
+            if (empty($user->except["revise_post"])) {
+               $user->retrieveExceptions('revise', 'post');
+            }
+
             $revision_uris = apply_filters('presspermit_revision_uris', ['edit.php', 'upload.php', 'widgets.php', 'revision.php', 'admin-ajax.php', 'rvy-revisions', 'revisionary-q']);
 
             //if (is_admin() || !empty($_GET['preview'])) {
