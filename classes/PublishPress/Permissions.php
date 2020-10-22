@@ -225,7 +225,7 @@ class Permissions
             
             $db_ver = ( isset( $ver['db_version'] ) ) ? $ver['db_version'] : '';
             require_once(PRESSPERMIT_CLASSPATH . '/DB/DatabaseSetup.php');
-            new Permissions\DB\DatabaseSetup($ver['db_version']);
+            new Permissions\DB\DatabaseSetup($db_ver);
         }
 
         if (!empty($check_for_rs_migration) || !empty($_REQUEST['rs-migration-check'])) { // support http arg for test / troubleshooting
