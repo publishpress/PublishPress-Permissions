@@ -398,13 +398,25 @@ class Permissions
         $additional_ttids = [];
         $revise_ttids = ['{published}' => []];
 
+        global $revisionary, $pagenow;  // @todo: API
+
         foreach (presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
             $tt_ids = $user->getExceptionTerms($required_operation, 'additional', $post_type, $taxonomy, ['status' => true, 'merge_universals' => true]);
 
-            if ('edit' == $required_operation) {
+            global $pagenow;
+
+            $type_obj = get_post_type_object($post_type);
+
+            if (('edit' == $required_operation) 
+            && ((!$type_obj || empty($type_obj->cap->edit_published_posts) || empty($user->allcaps[$type_obj->cap->edit_published_posts]))                                         // prevent Revise exceptions from allowing Authors to restore revisions
+                || ('revision.php' != $pagenow) && (!defined('DOING_AJAX') || ! DOING_AJAX || empty($_REQUEST['action']) || ('get-revision-diffs' != $_REQUEST['action']))
+                )
+            ) {
                 if (!empty($user->except['revise_post']['term'][$taxonomy]['additional'][$post_type][''])) {
+	                if (!empty($revisionary) && empty($revisionary->skip_revision_allowance)) {
                         $revise_ttids['{published}'] = array_merge($revise_ttids['{published}'], $user->except['revise_post']['term'][$taxonomy]['additional'][$post_type]['']);
                 }
+            }
             }
 
             // merge this taxonomy exceptions with other taxonomies

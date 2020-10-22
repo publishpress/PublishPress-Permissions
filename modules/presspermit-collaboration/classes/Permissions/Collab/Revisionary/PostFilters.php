@@ -7,6 +7,7 @@ class PostFilters
 
     function __construct()
     {
+        add_filter('presspermit_have_site_caps', [$this, 'fltHaveSiteCaps'], 10, 3);
         add_filter('presspermit_main_posts_clauses_types', [$this, 'flt_posts_clauses_object_types'], 10, 2);
         add_filter('presspermit_main_posts_clauses_where', [$this, 'flt_posts_clauses_where'], 10, 1);
         add_filter('presspermit_meta_cap', [$this, 'flt_meta_cap']);
@@ -14,6 +15,38 @@ class PostFilters
         add_filter('revisionary_require_edit_others_drafts', [$this, 'fltRequireEditOthersDrafts'], 10, 4);
 
         add_filter('presspermit_base_cap_replacements', [$this, 'fltBaseCapReplacements'], 10, 3);
+    }
+
+    public function fltHaveSiteCaps($have_site_caps, $post_type, $args) {
+        global $current_user;
+
+        if (!empty($args['has_cap_check']) && ('edit_post' == $args['has_cap_check'])) {
+            if (rvy_get_option('revisor_lock_others_revisions')) {
+                $type_obj = get_post_type_object($post_type);
+
+                // This limitation is not needed for Contributors
+                if (empty($type_obj->cap->edit_others_posts) || empty($current_user->allcaps[$type_obj->cap->edit_others_posts])) {
+                    return $have_site_caps;
+                }
+
+                // This limitation is not applied to Editors
+                if (!empty($type_obj->cap->edit_published_posts) && !empty($current_user->allcaps[$type_obj->cap->edit_published_posts])) {
+                    return $have_site_caps;
+                }
+                
+                if (empty($current_user->all_caps['edit_others_revisions'])) {
+                    foreach( ['pending-revision', 'future-revisions'] as $status) {
+                        $have_site_caps['owner'][] = $status;
+                        
+                        if (!empty($have_site_caps['user']) && in_array($status, $have_site_caps['user'])) {
+                            $have_site_caps['user'] = array_diff($have_site_caps['user'], [$status]);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $have_site_caps;
     }
 
     function fltBaseCapReplacements($replace_caps, $reqd_caps, $post_type) {
