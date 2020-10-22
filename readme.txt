@@ -136,6 +136,8 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 * Compat : Revisions - Category-Specific Revise Permissions allowed an Author to restore past revisions
 * Compat : Revisions - If Revisors are blocked from editing other users' drafts, those can now be included (unclickable) in Edit Pages if the list_others_pages capability is granted 
 * Compat : Revisions - Specific Permissions to enable the Revise operation were ineffective for Contributors and Authors in some cases
+* Fixed : Comment count filtering - Incorrect Total for non-Administrators
+* Fixed : Comment count filtering - Incorrect Approved subtotal for non-Administrators if PublishPress Notifications or Editorial Comments have been stored
 * Fixed : ODBC installations - No confirmation or redirect screen after revision creation, due to database error
 * Fixed : PHP Warning for undefined index on first-time activation
 * Fixed : PHP Warning on Edit Category page, for deprecated action name
