@@ -47,7 +47,8 @@ class CommentFiltersAdmin
     {
         if (!strpos($clauses['where'], 'GROUP BY')) {
             $clauses['fields'] = 'comment_approved, COUNT( * ) AS num_comments';
-            $clauses['where'] .= ' GROUP BY comment_approved';
+            $clauses['groupby'] = 'comment_approved';
+            $clauses['orderby'] = false;
         }
         return $clauses;
     }
@@ -62,7 +63,7 @@ class CommentFiltersAdmin
         }
 
         add_filter('comments_clauses', [$this, 'flt_wp_count_comments_clauses'], 99, 2);
-        $count = get_comments(['post_id' => $post_id]);
+        $count = get_comments(['post_id' => $post_id, 'orderby' => false]);
         remove_filter('comments_clauses', [$this, 'flt_wp_count_comments_clauses'], 99, 2);
 
         // remainder of this function ported from WP function wp_count_comments()
