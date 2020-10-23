@@ -98,7 +98,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	        return;
 	    }
 	
-	    define('PRESSPERMIT_VERSION', '3.3.7');
+	    define('PRESSPERMIT_VERSION', '3.3.8');
 		
 	    if (!$presspermit_loaded_by_pro) {
 	        require_once(__DIR__ . '/includes/Core.php');

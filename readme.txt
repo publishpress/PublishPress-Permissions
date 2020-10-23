@@ -128,7 +128,7 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.3.8 - 22 Oct 2020 =
+= 3.3.8 - 26 Oct 2020 =
 * Fixed: REST tag / term queries returned all terms, ignoring per_page parameter
 * Compat : Gutenberg block embedding - for users lacking edit_posts capability, allow based on upload_files (or other capability per 'presspermit_embed_capability' filter)
 * Compat : Revisions - "Prevent Revisors from editing others' revisions" setting was not applied (also requires Revisions 2.4.2)
