@@ -138,6 +138,7 @@ class Permissions
             'admin_hide_uneditable_posts' => 1,
             'post_blockage_priority' => get_option('presspermit_legacy_exception_handling') ? 0 : 1,
             'media_search_results' => 1,
+            'term_counts_unfiltered' => 0,
             'advanced_options' => 0,
             'edd_key' => false,
             'supplemental_role_defs' => [], // stored by Capability Manager Enhanced

@@ -48,6 +48,7 @@ class SettingsTabCore
             'define_media_post_caps' => __('Enforce distinct edit, delete capability requirements for Media', 'press-permit-core'),
             'define_create_posts_cap' => __('Use create_posts capability', 'press-permit-core'),
             'media_search_results' => __('Search Results include Media', 'press-permit-core'),
+            'term_counts_unfiltered' => __("Performance: Don't filter category / tag counts", 'press-permit-core'),
             'strip_private_caption' => __('Suppress "Private:" Caption', 'press-permit-core'),
             'force_nav_menu_filter' => __('Filter Menu Items', 'press-permit-core'),
             'display_user_profile_groups' => __('Permission Groups on User Profile', 'press-permit-core'),
@@ -65,7 +66,7 @@ class SettingsTabCore
             'taxonomies' => ['enabled_taxonomies'],
             'post_types' => ['enabled_post_types', 'define_media_post_caps', 'define_create_posts_cap'],
             'permissions' => ['post_blockage_priority'],
-            'front_end' => ['media_search_results', 'strip_private_caption', 'force_nav_menu_filter'],
+            'front_end' => ['media_search_results', 'term_counts_unfiltered', 'strip_private_caption', 'force_nav_menu_filter'],
             'admin' => ['admin_hide_uneditable_posts'],
             'user_profile' => ['new_user_groups_ui', 'display_user_profile_groups', 'display_user_profile_roles'],
         ];
@@ -278,6 +279,8 @@ class SettingsTabCore
                 <td>
                     <?php
                     $ui->optionCheckbox('media_search_results', $tab, $section, '');
+
+                    $ui->optionCheckbox('term_counts_unfiltered', $tab, $section, '');
 
                     $hint = __('Remove the "Private:" and "Protected" prefix from Post, Page titles', 'press-permit-core');
                     $ui->optionCheckbox('strip_private_caption', $tab, $section, $hint);
