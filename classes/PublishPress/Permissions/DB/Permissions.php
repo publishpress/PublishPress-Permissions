@@ -536,24 +536,25 @@ class Permissions
                     );
                 } else {
                     $restriction_clause = '1=1';
-				}
+				        }
 
                 if ($apply_term_restrictions) {
                 	$restriction_clause .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table, ['mod_types' => 'exclude']);
-            	}
+            	  }
 
-            	if ($restriction_clause != '1=1') {
+            	  if ($restriction_clause != '1=1') {
                 	$where = "( $where ) AND ( $restriction_clause )";
                 }
+
             }
 
             if (!empty($post_blockage_clause)) {
-            	if (!empty($additions['post']) || defined('PP_LEGACY_POST_BLOCKAGE')) {
-                    $post_blockage_clause = "AND ( ( 1=1 $post_blockage_clause ) OR ( " . Arr::implode(' OR ', $additions['post']) . " ) )";
+            	 if (!empty($additions['post']) || defined('PP_LEGACY_POST_BLOCKAGE')) {
+                  $post_blockage_clause = "AND ( ( 1=1 $post_blockage_clause ) OR ( " . Arr::implode(' OR ', $additions['post']) . " ) )";
 
-            	} else {
+            	 } else {
                 	$post_blockage_clause = "AND ( 1=1 $post_blockage_clause )";
-            	}
+            	 }
             }
         }
 
