@@ -5,7 +5,6 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.5
 Requires PHP: 5.6.20
-Stable tag: 3.3.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -129,16 +128,17 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 == Changelog ==
 
 = 3.3.8 - 26 Oct 2020 =
+* Feature : Gutenberg block embedding - for users lacking "edit_posts" capability, allow embedding based on "upload_files" (or per 'presspermit_embed_capability' filter)
+* Feature : New setting - Core > Front End > "Performance: Don't filter category / tag counts"
 * Fixed: REST tag / term queries returned all terms, ignoring per_page parameter
-* Compat : Gutenberg block embedding - for users lacking edit_posts capability, allow based on upload_files (or other capability per 'presspermit_embed_capability' filter)
+* Fixed : Comment count filtering - Incorrect Total for non-Administrators
+* Fixed : Comment count filtering - Incorrect Approved subtotal for non-Administrators if PublishPress Notifications or Editorial Comments have been stored
+* Compat : ODBC installations - Comment query database error caused issues including lack of confirmation message after Revision creation with PublishPress Revisions plugin
 * Compat : Revisions - "Prevent Revisors from editing others' revisions" setting was not applied (also requires Revisions 2.4.2)
 * Compat : Revisions - Category-Specific Revise Permissions allowed an Author to fully edit posts in specified categories
 * Compat : Revisions - Category-Specific Revise Permissions allowed an Author to restore past revisions
 * Compat : Revisions - If Revisors are blocked from editing other users' drafts, those can now be included (unclickable) in Edit Pages if the list_others_pages capability is granted 
 * Compat : Revisions - Specific Permissions to enable the Revise operation were ineffective for Contributors and Authors in some cases
-* Fixed : Comment count filtering - Incorrect Total for non-Administrators
-* Fixed : Comment count filtering - Incorrect Approved subtotal for non-Administrators if PublishPress Notifications or Editorial Comments have been stored
-* Fixed : ODBC installations - No confirmation or redirect screen after revision creation, due to database error
 * Fixed : PHP Warning for undefined index on first-time activation
 * Fixed : PHP Warning on Edit Category page, for deprecated action name
 * Change : Some settings captions referred to "PressPermit"
