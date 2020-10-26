@@ -210,7 +210,13 @@ class Admin
                     return $caps;
                 }
 
-                $caps[] = 'edit_others_drafts';
+                if (!presspermit()->doing_cap_check && empty($current_user->allcaps['edit_others_drafts']) && $post_type_obj) {
+                    if (!empty($post_type_obj->cap->edit_others_posts) && empty($current_user->allcaps[$post_type_obj->cap->edit_others_posts])) {
+                        $caps[] = str_replace('edit_', 'list_', $post_type_obj->cap->edit_others_posts);
+                    }
+                } else {
+                	$caps[] = "edit_others_drafts";
+                }
             }
         }
         return $caps;
@@ -351,6 +357,12 @@ class Admin
 
         if (empty($revisionary->skip_revision_allowance)) {
             global $pagenow, $plugin_page;
+
+            $user = presspermit()->getUser();
+
+            if (empty($user->except["revise_post"])) {
+               $user->retrieveExceptions('revise', 'post');
+            }
 
             $revision_uris = apply_filters('presspermit_revision_uris', ['edit.php', 'upload.php', 'widgets.php', 'revision.php', 'admin-ajax.php', 'rvy-revisions', 'revisionary-q']);
 

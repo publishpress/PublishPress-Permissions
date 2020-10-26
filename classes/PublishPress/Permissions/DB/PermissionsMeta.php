@@ -67,7 +67,7 @@ class PermissionsMeta
                     . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
                     . " INNER JOIN $members_table AS gm ON ( $agent_type_clause )"
                     . " WHERE i.inherited_from = '0' $ops_clause $type_clause $agent_clause"
-                    . " GROUP BY qry_agent_id, e.for_item_source, e.for_item_type, e.operation"
+                    . " GROUP BY gm.$col_member_user, e.for_item_source, e.for_item_type, e.operation"
                 );
 
                 $results = array_merge($results, $_results);
@@ -81,7 +81,7 @@ class PermissionsMeta
                 . " FROM $wpdb->ppc_exception_items AS i"
                 . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
                 . " WHERE i.inherited_from = '0' AND e.agent_type = '$agent_type' $ops_clause $type_clause $agent_clause"
-                . " GROUP BY qry_agent_id, e.for_item_source, e.for_item_type, e.operation"
+                . " GROUP BY e.agent_id, e.for_item_source, e.for_item_type, e.operation"
             );
         }
 

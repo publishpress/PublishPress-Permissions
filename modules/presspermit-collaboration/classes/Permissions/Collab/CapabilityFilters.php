@@ -87,7 +87,8 @@ class CapabilityFilters
                 $op = 'edit';
                 break;
             case $type_obj->cap->publish_posts:
-                $op = (presspermit()->getOption('publish_exceptions')) ? 'publish' : 'edit';
+                global $pagenow;
+                $op = (presspermit()->getOption('publish_exceptions') || (!empty($pagenow && ('post-new.php' == $pagenow)))) ? 'publish' : 'edit';
                 break;
             case $type_obj->cap->delete_posts:
                 $op = 'delete';
@@ -167,17 +168,23 @@ class CapabilityFilters
 
         global $pagenow;
 
-        if ('async-upload.php' == $pagenow) {
+        if (('async-upload.php' == $pagenow) || (in_array('edit_posts', $pp_reqd_caps, true) && presspermit()->doingEmbed())) {
             if ('upload_files' == reset($pp_reqd_caps)) {  // don't apply any exceptions for upload_files requirement on media upload
                 $return['return_caps'] = $wp_sitecaps;
-            } elseif (!empty($wp_sitecaps['upload_files'])) {
-                $_post = ($post_id) ? get_post($post_id) : false;
+            } else {
+                $require_cap = (presspermit()->doingEmbed()) ? apply_filters('presspermit_embed_capability', 'upload_files') : 'upload_files';
 
-                if (!$_post || ('attachment' == $_post->post_type)) {
-                    if (in_array('edit_posts', $pp_reqd_caps, true))
-                        $return['return_caps'] = array_merge($wp_sitecaps, ['edit_posts' => true]);
-                    elseif (in_array('edit_post', $pp_reqd_caps, true))
-                        $return['return_caps'] = array_merge($wp_sitecaps, ['edit_post' => true]);
+                if (!empty($wp_sitecaps[$require_cap])) {
+                	$_post = ($post_id) ? get_post($post_id) : false;
+
+                	if (!$_post || ('attachment' == $_post->post_type)) {
+                    	if (in_array('edit_posts', $pp_reqd_caps, true)) {
+                        	$return['return_caps'] = array_merge($wp_sitecaps, ['edit_posts' => true]);
+
+                    	} elseif (in_array('edit_post', $pp_reqd_caps, true)) {
+                        	$return['return_caps'] = array_merge($wp_sitecaps, ['edit_post' => true]);
+                        }
+                    }
                 }
             }
         }

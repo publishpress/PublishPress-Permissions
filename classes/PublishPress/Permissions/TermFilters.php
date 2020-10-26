@@ -19,6 +19,8 @@ class TermFilters
     public function __construct()
     {
         add_filter('get_terms_args', [$this, 'fltGetTermsArgs'], 50, 2);
+        add_filter('get_terms_args', [$this, 'fltGetTermsRestoreArgs'], 51, 2);
+
         add_filter('terms_clauses', [$this, 'fltTermsClauses'], 50, 3);
 
         if (!presspermit()->isUserUnfiltered())
@@ -172,6 +174,15 @@ class TermFilters
         ) {
             return true;
         }
+    }
+
+    public function fltGetTermsRestoreArgs($args, $taxonomies)
+    {
+        if (!empty($args['actual_args']) && is_array($args['actual_args'])) {
+            $args = array_merge($args, $args['actual_args']);
+        }
+
+        return $args;
     }
 
     public function fltGetTermsArgs($args, $taxonomies)

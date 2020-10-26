@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.5
 Requires PHP: 5.6.20
-Stable tag: 3.3.5
+Stable tag: 3.3.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,16 +123,41 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.3.5 =
+= 3.3.8 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
+= 3.3.8 - 26 Oct 2020 =
+* Feature : Gutenberg block embedding - for users lacking "edit_posts" capability, allow embedding based on "upload_files" (or per 'presspermit_embed_capability' filter)
+* Feature : New setting - Core > Front End > "Performance: Don't filter category / tag counts"
+* Fixed: REST tag / term queries returned all terms, ignoring per_page parameter
+* Fixed : Comment count filtering - Incorrect Total for non-Administrators
+* Fixed : Comment count filtering - Incorrect Approved subtotal for non-Administrators if PublishPress Notifications or Editorial Comments have been stored
+* Compat : ODBC installations - Comment query database error caused issues including lack of confirmation message after Revision creation with PublishPress Revisions plugin
+* Compat : Revisions - "Prevent Revisors from editing others' revisions" setting was not applied (also requires Revisions 2.4.2)
+* Compat : Revisions - Category-Specific Revise Permissions allowed an Author to fully edit posts in specified categories
+* Compat : Revisions - Category-Specific Revise Permissions allowed an Author to restore past revisions
+* Compat : Revisions - If Revisors are blocked from editing other users' drafts, those can now be included (unclickable) in Edit Pages if the list_others_pages capability is granted 
+* Compat : Revisions - Specific Permissions to enable the Revise operation were ineffective for Contributors and Authors in some cases
+* Fixed : PHP Warning for undefined index on first-time activation
+* Fixed : PHP Warning on Edit Category page, for deprecated action name
+* Change : Some settings captions referred to "PressPermit"
+
+= 3.3.7 - 9 Oct 2020 =
+* Compat : PublishPress Revisions - On new post creation, Revisors had Submit button replaced by a Publish button, which failed. The only way to submit was to Save Draft first.
+* Compat : PublishPress Revisions - Existing "Edit Page" Permissions could not be mirrored as "Revise Page" Permissions using bulk action dropdown
+* Compat : PublishPress Revisions - Existing "Revise Page" Permissions could not be mirrored as "Edit Page" Permissions using bulk action dropdown
+* Compat : PublishPress Revisions - PHP warning on Edit Group Permissions screen if any Specific Permissions are stored for the Revise operation
+
+= 3.3.6 - 8 Oct 2020 =
+* Fixed : Post-specific permissions did not correctly enable access under some configurations with "Post-specific Permissions take priority" setting enabled
+
 = 3.3.5 - 1 Oct 2020 =
+* Change : Friendlier caption in Permissions metaboxes, "Editing permissions have not been added or blocked for any Custom Group"
 * Fixed : Javascript error "jQuery is not defined" on some sites
 * Fixed : Media items were always included in search results if filtering enabled. Now controlled by Settings > Core > Front End > Search Results include Media
 * Fixed : Edit Permission Group - In Posts / Pages selector, "(none)" item was not available unless paging links clicked (since 3.1)
-* Change : Friendlier caption in Permissions metaboxes, "Editing permissions have not been added or blocked for any Custom Group"
 * Compat : Gutenberg Ramp - Revision submission UI did not load for post types that have Gutenberg enabled
 
 = 3.3.4 - 11 Sep 2020 =

@@ -212,6 +212,7 @@ class TermFiltersCount
             global $pagenow;
             if ((!is_admin() || !in_array($pagenow, ['post.php', 'post-new.php']))
                 && (!defined('PP_UNFILTERED_TERM_COUNTS') || is_admin())
+                && (in_array($pagenow, ['edit-tags.php']) || !presspermit()->getOption('term_counts_unfiltered'))
             ) {
                 if ($hide_empty || !empty($args['actual_args']['hide_empty'])) {
                     // need to tally for all terms in case some were hidden by core function due to lack of public posts
@@ -285,7 +286,7 @@ class TermFiltersCount
         if ('id=>parent' == $fields) {
 			foreach ( $terms as $term ) {
                 if (is_object($term)) {
-                $_terms[$term->term_id] = $term->parent;
+                	$_terms[$term->term_id] = $term->parent;
                 } elseif ($_term = get_term($term, reset($taxonomies))) {
                     if (!is_wp_error($_term)) {
                         $_terms[$_term->term_id] = $_term->parent;
@@ -308,8 +309,8 @@ class TermFiltersCount
                 } elseif (is_numeric($term) && count($taxonomies) == 1) {
                     if ($term = get_term($term, reset($taxonomies))) {
                         if (!is_wp_error($term)) {
-                        $_terms[] = $term->name;
-                    }
+                        	$_terms[] = $term->name;
+                    	}
                     }
                 } elseif (is_string($term)) {
                     $_terms[] = $term;
@@ -322,10 +323,10 @@ class TermFiltersCount
                 } elseif (is_numeric($term) && count($taxonomies) == 1) {
                     if ($term = get_term($term, reset($taxonomies))) {
                         if (!is_wp_error($term)) {
-                        $_terms[] = $term->slug;
-                    }
-                }
-			}
+                        	$_terms[] = $term->slug;
+                    	}
+                	}
+				}
 			}
 		} elseif ( 'id=>name' == $fields ) {
 			foreach ( $terms as $term ) {
@@ -334,10 +335,10 @@ class TermFiltersCount
                 } elseif (is_numeric($term) && count($taxonomies) == 1) {
                     if ($term = get_term($term, reset($taxonomies))) {
                         if (!is_wp_error($term)) {
-                        $_terms[ $term->term_id ] = $term->name;
-                    }
-                }
-			}
+                        	$_terms[ $term->term_id ] = $term->name;
+                    	}
+                	}
+				}
 			}
 		} elseif ( 'id=>slug' == $fields ) {
 			foreach ( $terms as $term ) {
@@ -346,7 +347,7 @@ class TermFiltersCount
                 } elseif (is_numeric($term) && count($taxonomies) == 1) {
                     if ($term = get_term($term, reset($taxonomies))) {
                         if (!is_wp_error($term)) {
-						$_terms[ $term->term_id ] = $term->slug;
+							$_terms[ $term->term_id ] = $term->slug;
                         }
                     }
                 }

@@ -25,15 +25,15 @@ class TermEdit
             if (presspermit()->isTaxonomyEnabled($_REQUEST['taxonomy'])) {
                 add_action('admin_head', [$this, 'actScriptsWP']);
 
-                add_action('edit_category_form', [$this, 'actExceptionEditUI']);
+                add_action("{$_REQUEST['taxonomy']}_add_form", [$this, 'actExceptionEditUI']);
                 add_action('edit_tag_form', [$this, 'actExceptionEditUI']);
             } else {
-                add_action('edit_category_form', [$this, 'actTaxonomyEnableUI']);
+                add_action("{$_REQUEST['taxonomy']}_add_form", [$this, 'actTaxonomyEnableUI']);
                 add_action('edit_tag_form', [$this, 'actTaxonomyEnableUI']);
             }
 
             if (!empty($_REQUEST['pp_universal'])) {
-                add_action('edit_category_form', [$this, 'actUniversalExceptionsUIsupport']);
+                add_action("{$_REQUEST['taxonomy']}_add_form", [$this, 'actUniversalExceptionsUIsupport']);
                 add_action('edit_tag_form', [$this, 'actUniversalExceptionsUIsupport']);
             }
         }
