@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.5
 Requires PHP: 5.6.20
-Stable tag: 3.3.8
+Stable tag: 3.3.9
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,13 +123,16 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.3.8 =
+= 3.3.9 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
+= 3.3.9 - 27 Oct 2020 =
+* Fixed : Permissions metaboxes were not displayed on Edit Category screen
+
 = 3.3.8 - 26 Oct 2020 =
-* Feature : Gutenberg block embedding - for users lacking "edit_posts" capability, allow embedding based on "upload_files" (or per 'presspermit_embed_capability' filter)
+* Feature : Gutenberg block embedding - for users lacking "edit_posts" capability, allow embedding based on "upload_files" (or per "presspermit_embed_capability" filter)
 * Feature : New setting - Core > Front End > "Performance: Don't filter category / tag counts"
 * Fixed: REST tag / term queries returned all terms, ignoring per_page parameter
 * Fixed : Comment count filtering - Incorrect Total for non-Administrators
