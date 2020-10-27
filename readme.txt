@@ -128,8 +128,11 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
+= 3.3.9 - 27 Oct 2020 =
+* Fixed : Permissions metaboxes were not displayed on Edit Category screen
+
 = 3.3.8 - 26 Oct 2020 =
-* Feature : Gutenberg block embedding - for users lacking "edit_posts" capability, allow embedding based on "upload_files" (or per 'presspermit_embed_capability' filter)
+* Feature : Gutenberg block embedding - for users lacking "edit_posts" capability, allow embedding based on "upload_files" (or per "presspermit_embed_capability" filter)
 * Feature : New setting - Core > Front End > "Performance: Don't filter category / tag counts"
 * Fixed: REST tag / term queries returned all terms, ignoring per_page parameter
 * Fixed : Comment count filtering - Incorrect Total for non-Administrators
