@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.5
 Requires PHP: 5.6.20
-Stable tag: 3.2.5
+Stable tag: 3.3.9
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,22 +123,60 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.2.5 =
+= 3.3.9 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
-= 3.4-alpha =
+= 3.4-beta =
 * Compat : PublishPress Authors - integration of multiple authors in Permissions filtering
+* Fixed : Better styling in Permissions / Groups administration UI
 
-= 3.3.3-beta4 =
+= 3.3.9 - 27 Oct 2020 =
+* Fixed : Permissions metaboxes were not displayed on Edit Category screen
+
+= 3.3.8 - 26 Oct 2020 =
+* Feature : Gutenberg block embedding - for users lacking "edit_posts" capability, allow embedding based on "upload_files" (or per "presspermit_embed_capability" filter)
+* Feature : New setting - Core > Front End > "Performance: Don't filter category / tag counts"
+* Fixed: REST tag / term queries returned all terms, ignoring per_page parameter
+* Fixed : Comment count filtering - Incorrect Total for non-Administrators
+* Fixed : Comment count filtering - Incorrect Approved subtotal for non-Administrators if PublishPress Notifications or Editorial Comments have been stored
+* Compat : ODBC installations - Comment query database error caused issues including lack of confirmation message after Revision creation with PublishPress Revisions plugin
+* Compat : Revisions - "Prevent Revisors from editing others' revisions" setting was not applied (also requires Revisions 2.4.2)
+* Compat : Revisions - Category-Specific Revise Permissions allowed an Author to fully edit posts in specified categories
+* Compat : Revisions - Category-Specific Revise Permissions allowed an Author to restore past revisions
+* Compat : Revisions - If Revisors are blocked from editing other users' drafts, those can now be included (unclickable) in Edit Pages if the list_others_pages capability is granted 
+* Compat : Revisions - Specific Permissions to enable the Revise operation were ineffective for Contributors and Authors in some cases
+* Fixed : PHP Warning for undefined index on first-time activation
+* Fixed : PHP Warning on Edit Category page, for deprecated action name
+* Change : Some settings captions referred to "PressPermit"
+
+= 3.3.7 - 9 Oct 2020 =
+* Compat : PublishPress Revisions - On new post creation, Revisors had Submit button replaced by a Publish button, which failed. The only way to submit was to Save Draft first.
+* Compat : PublishPress Revisions - Existing "Edit Page" Permissions could not be mirrored as "Revise Page" Permissions using bulk action dropdown
+* Compat : PublishPress Revisions - Existing "Revise Page" Permissions could not be mirrored as "Edit Page" Permissions using bulk action dropdown
+* Compat : PublishPress Revisions - PHP warning on Edit Group Permissions screen if any Specific Permissions are stored for the Revise operation
+
+= 3.3.6 - 8 Oct 2020 =
+* Fixed : Post-specific permissions did not correctly enable access under some configurations with "Post-specific Permissions take priority" setting enabled
+
+= 3.3.5 - 1 Oct 2020 =
+* Change : Friendlier caption in Permissions metaboxes, "Editing permissions have not been added or blocked for any Custom Group"
+* Fixed : Javascript error "jQuery is not defined" on some sites
+* Fixed : Media items were always included in search results if filtering enabled. Now controlled by Settings > Core > Front End > Search Results include Media
+* Fixed : Edit Permission Group - In Posts / Pages selector, "(none)" item was not available unless paging links clicked (since 3.1)
+* Compat : Gutenberg Ramp - Revision submission UI did not load for post types that have Gutenberg enabled
+
+= 3.3.4 - 11 Sep 2020 =
+* Fixed : Post access was improperly blocked under some configurations if Permissions > Settings > Core > "Post-specific Permissions take priority" enabled
+
+= 3.3.3 - 10 Sep 2020 =
 * Fixed : Deleted WordPress roles were still listed in Permissions metaboxes of Post/Term editor
 * Fixed : Limited term managers could not view some of their manageable terms under some configurations
 * Fixed : Term managers who are limited to managing a fixed set of terms had "None" category listed in Parent dropdown, even though they cannot add a top-level category
 * Fixed : Parent selection for custom post types was not properly filtered in Gutenberg editor
-* Compat : PublishPress Authors - activation of invalid "Custom permissions for Authors" setting on Edit Author screen (using a previous Permissions version) broke Authors > Authors listing and editing access
-* Compat : Public Post Preview + PublishPress Revisions: Public previews of pending and scheduled revisions were blocked
 * Fixed : Setting "Post-specific Permissions take priority" ineffective under some configurations
+* Compat : PublishPress Authors - activation of invalid "Custom permissions for Authors" setting on Edit Author screen (using a previous Permissions version) broke Authors > Authors listing and editing access
 * Compat : Nested Pages - Enable Permissions filtering, but disable Quick Edit and Context Menu for non-Administrators by default. Available constants: PP_NESTED_PAGES_DISABLE_FILTERING, PP_NESTED_PAGES_QUICKEDIT_ROLES, PP_NESTED_PAGES_CONTEXT_MENU_ROLES
 * Compat : WooCommerce - When editing a product, variation additions were blocked inappropriately
 
