@@ -229,7 +229,7 @@ class AgentsDynamicUI
                 <?php if ($display_stored_selections) : ?>
                     <td class="pp-members-current">
                         <button type="button" id="unselect_agents_<?php echo $id_suffix; ?>" class="pp_remove button pp-default-button"
-                            style="margin-left: 24px;">
+                            style="margin-left: 8px;">
                             <?php echo $label_unselect; ?></button>
                     </td>
                 <?php endif; ?>
