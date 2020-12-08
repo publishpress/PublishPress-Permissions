@@ -42,6 +42,7 @@ class ContentRoles extends \RevisionaryContentRoles
 
             foreach ($user_ids as $user_id) {
                 wp_set_current_user($user_id);
+                do_action('presspermit_user_reload');
 
                 $pp->clearMemcache();
                 $pp->flags['memcache_disabled'] = true;
@@ -57,6 +58,7 @@ class ContentRoles extends \RevisionaryContentRoles
 
             $pp->flags['memcache_disabled'] = false;
             wp_set_current_user($buffer_user_id);
+            do_action('presspermit_user_reload');
 
             return $ok_users;
         }
