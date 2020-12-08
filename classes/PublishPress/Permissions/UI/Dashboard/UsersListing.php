@@ -284,7 +284,7 @@ class UsersListing
 
                 $role_str = '<span class="pp-group-site-roles">' . implode(', ', $role_titles) . '</span>';
 
-                if (current_user_can('edit_user', $id) && current_user_can('pp_assign_roles')) {
+                if (current_user_can('pp_assign_roles') && (is_multisite() || current_user_can('edit_user', $id))) {
                     $edit_link = "admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_id=$id&amp;agent_type=user";
                     $role_str = "<a href=\"$edit_link\">$role_str</a><br />";
                 }
