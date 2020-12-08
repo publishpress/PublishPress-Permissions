@@ -116,7 +116,7 @@ class CapabilityFiltersAdmin
 
         // for scoped menu management roles, satisfy edit_theme_options cap requirement
         if (('nav-menus.php' == $pagenow)
-            || (('edit_theme_options' == reset($reqd_caps)) && (PWP::doingAdminMenus() || (defined('DOING_AJAX') && DOING_AJAX)))
+            || (('edit_theme_options' == reset($reqd_caps)) && ('edit_theme_options' == $orig_cap) && (PWP::doingAdminMenus() || (defined('DOING_AJAX') && DOING_AJAX)))
         ) {
             //if ( ( 'nav-menus.php' == $pagenow ) || empty( $current_user->allcaps['edit_theme_options'] ) ) {
             if (empty($current_user->allcaps['edit_theme_options'])) {
