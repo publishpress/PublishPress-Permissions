@@ -139,7 +139,12 @@ class PostFilters
 
         $pp = presspermit();
 
-        if ($pp->isUserUnfiltered() && (!is_admin() || ($pagenow != 'nav-menus.php'))) { // need to make private items selectable for nav menus
+        if ($pp->isUserUnfiltered() && 
+            (
+            !is_admin() || 
+            (($pagenow != 'nav-menus.php') && (!defined('DOING_AJAX') || !DOING_AJAX || empty($_REQUEST['action']) || ('menu-quick-search' != $_REQUEST['action'])))
+            )
+        ) { // need to make private items selectable for nav menus
             return $clauses;
         }
 
@@ -375,7 +380,7 @@ class PostFilters
         // (But not if user is anon and hidden content teaser is enabled.  In that case, we need to replace the default "status=publish" clause)
         $matches = [];
         if ($num_matches = preg_match_all("/{$src_table}.post_status\s*=\s*'([^']+)'/", $where, $matches)) {
-            if (PWP::isFront() || (defined('REST_REQUEST') && REST_REQUEST)) {
+            if (PWP::isFront() || (defined('REST_REQUEST') && REST_REQUEST) || (defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) && ('menu-quick-search' == $_REQUEST['action']))) {
                 if (PWP::isFront() || 'read' == $required_operation) {
                     $valid_stati = array_merge(
                         PWP::getPostStatuses(['public' => true, 'post_type' => $post_types]),
@@ -406,7 +411,7 @@ class PostFilters
         if (1 == $num_matches) {
             // Eliminate a primary plugin incompatibility by skipping this preservation of existing single status requirements if we're on the front end and the requirement is 'publish'.  
             // (i.e. include private posts that this user has access to via PP roles or exceptions).  
-            if ((!PWP::isFront() && (!defined('REST_REQUEST') || !REST_REQUEST))
+            if ((!PWP::isFront() && (!defined('REST_REQUEST') || !REST_REQUEST) && (!defined('DOING_AJAX') || !DOING_AJAX || ('menu-quick-search' != $_REQUEST['action'])))
                 || ('publish' != $matches[1][0]) || $retain_status || defined('PP_RETAIN_PUBLISH_FILTER')
             ) {
                 $limit_statuses = [];
