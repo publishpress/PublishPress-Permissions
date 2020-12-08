@@ -38,12 +38,17 @@ class AgentExceptionsAjax
             else
                 $for_source_name = $for_type;
 
+            if (!$via_type && post_type_exists($for_type)) {
+                $via_type = $for_type;
+                $via_source_name = 'post';
+            } else {
             if (post_type_exists($via_type))
                 $via_source_name = 'post';
             elseif (taxonomy_exists($via_type))
                 $via_source_name = 'term';
             else
                 $via_source_name = $via_type;
+        }
         }
 
         $html = '';
@@ -125,7 +130,7 @@ class AgentExceptionsAjax
                     if ('associate' != $operation) {
                         if ('assign' != $operation) {  // 'assign' op only pertains to terms
                             if ($type_obj = get_post_type_object($for_type)) {
-                                $types = [$for_type => __('selected:', 'press-permit-core')];
+                                $types = ['' => __('selected:', 'press-permit-core')];
                             }
                         }
 
