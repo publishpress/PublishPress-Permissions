@@ -37,6 +37,12 @@ class PermissionsHooks
         }
         
         add_action('user_has_cap', [$this, 'fltEarlyUserHasCap'], 50, 3);
+
+        // filter pre_option_category_children to disable/enable terms filtering
+        foreach (presspermit()->getEnabledTaxonomies(['object_type' => false]) as $taxonomy) {
+            add_action("pre_update_option_{$taxonomy}_children", [$this, 'actClearTermChildrenCache'], 99, 3);
+            add_action("update_option_{$taxonomy}_children", [$this, 'actClearTermChildrenCache'], 99, 3);
+        }
     }
 
 	public function loadUpdater() {
@@ -490,4 +496,13 @@ class PermissionsHooks
 
         return Permissions\PageFilters::fltGetPages($pages, $args);
     }
+
+    public function actClearTermChildrenCache($children, $option_val, $option_name)
+    {  // fires on pre_update_option_$taxonomy filter
+        if (defined('DOING_AJAX') && DOING_AJAX) {
+        	delete_option($option_name);
+    	}
+    }
+
+
 } // end class
