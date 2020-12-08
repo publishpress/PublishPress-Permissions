@@ -27,6 +27,9 @@ class CollabHooks
             return;
         }
 
+        // Divi Page Builder
+        add_filter('user_has_cap', [$this, 'fltDiviCaps'], 10, 3);
+
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Capabilities.php');
 
         add_action('init', [$this, 'init']);
@@ -175,6 +178,39 @@ class CollabHooks
                 }
             }
         }
+    }
+
+    function fltDiviCaps($wp_sitecaps, $orig_reqd_caps, $args) 
+    {
+        global $current_user;
+
+        // Work around Divi Page Builder requiring off-type capabilities, which prevents Specific Permissions from satisfying edit_published_pages capability requirement
+        if (!strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') || !did_action('wp_ajax_et_fb_ajax_save')) {
+            return $wp_sitecaps;
+        }
+
+        static $busy;
+
+        if (!empty($busy)) {
+            return $wp_sitecaps;
+        }
+
+        $orig_cap = (isset($args[0])) ? $args[0] : '';
+
+        // If user can edit the current post, credit edit_published_posts and edit_published_pages capabilities
+        if (in_array($orig_cap, ['edit_published_posts', 'edit_published_pages'])) {
+            if ($post_id = PWP::getPostID()) {
+                $busy = true;
+
+                if (current_user_can('edit_post', $post_id)) {
+                    $wp_sitecaps[$orig_cap] = true;
+                }
+
+                $busy = false;
+            }
+        }
+
+        return $wp_sitecaps;
     }
 
     function fltMetaCaps($meta_caps)

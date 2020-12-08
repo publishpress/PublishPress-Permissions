@@ -18,6 +18,7 @@ class CapabilityFiltersAdmin
         // filter pre_option_category_children, pre_update_option_category_children to disable/enable terms filtering
         foreach (presspermit()->getEnabledTaxonomies(['object_type' => false]) as $taxonomy) {
             add_filter("pre_option_{$taxonomy}_children", [$this, 'fltTriggerDisableTermsFilter'], 10, 2);
+            add_filter("pre_update_option_{$taxonomy}_children", [$this, 'fltTriggerDisableTermsFilter'], 10, 2);
         }
 
         add_filter('map_meta_cap', [$this, 'fltAdjustReqdCaps'], 1, 4);
@@ -115,7 +116,7 @@ class CapabilityFiltersAdmin
 
         // for scoped menu management roles, satisfy edit_theme_options cap requirement
         if (('nav-menus.php' == $pagenow)
-            || (('edit_theme_options' == reset($reqd_caps)) && (PWP::doingAdminMenus() || (defined('DOING_AJAX') && DOING_AJAX)))
+            || (('edit_theme_options' == reset($reqd_caps)) && ('edit_theme_options' == $orig_cap) && (PWP::doingAdminMenus() || (defined('DOING_AJAX') && DOING_AJAX)))
         ) {
             //if ( ( 'nav-menus.php' == $pagenow ) || empty( $current_user->allcaps['edit_theme_options'] ) ) {
             if (empty($current_user->allcaps['edit_theme_options'])) {
@@ -218,14 +219,16 @@ class CapabilityFiltersAdmin
         presspermit()->flags['disable_term_filtering'] = true;
 
         $taxonomy = str_replace('_children', '', $option_name);
-        add_filter("pre_update_option_{$taxonomy}_children", [$this, 'enable_terms_filter']);
+        add_filter("option_{$taxonomy}_children", [$this, 'enable_terms_filter'], 10, 2);
+        add_filter("update_option_{$taxonomy}_children", [$this, 'enable_terms_filter'], 10, 2);
 
         return $option_val;
     }
 
-    public function enable_terms_filter()
+    public function enable_terms_filter($option_val, $option_name)
     {
         unset(presspermit()->flags['disable_term_filtering']);
+        return $option_val;
     }
 
     private function taxonomy_from_caps($caps)

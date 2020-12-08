@@ -37,6 +37,12 @@ class PermissionsHooks
         }
         
         add_action('user_has_cap', [$this, 'fltEarlyUserHasCap'], 50, 3);
+
+        // filter pre_option_category_children to disable/enable terms filtering
+        foreach (presspermit()->getEnabledTaxonomies(['object_type' => false]) as $taxonomy) {
+            add_action("pre_update_option_{$taxonomy}_children", [$this, 'actClearTermChildrenCache'], 99, 3);
+            add_action("update_option_{$taxonomy}_children", [$this, 'actClearTermChildrenCache'], 99, 3);
+        }
     }
 
 	public function loadUpdater() {
@@ -421,7 +427,10 @@ class PermissionsHooks
         }
 
         // (also use content filters on front end to FILTER IN private content which WP inappropriately hides from administrators)
-        if (($is_front && $front_filtering) || (!$is_unfiltered || ('nav-menus.php' == $pagenow))) {
+        if (($is_front && $front_filtering) 
+        || !$is_unfiltered 
+        || ('nav-menus.php' == $pagenow) 
+        || (defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) && ('menu-quick-search' == $_REQUEST['action']))) {
             if (! $this->post_filters_loaded) { // since this could possibly fire on multiple 'set_current_user' calls, avoid redundancy
                 require_once(PRESSPERMIT_CLASSPATH . '/PostFilters.php');
                 Permissions\PostFilters::instance(['direct_file_access' => $this->direct_file_access]);
@@ -487,4 +496,13 @@ class PermissionsHooks
 
         return Permissions\PageFilters::fltGetPages($pages, $args);
     }
+
+    public function actClearTermChildrenCache($children, $option_val, $option_name)
+    {  // fires on pre_update_option_$taxonomy filter
+        if (defined('DOING_AJAX') && DOING_AJAX) {
+        	delete_option($option_name);
+    	}
+    }
+
+
 } // end class
