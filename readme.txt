@@ -128,6 +128,14 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
+= 3.3.10 - 8 Dec 2020 =
+* Compat : PublishPress Revisions - Pending Revision Monitors group members were not properly filtered for editing access prior to display as available "Publishers to Notify"
+* Compat : Divi Page Builder / theme - Contributors granted page editing permission for specific pages cannot edit those pages with Divi
+* Compat : Visual Composer - PHP error for undefined class "PublishPress\Permissions\Capabilities" under some configurations
+* Fixed : Edit Permissions screen - Cannot save Specific Permissions for a post type that has the same name as a taxonomy
+* Fixed : Menus screen - Private posts were not included in "Add menu items" search results
+* Fixed : Categories / Terms screen - Incorrect filtering under some site configurations
+
 = 3.3.9 - 27 Oct 2020 =
 * Fixed : Permissions metaboxes were not displayed on Edit Category screen
 
