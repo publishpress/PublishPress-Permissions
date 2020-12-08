@@ -104,6 +104,10 @@ class Capabilities
             }
 
             if (!in_array($taxonomy, $core_taxonomies, true)) {
+                if (!class_exists('PublishPress\Permissions\Capabilities')) {
+                    presspermit()->capDefs();
+                }
+
                 // Default plural slug
                 //$plural_type = "{$taxonomy}s";
 
