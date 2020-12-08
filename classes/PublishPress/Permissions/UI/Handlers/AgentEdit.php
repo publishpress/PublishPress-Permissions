@@ -218,7 +218,7 @@ class AgentEdit
                     $args['via_item_type'] = $via_type;
                     $args['item_id'] = PWP::termidToTtid($item_id, $via_type);
 
-                } elseif (!$via_type || post_type_exists($via_type)) {
+                } elseif ((!$via_type && post_type_exists($for_type)) || post_type_exists($via_type)) {
                     $args['via_item_source'] = 'post';
                     $args['via_item_type'] = '';
 
