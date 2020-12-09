@@ -499,7 +499,7 @@ class PostFilters
     }
 
     public function fltPostsJoin($join, $args = []) {
-        if (!defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION')) {
+        if (!defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') || defined('PRESSPERMIT_DISABLE_AUTHORS_JOIN')) {
             return $join;
         }
         

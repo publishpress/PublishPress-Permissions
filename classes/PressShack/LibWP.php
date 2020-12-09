@@ -498,7 +498,7 @@ class LibWP
             $src_table = $args['src_table'];
         }
 
-        if ($ppma_active && $join_table) {
+        if ($ppma_active && $join_table && !defined('PRESSPERMIT_DISABLE_AUTHORS_JOIN')) {
             $join_where = ($compare == '=') ? "OR $join_table.term_id > 0" : "AND $join_table.term_id IS NULL";
             $clause = "( $src_table.post_author $compare '$user_id' $join_where )";
         } else {
