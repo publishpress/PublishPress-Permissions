@@ -3,9 +3,9 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.9.7
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.6.20
-Stable tag: 3.3.9
+Stable tag: 3.3.10
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,7 +123,7 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.3.9 =
+= 3.3.10 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
@@ -131,6 +131,19 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 = 3.4-beta =
 * Compat : PublishPress Authors - integration of multiple authors in Permissions filtering
 * Fixed : Better styling in Permissions / Groups administration UI
+
+= 3.3.10 - 8 Dec 2020 =
+* Compat : GD bbPress Attachments - 404 error on some sites following file rewrite rules update, if File Access module enabled
+* Compat : Status Control + WooCommerce: PHP Notice on scheduled task execution
+* Compat : Access Circles + PublishPress Revisions - Visibility Circles blocked editors from approving revisions
+* Compat : PublishPress Revisions - Pending Revision Monitors group members were not properly filtered for editing access prior to display as available "Publishers to Notify"
+* Compat : Divi Page Builder / theme - Contributors granted page editing permission for specific pages cannot edit those pages with Divi
+* Compat : Visual Composer - PHP error for undefined class "PublishPress\Permissions\Capabilities" under some configurations
+* Compat : Display Posts plugin - Posts with a custom privacy status were never listed (even if readable)
+* Fixed : Edit Permissions screen - Cannot save Specific Permissions for a post type that has the same name as a taxonomy
+* Fixed : Menus screen - Private posts were not included in "Add menu items" search results
+* Fixed : Categories / Terms screen - Incorrect filtering under some conditions
+* Lang : Move all Pro translations into a single file
 
 = 3.3.9 - 27 Oct 2020 =
 * Fixed : Permissions metaboxes were not displayed on Edit Category screen
