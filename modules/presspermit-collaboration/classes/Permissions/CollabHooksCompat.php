@@ -131,7 +131,8 @@ class CollabHooksCompat
             }
 
             $skip_metacaps = !empty($user->allcaps['pp_moderate_any']) 
-            && false === strpos($_SERVER['REQUEST_URI'], "page=presspermit-statuses");
+            && (!is_admin() || ('presspermit-statuses' != presspermitPluginPage()))       // Capabilities screen needs all status capabilities loaded for administration
+            && ((false == strpos($_SERVER['SCRIPT_NAME'], 'admin.php') || empty($_REQUEST['page'] || ('capsman' != $_REQUEST['page']))) || (!presspermit()->isAdministrator() && !current_user_can('manage_capabilities')));
 
             // register each custom post status as an attribute condition with mapped caps
             foreach (get_post_stati([], 'object') as $status => $status_obj) {

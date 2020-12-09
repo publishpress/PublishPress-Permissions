@@ -11,7 +11,7 @@ class Admin
             add_action('init', [$this, 'init_rvy_interface'], 2);
         }
 
-        add_filter('map_meta_cap', [$this, 'flt_mapMetaCap'], 1, 4);
+        add_filter('map_meta_cap', [$this, 'flt_mapMetaCap'], 3, 4);
 
         add_filter('presspermit_get_exception_items', [$this, 'flt_get_exception_items'], 10, 5);
 
@@ -210,7 +210,13 @@ class Admin
                     return $caps;
                 }
 
-                $caps[] = 'edit_others_drafts';
+                if (!presspermit()->doing_cap_check && empty($current_user->allcaps['edit_others_drafts']) && $post_type_obj) {
+                    if (!empty($post_type_obj->cap->edit_others_posts) && empty($current_user->allcaps[$post_type_obj->cap->edit_others_posts])) {
+                        $caps[] = str_replace('edit_', 'list_', $post_type_obj->cap->edit_others_posts);
+                    }
+                } else {
+                	$caps[] = "edit_others_drafts";
+                }
             }
         }
         return $caps;
@@ -352,6 +358,12 @@ class Admin
         if (empty($revisionary->skip_revision_allowance)) {
             global $pagenow, $plugin_page;
 
+            $user = presspermit()->getUser();
+
+            if (empty($user->except["revise_post"])) {
+               $user->retrieveExceptions('revise', 'post');
+            }
+
             $revision_uris = apply_filters('presspermit_revision_uris', ['edit.php', 'upload.php', 'widgets.php', 'revision.php', 'admin-ajax.php', 'rvy-revisions', 'revisionary-q']);
 
             //if (is_admin() || !empty($_GET['preview'])) {
@@ -399,9 +411,17 @@ class Admin
         if (!defined('DOING_AJAX') || !DOING_AJAX) {
             // don't need to fudge the capreq for post.php unless existing post has public/private status
             $status = get_post_field('post_status', $post_id, 'post');
-            $status_obj = get_post_status_object($status);
 
-            if (empty($status_obj->public) && empty($status_obj->private) && ('future' != $status)) {
+            $adjust_statuses = apply_filters(
+                'revisionary_main_post_statuses', 
+                array_merge(
+                	get_post_stati( ['public' => true, 'private' => true], 'names', 'or' ),
+                	['future']
+                ),
+                'names'
+            );
+
+            if (!in_array($status, $adjust_statuses)) {
                 return $rs_reqd_caps;
             }
         }

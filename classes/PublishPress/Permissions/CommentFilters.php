@@ -56,6 +56,10 @@ class CommentFilters
                 array_merge($args, ['post_types' => $post_type, 'skip_teaser' => true, 'query_contexts' => $query_contexts])
             );
 
+        if (!empty($clauses['groupby']) && !empty($clauses['select']) && (false !== stripos($clauses['select'], 'COUNT(')) && !defined('PRESSPERMIT_LEGACY_COMMENT_FILTERING')) {
+            $clauses['orderby'] = '';
+        }
+
         return $clauses;
     }
 

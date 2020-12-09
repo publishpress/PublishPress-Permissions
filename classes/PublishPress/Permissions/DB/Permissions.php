@@ -319,6 +319,39 @@ class Permissions
 
         $exc_post_type = apply_filters('presspermit_exception_post_type', $post_type, $required_operation, $args);
 
+        $additions = [ 
+            'post' => [], 
+            'term' => []
+        ];
+
+        $additional_ids = $user->getExceptionPosts($required_operation, 'additional', $exc_post_type, ['status' => true]);
+
+        foreach ($additional_ids as $_status => $_ids) {
+            if ($_status) {  // db storage is with "post_status:" prefix to allow for implementation of other attributes
+                if (0 === strpos($_status, 'post_status:'))
+                    $_status = str_replace('post_status:', '', $_status);
+                else
+                    continue;
+            }
+
+            // facilitates user-add on post edit form without dealing with status caps
+            $in_clause = "IN ('" . implode("','", $_ids) . "')";
+            $additions['post'][$_status][] = apply_filters(
+                'presspermit_additions_clause',
+                "$src_table.ID $in_clause",
+                $required_operation,
+                $post_type,
+                [
+                    'via_item_source' => 'post', 
+                    'via_item_type' => $exc_post_type,
+                    'status' => $_status, 
+                    'in_clause' => $in_clause, 
+                    'src_table' => $src_table,
+                    'ids' => $_ids
+                ]
+            );
+        }
+
         if (!$additions_only) {
             if ($where) {  // where clause already indicates sitewide caps for one or more statuses (or just want the exceptions clause generated)
                 if ($append_clause = apply_filters('presspermit_append_query_clause', '', $post_type, $required_operation, $args)) {
@@ -330,6 +363,10 @@ class Permissions
 
                 foreach (['include' => 'IN', 'exclude' => 'NOT IN'] as $mod => $logic) {
                     if ($ids = $user->getExceptionPosts($required_operation, $mod, $exc_post_type)) {
+                        if (!defined('PP_RESTRICTION_PRIORITY') && !empty($additional_ids['']) && !defined('PP_LEGACY_POST_BLOCKAGE')) {
+                        	$ids = array_diff($ids, $additional_ids['']);
+                    	}
+                        
                         $_args = array_merge($args, compact('mod', 'ids', 'src_table', 'logic'));
 
                         $clause_var = ($post_blockage_priority) ? 'post_blockage_clause' : 'where';
@@ -358,46 +395,28 @@ class Permissions
             }
         }
 
-        $additions = [];
-        $additional_ids = $user->getExceptionPosts($required_operation, 'additional', $exc_post_type, ['status' => true]);
-
-        foreach ($additional_ids as $_status => $_ids) {
-            if ($_status) {  // db storage is with "post_status:" prefix to allow for implementation of other attributes
-                if (0 === strpos($_status, 'post_status:'))
-                    $_status = str_replace('post_status:', '', $_status);
-                else
-                    continue;
-            }
-
-            // facilitates user-add on post edit form without dealing with status caps
-            $in_clause = "IN ('" . implode("','", $_ids) . "')";
-            $additions[$_status][] = apply_filters(
-                'presspermit_additions_clause',
-                "$src_table.ID $in_clause",
-                $required_operation,
-                $post_type,
-                [
-                    'via_item_source' => 'post', 
-                    'via_item_type' => $exc_post_type,
-                    'status' => $_status, 
-                    'in_clause' => $in_clause, 
-                    'src_table' => $src_table,
-                    'ids' => $_ids,
-                    'join' => $join,
-                ]
-            );
-        }
-
         $additional_ttids = [];
         $revise_ttids = ['{published}' => []];
+
+        global $revisionary, $pagenow;  // @todo: API
 
         foreach (presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
             $tt_ids = $user->getExceptionTerms($required_operation, 'additional', $post_type, $taxonomy, ['status' => true, 'merge_universals' => true]);
 
-            if ('edit' == $required_operation) {
+            global $pagenow;
+
+            $type_obj = get_post_type_object($post_type);
+
+            if (('edit' == $required_operation) 
+            && ((!$type_obj || empty($type_obj->cap->edit_published_posts) || empty($user->allcaps[$type_obj->cap->edit_published_posts]))                                         // prevent Revise exceptions from allowing Authors to restore revisions
+                || ('revision.php' != $pagenow) && (!defined('DOING_AJAX') || ! DOING_AJAX || empty($_REQUEST['action']) || ('get-revision-diffs' != $_REQUEST['action']))
+                )
+            ) {
                 if (!empty($user->except['revise_post']['term'][$taxonomy]['additional'][$post_type][''])) {
+                    if (!empty($revisionary) && empty($revisionary->skip_revision_allowance)) {
                         $revise_ttids['{published}'] = array_merge($revise_ttids['{published}'], $user->except['revise_post']['term'][$taxonomy]['additional'][$post_type]['']);
-                }
+                	}
+            	}
             }
 
             // merge this taxonomy exceptions with other taxonomies
@@ -413,7 +432,8 @@ class Permissions
         if (('edit' == $required_operation) && !empty($revise_ttids['{published}'])) {
             $in_clause = "IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $revise_ttids['{published}']) . "') )";
 
-            $additions['{published}'][] = apply_filters(
+            $key = (!empty($post_blockage_clause) && !defined('PP_LEGACY_POST_BLOCKAGE')) ? 'term' : 'post'; // perf enhancement (cosolidate query clauses that don't need to be separated)
+            $additions[$key]['{published}'][] = apply_filters(
                 'presspermit_additions_clause',
                 "$src_table.ID $in_clause",
                 'revise',
@@ -438,7 +458,9 @@ class Permissions
                 }
 
                 $in_clause = "IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $_ttids) . "') )";
-                $additions[$_status][] = apply_filters(
+
+                $key = (!empty($post_blockage_clause) && !defined('PP_LEGACY_POST_BLOCKAGE')) ? 'term' : 'post'; // perf enhancement (cosolidate query clauses that don't need to be separated)
+                $additions[$key][$_status][] = apply_filters(
                     'presspermit_additions_clause',
                     "$src_table.ID $in_clause",
                     $required_operation,
@@ -454,7 +476,8 @@ class Permissions
             }
         }
 
-        foreach (array_keys($additions) as $_status) {
+        foreach (array_keys($additions) as $via_item_source) {
+            foreach (array_keys($additions[$via_item_source]) as $_status) {
             switch ($_status) {
                 case '{published}':
                     $_stati = array_merge(
@@ -484,15 +507,25 @@ class Permissions
                     break;
             }
 
-            $additions[$_status] = $_status_clause . Arr::implode(' OR ', $additions[$_status]);
+                $additions[$via_item_source][$_status] = $_status_clause . Arr::implode(' OR ', $additions[$via_item_source][$_status]);
+        }
         }
 
-        if ($additions = apply_filters('presspermit_apply_additions', $additions, $where, $required_operation, $post_type, $args)) {
-            $where = "( $where ) OR ( " . Arr::implode(' OR ', $additions) . " )";
+        // Note: this is a legacy filter used only for Post Forking integration
+        $additions['post'] = apply_filters('presspermit_apply_additions', $additions['post'], $where, $required_operation, $post_type, $args);
 
-            $restriction_clause = '1=1';
+        if (!empty($additions['post']) || !empty($additions['term'])) {
+            $where = "( $where )";
 
-            if (presspermit()->getOption('post_blockage_priority')) {
+			if (!empty($additions['post'])) {
+				$where .= " OR ( " . Arr::implode(' OR ', $additions['post']) . " )";
+			}
+		
+			if (!empty($additions['term'])) {
+				$where .= " OR ( " . Arr::implode(' OR ', $additions['term']) . " )";
+			}
+
+            if (defined('PP_RESTRICTION_PRIORITY') && PP_RESTRICTION_PRIORITY) {  // this constant forces exclusions to take priority over additions
                 if ($ids = $user->getExceptionPosts($required_operation, 'exclude', $exc_post_type)) {
                     $_args = array_merge($args, ['mod' => 'exclude', 'ids' => $ids, 'src_table' => $src_table, 'logic' => "NOT IN"]);
 
@@ -503,27 +536,37 @@ class Permissions
                         $post_type,
                         $_args
                     );
-                }
+                } else {
+                    $restriction_clause = '1=1';
             }
 
-            if ($apply_term_restrictions && defined('PP_RESTRICTION_PRIORITY') && PP_RESTRICTION_PRIORITY) {
+                if ($apply_term_restrictions) {
                     $restriction_clause .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table, ['mod_types' => 'exclude']);
                 }
 
                 if ($restriction_clause != '1=1') {
                     $where = "( $where ) AND ( $restriction_clause )";
+            	}
+
             }
 
             if (!empty($post_blockage_clause)) {
-                $post_blockage_clause = "AND ( ( 1=1 $post_blockage_clause ) OR ( " . Arr::implode(' OR ', $additions) . " ) )";
+            	if (!empty($additions['post']) || defined('PP_LEGACY_POST_BLOCKAGE')) {
+                    $post_blockage_clause = "AND ( ( 1=1 $post_blockage_clause ) OR ( " . Arr::implode(' OR ', $additions['post']) . " ) )";
+
+            	} else {
+                	$post_blockage_clause = "AND ( 1=1 $post_blockage_clause )";
+            	}
             }
         }
 
-        if (!empty($post_blockage_clause))
+        if (!empty($post_blockage_clause)) {
             $where = "( $where ) $post_blockage_clause";
+		}
 
-        if ($append_post_type_clause)
+        if ($append_post_type_clause) {
             $where = "$src_table.post_type = '$post_type' AND ( $where )";
+		}
 
         return $where;
     }

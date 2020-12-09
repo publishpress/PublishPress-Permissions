@@ -332,7 +332,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
                     <img class="waiting" style="display:none"
                         src="<?php echo esc_url(admin_url('images/wpspin_light.gif')); ?>" alt=""/>
 
-                    <input type="submit" <?php disabled($nav_menu_selected_id, 0); ?> class="button-secondary pp-default-button submit-add-item-exception"
+                    <input type="submit" <?php disabled($nav_menu_selected_id, 0); ?> class="button-secondary submit-add-item-exception"
                         value="<?php
                         esc_attr_e('Add Selected', 'press-permit-core'); ?>" name="add-post-type-menu-item"
                         id="submit-posttype-<?php echo $post_type_name; ?>"/>

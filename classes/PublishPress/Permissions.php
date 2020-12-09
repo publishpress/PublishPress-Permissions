@@ -43,6 +43,7 @@ class Permissions
     public $flags = [];
     public $listed_ids = [];               // $listed_ids[object_type][object_id] = true : avoid separate capability query for each listed item
     public $meta_cap_post = false;
+    public $doing_cap_check = false;
 
     public static function instance($args = [])
     {
@@ -73,6 +74,22 @@ class Permissions
     public static function doingREST()
     {
         return self::instance()->doing_rest;
+    }
+
+    public function doingEmbed() {
+        static $arr_url;
+
+        if (!isset($arr_url)) {
+            $arr_url = parse_url(get_option('siteurl'));
+        }
+
+        if ($arr_url && isset($arr_url['path'])) {
+            if (0 === strpos($_SERVER['REQUEST_URI'], $arr_url['path'] . '/wp-json/oembed/')) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function checkInitInterrupt() {
@@ -120,6 +137,8 @@ class Permissions
             'beta_updates' => false,        // @todo: EDD integration, or eliminate
             'admin_hide_uneditable_posts' => 1,
             'post_blockage_priority' => get_option('presspermit_legacy_exception_handling') ? 0 : 1,
+            'media_search_results' => 1,
+            'term_counts_unfiltered' => 0,
             'advanced_options' => 0,
             'edd_key' => false,
             'supplemental_role_defs' => [], // stored by Capability Manager Enhanced
@@ -208,7 +227,7 @@ class Permissions
             
             $db_ver = ( isset( $ver['db_version'] ) ) ? $ver['db_version'] : '';
             require_once(PRESSPERMIT_CLASSPATH . '/DB/DatabaseSetup.php');
-            new Permissions\DB\DatabaseSetup($ver['db_version']);
+            new Permissions\DB\DatabaseSetup($db_ver);
         }
 
         if (!empty($check_for_rs_migration) || !empty($_REQUEST['rs-migration-check'])) { // support http arg for test / troubleshooting

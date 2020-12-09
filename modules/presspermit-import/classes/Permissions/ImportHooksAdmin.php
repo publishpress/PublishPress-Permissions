@@ -69,7 +69,9 @@ class ImportHooksAdmin
 
             // set_current_user may have triggered DB setup already
             require_once(PRESSPERMIT_IMPORT_CLASSPATH . '/DB/DatabaseSetup.php');
-            new Import\DB\DatabaseSetup($ver['db_version']);
+
+            $db_ver = (isset($ver['db_version'])) ? $ver['db_version'] : ''; 
+            new Import\DB\DatabaseSetup($db_ver);
         }
 
         // These maintenance operations only apply when a previous version of PP was installed 

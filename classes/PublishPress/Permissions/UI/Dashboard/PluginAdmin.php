@@ -16,10 +16,6 @@ class PluginAdmin
                 $this->activationNotice();
             }
         }
-
-        if (!presspermit()->isPro()) {
-            $this->proNotice();
-        }
     }
 
     public function actCorePluginStatus($plugin_file, $plugin_data, $status)
@@ -38,7 +34,7 @@ class PluginAdmin
             }
         }
 
-        if (is_network_admin() || !is_multisite()) {
+        if (presspermit()->isPro() && (is_network_admin() || !is_multisite())) {
             $key = presspermit()->getOption('edd_key');
             $keyStatus = isset($key['license_status']) ? $key['license_status'] : 'invalid';
 
@@ -93,25 +89,12 @@ class PluginAdmin
 
             presspermit()->admin()->notice(
                 sprintf(
-                    __('Thanks for activating %1$s. Please go to %2$sPermissions > Settings%3$s and indicate which Post Types and Taxonomies should be filtered.', 'press-permit-core'),
+                    __('Thanks for activating %1$s. Please go to %2$sPermissions > Settings%3$s to enable Post Types and Taxonomies for custom permissions.', 'press-permit-core'),
                     $plugin_title,
 					'<a href="' . $url . '">',
                     '</a>'
                 ), 'initial-activation'
             );
         }
-    }
-
-    private function proNotice()
-    {       
-        $url = admin_url('admin.php?page=presspermit-settings');
-        
-        presspermit()->admin()->notice(
-            sprintf(
-                __('For Pro features, replace the PublishPress Permissions plugin with PublishPress Permissions Pro. See %sPermissions > Settings > Install%s for details.', 'press-permit-core'),
-                '<a href="' . $url . '">',
-                '</a>'
-            ), 'pro-info'
-        );
     }
 }

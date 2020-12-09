@@ -247,6 +247,36 @@ class ItemExceptionsUI
 
                         </div>
 
+                        <?php if (!$any_stored) : 
+                            $op_obj = presspermit()->admin()->getOperationObject($op, $for_item_type);
+                            $op_label = (!empty($op_obj->noun_label)) ? $op_obj->noun_label : $op_obj->label;
+                            $agent_label = (!empty($agent_types[$agent_type]->labels)) ? $agent_types[$agent_type]->labels->singular_name : $agent_types[$agent_type]->label;
+                            $caption = sprintf(__('%s permissions have not been added or blocked for any %s.', 'press-permit-core'), $op_label, $agent_label);
+                        ?>
+                            <div class="pp-no-exceptions"><?php echo $caption; ?></div>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="pp-exception-actions" <?php echo $colspan; ?>>
+                        <?php if ('wp_role' != $agent_type) : ?>
+                            <a class="pp-select-exception-agents" href="#">
+                                <?php ('user' == $agent_type) ? _e('select users', 'press-permit-core') : _e('select groups', 'press-permit-core'); ?>
+                            </a>
+
+                            <a class="pp-close-select-exception-agents" href="#"
+                               style="display:none;"><?php _e('close', 'press-permit-core'); ?></a>
+                        <?php
+                        endif;
+                        if ($pp_groups->groupTypeEditable($agent_type) && $pp_groups->userCan('pp_create_groups', 0, $agent_type)) :
+                            ?>
+                            &nbsp;&bull;&nbsp;
+                            <a class="pp-create-exception-agent" href="admin.php?page=presspermit-group-new"
+                               target="_blank">
+                                <?php _e('create group', 'press-permit-core'); ?>
+                            </a>
+                        <?php endif; ?>
                     </td>
                 </tr>
             </table>

@@ -43,27 +43,41 @@ class CommentFiltersAdmin
         return $reqd_caps;
     }
 
-    public function flt_wp_count_comments_clauses($clauses, $qry_obj)
-    {
-        if (!strpos($clauses['where'], 'GROUP BY')) {
-            $clauses['fields'] = 'comment_approved, COUNT( * ) AS num_comments';
-            $clauses['where'] .= ' GROUP BY comment_approved';
-        }
-        return $clauses;
-    }
-
     // force wp_count_comments() through WP_Comment_Query filtering
     public function fltWpCountCommentsOverride($comments, $post_id = 0)
     {
-        global $pagenow;
+        global $pagenow, $wpdb;
 
         if (!empty($pagenow) && ('post-new.php' == $pagenow)) {
             return $comments;
         }
 
-        add_filter('comments_clauses', [$this, 'flt_wp_count_comments_clauses'], 99, 2);
-        $count = get_comments(['post_id' => $post_id]);
-        remove_filter('comments_clauses', [$this, 'flt_wp_count_comments_clauses'], 99, 2);
+        $qry_obj = new \WP_Comment_Query();
+
+        $clauses = array_fill_keys( ['fields', 'join', 'orderby', 'limits', 'groupby'], '' );
+        $clauses['where'] = "comment_approved = '1'";
+
+        /**
+		 * Filters the comment query clauses.
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param string[]         $pieces An associative array of comment query clauses.
+		 * @param WP_Comment_Query $this   Current instance of WP_Comment_Query (passed by reference).
+		 */
+
+		$clauses = apply_filters_ref_array( 'comments_clauses', array( $clauses, $qry_obj) );
+
+		$join    = isset( $clauses['join'] ) ? $clauses['join'] : '';
+		$where   = isset( $clauses['where'] ) ? $clauses['where'] : '';
+
+		if ( $where ) {
+			$where = 'WHERE ' . $where;
+		}
+
+		$request = "SELECT comment_approved, COUNT( * ) AS num_comments FROM $wpdb->comments $join $where GROUP BY comment_approved";
+
+        $count = $wpdb->get_results($request);
 
         // remainder of this function ported from WP function wp_count_comments()
 
@@ -83,6 +97,7 @@ class CommentFiltersAdmin
         }
 
         $stats['total_comments'] = $total;
+        $stats['all'] = $total;
         foreach ($approved as $key) {
             if (empty($stats[$key]))
                 $stats[$key] = 0;

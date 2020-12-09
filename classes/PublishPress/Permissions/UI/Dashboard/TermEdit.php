@@ -22,18 +22,20 @@ class TermEdit
         add_action('admin_menu', [$this, 'actAddMetaBoxes']);
 
         if (!empty($_REQUEST['taxonomy'])) {
-            if (presspermit()->isTaxonomyEnabled($_REQUEST['taxonomy'])) {
+            $taxonomy = sanitize_key($_REQUEST['taxonomy']);
+        	
+            if (presspermit()->isTaxonomyEnabled($taxonomy)) {
                 add_action('admin_head', [$this, 'actScriptsWP']);
 
-                add_action('edit_category_form', [$this, 'actExceptionEditUI']);
+                add_action("{$taxonomy}_edit_form", [$this, 'actExceptionEditUI']);
                 add_action('edit_tag_form', [$this, 'actExceptionEditUI']);
             } else {
-                add_action('edit_category_form', [$this, 'actTaxonomyEnableUI']);
+                add_action("{$taxonomy}_edit_form", [$this, 'actTaxonomyEnableUI']);
                 add_action('edit_tag_form', [$this, 'actTaxonomyEnableUI']);
             }
 
             if (!empty($_REQUEST['pp_universal'])) {
-                add_action('edit_category_form', [$this, 'actUniversalExceptionsUIsupport']);
+                add_action("{$taxonomy}_edit_form", [$this, 'actUniversalExceptionsUIsupport']);
                 add_action('edit_tag_form', [$this, 'actUniversalExceptionsUIsupport']);
             }
         }
@@ -269,10 +271,7 @@ class TermEdit
     {
         global $taxonomy, $typenow;
 
-        if (($typenow && !in_array($typenow, presspermit()->getEnabledPostTypes(), true))
-        || presspermit()->isTaxonomyEnabled($taxonomy)
-        || in_array($taxonomy, presspermit()->getUnfilteredTaxonomies())
-        ) {
+        if ($typenow && !in_array($typenow, presspermit()->getEnabledPostTypes(), true)) {
             return;
         }
 
