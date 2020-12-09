@@ -479,9 +479,10 @@ class LibWP
         $defaults = [
             'user_id' => $current_user->ID,
             'compare' => '=',
+            'join' => '',
         ];
 
-        if ($ppma_active = defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') && !empty($args['join'])) {
+        if ($ppma_active = defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') && !empty($args['join']) && strpos($args['join'], 'ppma_t')) {
             $defaults['join_table'] = 'ppma_t';
         }
 
