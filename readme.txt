@@ -128,7 +128,7 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.4-beta =
+= 3.4 - 10 Dec 2020 =
 * Compat : PublishPress Authors - integration of multiple authors in Permissions filtering
 * Fixed : Better styling in Permissions / Groups administration UI
 
