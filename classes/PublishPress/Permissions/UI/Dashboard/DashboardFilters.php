@@ -80,6 +80,11 @@ class DashboardFilters
                 wp_enqueue_style('plugin-install');
                 wp_enqueue_script('plugin-install');
                 add_thickbox();
+
+                if (defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') && !version_compare(PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION, '3.8.0', '>=')) {
+                    require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/PluginAdmin.php');
+                    PluginAdmin::authorsVersionNotice(['ignore_dismissal' => true]);
+                }
             } elseif ('plugins.php' == $pagenow) {
                 add_thickbox();
             }

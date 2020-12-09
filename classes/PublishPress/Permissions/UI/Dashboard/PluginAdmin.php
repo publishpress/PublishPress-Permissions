@@ -16,6 +16,10 @@ class PluginAdmin
                 $this->activationNotice();
             }
         }
+
+        if (defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') && !version_compare(PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION, '3.8.0', '>=')) {
+            self::authorsVersionNotice();
+        }
     }
 
     public function actCorePluginStatus($plugin_file, $plugin_data, $status)
@@ -96,5 +100,16 @@ class PluginAdmin
                 ), 'initial-activation'
             );
         }
+    }
+
+    public static function authorsVersionNotice($args = [])
+    {
+        $id = (!empty($args['ignore_dismissal'])) ? '' : 'authors-integration-version';
+
+        presspermit()->admin()->notice(
+            __('Please upgrade PublishPress Authors to version 3.8.0 or later for Permissions integration.', 'press-permit-core'),
+            $id,
+            $args
+        );
     }
 }
