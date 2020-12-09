@@ -16,10 +16,6 @@
     background-color: #858585; /*#dfdfdf;*/ /*#FFFEEB;*/
 }
 
-#pp_settings_form ul.pp-list_horiz li.pp-backtan a {
-    color: white;
-}
-
 /* --- Settings table layout --- */
 
 #pp_settings_form .form-table th {
