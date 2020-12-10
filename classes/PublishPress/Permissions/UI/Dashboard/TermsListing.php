@@ -27,6 +27,7 @@ class TermsListing
 
                 if (!$tx_children || !is_array($tx_children) || !empty($_REQUEST['clear_db_cache']) || !get_option("_ppperm_refresh_{$taxonomy}_children")) {
                     delete_option("{$taxonomy}_children");
+
                     update_option("_ppperm_refresh_{$taxonomy}_children", true);
                 }
             }

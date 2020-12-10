@@ -538,15 +538,15 @@ class Permissions
                     );
                 } else {
                     $restriction_clause = '1=1';
-            }
+            	}
 
                 if ($apply_term_restrictions) {
-                    $restriction_clause .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table, ['mod_types' => 'exclude']);
-                }
-
-                if ($restriction_clause != '1=1') {
-                    $where = "( $where ) AND ( $restriction_clause )";
+                	$restriction_clause .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table, ['mod_types' => 'exclude']);
             	}
+
+	            if ($restriction_clause != '1=1') {
+	                $where = "( $where ) AND ( $restriction_clause )";
+	            }
 
             }
 

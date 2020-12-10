@@ -497,7 +497,7 @@ class PostFilters
 
         return "SELECT $found_rows $distinct $fields FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
     }
-
+  
     public function fltPostsJoin($join, $args = []) {
         if (!defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') || !version_compare(PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION, '3.8.0', '>=') || defined('PRESSPERMIT_DISABLE_AUTHORS_JOIN')) {
             return $join;
