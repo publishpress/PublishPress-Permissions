@@ -67,7 +67,7 @@ class ErrorNotice
                 define('PRESSPERMIT_DISABLE_QUERYFILTERS', true);
             
                 $args = (isset($_REQUEST['page']) && (0 === strpos($_REQUEST['page'], 'presspermit-')))
-                    ? ['style' => 'margin-top:30px;color:black']
+                    ? ['style' => 'color:black']
                     : [];
 
                 $this->addNotice(

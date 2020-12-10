@@ -17,8 +17,8 @@ class PluginAdmin
             }
         }
 
-        if (!presspermit()->isPro()) {
-            $this->proNotice();
+        if (defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') && !version_compare(PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION, '3.8.0', '>=')) {
+            self::authorsVersionNotice();
         }
     }
 
@@ -38,7 +38,7 @@ class PluginAdmin
             }
         }
 
-        if (is_network_admin() || !is_multisite()) {
+        if (presspermit()->isPro() && (is_network_admin() || !is_multisite())) {
             $key = presspermit()->getOption('edd_key');
             $keyStatus = isset($key['license_status']) ? $key['license_status'] : 'invalid';
 
@@ -93,7 +93,7 @@ class PluginAdmin
 
             presspermit()->admin()->notice(
                 sprintf(
-                    __('Thanks for activating %1$s. Please go to %2$sPermissions > Settings%3$s and indicate which Post Types and Taxonomies should be filtered.', 'press-permit-core'),
+                    __('Thanks for activating %1$s. Please go to %2$sPermissions > Settings%3$s to enable Post Types and Taxonomies for custom permissions.', 'press-permit-core'),
                     $plugin_title,
 					'<a href="' . $url . '">',
                     '</a>'
@@ -102,16 +102,14 @@ class PluginAdmin
         }
     }
 
-    private function proNotice()
-    {       
-        $url = admin_url('admin.php?page=presspermit-settings');
-        
+    public static function authorsVersionNotice($args = [])
+    {
+        $id = (!empty($args['ignore_dismissal'])) ? '' : 'authors-integration-version';
+
         presspermit()->admin()->notice(
-            sprintf(
-                __('For Pro features, replace the PublishPress Permissions plugin with PublishPress Permissions Pro. See %sPermissions > Settings > Install%s for details.', 'press-permit-core'),
-                '<a href="' . $url . '">',
-                '</a>'
-            ), 'pro-info'
+            __('Please upgrade PublishPress Authors to version 3.8.0 or later for Permissions integration.', 'press-permit-core'),
+            $id,
+            $args
         );
     }
 }

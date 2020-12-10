@@ -16,10 +16,6 @@
     background-color: #858585; /*#dfdfdf;*/ /*#FFFEEB;*/
 }
 
-#pp_settings_form ul.pp-list_horiz li.pp-backtan a {
-    color: white;
-}
-
 /* --- Settings table layout --- */
 
 #pp_settings_form .form-table th {
@@ -321,10 +317,6 @@ div.pp-settings-code textarea {
 
 .pp-instructions ol li {
     margin: 1em 0 1em 2em;
-}
-
-#pp_settings_form #message {
-    margin-top: 35px;
 }
 
 @media screen and (max-width: 782px) {

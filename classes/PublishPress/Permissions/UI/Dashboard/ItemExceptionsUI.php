@@ -97,7 +97,7 @@ class ItemExceptionsUI
         $class = "class='pp-agents pp-exceptions'";
 
         //need effective line break here if not IE
-        echo "<div style='clear:both;margin:0 0 0.3em 0' $class>";
+        echo "<div style='clear:both;' $class>";
 
         foreach (array_keys($agent_types) as $agent_type) {
             $hide_class = ($toggle_agents && ($agent_type != $default_agent_type)) ? ' class="hide-if-js"' : '';
@@ -142,7 +142,7 @@ class ItemExceptionsUI
             <table class="pp-item-exceptions-ui pp-exc-<?php echo $agent_type; ?>" style="width:100%">
                 <tr>
                     <?php if ('wp_role' != $agent_type) : ?>
-                        <td class="pp-select-exception-agents" style="display:none;">
+                        <td class="pp-select-exception-agents">
                             <?php
                             // Select Groups / Users UI
 
@@ -199,14 +199,14 @@ class ItemExceptionsUI
                                         foreach ($current_exceptions[$op][$agent_type] as $agent_id => $agent_exceptions) {
                                             if ($agent_id && isset($this->data->agent_info[$agent_type][$agent_id])) {
                                                 if ((false === strpos($this->data->agent_info[$agent_type][$agent_id]->name, '[WP ')) || defined('PRESSPERMIT_DELETED_ROLE_EXCEPTIONS_UI')) {
-	                                                $this->render->drawRow(
-	                                                    $agent_type,
-	                                                    $agent_id,
-	                                                    $current_exceptions[$op][$agent_type][$agent_id],
-	                                                    $this->data->inclusions_active,
-	                                                    $this->data->agent_info[$agent_type][$agent_id],
-	                                                    compact('for_item_type', 'op', 'reqd_caps', 'hierarchical')
-	                                                );
+                                                    $this->render->drawRow(
+                                                        $agent_type,
+                                                        $agent_id,
+                                                        $current_exceptions[$op][$agent_type][$agent_id],
+                                                        $this->data->inclusions_active,
+                                                        $this->data->agent_info[$agent_type][$agent_id],
+                                                        compact('for_item_type', 'op', 'reqd_caps', 'hierarchical')
+                                                    );
                                                 }
                                             }
                                         }

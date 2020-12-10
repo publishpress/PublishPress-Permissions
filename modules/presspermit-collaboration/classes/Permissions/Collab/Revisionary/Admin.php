@@ -415,7 +415,7 @@ class Admin
             $adjust_statuses = apply_filters(
                 'revisionary_main_post_statuses', 
                 array_merge(
-                get_post_stati( ['public' => true, 'private' => true], 'names', 'or' ),
+                	get_post_stati( ['public' => true, 'private' => true], 'names', 'or' ),
                 	['future']
                 ),
                 'names'

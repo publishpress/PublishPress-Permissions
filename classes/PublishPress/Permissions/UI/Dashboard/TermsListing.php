@@ -23,10 +23,11 @@ class TermsListing
             add_action('after-' . $taxonomy . '-table', [$this, 'actShowNotes']);
 
             if (is_taxonomy_hierarchical($taxonomy)) {
-            	$tx_children = get_option("{$taxonomy}_children");
+                $tx_children = get_option("{$taxonomy}_children");
 
                 if (!$tx_children || !is_array($tx_children) || !empty($_REQUEST['clear_db_cache']) || !get_option("_ppperm_refresh_{$taxonomy}_children")) {
-                	delete_option("{$taxonomy}_children");
+                    delete_option("{$taxonomy}_children");
+
                     update_option("_ppperm_refresh_{$taxonomy}_children", true);
                 }
             }

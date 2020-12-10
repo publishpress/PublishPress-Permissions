@@ -22,7 +22,7 @@ class TermEdit
         add_action('admin_menu', [$this, 'actAddMetaBoxes']);
 
         if (!empty($_REQUEST['taxonomy'])) {
-        	$taxonomy = sanitize_key($_REQUEST['taxonomy']);
+        	  $taxonomy = sanitize_key($_REQUEST['taxonomy']);
         	
             if (presspermit()->isTaxonomyEnabled($taxonomy)) {
                 add_action('admin_head', [$this, 'actScriptsWP']);

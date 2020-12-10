@@ -126,19 +126,6 @@ class SettingsTabAdvanced
 
         $section = 'file_filtering';
 
-        if (!$pp->moduleActive('file-access')) :
-            ?>
-            <tr>
-                <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
-                <td>
-                    <?php
-                    _e('To regulate direct access to Media Library files, enable the File Access module.', 'press-permit-core');
-                    echo '<br />';
-                    ?>
-                </td>
-            </tr>
-        <?php endif;
-
         if ($this->enabled) {
             $section = 'anonymous'; // --- ANONYMOUS USERS SECTION ---
             if (!empty($ui->form_options[$tab][$section])) : ?>

@@ -59,12 +59,12 @@ class CollabHooksAdmin
 
         if (class_exists('NestedPages') && !empty($_REQUEST['page']) && ('nestedpages' == $_REQUEST['page'])) {
             if (defined('PP_NESTED_PAGES_DISABLE_FILTERING') && !defined('PP_NESTED_PAGES_ENABLE_FILTERING')) {
-	            add_filter(
-	                'presspermit_posts_clauses_intercept', 
-	                function ($clauses, $orig_clauses) {
-	                    return $orig_clauses;
-	                }, 10, 2
-	            );
+            add_filter(
+                'presspermit_posts_clauses_intercept', 
+                function ($clauses, $orig_clauses) {
+                    return $orig_clauses;
+                }, 10, 2
+            );
             } else {
                 add_action('admin_print_scripts', [$this, 'NestedPagesDisableQuickEdit']);
             }

@@ -327,7 +327,7 @@ class PermissionsUser extends \WP_User
     {
         global $current_user;
 
-        // @todo: review (Add New Media)
+        							// @todo: review (Add New Media)
         if (empty($current_user) || !did_action('presspermit_init') || did_action('presspermit_user_reload')) {
             return $wp_blogcaps;
         }

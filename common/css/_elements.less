@@ -1,0 +1,246 @@
+/* Vars */
+@main_color: #655997;
+@main_color_hover: #483f6b;
+@important_color: #feb123;
+@important_color_hover: #febe47;
+
+/* Buttons */
+
+.ppButtons() {
+  .pp-default-button {
+    border-color: @main_color;
+    color: @main_color;
+    border-width: 1px;
+
+    &:focus {
+      color: @main_color_hover;
+      border-color: @main_color_hover;
+      box-shadow: 0 0 0 1px @main_color_hover;
+      -moz-box-shadow: 0 0 0 1px @main_color_hover;
+      -webkit-box-shadow: 0 0 0 1px @main_color_hover;
+    }
+
+    &:hover,
+    &:active {
+      color: @main_color_hover;
+      border-color: @main_color_hover;
+    }
+  }
+
+  .pp-primary-button {
+    background: @main_color;
+    color: #fff;
+    border-color: @main_color;
+    border-width: 1px;
+
+    &:focus {
+      background: @main_color_hover;
+      color: #fff;
+      border-color: @main_color_hover;
+      box-shadow: 0 0 0 1px #fff, 0 0 0 3px @main_color_hover;
+    }
+
+    &:hover,
+    &:active {
+      background: @main_color_hover;
+      color: #fff;
+      border-color: @main_color_hover;
+    }
+  }
+
+  .pp-pro-button {
+    background: @important_color;
+    color: #222;
+    border-color: @important_color;
+    border-width: 1px;
+
+    &:focus {
+      background: @important_color_hover;
+      color: #222;
+      border-color: @important_color_hover;
+      box-shadow: 0 0 0 1px #fff, 0 0 0 3px @important_color_hover;
+      -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px @important_color_hover;
+      -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px @important_color_hover;
+    }
+
+    &:hover,
+    &:active {
+      background: @important_color_hover;
+      color: #222;
+      border-color: @important_color_hover;
+    }
+  }
+}
+
+/* Input fields */
+
+.ppFormFields() {
+
+  input[type=radio] {
+
+    &:checked::before {
+      background-color: @main_color;
+    }
+  }
+
+  input[type=checkbox] {
+
+    &:checked {
+
+      &::before {
+        content: url(data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.83%204.89l1.34.94-5.81%208.38H9.02L5.78%209.67l1.34-1.25%202.57%202.4z%27%20fill%3D%27%23655997%27%2F%3E%3C%2Fsvg%3E);
+      }
+    }
+
+    &:focus {
+      outline: 2px solid transparent;
+    }
+  }
+
+  input[type=radio],
+  input[type=checkbox],
+  input[type=text],
+  select,
+  textarea {
+
+    &:focus {
+      border-color: @main_color_hover;
+      box-shadow: 0 0 0 1px @main_color_hover;
+      -moz-box-shadow: 0 0 0 1px @main_color_hover;
+      -webkit-box-shadow: 0 0 0 1px @main_color_hover;
+    }
+  }
+}
+
+/* Tabs */
+
+.ppTabs() {
+  ul {
+
+    &.pp-list_horiz {
+      width: 100%;
+      clear: both;
+      float: left;
+      margin: 0 0 -1px 0;
+      padding: 0;
+
+      li {
+        list-style: none;
+        float: left;
+        margin: 0;
+
+        &:hover,
+        &:focus,
+        &:active {
+          outline: none;
+        }
+
+        &.agp-agent {
+          margin: 0 -1px 0 0;
+
+          a {
+            text-decoration: none;
+            color: #666;
+            padding: 10px 14px 10px;
+            display: block;
+
+            &:hover,
+            &:focus,
+            &:active {
+              text-decoration: none;
+              -webkit-box-shadow: none;
+              -moz-box-shadow: none;
+              box-shadow: none;
+              color: #222;
+            }
+          }
+        }
+
+        // Selected tab
+        &.agp-selected_agent {
+          border: 1px solid #ccc;
+          background-color: #fff;
+          border-bottom: 1px solid #fff;
+
+          a {
+            color: #222;
+          }
+        }
+
+        // Non selected tab
+        &.agp-unselected_agent {
+          border: 1px solid #ccc;
+          background: #f1f1f1;
+
+          a {
+            color: #666;
+          }
+        }
+      }
+    }
+  }
+
+  .pp-agents {
+    background-color: #fff;
+    padding: 0 0 0.2em 0.3em;
+    border: 1px solid #ccc;
+    margin: 0;
+    padding: 20px;
+
+    a {
+      color: @main_color;
+      text-decoration: none;
+
+      &:hover
+      &:focus,
+      &:focus {
+        color: @main_color_hover;
+        text-decoration: none;
+      }
+    }
+
+    input {
+      vertical-align: text-bottom;
+    }
+  }
+}
+
+/* Tables */
+
+.ppTables() {
+  table {
+    border-collapse: collapse;
+
+    tr {
+
+      th {
+
+      }
+
+      td {
+
+      }
+
+      th,
+      td {
+        text-align: left;
+        vertical-align: top;
+      }
+    }
+  }
+}
+
+/* Alert boxes */
+
+.ppAlertBoxes() {
+  .pp-edit-msg {
+    padding: .7em 0.9em;
+    margin: 0 0 10px 0;
+  }
+
+  .pp-error-note {
+    color: #dc3232;
+    border-color: #dc3232;
+    background-color: lighten(#dc3232, 45%);
+  }
+}

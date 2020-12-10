@@ -55,7 +55,7 @@ class Groups
                 <form action="" method="post" name="updategroups" id="updategroups">
                     <?php wp_nonce_field('pp-bulk-groups');?>
 
-                    <div class="wrap pressshack-admin-wrapper">
+                    <div class="wrap pressshack-admin-wrapper" id="pp-permissions-wrapper">
                         <?php PluginPage::icon(); ?>
                         <h1><?php _e('Delete Groups'); ?></h1>
                         <p><?php echo _n('You have specified this group for deletion:', 'You have specified these groups for deletion:', count($groupids), 'press-permit-core'); ?></p>
@@ -139,7 +139,7 @@ class Groups
                         echo $msg;
                 } ?>
 
-                <div class="wrap pressshack-admin-wrapper presspermit-groups">
+                <div class="wrap pressshack-admin-wrapper presspermit-groups" id="pp-permissions-wrapper">
                     <header>
                     <?php PluginPage::icon(); ?>
                     <h1>

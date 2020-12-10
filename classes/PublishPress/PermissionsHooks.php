@@ -500,9 +500,8 @@ class PermissionsHooks
     public function actClearTermChildrenCache($children, $option_val, $option_name)
     {  // fires on pre_update_option_$taxonomy filter
         if (defined('DOING_AJAX') && DOING_AJAX) {
-        	delete_option($option_name);
-    	}
+            delete_option($option_name);
+        }
     }
-
 
 } // end class

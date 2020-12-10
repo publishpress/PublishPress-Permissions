@@ -175,14 +175,15 @@ class CapabilityFilters
                 $require_cap = (presspermit()->doingEmbed()) ? apply_filters('presspermit_embed_capability', 'upload_files') : 'upload_files';
 
                 if (!empty($wp_sitecaps[$require_cap])) {
-                	$_post = ($post_id) ? get_post($post_id) : false;
 
-                	if (!$_post || ('attachment' == $_post->post_type)) {
-                    	if (in_array('edit_posts', $pp_reqd_caps, true)) {
-                        	$return['return_caps'] = array_merge($wp_sitecaps, ['edit_posts' => true]);
+                    $_post = ($post_id) ? get_post($post_id) : false;
 
-                    	} elseif (in_array('edit_post', $pp_reqd_caps, true)) {
-                        	$return['return_caps'] = array_merge($wp_sitecaps, ['edit_post' => true]);
+                    if (!$_post || ('attachment' == $_post->post_type)) {
+                        if (in_array('edit_posts', $pp_reqd_caps, true)) {
+                            $return['return_caps'] = array_merge($wp_sitecaps, ['edit_posts' => true]);
+
+                        } elseif (in_array('edit_post', $pp_reqd_caps, true)) {
+                            $return['return_caps'] = array_merge($wp_sitecaps, ['edit_post' => true]);
                         }
                     }
                 }
