@@ -309,8 +309,8 @@ class TermFiltersCount
                 } elseif (is_numeric($term) && count($taxonomies) == 1) {
                     if ($term = get_term($term, reset($taxonomies))) {
                         if (!is_wp_error($term)) {
-                        $_terms[] = $term->name;
-                    }
+                        	$_terms[] = $term->name;
+                    	}
                     }
                 } elseif (is_string($term)) {
                     $_terms[] = $term;
@@ -323,10 +323,10 @@ class TermFiltersCount
                 } elseif (is_numeric($term) && count($taxonomies) == 1) {
                     if ($term = get_term($term, reset($taxonomies))) {
                         if (!is_wp_error($term)) {
-                        $_terms[] = $term->slug;
-                    }
-                }
-			}
+                        	$_terms[] = $term->slug;
+                    	}
+                	}
+				}
 			}
 		} elseif ( 'id=>name' == $fields ) {
 			foreach ( $terms as $term ) {
@@ -335,10 +335,10 @@ class TermFiltersCount
                 } elseif (is_numeric($term) && count($taxonomies) == 1) {
                     if ($term = get_term($term, reset($taxonomies))) {
                         if (!is_wp_error($term)) {
-                        $_terms[ $term->term_id ] = $term->name;
-                    }
-                }
-			}
+                        	$_terms[ $term->term_id ] = $term->name;
+                    	}
+                	}
+				}
 			}
 		} elseif ( 'id=>slug' == $fields ) {
 			foreach ( $terms as $term ) {
@@ -347,7 +347,7 @@ class TermFiltersCount
                 } elseif (is_numeric($term) && count($taxonomies) == 1) {
                     if ($term = get_term($term, reset($taxonomies))) {
                         if (!is_wp_error($term)) {
-						$_terms[ $term->term_id ] = $term->slug;
+							$_terms[ $term->term_id ] = $term->slug;
                         }
                     }
                 }

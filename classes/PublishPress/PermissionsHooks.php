@@ -503,4 +503,5 @@ class PermissionsHooks
             delete_option($option_name);
         }
     }
+
 } // end class
