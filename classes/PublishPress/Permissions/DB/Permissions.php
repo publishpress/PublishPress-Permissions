@@ -303,7 +303,7 @@ class Permissions
 
     public static function addExceptionClauses($where, $required_operation, $post_type, $args = [])
     {
-        $defaults = ['src_table' => '', 'source_alias' => '', 'apply_term_restrictions' => true, 'append_post_type_clause' => true, 'additions_only' => false, 'query_contexts' => []];
+        $defaults = ['src_table' => '', 'source_alias' => '', 'apply_term_restrictions' => true, 'append_post_type_clause' => true, 'additions_only' => false, 'query_contexts' => [], 'join' => ''];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -415,8 +415,8 @@ class Permissions
                 if (!empty($user->except['revise_post']['term'][$taxonomy]['additional'][$post_type][''])) {
                     if (!empty($revisionary) && empty($revisionary->skip_revision_allowance)) {
                         $revise_ttids['{published}'] = array_merge($revise_ttids['{published}'], $user->except['revise_post']['term'][$taxonomy]['additional'][$post_type]['']);
-                    }
-                }
+                	}
+            	}
             }
 
             // merge this taxonomy exceptions with other taxonomies
@@ -442,7 +442,8 @@ class Permissions
                     'status' => '{published}', 
                     'in_clause' => $in_clause, 
                     'src_table' => $src_table,
-                    'ids' => $revise_ttids['{published}']
+                    'ids' => $revise_ttids['{published}'],
+                    'join' => $join,
                 ]
             );
         }
@@ -468,7 +469,8 @@ class Permissions
                         'status' => $_status, 
                         'in_clause' => $in_clause, 
                         'src_table' => $src_table,
-                        'ids' => $_ttids
+                        'ids' => $_ttids,
+                        'join' => $join,
                     ]
                 );
             }
@@ -476,52 +478,52 @@ class Permissions
 
         foreach (array_keys($additions) as $via_item_source) {
             foreach (array_keys($additions[$via_item_source]) as $_status) {
-                switch ($_status) {
-                    case '{published}':
+            switch ($_status) {
+                case '{published}':
+                    $_stati = array_merge(
+                        PWP::getPostStatuses(['public' => true, 'post_type' => $post_type]),
+                        PWP::getPostStatuses(['private' => true, 'post_type' => $post_type])
+                    );
+
+                    $_status_clause = "$src_table.post_status IN ('" . implode("','", $_stati) . "') AND ";
+                    break;
+                
+                case '':
+                    $_status_clause = '';
+                    break;
+
+                case '{unpublished}':
+                    if ('read' != $required_operation) { // sanity check
                         $_stati = array_merge(
                             PWP::getPostStatuses(['public' => true, 'post_type' => $post_type]),
                             PWP::getPostStatuses(['private' => true, 'post_type' => $post_type])
                         );
 
-                        $_status_clause = "$src_table.post_status IN ('" . implode("','", $_stati) . "') AND ";
+                        $_status_clause = "$src_table.post_status NOT IN ('" . implode("','", $_stati) . "') AND ";
                         break;
-
-                    case '':
-                        $_status_clause = '';
-                        break;
-
-                    case '{unpublished}':
-                        if ('read' != $required_operation) { // sanity check
-                            $_stati = array_merge(
-                                PWP::getPostStatuses(['public' => true, 'post_type' => $post_type]),
-                                PWP::getPostStatuses(['private' => true, 'post_type' => $post_type])
-                            );
-
-                            $_status_clause = "$src_table.post_status NOT IN ('" . implode("','", $_stati) . "') AND ";
-                            break;
-                        }
-                    default:
-                        $_status_clause = "$src_table.post_status = '$_status' AND ";
-                        break;
-                }
+                    }
+                default:
+                    $_status_clause = "$src_table.post_status = '$_status' AND ";
+                    break;
+            }
 
                 $additions[$via_item_source][$_status] = $_status_clause . Arr::implode(' OR ', $additions[$via_item_source][$_status]);
-            }
+        }
         }
 
-         // Note: this is a legacy filter used only for Post Forking integration
+        // Note: this is a legacy filter used only for Post Forking integration
         $additions['post'] = apply_filters('presspermit_apply_additions', $additions['post'], $where, $required_operation, $post_type, $args);
 
         if (!empty($additions['post']) || !empty($additions['term'])) {
             $where = "( $where )";
 
-            if (!empty($additions['post'])) {
-              $where .= " OR ( " . Arr::implode(' OR ', $additions['post']) . " )";
-            }
-
-            if (!empty($additions['term'])) {
-              $where .= " OR ( " . Arr::implode(' OR ', $additions['term']) . " )";
-            }
+			if (!empty($additions['post'])) {
+				$where .= " OR ( " . Arr::implode(' OR ', $additions['post']) . " )";
+			}
+		
+			if (!empty($additions['term'])) {
+				$where .= " OR ( " . Arr::implode(' OR ', $additions['term']) . " )";
+			}
 
             if (defined('PP_RESTRICTION_PRIORITY') && PP_RESTRICTION_PRIORITY) {  // this constant forces exclusions to take priority over additions
                 if ($ids = $user->getExceptionPosts($required_operation, 'exclude', $exc_post_type)) {
@@ -536,34 +538,35 @@ class Permissions
                     );
                 } else {
                     $restriction_clause = '1=1';
-                }
+            	}
 
                 if ($apply_term_restrictions) {
-                    $restriction_clause .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table, ['mod_types' => 'exclude']);
-                }
+                	$restriction_clause .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table, ['mod_types' => 'exclude']);
+            	}
 
-                if ($restriction_clause != '1=1') {
-                    $where = "( $where ) AND ( $restriction_clause )";
-                }
+	            if ($restriction_clause != '1=1') {
+	                $where = "( $where ) AND ( $restriction_clause )";
+	            }
+
             }
 
             if (!empty($post_blockage_clause)) {
-                if (!empty($additions['post']) || defined('PP_LEGACY_POST_BLOCKAGE')) {
+            	if (!empty($additions['post']) || defined('PP_LEGACY_POST_BLOCKAGE')) {
                     $post_blockage_clause = "AND ( ( 1=1 $post_blockage_clause ) OR ( " . Arr::implode(' OR ', $additions['post']) . " ) )";
 
-                } else {
-                    $post_blockage_clause = "AND ( 1=1 $post_blockage_clause )";
-                }
+            	} else {
+                	$post_blockage_clause = "AND ( 1=1 $post_blockage_clause )";
+            	}
             }
         }
 
         if (!empty($post_blockage_clause)) {
             $where = "( $where ) $post_blockage_clause";
-		    }
+		}
 
         if ($append_post_type_clause) {
             $where = "$src_table.post_type = '$post_type' AND ( $where )";
-		    }
+		}
 
         return $where;
     }
@@ -572,7 +575,7 @@ class Permissions
     {
         global $wpdb;
 
-        $defaults = ['merge_additions' => false, 'exempt_post_types' => [], 'mod_types' => ['include', 'exclude'], 'additional_ttids' => [], 'apply_object_additions' => false];
+        $defaults = ['merge_additions' => false, 'exempt_post_types' => [], 'mod_types' => ['include', 'exclude'], 'additional_ttids' => [], 'apply_object_additions' => false, 'join' => ''];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -604,7 +607,8 @@ class Permissions
                     'status' => '', 
                     'in_clause' => $in_clause, 
                     'src_table' => $src_table,
-                    'ids' => $additional_ttids
+                    'ids' => $additional_ttids,
+                    'join' => $join,
                 ]
             );
 
@@ -624,7 +628,7 @@ class Permissions
                 '1=2',
                 $required_operation, 
                 $apply_object_additions, 
-                ['additions_only' => true, 'apply_term_restrictions' => false, 'src_table' => $src_table]) 
+                ['additions_only' => true, 'apply_term_restrictions' => false, 'src_table' => $src_table, 'join' => $join]) 
             ) {
                 $post_additions_clause = "OR ( $post_additions_clause )";
             }
