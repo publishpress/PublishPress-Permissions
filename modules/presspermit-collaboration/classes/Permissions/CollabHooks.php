@@ -64,6 +64,8 @@ class CollabHooks
         new Collab\Compat\MultipleAuthors();
 
         // Filtering of terms selection:
+        add_filter('pre_post_category', [$this, 'fltOriginalRestPostTerms'], 1, 1);  // ensure actual term selections are passed into filter
+
         add_filter('pre_post_tax_input', [$this, 'fltTaxInput'], 50, 1);
         add_filter('pre_post_category', [$this, 'fltPrePostTerms'], 50, 1);
         add_filter('presspermit_pre_object_terms', [$this, 'fltPrePostTerms'], 50, 2);
@@ -477,6 +479,28 @@ class CollabHooks
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
         return Collab\PostTermsSave::fltPreObjectTerms($terms, $taxonomy);
+    }
+
+    function fltOriginalRestPostTerms($terms, $taxonomy = 'category')
+    {
+        global $wp_version;
+
+        if (!defined('REST_REQUEST') || !REST_REQUEST || !version_compare($wp_version, '5.6', '>=')) {
+            return $terms;
+        }
+
+        // On REST post update, compensate for errant passing of currently stored post categories into pre_post_category filter instead of selected categories
+        if ($tx_obj = get_taxonomy($taxonomy)) {
+            $rest_base = (!empty($tx_obj->rest_base)) ? $tx_obj->rest_base : $tx_obj->name;
+
+            $payload_vars = json_decode(file_get_contents('php://input'), true);
+
+            if ($payload_vars && is_array($payload_vars) && isset($payload_vars[$rest_base]) && is_array($payload_vars[$rest_base])) {
+                $terms = $payload_vars[$rest_base];
+            }
+        }
+
+        return $terms;
     }
 
     /* // this is now handled by fltPreObjectTerms instead
