@@ -52,7 +52,11 @@ class CommentFiltersAdmin
             return $comments;
         }
 
-        $qry_obj = new \WP_Comment_Query();
+        if (!$post_id) {
+            $post_id = ('edit.php' == $pagenow) ? 0 : PWP::getPostID();
+        }
+
+        $qry_obj = new \WP_Comment_Query(['post_id' => $post_id]);
 
         $clauses = array_fill_keys( ['fields', 'join', 'orderby', 'limits', 'groupby'], '' );
         $clauses['where'] = "comment_approved = '1'";
