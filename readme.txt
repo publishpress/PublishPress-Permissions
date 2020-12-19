@@ -128,9 +128,10 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.4 - 10 Dec 2020 =
+= 3.4 - 17 Dec 2020 =
 * Compat : PublishPress Authors - integration of multiple authors in Permissions filtering
 * Fixed : Better styling in Permissions / Groups administration UI
+* Fixed : Term assignment permissions were not applied correctly in Gutenberg editor, under some configurations
 
 = 3.3.10 - 8 Dec 2020 =
 * Compat : GD bbPress Attachments - 404 error on some sites following file rewrite rules update, if File Access module enabled
