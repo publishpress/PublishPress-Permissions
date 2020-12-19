@@ -11,36 +11,38 @@ class TermEdit
 {
     public function __construct()
     {
-        wp_enqueue_script('post');
-        wp_enqueue_script('postbox');
-
-        wp_enqueue_style('presspermit-item-edit', PRESSPERMIT_URLPATH . '/common/css/item-edit.css', [], PRESSPERMIT_VERSION);
-        wp_enqueue_style('presspermit-term-edit', PRESSPERMIT_URLPATH . '/common/css/term-edit.css', [], PRESSPERMIT_VERSION);
-
-        add_action('admin_print_scripts', ['\PublishPress\Permissions\UI\Dashboard\ItemEdit', 'scriptItemEdit']);
-
-        add_action('admin_menu', [$this, 'actAddMetaBoxes']);
-
-        if (!empty($_REQUEST['taxonomy'])) {
-        	  $taxonomy = sanitize_key($_REQUEST['taxonomy']);
-        	
-            if (presspermit()->isTaxonomyEnabled($taxonomy)) {
-                add_action('admin_head', [$this, 'actScriptsWP']);
-
-                add_action("{$taxonomy}_edit_form", [$this, 'actExceptionEditUI']);
-                add_action('edit_tag_form', [$this, 'actExceptionEditUI']);
-            } else {
-                add_action("{$taxonomy}_edit_form", [$this, 'actTaxonomyEnableUI']);
-                add_action('edit_tag_form', [$this, 'actTaxonomyEnableUI']);
-            }
-
-            if (!empty($_REQUEST['pp_universal'])) {
-                add_action("{$taxonomy}_edit_form", [$this, 'actUniversalExceptionsUIsupport']);
-                add_action('edit_tag_form', [$this, 'actUniversalExceptionsUIsupport']);
-            }
-        }
-
-        do_action('presspermit_term_edit_ui');
+        if (!did_action('presspermit_term_edit_ui')) {
+	        wp_enqueue_script('post');
+	        wp_enqueue_script('postbox');
+	
+	        wp_enqueue_style('presspermit-item-edit', PRESSPERMIT_URLPATH . '/common/css/item-edit.css', [], PRESSPERMIT_VERSION);
+	        wp_enqueue_style('presspermit-term-edit', PRESSPERMIT_URLPATH . '/common/css/term-edit.css', [], PRESSPERMIT_VERSION);
+	
+	        add_action('admin_print_scripts', ['\PublishPress\Permissions\UI\Dashboard\ItemEdit', 'scriptItemEdit']);
+	
+	        add_action('admin_menu', [$this, 'actAddMetaBoxes']);
+	
+	        if (!empty($_REQUEST['taxonomy'])) {
+	            $taxonomy = sanitize_key($_REQUEST['taxonomy']);
+	        	
+	            if (presspermit()->isTaxonomyEnabled($taxonomy)) {
+	                add_action('admin_head', [$this, 'actScriptsWP']);
+	
+	                add_action("{$taxonomy}_edit_form", [$this, 'actExceptionEditUI']);
+	                add_action('edit_tag_form', [$this, 'actExceptionEditUI']);
+	            } else {
+	                add_action("{$taxonomy}_edit_form", [$this, 'actTaxonomyEnableUI']);
+	                add_action('edit_tag_form', [$this, 'actTaxonomyEnableUI']);
+	            }
+	
+	            if (!empty($_REQUEST['pp_universal'])) {
+	                add_action("{$taxonomy}_edit_form", [$this, 'actUniversalExceptionsUIsupport']);
+	                add_action('edit_tag_form', [$this, 'actUniversalExceptionsUIsupport']);
+	            }
+	        }
+	
+	        do_action('presspermit_term_edit_ui');
+	    }
     }
 
     public function initItemExceptionsUI()
@@ -54,9 +56,13 @@ class TermEdit
     // wrapper function so we don't have to load item_roles_ui class just to register the metabox
     public function drawExceptionsUI($term, $box)
     {
-        if (empty($box['id'])) {
+        static $done;
+
+        if (empty($box['id']) || !empty($done)) {
             return;
         }
+
+        $done = true;
 
         $this->initItemExceptionsUI();
 
@@ -79,6 +85,12 @@ class TermEdit
     {
         // ========= register WP-rendered metaboxes ============
         global $typenow;
+
+        static $done;
+
+        if (!empty($done)) {
+            return;
+        }
 
         $pp = presspermit();
 
@@ -105,6 +117,8 @@ class TermEdit
         ) {
             return;
         }
+
+        $done = true;
 
         $tx = get_taxonomy($taxonomy);
         $type_obj = get_post_type_object($post_type);
@@ -221,6 +235,13 @@ class TermEdit
     public function actExceptionEditUI($tag)
     {
         global $taxonomy, $typenow;  // only deal with post type which edit form was linked from?
+
+        static $been_here;
+        if (isset($been_here)) {
+            return;
+        }
+
+        $been_here = true;
 
         if ($typenow && !in_array($typenow, presspermit()->getEnabledPostTypes(), true)) {
             return;
