@@ -128,6 +128,9 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
+= 3.4.1-beta =
+* Compat : WPML - Edit Category / Edit Term screen had duplicate Permissions metaboxes
+
 = 3.4 - 17 Dec 2020 =
 * Compat : PublishPress Authors - integration of multiple authors in Permissions filtering
 * Fixed : Better styling in Permissions / Groups administration UI
