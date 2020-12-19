@@ -209,10 +209,12 @@ class TermFilters
             $rest = \PublishPress\Permissions\REST::instance();
             
             if ($rest->is_posts_request) {
-                if (!empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')) {
-                    $args['required_operation'] = 'edit';
-                } else {
-                    $args['required_operation'] = $rest->operation;
+                if (empty($args['required_operation']) || ('assign' != $args['required_operation'])) {
+                    if (!empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')) {
+                        $args['required_operation'] = 'edit';
+                    } else {
+                        $args['required_operation'] = $rest->operation;
+                    }
                 }
             } else {
                 $args['required_operation'] = ($rest->is_view_method) ? 'assign' : 'manage';
@@ -269,6 +271,26 @@ class TermFilters
                 $universal['additional'] = $user->getExceptionTerms($required_operation, 'additional', '', $taxonomy);
 
                 $universal = apply_filters('presspermit_get_terms_universal_exceptions', $universal, $required_operation, $taxonomy, $args);
+
+                if (defined('REST_REQUEST') && REST_REQUEST && ('assign' == $args['required_operation']) && !isset($args['object_type'])) {
+                    // @todo: WP Trac ticket for post_id or post_type argument in terms query a better solution
+                    if (!empty($_SERVER['HTTP_REFERER'])) {
+                        $referer = $_SERVER['HTTP_REFERER'];
+
+                        $matches = [];
+                        preg_match("/wp-admin\/post\.php\?post=([0-9]+)/", $referer, $matches);
+                        if (!empty($matches[1])) {
+                            $args['object_type'] = get_post_field('post_type', $matches[1]);
+                        } elseif (strpos($referer, 'wp-admin/post-new.php')) {
+                            preg_match("/wp-admin\/post-new\.php\?post_type=([a-zA-Z_\-0-9]+)/", $referer, $matches);
+                            if (!empty($matches[1])) {
+                                $args['object_type'] = $matches[1];
+                            } else {
+                                $args['object_type'] = 'post';
+                            }
+                        }
+                    }
+                }
 
                 if (!empty($args['object_type']))
                     $exception_types = array_intersect((array)$args['object_type'], $enabled_types);
