@@ -128,13 +128,12 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.4.1-beta =
-* Compat : WPML - Edit Category / Edit Term screen had duplicate Permissions metaboxes
+= 3.4.1-rc =
+* Compat : PublishPress Revisions - Contributors could not edit their own drafts if Revisions is configured to restrict access to other users' drafts
 
 = 3.4 - 17 Dec 2020 =
 * Compat : PublishPress Authors - integration of multiple authors in Permissions filtering
 * Fixed : Better styling in Permissions / Groups administration UI
-* Fixed : Term assignment permissions were not applied correctly in Gutenberg editor, under some configurations
 
 = 3.3.10 - 8 Dec 2020 =
 * Compat : GD bbPress Attachments - 404 error on some sites following file rewrite rules update, if File Access module enabled
