@@ -128,8 +128,16 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.4.1-rc =
+= 3.4.1-rc2 =
 * Compat : PublishPress Revisions - Contributors could not edit their own drafts if Revisions is configured to restrict access to other users' drafts
+* Compat : WPML - Edit Category / Edit Term screen had duplicate Permissions metaboxes
+* Feature : Add / Edit User: single select for Permission Groups if constant PRESSPERMIT_EDIT_USER_SINGLE_GROUP_SELECTION or PRESSPERMIT_EDIT_USER_SINGLE_GROUP_SELECTION is defined
+* Compat : PublishPress Authors - PHP Notice in term / category filtering under some conditions
+* Compat : PublishPress Capabilities - With "Control Custom Statuses" enabled, custom capability was required to set Draft status
+* Fixed : Administrators could not assign roles or edit users with a role level higher that Subscriber, under some conditions
+* Fixed : Fatal Error activating Permissions Pro if Permissions is already active
+* Fixed : Anonymous visitors were blocked from viewing public posts under some conditions
+
 
 = 3.4 - 17 Dec 2020 =
 * Compat : PublishPress Authors - integration of multiple authors in Permissions filtering
