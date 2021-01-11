@@ -172,6 +172,10 @@ p.pp-bulk-user-perm {
 
 
 /* --- User Profile and Permissions Edit --- */
+#pp_select_custom_attribs div.pp-attrib {
+  margin-top: 12px;
+}
+
 .pp-group-box {
   margin: 0 0 20px !important;
   padding: 20px !important;
