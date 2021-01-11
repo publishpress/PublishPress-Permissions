@@ -915,6 +915,14 @@ class PostFilters
         wp_cache_delete(-1, 'posts');
         presspermit()->meta_cap_post = false;
 
+        if ((1 == count($return)) && ('do_not_allow' == reset($return)) && in_array($cap_name, ['read_post', 'read_page']) && ('publish' == $status)) {
+            if ($type_obj = get_post_type_object($post_type)) {
+                if (!empty($type_obj->public)) {
+                    return 'read';
+                }
+            }
+        }
+
         return $return;
     }
 
