@@ -54,7 +54,7 @@ class Users
 
         if (!is_array($user_ids)) {
             // mu site administrator may not be a user for the current site
-            if (is_multisite() && function_exists('is_super_admin') && is_super_admin()) 
+            if (is_multisite() && function_exists('is_super_admin') && is_super_admin() || current_user_can('administrator'))
                 return 10;
 
             $orig_user_id = $user_ids;
@@ -70,45 +70,45 @@ class Users
             $role_levels = self::getRoleLevels(); // local buffer for performance
 
             // If the listed user ids were logged following a search operation, save extra DB queries by getting the levels of all those users now
-            global $wp_user_search, $current_user;
+            global $wp_user_search, $current_user, $wpdb;
 
             if ((count($user_ids) == 1) && (current($user_ids) == $current_user->ID)) {
-                $results = [];
-                foreach ($current_user->roles as $role_name) {
-                    $results[] = (object)['user_id' => $current_user->ID, 'role_name' => $role_name];
+                $user_levels[$current_user->ID] = !empty($current_user->role_level) ? $current_user->role_level : 0;
+
+                if (empty($user_levels[$current_user->ID])) {
+                    $user_levels[$current_user->ID] = (int) get_user_meta( $current_user->ID, $wpdb->get_blog_prefix() . 'user_level', true );
                 }
             } else {
                 if (!empty($wp_user_search->results)) {
                     $query_users = $wp_user_search->results;
                     $query_users = array_unique(array_merge($query_users, $user_ids));
-                } else
+                } else {
                     $query_users = $user_ids;
+				}
 
                 // get the WP roles for user
-                global $wpdb;
                 $results = $wpdb->get_results(
                     "SELECT m.user_id, g.metagroup_id AS role_name FROM $wpdb->pp_groups AS g"
                     . " INNER JOIN $wpdb->pp_group_members AS m ON m.group_id = g.ID"
                     . " WHERE g.metagroup_type = 'wp_role' AND m.user_id IN ('" . implode("','", $query_users) . "')"
                 );
-            }
 
-            // credit each user for the highest role level they have
-            foreach ($results as $row) {
-                if (!isset($role_levels[$row->role_name]))
-                    continue;
+	            // credit each user for the highest role level they have
+	            foreach ($results as $row) {
+	                if (!isset($role_levels[$row->role_name]))
+	                    continue;
+	
+	                if (!isset($user_levels[$row->user_id]) || ($role_levels[$row->role_name] > $user_levels[$row->user_id]))
+	                    $user_levels[$row->user_id] = $role_levels[$row->role_name];
+	            }
 
-                if (!isset($user_levels[$row->user_id]) || ($role_levels[$row->role_name] > $user_levels[$row->user_id]))
-                    $user_levels[$row->user_id] = $role_levels[$row->role_name];
-            }
-
-            // note any "No Role" users
-            if (!empty($query_users)) {
-                if ($no_role_users = array_diff($query_users, array_keys($user_levels)))
-                    $user_levels = $user_levels + array_fill_keys($no_role_users, 0);
-            }
+	            // note any "No Role" users
+	            if (!empty($query_users)) {
+	                if ($no_role_users = array_diff($query_users, array_keys($user_levels)))
+	                    $user_levels = $user_levels + array_fill_keys($no_role_users, 0);
+	            }
+        	}
         }
-
 
         if ($return_array)
             $return = array_intersect_key($user_levels, array_fill_keys($user_ids, true));
