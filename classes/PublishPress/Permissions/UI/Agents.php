@@ -16,10 +16,25 @@ class Agents
 
     public function agentsUI($agent_type, $all_agents, $id_suffix = '', $item_assignments = [], $args = [])
     {
-        $defaults = ['role_name' => '', 'ajax_selection' => false, 'width' => '', 'hide_checkboxes' => false];
+        $defaults = ['role_name' => '', 'ajax_selection' => false, 'width' => '', 'hide_checkboxes' => false, 'single_select' => false];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
+        }
+
+        if ($single_select) {
+            $ajax_selection = false;
+            ?>
+            <script type="text/javascript">
+                /* <![CDATA[ */
+                jQuery(document).ready(function ($) {
+                    $('ul.pp-agents-list input[type=checkbox]').click(function() {
+                        $('ul.pp-agents-list input[type=checkbox]').not(this).prop('checked', false);
+                    });
+                });
+                /* ]]> */
+            </script>
+            <?php
         }
 
         echo '<div class="pp_agents_wrapper">';
