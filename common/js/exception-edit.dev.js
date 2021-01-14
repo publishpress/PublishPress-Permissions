@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
 
     $('ul.categorychecklist ul.children li[style="display:none"]').parent().prevAll('input.menu-item-checkbox').next('span').html(' + ');
 
-    $('input.menu-item-checkbox').nextAll('span').click(function (e) {
+    $('input.menu-item-checkbox').nextAll('span').on('click', function (e) {
         $(this).parent().children('ul.children').children('li').toggle();
 
         if ($(this).nextAll('ul.children').length) {
@@ -25,7 +25,7 @@ jQuery(document).ready(function ($) {
 
     $('.add-to-menu .waiting').hide();
 
-    $("#pp_save_exceptions input.button-primary").click(function () {
+    $("#pp_save_exceptions input.button-primary").on('click', function () {
         $('input[name="member_csv"]').val($("input#member_csv").val());
         $('input[name="group_name"]').val($("input#group_name").val());
         $('input[name="description"]').val($("input#description").val());
@@ -33,7 +33,7 @@ jQuery(document).ready(function ($) {
         $("#pp_new_x_submission_msg").show();
     });
 
-    $('#agent-profile #submit').click(function (e) {
+    $('#agent-profile #submit').on('click', function (e) {
         // no need to submit selection inputs
         $('#pp_review_exceptions').hide();
         $('#pp_add_exception').remove();
@@ -50,11 +50,11 @@ jQuery(document).ready(function ($) {
         e.stopPropagation();
     });
 
-    $('.pp_clear_all').click(function () {
+    $('.pp_clear_all').on('click', function () {
         $('.pp_clear').trigger('click');
     });
 
-    $(".menu-item-checkbox").click(function () {
+    $(".menu-item-checkbox").on('click', function () {
         presspermitItemCheckboxClick('menu-item', $(this));
     });
 
@@ -344,9 +344,9 @@ jQuery(document).ready(function ($) {
         pressPermitNoneItemVisibility();
     }
 
-    $('select[name="pp_select_x_for_type"]').bind('change', presspermitReloadOperation);
+    $('select[name="pp_select_x_for_type"]').on('change', presspermitReloadOperation);
 
-    $('select[name="pp_select_x_for_type"]').change(function () {
+    $('select[name="pp_select_x_for_type"]').on('change', function () {
         $('.pp-select-items').hide();
         $('.pp-select-x-mod-type').hide();
         $('.pp-select-x-via-type').hide();
@@ -354,7 +354,7 @@ jQuery(document).ready(function ($) {
         $('#pp_add_exception').css('width', 'auto');
     });
 
-    $('td.pp-select-x-operation').click(function() {
+    $('td.pp-select-x-operation').on('click', function() {
         var sel = $(this).find('input:checked').val();
         if (sel) {
             presspermitLastOp = sel;
@@ -362,10 +362,10 @@ jQuery(document).ready(function ($) {
         presspermitReloadViaType();
     });
 
-    $('td.pp-select-x-operation').bind('click', presspermitReloadModificationType);
-    $('td.pp-select-x-operation').bind('click', presspermitReloadStatus);
+    $('td.pp-select-x-operation').on('click', presspermitReloadModificationType);
+    $('td.pp-select-x-operation').on('click', presspermitReloadStatus);
 
-    $('td.pp-select-x-mod-type').click(function() {
+    $('td.pp-select-x-mod-type').on('click', function() {
         var sel = $(this).find('input:checked').val();
         if (sel) {
             presspermitLastModType = sel;
@@ -373,10 +373,10 @@ jQuery(document).ready(function ($) {
         presspermitReloadStatus();
     });
 
-    $('select[name="pp_select_x_via_type"]').bind('change', presspermitReloadStatus);
-    $('select[name="pp_select_x_via_type"]').bind('change', presspermitReloadAssignFor);
+    $('select[name="pp_select_x_via_type"]').on('change', presspermitReloadStatus);
+    $('select[name="pp_select_x_via_type"]').on('change', presspermitReloadAssignFor);
 
-    $('select[name="pp_select_x_via_type"]').change(function () {
+    $('select[name="pp_select_x_via_type"]').on('change', function () {
         $('#pp_add_exception .postbox').hide();	// @todo: review this
 
         if ($(this).find('option').length) {
@@ -396,7 +396,7 @@ jQuery(document).ready(function ($) {
         $('input.menu-item-checkbox').prop('checked', false);
     });
 
-    $('select[name="pp_select_x_via_type"]').click(function () {
+    $('select[name="pp_select_x_via_type"]').on('click', function () {
         presspermitLastViaType = $(this).val();
     });
 
@@ -416,7 +416,7 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    $('input[name="pp_select_x_mod_type"]').bind('change', presspermitUpdateItemNoneCaption);
+    $('input[name="pp_select_x_mod_type"]').on('change', presspermitUpdateItemNoneCaption);
 
     $(document).on('click', '#pp_select_x_item_assign', function(e){
         presspermitLastItemAssign = $(this).prop('checked');
@@ -642,11 +642,11 @@ jQuery(document).ready(function ($) {
 
 
     // ========== Begin "Edit Exception" Submission scripts ==========
-    $('#pp_current_exceptions input').click(function (e) {
+    $('#pp_current_exceptions input').on('click', function (e) {
         $(this).closest('div.pp-current-type-roles').find('div.pp-exception-bulk-edit').show();
     });
 
-    $('#pp_current_exceptions .pp_check_all').click(function (e) {
+    $('#pp_current_exceptions .pp_check_all').on('click', function (e) {
         $(this).closest('td').find('input[name="pp_edit_exception[]"][disabled!="true"]').prop('checked', $(this).is(':checked'));
     });
 
@@ -739,7 +739,7 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    $('#pp_current_exceptions input.submit-edit-item-exception').click(function (e) {
+    $('#pp_current_exceptions input.submit-edit-item-exception').on('click', function (e) {
         var action = $(this).closest('div.pp-current-type-roles').find('div.pp-exception-bulk-edit select').first().val();
 
         if (!action) {

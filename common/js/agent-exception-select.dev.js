@@ -3,12 +3,12 @@ function presspermitLoadAgentsJS(id_sfx, agent_type, context, agent_id, suppress
         id_sfx = id_sfx.replace(/:/g, '\\:');
 
         if (!suppress_selection_js) {
-            $("#select_agents_" + id_sfx).click(function (e) {
+            $("#select_agents_" + id_sfx).on('click', function (e) {
                 e.preventDefault();
                 presspermitSelectAgents(id_sfx);
             });
 
-            $("#agent_results_" + id_sfx).bind('dblclick', function (e) {
+            $("#agent_results_" + id_sfx).on('dblclick', function (e) {
                 e.preventDefault();
                 presspermitSelectAgents(id_sfx);
 

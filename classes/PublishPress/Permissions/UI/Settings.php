@@ -96,7 +96,7 @@ class Settings
             <script type="text/javascript">
                 /* <![CDATA[ */
                 jQuery(document).ready(function ($) {
-                    $('li.agp-agent a').click(function()
+                    $('li.agp-agent a').on('click', function()
                     {
                         $('li.agp-agent').removeClass('agp-selected_agent <?php echo $color_class; ?>');
                         $('li.agp-agent').addClass('agp-unselected_agent');

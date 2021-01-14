@@ -24,7 +24,7 @@ class HintsPostEdit
                 jQuery(document).ready(function ($) {
                     $('#visibility-radio-private').next('label').after('<a href="#" class="pp-custom-privacy-promo" style="margin-left:5px"><?php _e('define custom privacy', 'press-permit-core'); ?></a><span class="pp-ext-promo" style="display:none;"><br /><?php echo $msg; ?></span>');
 
-                    $('a.pp-custom-privacy-promo').click(function()
+                    $('a.pp-custom-privacy-promo').on('click', function()
                     {
                         $(this).hide().next('span').show();
                         return false;
@@ -67,7 +67,7 @@ class HintsPostEdit
                 jQuery(document).ready(function ($) {
                     $('a.edit-post-status').after('<a href="#" class="pp-custom-moderation-promo" style="margin-left:5px"><?php _e('Customize', 'press-permit-core'); ?></a><span class="pp-ext-promo" style="display:none;"><br /><?php echo $msg; ?></span>');
 
-                    $('a.pp-custom-moderation-promo').click(function()
+                    $('a.pp-custom-moderation-promo').on('click', function()
                     {
                         $(this).hide().next('span').show();
                         return false;

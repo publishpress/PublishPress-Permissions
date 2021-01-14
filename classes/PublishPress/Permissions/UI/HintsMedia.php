@@ -21,7 +21,7 @@ class HintsMedia
             jQuery(document).ready(function ($) {
                 $('#posts-filter').after('<a href="#" class="pp-file-filtering-promo"><?php _e('Block URL access', 'press-permit-core'); ?></a><span class="pp-ext-promo" style="display:none;"><?php echo $msg; ?></span>');
 
-                $('a.pp-file-filtering-promo').click(function()
+                $('a.pp-file-filtering-promo').on('click', function()
                 {
                     $(this).hide().next('span').show();
                     return false;

@@ -915,6 +915,14 @@ class PostFilters
         wp_cache_delete(-1, 'posts');
         presspermit()->meta_cap_post = false;
 
+        if ((1 == count($return)) && ('do_not_allow' == reset($return)) && in_array($cap_name, ['read_post', 'read_page']) && ('publish' == $status)) {
+            if ($type_obj = get_post_type_object($post_type)) {
+                if (!empty($type_obj->public)) {
+                    return 'read';
+                }
+            }
+        }
+
         return $return;
     }
 
@@ -955,6 +963,15 @@ class PostFilters
             $replace_caps = apply_filters('presspermit_base_cap_replacements', $replace_caps, $reqd_caps, $post_type);
 
             $replace_caps['edit_others_drafts'] = 'read';
+
+            if (!empty($type_obj->cap->edit_others_posts)) {
+                global $current_user;
+                $list_others_cap = str_replace('edit_', 'list_', $type_obj->cap->edit_others_posts);
+
+                $replace_caps[$list_others_cap] = (!empty($current_user->allcaps[$type_obj->cap->edit_posts]))
+                ? $type_obj->cap->edit_posts
+                : str_replace('edit_', 'list_', $type_obj->cap->edit_posts);
+            }
 
             foreach ($replace_caps as $cap_name => $base_cap) {
                 $key = array_search($cap_name, $reqd_caps);

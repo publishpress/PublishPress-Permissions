@@ -156,6 +156,8 @@ class TermFiltersCount
             return [];
         }
 
+        $taxonomies = (array) $taxonomies;
+
         if (apply_filters('presspermit_terms_skip_filtering', false, $taxonomies, $args)) {
             return $terms;
         }

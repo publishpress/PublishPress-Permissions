@@ -14,7 +14,7 @@
         };
         */
 
-        $('#' + args.search_id).keydown(function (e) {
+        $('#' + args.search_id).on('keydown', function (e) {
             // this will catch pressing enter and call find function
             if (e.keyCode == 13) {
                 ajax_request($(this).val());
@@ -22,7 +22,7 @@
             }
         });
 
-        $("#" + args.button_id).click(function () {
+        $("#" + args.button_id).on('click', function () {
             ajax_request($('#' + args.search_id).val());
         });
 

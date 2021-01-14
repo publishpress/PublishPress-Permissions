@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.6
 Requires PHP: 5.6.20
-Stable tag: 3.4
+Stable tag: 3.4.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,15 +123,26 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.4 =
+= 3.4.1 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
+= 3.4.1 =
+* Fixed : Anonymous visitors were blocked from viewing public posts under some conditions
+* Fixed : Administrators could not assign roles or edit users with a role level higher that Subscriber, under some conditions
+* Fixed : Fatal Error activating Permissions Pro if Permissions is already active
+* Fixed : PHP Warning for undefined constant DB_NAME, on some installations
+* Fixed : Deprecated jQuery event handlers
+* Compat : PublishPress Revisions - Contributors could not edit their own drafts if Revisions is configured to restrict access to other users' drafts
+* Compat : PublishPress Capabilities - With "Control Custom Statuses" enabled, custom capability was required to set Draft status
+* Compat : WPML - Edit Category / Edit Term screen had duplicate Permissions metaboxes
+* Compat : PublishPress Authors - PHP Notice in term / category filtering under some conditions
+* Feature : Add / Edit User: single select for Permission Groups if constant PRESSPERMIT_EDIT_USER_SINGLE_GROUP_SELECTION or PRESSPERMIT_EDIT_USER_SINGLE_GROUP_SELECTION is defined
+
 = 3.4 - 17 Dec 2020 =
 * Compat : PublishPress Authors - integration of multiple authors in Permissions filtering
 * Fixed : Better styling in Permissions / Groups administration UI
-* Fixed : Term assignment permissions were not applied correctly in Gutenberg editor, under some configurations
 
 = 3.3.10 - 8 Dec 2020 =
 * Compat : GD bbPress Attachments - 404 error on some sites following file rewrite rules update, if File Access module enabled

@@ -12,7 +12,10 @@ $db_ver = ( isset( $ver['db_version'] ) ) ? $ver['db_version'] : '';
 require_once(__DIR__ . '/classes/PublishPress/Permissions/DB/DatabaseSetup.php');
 new \PublishPress\Permissions\DB\DatabaseSetup($db_ver);
 
-require_once(__DIR__ . '/classes/PublishPress/Permissions/PluginUpdated.php');
+if (!class_exists('PublishPress\Permissions\PluginUpdated')) {
+	require_once(__DIR__ . '/classes/PublishPress/Permissions/PluginUpdated.php');
+}
+
 \PublishPress\Permissions\PluginUpdated::syncWordPressRoles();
 
 update_option('presspermit_activation', true);

@@ -80,7 +80,7 @@ var wpNavMenu;
         },
 
         attachTabsPanelListeners: function () {
-            $('#menu-settings-column').bind('click', function (e) {
+            $('#menu-settings-column').on('click', function (e) {
                 var selectAreaMatch, panelId, wrapper, items,
                     target = $(e.target);
 

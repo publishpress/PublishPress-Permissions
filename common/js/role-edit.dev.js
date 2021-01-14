@@ -3,13 +3,13 @@ jQuery(document).ready(function ($) {
     $("#pp-add-permissions").show();
     $("#pp_current_roles").show();
 
-    $("a.pp-show-groups").click(function () {
+    $("a.pp-show-groups").on('click', function () {
         $('#userprofile_groupsdiv_pp').show();
         return false;
     });
 
     // ========= Group Members / Managers toggle ========
-    $(".pp-member-type > a").click(function () {
+    $(".pp-member-type > a").on('click', function () {
         $(".pp-member-type > a").parent().removeClass('agp-selected_agent').addClass('agp-unselected_agent');
         $(this).parent().removeClass('agp-unselected_agent').addClass('agp-selected_agent');
         $('div.pp-member-type').hide();
@@ -21,14 +21,14 @@ jQuery(document).ready(function ($) {
     var presspermitAllRoleData = [];
     var presspermitEID = -1;
 
-    $(".pp-add-permissions > a").click(function () {
+    $(".pp-add-permissions > a").on('click', function () {
         $(".pp-add-permissions > a").parent().removeClass('agp-selected_agent').addClass('agp-unselected_agent');
         $(this).parent().removeClass('agp-unselected_agent').addClass('agp-selected_agent');
         $('div.pp-add-permissions').hide();
         presspermitShowClass($(this).attr('class'), $);
     });
 
-    $("#pp_save_roles input.button-primary").click(function () {
+    $("#pp_save_roles input.button-primary").on('click', function () {
         $('input[name="member_csv"]').val($("input#member_csv").val());
         $('input[name="group_name"]').val($("input#group_name").val());
         $('input[name="description"]').val($("input#description").val());
@@ -36,7 +36,7 @@ jQuery(document).ready(function ($) {
         $("#pp_new_submission_msg").show();
     });
 
-    $('#agent-profile #submit').click(function (e) {
+    $('#agent-profile #submit').on('click', function (e) {
         // no need to submit selection inputs
         $('#pp_review_roles').hide();
         $('#pp_add_role').remove();
@@ -53,7 +53,7 @@ jQuery(document).ready(function ($) {
         e.stopPropagation();
     });
 
-    $('#pp_add_site_role').bind('click', function () {
+    $('#pp_add_site_role').on('click', function () {
         $('div.pp-ext-promo').hide();
 
         var newrow = '', trackdata = '', duplicate = false, any_added = false;
@@ -128,9 +128,9 @@ jQuery(document).ready(function ($) {
             $('.pp-select-cond').hide();
     }
 
-    $('select[name="pp_select_role"]').bind('change', presspermitReloadConditions);
+    $('select[name="pp_select_role"]').on('change', presspermitReloadConditions);
 
-    $('select[name="pp_select_type"]').change(function () {
+    $('select[name="pp_select_type"]').on('change', function () {
         $('#pp_add_role .postbox').hide();
 
         if ($(this).val() == 'site') {
@@ -202,12 +202,12 @@ jQuery(document).ready(function ($) {
 
 
     // ========== Begin "Edit Roles" Submission scripts ==========
-    $('#pp_current_roles input').click(function (e) {
+    $('#pp_current_roles input').on('click', function (e) {
         //$(this).closest('div.pp-current-roles').find('div.pp-role-bulk-edit').show();
         $('div.pp-role-bulk-edit').show();
     });
 
-    $('#pp_current_roles .pp_check_all').click(function (e) {
+    $('#pp_current_roles .pp_check_all').on('click', function (e) {
         $(this).closest('td').find('input[name="pp_edit_role[]"][disabled!="true"]').prop('checked', $(this).is(':checked'));
     });
 
@@ -238,7 +238,7 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    $('#pp_current_roles input.submit-edit-item-role').click(function (e) {
+    $('#pp_current_roles input.submit-edit-item-role').on('click', function (e) {
         //var action = $(this).closest('div.pp-current-roles').find('div.pp-role-bulk-edit select').first().val();
         var action = $('div.pp-role-bulk-edit select').val();
 

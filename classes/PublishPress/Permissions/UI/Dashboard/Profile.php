@@ -110,6 +110,8 @@ class Profile
 
     public static function displayUserGroups($include_role_metagroups = false, $args = [])
     {
+        global $pagenow;
+
         $defaults = [
             'initial_hide' => false,
             'selected_only' => false,
@@ -206,12 +208,17 @@ class Profile
 
             echo "</h3>";
 
+            $single_select = ('user-new.php' == $pagenow) || (!empty($_REQUEST['pp_ajax_user']) && ('new_user_groups_ui' == $_REQUEST['pp_ajax_user']))
+            ? defined('PRESSPERMIT_ADD_USER_SINGLE_GROUP_SELECT') 
+            : defined('PRESSPERMIT_EDIT_USER_SINGLE_GROUP_SELECT');
+
             $css_id = $agent_type;
             $args = [
                 'eligible_ids' => $editable_ids,
                 'locked_ids' => $locked_ids,
                 'show_subset_caption' => false,
-                'hide_checkboxes' => $hide_checkboxes
+                'hide_checkboxes' => $hide_checkboxes,
+                'single_select' => $single_select
             ];
 
             $pp->admin()->agents()->agentsUI($agent_type, $all_groups, $css_id, $stored_groups, $args);
