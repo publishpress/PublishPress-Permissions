@@ -252,7 +252,8 @@ class Groups
         $args = array_merge($defaults, $args);
 
         // guard against groups table being imported into a different database (with mismatching options table)
-        $site_key = md5(get_option('site_url') . constant('DB_NAME') . $wpdb->prefix);
+        $dbname = defined( 'DB_NAME' ) ? DB_NAME : '';
+        $site_key = md5(get_option('site_url') . $dbname . $wpdb->prefix);
 
         if (!$buffered_groups = presspermit()->getOption("buffer_metagroup_id_{$site_key}")) {
             $buffered_groups = [];
