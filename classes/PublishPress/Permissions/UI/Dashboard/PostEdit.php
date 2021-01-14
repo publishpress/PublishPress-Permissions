@@ -201,7 +201,7 @@ class PostEdit
             <script type="text/javascript">
                 /* <![CDATA[ */
                 jQuery(document).ready(function ($) {
-                    $('#wp-content-media-buttons a').click(function()
+                    $('#wp-content-media-buttons a').on('click', function()
                     {
                         if ($('#post-status-info span.autosave-message').html() == '&nbsp;') {
                             autosave();

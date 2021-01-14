@@ -20,7 +20,7 @@ jQuery(document).ready(function ($) {
         });
     });
 
-    $('.pp-exception-actions a.pp-select-exception-agents').click(function () {
+    $('.pp-exception-actions a.pp-select-exception-agents').on('click', function () {
         $(this).closest('tbody').find('td.pp-select-exception-agents').show();
         $(this).hide();
         $(this).parent().find('a.pp-close-select-exception-agents').show();
@@ -30,7 +30,7 @@ jQuery(document).ready(function ($) {
         return false;
     });
 
-    $('.pp-exception-actions a.pp-close-select-exception-agents').click(function () {
+    $('.pp-exception-actions a.pp-close-select-exception-agents').on('click', function () {
         $(this).closest('tbody').find('td.pp-select-exception-agents').hide();
         $(this).hide();
         $(this).parent().find('a.pp-select-exception-agents').show();
@@ -43,7 +43,7 @@ jQuery(document).ready(function ($) {
     });
 
     // remove search result items for agents who have item exception UI dropdowns
-    $('.pp-agents-selection select').bind('jchange', function () {
+    $('.pp-agents-selection select').on('jchange', function () {
         var tree = $("<div>" + $(this).html() + "</div>");
 
         $(this).closest('table.pp-item-exceptions-ui').find('td.pp-current-item-exceptions td input[type="hidden"]').each(function (i, item) {
@@ -53,12 +53,12 @@ jQuery(document).ready(function ($) {
         $(this).html(tree.html());
     });
 
-    $('a[href="#clear-item-exc"]').click(function () {
+    $('a[href="#clear-item-exc"]').on('click', function () {
         $(this).closest('table tbody').find('td.pp-exc-item select').val('').change();
         return false;
     });
 
-    $('a[href="#clear-sub-exc"]').click(function () {
+    $('a[href="#clear-sub-exc"]').on('click', function () {
         $(this).closest('table tbody').find('td.pp-exc-children select').val('').change();
         return false;
     });

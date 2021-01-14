@@ -6,21 +6,21 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(".pp-user-meta-search select").click(function (e) {
+    $(".pp-user-meta-search select").on('click', function (e) {
         $(this).siblings().show();
     });
 
-    $(".pp-user-meta-search select").change(function (e) {
+    $(".pp-user-meta-search select").on('change', function (e) {
         $(this).parent().find('input').focus();
     });
 
-    $("span.pp-usermeta-field-more").click(function (e) {
+    $("span.pp-usermeta-field-more").on('click', function (e) {
         $(this).parent().next('div.pp-user-meta-search').show().find('select').focus();
         $(this).parent().next('div.pp-user-meta-search').children().show();
         $(this).hide();
     });
 
-    $('div.pp-user-meta-search input').keydown(function (e) {
+    $('div.pp-user-meta-search input').on('keydown', function (e) {
         // this will catch pressing enter and call find function
         if (e.keyCode == 13) {
             $(this).closest('td').find('button.pp-agent-search-submit').click();
@@ -35,7 +35,7 @@ function presspermitPrepareID(selector) {
 }
 
 jQuery(document).ready(function ($) {
-    $(".pp-hidden-subdiv h3").click(function (e) {
+    $(".pp-hidden-subdiv h3").on('click', function (e) {
         e.preventDefault();
         $(this).siblings(".hide-if-js").show();
     });

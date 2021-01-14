@@ -2,21 +2,21 @@ function presspermitLoadAgentsJS(id_sfx, agent_type, context, agent_id, selectio
     jQuery(document).ready(function ($) {
         id_sfx = id_sfx.replace(/:/g, '\\:');
 
-        $("#select_agents_" + id_sfx).click(function (e) {
+        $("#select_agents_" + id_sfx).on('click', function (e) {
             e.preventDefault();
             presspermitSelectAgents(id_sfx);
         });
 
-        $("#agent_results_" + id_sfx).bind('dblclick', function (e) {
+        $("#agent_results_" + id_sfx).on('dblclick', function (e) {
             e.preventDefault();
             presspermitSelectAgents(id_sfx);
         });
 
         if (selection_only != true) {
-            $("#unselect_agents_" + id_sfx).bind('click', function (event) {
+            $("#unselect_agents_" + id_sfx).on('click', function (event) {
                 presspermitUnselectListAgents(id_sfx);
             });
-            $("#" + id_sfx).bind('dblclick', function (event) {
+            $("#" + id_sfx).on('dblclick', function (event) {
                 presspermitUnselectListAgents(id_sfx);
             });
 

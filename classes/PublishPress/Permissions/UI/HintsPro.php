@@ -18,13 +18,13 @@ $lang_id = 'press-permit-core';
 <script type="text/javascript">
 /* <![CDATA[ */
 jQuery(document).ready(function ($) {
-    $('a[href="#pp-pro-info"]').click(function()
+    $('a[href="#pp-pro-info"]').on('click', function()
     {
         $('#pp_features').show();
         $('ul.pro-pplinks').show();
         return false;
     });
-    $('a[href="#pp-pro-hide"]').click(function()
+    $('a[href="#pp-pro-hide"]').on('click', function()
     {
         $('#pp_features').hide();
         $('ul.pro-pplinks').hide();
