@@ -113,7 +113,7 @@ class Users
 
                 $("select[name='action']").closest('div.top').find('div.tablenav-pages').after($(elems));
 
-                $("#member_page_type").change(function()
+                $("#member_page_type").on('change', function()
                 {
                     $("#member_page_title").toggle($(this).val() != '');
                     $("#member_page_add").toggle($(this).val() != '');

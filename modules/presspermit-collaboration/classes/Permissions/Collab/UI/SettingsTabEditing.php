@@ -204,11 +204,11 @@ class SettingsTabEditing
                     <script type="text/javascript">
                         /* <![CDATA[ */
                         jQuery(document).ready(function ($) {
-                            $('div.default_privacy select').click(function() {
+                            $('div.default_privacy select').on('click', function() {
                                 $(this).parent().find('label').toggle($(this).val() != '');
                             });
 
-                            $('#add_author_pages').click(function() {
+                            $('#add_author_pages').on('click', function() {
                                 $('div.publish_author_pages').toggle($(this).is(':checked'));
                             });
                         });

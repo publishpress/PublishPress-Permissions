@@ -187,7 +187,7 @@ class ErrorNotice
 		?>
 		<script type="text/javascript">
             jQuery(document).ready( function($) {
-                $('a.presspermit-dismiss-notice').click(function(e) {
+                $('a.presspermit-dismiss-notice').on('click', function(e) {
                     $(this).closest('div').slideUp();
                     jQuery.post(ajaxurl, {action:"pp_dismiss_msg", msg_id:$(this).attr('id'), cookie: encodeURIComponent(document.cookie)});
                 });

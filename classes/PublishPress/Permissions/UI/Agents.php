@@ -28,7 +28,7 @@ class Agents
             <script type="text/javascript">
                 /* <![CDATA[ */
                 jQuery(document).ready(function ($) {
-                    $('ul.pp-agents-list input[type=checkbox]').click(function() {
+                    $('ul.pp-agents-list input[type=checkbox]').on('click', function() {
                         $('ul.pp-agents-list input[type=checkbox]').not(this).prop('checked', false);
                     });
                 });
