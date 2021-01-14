@@ -205,7 +205,7 @@ class Admin
 
                 $post_type_obj = get_post_type_object($_post->post_type);
 
-                if (isset(($post_type_obj->cap->edit_others_posts)) && !in_array($post_type_obj->cap->edit_others_posts, $caps)) {
+                if (isset($post_type_obj->cap->edit_others_posts) && !in_array($post_type_obj->cap->edit_others_posts, $caps)) {
                     return $caps;
                 }
 
