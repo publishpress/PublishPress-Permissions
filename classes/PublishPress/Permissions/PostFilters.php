@@ -687,7 +687,7 @@ class PostFilters
                         $caps->do_status_cap_map = true;
                     }
 
-                    $reqd_caps = self::$instance->mapMetaCap($meta_cap, $user->ID, 0, compact('post_type', 'status', 'query_contexts'));
+                    $reqd_caps = (array) self::$instance->mapMetaCap($meta_cap, $user->ID, 0, compact('post_type', 'status', 'query_contexts'));
 
                     if ($flag_meta_caps) {
                         $caps->do_status_cap_map = false;

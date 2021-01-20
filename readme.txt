@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.6
 Requires PHP: 5.6.20
-Stable tag: 3.4.1
+Stable tag: 3.4.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,12 +123,16 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.4.1 =
+= 3.4.2 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
-= 3.4.1 =
+= 3.4.2 - 20 Jan 2021 =
+* Compat : WP Engine Object Cache - initial pass at auto-clearing cache on plugin configuration changes
+* Fixed : Slow comment count query for Contributors in wp-admin
+
+= 3.4.1 - 14 Jan 2021 =
 * Fixed : Anonymous visitors were blocked from viewing public posts under some conditions
 * Fixed : Administrators could not assign roles or edit users with a role level higher that Subscriber, under some conditions
 * Fixed : Fatal Error activating Permissions Pro if Permissions is already active
