@@ -48,6 +48,10 @@ class CommentFiltersAdmin
     {
         global $pagenow, $wpdb;
 
+        if (!current_user_can('moderate_comments') || defined('PRESSPERMIT_FORCE_COMMENT_COUNT_FILTER')) {
+            return $comments;
+        }
+
         if (!empty($pagenow) && ('post-new.php' == $pagenow)) {
             return $comments;
         }
