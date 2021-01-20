@@ -128,7 +128,11 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.4.1 =
+= 3.4.2 - 20 Jan 2021 =
+* Compat : WP Engine Object Cache - initial pass at auto-clearing cache on plugin configuration changes
+* Fixed : Slow comment count query for Contributors in wp-admin
+
+= 3.4.1 - 14 Jan 2021 =
 * Fixed : Anonymous visitors were blocked from viewing public posts under some conditions
 * Fixed : Administrators could not assign roles or edit users with a role level higher that Subscriber, under some conditions
 * Fixed : Fatal Error activating Permissions Pro if Permissions is already active
