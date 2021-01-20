@@ -66,6 +66,10 @@ class CapabilityFilters
 
         $legacy_suffix = version_compare(REVISIONARY_VERSION, '1.5-alpha', '<') ? 'Legacy' : '';
 
+        if (('revision.php' == $pagenow) && !empty($_REQUEST['action']) && ('restore' == $_REQUEST['action'])) {
+            return $reqd_caps;
+        }
+
         if (!empty($args[0]) && in_array($orig_cap, ['edit_post', 'delete_post', 'edit_page', 'delete_page'], true)) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/Admin{$legacy_suffix}.php");
             $admin_class = "\PublishPress\Permissions\Collab\Revisionary\Admin{$legacy_suffix}";
