@@ -4,6 +4,8 @@ namespace PublishPress;
 
 class PermissionsHooksAdmin
 {
+    private $config_updated = false;
+
     public function __construct()
     {
         //add_action('wp_dashboard_setup', [$this, '_getVersionInfo']);  // retrieve version info in case there are any alerts
@@ -32,6 +34,19 @@ class PermissionsHooksAdmin
         }
 
         add_action('presspermit_admin_ui', [$this, 'act_revisions_dependency']);
+
+        add_filter('presspermit_exception_item_update_hooks', function($var) {return true;});
+        add_filter('presspermit_exception_item_insertion_hooks', function($var) {return true;});
+        add_filter('presspermit_exception_item_deletion_hooks', function($var) {return true;});
+
+        add_action('presspermit_exception_items_updated', [$this, 'actPluginSettingsUpdated']);
+        add_action('presspermit_inserted_exception_item', [$this, 'actPluginSettingsUpdated']);
+        add_action('pp_inserted_exception_item', [$this, 'actPluginSettingsUpdated']);
+        add_action('presspermit_removed_exception_items', [$this, 'actPluginSettingsUpdated']);
+
+        add_action('presspermit_admin_handlers', [$this, 'actPluginSettingsUpdated']);
+        add_action('presspermit_activate', [$this, 'actPluginSettingsUpdated']);
+        add_action('shutdown', [$this, 'actConfigUpdateFollowup']);
     }
 
     public function init()
@@ -70,6 +85,50 @@ class PermissionsHooksAdmin
             require_once(PRESSPERMIT_CLASSPATH . '/UI/AgentsAjax.php');
             new Permissions\UI\AgentsAjax();
             exit;
+        }
+    }
+
+    public function actPluginSettingsUpdated() {
+        $this->config_updated = true;
+    }
+
+    public function actConfigUpdateFollowup() {
+        if ($this->config_updated) {
+            $this->wpeCacheFlush();
+        }
+    }
+
+    /**
+     * Full WP Engine cache flush (Hold for possible future use as needed)
+     *
+     * Based on WP Engine Cache Flush by Aaron Holbrook
+     * https://github.org/a7/wpe-cache-flush/
+     * http://github.org/a7/
+     */
+    public function wpeCacheFlush() {
+        // Don't cause a fatal if there is no WpeCommon class
+        if ( ! class_exists( 'WpeCommon' ) ) {
+            return false;
+        }
+
+        if ( function_exists( 'WpeCommon::purge_memcached' ) ) {
+            \WpeCommon::purge_memcached();
+        }
+
+        if ( function_exists( 'WpeCommon::clear_maxcdn_cache' ) ) {
+            \WpeCommon::clear_maxcdn_cache();
+        }
+
+        if ( function_exists( 'WpeCommon::purge_varnish_cache' ) ) {
+            \WpeCommon::purge_varnish_cache();
+        }
+
+        global $wp_object_cache;
+        // Check for valid cache. Sometimes this is broken -- we don't know why! -- and it crashes when we flush.
+        // If there's no cache, we don't need to flush anyway.
+
+        if ( !empty($wp_object_cache) && is_object( $wp_object_cache ) ) {
+            @wp_cache_flush();
         }
     }
 
