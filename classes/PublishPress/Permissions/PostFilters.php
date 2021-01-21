@@ -584,6 +584,32 @@ class PostFilters
             $args['required_operation'] = $required_operation;
         }
 
+        // Deal with case of logged user viewing a post with normal view  link, no preview argument (require read OR edit permission)
+        if ($user->ID && ('read' == $required_operation) && !defined('PRESSPERMIT_SIMPLIFY_READ_PERMISSIONS')) {
+            if (!empty($args['query_vars'])) {
+                $post_id = (!empty($args['query_vars']['page_id'])) ? $args['query_vars']['page_id'] : $args['query_vars']['p'];
+            } else {
+                $post_id = PWP::getPostID();
+            }
+            
+            if ($post_id) {
+                $caps = (array) map_meta_cap('read_post', $user->ID, $post_id);
+
+                if ($type_obj = get_post_type_object(get_post_field('post_type', $post_id))) {
+                    $edit_caps = [$type_obj->cap->edit_posts];
+
+                    if (!empty($type_obj->cap->edit_others_posts)) {
+                        $edit_caps []= $type_obj->cap->edit_others_posts;
+                    }
+
+                    if (array_intersect($caps, $edit_caps)) {
+                        $required_operation = 'edit';
+                        $args['required_operation'] = $required_operation;
+                    }
+                }
+            }
+        }
+
         if ($query_contexts) {
             $query_contexts = (array)$query_contexts;
         }
