@@ -58,9 +58,52 @@ class REST
     function pre_dispatch($rest_response, $rest_server, $request)
     {
         $method = $request->get_method();
-		$path   = $request->get_route();
+        $path   = $request->get_route();
+        $routes = $rest_server->get_routes();
         
-		foreach ( $rest_server->get_routes() as $route => $handlers ) {
+        $post_endpoints = apply_filters('presspermit_rest_post_endpoints', []);
+        $term_endpoints = apply_filters('presspermit_rest_term_endpoints', []);
+        
+        $extra_route_endpoints = array_replace($post_endpoints, $term_endpoints);
+        $endpoint_post_types = [];
+		
+        foreach($extra_route_endpoints as $route => $endpoint) {
+            if ($route && !is_numeric($route)) {
+                $set_routes []= $route;
+                $set_routes []= $route . '/(?P<id>[\d]+)';
+
+                foreach($set_routes as $route) {
+					if (is_array($endpoint)) {
+                        $_endpoint = $endpoint;
+                        $endpoint = reset($_endpoint);
+                        $post_type = key($_endpoint);
+
+                        if ($post_type) {
+                            $endpoint_post_types[$endpoint] = $post_type;
+                        }
+						
+                        if (isset($post_endpoints[$route]) && is_array($post_endpoints[$route])) {
+                            $post_endpoints[$route] = $endpoint;
+                        }
+						
+                        if (isset($term_endpoints[$route]) && is_array($term_endpoints[$route])) {
+                            $term_endpoints[$route] = $endpoint;
+                        }
+                    }
+					
+                    if (!empty($routes[$route])) {
+                        $routes[$route] []= ['callback' => [0 => $endpoint]];
+                    } else {
+                        $routes[$route] = ['callback' => [0 => $endpoint]];
+                    }
+                }
+            }
+        }
+
+        $post_endpoints[]= 'WP_REST_Posts_Controller';
+        $term_endpoints[]= 'WP_REST_Terms_Controller';
+		
+		foreach ( $routes as $route => $handlers ) {
 			$match = preg_match( '@^' . $route . '$@i', $path, $matches );
 
 			if ( ! $match ) {
@@ -75,20 +118,24 @@ class REST
 			}
 
 			foreach ( $handlers as $handler ) {
-                if (!is_array($handler['callback']) || !isset($handler['callback'][0]) || !is_object($handler['callback'][0])) {
+                if (!is_array($handler['callback']) || !isset($handler['callback'][0])) {
                     continue;
                 }
 
-				$this->endpoint_class = get_class($handler['callback'][0]);
+                if (is_object($handler['callback'][0])) {
+					$this->endpoint_class = get_class($handler['callback'][0]);
 
-                if (!in_array(
-                    $this->endpoint_class, 
-                    ['WP_REST_Posts_Controller', 'WP_REST_Posts_Terms_Controller', 'WP_REST_Terms_Controller'], 
-                    true)
+                } elseif (is_string($handler['callback'][0])) {
+                    $this->endpoint_class = $handler['callback'][0];
+                } else {
+                    continue;
+                }
+				
+                if (!in_array($this->endpoint_class, $post_endpoints, true) && !in_array($this->endpoint_class, $term_endpoints, true)
                 ) {
                     continue;
                 }
-
+				
                 //$this->request = $request;
 
                 $this->is_view_method = in_array($method, [\WP_REST_Server::READABLE, 'GET']);
@@ -115,62 +162,63 @@ class REST
                     $this->operation = ($this->is_view_method) ? 'read' : 'edit';
                 }
 
-                switch ($this->endpoint_class) {
-                    case 'WP_REST_Posts_Controller':
-                        $this->post_type = (!empty($args['post_type'])) ? $args['post_type'] : '';
-                        
-                        if ( ! $this->post_id = (!empty($args['id'])) ? $args['id'] : 0 ) {
-                            $this->post_id = (!empty($this->params['id'])) ? $this->params['id'] : 0;
-                        }
+                if (in_array($this->endpoint_class, $post_endpoints)) {
+                    $this->post_type = (!empty($args['post_type'])) ? $args['post_type'] : '';
+                    
+                    if (!$this->post_type && !empty($endpoint_post_types[$this->endpoint_class])) {
+                        $this->post_type = $endpoint_post_types[$this->endpoint_class];
+                        $this->params['post_type'] = $this->post_type;
+                    }
+                
+                    if ( ! $this->post_id = (!empty($args['id'])) ? $args['id'] : 0 ) {
+                        $this->post_id = (!empty($this->params['id'])) ? $this->params['id'] : 0;
+                    }
 
-                        if (('revision' != $this->post_type) && presspermit()->getTypeOption('default_privacy', $this->post_type)) {
-                            if (false === get_post_meta($this->post_id, '_pp_original_status')) {
-                                global $wpdb;
-                                if ( $post_status = $wpdb->get_var( $wpdb->prepare("SELECT post_status FROM $wpdb->posts WHERE ID = %s", $this->post_id) ) ) {
-                                    update_post_meta($this->post_id, '_pp_original_status', $this->post_status);
+                    if (('revision' != $this->post_type) && presspermit()->getTypeOption('default_privacy', $this->post_type)) {
+                        if (false === get_post_meta($this->post_id, '_pp_original_status')) {
+                            global $wpdb;
+                            if ( $post_status = $wpdb->get_var( $wpdb->prepare("SELECT post_status FROM $wpdb->posts WHERE ID = %s", $this->post_id) ) ) {
+                                update_post_meta($this->post_id, '_pp_original_status', $this->post_status);
+                            }
+                        }
+                    }
+
+                    // workaround for superfluous post retrieval by Gutenberg on Parent Page query
+                    if ($this->is_view_method && !$this->post_id) {
+                        $params = $request->get_params();
+
+                        if (!empty($params['exclude']) || !empty($params['parent_exclude'])) {
+                            // Prevent Gutenberg from triggering needless post_name retrieval (for permalink generation) for each item in Page Parent dropdown
+                            if (!empty($_SERVER) && !empty($_SERVER['HTTP_REFERER']) && false !== strpos($_SERVER['HTTP_REFERER'], admin_url())) {
+                                global $wp_post_types;
+
+                                if (!$this->post_type) {
+                                    $id = (!empty($params['exclude'])) ? $params['exclude'] : $params['parent_exclude'];
+                                    $this->post_type = get_post_field('post_type', $id);
                                 }
-                            }
-                        }
 
-                        // workaround for superfluous post retrieval by Gutenberg on Parent Page query
-                        if ($this->is_view_method && !$this->post_id) {
-                            $params = $request->get_params();
-
-                            if (!empty($params['exclude']) || !empty($params['parent_exclude'])) {
-                                // Prevent Gutenberg from triggering needless post_name retrieval (for permalink generation) for each item in Page Parent dropdown
-                                if (!empty($_SERVER) && !empty($_SERVER['HTTP_REFERER']) && false !== strpos($_SERVER['HTTP_REFERER'], admin_url())) {
-                                    global $wp_post_types;
-
-                                    if (!$this->post_type) {
-                                        $id = (!empty($params['exclude'])) ? $params['exclude'] : $params['parent_exclude'];
-                                        $this->post_type = get_post_field('post_type', $id);
-                                    }
-
-                                    if (!empty($wp_post_types[$this->post_type])) {
-                                        $wp_post_types[$this->post_type]->publicly_queryable = false;
-                                        $wp_post_types[$this->post_type]->_builtin = false;
-                                    }
-
-                                    // Prevent Gutenberg from triggering revisions retrieval for each item in Page Parent dropdown
-                                    add_filter('wp_revisions_to_keep', function($num, $post) {return 0;}, 10, 2);
+                                if (!empty($wp_post_types[$this->post_type])) {
+                                    $wp_post_types[$this->post_type]->publicly_queryable = false;
+                                    $wp_post_types[$this->post_type]->_builtin = false;
                                 }
+
+                                // Prevent Gutenberg from triggering revisions retrieval for each item in Page Parent dropdown
+                                add_filter('wp_revisions_to_keep', function($num, $post) {return 0;}, 10, 2);
                             }
                         }
+                    }
 
-                        if (!$this->post_type) {
-                            if (!$this->post_type = get_post_field('post_type', $this->post_id)) {
-                                return $rest_response;
-                            }
-                        } elseif (!empty($args['post_type'])) {
-                            $this->post_type = $args['post_type'];
+                    if (!$this->post_type) {
+                        if (!$this->post_type = get_post_field('post_type', $this->post_id)) {
+                            return $rest_response;
                         }
+                    } elseif (!empty($args['post_type'])) {
+                        $this->post_type = $args['post_type'];
+                    }
 
-                        $this->is_posts_request = true;
+                    $this->is_posts_request = true;
 
-                        if (presspermit()->isContentAdministrator()) {
-                            break;
-                        }
-
+                    if (!presspermit()->isContentAdministrator()) {
                         // do this here because WP does not trigger a capability check if the post type is public
                         if ($this->post_id && in_array($this->post_type, presspermit()->getEnabledPostTypes(), true)) {
                             if ('read' == $this->operation) {
@@ -187,22 +235,18 @@ class REST
                                 return self::rest_denied();
                             }
                         }
+                    }
 
-                        break;
+                } elseif (in_array($this->endpoint_class, $term_endpoints)) { 
+                    if (empty($args['taxonomy'])) break;
 
-                    case 'WP_REST_Terms_Controller':
-                        if (empty($args['taxonomy'])) break;
+                    $this->taxonomy = $args['taxonomy'];
 
-                        $this->taxonomy = $args['taxonomy'];
+                    $required_operation = ('read' == $this->operation) ? 'read' : 'manage';
+                    
+                    $this->is_terms_request = true;
 
-                        $required_operation = ('read' == $this->operation) ? 'read' : 'manage';
-                        
-                        $this->is_terms_request = true;
-
-                        if (presspermit()->isContentAdministrator()) {
-                            break;
-                        }
-
+                    if (!presspermit()->isContentAdministrator()) {
                         if (!empty($args['post'])) {
                             $post_id = $this->params['post'];
 
@@ -223,10 +267,8 @@ class REST
                                 return self::rest_denied();
                             }
                         }
-
-                        break;
-
-                } // end switch
+                    }
+                }
             }
         }
 
