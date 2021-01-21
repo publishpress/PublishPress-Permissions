@@ -128,6 +128,12 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
+= 3.4.3 - 21 Jan 2021 =
+* Fixed : Edit Category / Term - Metaboxes for Editing and Assignment permissions were blank
+* Fixed : Non-Administrators with editing access to an unpublished post could not view it using standard post link
+* API : New filter 'presspermit_rest_post_endpoints' and 'presspermit_rest_term_endpoints' support some custom REST API routes and endpoints
+* Compat : Simple WordPress Membership - Invalid metabox displayed on Edit Category screen
+
 = 3.4.2 - 20 Jan 2021 =
 * Compat : WP Engine Object Cache - initial pass at auto-clearing cache on plugin configuration changes
 * Fixed : Slow comment count query for Contributors in wp-admin
