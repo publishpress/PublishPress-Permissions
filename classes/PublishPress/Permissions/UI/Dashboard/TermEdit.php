@@ -58,11 +58,15 @@ class TermEdit
     {
         static $done;
 
-        if (empty($box['id']) || !empty($done)) {
+		if (empty($done)) {
+			$done = [];
+		}
+	
+        if (empty($box['id']) || !empty($done[$box['id']])) {
             return;
         }
 
-        $done = true;
+        $done[$box['id']] = true;
 
         $this->initItemExceptionsUI();
 
