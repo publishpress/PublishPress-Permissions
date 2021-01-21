@@ -19,6 +19,7 @@ class TermEdit
 	        wp_enqueue_style('presspermit-term-edit', PRESSPERMIT_URLPATH . '/common/css/term-edit.css', [], PRESSPERMIT_VERSION);
 	
 	        add_action('admin_print_scripts', ['\PublishPress\Permissions\UI\Dashboard\ItemEdit', 'scriptItemEdit']);
+	        add_action('admin_print_scripts', [$this, 'compatStyles']);
 	
 	        add_action('admin_menu', [$this, 'actAddMetaBoxes']);
 	
@@ -380,6 +381,19 @@ class TermEdit
             </p>
         </div>
         <?php
+    }
+
+    public function compatStyles() {
+        // Hide invalid Simple WP Membership Protection metabox which is triggered due to existence of add_meta_box() function.
+        if (defined('SIMPLE_WP_MEMBERSHIP_VER') && !defined('PRESSPERMIT_ALLOW_SIMPLE_MEMBERSHIP_METABOX')):
+        ?>
+        <style type="text/css">
+            #swpm_sectionid {
+                display: none;
+            }
+        </style>
+        <?php 
+        endif;
     }
 
     public function actScriptsWP()
