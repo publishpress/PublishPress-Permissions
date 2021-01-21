@@ -19,8 +19,8 @@ class TermEdit
 	        wp_enqueue_style('presspermit-term-edit', PRESSPERMIT_URLPATH . '/common/css/term-edit.css', [], PRESSPERMIT_VERSION);
 	
 	        add_action('admin_print_scripts', ['\PublishPress\Permissions\UI\Dashboard\ItemEdit', 'scriptItemEdit']);
-	        add_action('admin_print_scripts', [$this, 'compatStyles']);
-	
+            add_action('admin_print_scripts', [$this, 'compatStyles']);
+
 	        add_action('admin_menu', [$this, 'actAddMetaBoxes']);
 	
 	        if (!empty($_REQUEST['taxonomy'])) {
