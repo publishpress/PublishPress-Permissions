@@ -478,37 +478,37 @@ class Permissions
 
         foreach (array_keys($additions) as $via_item_source) {
             foreach (array_keys($additions[$via_item_source]) as $_status) {
-            switch ($_status) {
-                case '{published}':
-                    $_stati = array_merge(
-                        PWP::getPostStatuses(['public' => true, 'post_type' => $post_type]),
-                        PWP::getPostStatuses(['private' => true, 'post_type' => $post_type])
-                    );
-
-                    $_status_clause = "$src_table.post_status IN ('" . implode("','", $_stati) . "') AND ";
-                    break;
-                
-                case '':
-                    $_status_clause = '';
-                    break;
-
-                case '{unpublished}':
-                    if ('read' != $required_operation) { // sanity check
+                switch ($_status) {
+                    case '{published}':
                         $_stati = array_merge(
                             PWP::getPostStatuses(['public' => true, 'post_type' => $post_type]),
                             PWP::getPostStatuses(['private' => true, 'post_type' => $post_type])
                         );
 
-                        $_status_clause = "$src_table.post_status NOT IN ('" . implode("','", $_stati) . "') AND ";
+                        $_status_clause = "$src_table.post_status IN ('" . implode("','", $_stati) . "') AND ";
                         break;
-                    }
-                default:
-                    $_status_clause = "$src_table.post_status = '$_status' AND ";
-                    break;
-            }
+                    
+                    case '':
+                        $_status_clause = '';
+                        break;
+
+                    case '{unpublished}':
+                        if ('read' != $required_operation) { // sanity check
+                            $_stati = array_merge(
+                                PWP::getPostStatuses(['public' => true, 'post_type' => $post_type]),
+                                PWP::getPostStatuses(['private' => true, 'post_type' => $post_type])
+                            );
+
+                            $_status_clause = "$src_table.post_status NOT IN ('" . implode("','", $_stati) . "') AND ";
+                            break;
+                        }
+                    default:
+                        $_status_clause = "$src_table.post_status = '$_status' AND ";
+                        break;
+                }
 
                 $additions[$via_item_source][$_status] = $_status_clause . Arr::implode(' OR ', $additions[$via_item_source][$_status]);
-        }
+            }
         }
 
         // Note: this is a legacy filter used only for Post Forking integration

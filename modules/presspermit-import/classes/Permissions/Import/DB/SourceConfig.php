@@ -91,7 +91,7 @@ class SourceConfig
                 if (!$this->hasTable($wpdb->role_scope_rs)) {
                     if (!is_multisite() || !is_main_site()) {
                         return false;
-                }
+                    }
                 }
 
                 require_once(PRESSPERMIT_IMPORT_CLASSPATH . '/DB/RoleScoper.php');

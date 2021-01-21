@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.6
 Requires PHP: 5.6.20
-Stable tag: 3.4.2
+Stable tag: 3.4.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,10 +123,16 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.4.2 =
+= 3.4.3 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
+
+= 3.4.3 - 21 Jan 2021 =
+* Fixed : Edit Category / Term - Metaboxes for Editing and Assignment permissions were blank
+* Fixed : Non-Administrators with editing access to an unpublished post could not view it using standard post link
+* API : New filter 'presspermit_rest_post_endpoints' and 'presspermit_rest_term_endpoints' support some custom REST API routes and endpoints
+* Compat : Simple WordPress Membership - Invalid metabox displayed on Edit Category screen
 
 = 3.4.2 - 20 Jan 2021 =
 * Compat : WP Engine Object Cache - initial pass at auto-clearing cache on plugin configuration changes
