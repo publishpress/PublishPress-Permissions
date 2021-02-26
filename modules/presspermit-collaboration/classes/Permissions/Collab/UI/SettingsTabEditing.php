@@ -106,7 +106,7 @@ class SettingsTabEditing
 
     function optionsPreUI()
     {
-        if (presspermit()->getOption('display_hints')) :
+        if (false && presspermit()->getOption('display_hints')) :
             ?>
             <div class="pp-optionhint">
                 <?php
