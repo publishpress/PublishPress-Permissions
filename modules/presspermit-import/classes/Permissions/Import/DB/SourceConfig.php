@@ -38,20 +38,6 @@ class SourceConfig
         $wpdb->user2group_status_col = 'status';
     }
 
-    public static function setPressPermitBetaTables()
-    {
-        global $wpdb;
-        $prefix = $wpdb->prefix; // (! empty($wpdb->base_prefix) && $sitewide_groups) ? $wpdb->base_prefix : $wpdb->prefix;
-
-        $wpdb->pp_roles = $wpdb->prefix . 'pp_roles';
-        $wpdb->pp_conditions = $wpdb->prefix . 'pp_conditions';
-        $wpdb->pp_groups = apply_filters('presspermit_groups_table', $wpdb->prefix . 'pp_groups');
-        $wpdb->pp_group_members = $wpdb->prefix . 'pp_group_members';
-
-        if (!isset($wpdb->pp_circles))
-            $wpdb->pp_circles = $wpdb->prefix . 'pp_circles';
-    }
-
     private function hasTable($table_name)
     {
         global $wpdb;
@@ -67,10 +53,6 @@ class SourceConfig
         switch ($install_code) {
             case 'rs' :
                 return $this->hasTable($wpdb->user2role2object_rs);
-                break;
-
-            case 'pp':
-                return $this->hasTable($wpdb->pp_roles);
                 break;
         }
 
@@ -123,33 +105,6 @@ class SourceConfig
                 }
 
                 return $groups || $restrictions || $item_roles || $site_roles;
-                break;
-                
-            case 'pp' :
-                if (!$wpdb->get_results("SHOW TABLES LIKE '$wpdb->pp_roles'"))
-                    return false;
-
-                if (is_multisite() && is_main_site()) {
-                    return true;
-                }
-
-                require_once(PRESSPERMIT_IMPORT_CLASSPATH . '/DB/PressPermitBeta.php');
-                $importer = PressPermitBeta::instance();
-
-                $site_roles = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->pp_roles WHERE scope = 'site' AND assignment_id NOT IN ( SELECT source_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d )", $importer->getTableCode($wpdb->pp_roles)));
-                $item_roles = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->pp_roles WHERE scope IN ( 'term', 'object' ) AND assignment_id NOT IN ( SELECT source_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d )", $importer->getTableCode($wpdb->pp_roles)));
-                $item_conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->pp_conditions WHERE attribute IN ('editability', 'post_status', 'author_restrict', 'contributor_restrict') AND assignment_id NOT IN ( SELECT source_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d )", $importer->getTableCode($wpdb->pp_conditions)));
-
-                if (!empty($_REQUEST['show_unimported'])) {
-                    pp_debug_echo('<br />site roles:');
-                    pp_dump($site_roles);
-                    pp_debug_echo('<br />conditions:');
-                    pp_dump($item_conditions);
-                    pp_debug_echo('<br />item roles:');
-                    pp_dump($item_roles);
-                }
-
-                return $site_roles || $item_roles || $item_conditions;
                 break;
         }
     }
