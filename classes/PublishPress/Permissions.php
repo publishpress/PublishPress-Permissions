@@ -152,7 +152,7 @@ class Permissions
             'new_user_groups_ui' => 1,
             'beta_updates' => false,        // @todo: EDD integration, or eliminate
             'admin_hide_uneditable_posts' => 1,
-            'post_blockage_priority' => get_option('presspermit_legacy_exception_handling') ? 0 : 1,
+            'post_blockage_priority' => 1,
             'media_search_results' => 1,
             'term_counts_unfiltered' => 0,
             'advanced_options' => 0,
@@ -548,6 +548,8 @@ class Permissions
 
         foreach ($wpdb->get_results("SELECT option_name, option_value FROM $wpdb->options WHERE option_name LIKE 'presspermit_%'") as $row)
             $site_options[$row->option_name] = $row->option_value;
+
+        $this->default_options['post_blockage_priority'] = !empty($site_options['presspermit_legacy_exception_handling']) ? 0 : 1;
 
         // this would normally be handled in PPP, but leave here so bbp roles are never listed as WP role groups
         if (function_exists('bbp_get_version') && version_compare(bbp_get_version(), '2.2', '>=')) {
