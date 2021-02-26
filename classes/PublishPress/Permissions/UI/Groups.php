@@ -185,18 +185,20 @@ class Groups
                         // currently faking WP Role as a "group type", but want it listed before BuddyPress Group
                         $group_types = apply_filters('presspermit_list_group_types', array_merge($group_types, $pp_groups->getGroupTypes([], 'object')));
 
-                        $links = [];
+                        $class = (!$group_variant) ? 'class="current"' : '';
+                        $links = ["<li><a href='admin.php?page=presspermit-groups' $class>" . __('All', 'press-permit-core') . "</a></li>"];
+                        
                         foreach ($group_types as $_group_type => $gtype_obj) {
                             $agent_type_str = ('wp_role' == $_group_type) ? "&agent_type=pp_group" : "&agent_type=$_group_type";
                             $gvar_str = "&group_variant=$_group_type";
-                            $class = strpos($agent_type_str, $agent_type) && (!$group_variant || strpos($gvar_str, $group_variant))
+                            $class = strpos($agent_type_str, $agent_type) && ($group_variant && strpos($gvar_str, $group_variant))
                                 ? 'class="current"' : '';
 
                             $links[] = "<li><a href='admin.php?page=presspermit-groups{$agent_type_str}{$gvar_str}' $class>{$gtype_obj->labels->singular_name}</a></li>";
                         }
 
                         echo '<ul class="subsubsub">';
-                        printf(__('%1$sGroup Type:%2$s %3$s', 'press-permit-core'), '<li class="pp-gray"><strong>', '</strong></li>', implode('&nbsp;|&nbsp;', $links));
+                        printf(__('%1$sGroup Type:%2$s %3$s', 'press-permit-core'), '<li class="pp-gray">', '</li>', implode('&nbsp;|&nbsp;', $links));
                         echo '</ul>';
 
                         if (!empty($groupsearch))
