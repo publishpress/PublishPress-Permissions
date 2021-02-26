@@ -164,7 +164,7 @@ class Groups
                         echo '</h1>';
 
                         if ($pp->getOption('display_hints')) {
-                            echo '<div class="pp-hint">';
+                            echo '<div class="pp-hint pp-no-hide">';
 
                             if (defined('PP_GROUPS_HINT')) {
                                 echo esc_html(PP_GROUPS_HINT);

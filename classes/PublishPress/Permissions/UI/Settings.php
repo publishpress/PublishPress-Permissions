@@ -7,6 +7,8 @@ class Settings
     public function __construct() {
         // called by Dashboard\DashboardFilters::actMenuHandler
 
+        @load_plugin_textdomain('press-permit-core-hints', false, dirname(plugin_basename(PRESSPERMIT_FILE)) . '/languages');
+
         require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsAdmin.php');
 
         require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabInstall.php');
@@ -23,6 +25,9 @@ class Settings
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
         wp_enqueue_script('presspermit-settings', PRESSPERMIT_URLPATH . "/common/js/settings{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
         $wp_scripts->in_footer[] = 'presspermit-settings';  // otherwise it will not be printed in footer  @todo: review
+
+        $vars = ['displayHints' => presspermit()->getOption('display_hints')];
+        wp_localize_script('presspermit-settings', 'ppCoreSettings', $vars);
 
         if (presspermit()->isPro()) {
             wp_enqueue_script('presspermit-pro-settings', plugins_url('', PRESSPERMIT_PRO_FILE) . "/includes-pro/settings-pro{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_PRO_VERSION, true);

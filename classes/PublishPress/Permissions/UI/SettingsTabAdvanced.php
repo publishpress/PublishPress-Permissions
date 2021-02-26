@@ -91,14 +91,14 @@ class SettingsTabAdvanced
     public function optionsPreUI()
     {
         if (SettingsAdmin::instance()->display_hints) {
-            echo '<div class="pp-optionhint">';
+            echo '<div class="pp-hint pp-optionhint">';
 
             if (presspermit()->getOption('advanced_options')) {
                 if (presspermit()->moduleActive('collaboration')) {
-                    _e("<strong>Note:</strong> if you disable these settings, the stored values (including Role Usage adjustments) are retained but ignored.", 'press-permit-core');
+                    echo SettingsAdmin::getStr('advanced_options_enabled');
                 }
             } else {
-                _e('Most sites don\'t need advanced settings. But enable them if you need to work with custom WP Roles or apply performance tweaks.', 'press-permit-core');
+                echo SettingsAdmin::getStr('advanced_options_disabled');
             }
             echo '</div>';
         }
@@ -133,11 +133,9 @@ class SettingsTabAdvanced
                     <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
                     <td>
                         <?php
-                        $hint = sprintf(__('Disable Permissions filtering for users who are not logged in. %1$sNote that this performance enhancement will make reading exceptions ineffective%2$s.', 'press-permit-core'), '<span class="pp-warning"><strong>', '</strong></span>');
-                        $ui->optionCheckbox('anonymous_unfiltered', $tab, $section, $hint);
+                        $ui->optionCheckbox('anonymous_unfiltered', $tab, $section, true);
 
-                        $hint = __('If checked, pages blocked from the "All" or "Authenticated" groups will still be listed to Administrators.', 'press-permit-core');
-                        $ui->optionCheckbox('suppress_administrator_metagroups', $tab, $section, $hint);
+                        $ui->optionCheckbox('suppress_administrator_metagroups', $tab, $section, true);
 
                         do_action('presspermit_options_ui_insertion', $tab, $section);
                         ?>
@@ -163,8 +161,7 @@ class SettingsTabAdvanced
                     <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
                     <td>
                         <?php
-                        $hint = __('If enabled, users with the pp_set_read_exceptions capability in the WP role can set reading exceptions for their editable posts.', 'press-permit-core');
-                        $ui->optionCheckbox('non_admins_set_read_exceptions', $tab, $section, $hint);
+                        $ui->optionCheckbox('non_admins_set_read_exceptions', $tab, $section, true);
 
                         do_action('presspermit_options_ui_insertion', $tab, $section);
                         ?>
@@ -180,15 +177,12 @@ class SettingsTabAdvanced
                         <?php
                         $ui->optionCheckbox('users_bulk_groups', $tab, $section, '');
 
-                        $hint = __('Display a role dropdown alongside the user search input box to narrow results.', 'press-permit-core');
-                        $ui->optionCheckbox('user_search_by_role', $tab, $section, $hint);
+                        $ui->optionCheckbox('user_search_by_role', $tab, $section, true);
 
-                        $hint = __('Display additional descriptions in role assignment and options UI.', 'press-permit-core');
-                        $ui->optionCheckbox('display_hints', $tab, $section, $hint);
+                        $ui->optionCheckbox('display_hints', $tab, $section, true);
 
                         if (presspermit()->isPro()) {
-                            $hint = __('Display descriptive captions for additional functionality provided by missing or deactivated modules (Permissions Pro package).', 'press-permit-core');
-                            $ui->optionCheckbox('display_extension_hints', $tab, $section, $hint);
+                            $ui->optionCheckbox('display_extension_hints', $tab, $section, true);
                         }
                         ?>
                     </td>
@@ -201,33 +195,30 @@ class SettingsTabAdvanced
                 <td scope="row" colspan="2"><span
                             style="font-weight:bold"><?php echo $ui->section_captions[$tab][$section]; ?></span>
                     <span class="pp-capabilities-caption">
+                        <span class="pp-subtext pp-no-hide">
                     <?php
-
-                    if ($pp->getOption('display_hints')) :
-                        ?>
-                        <span class="pp-subtext">
-                            <?php
-                            if (PWP::isPluginActive('capsman-enhanced')) {
-                                $url = 'admin.php?page=capsman';
+                            if (defined('PUBLISHPRESS_CAPS_VERSION')) {
+                                $url = admin_url('admin.php?page=capsman');
                                 printf(
-                                    __('You can customize Permissions administration capabilities %1$s for any WP role%2$s:', 'press-permit-core'),
+                                    SettingsAdmin::getStr('pp_capabilities'),
                                     '<a href="' . $url . '">',
                                     '</a>'
                                 );
                             } else {
                                 printf(
-                                    __('You can customize Permissions administration capabilities by using a WP role editor such as %1$s:', 'press-permit-core'),
+                                    SettingsAdmin::getStr('pp_capabilities_install_prompt'),
                                     '<span class="plugins update-message"><a href="' . Settings::pluginInfoURL('capability-manager-enhanced')
                                     . '" class="thickbox" title=" PublishPress Capabilities">PublishPress&nbsp;Capabilities</a></span>'
                                 );
                             }
                             ?>
                         </span>
-                    <?php endif; ?>
                 </span>
 
-
-                    <table id="pp_cap_descripts" class="pp_cap_descripts">
+                <?php
+                if ($pp->getOption('display_hints')) :
+                ?>
+                    <table id="pp_cap_descripts" class="pp_cap_descripts pp-hint">
                         <thead>
                         <tr>
                             <th class="cap-name"><?php _e('Capability Name', 'press-permit-core'); ?></th>
@@ -237,31 +228,6 @@ class SettingsTabAdvanced
                         <tbody>
 
                         <?php
-                        $pp_caps = [
-                            'pp_manage_settings' => __('Modify these Permissions settings', 'press-permit-core'),
-                            'pp_unfiltered' => __('PublishPress Permissions does not apply any Supplemental Roles or Specific Permissions to limit or expand viewing or editing access', 'press-permit-core'),
-                            'pp_administer_content' => __('PublishPress Permissions implicitly grants capabilities for all post types and statuses, but does not apply Specific Permissions', 'press-permit-core'),
-                            'pp_create_groups' => __('Can create Permission Groups', 'press-permit-core'),
-                            'pp_edit_groups' => __('Can edit all Permission Groups (barring Specific Permissions)', 'press-permit-core'),
-                            'pp_delete_groups' => __('Can delete Permission Groups', 'press-permit-core'),
-                            'pp_manage_members' => __('If group editing is allowed, can also modify group membership', 'press-permit-core'),
-                            'pp_assign_roles' => __('Assign Supplemental Roles or Specific Permissions. Other capabilities may also be required.', 'press-permit-core'),
-                            'pp_set_read_exceptions' => __('Set Read Permissions for specific posts on Edit Post/Term screen (for non-Administrators lacking edit_users capability; may be disabled by Permissions Settings)', 'press-permit-core'),
-                        ];
-
-                        if (!$pp->moduleActive('status-control') && !$pp->keyActive()) {
-                            $pp_caps = array_merge(
-                                $pp_caps,
-                                [
-                                    'pp_define_post_status' => __('(Permissions Pro capability)', 'press-permit-core'),
-                                    'pp_define_moderation' => __('(Permissions Pro capability)', 'press-permit-core'),
-                                    'pp_define_privacy' => __('(Permissions Pro capability)', 'press-permit-core'),
-                                    'set_posts_status' => __('(Permissions Pro capability)', 'press-permit-core'),
-                                    'pp_moderate_any' => __('(Permissions Pro capability)', 'press-permit-core'),
-                                ]
-                            );
-                        }
-
                         $pp_caps = apply_filters('presspermit_cap_descriptions', $pp_caps);
 
                         foreach ($pp_caps as $cap_name => $descript) :
@@ -274,7 +240,7 @@ class SettingsTabAdvanced
                         </tbody>
                     </table>
 
-
+                <?php endif;?>
                 </td>
             </tr>
             <?php
@@ -285,9 +251,8 @@ class SettingsTabAdvanced
                     <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
                     <td>
                         <?php
-                        $hint = __('Detect user roles which are appended dynamically but not stored to the WP database. May be useful for sites that sync with Active Directory or other external user registration systems.', 'press-permit-core');
                         $args = (defined('PP_FORCE_DYNAMIC_ROLES')) ? ['val' => 1, 'no_storage' => true, 'disabled' => true] : [];
-                        $ui->optionCheckbox('dynamic_wp_roles', $tab, $section, $hint, '', $args);
+                        $ui->optionCheckbox('dynamic_wp_roles', $tab, $section, true, '', $args);
                         ?>
                     </td>
                 </tr>
@@ -356,7 +321,7 @@ class SettingsTabAdvanced
                         </table>
 
                         <br/>
-                        <table id="pp_available_constants" class="pp_cap_descripts">
+                        <table id="pp_available_constants" class="pp_cap_descripts pp-hint">
                             <thead>
                             <tr>
                                 <th class="cap-name"><?php _e('Available Constant', 'press-permit-core'); ?></th>

@@ -1,0 +1,926 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PublishPress Permissions Hints\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-15 18:09-0500\n"
+"PO-Revision-Date: 2021-02-15 23:14+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_c;__ngettext;_n;_x\n"
+"Language: en_US\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Poedit-SearchPath-0: classes/PublishPress/Permissions/UI/SettingsAdmin."
+"php\n"
+"X-Poedit-SearchPath-1: classes/PublishPress/Permissions/Constants.php\n"
+"X-Poedit-SearchPath-2: modules/presspermit-"
+"import/classes/Permissions/Import/UI/SettingsTabImportNotes.php\n"
+"X-Poedit-SearchPathExcluded-0: vendor\n"
+"\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Loco-Version: 2.4.6; wp-5.6.1"
+
+#: classes/PublishPress/Permissions/Constants.php:19
+msgid ""
+"Specific Permissions: restrictions ('Blocked') take priority over additions "
+"('Enabled')"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:20
+msgid ""
+"Specific Permissions: restrictions ('Blocked') can be applied to custom-"
+"defined groups"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:21
+msgid ""
+"Supplemental roles assignment available for {All} and {Anonymous} metagroups"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:22
+msgid ""
+"Allow the {All} and {Anonymous} metagroups to be granted specific reading "
+"permissions for private content"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:23
+msgid ""
+"PRO: Users who have specific editing permissions for a post or attachment "
+"can also delete it"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:24
+msgid ""
+"PRO: Users who have custom editing permissions for an attachment can also "
+"delete it"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:25
+msgid ""
+"Disable front end filtering if logged user is a content administrator "
+"(normally filter to force inclusion of readable private posts in get_pages() "
+"listing, post counts, etc."
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:26
+msgid ""
+"Disable front end filtering for all users (subject to limitation by "
+"PP_UNFILTERED_FRONT_TYPES)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:27
+msgid ""
+"Comma-separated list of post types to limit the effect of "
+"PP_UNFILTERED_FRONT and apply_filters( 'presspermit_skip_cap_filtering' )"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:28
+msgid ""
+"Specific Permissions: additions ('Enabled') are not applied, cannot be "
+"assigned"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:29
+msgid "Don't assign or apply specific permissions for the 'post' type"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:30
+msgid "Don't assign or apply specific permissions for the 'page' type"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:31
+msgid "Don't assign or apply specific permissions for the 'media' type"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:32
+msgid ""
+"Don't assign or apply specific permissions for the specified custom post type"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:38
+msgid "Include scheduled posts in the posts query if user can edit them"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:39
+msgid "Don't filter term post counts in get_terms() call"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:40
+msgid "Leave unreadable posts on WP Navigation Menus"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:41
+msgid "Leave terms with no readable posts on WP Navigation Menus"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:47
+msgid "Filter priority for 'get_pages' filter (default: 1)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:48
+msgid ""
+"Don't include readable private pages in the Pages widget or other "
+"wp_list_pages() / get_pages() results    "
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:49
+msgid ""
+"If some pages have been suppressed from get_pages() results, change child "
+"pages' corresponding post_parent values to a visible ancestor"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:50
+msgid ""
+"Never modify the post_parent value in the get_pages() result set, even if "
+"some pages have been suppressed"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:51
+msgid ""
+"For performance, change the get_pages() database query to return only a "
+"subset of fields, excluding post_content"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:52
+msgid ""
+"PRO: Don't apply content teaser to get_pages() results (leave unreadable "
+"posts hidden)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:58
+msgid ""
+"If some terms have been suppressed from get_terms() results, change child "
+"terms' corresponding parent values to a visible ancestor"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:59
+msgid ""
+"Never modify the parent value in the get_terms() result set, even if some "
+"terms have been suppressed"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:65
+msgid ""
+"Leave Media Library with normal access criteria based on user's role "
+"capabilities "
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:71
+msgid ""
+"On Users listing, Permission groups in custom column are list filter links "
+"instead of group edit links"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:72
+msgid ""
+"Unlock Permissions > Settings > Core > Admin Back End > 'Hide non-editable "
+"posts'"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:73
+msgid ""
+"Within the async-upload.php script, filtering author's retrieval of the "
+"attachment they just uploaded"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:74
+msgid "Don't filter comment display or moderation within wp-admin"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:81
+msgid ""
+"If propagating permissions are assigned to a page branch, overwrite any "
+"explicitly assigned permissions in sub-pages"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:82
+msgid ""
+"Max number of specific permissions to insert in a single database query "
+"(default 1000)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:83
+msgid ""
+"Don't tweak the admin menu indexes to position Permissions menu under Users"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:84
+msgid ""
+"Don't add a Permissions menu. Instead, add menu items to the Users and "
+"Settings menus."
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:90
+msgid "Customize 'Permission Groups' caption"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:91
+msgid "Customize 'Permission Groups' caption on user profile"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:92
+msgid "Customize description under 'Permission Groups' caption "
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:93
+msgid ""
+"Max number of non-hierarchical posts / terms to display at one time (per "
+"page)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:94
+msgid ""
+"Max number of hierarchical posts / terms to display at one time (per page)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:95
+msgid ""
+"Disable auto-determination of how many levels of page tree to make visble by "
+"default. Instead, use specified value."
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:96
+msgid ""
+"Target number of visible pages/terms, used for auto-determination of number "
+"of visible levels"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:97
+msgid "Make search function on the post selection metabox look at post content"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:98
+msgid "Make search function on the post selection metabox look at post excerpt"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:104
+msgid "Search by last name instead of display name"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:105
+msgid "User field to search by default"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:106
+msgid "User meta fields selectable for search (comma-separated)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:107
+msgid "User meta fields which should be treated as numeric (comma-separated)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:108
+msgid "User meta fields which should be treated as boolean (comma-separated)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:109
+msgid "Use display name for search results instead of user_login"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:115
+msgid ""
+"Don't auto-assign role metagroups for all users. Instead, assign per-user at "
+"first login."
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:116
+msgid ""
+"When synchronizing role metagroups to currently defined WP roles, don't "
+"delete groups for previously defined WP roles."
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:122
+msgid ""
+"Force detection of WP user roles which are appended dynamically but not "
+"stored to the WP database."
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:128
+msgid ""
+"To save memory on front end access, don't register any filters related to "
+"content editing"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:129
+msgid ""
+"Attached media do not have any comments, so don't append clauses to comment "
+"queries for them"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:130
+msgid ""
+"Reduce overhead of pages query (in get_pages() and wp-admin) by defaulting "
+"fields to a set list that does not include post_content "
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:131
+msgid ""
+"Reduce overhead of wp-admin posts query by defaulting fields to a set list "
+"that does not include post_content "
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:132
+msgid ""
+"Reduce overhead of wp-admin Media query by defaulting fields to a set list "
+"that does not include post_content "
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:133
+msgid ""
+"Reduce overhead of wp-admin query for specified custom post type by "
+"defaulting fields to a set list that does not include post_content "
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:139
+msgid ""
+"Don't restore pre-4.4 behavior of not requiring 'publish' status for "
+"inclusion in page uri hierarchy"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:176
+msgid ""
+"Development use only (suppresses post_status = 'publish' clause for "
+"unfiltered post types with anonymous user)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Constants.php:177
+msgid ""
+"Development use only (on front end, do not replace 'post_status = 'publish'' "
+"clause with filtered equivalent)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:36
+msgid ""
+"If disabled, manually \"blocked\" posts can be unblocked by specific "
+"Category / Term Permissions."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:39
+msgid ""
+"For most installations, leave this disabled. If enabled, corresponding edit "
+"and delete capabilities must be added to existing roles."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:42
+msgid ""
+"For most installations, leave this disabled. See Editing tab for specialized "
+"Media Library permissions."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:45
+msgid ""
+"For most installations, leave this disabled. For specialized Media Library "
+"permissions, install the Collaborative Publishing module."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:48
+msgid ""
+"To customize bbPress forum permissions, activate the Compatibility Pack "
+"module."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:51
+msgid ""
+"To customize bbPress forum permissions, activate your Permissions Pro "
+"license key."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:54
+msgid "Remove the \"Private:\" and \"Protected\" prefix from Post, Page titles"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:57
+msgid ""
+"Remove unreadable Menu Items. If menu rendering problems occur with a third "
+"party plugin, disable this setting."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:60
+msgid ""
+"Unmodified from WordPress default behavior. To enable filtering, remove "
+"constant definition PP_ADMIN_READONLY_LISTABLE."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:63
+msgid ""
+"Uneditable posts are hidden from wp-admin listings. To expose them, use a "
+"role editor to add desired capabilities: list_posts, list_other_pages etc."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:66
+msgid ""
+"To customize editing permissions, enable the Collaborative Publishing module."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:69
+msgid "note: Groups and Roles are always displayed in \"Edit User\""
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:74
+msgid ""
+"<strong>Note:</strong> if you disable these settings, the stored values "
+"(including Role Usage adjustments) are retained but ignored."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:77
+msgid ""
+"Most sites don't need advanced settings. But enable them if you need to work "
+"with custom WP Roles or apply performance tweaks."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:80
+msgid "Disable Permissions filtering for users who are not logged in."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:83
+msgid ""
+"If checked, pages blocked from the \"All\" or \"Logged In\" groups will "
+"still be listed to Administrators."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:86
+msgid ""
+"If enabled, users with the pp_set_read_exceptions capability in the WP role "
+"can set reading permissions for their editable posts."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:89
+msgid ""
+"Display a role dropdown alongside the user search input box to narrow "
+"results."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:92
+msgid "Display additional descriptions in role assignment and options UI."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:95
+msgid ""
+"Display descriptive captions for additional functionality provided by "
+"missing or deactivated modules (Permissions Pro package)."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:98
+msgid ""
+"Detect user roles which are appended dynamically but not stored to the WP "
+"database. May be useful for sites that sync with Active Directory or other "
+"external user registration systems."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:101
+#, php-format
+msgid ""
+"You can also %1$s add Permissions administration capabilities to a WordPress "
+"role%2$s:"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:104
+#, php-format
+msgid ""
+"You can add Permissions administration capabilities to a WordPress role "
+"using %1$s:"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:109
+#, php-format
+msgid ""
+"Settings related to content editing permissions, provided by the %s module."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:109
+msgid "Collaborative Publishing"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:112
+msgid ""
+"Display a custom column on Edit Posts screen for all related taxonomies "
+"which are enabled for Permissions filtering."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:115
+msgid ""
+"Allows creation of a new post (of any type) for each selected user, using an "
+"existing post as the pattern."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:118
+msgid ""
+"Users who do not meet this site-wide role requirement will not be able to "
+"publish new top-level pages (Parent = \"Main Page\").  They will also be "
+"unable to move a currently published page from \"Main Page\" to a different "
+"Page Parent."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:121
+msgid ""
+"Remove Edit Form elements with these (comma-separated) html IDs from users "
+"who do not have full editing capabilities for the post/page."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:124
+msgid ""
+"The following settings are currently overridden by the constant "
+"PP_MEDIA_LIB_UNFILTERED (defined in wp-config.php or some other file you "
+"maintain). Media Library access will not be altered by Permissions."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:127
+msgid ""
+"For non-Administrators, determines visibility of files uploaded by another "
+"user and now attached to a post which the logged user can edit. To force a "
+"user to view all media regardless of this setting, add the pp_list_all_files "
+"capability to their role."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:130
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:136
+msgid ""
+"For non-Administrators, determines editing access to files uploaded by "
+"another user and now attached to a post which the logged user can edit."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:133
+msgid ""
+"If enabled, all users who have Media Library access will be implicitly "
+"granted the list_others_unattached_files capability. Media Editors can view "
+"and edit regardless of this setting."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:139
+msgid ""
+"Ensures users can always edit attachments they have uploaded, even if they "
+"are later attached to a post which the user cannot edit. If disabled, you "
+"can grant individual users the edit_own_attachments capability or assign "
+"Media editing Permissions for individual files."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:142
+msgid ""
+"Allow non-Administrators to rename menu items they cannot fully edit. Menu "
+"items will be locked into current positions."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:145
+msgid ""
+"Prevent creation or editing of custom items for non-Administrators who lack "
+"edit_theme_options capability."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:148
+msgid ""
+"Prevent non-Administrators with user editing permissions from editing a "
+"higher-level user or assigning a role higher than their own."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:151
+msgid "Fork published posts only."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:154
+msgid ""
+"If a user lacks the edit_others_posts capability for the post type, they "
+"cannot fork other&apos;s posts either."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:157
+msgid ""
+"If enabled, presence of the pp_set_edit_exceptions, "
+"pp_set_associate_exceptions, etc. capabilities in the WP role will be "
+"honored. See list of capabilities below."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:162
+#, php-format
+msgid ""
+"Once your import task is complete, you can eliminate this tab by disabling "
+"the %s module."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:162
+msgid "Import"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:174
+msgid ""
+"Enable post contributors or authors with pp_set_edit_exceptions capability "
+"to set editing Permissions on posts authored by others"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:178
+msgid "Don't try to integrate with the Post Forking plugin"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:181
+msgid ""
+"Permissions setting 'Pages can be set or removed from Top Level by' applies "
+"to 'page' type only"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:184
+msgid ""
+"If user cannot generally save pages to top level but a page they are editing "
+"is already there, allow it to stay at top level even if not yet published "
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:187
+msgid ""
+"Circle membership does not limit page association (page parent setting) "
+"ability"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:190
+msgid ""
+"When saving a post, if default term (of any taxonomy) is not in user's "
+"subset of assignable terms, substitute first available"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:193
+msgid ""
+"When saving a post, if default category is not in user's subset of "
+"assignable categories, substitute first available"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:196
+msgid ""
+"When saving a post, if default tag is not in user's subset of assignable "
+"tags, substitute first available"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:199
+msgid ""
+"When saving a post, if default term (of specified taxonomy) is not in user's "
+"subset of assignable tags, substitute first available"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:202
+msgid ""
+"When saving a post, never auto-assign a term (of any taxonomy), even if it "
+"is the user's only assignable term"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:205
+msgid ""
+"When saving a post, never auto-assign a category, even if it is the user's "
+"only assignable category"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:208
+msgid ""
+"When saving a post, never auto-assign a tag, even if it is the user's only "
+"assignable tag"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:211
+msgid ""
+"When saving a post, never auto-assign a term (of specified taxonomy), even "
+"if it is the user's only assignable term"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:214
+msgid ""
+"When a limited user updates a post, strip out currently stored categories "
+"they don't have permission to assign"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:217
+msgid ""
+"When a limited user updates a post, strip out currently stored tags they "
+"don't have permission to assign"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:220
+msgid ""
+"When a limited user updates a post, strip out currently stored terms (of "
+"specified taxonomy) they don't have permission to assign"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:223
+msgid ""
+"Don't define an 'Approved' status, even if Status Control module is active"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:228
+msgid ""
+"If user has Nav Menu management capabilities but can't 'edit_theme_options', "
+"strip link out of wp-admin Appearance Menu instead of linking it to nav-menus"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:231
+msgid ""
+"Don't credit implicit 'manage_nav_menus' capability to users who have "
+"'edit_theme_options' or 'switch_themes' capability"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:234
+msgid ""
+"Prevent non-Administrators from adding new Nav Menu items to top level (add "
+"below existing editable items instead)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:237
+msgid ""
+"For non-Administrators, new Nav Menu items default to being a child of first "
+"editable item "
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:240
+msgid ""
+"Don't require any additional capabilities for management of Nav Menu "
+"settings (normally require 'manage_menu_settings', 'edit_others_pages' or "
+"'publish_pages') "
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:243
+msgid ""
+"Eliminate extra filtering queries on Nav Menu update, even for non-"
+"Administrators"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:248
+msgid ""
+"Don't allow non-Administrators to see others' unattached uploads, regardless "
+"of Permissions settings.  Their own unattached uploads are still accessible "
+"unless option 'own_attachments_always_editable' is set false"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:253
+msgid "Limited User Editors can assign their own role"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:256
+msgid ""
+"Post Meta fields to copy when using 'Add Author Page' dropdown on Users "
+"screen"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:265
+msgid "Modify these Permissions settings"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:266
+msgid ""
+"PublishPress Permissions does not apply any Supplemental Roles or Specific "
+"Permissions to limit or expand viewing or editing access"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:267
+msgid ""
+"PublishPress Permissions implicitly grants capabilities for all post types "
+"and statuses, but does not apply Specific Permissions"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:268
+msgid "Can create Permission Groups"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:269
+msgid "Can edit all Permission Groups (barring Specific Permissions)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:270
+msgid "Can delete Permission Groups"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:271
+msgid "If group editing is allowed, can also modify group membership"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:272
+msgid ""
+"Assign Supplemental Roles or Specific Permissions. Other capabilities may "
+"also be required."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:273
+msgid ""
+"Set Read Permissions for specific posts on Edit Post/Term screen (for non-"
+"Administrators lacking edit_users capability; may be disabled by Permissions "
+"Settings)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:276
+msgid "Set Forking Permissions on Edit Post/Term screen (where applicable)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:280
+msgid "Set Revision Permissions on Edit Post/Term screen (where applicable)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:283
+msgid "Set Editing Permissions on Edit Post/Term screen (where applicable)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:284
+msgid ""
+"Set Association (Parent) Permissions on Edit Post screen (where applicable)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:285
+msgid ""
+"Set Term Assignment Permissions on Edit Term screen (in relation to an "
+"editable post type)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:286
+msgid "Set Term Management Permissions on Edit Term screen"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:287
+msgid "Set Term Association (Parent) Permissions on Edit Term screen"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:289
+msgid ""
+"Edit own file uploads, even if they become attached to an uneditable post"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:290
+msgid "See other user&apos;s unattached file uploads in Media Library"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:291
+msgid "Disregard association permissions (for all hierarchical post types)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:293
+msgid "Do not alter the Media Library listing provided by WordPress"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:294
+msgid ""
+"On the Posts screen, satisfy a missing edit_posts capability by listing "
+"uneditable drafts"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:295
+msgid ""
+"On the Posts screen, satisfy a missing edit_others_posts capability by "
+"listing other user's uneditable posts"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:296
+msgid ""
+"On the Pages screen, satisfy a missing edit_private_pages capability by "
+"listing uneditable private pages"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:297
+msgid ""
+"Make Quick Edit and Bulk Edit available to non-Administrators even though "
+"some inappropriate selections may be possible"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:303
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:304
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:305
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:306
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:307
+msgid "(Permissions Pro capability)"
+msgstr ""
+
+#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImportNotes.php:9
+msgid "The import can be run multiple times if source values change."
+msgstr ""
+
+#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImportNotes.php:10
+msgid ""
+"Configuration items will be imported even if the request exceeds PHP "
+"execution time limit. Repeat as necessary until all items are imported."
+msgstr ""
+
+#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImportNotes.php:11
+msgid ""
+"Current Role Scoper configuration is not modified or deleted. You will still "
+"be able to restore previous behavior by reactivating Role Scoper if "
+"necessary."
+msgstr ""
+
+#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImportNotes.php:12
+msgid ""
+"Following import, you should manually review the results and confirm that "
+"permissions are correct. Some manual followup may be required."
+msgstr ""
+
+#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImportNotes.php:13
+msgid ""
+"If your Role Scoper configuration has Category Restrictions on the Author or "
+"Editor role, specific Publish Permissions will be enabled to control "
+"publishing permissions separate from editing permissions. Existing specific "
+"Edit Permissions will be mirrored as specific Publish Permissions to "
+"maintain previous access."
+msgstr ""
+
+#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImportNotes.php:14
+msgid ""
+"Category Restrictions on the Editor role are converted to specific Edit, "
+"Publish and Term Assignment Permissions. If a Post Editor should be blocked "
+"from editing other&apos;s posts within a specified category but still be "
+"able to submit / edit / publish their own posts in that category, they will "
+"need to be switched to a WordPress role that does not have the "
+"\"edit_others_pages\" capability. Then specific editing permissions can be "
+"granted per-category."
+msgstr ""

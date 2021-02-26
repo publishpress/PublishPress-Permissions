@@ -1,6 +1,8 @@
 <?php
 namespace PublishPress\Permissions\Collab\UI;
 
+use \PublishPress\Permissions\UI\SettingsAdmin as SettingsAdmin;
+
 class SettingsTabEditing
 {
     function __construct()
@@ -15,9 +17,6 @@ class SettingsTabEditing
         add_action('presspermit_options_ui_insertion', [$this, 'advanced_tab_permissions_options_ui'], 5, 2); // hook for UI insertion on Settings > Advanced tab
 
         add_filter('presspermit_cap_descriptions', [$this, 'flt_cap_descriptions'], 3);  // priority 3 for ordering before PPS and PPCC additions in caps list
-
-        include_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Constants.php');
-        new \PublishPress\Permissions\Collab\Constants();
     }
 
     function optionTabs($tabs)
@@ -111,7 +110,7 @@ class SettingsTabEditing
             ?>
             <div class="pp-optionhint">
                 <?php
-                printf(__('Settings related to content editing permissions, provided by the %s module.', 'press-permit-core'), __('Collaborative Publishing', 'press-permit-core'));
+                echo SettingsAdmin::getStr('collaborative-publishing');
                 ?>
             </div>
         <?php
@@ -220,11 +219,9 @@ class SettingsTabEditing
                     $hint = '';
                     $ui->optionCheckbox('page_parent_order', $tab, $section, $hint, '<br />');
 
-                    $hint = __('Display a custom column on Edit Posts screen for all related taxonomies which are enabled for Permissions filtering.', 'press-permit-core');
-                    $ui->optionCheckbox('force_taxonomy_cols', $tab, $section, $hint, '');
+                    $ui->optionCheckbox('force_taxonomy_cols', $tab, $section, true, '');
 
-                    $hint = __('Allows creation of a new post (of any type) for each selected user, using an existing post as the pattern.', 'press-permit-core');
-                    $ui->optionCheckbox('add_author_pages', $tab, $section, $hint, '');
+                    $ui->optionCheckbox('add_author_pages', $tab, $section, true, '');
 
                     $div_style = ($pp->getOption('add_author_pages')) ? '' : 'style="display:none"';
                     $ui->optionCheckbox('publish_author_pages', $tab, $section, '', '', compact('div_style'));
@@ -259,8 +256,9 @@ class SettingsTabEditing
                     }
 
                     echo '<span class="pp-subtext">';
-                    if ($ui->display_hints)
-                        _e('Users who do not meet this site-wide role requirement will not be able to publish new top-level pages (Parent = "Main Page").  They will also be unable to move a currently published page from "Main Page" to a different Page Parent.', 'press-permit-core');
+                    if ($ui->display_hints) {
+                        echo SettingsAdmin::getStr('lock_top_pages');
+                    }
 
                     echo '</span>';
                     ?>
@@ -276,15 +274,6 @@ class SettingsTabEditing
                     <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
                     <td>
                         <?php if (in_array('editor_hide_html_ids', $ui->form_options[$tab][$section], true)) : ?>
-                            <div class="agp-vspaced_input">
-                                <?php
-                                if ($ui->display_hints) {
-                                    echo('<div class="agp-vspaced_input">');
-                                    _e('Remove Edit Form elements with these html IDs from users who do not have full editing capabilities for the post/page. Separate with&nbsp;;', 'press-permit-core');
-                                    echo '</div>';
-                                }
-                                ?>
-                            </div>
                             <?php
                             $option_name = 'editor_hide_html_ids';
                             $ui->all_options[] = $option_name;
@@ -311,6 +300,14 @@ class SettingsTabEditing
                             printf(__('%1$s sample IDs:%2$s %3$s', 'press-permit-core'), "<a href='javascript:void(0)' onclick=\"$js_call\">", '</a>', $sample_ids);
                             ?>
                             </div>
+                            
+                            <?php
+                            if ($ui->display_hints) {
+                                echo('<div class="pp-subtext">');
+                                echo SettingsAdmin::getStr('limited_editing_elements');
+                                echo '</div>';
+                            }
+                            ?>
                             <br/>
                         <?php endif; ?>
 
@@ -322,7 +319,7 @@ class SettingsTabEditing
                             if (!$current_setting = strval($ui->getOption($id)))
                                 $current_setting = '0';
                             ?>
-                            <div class="agp-vspaced_input">
+                            <div>
                                 <?php
                                 _e('Specified element IDs also require the following site-wide Role:', 'press-permit-core');
 
@@ -367,7 +364,7 @@ class SettingsTabEditing
                     if (defined('PP_MEDIA_LIB_UNFILTERED')) :
                         ?>
                         <div><span class="pp-important">
-                            <?php _e('The following settings are currently overridden by the constant PP_MEDIA_LIB_UNFILTERED (defined in wp-config.php or some other file you maintain). Media Library access will not be altered by Permissions exceptions.', 'press-permit-core'); ?>
+                            <?php echo SettingsAdmin::getStr('media_lib_unfiltered'); ?>
                         </span></div><br />
                     <?php else : ?>
                         <div><span style="font-weight:bold">
@@ -375,20 +372,15 @@ class SettingsTabEditing
                         </span></div><br />
                     <?php endif;
 
-                    $hint = __("For non-Administrators, determines visibility of files uploaded by another user and now attached to a post which the logged user can read. To force a user to view all media regardless of this setting, add the pp_list_all_files capability to their role.", 'press-permit-core');
-                    $ret = $ui->optionCheckbox('admin_others_attached_to_readable', $tab, $section, $hint, '');
+                    $ret = $ui->optionCheckbox('admin_others_attached_to_readable', $tab, $section, true, '');
 
-                    $hint = __("For non-Administrators, determines visibility of files uploaded by another user and now attached to a post which the logged user can edit. To force a user to view all media regardless of this setting, add the pp_list_all_files capability to their role.", 'press-permit-core');
-                    $ret = $ui->optionCheckbox('admin_others_attached_files', $tab, $section, $hint, '');
+                    $ret = $ui->optionCheckbox('admin_others_attached_files', $tab, $section, true, '');
 
-                    $hint = __("For non-Administrators, determines editing access to files uploaded by another user and now attached to a post which the logged user can edit.", 'press-permit-core');
-                    $ret = $ui->optionCheckbox('edit_others_attached_files', $tab, $section, $hint, '');
+                    $ret = $ui->optionCheckbox('edit_others_attached_files', $tab, $section, true, '');
 
-                    $hint = __("If enabled, all users who have Media Library access will be implicitly granted the list_others_unattached_files capability. Media Editors can view and edit regardless of this setting.", 'press-permit-core');
-                    $ret = $ui->optionCheckbox('admin_others_unattached_files', $tab, $section, $hint, '');
+                    $ret = $ui->optionCheckbox('admin_others_unattached_files', $tab, $section, true, '');
 
-                    $hint = __("Ensures users can always edit attachments they have uploaded, even if they are later attached to a post which the user cannot edit. If disabled, you can grant individual users the edit_own_attachments capability or assign Media editing Exceptions for individual files.", 'press-permit-core');
-                    $ret = $ui->optionCheckbox('own_attachments_always_editable', $tab, $section, $hint, '');
+                    $ret = $ui->optionCheckbox('own_attachments_always_editable', $tab, $section, true, '');
                     ?>
                 </td>
             </tr>
@@ -401,14 +393,11 @@ class SettingsTabEditing
                 <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
                 <td>
                     <?php
-                    $hint = '';
-                    $ui->optionCheckbox('admin_nav_menu_filter_items', $tab, $section, $hint, '', ['val' => true, 'disabled' => true]);
+                    $ui->optionCheckbox('admin_nav_menu_filter_items', $tab, $section, '', '', ['val' => true, 'disabled' => true]);
 
-                    $hint = __('Allow non-Administrators to rename menu items they cannot fully edit. Menu items will be locked into current positions.', 'press-permit-core');
-                    $ui->optionCheckbox('admin_nav_menu_partial_editing', $tab, $section, $hint, '');
+                    $ui->optionCheckbox('admin_nav_menu_partial_editing', $tab, $section, true, '');
 
-                    $hint = __('Prevent creation or editing of custom items for non-Administrators who lack edit_theme_options capability.', 'press-permit-core');
-                    $ui->optionCheckbox('admin_nav_menu_lock_custom', $tab, $section, $hint, '');
+                    $ui->optionCheckbox('admin_nav_menu_lock_custom', $tab, $section, true, '');
                     ?>
                 </td>
             </tr>
@@ -440,7 +429,7 @@ class SettingsTabEditing
 
                     <p><span class='pp-subtext'>
                     <?php
-                    _e('Prevent non-Administrators with user editing permissions from editing a higher-level user or assigning a role higher than their own.', 'press-permit-core');
+                    echo SettingsAdmin::getStr('limit_user_edit_by_level');
                     ?>
                     </span>
                     </p>
@@ -456,11 +445,9 @@ class SettingsTabEditing
                     <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
                     <td>
                         <?php
-                        $hint = __('Fork published posts only.', 'press-permit-core');
-                        $ui->optionCheckbox('fork_published_only', $tab, $section, $hint, '');
+                        $ui->optionCheckbox('fork_published_only', $tab, $section, true, '');
 
-                        $hint = __('If a user lacks the edit_others_posts capability for the post type, they cannot fork other&apos;s posts either.', 'press-permit-core');
-                        $ui->optionCheckbox('fork_require_edit_others', $tab, $section, $hint, '');
+                        $ui->optionCheckbox('fork_require_edit_others', $tab, $section, true, '');
                         ?>
                     </td>
                 </tr>
@@ -471,8 +458,7 @@ class SettingsTabEditing
     function advanced_tab_permissions_options_ui($tab, $section)
     {
         if (('advanced' == $tab) && ('permissions_admin' == $section)) {
-            $hint = __('If enabled, presence of the pp_set_edit_exceptions, pp_set_associate_exceptions, etc. capabilities in the WP role will be honored. See list of capabilities below.', 'press-permit-core');
-            \PublishPress\Permissions\UI\SettingsAdmin::instance()->optionCheckbox('non_admins_set_edit_exceptions', 'advanced', 'permissions_admin', $hint);
+            \PublishPress\Permissions\UI\SettingsAdmin::instance()->optionCheckbox('non_admins_set_edit_exceptions', 'advanced', 'permissions_admin', true);
 
             \PublishPress\Permissions\UI\SettingsAdmin::instance()->optionCheckbox('publish_exceptions', $tab, $section, '');
         }
@@ -480,28 +466,6 @@ class SettingsTabEditing
 
     function flt_cap_descriptions($pp_caps)
     {
-        if (class_exists('Fork', false))
-            $pp_caps['pp_set_fork_exceptions'] = __('Set Forking Exceptions on Edit Post/Term screen (where applicable)', 'press-permit-core');
-
-        if (defined('REVISIONARY_VERSION'))
-            $pp_caps['pp_set_revise_exceptions'] = __('Set Forking Exceptions on Edit Post/Term screen (where applicable)', 'press-permit-core');
-
-        $pp_caps['pp_set_edit_exceptions'] = __('Set Editing Exceptions on Edit Post/Term screen (where applicable)', 'press-permit-core');
-        $pp_caps['pp_set_associate_exceptions'] = __('Set Association (Parent) Exceptions on Edit Post screen (where applicable)', 'press-permit-core');
-        $pp_caps['pp_set_term_assign_exceptions'] = __('Set Term Assignment Exceptions on Edit Term screen (in relation to an editable post type)', 'press-permit-core');
-        $pp_caps['pp_set_term_manage_exceptions'] = __('Set Term Management Exceptions on Edit Term screen', 'press-permit-core');
-        $pp_caps['pp_set_term_associate_exceptions'] = __('Set Term Association (Parent) Exceptions on Edit Term screen', 'press-permit-core');
-
-        $pp_caps['edit_own_attachments'] = __('Edit own file uploads, even if they become attached to an uneditable post', 'press-permit-core');
-        $pp_caps['list_others_unattached_files'] = __('See other user&apos;s unattached file uploads in Media Library', 'press-permit-core');
-        $pp_caps['pp_associate_any_page'] = __('Disregard association exceptions (for all hierarchical post types)', 'press-permit-core');
-
-        $pp_caps['pp_list_all_files'] = __('Do not alter the Media Library listing provided by WordPress', 'press-permit-core');
-        $pp_caps['list_posts'] = __('On the Posts screen, satisfy a missing edit_posts capability by listing uneditable drafts', 'press-permit-core');
-        $pp_caps['list_others_posts'] = __("On the Posts screen, satisfy a missing edit_others_posts capability by listing other user's uneditable posts", 'press-permit-core');
-        $pp_caps['list_private_pages'] = __('On the Pages screen, satisfy a missing edit_private_pages capability by listing uneditable private pages', 'press-permit-core');
-        $pp_caps['pp_force_quick_edit'] = __('Make Quick Edit and Bulk Edit available to non-Administrators even though some inappropriate selections may be possible', 'press-permit-core');
-
-        return $pp_caps;
+        return SettingsAdmin::setCapabilityDescriptions($pp_caps);
     }
 }
