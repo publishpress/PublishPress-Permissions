@@ -57,7 +57,7 @@ class ItemExceptionsUI
 
         $agent_types = apply_filters('presspermit_list_group_types', array_merge($agent_types, $pp->groups()->getGroupTypes([], 'object')));
 
-        $agent_types['user'] = (object)['labels' => (object)['name' => __('Users', 'press-permit-core'), 'singular_name' => __('User', 'press-permit-core')]];
+        $agent_types['user'] = (object)['labels' => (object)['name' => __('Users'), 'singular_name' => __('User', 'press-permit-core')]];
 
         static $drew_itemroles_marker;
         if (empty($drew_itemroles_marker)) {
