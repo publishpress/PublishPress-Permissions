@@ -169,7 +169,7 @@ class AgentPermissionsUI
 
     <?php if ($is_all_anon) : ?>
         <div id="pp-all-anon-warning" class="pp-red" style="display:none;">
-            <?php _e('Warning: Content hidden by exceptions will be displayed if PP is deactivated. Consider setting a private Visibility on Edit Post screen instead.', 'press-permit-core'); ?>
+            <?php _e('Warning: Content hidden by these Permissions will be displayed if PP is deactivated. Consider setting a private Visibility on Edit Post screen instead.', 'press-permit-core'); ?>
         </div>
 
         <script type="text/javascript">
@@ -200,7 +200,7 @@ class AgentPermissionsUI
     <div class='pp-ext-promo'>
         <?php
         if (!$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
-            $msg = __('To assign exceptions for editing, parent selection or term assignment, enable the Collaborative Publishing module.', 'press-permit-core');
+            $msg = __('To assign page-specific Permissions for editing, parent selection or term assignment, enable the Collaborative Publishing module.', 'press-permit-core');
             echo "<div>$msg</div>";
         }
         ?>
@@ -211,10 +211,10 @@ class AgentPermissionsUI
             && $pp->getOption('display_extension_hints')
         ) {
             if (presspermit()->isPro())
-                $msg = __('To assign exceptions for bbPress forums, activate the Compatibility Pack module.', 'press-permit-core');
+                $msg = __('To assign forum-specific Permissions for bbPress, activate the Compatibility Pack module.', 'press-permit-core');
             else
                 $msg = sprintf(
-                    __('To assign exceptions for bbPress forums, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                    __('To assign forum-specific Permissions for bbPress, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
@@ -304,7 +304,7 @@ class AgentPermissionsUI
 
         <?php
         if (defined('REVISIONARY_VERSION') && !$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
-            $msg = __('To assign PublishPress Revisions exceptions, enable the Collaborative Publishing module.', 'press-permit-core');
+            $msg = __('To assign page-specific PublishPress Revision permissions, enable the Collaborative Publishing module.', 'press-permit-core');
             echo "<div>$msg</div>";
         }
         ?>
@@ -1121,7 +1121,7 @@ class AgentPermissionsUI
 
                 if ($any_redundant) {
                     echo '<div class="pp-current-roles-note">'
-                        . __('* = exceptions redundant due to a corresponding &quot;only these&quot; entry', 'press-permit-core')
+                        . __('* = Permissions redundant due to a corresponding &quot;only these&quot; entry', 'press-permit-core')
                         . '</div>';
                 }
 
@@ -1267,7 +1267,7 @@ class AgentPermissionsUI
     private static function selectCloneUI($agent)
     {
         global $wp_roles;
-        _e('Copy Roles and Exceptions from:', 'press-permit-core');
+        _e('Copy Roles and Permissions from:', 'press-permit-core');
 
         $pp_only = (array) presspermit()->getOption('supplemental_role_defs');
         ?>

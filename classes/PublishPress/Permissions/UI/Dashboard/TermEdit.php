@@ -371,7 +371,7 @@ class TermEdit
                 );
 
                 printf(
-                    __('Displayed exceptions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s exceptions which apply to all related post types%4$s.', 'press-permit-core'),
+                    __('Displayed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
                     $type_obj->labels->singular_name,
                     "<a href='$url'>",
                     $tx_obj->labels->singular_name,

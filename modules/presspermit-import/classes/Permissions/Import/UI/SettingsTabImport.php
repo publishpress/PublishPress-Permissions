@@ -181,7 +181,7 @@ class SettingsTabImport
                 <td>
 
                     <?php
-                    $msg = __("All imported groups, roles, exceptions and options will be deleted. Are you sure?", 'press-permit-core');
+                    $msg = __("All imported groups, roles, permissions and options will be deleted. Are you sure?", 'press-permit-core');
                     $js_call = "javascript:if (confirm('$msg')) {return true;} else {return false;}";
                     ?>
                     <div style="float:right">

@@ -346,7 +346,7 @@ class Profile
                     <p>
                         <?php
                         printf(
-                            __('Supplemental roles and exceptions assigned to a user\'s primary role or other Permission Groups are usually the cleanest way to customize permissions.  You can also %1$scustomize this user directly%2$s.', 'press-permit-core'),
+                            __('Supplemental roles and specific permissions assigned to a user\'s primary role or other Permission Groups are usually the cleanest way to customize permissions.  You can also %1$scustomize this user directly%2$s.', 'press-permit-core'),
                             "<a href='$edit_url'>",
                             '</a>'
                         );

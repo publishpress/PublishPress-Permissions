@@ -65,8 +65,8 @@ class SettingsTabEditing
             'fork_published_only' => __('Fork published posts only', 'press-permit-core'),
             'fork_require_edit_others' => __('Forking enforces edit_others_posts capability', 'press-permit-core'),
             'force_taxonomy_cols' => __('Add taxonomy columns to Edit Posts screen', 'press-permit-core'),
-            'non_admins_set_edit_exceptions' => __('Non-Administrators can set Editing Exceptions for their editable posts', 'press-permit-core'),
-            'publish_exceptions' => __('Assign Publish exceptions separate from Edit exceptions', 'press-permit-core'),
+            'non_admins_set_edit_exceptions' => __('Non-Administrators can set Editing Permissions for their editable posts', 'press-permit-core'),
+            'publish_exceptions' => __('Assign Publish Permissions separate from Edit Permissions', 'press-permit-core'),
         ];
 
         return array_merge($captions, $opt);
