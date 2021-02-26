@@ -118,7 +118,7 @@ class AgentsDynamicUI
                                     <?php endforeach; ?>
                                 </select>
 
-                                <input id="pp_search_user_meta_val_<?php echo $i; ?>_<?php echo $id_suffix; ?>"
+                                <input id="pp_search_user_meta_val_<?php echo $i; ?>_<?php echo $id_suffix; ?>" class="pp-user-meta-field" 
                                        type="text" <?php
                                 if (empty($_GET["pp_search_user_meta_key_{$i}_{$id_suffix}"])) {
                                     echo 'style="display:none"';
