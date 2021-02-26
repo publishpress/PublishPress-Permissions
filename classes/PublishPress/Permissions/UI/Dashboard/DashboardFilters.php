@@ -269,10 +269,6 @@ class DashboardFilters
             }
         }
 
-        if (current_user_can('list_users') && current_user_can('pp_administer_content')) {
-            add_submenu_page($pp_cred_menu, __('Users', 'press-permit-core'), __('Users', 'press-permit-core'), 'read', 'presspermit-users', $handler);
-        }
-
         if ($do_settings) {
             do_action('presspermit_permissions_menu', $pp_options_menu, $handler);
 

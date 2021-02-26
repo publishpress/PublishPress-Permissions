@@ -38,6 +38,7 @@ class SettingsTabAdvanced
             $new = array_merge($new, [
                 'anonymous' => __('Content Filtering', 'press-permit-core'),
                 'permissions_admin' => __('Permissions Admin', 'press-permit-core'),
+                'user_permissions' => __('User Permissions', 'press-permit-core'),
                 'capabilities' => __('Permissions Capabilities', 'press-permit-core'),
                 'role_integration' => __('Role Integration', 'press-permit-core'),
                 'constants' => __('Constants', 'press-permit-core'),
@@ -78,6 +79,7 @@ class SettingsTabAdvanced
             $new = array_merge($new, [
                 'anonymous' => ['anonymous_unfiltered', 'suppress_administrator_metagroups'],
                 'permissions_admin' => ['non_admins_set_read_exceptions'],
+                'user_permissions' => ['user_permissions'],
                 'role_integration' => ['dynamic_wp_roles'],
                 'misc' => ['users_bulk_groups', 'user_search_by_role', 'display_hints', 'display_extension_hints'],
             ]);
@@ -168,6 +170,66 @@ class SettingsTabAdvanced
                     </td>
                 </tr>
             <?php endif; // any options accessable in this section
+
+
+            $section = 'user_permissions'; // --- PERMISSIONS ADMIN SECTION ---
+            ?>
+                <tr>
+                    <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                    <td>
+
+                        <div class="pp-user-permissions-help">
+                            <p>
+                            <?php
+                            $url = "users.php";
+                            printf(
+                                __('For user-specific Supplemental Roles and Permissions, click a "Roles" cell on the %1$sUsers%2$s screen.', 'press-permit-core'),
+                                "<strong><a href='$url'>",
+                                '</a></strong>'
+                            );
+                            ?>
+                            </p>
+                        </div>
+
+                        <div class="pp-hint pp-user-permissions-help">
+                            <p>
+                            <?php
+                            _e('To filter the Users list by Permissions, follow a link below:', 'press-permit-core');
+                            ?>
+                            </p>
+
+                            <ul class="pp-notes">
+                                <li><?php printf(__('%1$sUsers who have no custom Permission Group membership%2$s', 'press-permit-core'), "<a href='$url?pp_no_group=1'>", '</a>'); ?></li>
+                            </ul>
+                            <br/>
+                            <ul class="pp-notes">
+                                <li><?php printf(__('%1$sUsers who have Supplemental Roles assigned directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_roles=1'>", '</a>'); ?></li>
+                                <li><?php printf(__('%1$sUsers who have Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_exceptions=1'>", '</a>'); ?></li>
+                                <li><?php printf(__('%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_perms=1'>", '</a>'); ?></li>
+                            </ul>
+                            <br/>
+                            <ul class="pp-notes">
+                                <li><?php printf(__('%1$sUsers who have Supplemental Roles (directly or via group)%2$s', 'press-permit-core'), "<a href='$url?pp_has_roles=1'>", '</a>'); ?></li>
+                                <li><?php printf(__('%1$sUsers who have Specific Permissions (directly or via group)%2$s', 'press-permit-core'), "<a href='$url?pp_has_exceptions=1'>", '</a>'); ?></li>
+                                <li><?php printf(__('%1$sUsers who have Supplemental Roles or Specific Permissions (directly or via group)%2$s', 'press-permit-core'), "<a href='$url?pp_has_perms=1'>", '</a>'); ?></li>
+                            </ul>
+                        </div>
+
+                        <?php if (presspermit()->getOption('display_hints')) : ?>
+                            <span class="pp-subtext">
+                                <?php
+                                printf(
+                                    __('%1$snote%2$s: If you don&apos;t see the Roles column on the Users screen, make sure it is enabled in Screen Options. ', 'press-permit-core'),
+                                    '<strong>',
+                                    '</strong>'
+                                );
+                                ?>
+                            </span>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php
+
 
             $section = 'misc'; // --- MISC SECTION ---
             if (!empty($ui->form_options[$tab][$section])) : ?>
