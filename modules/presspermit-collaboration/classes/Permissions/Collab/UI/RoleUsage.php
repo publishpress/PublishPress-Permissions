@@ -79,7 +79,7 @@ class RoleUsage
 
             <?php
             if (presspermit()->getOption('display_hints')) {
-                echo '<div class="pp-hint">';
+                echo '<div class="pp-hint pp-no-hide">';
                 _e("These <strong>optional</strong> settings customize how PublishPress Permissions applies <strong>supplemental roles</strong>. Your existing WP Role Definitions can be applied in two different ways:", 'press-permit-core');
                 
                 echo '<ul style="list-style-type:disc;list-style-position:outside;margin:1em 0 0 2em"><li>' 
