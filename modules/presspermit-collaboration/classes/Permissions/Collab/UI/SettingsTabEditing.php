@@ -282,7 +282,7 @@ class SettingsTabEditing
 
                             // note: 'post:post' otype option is used for all non-page types
                             $sample_ids = '<span id="pp_sample_ids" class="pp-gray" style="display:none">' 
-                            . 'password-span; slugdiv; edit-slug-box; authordiv; commentstatusdiv; trackbacksdiv; postcustom; revisionsdiv; pageparentdiv;' 
+                            . 'password-span, slugdiv, edit-slug-box, authordiv, commentstatusdiv, trackbacksdiv, postcustom, revisionsdiv, pageparentdiv' 
                             . '</span>';
 
                             echo('<div class="agp-vspaced_input">');
