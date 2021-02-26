@@ -178,7 +178,7 @@ class Groups
                         $group_types = [];
 
                         if (current_user_can('pp_administer_content'))
-                            $group_types['wp_role'] = (object)['labels' => (object)['singular_name' => __('WP Role', 'press-permit-core')]];
+                            $group_types['wp_role'] = (object)['labels' => (object)['singular_name' => __('WordPress Role', 'press-permit-core')]];
 
                         $group_types['pp_group'] = (object)['labels' => (object)['singular_name' => __('Custom Group', 'press-permit-core')]];
 

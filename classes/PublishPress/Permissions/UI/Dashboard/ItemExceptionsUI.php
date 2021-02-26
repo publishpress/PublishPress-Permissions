@@ -53,7 +53,7 @@ class ItemExceptionsUI
             $type_obj = ('post' == $via_item_source) ? get_post_type_object($via_item_type) : get_taxonomy($via_item_type);
         }
 
-        $agent_types['wp_role'] = (object)['labels' => (object)['name' => __('WP Roles', 'press-permit-core'), 'singular_name' => __('WP Role', 'press-permit-core')]];
+        $agent_types['wp_role'] = (object)['labels' => (object)['name' => __('Roles'), 'singular_name' => __('Role')]];
 
         $agent_types = apply_filters('presspermit_list_group_types', array_merge($agent_types, $pp->groups()->getGroupTypes([], 'object')));
 
