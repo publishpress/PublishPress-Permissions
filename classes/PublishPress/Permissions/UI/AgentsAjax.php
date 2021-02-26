@@ -131,7 +131,7 @@ class AgentsAjax
             $um_vals = array_values($um_vals);
 
             if ($search_str) {
-                $where = "WHERE (user_login LIKE '%{$search_str}%' OR user_nicename LIKE '%{$search_str}%')";
+                $where = "WHERE (user_login LIKE '%{$search_str}%' OR user_nicename LIKE '%{$search_str}%' OR display_name LIKE '%{$search_str}%')";
             } else {
                 $where = "WHERE 1=1";
             }
