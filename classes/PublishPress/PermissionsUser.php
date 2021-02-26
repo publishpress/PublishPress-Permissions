@@ -197,7 +197,19 @@ class PermissionsUser extends \WP_User
     {
         global $wpdb;
 
+        static $roles_retrieved;
+
+        if (!isset($roles_retrieved)) {
+            $roles_retrieved = [];
+        }
+
         $u_g_clause = $this->getUsergroupsClause('uro', ['context' => 'roles']);
+
+        if (isset($roles_retrieved[$u_g_clause])) {
+            return;
+        } else {
+            $roles_retrieved[$u_g_clause] = true;
+        }
 
         $qry = "SELECT role_name FROM $wpdb->ppc_roles AS uro WHERE 1=1 $u_g_clause";
 
