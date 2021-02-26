@@ -123,10 +123,22 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.4.3 =
+= 3.4.4 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
+
+= 3.4.4 =
+* Compat : PublishPress Authors - non-Editors could be locked out of editing their own post due to "default author for new post" setting or manual Authors change
+* Compat : PublishPress Revisions - Specific Permissions did not allow Contributors to revise other users' pages
+* Compat : Glance That plugin - Widget content was cleared
+* Change : Settings screen - admin hints hidden by default, display on Comments icon click
+* Change : Moved Users screen content to Settings > Advanced > User Permissions
+* Lang : Separated admin hints into separate language file (text domains: press-permit-core-hints)
+* Fixed : Permission metaboxes in post editor did not search user display name
+* Fixed : Permission metaboxes in post editor - clicking search icon did not trigger search
+* Fixed : Fatal error in some custom REST requests 
+* Perf : Eliminate a few redundant queries
 
 = 3.4.3 - 21 Jan 2021 =
 * Fixed : Edit Category / Term - Metaboxes for Editing and Assignment permissions were blank
