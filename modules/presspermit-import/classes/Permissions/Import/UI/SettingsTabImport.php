@@ -2,6 +2,7 @@
 namespace PublishPress\Permissions\Import\UI;
 
 use \PublishPress\Permissions\Import as Import;
+use \PublishPress\Permissions\UI\SettingsAdmin as SettingsAdmin;
 
 class SettingsTabImport
 {
@@ -96,7 +97,7 @@ class SettingsTabImport
 
     function actOptionsUI()
     {
-        $ui = \PublishPress\Permissions\UI\SettingsAdmin::instance(); 
+        $ui = SettingsAdmin::instance(); 
         $tab = 'import';
 
         echo '<tr><td>';
@@ -151,9 +152,9 @@ class SettingsTabImport
 
         if (presspermit()->getOption('display_hints')) :
             ?>
-            <div class="pp-optionhint">
+            <div class="pp-hint pp-optionhint">
                 <?php
-                printf(__('Once your import task is complete, you can eliminate this tab by disabling the %s module.', 'press-permit-core'), __('Import', 'press-permit-core'));
+                echo SettingsAdmin::getStr('pp-import-disable');
                 ?>
             </div>
         <?php

@@ -100,7 +100,7 @@ class SettingsTabCore
                 <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
                 <td>
                     <?php
-                    $hint = __('If disabled, manually "blocked" posts can be unblocked by specific Category / Term Permissions.  Enabling this setting will provide more intuitive behavior, but may require configuration review and testing on prior installations.', 'press-permit-core');
+                    $hint = SettingsAdmin::getStr('post_blockage_priority');
                     $ui->optionCheckbox('post_blockage_priority', $tab, $section, $hint);
                     ?>
                 </td>
@@ -218,10 +218,12 @@ class SettingsTabCore
                                 if ($pp->getOption('display_hints')) {
                                     //if ( $types = get_post_types( [ 'public' => true, '_builtin' => false ] ) ) :
                                     ?>
-                                    <div class="pp-subtext">
+                                    <div class="pp-subtext pp-no-hide">
                                         <?php
                                         printf(
-                                            __('<span class="pp-important">Note</span>: Custom post types enabled here require type-specific capabilities for editing ("edit_things" instead of "edit_posts").  You can %1$sassign corresponding supplemental roles%2$s to grant these capabilities. Adding the type-specific capabilities directly to a WordPress role definition also works.'),
+                                            __('%1$sNote%2$s: This causes type-specific capabilities to be required for editing ("edit_things" instead of "edit_posts"). You can %3$sassign supplemental roles%4$s for the post type or add the capabilities directly to a WordPress role.'),
+                                            '<span class="pp-important">',
+                                            '</span>',
                                             "<a href='" . admin_url('?page=presspermit-groups') . "'>",
                                             '</a>'
                                         );
@@ -235,9 +237,9 @@ class SettingsTabCore
                                         <div class="pp-subtext pp-settings-caption">
                                             <?php
                                             if ($pp->keyActive()) {
-                                                _e('To customize bbPress forum permissions, activate the Compatibility Pack module.', 'press-permit-core');
+                                                echo SettingsAdmin::getStr('bbp_compat_prompt');
                                             } else {
-                                                _e('To customize bbPress forum permissions, activate your Permissions Pro license key.', 'press-permit-core');
+                                                echo SettingsAdmin::getStr('bbp_pro_prompt');
                                             }
 
                                             ?>
@@ -247,22 +249,49 @@ class SettingsTabCore
                                     //endif;
                                 }
 
-                                echo '<br /><div>';
+                                echo '<div>';
 
                                 if (in_array('attachment', presspermit()->getEnabledPostTypes(), true)) {
                                     if (!presspermit()->isPro()) {
-                                        $hint = __("For most installations, leave this disabled. If enabled, corresponding edit and delete capabilities must be added to existing roles.", 'press-permit-core');
+                                        $hint = SettingsAdmin::getStr('define_media_post_caps_pro');
                                     } else {
                                         $hint = defined('PRESSPERMIT_COLLAB_VERSION') 
-                                        ? __("For most installations, leave this disabled. See Editing tab for specialized Media Library permissions.", 'press-permit-core')
-                                        : __("For most installations, leave this disabled. For specialized Media Library permissions, install the Collaborative Publishing module.", 'press-permit-core');
+                                        ? SettingsAdmin::getStr('define_media_post_caps')
+                                        : SettingsAdmin::getStr('define_media_post_caps_collab_prompt');
                                     }
 
                                     $ret = $ui->optionCheckbox('define_media_post_caps', $tab, $section, $hint, '');
                                 }
 
-                                $hint = __('If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types.  <strong>NOTE: You will also need to use a WordPress role editor</strong> such as PublishPress Capabilities to add these capabilities to desired roles.', 'press-permit-core');
-                                $ret = $ui->optionCheckbox('define_create_posts_cap', $tab, $section, $hint, '');
+                                if (defined('PUBLISHPRPESS_CAPS_VERSION')) {
+                                    $url = admin_url('admin.php?page=capsman');
+
+                                    $hint = sprintf(
+                                        __(
+                                            '%1$sNote:%2$s If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types. You can %3$sadd these capabilities to any role%4$s that needs it.', 
+                                            'press-permit-core'
+                                        ),
+                                        '<span class="pp-important">',
+                                        '</span>',
+                                        '<a href="' . $url . '">',
+                                        '</a>'
+                                    );
+                                } else {
+                                    $url = Settings::pluginInfoURL('capability-manager-enhanced');
+
+                                    $hint = sprintf(
+                                        __(
+                                            '%1$sNote:%2$s If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types. You can use a WordPress role editor like %3$sPublishPress Capabilities%4$s to add these capabilities to any role that needs it.', 
+                                            'press-permit-core'
+                                        ),
+                                        '<span class="pp-important">',
+                                        '</span>',
+                                        '<span class="plugins update-message"><a href="' . $url . '" class="thickbox" title=" PublishPress Capabilities">',
+                                        '</a></span>'
+                                    );
+                                }
+
+                                $ret = $ui->optionCheckbox('define_create_posts_cap', $tab, $section, $hint, '', ['hint_class' => 'pp-no-hide']);
                                 echo '</div>';
                             }
                             ?>
@@ -282,11 +311,11 @@ class SettingsTabCore
 
                     $ui->optionCheckbox('term_counts_unfiltered', $tab, $section, '');
 
-                    $hint = __('Remove the "Private:" and "Protected" prefix from Post, Page titles', 'press-permit-core');
+                    $hint = SettingsAdmin::getStr('strip_private_caption');
                     $ui->optionCheckbox('strip_private_caption', $tab, $section, $hint);
 
                     if (defined('UBERMENU_VERSION')) {
-                        $hint = __('Remove unreadable Menu Items. If menu rendering problems occur with a third party plugin, disable this setting.', 'press-permit-core');
+                        $hint = SettingsAdmin::getStr('force_nav_menu_filter');
                         $ui->optionCheckbox('force_nav_menu_filter', $tab, $section, $hint);
                     }
                     ?>
@@ -302,23 +331,21 @@ class SettingsTabCore
                 <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
                 <td>
                     <?php
-                    $ui->optionCheckbox('display_branding', $tab, $section, '');
+                    $ui->optionCheckbox('display_branding', $tab, $section, '', '<br />');
                     
                     if (defined('PP_ADMIN_READONLY_LISTABLE') && (!$pp->getOption('admin_hide_uneditable_posts') || defined('PP_ADMIN_POSTS_NO_FILTER'))) {
-                        $hint = __('Unmodified from WordPress default behavior. To enable filtering, remove constant definition PP_ADMIN_READONLY_LISTABLE.', 'press-permit-core');
+                        $hint = SettingsAdmin::getStr('posts_listing_unmodified');
                     } else {
                         $hint = ($pp->moduleActive('collaboration'))
-                            ? __('Uneditable posts are hidden from wp-admin listings. To expose them, use a role editor to add desired capabilities: list_posts, list_other_pages etc.', 'press-permit-core')
-                            : __('To customize editing permissions, enable the Collaborative Publishing module.', 'press-permit-core');
+                            ? SettingsAdmin::getStr('posts_listing_editable_only')
+                            : SettingsAdmin::getStr('posts_listing_editable_only_collab_prompt');
                     }
                     ?>
-                    <!--
-                    <p style="margin-top:20px">
+                    <div class="pp-hint">
                     <?php
                     printf(__('%sPosts / Pages Listing:%s %s', 'press-permit-core'), '<b>', '</b>', $hint);
                     ?>
                     </p>
-                    -->
                 </td>
             </tr>
         <?php
@@ -337,7 +364,7 @@ class SettingsTabCore
                         $ui->optionCheckbox('new_user_groups_ui', $tab, $section, $hint, '<br />');
                     }
 
-                    $hint = __('note: Groups and Roles are always displayed in "Edit User"', 'press-permit-core');
+                    $hint = SettingsAdmin::getStr('display_user_profile_roles');
                     $ui->optionCheckbox('display_user_profile_groups', $tab, $section);
                     $ui->optionCheckbox('display_user_profile_roles', $tab, $section, $hint);
                     ?>

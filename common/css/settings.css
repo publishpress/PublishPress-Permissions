@@ -1,7 +1,7 @@
 /* --- Colors used in settings table --- */
 .pp-important {
     font-weight: bold;
-    color: #700;
+    /*color: #700;*/
 }
 
 .pp-warning {
@@ -103,6 +103,25 @@ table.pp-options-table .pp-optionhint {
 
 #pp_settings_form div.pp-subtext {
     margin-bottom: 20px !important;
+}
+
+#pp_settings_form .pp-subtext {
+    display: none;
+}
+
+#pp_settings_form .pp-no-hide {
+    display: revert;
+    margin-top: 5px;
+    color: inherit !important;
+}
+
+#pp_settings_form .pp-show-hints {
+    margin-left: 10px;
+    opacity: 80%;
+}
+
+#pp_settings_form .pp-show-hints:hover {
+    opacity: 50%;
 }
 
 /* --- Install Tab --- */
@@ -256,7 +275,7 @@ table.pp-options-table .pp-optionhint {
 
 /* --- Advanced tab --- */
 .pp-capabilities-caption {
-    margin-left: 125px;
+    margin-left: 50px;
 }
 
 .pp_cap_descripts {

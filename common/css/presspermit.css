@@ -49,6 +49,7 @@
 
 /* --- Misc Admin --- */
 .pp-hint {
+    display: none;
     margin-top: 0.2em;
 }
 
