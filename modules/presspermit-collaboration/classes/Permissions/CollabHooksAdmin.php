@@ -24,24 +24,6 @@ class CollabHooksAdmin
         add_filter('presspermit_user_can_admin_role', [$this, 'fltUserCanAdminRole'], 10, 4);
         add_filter('presspermit_admin_groups', [$this, 'fltAdminGroups'], 10, 2);
 
-        global $pagenow;
-        if (defined('REVISIONARY_VERSION')) {
-            $legacy_suffix = version_compare(REVISIONARY_VERSION, '1.5-alpha', '<') ? 'Legacy' : '';
-
-            require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/PostFilters{$legacy_suffix}.php");
-            ($legacy_suffix) ? new Collab\Revisionary\PostFiltersLegacy() : new Collab\Revisionary\PostFilters();
-        
-            if ((!defined('DOING_AJAX') || !DOING_AJAX) && ('async-upload.php' != $pagenow)) {
-                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/Admin{$legacy_suffix}.php");
-                ($legacy_suffix) ? new Collab\Revisionary\AdminLegacy() : new Collab\Revisionary\Admin();
-            }
-
-            if (!presspermit()->isContentAdministrator()) {
-                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/AdminNonAdministrator{$legacy_suffix}.php");
-                ($legacy_suffix) ? new Collab\Revisionary\AdminNonAdministratorLegacy() : new Collab\Revisionary\AdminNonAdministrator();
-            }
-        }
-
         if (defined('PRESSPERMIT_ENABLE_PAGE_TEMPLATE_LIMITER') && PRESSPERMIT_ENABLE_PAGE_TEMPLATE_LIMITER) {
             if (strpos($_SERVER['REQUEST_URI'], 'wp-admin/post.php') || strpos($_SERVER['REQUEST_URI'], 'wp-admin/post-new.php')) {   
                 require_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/PageTemplateLimiter.php');

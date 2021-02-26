@@ -50,6 +50,25 @@ class CollabHooks
             add_filter('rest_pre_dispatch', [$this, 'fltRestAddEditingFilters'], 99, 3);  // also add the filters on REST request
         }
 
+        if (defined('REVISIONARY_VERSION') && (is_admin() || presspermit()->isRESTurl())) {
+            global $pagenow;
+
+            $legacy_suffix = version_compare(REVISIONARY_VERSION, '1.5-alpha', '<') ? 'Legacy' : '';
+
+            require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/PostFilters{$legacy_suffix}.php");
+            ($legacy_suffix) ? new Collab\Revisionary\PostFiltersLegacy() : new Collab\Revisionary\PostFilters();
+        
+            if ((!defined('DOING_AJAX') || !DOING_AJAX) && ('async-upload.php' != $pagenow)) {
+                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/Admin{$legacy_suffix}.php");
+                ($legacy_suffix) ? new Collab\Revisionary\AdminLegacy() : new Collab\Revisionary\Admin();
+            }
+
+            if (!presspermit()->isContentAdministrator()) {
+                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/AdminNonAdministrator{$legacy_suffix}.php");
+                ($legacy_suffix) ? new Collab\Revisionary\AdminNonAdministratorLegacy() : new Collab\Revisionary\AdminNonAdministrator();
+            }
+        }
+
         if (class_exists('Fork', false) && !defined('PP_DISABLE_FORKING_SUPPORT')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Compat/PostForking.php'); // load this early to block rolecap addition if necessary
             new Collab\Compat\PostForking();

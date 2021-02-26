@@ -92,6 +92,22 @@ class Permissions
         return false;
     }
 
+    public function isRESTurl() {
+        static $arr_url;
+
+        if (!isset($arr_url)) {
+            $arr_url = parse_url(get_option('siteurl'));
+        }
+
+        if ($arr_url && isset($arr_url['path'])) {
+            if (0 === strpos($_SERVER['REQUEST_URI'], $arr_url['path'] . '/wp-json/')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function checkInitInterrupt() {
         if (defined('ISCVERSION') || defined('PRESSPERMIT_LIMIT_ASYNC_UPLOAD_FILTERING')) {
             if ( is_admin() && strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php') && ! empty($_POST['attachment_id']) && ! empty($_POST['fetch']) && ( 3 == $_POST['fetch']) ) {
