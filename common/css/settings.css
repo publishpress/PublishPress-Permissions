@@ -329,6 +329,11 @@ div.pp-settings-code textarea {
     margin-top: 5px;
 }
 
+div.pp-user-permissions-help p {
+margin-bottom: 10px !important;
+}
+
+
 /* --- PPFF Attachments Utility --- */
 .pp-instructions ol {
     list-style-type: decimal;
