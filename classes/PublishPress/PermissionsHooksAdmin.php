@@ -31,6 +31,11 @@ class PermissionsHooksAdmin
             add_action('wp_ajax_pp_dismiss_msg', [$this, 'dashboardDismissMsg']);
         }
 
+        if (defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION')) {
+            add_filter('authors_default_author', [$this, 'fltAuthorsPreventPostCreationLockout'], 99, 2);
+            add_action('save_post', [$this, 'actAuthorsPreventPostUpdateLockout'], 1, 3);
+        }
+
         add_action('presspermit_admin_ui', [$this, 'act_revisions_dependency']);
 
         add_filter('presspermit_exception_item_update_hooks', function($var) {return true;});
@@ -230,5 +235,60 @@ class PermissionsHooksAdmin
         $msg_id = (isset($_REQUEST['msg_id'])) ? $_REQUEST['msg_id'] : 'post_blockage_priority';
         $dismissals[$msg_id] = true;
         update_option('presspermit_dismissals', $dismissals);
+    }
+
+    // Prevent users lacking edit_others capability from being locked out of their newly created post due to Authors' "default author for new posts" setting
+    function fltAuthorsPreventPostCreationLockout($default_author, $post) {
+        global $current_user;
+
+        if (presspermit()->isAdministrator()) {
+            return $default_author;
+        }
+        
+        if ($post_type = PWP::findPostType()) {
+            if ($type_obj = get_post_type_object($post_type)) {
+                if (!empty($type_obj->cap->edit_others_posts) && !current_user_can($type_obj->cap->edit_others_posts)) {
+                    if (apply_filters('presspermit_override_default_author', true, ['post_type' => $post_type])) {
+                        return $current_user->ID;
+                    }
+                }
+            }
+        }
+
+        return $default_author;
+    }
+
+    function actAuthorsPreventPostUpdateLockout($post_id, $post, $update) {
+        global $current_user;
+        
+        if (!$update
+        || presspermit()->isAdministrator() 
+        || !function_exists('get_multiple_authors') 
+        || !function_exists('is_multiple_author_for_post')
+        || !isset($_POST['authors'])
+        || !apply_filters('presspermit_maybe_override_authors_change', true, $post)
+        ) {
+            return;
+        }
+        
+        if ($post_type = PWP::findPostType()) {
+            if ($type_obj = get_post_type_object($post_type)) {
+                if (!empty($type_obj->cap->edit_others_posts) 
+                && empty($current_user->allcaps[$type_obj->cap->edit_others_posts])
+                && is_multiple_author_for_post($current_user, $post_id)
+                && method_exists('MultipleAuthors\Classes\Objects\Author', 'get_by_user_id')
+                ) {
+                    if (!$current_author = \MultipleAuthors\Classes\Objects\Author::get_by_user_id($current_user->ID)) {
+                        return;
+                    }
+
+                    if (!in_array($current_author->term_id, $_POST['authors'])) {
+                        if (apply_filters('presspermit_override_authors_change', true, $post)) {
+                            $_POST['authors'] = array_merge([strval($current_author->term_id)], $_POST['authors']);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
