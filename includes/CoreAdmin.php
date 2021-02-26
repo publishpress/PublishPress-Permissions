@@ -3,11 +3,18 @@ namespace PublishPress\Permissions;
 
 class CoreAdmin {
     function __construct() {
+        add_action('presspermit_permissions_menu', [$this, 'actAdminMenuPromos'], 12, 2);
+        add_action('presspermit_menu_handler', [$this, 'menuHandler']);
+
         add_action('presspermit_admin_menu', [$this, 'actAdminMenu'], 999);
 
         add_action('admin_enqueue_scripts', function() {
             if (presspermitPluginPage()) {
                 wp_enqueue_style('presspermit-settings-free', plugins_url('', PRESSPERMIT_FILE) . '/includes/css/settings.css', [], PRESSPERMIT_VERSION);
+            }
+
+            if (in_array(presspermitPluginPage(), ['presspermit-statuses', 'presspermit-sync', 'presspermit-teaser'])) {
+                wp_enqueue_style('presspermit-admin-promo', plugins_url('', PRESSPERMIT_FILE) . '/includes/promo/admin-core.css', [], PRESSPERMIT_VERSION, 'all');
             }
         });
 
@@ -28,13 +35,49 @@ class CoreAdmin {
                     ['base' => 'toplevel_page_presspermit-groups'],
                     ['base' => 'permissions_page_presspermit-group-new'],
                     ['base' => 'permissions_page_presspermit-users'],
-                    ['base' => 'permissions_page_presspermit-role-usage'],
                     ['base' => 'permissions_page_presspermit-settings'],
                 ]
             ];
 
             return $settings;
         });
+    }
+
+    function actAdminMenuPromos($pp_options_menu, $handler) {
+        add_submenu_page(
+            $pp_options_menu, 
+            __('Post Statuses', 'press-permit-core'), 
+            __('Post Statuses', 'press-permit-core'), 
+            'read', 
+            'presspermit-statuses', 
+            $handler
+        );
+
+        add_submenu_page(
+            $pp_options_menu, 
+            __('Sync Posts', 'press-permit-core'), 
+            __('Sync Posts', 'press-permit-core'), 
+            'read', 
+            'presspermit-sync', 
+            $handler
+        );
+
+        add_submenu_page(
+            $pp_options_menu, 
+            __('Teaser', 'press-permit-core'), 
+            __('Teaser', 'press-permit-core'), 
+            'read', 
+            'presspermit-teaser', 
+            $handler
+        );
+    }
+
+    function menuHandler($pp_page)
+    {
+        if (in_array($pp_page, ['presspermit-statuses', 'presspermit-sync', 'presspermit-teaser'], true)) {
+            $slug = str_replace('presspermit-', '', $pp_page);
+            require_once(PRESSPERMIT_ABSPATH . "/includes/promo/{$slug}-promo.php");
+        }
     }
 
     function actAdminMenu() {
