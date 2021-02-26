@@ -4,8 +4,10 @@ namespace PublishPress\Permissions\Collab\UI\Dashboard;
 class DashboardWidgetsFilters 
 {
     function __construct() {
-        add_action('right_now_content_table_end', [$this, 'act_right_now_pending']);
-        add_action('dashboard_glance_items', [$this, 'act_right_now_pending']);
+        if (!class_exists('Glance_That')) {
+            add_action('dashboard_glance_items', [$this, 'act_right_now_pending']);
+        	add_action('right_now_content_table_end', [$this, 'act_right_now_pending']);
+        }
     }
 
     function act_right_now_pending()
