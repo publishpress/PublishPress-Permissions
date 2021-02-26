@@ -86,7 +86,8 @@ class DashboardFilters
 
     function permissions_menu($pp_options_menu, $handler)
     {
-        if (presspermit()->getOption('advanced_options'))
+    	// Register a submenu item for these screens, but only if they are accessed
+        if ('presspermit-role-usage' == presspermitPluginPage()) {
             add_submenu_page(
                 $pp_options_menu, 
                 __('Role Usage', 'press-permit-core'), 
@@ -95,14 +96,17 @@ class DashboardFilters
                 'presspermit-role-usage', 
                 $handler
             );
+        }
 
-        // satisfy WordPress' demand that all admin links be properly defined in menu
-        $pp_plugin_page = presspermitPluginPage();
-
-        if (in_array($pp_plugin_page, ['presspermit-role-usage-edit'], true)) {
-            $permissions_menu = presspermit()->admin()->getMenuParams('permits');
-            $titles = ['presspermit-role-usage-edit' => __('Edit Role Usage', 'press-permit-core')];
-            add_submenu_page($permissions_menu, $titles[$pp_plugin_page], '', 'read', $pp_plugin_page, $handler);
+        if ('presspermit-role-usage-edit' == presspermitPluginPage()) {
+            add_submenu_page(
+                $pp_options_menu, 
+                __('Edit Role Usage', 'press-permit-core'), 
+                __('Edit Role Usage', 'press-permit-core'), 
+                'read', 
+                'presspermit-role-usage-edit', 
+                $handler
+            );
         }
     }
 

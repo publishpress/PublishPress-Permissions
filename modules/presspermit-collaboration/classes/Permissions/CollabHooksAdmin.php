@@ -69,8 +69,6 @@ class CollabHooksAdmin
                 add_action('admin_print_scripts', [$this, 'NestedPagesDisableQuickEdit']);
             }
         }
-
-        add_action('admin_menu', [$this, 'actSettingsPageMaybeRedirect'], 999);
     }
 
     function NestedPagesDisableQuickEdit() {
@@ -94,32 +92,6 @@ class CollabHooksAdmin
             <?php endif;?>
             </style>
             <?php
-        }
-    }
-
-    // For old extensions linking to page=pp-settings.php, redirect to page=presspermit-settings, preserving other request args
-    function actSettingsPageMaybeRedirect()
-    {
-        foreach ([
-                     'pp-role-usage' => 'presspermit-role-usage',
-                     'pp-role-usage-edit' => 'presspermit-role-usage-edit',
-                 ] as $old_slug => $new_slug) {
-            if (strpos($_SERVER['REQUEST_URI'], "page=$old_slug") && (false !== strpos($_SERVER['REQUEST_URI'], 'admin.php'))) {
-                global $submenu;
-
-                // Don't redirect if pp-settings is registered by another plugin or theme
-                foreach (array_keys($submenu) as $i) {
-                    foreach (array_keys($submenu[$i]) as $j) {
-                        if (isset($submenu[$i][$j][2]) && ($old_slug == $submenu[$i][$j][2])) {
-                            return;
-                        }
-                    }
-                }
-
-                $arr_url = parse_url($_SERVER['REQUEST_URI']);
-                wp_redirect(admin_url('admin.php?' . str_replace("page=$old_slug", "page=$new_slug", $arr_url['query'])));
-                exit;
-            }
         }
     }
 

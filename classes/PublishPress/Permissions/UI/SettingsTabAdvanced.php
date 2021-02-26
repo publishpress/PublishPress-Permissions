@@ -189,6 +189,31 @@ class SettingsTabAdvanced
                 </tr>
             <?php endif; // any options accessable in this section
 
+            $section = 'role_integration'; // --- ROLE INTEGRATION SECTION ---
+            if (!empty($ui->form_options[$tab][$section])) : ?>
+                <tr>
+                    <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                    <td>
+                        <div>
+                        <?php printf(
+                            __('To control the makeup of Supplemental Roles, see %1$sRole Usage%2$s.', 'press-permit-core'),
+                            '<strong><a href="' . admin_url('admin.php?page=presspermit-role-usage') . '">',
+                            '</a></strong>'
+                        );
+                        ?>
+                        </div>
+                        <br />
+
+                        <div>
+                        <?php
+                        $args = (defined('PP_FORCE_DYNAMIC_ROLES')) ? ['val' => 1, 'no_storage' => true, 'disabled' => true] : [];
+                        $ui->optionCheckbox('dynamic_wp_roles', $tab, $section, true, '', $args);
+                        ?>
+                        </div>
+                    </td>
+                </tr>
+            <?php endif; // any options accessable in this section
+
             $section = 'capabilities'; // --- PP CAPABILITIES SECTION ---
             ?>
             <tr>
@@ -244,19 +269,6 @@ class SettingsTabAdvanced
                 </td>
             </tr>
             <?php
-
-            $section = 'role_integration'; // --- ROLE INTEGRATION SECTION ---
-            if (!empty($ui->form_options[$tab][$section])) : ?>
-                <tr>
-                    <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
-                    <td>
-                        <?php
-                        $args = (defined('PP_FORCE_DYNAMIC_ROLES')) ? ['val' => 1, 'no_storage' => true, 'disabled' => true] : [];
-                        $ui->optionCheckbox('dynamic_wp_roles', $tab, $section, true, '', $args);
-                        ?>
-                    </td>
-                </tr>
-            <?php endif; // any options accessable in this section
 
             $section = 'constants'; // --- CONSTANTS SECTION ---
 
