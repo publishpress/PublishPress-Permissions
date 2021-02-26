@@ -165,6 +165,7 @@ class GroupsListTable extends GroupsListTableBase
             'cb' => $bulk_check_all,
             'ID' => __('ID', 'press-permit-core'),
             'group_name' => __('Name', 'press-permit-core'),
+            'group_type' => __('Type', 'press-permit-core'),
             'num_users' => _x('Users', 'count', 'press-permit-core'),
             'roles' => _x('Roles', 'count', 'press-permit-core'),
             'exceptions' => _x('Permissions', 'count', 'press-permit-core'),
@@ -311,6 +312,34 @@ class GroupsListTable extends GroupsListTableBase
                     break;
                 case 'group_name':
                     $r .= "<td $attributes>$edit</td>";
+                    break;
+                case 'group_type':
+                    switch ($group->metagroup_type) {
+                        case 'wp_role' :
+                            switch ($group->metagroup_id) {
+                                case 'wp_anon':
+                                case 'wp_auth':
+                                case 'wp_all':
+                                    $type_caption = __('Login State', 'press-permit-core');
+                                    break;
+                                default:
+                                    $type_caption = __('WordPress Role');
+                            }
+
+                            break;
+                        case '' :
+                            $type_caption = __('Custom Group', 'press-permit-core');
+                            break;
+                        case 'rvy_notice':
+                            $type_caption = __('Notifications', 'press-permit-core');
+                            break;
+                        default:
+                            if (!$type_caption = apply_filters('presspermit_group_type_caption', '', $group->metagroup_type)) {
+                                $type_caption = ucwords(str_replace('_', ' ', $group->metagroup_type));
+                            }
+                    }
+
+                    $r .= "<td $attributes>$type_caption</td>";
                     break;
                 case 'num_users':
                     if ('wp_role' == $group->metagroup_type) {
