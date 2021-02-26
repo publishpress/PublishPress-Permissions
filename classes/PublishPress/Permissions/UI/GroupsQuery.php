@@ -175,7 +175,11 @@ class GroupQuery
             $order = 'DESC';
         }
 
-        $this->query_orderby = "ORDER BY $orderby $order";
+        if ('ID' == $qv['orderby'] || 'id' == $qv['orderby']) {
+        	$this->query_orderby = "ORDER BY $orderby $order";
+        } else {
+            $this->query_orderby = "ORDER BY metagroup_type ASC, $orderby $order";
+        }
 
         // limit
         if ($qv['number']) {

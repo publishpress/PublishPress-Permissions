@@ -312,9 +312,34 @@ class Groups
         } elseif ('wp_all' == $meta_id) {
             return __('Everyone', 'press-permit-core');
         } elseif ('wp_role' == $metagroup_type) {
-            $role_display_name = isset($wp_roles->role_names[$meta_id]) ? __($wp_roles->role_names[$meta_id]) : $meta_id;
-            return sprintf(__('[WP %s]', 'press-permit-core'), $role_display_name);
+            switch ($meta_id) {
+                case 'rvy_pending_rev_notice':
+                    return __('Pending Revision Monitors', 'press-permit-core');
+                    break;
+
+                case 'rvy_scheduled_rev_notice':
+                    return __('Scheduled Revision Monitors', 'press-permit-core');
+                    break;
+
+                default:
+            		$role_display_name = isset($wp_roles->role_names[$meta_id]) ? __($wp_roles->role_names[$meta_id]) : $meta_id;
+            }
+
+            //return sprintf(__('[WP %s]', 'press-permit-core'), $role_display_name);
+            return $role_display_name;
         } else {
+            switch ($meta_id) {
+                case 'rvy_pending_rev_notice':
+                    return __('Pending Revision Monitors', 'press-permit-core');
+                    break;
+
+                case 'rvy_scheduled_rev_notice':
+                    return __('Scheduled Revision Monitors', 'press-permit-core');
+                    break;
+
+                default:
+            }
+
             return $default_name;
         }
     }
