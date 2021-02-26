@@ -11,8 +11,6 @@ class PermissionsHooksAdmin
         //add_action('wp_dashboard_setup', [$this, '_getVersionInfo']);  // retrieve version info in case there are any alerts
         add_action('presspermit_duplicate_module', [$this, 'duplicateModule'], 10, 2);
 
-        add_filter('presspermit_default_options', [$this, 'fltDefaultAdminOptions'], 1);
-
         add_filter('presspermit_pattern_roles', [$this, 'fltPatternRoles']);
 
         add_action('admin_menu', [$this, 'actSettingsPageMaybeRedirect'], 999);
@@ -156,16 +154,6 @@ class PermissionsHooksAdmin
     public function duplicateModule($ext_slug, $ext_folder)
     {
         presspermit()->admin()->errorNotice('duplicate_module', ['module_slug' => $ext_slug, 'module_folder' => $ext_folder]);
-    }
-
-    public function fltDefaultAdminOptions($options)
-    {
-        $options['support_data'] = array_fill_keys([
-            'pp_options', 'wp_roles_types', 'theme', 'active_plugins', 'pp_permissions', 'pp_group_members', 'error_log',
-            'post_data', 'term_data'
-        ], true);
-
-        return $options;
     }
 
     public function fltPatternRoles($roles)
