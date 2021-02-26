@@ -306,11 +306,11 @@ class Groups
         global $wp_roles;
 
         if ('wp_auth' == $meta_id) {
-            return __('{Authenticated}', 'press-permit-core');
+            return __('Logged In', 'press-permit-core');
         } elseif ('wp_anon' == $meta_id) {
-            return __('{Anonymous}', 'press-permit-core');
+            return __('Not Logged In', 'press-permit-core');
         } elseif ('wp_all' == $meta_id) {
-            return __('{All}', 'press-permit-core');
+            return __('Everyone', 'press-permit-core');
         } elseif ('wp_role' == $metagroup_type) {
             $role_display_name = isset($wp_roles->role_names[$meta_id]) ? __($wp_roles->role_names[$meta_id]) : $meta_id;
             return sprintf(__('[WP %s]', 'press-permit-core'), $role_display_name);
