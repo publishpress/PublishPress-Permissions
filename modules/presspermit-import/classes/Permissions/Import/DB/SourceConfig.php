@@ -6,11 +6,9 @@ class SourceConfig
     function __construct() {
         global $wpdb;
 
-        if (!defined('SCOPER_VERSION') || empty($wpdb->groups_rs))
+        if (!defined('SCOPER_VERSION') || empty($wpdb->groups_rs)) {
             self::setRoleScoperTables();
-
-        if (presspermit()->isPro() && (!defined('PP_VERSION') || empty($wpdb->pp_roles)))
-            self::setPressPermitBetaTables();
+        }
     }
 
     public static function setRoleScoperTables()
