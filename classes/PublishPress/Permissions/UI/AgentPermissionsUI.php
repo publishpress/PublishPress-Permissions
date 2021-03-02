@@ -421,7 +421,7 @@ class AgentPermissionsUI
                 <div class="mirror-label">
                     <?php _e('Mirror all selections to other operation(s)', 'press-permit-core');?>
                 </div>
-                <div class='pp_mirror_to_operations'>    
+                <div class='pp_mirror_to_operations'>
                 </div>
             </p>
             -->
@@ -445,20 +445,20 @@ class AgentPermissionsUI
 
         $perms = [];
 
+        $perms['exceptions'] = __('Set Specific Permissions', 'press-permit-core');
+        
         if (('pp_group' == $agent_type) && ($group = $pp->groups()->getGroup($agent_id)))
             $is_wp_role = ('wp_role' == $group->metagroup_type);
 
         if (empty($group) || !in_array($group->metagroup_id, ['wp_anon', 'wp_all']) || defined('PP_ALL_ANON_ROLES'))
             $perms['roles'] = __('Add Supplemental Roles', 'press-permit-core');
 
-        $perms['exceptions'] = __('Set Specific Permissions', 'press-permit-core');
-
         if (!isset($perms['roles']))
             $current_tab = 'pp-add-exceptions';
         elseif (!isset($perms['roles']))
             $current_tab = 'pp-add-roles';
         elseif (!$current_tab = get_user_option('pp-permissions-tab'))
-            $current_tab = (isset($perms['roles'])) ? 'pp-add-roles' : 'pp-add-exceptions';
+            $current_tab = (isset($perms['exceptions'])) ? 'pp-add-exceptions' : 'pp-add-roles';
 
         if (($args['agent']->metagroup_type != 'wp_role') || !in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all'])) {
             $perms['clone'] = __('Clone', 'press-permit-core');
@@ -1064,7 +1064,7 @@ class AgentPermissionsUI
                                     if ($for_type_obj->hierarchical) {
                                         $mirror_ops []= 'associate';
                                     }
-                                    
+
                                     break;
 
                                 case 'manage':
@@ -1083,7 +1083,7 @@ class AgentPermissionsUI
                             foreach($mirror_ops as $op) {
                                 $op_obj = $pp_admin->getOperationObject($op);
 
-                                $caption = (('assign' == $op) || !$for_type || ('term' == $for_type)) 
+                                $caption = (('assign' == $op) || !$for_type || ('term' == $for_type))
                                 ? sprintf(
                                     __('Mirror to %s', 'press-permit-core'),
                                     $op_obj->label
