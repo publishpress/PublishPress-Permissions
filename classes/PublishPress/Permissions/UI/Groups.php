@@ -142,7 +142,7 @@ class Groups
                 <div class="wrap pressshack-admin-wrapper presspermit-groups" id="pp-permissions-wrapper">
                     <header>
                     <?php PluginPage::icon(); ?>
-                    <h1>
+                    <h1 class="wp-heading-inline">
                         <?php
                         if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type))
                             $groups_caption = (defined('PP_GROUPS_CAPTION')) ? PP_GROUPS_CAPTION : __('Permission Groups', 'press-permit-core');
@@ -151,17 +151,18 @@ class Groups
 
                         echo esc_html($groups_caption);
 
-                        $url = 'admin.php';
-
-                        if ($pp_groups->groupTypeEditable($group_variant) && current_user_can('pp_create_groups')) {
-                            ?>
-                            <a href="<?php echo add_query_arg(['agent_type' => $agent_type, 'page' => 'presspermit-group-new'], $url); ?>"
-                            class="add-new-h2" tabindex="1">
-                                <?php echo esc_html(PWP::__wp('Add New')); ?>
-                            </a>
-                        <?php }
-
                         echo '</h1>';
+
+                        $gvar = ($group_variant) ? $group_variant : 'pp_group';
+
+                        if ($pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')) :
+                            $_url = admin_url('admin.php?page=presspermit-group-new');
+                            if ($agent_type) {
+                                $_url = add_query_arg(['agent_type' => $agent_type], $_url);
+                            }
+                            ?>
+                            <a href="<?php echo $_url;?>" class="page-title-action"><?php _e('Add New');?></a>
+                        <?php endif;
 
                         if ($pp->getOption('display_hints')) {
                             echo '<div class="pp-hint pp-no-hide">';

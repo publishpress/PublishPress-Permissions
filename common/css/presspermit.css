@@ -298,7 +298,9 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
     color: #fff;
 }
 
-#toplevel_page_presspermit-groups ul li a[href*="presspermit-edit-permissions"] {
+#toplevel_page_presspermit-groups ul li a[href*="presspermit-edit-permissions"],
+#toplevel_page_presspermit-groups ul li a[href*="presspermit-group-new"]
+{
     display: none;
 }
 
