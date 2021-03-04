@@ -16,7 +16,7 @@
                             <img src="<?php echo PRESSPERMIT_URLPATH . '/includes/promo/permissions-sync-mobile.jpg';?>" class="pp-permissions-mobile" />
                             <div class="pp-permissions-menus-promo-content">
                                 <p>
-                                    <?php _e('Generate a page for each user in specified roles. This feature is available in PublishPress Permissions Pro.', 'press-permit-core'); ?>
+                                    <?php _e('Automatically generate a personal page for each user. This feature is available in PublishPress Permissions Pro.', 'press-permit-core'); ?>
                                 </p>
                                 <p>
                                     <a href="https://publishpress.com/links/permissions-sync-screen" target="_blank">
