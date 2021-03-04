@@ -26,7 +26,10 @@ class Settings
         wp_enqueue_script('presspermit-settings', PRESSPERMIT_URLPATH . "/common/js/settings{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
         $wp_scripts->in_footer[] = 'presspermit-settings';  // otherwise it will not be printed in footer  @todo: review
 
-        $vars = ['displayHints' => presspermit()->getOption('display_hints')];
+        $vars = [
+            'displayHints' => presspermit()->getOption('display_hints'), 
+            'hintImg' => plugins_url('', PRESSPERMIT_FILE) . "/common/img/comment-grey-bubble.png"
+        ];
         wp_localize_script('presspermit-settings', 'ppCoreSettings', $vars);
 
         if (presspermit()->isPro()) {

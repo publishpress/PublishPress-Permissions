@@ -14,7 +14,7 @@ jQuery(document).ready(function ($) {
     if (ppCoreSettings.displayHints) {
         $('.pp-options-table tr').each(function(i,e) {
             if ($(this).find('td .pp-subtext, td .pp-hint').length) {
-                var img_html = '<img class="pp-show-hints" title="See more configuration tips..." src="http://localhost/wp56/wp-content/plugins/presspermit-pro/vendor/publishpress/publishpress-permissions/common/img/comment-grey-bubble.png" />';
+                var img_html = '<img class="pp-show-hints" title="See more configuration tips..." src="' + ppCoreSettings.hintImg + '" />';
                 
                 if ($(e).find('div.pp-extra-heading').length) {
                     $(e).find('div.pp-extra-heading').before(img_html);
