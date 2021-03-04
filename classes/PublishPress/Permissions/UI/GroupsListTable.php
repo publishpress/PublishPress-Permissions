@@ -326,7 +326,7 @@ class GroupsListTable extends GroupsListTableBase
                             $type_caption = __('Custom Group', 'press-permit-core');
                             break;
                         case 'rvy_notice':
-                            $type_caption = __('Notifications', 'press-permit-core');
+                            $type_caption = __('Workflow', 'press-permit-core');
                             break;
                         default:
                             if (!$type_caption = apply_filters('presspermit_group_type_caption', '', $group->metagroup_type)) {
