@@ -16,7 +16,7 @@
                             <img src="<?php echo PRESSPERMIT_URLPATH . '/includes/promo/permissions-statuses-mobile.jpg';?>" class="pp-permissions-mobile" />
                             <div class="pp-permissions-menus-promo-content">
                                 <p>
-                                    <?php _e('Customize access to custom post statuses. This workflow feature is available in PublishPress Permissions Pro.', 'press-permit-core'); ?>
+                                    <?php _e('Control access to custom post statuses. This workflow feature is available in PublishPress Permissions Pro.', 'press-permit-core'); ?>
                                 </p>
                                 <p>
                                     <a href="https://publishpress.com/links/permissions-statuses-screen" target="_blank">
