@@ -83,8 +83,10 @@ class Permissions
             $arr_url = parse_url(get_option('siteurl'));
         }
 
-        if ($arr_url && isset($arr_url['path'])) {
-            if (0 === strpos($_SERVER['REQUEST_URI'], $arr_url['path'] . '/wp-json/oembed/')) {
+        if ($arr_url) {
+            $path = isset($arr_url['path']) ? $arr_url['path'] : '';
+
+            if (0 === strpos($_SERVER['REQUEST_URI'], $path . '/wp-json/oembed/')) {
                 return true;
             }
         }
@@ -99,8 +101,14 @@ class Permissions
             $arr_url = parse_url(get_option('siteurl'));
         }
 
-        if ($arr_url && isset($arr_url['path'])) {
-            if (0 === strpos($_SERVER['REQUEST_URI'], $arr_url['path'] . '/wp-json/')) {
+        if ($arr_url) {
+            $path = isset($arr_url['path']) ? $arr_url['path'] : '';
+
+			if (0 === strpos($_SERVER['REQUEST_URI'], $path . '/wp-json/oembed/')) {
+				return false;	
+			}
+
+            if (0 === strpos($_SERVER['REQUEST_URI'], $path . '/wp-json/')) {
                 return true;
             }
         }
