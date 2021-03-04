@@ -179,9 +179,9 @@ class Groups
                         $group_types = [];
 
                         if (current_user_can('pp_administer_content'))
-                            $group_types['wp_role'] = (object)['labels' => (object)['singular_name' => __('WordPress Role', 'press-permit-core')]];
+                            $group_types['wp_role'] = (object)['labels' => (object)['singular_name' => __('WordPress Role', 'press-permit-core'), 'plural_name' => __('WordPress Roles', 'press-permit-core')]];
 
-                        $group_types['pp_group'] = (object)['labels' => (object)['singular_name' => __('Custom Group', 'press-permit-core')]];
+                        $group_types['pp_group'] = (object)['labels' => (object)['singular_name' => __('Custom Group', 'press-permit-core'), 'plural_name' => __('Custom Groups', 'press-permit-core')]];
 
                         // currently faking WP Role as a "group type", but want it listed before BuddyPress Group
                         $group_types = apply_filters('presspermit_list_group_types', array_merge($group_types, $pp_groups->getGroupTypes([], 'object')));
@@ -195,7 +195,7 @@ class Groups
                             $class = strpos($agent_type_str, $agent_type) && ($group_variant && strpos($gvar_str, $group_variant))
                                 ? 'class="current"' : '';
 
-                            $links[] = "<li><a href='admin.php?page=presspermit-groups{$agent_type_str}{$gvar_str}' $class>{$gtype_obj->labels->singular_name}</a></li>";
+                            $links[] = "<li><a href='admin.php?page=presspermit-groups{$agent_type_str}{$gvar_str}' $class>{$gtype_obj->labels->plural_name}</a></li>";
                         }
 
                         echo '<ul class="subsubsub">';
