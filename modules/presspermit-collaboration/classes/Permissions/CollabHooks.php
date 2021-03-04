@@ -206,8 +206,21 @@ class CollabHooks
         global $current_user;
 
         // Work around Divi Page Builder requiring off-type capabilities, which prevents Specific Permissions from satisfying edit_published_pages capability requirement
-        if (!strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') || !did_action('wp_ajax_et_fb_ajax_save')) {
+        if ((is_admin() || empty($_REQUEST['et_fb'])) && (!strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') || !did_action('wp_ajax_et_fb_ajax_save'))) {
             return $wp_sitecaps;
+        }
+
+        $post_id = PWP::getPostID();
+
+        // Work around Divi Page Builder requiring edit_posts for other post types
+        if ('edit_posts' == reset($orig_reqd_caps)) {
+            if ($post_id) {
+                if ($type_obj = get_post_type_object(get_post_field('post_type', $post_id))) {
+                    if (!empty($type_obj->cap->edit_posts) && ('edit_posts' != $type_obj->cap->edit_posts) && current_user_can($type_obj->cap->edit_posts)) {
+                        return array_merge($wp_sitecaps, ['edit_posts' => true]);
+                    }
+                }
+            }
         }
 
         static $busy;
@@ -216,11 +229,11 @@ class CollabHooks
             return $wp_sitecaps;
         }
 
-        $orig_cap = (isset($args[0])) ? $args[0] : '';
+        $orig_cap = (isset($args[0])) ? $args[0] : reset($orig_reqd_caps);
 
-        // If user can edit the current post, credit edit_published_posts and edit_published_pages capabilities
-        if (in_array($orig_cap, ['edit_published_posts', 'edit_published_pages'])) {
-            if ($post_id = PWP::getPostID()) {
+        // If user can edit the current post, credit edit_published_posts, edit_published_pages, publish_posts capabilities
+        if (in_array($orig_cap, ['edit_published_posts', 'edit_published_pages', 'publish_posts'])) {
+            if ($post_id) {
                 $busy = true;
 
                 if (current_user_can('edit_post', $post_id)) {
