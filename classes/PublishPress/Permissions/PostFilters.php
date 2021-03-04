@@ -936,6 +936,12 @@ class PostFilters
 
         wp_cache_add(-1, $_post, 'posts');  // prevent querying for fake post
         presspermit()->meta_cap_post = $_post;
+        
+        // Avoid conflict with the combination of PublishPress Authors and WP_Privacy_Policy_Content check
+        if (is_admin() && class_exists('WP_Privacy_Policy_Content')) {
+            remove_action( 'admin_init', array( 'WP_Privacy_Policy_Content', 'text_change_check' ), 100 );
+        }
+
         //$return = array_diff(map_meta_cap($cap_name, $user_id, $_post), [null]);  // post types which leave some basic cap properties undefined result in nulls
         $return = array_diff(map_meta_cap($cap_name, $user_id, $_post->ID), [null]);  // post types which leave some basic cap properties undefined result in nulls
         wp_cache_delete(-1, 'posts');
