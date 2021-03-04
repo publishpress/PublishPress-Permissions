@@ -52,6 +52,7 @@ class Groups
     {
         if (isset($this->group_types['pp_group']) && ('group' == $this->group_types['pp_group']->labels->singular_name)) {
             $this->group_types['pp_group']->labels->singular_name = __('Custom Group', 'press-permit-core');
+            $this->group_types['pp_group']->labels->plural_name = __('Custom Groups', 'press-permit-core');
             $this->group_types['pp_group']->labels->name = __('Groups', 'press-permit-core');
         }
     }

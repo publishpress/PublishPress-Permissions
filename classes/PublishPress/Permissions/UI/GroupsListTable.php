@@ -163,7 +163,6 @@ class GroupsListTable extends GroupsListTableBase
 
         $c = [
             'cb' => $bulk_check_all,
-            'ID' => __('ID', 'press-permit-core'),
             'group_name' => __('Name', 'press-permit-core'),
             'group_type' => __('Type', 'press-permit-core'),
             'num_users' => _x('Users', 'count', 'press-permit-core'),
@@ -180,7 +179,6 @@ class GroupsListTable extends GroupsListTableBase
     public function get_sortable_columns()
     {
         $c = [
-            'ID' => 'ID',
             'group_name' => 'group_name',
         ];
 
@@ -307,9 +305,6 @@ class GroupsListTable extends GroupsListTableBase
                 case 'cb':
                     $r .= "<th scope='row' class='check-column'>$checkbox</th>";
                     break;
-                case 'ID':
-                    $r .= "<td $attributes>$group_id</td>";
-                    break;
                 case 'group_name':
                     $r .= "<td $attributes>$edit</td>";
                     break;
@@ -331,7 +326,7 @@ class GroupsListTable extends GroupsListTableBase
                             $type_caption = __('Custom Group', 'press-permit-core');
                             break;
                         case 'rvy_notice':
-                            $type_caption = __('Notifications', 'press-permit-core');
+                            $type_caption = __('Workflow', 'press-permit-core');
                             break;
                         default:
                             if (!$type_caption = apply_filters('presspermit_group_type_caption', '', $group->metagroup_type)) {
