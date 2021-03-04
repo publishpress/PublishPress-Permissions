@@ -128,8 +128,10 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.4.4 =
+= 3.5 - 4 Mar 2021 =
+* Compat : Divi Builder - Specific Permissions did not allow non-Editors to edit other users' pages
 * Compat : PublishPress Authors - non-Editors could be locked out of editing their own post due to "default author for new post" setting or manual Authors change
+* Compat : PublishPress Authors - users who can edit due to specific permissions where blocked from Edit Posts / Pages screen under some configurations
 * Compat : PublishPress Revisions - Specific Permissions did not allow Contributors to revise other users' pages
 * Compat : Glance That plugin - Widget content was cleared
 * Change : Settings screen - admin hints hidden by default, display on Comments icon click
