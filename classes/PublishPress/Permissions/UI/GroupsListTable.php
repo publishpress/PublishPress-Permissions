@@ -163,7 +163,6 @@ class GroupsListTable extends GroupsListTableBase
 
         $c = [
             'cb' => $bulk_check_all,
-            'ID' => __('ID', 'press-permit-core'),
             'group_name' => __('Name', 'press-permit-core'),
             'group_type' => __('Type', 'press-permit-core'),
             'num_users' => _x('Users', 'count', 'press-permit-core'),
@@ -180,7 +179,6 @@ class GroupsListTable extends GroupsListTableBase
     public function get_sortable_columns()
     {
         $c = [
-            'ID' => 'ID',
             'group_name' => 'group_name',
         ];
 
@@ -306,9 +304,6 @@ class GroupsListTable extends GroupsListTableBase
             switch ($column_name) {
                 case 'cb':
                     $r .= "<th scope='row' class='check-column'>$checkbox</th>";
-                    break;
-                case 'ID':
-                    $r .= "<td $attributes>$group_id</td>";
                     break;
                 case 'group_name':
                     $r .= "<td $attributes>$edit</td>";
