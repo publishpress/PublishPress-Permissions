@@ -38,40 +38,40 @@ table#akmin {
 }
 
 
-#pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner img
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner img
 {
   filter: blur(2px);
 }
 
-#pp-capability-menu-wrapper {
+#pp-permissions-menu-wrapper {
   border: inherit;
 }
 
-#pp-capability-menu-wrapper div.pp-capability-menus-promo {
-  height: 600px;
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo {
+  height: 550px;
   overflow: hidden;
 }
 
-#pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner {
-  position: relative; 
-  width: 100%; 
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner {
+  position: relative;
+  width: 100%;
   height: 100%;
 }
 
-#pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner img {
-  position: absolute; 
-  width: 100%; 
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner img {
+  position: absolute;
+  width: 100%;
 }
 
-#pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner img.pp-capability-mobile {
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner img.pp-permissions-mobile {
   display: none !important;
 }
 
-#pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner img.pp-capability-desktop {
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner img.pp-permissions-desktop {
   display: block !important;
 }
 
-#pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner .pp-capability-menus-promo-content {
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content {
   position: absolute;
   top: calc(50% - 100px);
   left: calc(50% - 225px);
@@ -84,7 +84,7 @@ table#akmin {
   box-shadow: 0 0 25px #ccc;
 }
 
-#pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner .pp-capability-menus-promo-gradient {
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-gradient {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -92,7 +92,7 @@ table#akmin {
   background-image: linear-gradient(to bottom, rgba(255,255,255,0), #f1f1f1);
 }
 
-#pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner .pp-capability-menus-promo-content p {
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content p {
   line-height: 1.4em;
   font-size: 16px;
   margin-bottom: 20px;
@@ -101,11 +101,11 @@ table#akmin {
   padding: 0;
 }
 
-#pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner .pp-capability-menus-promo-content p:last-of-type {
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content p:last-of-type {
     margin-bottom: 0;
 }
 
-#pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner .pp-capability-menus-promo-content a {
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content a {
   font-size: 17px;
   background: #FCB223;
   color: #000;
@@ -121,31 +121,39 @@ table#akmin {
   white-space: nowrap;
 }
 
-#pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner .pp-capability-menus-promo-content a:hover,
-#pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner .pp-capability-menus-promo-content a:focus,
-#pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner .pp-capability-menus-promo-content a:active {
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content a:hover,
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content a:focus,
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content a:active {
   background: #fcca46;
     color: #000;
 }
 
-#pp-capability-menu-wrapper div.pp-capability-menus-promo-nav {
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo-nav {
   height: 370px;
 }
 
 @media (max-width: 979px) {
-  
-  #pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner img.pp-capability-mobile {
+
+  #pp-permissions-menu-wrapper div.pp-permissions-menus-promo {
+    height: 450px;
+  }
+
+  #pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-gradient {
+    height: 100px;
+  }
+
+  #pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner img.pp-permissions-mobile {
     display: block !important;
   }
-  
-  #pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner img.pp-capability-desktop {
+
+  #pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner img.pp-permissions-desktop {
     display: none !important;
   }
 }
 
 @media (max-width: 768px) {
-  
-  #pp-capability-menu-wrapper div.pp-capability-menus-promo .pp-capability-menus-promo-inner .pp-capability-menus-promo-content {
+
+  #pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content {
     top: calc(50% - 100px);
     left: calc(50% - 150px);
     padding: 20px 20px 35px;
