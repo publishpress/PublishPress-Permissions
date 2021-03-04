@@ -18,7 +18,7 @@ class PostSaveHierarchical
         $post_id = PWP::getPostID();
 
         if (!$post_id && !$post_type && presspermit()->doingREST() && \PublishPress\Permissions\REST::getPostType()) {
-            $post_type = REST::getPostType();
+            $post_type = \PublishPress\Permissions\REST::getPostType();
         }
 
         // this filter is not intended to regulate attachment parent

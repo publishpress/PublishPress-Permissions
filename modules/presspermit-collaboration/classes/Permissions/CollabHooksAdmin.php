@@ -24,24 +24,6 @@ class CollabHooksAdmin
         add_filter('presspermit_user_can_admin_role', [$this, 'fltUserCanAdminRole'], 10, 4);
         add_filter('presspermit_admin_groups', [$this, 'fltAdminGroups'], 10, 2);
 
-        global $pagenow;
-        if (defined('REVISIONARY_VERSION')) {
-            $legacy_suffix = version_compare(REVISIONARY_VERSION, '1.5-alpha', '<') ? 'Legacy' : '';
-
-            require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/PostFilters{$legacy_suffix}.php");
-            ($legacy_suffix) ? new Collab\Revisionary\PostFiltersLegacy() : new Collab\Revisionary\PostFilters();
-        
-            if ((!defined('DOING_AJAX') || !DOING_AJAX) && ('async-upload.php' != $pagenow)) {
-                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/Admin{$legacy_suffix}.php");
-                ($legacy_suffix) ? new Collab\Revisionary\AdminLegacy() : new Collab\Revisionary\Admin();
-            }
-
-            if (!presspermit()->isContentAdministrator()) {
-                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/AdminNonAdministrator{$legacy_suffix}.php");
-                ($legacy_suffix) ? new Collab\Revisionary\AdminNonAdministratorLegacy() : new Collab\Revisionary\AdminNonAdministrator();
-            }
-        }
-
         if (defined('PRESSPERMIT_ENABLE_PAGE_TEMPLATE_LIMITER') && PRESSPERMIT_ENABLE_PAGE_TEMPLATE_LIMITER) {
             if (strpos($_SERVER['REQUEST_URI'], 'wp-admin/post.php') || strpos($_SERVER['REQUEST_URI'], 'wp-admin/post-new.php')) {   
                 require_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/PageTemplateLimiter.php');
@@ -69,8 +51,6 @@ class CollabHooksAdmin
                 add_action('admin_print_scripts', [$this, 'NestedPagesDisableQuickEdit']);
             }
         }
-
-        add_action('admin_menu', [$this, 'actSettingsPageMaybeRedirect'], 999);
     }
 
     function NestedPagesDisableQuickEdit() {
@@ -94,32 +74,6 @@ class CollabHooksAdmin
             <?php endif;?>
             </style>
             <?php
-        }
-    }
-
-    // For old extensions linking to page=pp-settings.php, redirect to page=presspermit-settings, preserving other request args
-    function actSettingsPageMaybeRedirect()
-    {
-        foreach ([
-                     'pp-role-usage' => 'presspermit-role-usage',
-                     'pp-role-usage-edit' => 'presspermit-role-usage-edit',
-                 ] as $old_slug => $new_slug) {
-            if (strpos($_SERVER['REQUEST_URI'], "page=$old_slug") && (false !== strpos($_SERVER['REQUEST_URI'], 'admin.php'))) {
-                global $submenu;
-
-                // Don't redirect if pp-settings is registered by another plugin or theme
-                foreach (array_keys($submenu) as $i) {
-                    foreach (array_keys($submenu[$i]) as $j) {
-                        if (isset($submenu[$i][$j][2]) && ($old_slug == $submenu[$i][$j][2])) {
-                            return;
-                        }
-                    }
-                }
-
-                $arr_url = parse_url($_SERVER['REQUEST_URI']);
-                wp_redirect(admin_url('admin.php?' . str_replace("page=$old_slug", "page=$new_slug", $arr_url['query'])));
-                exit;
-            }
         }
     }
 

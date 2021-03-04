@@ -1,0 +1,162 @@
+
+/**
+ * Alkivia Framework.
+ * Styles for admin dashboard.
+ * Based on the styles for Maintenance Mode plugin by Michael Wöhrer
+ *
+ * @version		$Rev: 198515 $
+ * @author		Jordi Canals
+ * @copyright   Copyright (C) 2009, 2010 Jordi Canals
+ * @license		GNU General Public License version 2
+ * @link		http://alkivia.org
+ * @package		Alkivia
+ * @subpackage	Framework
+ *
+
+	Copyright 2009, 2010 Jordi Canals <devel@jcanals.cat>
+
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	version 2 as published by the Free Software Foundation.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* =========================================================== SETTINGS */
+
+table#akmin {
+  width: 100%;
+  border: 0 none;
+  padding: 0;
+  margin: 0;
+}
+
+
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner img
+{
+  filter: blur(2px);
+}
+
+#pp-permissions-menu-wrapper {
+  border: inherit;
+}
+
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo {
+  height: 550px;
+  overflow: hidden;
+}
+
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner img {
+  position: absolute;
+  width: 100%;
+}
+
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner img.pp-permissions-mobile {
+  display: none !important;
+}
+
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner img.pp-permissions-desktop {
+  display: block !important;
+}
+
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content {
+  position: absolute;
+  top: calc(50% - 100px);
+  left: calc(50% - 225px);
+  text-align: center;
+  background: #655897;
+  padding: 20px 20px 35px;
+  border-radius: 6px;
+  width: 450px;
+  box-sizing: border-box;
+  box-shadow: 0 0 25px #ccc;
+}
+
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-gradient {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 200px;
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0), #f1f1f1);
+}
+
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content p {
+  line-height: 1.4em;
+  font-size: 16px;
+  margin-bottom: 20px;
+  margin-top: 0;
+  color: #fff;
+  padding: 0;
+}
+
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content p:last-of-type {
+    margin-bottom: 0;
+}
+
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content a {
+  font-size: 17px;
+  background: #FCB223;
+  color: #000;
+  font-weight: normal;
+  text-decoration: none;
+  padding: 9px 12px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border: 1px solid #fca871;
+  break-inside: avoid;
+  white-space: nowrap;
+}
+
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content a:hover,
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content a:focus,
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content a:active {
+  background: #fcca46;
+    color: #000;
+}
+
+#pp-permissions-menu-wrapper div.pp-permissions-menus-promo-nav {
+  height: 370px;
+}
+
+@media (max-width: 979px) {
+
+  #pp-permissions-menu-wrapper div.pp-permissions-menus-promo {
+    height: 450px;
+  }
+
+  #pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-gradient {
+    height: 100px;
+  }
+
+  #pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner img.pp-permissions-mobile {
+    display: block !important;
+  }
+
+  #pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner img.pp-permissions-desktop {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+
+  #pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner .pp-permissions-menus-promo-content {
+    top: calc(50% - 100px);
+    left: calc(50% - 150px);
+    padding: 20px 20px 35px;
+    width: 300px;
+  }
+}

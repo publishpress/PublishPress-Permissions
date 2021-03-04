@@ -50,6 +50,25 @@ class CollabHooks
             add_filter('rest_pre_dispatch', [$this, 'fltRestAddEditingFilters'], 99, 3);  // also add the filters on REST request
         }
 
+        if (defined('REVISIONARY_VERSION') && (is_admin() || presspermit()->isRESTurl())) {
+            global $pagenow;
+
+            $legacy_suffix = version_compare(REVISIONARY_VERSION, '1.5-alpha', '<') ? 'Legacy' : '';
+
+            require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/PostFilters{$legacy_suffix}.php");
+            ($legacy_suffix) ? new Collab\Revisionary\PostFiltersLegacy() : new Collab\Revisionary\PostFilters();
+        
+            if ((!defined('DOING_AJAX') || !DOING_AJAX) && ('async-upload.php' != $pagenow)) {
+                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/Admin{$legacy_suffix}.php");
+                ($legacy_suffix) ? new Collab\Revisionary\AdminLegacy() : new Collab\Revisionary\Admin();
+            }
+
+            if (!presspermit()->isContentAdministrator()) {
+                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/AdminNonAdministrator{$legacy_suffix}.php");
+                ($legacy_suffix) ? new Collab\Revisionary\AdminNonAdministratorLegacy() : new Collab\Revisionary\AdminNonAdministrator();
+            }
+        }
+
         if (class_exists('Fork', false) && !defined('PP_DISABLE_FORKING_SUPPORT')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Compat/PostForking.php'); // load this early to block rolecap addition if necessary
             new Collab\Compat\PostForking();
@@ -187,8 +206,21 @@ class CollabHooks
         global $current_user;
 
         // Work around Divi Page Builder requiring off-type capabilities, which prevents Specific Permissions from satisfying edit_published_pages capability requirement
-        if (!strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') || !did_action('wp_ajax_et_fb_ajax_save')) {
+        if ((is_admin() || empty($_REQUEST['et_fb'])) && (!strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') || !did_action('wp_ajax_et_fb_ajax_save'))) {
             return $wp_sitecaps;
+        }
+
+        $post_id = PWP::getPostID();
+
+        // Work around Divi Page Builder requiring edit_posts for other post types
+        if ('edit_posts' == reset($orig_reqd_caps)) {
+            if ($post_id) {
+                if ($type_obj = get_post_type_object(get_post_field('post_type', $post_id))) {
+                    if (!empty($type_obj->cap->edit_posts) && ('edit_posts' != $type_obj->cap->edit_posts) && current_user_can($type_obj->cap->edit_posts)) {
+                        return array_merge($wp_sitecaps, ['edit_posts' => true]);
+                    }
+                }
+            }
         }
 
         static $busy;
@@ -197,11 +229,11 @@ class CollabHooks
             return $wp_sitecaps;
         }
 
-        $orig_cap = (isset($args[0])) ? $args[0] : '';
+        $orig_cap = (isset($args[0])) ? $args[0] : reset($orig_reqd_caps);
 
-        // If user can edit the current post, credit edit_published_posts and edit_published_pages capabilities
-        if (in_array($orig_cap, ['edit_published_posts', 'edit_published_pages'])) {
-            if ($post_id = PWP::getPostID()) {
+        // If user can edit the current post, credit edit_published_posts, edit_published_pages, publish_posts capabilities
+        if (in_array($orig_cap, ['edit_published_posts', 'edit_published_pages', 'publish_posts'])) {
+            if ($post_id) {
                 $busy = true;
 
                 if (current_user_can('edit_post', $post_id)) {

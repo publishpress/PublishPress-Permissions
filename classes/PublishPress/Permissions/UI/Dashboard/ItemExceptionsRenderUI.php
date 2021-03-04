@@ -140,17 +140,20 @@ class ItemExceptionsRenderUI
 
         $_inclusions_active = isset($inclusions_active[$for_item_type][$op][$agent_type][$agent_id]);
 
+        $_name = (('user' == $agent_type) && defined('PP_USER_RESULTS_DISPLAY_NAME')) ? $agent_info->display_name : $agent_info->name;
+
         if ('wp_role' == $agent_type) {
             require_once(PRESSPERMIT_CLASSPATH . '/DB/Groups.php');
             $title = " title='" . \PublishPress\Permissions\DB\Groups::getMetagroupDescript('wp_role', $agent_info->metagroup_id, '') . "'";
         
+            if (!empty($agent_info->metagroup_id)) {
+                $_name = \PublishPress\Permissions\DB\Groups::getMetagroupName('wp_role', $agent_info->metagroup_id, $_name);
+            }
         } elseif (('user' == $agent_type) && !empty($agent_info->display_name) && ($agent_info->display_name != $agent_info->name)) {
             $title = " title='$agent_info->display_name'";
         } else {
             $title = '';
         }
-
-        $_name = (('user' == $agent_type) && defined('PP_USER_RESULTS_DISPLAY_NAME')) ? $agent_info->display_name : $agent_info->name;
         ?>
         <tr>
             <td class='pp-exc-agent'><input type='hidden' value='<?php echo $agent_id; ?>'/>

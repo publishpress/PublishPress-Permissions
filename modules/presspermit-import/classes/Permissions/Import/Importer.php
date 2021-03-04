@@ -39,14 +39,6 @@ class Importer
             DB\RoleScoper::instance()->doImport();
         }
 
-        if (!empty($_POST['pp_pp_import'])) {
-            if (!current_user_can('pp_manage_settings'))
-                wp_die(__('You are not allowed to manage Permissions settings', 'press-permit-core'));
-
-            require_once(PRESSPERMIT_IMPORT_CLASSPATH . '/DB/PressPermitBeta.php');
-            DB\PressPermitBeta::instance()->doImport();
-        }
-
         if (!empty($_POST['pp_undo_imports'])) {
             if (!current_user_can('pp_manage_settings'))
                 wp_die(__('You are not allowed to manage Permissions settings', 'press-permit-core'));
@@ -234,11 +226,6 @@ class Importer
             $wpdb->ppc_exceptions => 36,
             $wpdb->ppc_exception_items => 37,
         ];
-
-        // For Legacy PressPermit 1.0 beta import (circa 2011). To avoid confusion, this is handled by Permissions Pro only.
-        if (!empty($wpdb->pp_roles)) {
-            $this->table_codes[$wpdb->pp_roles] = 25;
-        }
 
         if (!empty($wpdb->pp_conditions)) {
             $this->table_codes[$wpdb->pp_conditions] = 26;

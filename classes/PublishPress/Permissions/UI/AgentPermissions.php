@@ -121,7 +121,7 @@ class AgentPermissions
             <div class="wrap pressshack-admin-wrapper" id="pp-permissions-wrapper">
                 <header>
                 <?php PluginPage::icon(); ?>
-                <h1><?php
+                <h1 class="wp-heading-inline"><?php
 
                     if ('user' == $agent_type) {
                         ($agent_id) ? _e('Edit User Permissions', 'press-permit-core') : _e('Add User Permissions', 'press-permit-core');
@@ -143,6 +143,19 @@ class AgentPermissions
                         printf(__('Edit Permissions (%s)', 'press-permit-core'), $group_type_obj->labels->singular_name);
                     }
                     ?></h1>
+
+                    <?php
+                    $gvar = ($group_variant) ? $group_variant : 'pp_group';
+
+                    if ($pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')) :
+                        $_url = admin_url('admin.php?page=presspermit-group-new');
+                        if ($agent_type) {
+                            $_url = add_query_arg(['agent_type' => $agent_type], $_url);
+                        }
+                    ?>
+                        <a href="<?php echo $_url;?>" class="page-title-action"><?php _e('Add New');?></a>
+                    <?php endif;?>
+    
                 </header>
 
                 <div id="pp_cred_wrap">

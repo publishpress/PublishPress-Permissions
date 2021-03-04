@@ -108,7 +108,7 @@ class UsersListing
         unset($defaults['role']);
         unset($defaults['bbp_user_role']);
 
-        $title = __('Click to show only users who have exceptions', 'press-permit-core');
+        $title = __('Click to show only users who have specific permissions', 'press-permit-core');
         $style = (!empty($_REQUEST['pp_has_exceptions'])) ? 'style="font-weight:bold; color:black"' : '';
 
         $defaults['pp_exceptions'] = sprintf(

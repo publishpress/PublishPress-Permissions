@@ -142,7 +142,7 @@ class Groups
                 <div class="wrap pressshack-admin-wrapper presspermit-groups" id="pp-permissions-wrapper">
                     <header>
                     <?php PluginPage::icon(); ?>
-                    <h1>
+                    <h1 class="wp-heading-inline">
                         <?php
                         if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type))
                             $groups_caption = (defined('PP_GROUPS_CAPTION')) ? PP_GROUPS_CAPTION : __('Permission Groups', 'press-permit-core');
@@ -151,20 +151,21 @@ class Groups
 
                         echo esc_html($groups_caption);
 
-                        $url = 'admin.php';
-
-                        if ($pp_groups->groupTypeEditable($group_variant) && current_user_can('pp_create_groups')) {
-                            ?>
-                            <a href="<?php echo add_query_arg(['agent_type' => $agent_type, 'page' => 'presspermit-group-new'], $url); ?>"
-                            class="add-new-h2" tabindex="1">
-                                <?php echo esc_html(PWP::__wp('Add New')); ?>
-                            </a>
-                        <?php }
-
                         echo '</h1>';
 
+                        $gvar = ($group_variant) ? $group_variant : 'pp_group';
+
+                        if ($pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')) :
+                            $_url = admin_url('admin.php?page=presspermit-group-new');
+                            if ($agent_type) {
+                                $_url = add_query_arg(['agent_type' => $agent_type], $_url);
+                            }
+                            ?>
+                            <a href="<?php echo $_url;?>" class="page-title-action"><?php _e('Add New');?></a>
+                        <?php endif;
+
                         if ($pp->getOption('display_hints')) {
-                            echo '<div class="pp-hint">';
+                            echo '<div class="pp-hint pp-no-hide">';
 
                             if (defined('PP_GROUPS_HINT')) {
                                 echo esc_html(PP_GROUPS_HINT);
@@ -178,25 +179,27 @@ class Groups
                         $group_types = [];
 
                         if (current_user_can('pp_administer_content'))
-                            $group_types['wp_role'] = (object)['labels' => (object)['singular_name' => __('WP Role', 'press-permit-core')]];
+                            $group_types['wp_role'] = (object)['labels' => (object)['singular_name' => __('WordPress Role', 'press-permit-core'), 'plural_name' => __('WordPress Roles', 'press-permit-core')]];
 
-                        $group_types['pp_group'] = (object)['labels' => (object)['singular_name' => __('Custom Group', 'press-permit-core')]];
+                        $group_types['pp_group'] = (object)['labels' => (object)['singular_name' => __('Custom Group', 'press-permit-core'), 'plural_name' => __('Custom Groups', 'press-permit-core')]];
 
                         // currently faking WP Role as a "group type", but want it listed before BuddyPress Group
                         $group_types = apply_filters('presspermit_list_group_types', array_merge($group_types, $pp_groups->getGroupTypes([], 'object')));
 
-                        $links = [];
+                        $class = (!$group_variant) ? 'class="current"' : '';
+                        $links = ["<li><a href='admin.php?page=presspermit-groups' $class>" . __('All', 'press-permit-core') . "</a></li>"];
+                        
                         foreach ($group_types as $_group_type => $gtype_obj) {
                             $agent_type_str = ('wp_role' == $_group_type) ? "&agent_type=pp_group" : "&agent_type=$_group_type";
                             $gvar_str = "&group_variant=$_group_type";
-                            $class = strpos($agent_type_str, $agent_type) && (!$group_variant || strpos($gvar_str, $group_variant))
+                            $class = strpos($agent_type_str, $agent_type) && ($group_variant && strpos($gvar_str, $group_variant))
                                 ? 'class="current"' : '';
 
-                            $links[] = "<li><a href='admin.php?page=presspermit-groups{$agent_type_str}{$gvar_str}' $class>{$gtype_obj->labels->singular_name}</a></li>";
+                            $links[] = "<li><a href='admin.php?page=presspermit-groups{$agent_type_str}{$gvar_str}' $class>{$gtype_obj->labels->plural_name}</a></li>";
                         }
 
                         echo '<ul class="subsubsub">';
-                        printf(__('%1$sGroup Type:%2$s %3$s', 'press-permit-core'), '<li class="pp-gray"><strong>', '</strong></li>', implode('&nbsp;|&nbsp;', $links));
+                        printf(__('%1$sGroup Type:%2$s %3$s', 'press-permit-core'), '<li class="pp-gray">', '</li>', implode('&nbsp;|&nbsp;', $links));
                         echo '</ul>';
 
                         if (!empty($groupsearch))
@@ -225,10 +228,10 @@ class Groups
                         && $pp->getOption('display_extension_hints')
                     ) {
                         if (presspermit()->isPro()) {
-                            $msg = __('To assign roles or exceptions to BuddyPress groups, activate the Compatibility Pack module', 'press-permit-core');
+                            $msg = __('To assign roles or permissions to BuddyPress groups, activate the Compatibility Pack module', 'press-permit-core');
                         } else {
                             $msg = sprintf(
-                                __('To assign roles or exceptions to BuddyPress groups, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                                __('To assign roles or permissions to BuddyPress groups, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
                                 '<a href="https://publishpress.com/pricing/">',
                                 '</a>'
                             );

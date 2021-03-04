@@ -298,34 +298,34 @@ class PluginUpdated
         // add a metagroup for anonymous users
         $metagroups['wp_anon'] = (object)[
             'type' => 'wp_role',
-            'name' => '{Anonymous}',
+            'name' => 'Not Logged In',
             'descript' => 'Anonymous users (not logged in)'
         ];
 
         // add a metagroup for authenticated users
         $metagroups['wp_auth'] = (object)[
             'type' => 'wp_role',
-            'name' => '{Authenticated}',
+            'name' => 'Logged In',
             'descript' => 'All users who are logged in and have a role on the site'
         ];
 
         // add a metagroup for all users
         $metagroups['wp_all'] = (object)[
             'type' => 'wp_role',
-            'name' => '{All}',
+            'name' => 'Everyone',
             'descript' => 'All users (including anonymous)'
         ];
 
         // add metagroups for Revisionary notification recipients
         $metagroups['rvy_pending_rev_notice'] = (object)[
             'type' => 'rvy_notice',
-            'name' => '[Pending Revision Monitors]',
+            'name' => 'Pending Revision Monitors',
             'descript' => 'Administrators / Publishers to notify (by default) of pending revisions'
         ];
 
         $metagroups['rvy_scheduled_rev_notice'] = (object)[
             'type' => 'rvy_notice',
-            'name' => '[Scheduled Revision Monitors]',
+            'name' => 'Scheduled Revision Monitors',
             'descript' => 'Administrators / Publishers to notify when any scheduled revision is published'
         ];
 

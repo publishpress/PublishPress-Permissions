@@ -109,7 +109,7 @@ class PluginPage
         }
 
         if (empty($group_variant)) {
-            $group_variant = (isset($_REQUEST['group_variant'])) ? sanitize_key($_REQUEST['group_variant']) : 'wp_role';
+            $group_variant = (isset($_REQUEST['group_variant'])) ? sanitize_key($_REQUEST['group_variant']) : '';
         }
 
         return apply_filters('presspermit_query_group_variant', $group_variant);

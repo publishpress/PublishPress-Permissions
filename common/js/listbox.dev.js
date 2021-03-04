@@ -22,6 +22,17 @@
             }
         });
 
+        $('input.pp-user-meta-field').on('keydown', function (e) {
+            if (e.keyCode == 13) {
+                ajax_request($('#' + args.search_id).val());
+                e.preventDefault();
+            }
+        });
+
+        $('div.pp-search-box-with-icon-wrapper .dashicons-search').on('click', function(e) {
+            ajax_request($('#' + args.search_id).val());
+        });
+
         $("#" + args.button_id).on('click', function () {
             ajax_request($('#' + args.search_id).val());
         });

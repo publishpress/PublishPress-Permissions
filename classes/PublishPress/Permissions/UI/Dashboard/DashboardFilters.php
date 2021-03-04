@@ -257,7 +257,7 @@ class DashboardFilters
         if ($do_groups) {
             add_submenu_page($pp_cred_menu, __('Groups', 'press-permit-core'), __('Groups', 'press-permit-core'), 'read', 'presspermit-groups', $handler);
 
-            if (current_user_can('pp_create_groups')) {
+            if (current_user_can('pp_create_groups') && ('presspermit-group-new' == presspermitPluginPage())) {
                 add_submenu_page(
                     $pp_cred_menu,
                     __('Add New Permission Group', 'press-permit-core'),
@@ -267,10 +267,6 @@ class DashboardFilters
                     $handler
                 );
             }
-        }
-
-        if (current_user_can('list_users') && current_user_can('pp_administer_content')) {
-            add_submenu_page($pp_cred_menu, __('Users', 'press-permit-core'), __('Users', 'press-permit-core'), 'read', 'presspermit-users', $handler);
         }
 
         if ($do_settings) {
