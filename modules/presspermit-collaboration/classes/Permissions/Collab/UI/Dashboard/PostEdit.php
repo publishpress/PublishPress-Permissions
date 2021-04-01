@@ -159,9 +159,20 @@ class PostEdit
                 $('#visibility-radio-<?php echo $set_visibility; ?>').click();
 
                 if (typeof(postL10n) != 'undefined') {
-	                $('#post-visibility-display').html(
-	                    postL10n[$('#post-visibility-select input:radio:checked').val()]
-	                );
+					var vis = $('#post-visibility-select input:radio:checked').val();
+                    var str = '';
+
+                    if ('public' == vis) {
+                        str = '<?php _e('Public');?>';
+                    } else {
+                        str = postL10n[$('#post-visibility-select input:radio:checked').val()];
+                    }
+
+                    if (str) {
+		                $('#post-visibility-display').html(
+		                    postL10n[$('#post-visibility-select input:radio:checked').val()]
+		                );
+                    }
                 } else {
                     $('#post-visibility-display').html(
                         $('#visibility-radio-<?php echo $set_visibility; ?>').next('label').html()
