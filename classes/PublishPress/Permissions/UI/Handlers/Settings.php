@@ -165,6 +165,16 @@ class Settings
         }
 
         if ($_deactivated !== $deactivated) {
+            foreach(array_diff_key($deactivated, $_deactivated) as $module_name => $module) {
+                do_action($module_name . '_deactivate');
+            }
+
+            foreach(array_diff_key($_deactivated, $deactivated) as $module_name => $module) {
+                if (in_array($module_name, ['presspermit-file-access'])) {
+                    update_option(str_replace('-', '_', $module_name) . '_deactivate', 1);
+                }
+            }
+
             $pp->updateOption('deactivated_modules', $deactivated);
             $tab = (!empty($_POST['pp_tab'])) ? "&pp_tab={$_POST['pp_tab']}" : '';
             wp_redirect(admin_url("admin.php?page=presspermit-settings$tab&presspermit_submit_redirect=1"));
