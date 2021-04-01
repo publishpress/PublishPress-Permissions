@@ -20,7 +20,7 @@ class PostFilters
     public function fltHaveSiteCaps($have_site_caps, $post_type, $args) {
         global $current_user;
 
-        if (!empty($args['has_cap_check']) && ('edit_post' == $args['has_cap_check'])) {
+        if (!empty($args['has_cap_check']) && ('edit_post' == $args['has_cap_check']) && !presspermit_is_preview()) {
             if (rvy_get_option('revisor_lock_others_revisions')) {
                 $type_obj = get_post_type_object($post_type);
 
