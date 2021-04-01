@@ -11,6 +11,8 @@ class Admin
             add_action('init', [$this, 'init_rvy_interface'], 2);
         }
 
+        add_action('presspermit_init_rvy_interface', [$this, 'init_rvy_interface']);
+
         add_filter('map_meta_cap', [$this, 'flt_mapMetaCap'], 3, 4);
 
         add_filter('presspermit_get_exception_items', [$this, 'flt_get_exception_items'], 10, 5);
