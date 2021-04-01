@@ -3,9 +3,9 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.9.7
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 5.6.20
-Stable tag: 3.5
+Stable tag: 3.5.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -123,10 +123,17 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.5 =
+= 3.5.1 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
+
+= 3.5.1 - 1 Apr 2021 =
+* Fixed : Post Editor - toggling a Specific Permission Enabled / Disabled left both Enabled and Disabled permissions intact (with Enabled taking precedence under normal configuration)
+* Fixed : Classic Editor - Publish metabox replaced "Public" caption with blank space
+* Compat : Classic Editor plugin - PHP warning for undefined variable current_user on some screens if users are allowed to select their editor
+* Compat : PublishPress Revisions - Revisors could not preview other users' pending revisions, even if they are listed in Revision Queue (also requires PublishPress Revisions 2.5.1)
+* Compat : PublishPress Revisions - Pending Revision Monitors group ineffective; notifications were sent to all Editors and Administrators (also requires PublishPress Revisions 2.5.1)
 
 = 3.5 - 4 Mar 2021 =
 * Compat : Divi Builder - Specific Permissions did not allow non-Editors to edit other users' pages

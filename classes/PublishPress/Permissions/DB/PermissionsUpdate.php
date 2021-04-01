@@ -261,7 +261,7 @@ class PermissionsUpdate
                 }
 
                 foreach ($agents[$assign_for] as $agent_id => $exc_code) {
-                    if (is_numeric($exc_code) && in_array($exc_code, array_keys($coded_mod_type), true)) {
+                    if (is_numeric($exc_code) && in_array($exc_code, array_keys($coded_mod_type))) {
                         // delete exceptions stored for different mod type
                         foreach (array_keys($stored_assignments) as $_mod_type) {
                             if (($_mod_type != $coded_mod_type[$exc_code]) && isset($stored_assignments[$_mod_type][$assign_for][$agent_id])) {

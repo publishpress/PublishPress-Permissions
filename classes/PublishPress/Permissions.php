@@ -701,6 +701,7 @@ class Permissions
 
             if (
                 isset($is_administrator[$admin_type])
+                && !empty($current_user)
                 && ($cached_user_id[$admin_type] == $current_user->ID) && empty($args['force_refresh'])
             ) {
                 return $is_administrator[$admin_type];
@@ -713,7 +714,7 @@ class Permissions
             $is_multisite = is_multisite();
         }
 
-        $user = ((false === $user_id) || ($user_id == $current_user->ID)) ? $current_user : new \WP_User($user_id);
+        $user = (((false === $user_id) || ($user_id == $current_user->ID)) && !empty($current_user)) ? $current_user : new \WP_User($user_id);
 
         if ($is_multisite && $user->ID && is_super_admin($user->ID)) {
             $return = true;
@@ -733,13 +734,13 @@ class Permissions
             ) {  // pp_administer_content cap also grants pp_unfiltered implicitly
                 $return = true;
             }
-        } elseif ($user->ID) {
+        } elseif ($user && !empty($user->ID)) {
             if (!empty($user->allcaps[$caps[$admin_type]])) {
                 $return = true;
             }
         }
 
-        if (false === $user_id) {
+        if ((false === $user_id) && !empty($current_user)) {
             $is_administrator[$admin_type] = $return;
             $cached_user_id[$admin_type] = $current_user->ID;
         }
