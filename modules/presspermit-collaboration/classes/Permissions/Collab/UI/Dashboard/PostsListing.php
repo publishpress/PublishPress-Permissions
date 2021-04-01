@@ -77,11 +77,14 @@ class PostsListing
     public function act_modify_inline_edit_ui()
     {
         $screen = get_current_screen();
-        $post_type_object = get_post_type_object($screen->post_type);
 
-        if (apply_filters('presspermit_disable_object_cond_metaboxes', false, 'post', 0)) {
+        $post_type = (!empty($screen) && isset($screen->post_type)) ? $screen->post_type : PWP::findPostType();
+
+        if (!$post_type || apply_filters('presspermit_disable_object_cond_metaboxes', false, 'post', 0)) {
             return;
         }
+
+        $post_type_object = get_post_type_object($screen->post_type);
         ?>
         <script type="text/javascript">
             /* <![CDATA[ */
