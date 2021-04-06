@@ -128,7 +128,7 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.5.1 - 1 Apr 2021 =
+= 3.5.1 - 6 Apr 2021 =
 * Fixed : Post Editor - toggling a Specific Permission Enabled / Disabled left both Enabled and Disabled permissions intact (with Enabled taking precedence under normal configuration)
 * Fixed : Classic Editor - Publish metabox replaced "Public" caption with blank space
 * Compat : Classic Editor plugin - PHP warning for undefined variable current_user on some screens if users are allowed to select their editor
