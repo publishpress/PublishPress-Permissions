@@ -5,14 +5,6 @@ namespace PublishPress\Permissions\Collab\Revisionary;
 class Admin
 {
     function __construct() {
-        if (did_action('init')) {
-            $this->init_rvy_interface();
-        } else {
-            add_action('init', [$this, 'init_rvy_interface'], 2);
-        }
-
-        add_action('presspermit_init_rvy_interface', [$this, 'init_rvy_interface']);
-
         add_filter('map_meta_cap', [$this, 'flt_mapMetaCap'], 3, 4);
 
         add_filter('presspermit_get_exception_items', [$this, 'flt_get_exception_items'], 10, 5);
@@ -24,17 +16,6 @@ class Admin
         add_filter('presspermit_administrator_caps', [$this, 'flt_pp_administrator_caps'], 5);
         add_filter('presspermit_term_include_clause', [$this, 'flt_term_include_clause'], 10, 2);
         add_filter('presspermit_exception_clause', [$this, 'flt_pp_exception_clause'], 10, 4);
-    }
-
-    public function init_rvy_interface()
-    {
-        if (class_exists('RevisionaryContentRoles')) {
-            global $revisionary;
-            if (!empty($revisionary) && method_exists($revisionary, 'set_content_roles')) {
-                require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisionary/ContentRoles.php');
-                $revisionary->set_content_roles(new ContentRoles());
-            }
-        }
     }
 
     public function flt_pp_administrator_caps($caps)
