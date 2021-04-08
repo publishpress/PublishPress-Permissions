@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.7
 Requires PHP: 5.6.20
-Stable tag: 3.5.1
+Stable tag: 3.5.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -67,6 +67,8 @@ WordPress provides some status options including "Draft", "Pending Review" and "
 = Feature #8. Create Your Own Visibility Statuses (Pro Version) =
 
 With PublishPress Permissions Pro, you can create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. Another example is a "Staff" status, for the people who run your site.
+
+
 [Click here to see how to build your own visibility statuses](https://publishpress.com/knowledge-base/custom-post-visibility/).
 
 = Join PublishPress and get the Pro plugins =
