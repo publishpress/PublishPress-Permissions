@@ -107,7 +107,7 @@ class LibWP
                             && isset($_GET['classic-editor__forget']));
 
         $conditions[] = $pluginsState['gutenberg-ramp'] 
-                        && apply_filters('use_block_editor_for_post', true, get_post(rvy_detect_post_id()), PHP_INT_MAX);
+                        && apply_filters('use_block_editor_for_post', true, get_post(self::getPostID()), PHP_INT_MAX);
 
 		// Returns true if at least one condition is true.
 		$result = count(

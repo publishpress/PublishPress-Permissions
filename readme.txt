@@ -5,60 +5,71 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.7
 Requires PHP: 5.6.20
-Stable tag: 3.5.1
+Stable tag: 3.5.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-With PublishPress Permissions you can enable or block access to specific posts, pages, categories and other content on your site. You can apply these permissions for roles, individual users, and even custom groups.
+With PublishPress Permissions you can enable or block access to specific posts, pages, categories, tags and more. You can apply these permissions for roles, individual users, and even custom groups.
 
 == Description ==
 
 [PublishPress Permissions](https://publishpress.com/permissions) is the plugin for advanced WordPress permissions. It goes far beyond the options you'll find in the WordPress core. With PublishPress Permissions you can enable or block access to specific posts, pages, categories and other content on your site. You can apply these permissions for roles, individual users, and even custom groups.
 
-There are too many features to mention in a short introduction, but here's one example: PublishPress Permissions allows you to customize viewing and editing access for almost any content built on the WordPress post types platform. Open a Post, Page or custom post type, and you'll be able to decide which roles, users or custom groups can view and edit that content.
-[Click here for your quick start guide to PublishPress Permissions](https://publishpress.com/knowledge-base/permissions-start/).
+= 8 Key Features in PublishPress Permissions = 
 
-= Control Viewing Permissions for WordPress Content = 
+1. Control who can view your WordPress content
+2. Control who can edit your WordPress content
+3. Create your own user groups and restrict access to their content
+4. Manage access files in the Media Library
+5. Show teasers for restricted content
+6. Automatically create personal posts for users
+7. Create publishing statuses
+8. Create visibility statuses
+
+= Feature #1. Viewing Permissions for WordPress Content = 
 
 PublishPress Permissions enables you to customize viewing access for WordPress content. Open any post and you'll see a box with the label, "Permissions: Read this Post". This box allows you to choose "Enabled" or "Blocked" for any user role or individual user. You can also set permissions for all users who are guests, and those who are logged in.
-[Click here to see how to create custom viewing permissions](https://publishpress.com/knowledge-base/viewing-permissions/).
 
-= Control Editing Permissions for WordPress Content = 
+[Click here to see how to control viewing permissions](https://publishpress.com/knowledge-base/viewing-permissions/).
+
+= Feature #2. Editing Permissions for WordPress Content = 
 
 PublishPress Permissions allows you to customize the editing permissions for all your content. Open a Post, Page, Category, Tag, or custom post type and you can decide who is allowed to edit that content.
-[Click here to see how to create editing viewing permissions](https://publishpress.com/knowledge-base/editing-permissions/).
 
-= Create Your Own User Groups =
+[Click here to see how to control editing permissions](https://publishpress.com/knowledge-base/editing-permissions/).
 
-PublishPress Permissions allows you to create your own user groups. Imagine you want to give some users access to a single Post. Instead of creating a new user role and applying all the permissions, you can easily add those users to a group. This is a simple and more flexible alternative to user roles.
-[Click here to see how to utilize custom user groups](https://publishpress.com/knowledge-base/groups/).
+= Feature #3. Create Your Own User Groups =
 
-= Manage Access to the Media Library = 
+PublishPress Permissions allows you to create your own user groups. Imagine you want to give some users access to a single Post. Instead of creating a new user role and applying all the permissions, you can easily add those users to a group. This is a simple and more flexible alternative to user roles. You can also prevent users from reading or editing content if they are not in a specific group.
+
+[Click here to see how to use custom user groups](https://publishpress.com/knowledge-base/groups/).
+
+= Feature #4. Manage Access to the Media Library = 
+
 PublishPress Permissions gives you detailed control over access to media on your WordPress site. You decide who gets to edit and view files in your Media Library. For example, you can set up WordPress so that users only have access to files that they uploaded. Or you can add an exception so users can edit other people's media files if they are attached to a post they can edit.
 [Click here to see how to manage access to your media files](https://publishpress.com/knowledge-base/permissions-media-files/).
 
-= Show Content Teasers =
+= Feaure #5. Show Teasers for Restricted Content (Pro Version) =
 
 PublishPress Permissions Pro allows you to display a teaser for unreadable content. This is perfect for making small snippets of your content available to the public. You can have teaser text that is publicly available, followed by private content that is only visible for your site's users. If you choose to display a login form, the redirect will go to the originally requested content.
 [Click here to see how to display content teasers](https://publishpress.com/knowledge-base/how-to-create-a-teaser-for-private-content-in-wordpress/).
 
-= Automatically Create Posts for Users =
+= Feature #6. Automatically Create Posts for Users (Pro Version) =
 
 This Pro feature allows you to automatically create content for your users. For example, you can sync your staff members to Pages. This would allow your staff to each have their own page to edit and update. You can use this feature to automatically create posts, WooCommerce products, or any other post type that is defined on your site.
 [Click here to see how to automatically create posts for users](https://publishpress.com/knowledge-base/how-to-create-a-personal-page-for-each-wordpress-user/).
 
-= Create Your Own Workflow Statuses =
+= Feature #7. Create Your Own Publishing Statuses (Pro Version) =
 
 WordPress provides some status options including "Draft", "Pending Review" and "Published". Permissions Pro enables you to design a far more advanced workflow. Each status you create can have its own unique capability requirements.
 [Click here to see how to build your own workflow statuses](https://publishpress.com/knowledge-base/multi-step-moderation/).
 
-= Create Your Own Visibility Statuses =
+= Feature #8. Create Your Own Visibility Statuses (Pro Version) =
 
 With PublishPress Permissions Pro, you can create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. Another example is a "Staff" status, for the people who run your site.
-[Click here to see how to build your own visibility statuses](https://publishpress.com/knowledge-base/custom-post-visibility/).
 
-= How to Upgrade from Press Permit =
-This plugin was previously called "Press Permit". [Contact us](https://publishpress.com/contact/) for assistance in migrating to the new version of this plugin.
+
+[Click here to see how to build your own visibility statuses](https://publishpress.com/knowledge-base/custom-post-visibility/).
 
 = Join PublishPress and get the Pro plugins =
 
@@ -73,6 +84,9 @@ Join PublishPress and you'll get access to these six Pro plugins:
 * [PublishPress Revisions Pro](https://publishpress.com/revisions) allows you to update your published pages with teamwork and precision.
 
 Together, these plugins are a suite of powerful publishing tools for WordPress. If you need to create a professional workflow in WordPress, with moderation, revisions, permissions and more, then you should try PublishPress.
+
+= How to Upgrade from Press Permit =
+This plugin was previously called "Press Permit". [Contact us](https://publishpress.com/contact/) for assistance in migrating to the new version of this plugin.
 
 = Bug Reports =
 Bug reports for PublishPress Permissions are welcomed in our [repository on GitHub](https://github.com/publishpress/publishpress-permissions). Please note that GitHub is not a support forum, and that issues that aren't properly qualified as bugs will be closed.
@@ -127,6 +141,10 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
+
+= 3.5.2 - 8 Apr 2021 =
+* Compat : Gutenberg Ramp - Fatal error on editor screen if PublishPress Revisions not active
+* Compat : Revisions Pro + Elementor, Divi or Beaver Builder : Pending Revision Monitors group membership did not control notifications
 
 = 3.5.1 - 6 Apr 2021 =
 * Fixed : Post Editor - toggling a Specific Permission Enabled / Disabled left both Enabled and Disabled permissions intact (with Enabled taking precedence under normal configuration)
