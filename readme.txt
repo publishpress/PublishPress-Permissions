@@ -140,6 +140,10 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
+= 3.5.2 - 8 Apr 2021 =
+* Compat : Gutenberg Ramp - Fatal error on editor screen if PublishPress Revisions not active
+* Compat : Revisions Pro + Elementor, Divi or Beaver Builder : Pending Revision Monitors group membership did not control notifications
+
 = 3.5.1 - 6 Apr 2021 =
 * Fixed : Post Editor - toggling a Specific Permission Enabled / Disabled left both Enabled and Disabled permissions intact (with Enabled taking precedence under normal configuration)
 * Fixed : Classic Editor - Publish metabox replaced "Public" caption with blank space
