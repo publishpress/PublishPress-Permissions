@@ -8,7 +8,7 @@ class CollabHooks
         if (!empty($_REQUEST['action']) && ('editpost' == $_REQUEST['action']) && !empty($_REQUEST['et_pb_use_builder']) && !empty($_REQUEST['auto_draft'])) {
             return;
         }
-        
+
         // Divi Page Builder  @todo: test whether these can be implemented with 'presspermit_unfiltered_ajax' filter in PostFilters::fltPostsClauses instead
         if (strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') 
         && in_array(
@@ -50,7 +50,10 @@ class CollabHooks
             add_filter('rest_pre_dispatch', [$this, 'fltRestAddEditingFilters'], 99, 3);  // also add the filters on REST request
         }
 
-        if (defined('REVISIONARY_VERSION') && (is_admin() || presspermit()->isRESTurl())) {
+        if (defined('REVISIONARY_VERSION')) {
+            add_action('presspermit_init_rvy_interface', [$this, 'init_rvy_interface']);
+    
+            if (is_admin() || presspermit()->isRESTurl()) {
             global $pagenow;
 
             $legacy_suffix = version_compare(REVISIONARY_VERSION, '1.5-alpha', '<') ? 'Legacy' : '';
@@ -66,6 +69,13 @@ class CollabHooks
             if (!presspermit()->isContentAdministrator()) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/AdminNonAdministrator{$legacy_suffix}.php");
                 ($legacy_suffix) ? new Collab\Revisionary\AdminNonAdministratorLegacy() : new Collab\Revisionary\AdminNonAdministrator();
+            }
+
+                if (did_action('init')) {
+                    $this->init_rvy_interface();
+                } else {
+                    add_action('init', [$this, 'init_rvy_interface'], 2);
+                }
             }
         }
 
@@ -163,6 +173,17 @@ class CollabHooks
 
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/CapabilityFiltersAdmin.php');
             new Collab\CapabilityFiltersAdmin();
+        }
+    }
+
+    public function init_rvy_interface()
+    {
+        if (class_exists('RevisionaryContentRoles')) {
+            global $revisionary;
+            if (!empty($revisionary) && method_exists($revisionary, 'set_content_roles')) {
+                require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisionary/ContentRoles.php');
+                $revisionary->set_content_roles(new Collab\Revisionary\ContentRoles());
+            }
         }
     }
 
