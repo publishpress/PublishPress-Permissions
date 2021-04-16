@@ -142,6 +142,9 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
+= 3.5.4 =
+* Compat : Revisions - Pending Revision Monitors group ineffective when first installation of Permissions was >= 3.5
+
 = 3.5.2 - 8 Apr 2021 =
 * Compat : Gutenberg Ramp - Fatal error on editor screen if PublishPress Revisions not active
 * Compat : Revisions Pro + Elementor, Divi or Beaver Builder : Pending Revision Monitors group membership did not control notifications
