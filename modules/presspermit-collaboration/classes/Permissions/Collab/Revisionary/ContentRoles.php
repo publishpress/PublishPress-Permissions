@@ -12,7 +12,11 @@ class ContentRoles extends \RevisionaryContentRoles
     {
         if ($group = presspermit()->groups()->getGroupByName('[' . $metagroup_name . ']')) {
             return "admin.php?page=presspermit-edit-permissions&action=edit&agent_id=$group->ID";
+        
+        } elseif ($group = presspermit()->groups()->getGroupByName($metagroup_name)) {
+            return "admin.php?page=presspermit-edit-permissions&action=edit&agent_id=$group->ID";
         }
+    
         return '';
     }
 
@@ -20,7 +24,11 @@ class ContentRoles extends \RevisionaryContentRoles
     {
         if ($group = presspermit()->groups()->getGroupByName('[' . $metagroup_name . ']')) {
             return presspermit()->groups()->getGroupMembers($group->ID, 'pp_group', 'id', ['maybe_metagroup' => true]);
+        
+        } elseif ($group = presspermit()->groups()->getGroupByName($metagroup_name)) {
+            return presspermit()->groups()->getGroupMembers($group->ID, 'pp_group', 'id', ['maybe_metagroup' => true]);
         }
+    
         return [];
     }
 
