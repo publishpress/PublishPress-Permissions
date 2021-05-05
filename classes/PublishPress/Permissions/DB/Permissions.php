@@ -396,7 +396,9 @@ class Permissions
         }
 
         $additional_ttids = [];
-        $revise_ttids = ['{published}' => []];
+
+        $revise_status_key = (defined('PRESSPERMIT_REVISE_TERMS_FOR_UNPUBLISHED') && function_exists('rvy_get_option') && rvy_get_option('pending_revision_unpublished')) ? '' : '{published}';
+        $revise_ttids = [$revise_status_key => []];
 
         global $revisionary, $pagenow;  // @todo: API
 
@@ -414,7 +416,7 @@ class Permissions
             ) {
                 if (!empty($user->except['revise_post']['term'][$taxonomy]['additional'][$post_type][''])) {
                     if (!empty($revisionary) && empty($revisionary->skip_revision_allowance)) {
-                        $revise_ttids['{published}'] = array_merge($revise_ttids['{published}'], $user->except['revise_post']['term'][$taxonomy]['additional'][$post_type]['']);
+                        $revise_ttids[$revise_status_key] = array_merge($revise_ttids[$revise_status_key], $user->except['revise_post']['term'][$taxonomy]['additional'][$post_type]['']);
                 	}
             	}
             }
@@ -429,20 +431,20 @@ class Permissions
             }
         }
 
-        if (('edit' == $required_operation) && !empty($revise_ttids['{published}'])) {
-            $in_clause = "IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $revise_ttids['{published}']) . "') )";
+        if (('edit' == $required_operation) && !empty($revise_ttids[$revise_status_key])) {
+            $in_clause = "IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $revise_ttids[$revise_status_key]) . "') )";
 
             $key = (!empty($post_blockage_clause) && !defined('PP_LEGACY_POST_BLOCKAGE')) ? 'term' : 'post'; // perf enhancement (cosolidate query clauses that don't need to be separated)
-            $additions[$key]['{published}'][] = apply_filters(
+            $additions[$key][$revise_status_key][] = apply_filters(
                 'presspermit_additions_clause',
                 "$src_table.ID $in_clause",
                 'revise',
                 $post_type,
                 [   'via_item_source' => 'term', 
-                    'status' => '{published}', 
+                    'status' => $revise_status_key, 
                     'in_clause' => $in_clause, 
                     'src_table' => $src_table,
-                    'ids' => $revise_ttids['{published}'],
+                    'ids' => $revise_ttids[$revise_status_key],
                     'join' => $join,
                 ]
             );
