@@ -315,7 +315,7 @@ class SettingsTabAdvanced
                         <tbody>
 
                         <?php
-                        $pp_caps = apply_filters('presspermit_cap_descriptions', $pp_caps);
+                        $pp_caps = apply_filters('presspermit_cap_descriptions', []);
 
                         foreach ($pp_caps as $cap_name => $descript) :
                             ?>
