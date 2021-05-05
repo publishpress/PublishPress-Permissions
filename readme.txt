@@ -144,6 +144,8 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 = 3.5.4 =
 * Compat : Revisions - Pending Revision Monitors group ineffective when first installation of Permissions was >= 3.5
+* Compat : Revisions - If draft revisions enabled, apply term-specific Revise permissions to unpublished posts if constant PRESSPERMIT_REVISE_TERMS_FOR_UNPUBLISHED defined 
+* Fixed : PHP warning on Permissions > Settings > Advanced
 
 = 3.5.2 - 8 Apr 2021 =
 * Compat : Gutenberg Ramp - Fatal error on editor screen if PublishPress Revisions not active
