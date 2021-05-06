@@ -195,7 +195,8 @@ class Groups
                             $class = strpos($agent_type_str, $agent_type) && ($group_variant && strpos($gvar_str, $group_variant))
                                 ? 'class="current"' : '';
 
-                            $links[] = "<li><a href='admin.php?page=presspermit-groups{$agent_type_str}{$gvar_str}' $class>{$gtype_obj->labels->plural_name}</a></li>";
+                            $group_label = (!empty($gtype_obj->labels->plural_name)) ? $gtype_obj->labels->plural_name : $gtype_obj->labels->singular_name;
+                            $links[] = "<li><a href='admin.php?page=presspermit-groups{$agent_type_str}{$gvar_str}' $class>{$group_label}</a></li>";
                         }
 
                         echo '<ul class="subsubsub">';
