@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.7
 Requires PHP: 5.6.20
-Stable tag: 3.5.2
+Stable tag: 3.5.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -137,10 +137,15 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.5.1 =
+= 3.5.4 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
+
+= 3.5.4 - 6 May 2021 =
+* Compat : Revisions - Pending Revision Monitors group ineffective when first installation of Permissions was >= 3.5
+* Compat : Revisions - If draft revisions enabled, apply term-specific Revise permissions to unpublished posts if constant PRESSPERMIT_REVISE_TERMS_FOR_UNPUBLISHED defined 
+* Fixed : PHP warning on Permissions > Settings > Advanced
 
 = 3.5.2 - 8 Apr 2021 =
 * Compat : Gutenberg Ramp - Fatal error on editor screen if PublishPress Revisions not active
