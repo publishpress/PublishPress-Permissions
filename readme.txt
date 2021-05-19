@@ -144,6 +144,7 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 = 3.5.5 - 19 May 2021 =
 * Fixed : Add User screen - Javascript error on some sites
+* Fixed : Term filtering error for some custom taxonomies
 * Compat : WPML - Archives widget did not output links if multiple languages configured
 
 = 3.5.4 - 6 May 2021 =
