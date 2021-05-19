@@ -244,7 +244,7 @@ class TermFiltersCount
 
                     // Remove empty terms, but only if their descendants are all empty too.
                     foreach ($terms as $k => $term) {
-                        if (!$term->count) {
+                        if (is_object($term) && !$term->count) {
                             if ($descendants = _get_term_children($term->term_id, $all_terms, $taxonomy)) {
                                 foreach ($descendants as $child) {
                                     if ($child->count) {
