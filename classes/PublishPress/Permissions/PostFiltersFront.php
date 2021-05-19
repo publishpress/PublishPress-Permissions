@@ -83,7 +83,7 @@ class PostFiltersFront
         $parser = new \PressShack\SqlTokenizer();
         $post_type = $parser->ParseArg($where, 'post_type');
 
-        $where = str_replace("WHERE ", "WHERE $wpdb->posts.post_date > 0 AND ", $where);
+        $where = str_replace("WHERE post_type", "WHERE $wpdb->posts.post_date > 0 AND post_type", $where);
 
         $stati = array_merge(
             PWP::getPostStatuses(['public' => true, 'post_type' => $post_type]),
@@ -94,7 +94,7 @@ class PostFiltersFront
             $where = str_replace("AND post_status = 'publish'", "AND post_status IN ('" . implode("','", $stati) . "')", $where);
         }
 
-        $where = str_replace("WHERE ", "AND ", $where);
+        $where = str_replace("WHERE $wpdb->posts.post_date > 0", "AND $wpdb->posts.post_date > 0", $where);
 
         $where = apply_filters('presspermit_posts_where', $where, ['skip_teaser' => true, 'post_type' => $post_type]);
 
