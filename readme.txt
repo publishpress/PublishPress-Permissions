@@ -142,6 +142,10 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
+= 3.5.5 - 19 May 2021 =
+* Fixed : Add User screen - Javascript error on some sites
+* Compat : WPML - Archives widget did not output links if multiple languages configured
+
 = 3.5.4 - 6 May 2021 =
 * Compat : Revisions - Pending Revision Monitors group ineffective when first installation of Permissions was >= 3.5
 * Compat : Revisions - If draft revisions enabled, apply term-specific Revise permissions to unpublished posts if constant PRESSPERMIT_REVISE_TERMS_FOR_UNPUBLISHED defined 
