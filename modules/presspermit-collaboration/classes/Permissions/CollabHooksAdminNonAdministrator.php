@@ -103,7 +103,7 @@ class CollabHooksAdminNonAdministrator
         if ('post.php' == $pagenow) {
             if ($object_id = PWP::getPostID()) {
                 // --------------- Polylang workaround -------------------
-                if (count($taxonomies) > 0) {
+                if (count($taxonomies) > 0 || !isset($taxonomies[0])) {
                     return $clauses;
                 }
 

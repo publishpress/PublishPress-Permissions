@@ -28,13 +28,13 @@ class Profile
             $roles,
             [
                 'read_only' => true,
-                'caption' => sprintf(__('Supplemental Roles %1$s(for this user)%2$s', 'press-permit-core'), '<small>', '</small>'),
+                'caption' => sprintf(__('Supplemental Roles %1$s(for this user)%2$s', 'press-permit-core'), '', ''),
                 'class' => 'pp-user-roles',
                 'link' => $edit_url
             ]
         );
 
-        $caption = sprintf(__('Specific Permissions %1$s(for user)%2$s', 'press-permit-core'), '<small>', '</small>');
+        $caption = sprintf(__('Specific Permissions %1$s(for user)%2$s', 'press-permit-core'), '', '');
         $new_permissions_link = true;
         $maybe_display_note = !$has_user_roles;
         $display_limit = 12;
@@ -91,7 +91,7 @@ class Profile
             [
                 'read_only' => true,
                 'link' => '',
-                'caption' => sprintf(__('Supplemental Roles %1$s(from primary role or group membership)%2$s', 'press-permit-core'), '<small>', '</small>')
+                'caption' => sprintf(__('Supplemental Roles %1$s(from primary role or group membership)%2$s', 'press-permit-core'), '', '')
             ]
         );
 
