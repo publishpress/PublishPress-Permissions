@@ -142,6 +142,14 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
+= 3.5.6 - 23 Jun 2021 =
+* Fixed : Category / Term selector in post editor offered a maximum of 100 terms
+* Fixed : Menu Editor - Page / Post selection metaboxes (if more than 50 total items are available) did not list private items after clicking a paging link 
+* Fixed : PHP Notice on plugin activation under some conditions
+* Fixed : Fatal error if a very old version of Revisionary or PressPermit Core is active
+* Compat : User Switching - First switched user inherits capabilities of current logged user on some sites
+* Compat : WooCommerce - Failure / delay updating variations of variable product
+
 = 3.5.5 - 19 May 2021 =
 * Fixed : Add User screen - Javascript error on some sites
 * Fixed : Term filtering error for some custom taxonomies
