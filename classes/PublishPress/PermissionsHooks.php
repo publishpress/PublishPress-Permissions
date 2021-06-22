@@ -336,7 +336,7 @@ class PermissionsHooks
         // content filters, loaded conditionally depending on whether the current user is a content administrator
         $this->loadContentFilters();
 
-        if (is_admin() && ('async-upload.php' != $pagenow) && !defined('XMLRPC_REQUEST') && (!defined('DOING_AJAX') || !DOING_AJAX)) {
+        if (is_admin() && ('async-upload.php' != $pagenow) && !defined('XMLRPC_REQUEST') && (!defined('DOING_AJAX') || !DOING_AJAX || in_array($_REQUEST['action'], ['menu-get-metabox', 'menu-quick-search']))) {
             // filters which are only needed for the wp-admin UI
             require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/DashboardFilters.php');
             new Permissions\UI\Dashboard\DashboardFilters();
@@ -430,7 +430,8 @@ class PermissionsHooks
         if (($is_front && $front_filtering) 
         || !$is_unfiltered 
         || ('nav-menus.php' == $pagenow) 
-        || (defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) && ('menu-quick-search' == $_REQUEST['action']))) {
+        || (defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) && (in_array($_REQUEST['action'], ['menu-get-metabox', 'menu-quick-search'])))
+        ) {
             if (! $this->post_filters_loaded) { // since this could possibly fire on multiple 'set_current_user' calls, avoid redundancy
                 require_once(PRESSPERMIT_CLASSPATH . '/PostFilters.php');
                 Permissions\PostFilters::instance(['direct_file_access' => $this->direct_file_access]);
