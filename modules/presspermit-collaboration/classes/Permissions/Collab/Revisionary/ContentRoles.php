@@ -48,6 +48,10 @@ class ContentRoles extends \RevisionaryContentRoles
 
             $ok_users = [];
 
+            // Prime the set user pump. Without this, first switched user inherits capabilities of current logged user on some installations.
+			wp_set_current_user(1);
+			do_action('presspermit_user_reload');
+
             foreach ($user_ids as $user_id) {
                 wp_set_current_user($user_id);
                 do_action('presspermit_user_reload');
