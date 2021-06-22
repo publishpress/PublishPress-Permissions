@@ -186,7 +186,7 @@ class PermissionsHooks
             }
         }
 
-        if (!$ver || empty($ver['db_version']) || version_compare(PRESSPERMIT_DB_VERSION, $ver['db_version'], '!=')) {
+        if (!$ver || !is_array($ver) || empty($ver['db_version']) || version_compare(PRESSPERMIT_DB_VERSION, $ver['db_version'], '!=')) {
             //require_once(PRESSPERMIT_CLASSPATH . '/DB/DatabaseSetup.php');  // do this earlier
             //new Permissions\DB\DatabaseSetup($ver['db_version']);
 
