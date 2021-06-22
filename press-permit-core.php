@@ -79,6 +79,14 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 
     include_once(constant('PRESSPERMIT_DEBUG') ? __DIR__ . '/library/debug.php' : __DIR__ . '/library/debug_shell.php');
 
+    function presspermit_err($err_slug, $args = [])
+    {
+        if (is_admin()) {
+            require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');
+            return new \PublishPress\Permissions\ErrorNotice($err_slug, $args);
+        }
+    }
+
     function presspermit_load() {
 	    global $wp_version, $presspermit_loaded_by_pro;
 	
@@ -157,14 +165,6 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
             require_once( __DIR__.'/activation.php' );
         }
     );
-
-    function presspermit_err($err_slug, $args = [])
-    {
-        if (is_admin()) {
-            require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');
-            return new \PublishPress\Permissions\ErrorNotice($err_slug, $args);
-        }
-    }
 } elseif (defined('PRESSPERMIT_FILE') && !defined('PRESSPERMIT_PRO_FILE')) {
     if (is_admin()) {
         global $pagenow;
