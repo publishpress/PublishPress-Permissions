@@ -8,7 +8,7 @@ if ( ! $ver = get_option('presspermitpro_version') ) {
     }
 }
 
-$db_ver = ( isset( $ver['db_version'] ) ) ? $ver['db_version'] : '';
+$db_ver = (is_array($ver) && isset( $ver['db_version'] ) ) ? $ver['db_version'] : '';
 require_once(__DIR__ . '/classes/PublishPress/Permissions/DB/DatabaseSetup.php');
 new \PublishPress\Permissions\DB\DatabaseSetup($db_ver);
 
