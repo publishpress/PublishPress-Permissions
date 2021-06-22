@@ -409,6 +409,12 @@ class PermissionsHooks
     // configuration / filter addition which depends on whether the current user is an Administrator
     private function loadContentFilters()
     {
+        if (defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) 
+        && in_array($_REQUEST['action'], ['woocommerce_load_variations', 'woocommerce_add_variation', 'woocommerce_remove_variations', 'woocommerce_save_variations'])
+        ) {
+			return;
+		}
+
         $pp = presspermit();
 
         if (!$pp->filteringEnabled()) {
