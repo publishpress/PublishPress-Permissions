@@ -30,15 +30,12 @@ class TermEdit
 	                add_action('admin_head', [$this, 'actScriptsWP']);
 	
 	                add_action("{$taxonomy}_edit_form", [$this, 'actExceptionEditUI']);
-	                add_action('edit_tag_form', [$this, 'actExceptionEditUI']);
 	            } else {
 	                add_action("{$taxonomy}_edit_form", [$this, 'actTaxonomyEnableUI']);
-	                add_action('edit_tag_form', [$this, 'actTaxonomyEnableUI']);
 	            }
 	
 	            if (!empty($_REQUEST['pp_universal'])) {
 	                add_action("{$taxonomy}_edit_form", [$this, 'actUniversalExceptionsUIsupport']);
-	                add_action('edit_tag_form', [$this, 'actUniversalExceptionsUIsupport']);
 	            }
 	        }
 	
