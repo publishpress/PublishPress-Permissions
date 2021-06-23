@@ -239,6 +239,10 @@ class AdminFilters
             return $parent_id;
         }
 
+        if (defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) && (false !== strpos($_REQUEST['action'], 'woocommerce_'))) {
+			return $parent_id;
+		}
+
         $orig_parent_id = $parent_id;
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostSaveHierarchical.php');
         $parent_id = PostSaveHierarchical::fltPageParent($parent_id);

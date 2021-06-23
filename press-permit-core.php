@@ -5,13 +5,13 @@
  * Description: Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
  * Author: PublishPress
  * Author URI:  https://publishpress.com/
- * Version:     3.5.5
+ * Version:     3.5.6
  * Text Domain: press-permit-core
  * Domain Path: /languages/
  * Min WP Version: 4.9.7
  * Requires PHP: 5.6.20
  *
- * Copyright (c) 2020 PublishPress
+ * Copyright (c) 2021 PublishPress
  *
  * GNU General Public License, Free Software Foundation <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -31,7 +31,7 @@
  * @package     PressPermit
  * @category    Core
  * @author      PublishPress
- * @copyright   Copyright (c) 2020 PublishPress. All rights reserved.
+ * @copyright   Copyright (c) 2021 PublishPress. All rights reserved.
  *
  **/
 
@@ -79,6 +79,14 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 
     include_once(constant('PRESSPERMIT_DEBUG') ? __DIR__ . '/library/debug.php' : __DIR__ . '/library/debug_shell.php');
 
+    function presspermit_err($err_slug, $args = [])
+    {
+        if (is_admin()) {
+            require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');
+            return new \PublishPress\Permissions\ErrorNotice($err_slug, $args);
+        }
+    }
+
     function presspermit_load() {
 	    global $wp_version, $presspermit_loaded_by_pro;
 	
@@ -98,7 +106,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	        return;
 	    }
 	
-	    define('PRESSPERMIT_VERSION', '3.5.5');
+	    define('PRESSPERMIT_VERSION', '3.5.6');
 		
 	    if (!$presspermit_loaded_by_pro) {
 	        require_once(__DIR__ . '/includes/Core.php');
@@ -157,14 +165,6 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
             require_once( __DIR__.'/activation.php' );
         }
     );
-
-    function presspermit_err($err_slug, $args = [])
-    {
-        if (is_admin()) {
-            require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');
-            return new \PublishPress\Permissions\ErrorNotice($err_slug, $args);
-        }
-    }
 } elseif (defined('PRESSPERMIT_FILE') && !defined('PRESSPERMIT_PRO_FILE')) {
     if (is_admin()) {
         global $pagenow;

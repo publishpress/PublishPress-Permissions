@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PublishPress Permissions\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-04 13:22-0500\n"
+"POT-Creation-Date: 2021-06-23 13:20-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: PublishPress <help@publishpress.com>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_c;__ngettext;_n;_x\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 2.4.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: vendor\n"
@@ -1009,7 +1009,7 @@ msgid "select groups"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:269
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:314
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:325
 msgid "close"
 msgstr ""
 
@@ -1044,7 +1044,7 @@ msgid ""
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:76
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:315
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:312
 #: classes/PublishPress/Permissions/UI/Settings.php:88
 msgid "Permissions Settings"
 msgstr ""
@@ -1060,7 +1060,7 @@ msgid "Permissions: %s this %s"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:150
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:339
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:336
 #, php-format
 msgid "enable custom permissions for %s"
 msgstr ""
@@ -1122,38 +1122,38 @@ msgid ""
 "permissions.  You can also %1$scustomize this user directly%2$s."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:148
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:145
 #, php-format
 msgid "Permissions: Assign this %2$s to %3$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:154
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:151
 #, php-format
 msgid "Permissions: Assign this %2$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:161
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:174
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:158
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:171
 #, php-format
 msgid "Permissions: %1$s %2$s in this %3$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:167
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:164
 #, php-format
 msgid "Permissions: %1$s all content in this %2$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:180
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:177
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/TermEdit.php:69
 #, php-format
 msgid "Permissions: %1$s this %2$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:265
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:262
 msgid "Update"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:374
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:371
 #, php-format
 msgid ""
 "Displayed permissions are those assigned for the \"%1$s\" type. You can also "
@@ -1308,27 +1308,27 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:202
+#: classes/PublishPress/Permissions/UI/Groups.php:203
 #, php-format
 msgid "%1$sGroup Type:%2$s %3$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:206
+#: classes/PublishPress/Permissions/UI/Groups.php:207
 #, php-format
 msgid "Search Results for &#8220;%s&#8221;"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:216
+#: classes/PublishPress/Permissions/UI/Groups.php:217
 msgid "Search Groups"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:231
+#: classes/PublishPress/Permissions/UI/Groups.php:232
 msgid ""
 "To assign roles or permissions to BuddyPress groups, activate the "
 "Compatibility Pack module"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:234
+#: classes/PublishPress/Permissions/UI/Groups.php:235
 #, php-format
 msgid ""
 "To assign roles or permissions to BuddyPress groups, %1$supgrade to "
@@ -2057,12 +2057,12 @@ msgstr ""
 msgid "Database Schema Version: %s"
 msgstr ""
 
-#: includes/SettingsTabInstall.php:259
+#: includes/SettingsTabInstall.php:258
 #, php-format
 msgid "WordPress Version: %s"
 msgstr ""
 
-#: includes/SettingsTabInstall.php:263
+#: includes/SettingsTabInstall.php:262
 #, php-format
 msgid "PHP Version: %s"
 msgstr ""
@@ -2276,11 +2276,16 @@ msgstr ""
 msgid "Page Approved"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:286
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:166
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:172
+msgid "Public"
+msgstr ""
+
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:297
 msgid "Author Search / Select"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:313
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:324
 msgid "select other"
 msgstr ""
 
@@ -2588,10 +2593,6 @@ msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:69
 msgid "Assign Publish Permissions separate from Edit Permissions"
-msgstr ""
-
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:172
-msgid "Public"
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:192
