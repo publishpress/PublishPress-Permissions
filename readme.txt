@@ -142,6 +142,12 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
+= 3.5.7 - 12 Jul 2021 =
+* Fixed : Nav Menu Edit - Permissions configuration did not make private pages selectable
+* Fixed : Nav Menu Edit - If Pages metabox results are paged, custom Front Page and Privacy Page were forced to the top of every results page
+* Compat : WP Engine - Long wp-admin screen loads because excessive clearance of WP Engine cache caused WordPress to execute Update Plugins check on each request
+* Fixed : Default / Lock Privacy settings were not properly reflected in Gutenberg Editor display
+
 = 3.5.6 - 23 Jun 2021 =
 * Fixed : Category / Term selector in post editor offered a maximum of 100 terms
 * Fixed : Menu Editor - Page / Post selection metaboxes (if more than 50 total items are available) did not list private items after clicking a paging link 
