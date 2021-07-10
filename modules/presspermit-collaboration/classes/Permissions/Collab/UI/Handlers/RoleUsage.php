@@ -36,6 +36,7 @@ class RoleUsage
                 $pp->refreshOptions();
                 do_action('presspermit_registrations');
                 do_action('presspermit_roles_defined');
+                do_action('presspermit_trigger_cache_flush');
 
                 $pp->refreshOptions();
 

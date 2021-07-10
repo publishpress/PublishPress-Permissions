@@ -19,6 +19,7 @@ class Admin
                 {
                     require_once(PRESSPERMIT_CLASSPATH . '/UI/Handlers/AgentEdit.php');
                     new AgentEdit();
+                    do_action('presspermit_trigger_cache_flush');
                 });
             }
         }

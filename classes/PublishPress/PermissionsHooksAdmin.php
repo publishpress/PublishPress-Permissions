@@ -47,7 +47,7 @@ class PermissionsHooksAdmin
         add_action('pp_inserted_exception_item', [$this, 'actPluginSettingsUpdated']);
         add_action('presspermit_removed_exception_items', [$this, 'actPluginSettingsUpdated']);
 
-        add_action('presspermit_admin_handlers', [$this, 'actPluginSettingsUpdated']);
+        add_action('presspermit_trigger_cache_flush', [$this, 'wpeCacheFlush']);
         add_action('presspermit_activate', [$this, 'actPluginSettingsUpdated']);
         add_action('shutdown', [$this, 'actConfigUpdateFollowup']);
     }
