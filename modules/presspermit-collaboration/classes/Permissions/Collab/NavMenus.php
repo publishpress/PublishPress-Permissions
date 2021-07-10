@@ -13,6 +13,8 @@ class NavMenus
         	add_filter('update_post_metadata', [$this, 'fltUpdateNavMenuItemParent'], 10, 5);        
         }
 
+        add_filter('nav_menu_meta_box_object', [$this, 'flt_nav_menu_edit_enable_filters']);
+
         do_action('presspermit_nav_menu_filters');
     }
 
@@ -28,6 +30,15 @@ class NavMenus
     {
         if (('nav_menu' != reset($taxonomies))) // && presspermit()->getOption( 'admin_nav_menu_filter_items' ) )
             $args['hide_empty'] = true;
+
+        return $args;
+    }
+
+    public function flt_nav_menu_edit_enable_filters($args) {
+        if (is_array($args)) {
+            $args['suppress_filters'] = false;
+            unset($args['post_status']);
+        }
 
         return $args;
     }
