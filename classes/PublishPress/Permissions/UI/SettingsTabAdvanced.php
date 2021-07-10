@@ -283,7 +283,7 @@ class SettingsTabAdvanced
                             style="font-weight:bold"><?php echo $ui->section_captions[$tab][$section]; ?></span>
                     <span class="pp-capabilities-caption">
                         <span class="pp-subtext pp-no-hide">
-                    <?php
+                            <?php
                             if (defined('PUBLISHPRESS_CAPS_VERSION')) {
                                 $url = admin_url('admin.php?page=capsman');
                                 printf(
