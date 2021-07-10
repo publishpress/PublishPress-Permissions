@@ -336,7 +336,7 @@ class PermissionsHooks
         // content filters, loaded conditionally depending on whether the current user is a content administrator
         $this->loadContentFilters();
 
-        if (is_admin() && ('async-upload.php' != $pagenow) && !defined('XMLRPC_REQUEST') && (!defined('DOING_AJAX') || !DOING_AJAX || in_array($_REQUEST['action'], ['menu-get-metabox', 'menu-quick-search']))) {
+        if (is_admin() && ('async-upload.php' != $pagenow) && !defined('XMLRPC_REQUEST') && (!defined('DOING_AJAX') || !DOING_AJAX || in_array($_REQUEST['action'] ?? null, ['menu-get-metabox', 'menu-quick-search']))) {
             // filters which are only needed for the wp-admin UI
             require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/DashboardFilters.php');
             new Permissions\UI\Dashboard\DashboardFilters();
