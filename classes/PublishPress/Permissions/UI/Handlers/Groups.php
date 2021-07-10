@@ -78,6 +78,8 @@ class Groups
                     $redirect = remove_query_arg('group_variant', $redirect);
                 }
 
+                do_action('presspermit_trigger_cache_flush');
+
                 wp_redirect($redirect);
                 exit();
 
