@@ -49,6 +49,26 @@ class AdminFilters
         add_filter('created_term', [$this, 'fltUnloadCurrentUserExceptions']);
 
         add_filter('editable_roles', [$this, 'fltEditableRoles'], 99);
+
+        add_action('pre_get_posts', [$this, 'actNavMenuQueryArgs'], 100);
+
+        add_filter('option_wp_page_for_privacy_policy', [$this, 'fltEditNavMenusIgnoreImportantPages']);
+        add_filter('option_show_on_front', [$this, 'fltEditNavMenusIgnoreImportantPages']);
+    }
+
+    public function actNavMenuQueryArgs($query_obj) {
+        if (did_action('wp_ajax_menu-quick-search')) {
+            $query_obj->query_vars['post_status'] = '';
+        }
+    }
+
+    // If Pages metabox results are paged, prevent custom Front Page and Privacy Policy from being forced to the top of every page
+    public function fltEditNavMenusIgnoreImportantPages($option_val) {
+        if (did_action('wp_ajax_menu-get-metabox') && !empty($_REQUEST['paged']) && (intval($_REQUEST['paged']) > 1)) {
+            $option_val = 0;
+        }
+
+        return $option_val;
     }
 
     function actSavePost($post_id, $post, $update)

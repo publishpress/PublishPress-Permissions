@@ -13,6 +13,9 @@ class NavMenus
         	add_filter('update_post_metadata', [$this, 'fltUpdateNavMenuItemParent'], 10, 5);        
         }
 
+        add_filter('nav_menu_meta_box_object', [$this, 'flt_nav_menu_edit_enable_filters']);
+        add_filter('get_user_option_metaboxhidden_nav-menus', [$this, 'flt_nav_menus_set_metabox_args']);
+
         do_action('presspermit_nav_menu_filters');
     }
 
@@ -30,6 +33,46 @@ class NavMenus
             $args['hide_empty'] = true;
 
         return $args;
+    }
+
+    public function flt_nav_menu_edit_enable_filters($args) {
+        if (is_array($args)) {
+            $args['suppress_filters'] = false;
+            unset($args['post_status']);
+        }
+
+        return $args;
+    }
+
+    public function flt_nav_menus_set_metabox_args($option_val) {
+        global $wp_meta_boxes;
+
+        foreach(presspermit()->getEnabledPostTypes() as $post_type) {
+            foreach(['core', 'default'] as $section) {
+                if (isset($wp_meta_boxes['nav-menus']['side'][$section]["add-post-type-{$post_type}"])) {
+                    $wp_meta_boxes['nav-menus']['side'][$section]["add-post-type-{$post_type}"]['args']->_default_query['suppress_filters'] = false;
+                    unset($wp_meta_boxes['nav-menus']['side'][$section]["add-post-type-{$post_type}"]['args']->_default_query['post_status']);
+                    
+                    if (defined('PRESSPERMIT_EDIT_NAV_MENUS_NO_PAGING')) {
+                        $wp_meta_boxes['nav-menus']['side'][$section]["add-post-type-{$post_type}"]['args']->_default_query['posts_per_page'] = 9999;
+                    }
+                }
+            }
+        }
+
+        foreach(presspermit()->getEnabledTaxonomies() as $taxonomy) {
+            foreach(['core', 'default'] as $section) {
+                if (isset($wp_meta_boxes['nav-menus']['side'][$section]["add-{$taxonomy}"])) {
+                    $wp_meta_boxes['nav-menus']['side'][$section]["add-{$taxonomy}"]['args']->_default_query['suppress_filters'] = false;
+
+                    if (defined('PRESSPERMIT_EDIT_NAV_MENUS_NO_PAGING')) {
+                        $wp_meta_boxes['nav-menus']['side'][$section]["add-{$taxonomy}"]['args']->_default_query['posts_per_page'] = 9999;
+                    }
+                }
+            }
+        }
+
+        return $option_val;
     }
 
     public static function can_edit_theme_locs()

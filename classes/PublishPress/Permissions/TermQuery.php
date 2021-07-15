@@ -69,11 +69,11 @@ class TermQuery
         if (isset($cache_results[$qry])) {
             $results = $cache_results[$qry];
         } else {
-	        $results = $wpdb->get_results(
-	            "SELECT tr.object_id, tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
-	            . " INNER JOIN $wpdb->posts ON object_id = $wpdb->posts.ID $join"
-	            . " WHERE tr.term_taxonomy_id IN ('" . implode("','", array_keys($term_ids)) . "') $type_status_clause"
-	        );
+            $results = $wpdb->get_results(
+                "SELECT tr.object_id, tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
+                . " INNER JOIN $wpdb->posts ON object_id = $wpdb->posts.ID $join"
+                . " WHERE tr.term_taxonomy_id IN ('" . implode("','", array_keys($term_ids)) . "') $type_status_clause"
+            );
 
             $cache_results[$qry] = $results;
         }

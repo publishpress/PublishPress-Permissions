@@ -145,7 +145,7 @@ class ItemExceptionsRenderUI
         if ('wp_role' == $agent_type) {
             require_once(PRESSPERMIT_CLASSPATH . '/DB/Groups.php');
             $title = " title='" . \PublishPress\Permissions\DB\Groups::getMetagroupDescript('wp_role', $agent_info->metagroup_id, '') . "'";
-        
+
             if (!empty($agent_info->metagroup_id)) {
                 $_name = \PublishPress\Permissions\DB\Groups::getMetagroupName('wp_role', $agent_info->metagroup_id, $_name);
             }

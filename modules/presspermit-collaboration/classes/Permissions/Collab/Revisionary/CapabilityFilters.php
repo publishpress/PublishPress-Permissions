@@ -101,7 +101,7 @@ class CapabilityFilters
 
     private function postTypeFromCaps($caps)
     {
-        foreach (get_post_types(['public' => true], 'object') as $post_type => $type_obj) {
+        foreach (get_post_types(['public' => true, 'show_ui' => true], 'object', 'or') as $post_type => $type_obj) {
             $caps = array_diff($caps, ['edit_posts', 'edit_pages']); // ignore generic caps defined for extraneous properties (assign_term, etc.) 
             if (array_intersect((array)$type_obj->cap,  $caps)) {
                 return $post_type;
