@@ -11,6 +11,7 @@ class CollabHooks
 
         // Divi Page Builder  @todo: test whether these can be implemented with 'presspermit_unfiltered_ajax' filter in PostFilters::fltPostsClauses instead
         if (strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') 
+        && isset($_REQUEST['action'])
         && in_array(
             $_REQUEST['action'], 
             apply_filters('presspermit_unfiltered_ajax_actions',
