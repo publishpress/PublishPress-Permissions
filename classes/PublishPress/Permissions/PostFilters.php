@@ -951,7 +951,6 @@ class PostFilters
             remove_action( 'admin_init', array( 'WP_Privacy_Policy_Content', 'text_change_check' ), 100 );
         }
 
-        //$return = array_diff(map_meta_cap($cap_name, $user_id, $_post), [null]);  // post types which leave some basic cap properties undefined result in nulls
         $return = array_diff(map_meta_cap($cap_name, $user_id, $_post->ID), [null]);  // post types which leave some basic cap properties undefined result in nulls
         wp_cache_delete(-1, 'posts');
         presspermit()->meta_cap_post = false;
