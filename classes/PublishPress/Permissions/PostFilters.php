@@ -538,6 +538,7 @@ class PostFilters
     public function getPostsWhere($args)
     {
         $defaults = [
+            'has_cap_check' => false,   // TRUE: this function call is to determine per-post editing / deletion capability;  FALSE: just determining which posts to list
             'post_types' => [],
             'source_alias' => false,
             'src_table' => '',
