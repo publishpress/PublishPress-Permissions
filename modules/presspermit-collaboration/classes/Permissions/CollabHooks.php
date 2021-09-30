@@ -51,26 +51,54 @@ class CollabHooks
             add_filter('rest_pre_dispatch', [$this, 'fltRestAddEditingFilters'], 99, 3);  // also add the filters on REST request
         }
 
-        if (defined('REVISIONARY_VERSION')) {
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
             add_action('presspermit_init_rvy_interface', [$this, 'init_rvy_interface']);
     
+            global $pagenow;
+
+            // also needed for Admin Bar filtering
+            if ((!defined('DOING_AJAX') || !DOING_AJAX) && ('async-upload.php' != $pagenow)) {
+                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisions/Admin.php");
+                new Collab\Revisions\Admin();
+            }
+
             if (is_admin() || presspermit()->isRESTurl()) {
-	            global $pagenow;
-	            
-	            $legacy_suffix = version_compare(REVISIONARY_VERSION, '1.5-alpha', '<') ? 'Legacy' : '';
-	            
-	            require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/PostFilters{$legacy_suffix}.php");
-	            ($legacy_suffix) ? new Collab\Revisionary\PostFiltersLegacy() : new Collab\Revisionary\PostFilters();
-	            
-	            if ((!defined('DOING_AJAX') || !DOING_AJAX) && ('async-upload.php' != $pagenow)) {
-	                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/Admin{$legacy_suffix}.php");
-	                ($legacy_suffix) ? new Collab\Revisionary\AdminLegacy() : new Collab\Revisionary\Admin();
-	            }
-	         	
+	            if (!presspermit()->isContentAdministrator()) {
+	                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisions/AdminNonAdministrator.php");
+	                new Collab\Revisions\AdminNonAdministrator();
+                }
+                
+                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisions/PostFilters.php");
+	            new Collab\Revisions\PostFilters();
+
+                if (did_action('init')) {
+                    $this->init_rvy_interface();
+                } else {
+                    add_action('init', [$this, 'init_rvy_interface'], 2);
+                }
+            }
+
+        } elseif (defined('REVISIONARY_VERSION')) {
+            add_action('presspermit_init_rvy_interface', [$this, 'init_rvy_interface']);
+    
+            $legacy_suffix = version_compare(REVISIONARY_VERSION, '1.5-alpha', '<') ? 'Legacy' : '';
+            
+            global $pagenow;
+
+            // also needed for Admin Bar filtering
+            if ((!defined('DOING_AJAX') || !DOING_AJAX) && ('async-upload.php' != $pagenow)) {
+                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/Admin{$legacy_suffix}.php");
+                ($legacy_suffix) ? new Collab\Revisionary\AdminLegacy() : new Collab\Revisionary\Admin();
+            }
+
+            if (is_admin() || presspermit()->isRESTurl()) {
 	            if (!presspermit()->isContentAdministrator()) {
 	                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/AdminNonAdministrator{$legacy_suffix}.php");
 	                ($legacy_suffix) ? new Collab\Revisionary\AdminNonAdministratorLegacy() : new Collab\Revisionary\AdminNonAdministrator();
-	            }
+                }
+                
+                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/PostFilters{$legacy_suffix}.php");
+	            ($legacy_suffix) ? new Collab\Revisionary\PostFiltersLegacy() : new Collab\Revisionary\PostFilters();
 
                 if (did_action('init')) {
                     $this->init_rvy_interface();
@@ -179,7 +207,14 @@ class CollabHooks
 
     public function init_rvy_interface()
     {
-        if (class_exists('RevisionaryContentRoles')) {
+        if (class_exists('RevisionsContentRoles')) {
+            global $revisionary;
+            if (!empty($revisionary) && method_exists($revisionary, 'set_content_roles')) {
+                require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisions/ContentRoles.php');
+                $revisionary->set_content_roles(new Collab\Revisions\ContentRoles());
+            }
+
+        } elseif (class_exists('RevisionaryContentRoles')) {
             global $revisionary;
             if (!empty($revisionary) && method_exists($revisionary, 'set_content_roles')) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisionary/ContentRoles.php');
@@ -493,7 +528,11 @@ class CollabHooks
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/CapabilityFilters.php');
         new Collab\CapabilityFilters();
 
-        if (defined('REVISIONARY_VERSION')) {
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+            require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisions/CapabilityFilters.php');
+            new Collab\Revisions\CapabilityFilters();
+        
+        } elseif (defined('REVISIONARY_VERSION')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisionary/CapabilityFilters.php');
             new Collab\Revisionary\CapabilityFilters();
         }

@@ -55,11 +55,13 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
                 define('PRESSPERMIT_COLLAB_VERSION', $ext_version);
 
                 class_alias('\PressShack\LibArray', '\PublishPress\Permissions\Collab\Arr');
+                class_alias('\PressShack\LibArray', '\PublishPress\Permissions\Collab\Revisions\Arr');
                 class_alias('\PressShack\LibArray', '\PublishPress\Permissions\Collab\Revisionary\Arr');
                 class_alias('\PressShack\LibArray', '\PublishPress\Permissions\Collab\UI\Dashboard\Arr');
 
                 class_alias('\PressShack\LibWP', '\PublishPress\Permissions\Collab\PWP');
                 class_alias('\PressShack\LibWP', '\PublishPress\Permissions\Collab\Compat\PWP');
+                class_alias('\PressShack\LibWP', '\PublishPress\Permissions\Collab\Revisions\PWP');
                 class_alias('\PressShack\LibWP', '\PublishPress\Permissions\Collab\Revisionary\PWP');
                 class_alias('\PressShack\LibWP', '\PublishPress\Permissions\Collab\UI\PWP');
                 class_alias('\PressShack\LibWP', '\PublishPress\Permissions\Collab\UI\Dashboard\PWP');
@@ -73,6 +75,7 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
                     class_alias('\PublishPress\Permissions\Collab', '\PublishPress\Permissions\Collab\UI\Handlers\Collab');
                     class_alias('\PublishPress\Permissions\Collab', '\PublishPress\Permissions\Collab\UI\Dashboard\Collab');
                     class_alias('\PublishPress\Permissions\Collab', '\PublishPress\Permissions\Collab\UI\Gutenberg\Collab');
+                    class_alias('\PublishPress\Permissions\Collab', '\PublishPress\Permissions\Collab\Revisions\Collab');
                     class_alias('\PublishPress\Permissions\Collab', '\PublishPress\Permissions\Collab\Revisionary\Collab');
                 }
 
