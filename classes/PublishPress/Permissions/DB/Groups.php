@@ -67,7 +67,7 @@ class Groups
 
             // strip out Revisionary metagroups if we're not using them (@todo: API)
             if ($results[$key]->metagroup_type) {
-                if (!defined('REVISIONARY_VERSION') && ('rvy_notice' == $results[$key]->metagroup_type)) {
+                if (!defined('PUBLISHPRESS_REVISIONS_VERSION') && !defined('REVISIONARY_VERSION') && ('rvy_notice' == $results[$key]->metagroup_type)) {
                     unset($results[$key]);
                 }
             }
@@ -314,27 +314,26 @@ class Groups
         } elseif ('wp_role' == $metagroup_type) {
             switch ($meta_id) {
                 case 'rvy_pending_rev_notice':
-                    return __('Pending Revision Monitors', 'press-permit-core');
+                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? __('Change Request Notifications', 'press-permit-core') : __('Pending Revision Monitors', 'press-permit-core');
                     break;
 
                 case 'rvy_scheduled_rev_notice':
-                    return __('Scheduled Revision Monitors', 'press-permit-core');
+                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? __('Scheduled Change Notifications', 'press-permit-core') : __('Scheduled Revision Monitors', 'press-permit-core');
                     break;
 
                 default:
             		$role_display_name = isset($wp_roles->role_names[$meta_id]) ? __($wp_roles->role_names[$meta_id]) : $meta_id;
             }
 
-            //return sprintf(__('[WP %s]', 'press-permit-core'), $role_display_name);
             return $role_display_name;
         } else {
             switch ($meta_id) {
                 case 'rvy_pending_rev_notice':
-                    return __('Pending Revision Monitors', 'press-permit-core');
+                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? __('Change Request Notifications', 'press-permit-core') : __('Pending Revision Monitors', 'press-permit-core');
                     break;
 
                 case 'rvy_scheduled_rev_notice':
-                    return __('Scheduled Revision Monitors', 'press-permit-core');
+                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? __('Scheduled Change Notifications', 'press-permit-core') : __('Scheduled Revision Monitors', 'press-permit-core');
                     break;
 
                 default:
