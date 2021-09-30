@@ -1153,14 +1153,27 @@ class AgentPermissionsUI
                     $show_all_url = esc_url(add_query_arg('show_propagated', '1', $_SERVER['REQUEST_URI']));
                     $show_all_link = "&nbsp;&nbsp;<a href='$show_all_url'>";
 
-                    if (empty($_REQUEST['show_propagated'])) {
+                    if (defined('WP_DEBUG')) {
+                        $fix_child_url = esc_url(add_query_arg('pp_fix_child_exceptions', '1', $_SERVER['REQUEST_URI']));
+                        $fix_child_link = "&nbsp;&nbsp;<a href='$fix_child_url'>";
+                        $fix_child_exceptions_link = '&nbsp;&nbsp;&bull;' . sprintf(__(' %1$sfix sub-%2$s permissions %3$s', 'press-permit-core'), $fix_child_link, strtolower($via_type_obj->labels->name), '</a>');
+                    } else {
+                        $fix_child_exceptions_link = '';
+                    }
+
+                    if (empty($_REQUEST['show_propagated']) || $fix_child_exceptions_link) {
                         if ('term' == $via_src) {
                             echo '<div class="pp-current-roles-note">'
                                 . sprintf(__('note: Permissions inherited from parent %1$s are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')
                                 . '</div>';
                         } else {
+                            $show_all_caption = (empty($_REQUEST['show_propagated']))
+                            ? sprintf(__('note: Permissions inherited from parent %1$s or terms are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')
+                            : '';
+
                             echo '<div class="pp-current-roles-note">'
-                                . sprintf(__('note: Permissions inherited from parent %1$s or terms are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')
+                                . $show_all_caption
+                                . $fix_child_exceptions_link
                                 . '</div>';
                         }
                     }
