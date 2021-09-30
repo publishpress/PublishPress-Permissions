@@ -142,6 +142,12 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
+= 3.6-beta =
+* Compat : PublishPress Revisions 3
+* Fixed : Page Structure settings did not prevent creation of top level pages in Gutenberg
+* Feature : Edit Group Permissions screen - "Fix sub-Pages permissions" link causes Specific Permissions to be re-propagated to sub-pages
+* Compat : PublishPress Revisions - Specific Permissions for "Revise" did not cause display of "Edit" link in Admin Bar
+
 = 3.5.7 - 15 Jul 2021 =
 * Fixed : Nav Menu Edit - Permissions configuration did not make private pages selectable
 * Fixed : Nav Menu Edit - If Pages metabox results are paged, custom Front Page and Privacy Page were forced to the top of every results page
