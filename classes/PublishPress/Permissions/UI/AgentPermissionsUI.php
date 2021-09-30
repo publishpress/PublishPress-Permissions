@@ -849,14 +849,16 @@ class AgentPermissionsUI
                         if (!$operation_obj = $pp_admin->getOperationObject($operation, $for_type))
                             continue;
 
+                        $op_label = (!empty($operation_obj->abbrev)) ? $operation_obj->abbrev : $operation_obj->label;
+
                         if ('assign' == $operation) {
                             $op_caption = ($for_type)
-                                ? sprintf(__('%1$s (%2$s: %3$s)', 'press-permit-core'), $operation_obj->label, $for_type_obj->labels->singular_name, $via_type_caption)
-                                : sprintf(__('%1$s %2$s %3$s', 'press-permit-core'), $operation_obj->label, $via_type_caption, $for_type_obj->labels->singular_name);
+                                ? sprintf(__('%1$s (%2$s: %3$s)', 'press-permit-core'), $op_label, $for_type_obj->labels->singular_name, $via_type_caption)
+                                : sprintf(__('%1$s %2$s %3$s', 'press-permit-core'), $op_label, $via_type_caption, $for_type_obj->labels->singular_name);
                         } elseif (in_array($operation, ['manage', 'associate'], true)) {
-                            $op_caption = sprintf(__('%1$s %2$s', 'press-permit-core'), $operation_obj->label, $via_type_caption);
+                            $op_caption = sprintf(__('%1$s - %2$s', 'press-permit-core'), $op_label, $via_type_caption);
                         } else {
-                            $op_caption = sprintf(__('%1$s %2$s', 'press-permit-core'), $operation_obj->label, $for_type_obj->labels->singular_name);
+                            $op_caption = sprintf(__('%1$s - %2$s', 'press-permit-core'), $op_label, $for_type_obj->labels->name);
                         }
 
                         echo "<div class='type-roles-wrapper'>";
