@@ -15,6 +15,11 @@ class AgentPermissions
         $pp_admin = $pp->admin();
         $pp_groups = $pp->groups();
 
+        if (!empty($_REQUEST['pp_fix_child_exceptions'])) {
+            require_once(PRESSPERMIT_CLASSPATH.'/DB/PermissionsUpdate.php');
+            \PublishPress\Permissions\DB\PermissionsUpdate::ensureExceptionPropagation();
+        }
+
         require_once(PRESSPERMIT_CLASSPATH . '/UI/AgentPermissionsUI.php');
 
         $agent_type = (!empty($_REQUEST['agent_type'])) ? sanitize_key($_REQUEST['agent_type']) : 'pp_group';
