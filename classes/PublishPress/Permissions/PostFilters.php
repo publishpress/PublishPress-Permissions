@@ -735,6 +735,15 @@ class PostFilters
 
                                         if (!empty($user->allcaps[$list_cap])) {
                                             $reqd_caps[$key] = $list_cap;
+                                        } else {
+                                            // @todo: API?
+                                            if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+                                                $revise_cap = str_replace('edit_', 'revise_', $cap);
+
+                                                if (!empty($user->allcaps[$list_cap])) {
+                                                    $reqd_caps[$key] = $revise_cap;
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -1000,9 +1009,22 @@ class PostFilters
                 global $current_user;
                 $list_others_cap = str_replace('edit_', 'list_', $type_obj->cap->edit_others_posts);
 
-                $replace_caps[$list_others_cap] = (!empty($current_user->allcaps[$type_obj->cap->edit_posts]))
-                ? $type_obj->cap->edit_posts
-                : str_replace('edit_', 'list_', $type_obj->cap->edit_posts);
+                if (!empty($current_user->allcaps[$type_obj->cap->edit_posts])) {
+                    $replace_caps[$list_others_cap] = $type_obj->cap->edit_posts;
+                } else {
+                    $require_cap = str_replace('edit_', 'list_', $type_obj->cap->edit_posts);
+
+                    // @todo: API?
+                    if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+                        $revise_cap = str_replace('edit_', 'revise_', $type_obj->cap->edit_posts);
+                        
+                        if (!empty($current_user->allcaps[$revise_cap])) {
+                            $require_cap = $revise_cap;
+                        }
+                    }
+
+                    $replace_caps[$list_others_cap] = $require_cap;
+                }
             }
 
             foreach ($replace_caps as $cap_name => $base_cap) {
