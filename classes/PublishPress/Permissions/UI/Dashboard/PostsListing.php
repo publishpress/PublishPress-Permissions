@@ -14,9 +14,32 @@ class PostsListing
         add_filter("manage_{$post_type}_posts_columns", [$this, 'fltManagePostsColumns'], 50); // need late priority to avoid being wiped by other plugins
         add_action("manage_{$post_type}_posts_custom_column", [$this, 'fltManagePostsCustomColumn'], 10, 2);
 
+        add_filter('wp_count_posts', [$this, 'fltCountPosts']);
+        add_filter('query', [$this, 'fltCountPostsQuery']);
+
         do_action('presspermit_post_listing_ui');
 
         add_filter('postsFields', [$this, 'fltPostsFields']); // perf
+    }
+
+    public function fltCountPosts($counts) {
+        // don't count posts that are stored with a status that's no longer registered
+        $counts = array_intersect_key((array) $counts, array_fill_keys(get_post_stati(), true));
+
+        return (object) $counts;
+    }
+
+    public function fltCountPostsQuery($query) {
+        global $typenow;
+
+        if (!empty($typenow)) {
+            if (strpos($query, "ELECT COUNT( 1 )")) {
+                $statuses_clause = " AND post_status IN ('" . implode("','", get_post_stati()) . "')"; 
+                $query = str_replace("WHERE post_type = '$typenow'", "WHERE post_type = '$typenow' $statuses_clause", $query);
+            }
+        }
+
+        return $query;
     }
 
     public function fltManagePostsColumns($columns)
