@@ -176,7 +176,7 @@ class CollabHooksCompat
     {
         //presspermit()->registerPatternRole( 'reviewer', ['labels' => (object)['name' => __('Reviewers', 'press-permit-core'), 'singular_name' => __('Reviewer', 'press-permit-core')]]);
 
-        if (defined('REVISIONARY_VERSION')) {
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) {
             presspermit()->registerPatternRole(
                 'revisor', 
                 [

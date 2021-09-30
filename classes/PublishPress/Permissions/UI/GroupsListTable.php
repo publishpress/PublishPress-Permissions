@@ -221,7 +221,7 @@ class GroupsListTable extends GroupsListTableBase
         $group_id = $group->ID;
 
         if ($group->metagroup_id) {
-            if (('rvy_notice' == $group->metagroup_type) && !defined('REVISIONARY_VERSION')) {
+            if (('rvy_notice' == $group->metagroup_type) && !defined('PUBLISHPRESS_REVISIONS_VERSION') && !defined('REVISIONARY_VERSION')) {
                 return;
             }
             

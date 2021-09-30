@@ -276,7 +276,7 @@ class SettingsAdmin
             $pp_caps['pp_set_fork_exceptions'] = __('Set Forking Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
         }
 
-        if (defined('REVISIONARY_VERSION')) {
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) {
             $pp_caps['pp_set_revise_exceptions'] = __('Set Revision Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
         }
 

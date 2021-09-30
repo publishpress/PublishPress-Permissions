@@ -303,7 +303,7 @@ class AgentPermissionsUI
         ?>
 
         <?php
-        if (defined('REVISIONARY_VERSION') && !$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
+        if ((defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) && !$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
             $msg = __('To assign page-specific PublishPress Revision permissions, enable the Collaborative Publishing module.', 'press-permit-core');
             echo "<div>$msg</div>";
         }
