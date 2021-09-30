@@ -148,9 +148,14 @@ class PostSaveHierarchical
 
         $post = get_post($post_id);
 
+        $valid_statuses = get_post_stati(['public' => true, 'private' => true], 'names', 'OR');
+        $workflow_statuses = get_post_stati(['protected' => true, 'internal' => false]);
+        $valid_statuses = array_merge($valid_statuses, $workflow_statuses, ['draft', 'pending']);
+        $statuses_csv = "'" . implode("','", $valid_statuses) . "'";
+
         global $wpdb;
         $valid_parents = $wpdb->get_col(
-            "SELECT ID FROM $wpdb->posts WHERE post_type = '" . sanitize_key($post_type) . "' AND post_status NOT IN ('trash') AND ID > 0 ORDER BY post_parent, ID ASC"
+            "SELECT ID FROM $wpdb->posts WHERE post_type = '" . sanitize_key($post_type) . "' AND post_status IN ($statuses_csv) AND ID > 0 ORDER BY post_parent, ID ASC"
         );
 
         $valid_parents = array_diff($valid_parents, $descendants, (array)$post_id);
