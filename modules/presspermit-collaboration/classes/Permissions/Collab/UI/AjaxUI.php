@@ -10,8 +10,13 @@ class AjaxUI
         if (presspermit()->getOption('publish_exceptions'))
             $op_captions['publish'] = (object)['label' => __('Publish'), 'noun_label' => __('Publishing', 'press-permit-core')];
 
-        if (defined('REVISIONARY_VERSION'))
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+            $op_captions['copy'] = (object)['label' => __('Working Copy of'), 'abbrev' => __('Working Copy'), 'noun_label' => __('Copy', 'press-permit-core')];
+            $op_captions['revise'] = (object)['label' => __('Submit Changes to'), 'abbrev' => __('Submit Changes'), 'noun_label' => __('Request', 'press-permit-core')];
+        
+        } elseif (defined('REVISIONARY_VERSION')) {
             $op_captions['revise'] = (object)['label' => __('Revise'), 'noun_label' => __('Revision', 'press-permit-core')];
+        }
 
         if (class_exists('Fork', false) && !defined('PP_DISABLE_FORKING_SUPPORT'))
             $op_captions['fork'] = (object)['label' => __('Fork'), 'noun_label' => __('Fork', 'press-permit-core')];
@@ -58,6 +63,14 @@ class AjaxUI
             if (class_exists('Fork', false) && !defined('PP_DISABLE_FORKING_SUPPORT') && !in_array($for_item_type, ['forum'], true)) {
                 $op_obj = $pp->admin()->getOperationObject('fork', $for_item_type);
                 $ops['fork'] = $op_obj->label;
+            }
+
+            if (defined('PUBLISHPRESS_REVISIONS_VERSION') && !in_array($for_item_type, ['forum'], true)) {
+                $op_obj = $pp->admin()->getOperationObject('copy', $for_item_type);
+                $ops['copy'] = $op_obj->abbrev;
+
+                $op_obj = $pp->admin()->getOperationObject('revise', $for_item_type);
+                $ops['revise'] = $op_obj->abbrev;
             }
 
             if (defined('REVISIONARY_VERSION') && !in_array($for_item_type, ['forum'], true)) {

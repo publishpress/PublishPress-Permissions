@@ -18,14 +18,21 @@ class CollabHooksCompat
     {
         $ops[] = 'edit';
 
-        if (presspermit()->getOption('publish_exceptions'))
+        if (presspermit()->getOption('publish_exceptions')) {
             $ops[] = 'publish';
+        }
 
-        if (class_exists('Fork', false) && !defined('PP_DISABLE_FORKING_SUPPORT'))
+        if (class_exists('Fork', false) && !defined('PP_DISABLE_FORKING_SUPPORT')) {
             $ops[] = 'fork';
+        }
 
-        if (defined('REVISIONARY_VERSION'))
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+            $ops[] = 'copy';
+        }
+
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) {
             $ops[] = 'revise';
+        }
 
         $ops = array_merge($ops, ['associate', 'assign', 'manage']);
 
