@@ -66,6 +66,8 @@ class AgentsAjax
 
             $post_type = (post_type_exists($context)) ? $context : 'page';
 
+            $authors_clause = apply_filters('presspermit_select_author_clause', '', $post_type);
+
             $type_obj = get_post_type_object($post_type);
             if (!current_user_can($type_obj->cap->edit_others_posts)) {
                 die(-1);
@@ -182,13 +184,13 @@ class AgentsAjax
             }
 
             $results = $wpdb->get_results(
-                "SELECT ID, user_login, display_name FROM $wpdb->users $join $where ORDER BY $orderby $limit_clause"
+                "SELECT ID, user_login, display_name FROM $wpdb->users $join $where $authors_clause ORDER BY $orderby $limit_clause"
             );
 
             if (defined('PRESSPERMIT_DEBUG_USER_QUERY') && empty($agent_id)) {
                 error_log('PublishPress Permissions User Query:');
                 error_log(serialize($_GET));
-                error_log("SELECT ID, user_login, display_name FROM $wpdb->users $join $where ORDER BY $orderby $limit_clause");
+                error_log("SELECT ID, user_login, display_name FROM $wpdb->users $join $where $authors_clause ORDER BY $orderby $limit_clause");
                 error_log($wpdb->last_query);
                 $num = count($results);
                 error_log("$num results");
