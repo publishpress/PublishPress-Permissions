@@ -638,7 +638,7 @@ class PostFilters
                 $use_statuses = array_merge($use_statuses, $limit_statuses);
             }
         } else {
-            $use_statuses = PWP::getPostStatuses(['internal' => false, 'post_type' => $post_types], '', 'object', ['context' => 'edit']);
+            $use_statuses = PWP::getPostStatuses(['internal' => false, 'post_type' => $post_types], 'object', 'and', ['context' => 'edit']);
         }
 
         $use_statuses = apply_filters('presspermit_query_post_statuses', $use_statuses, $args );
