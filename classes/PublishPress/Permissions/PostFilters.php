@@ -579,7 +579,7 @@ class PostFilters
                     $required_operation = (presspermit_is_preview()) ? 'edit' : 'read';
                 }
             } else {
-                $required_operation = (PWP::isFront() && !presspermit_is_preview()) ? 'read' : 'edit';
+                $required_operation = (PWP::isFront() && (!presspermit_is_preview() || (count($post_types) == 1 && ('attachment' == reset($post_types))) )) ? 'read' : 'edit';
             }
             
             $args['required_operation'] = $required_operation;
