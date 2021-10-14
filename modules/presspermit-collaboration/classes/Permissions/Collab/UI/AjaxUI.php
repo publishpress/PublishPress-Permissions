@@ -11,9 +11,18 @@ class AjaxUI
             $op_captions['publish'] = (object)['label' => __('Publish'), 'noun_label' => __('Publishing', 'press-permit-core')];
 
         if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
-            $op_captions['copy'] = (object)['label' => __('Working Copy of'), 'abbrev' => __('Working Copy'), 'noun_label' => __('Copy', 'press-permit-core')];
-            $op_captions['revise'] = (object)['label' => __('Submit Changes to'), 'abbrev' => __('Submit Changes'), 'noun_label' => __('Request', 'press-permit-core')];
+            if (rvy_get_option('revision_statuses_noun_labels')) {
+            	$op_captions['copy'] = (object)['label' => __('Working Copy of'), 'abbrev' => __('Working Copy'), 'noun_label' => __('Copy', 'press-permit-core')];
+            	$op_captions['revise'] = (object)['label' => __('Submit Changes to'), 'abbrev' => __('Submit Changes'), 'noun_label' => __('Request', 'press-permit-core')];
+            } else {
+                $op_captions['copy'] = (object)['label' => __('Create Revision of'), 'abbrev' => __('Create Revision'), 'noun_label' => __('New Revision', 'press-permit-core')];
+                $op_captions['revise'] = (object)['label' => __('Submit Revision of'), 'abbrev' => __('Submit Revision'), 'noun_label' => __('Submitted Revision', 'press-permit-core')];
+            }
         
+            foreach(['label', 'abbrev', 'noun_label'] as $prop) {
+                $op_captions['copy']->$prop = str_replace(' ', '&nbsp;', $op_captions['copy']->$prop);
+                $op_captions['revise']->$prop = str_replace(' ', '&nbsp;', $op_captions['revise']->$prop);
+            }
         } elseif (defined('REVISIONARY_VERSION')) {
             $op_captions['revise'] = (object)['label' => __('Revise'), 'noun_label' => __('Revision', 'press-permit-core')];
         }
