@@ -142,7 +142,7 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.6 - 13 Oct 2021 =
+= 3.6 - 14 Oct 2021 =
 * Compat : PublishPress Revisions 3
 * Fixed : Non-Administrators could not view image gallery in post preview
 * Fixed : Page Structure settings did not prevent creation of top level pages in Gutenberg
