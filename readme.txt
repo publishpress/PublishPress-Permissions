@@ -142,14 +142,14 @@ Press Permit Core + PP extension users: download PublishPress Permissions Pro fr
 
 == Changelog ==
 
-= 3.6 - 11 Oct 2021 =
+= 3.6 - 13 Oct 2021 =
 * Compat : PublishPress Revisions 3
 * Fixed : Non-Administrators could not view image gallery in post preview
 * Fixed : Page Structure settings did not prevent creation of top level pages in Gutenberg
 * Feature : Edit Group Permissions screen - "Fix sub-Pages permissions" link causes Specific Permissions to be re-propagated to sub-pages if WP_DEBUG is defined (url argument: pp_fix_child_exceptions)
 * Compat : PublishPress Revisions - Specific Permissions for "Revise" did not cause display of "Edit" link in Admin Bar
 
-= 3.5.7 - 15 Jul 2021 =
+= 3.5.7 - 26 Jul 2021 =
 * Fixed : Nav Menu Edit - Permissions configuration did not make private pages selectable
 * Fixed : Nav Menu Edit - If Pages metabox results are paged, custom Front Page and Privacy Page were forced to the top of every results page
 * Compat : WP Engine - Long wp-admin screen loads because excessive clearance of WP Engine cache caused WordPress to execute Update Plugins check on each request
