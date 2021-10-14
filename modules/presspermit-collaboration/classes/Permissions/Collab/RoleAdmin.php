@@ -144,8 +144,14 @@ class RoleAdmin
                 
                 break;
 
+            case 'copy':
+                $can = defined('PUBLISHPRESS_REVISIONS_VERSION') && ($is_administrator || $can_assign_edit_exceptions || (
+                    $can_edit_published && current_user_can('pp_set_copy_exceptions'))
+                );
+                break;
+
             case 'revise':
-                $can = defined('REVISIONARY_VERSION') && ($is_administrator || $can_assign_edit_exceptions || (
+                $can = (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) && ($is_administrator || $can_assign_edit_exceptions || (
                     $can_edit_published && current_user_can('pp_set_revise_exceptions'))
                 );
                 break;

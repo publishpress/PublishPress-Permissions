@@ -147,7 +147,7 @@ class LibWP
         $is_front = (!is_admin() && !defined('XMLRPC_REQUEST') && !defined('DOING_AJAX')
             && (!defined('REST_REQUEST') || !REST_REQUEST) && !self::doingCron());
 
-        return (defined('REST_REQUEST') && REST_REQUEST) ? apply_filters('presspermit_is_front', $is_front) : $is_front;
+        return apply_filters('presspermit_is_front', $is_front);
     }
 
     public static function doingCron()

@@ -70,6 +70,14 @@ class CommentFilters
         $post_id = (int)$post_id;
 
         $where = ($post_id > 0) ? $wpdb->prepare("comment_post_ID = %d", $post_id) : '1=1';
+        $where = apply_filters('presspermit_count_comments_where', $where, $post_id);
+
+        // @todo: move to filter
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+        	$revision_status_csv = rvy_revision_statuses(['return' => 'csv']);
+
+        	$where .= " AND post_mime_type NOT IN ($revision_status_csv)";
+		}
 
         $clauses = $this->fltCommentsClauses(['join' => '', 'where' => ''], false, ['required_operation' => 'edit']);
 

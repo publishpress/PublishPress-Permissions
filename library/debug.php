@@ -15,7 +15,7 @@ function presspermit_usage_message($translate = true)
 
 function presspermit_echo_usage_message($translate = true)
 {
-    if (!defined('REVISIONARY_VERSION') && !defined('PRESSPERMIT_USAGE_MESSAGE_DONE') && !defined('AGP_NO_USAGE_MSG')) {  // Revisionary outputs its own message
+    if (!defined('PUBLISHPRESS_REVISIONS_VERSION') && !defined('REVISIONARY_VERSION') && !defined('PRESSPERMIT_USAGE_MESSAGE_DONE') && !defined('AGP_NO_USAGE_MSG')) {  // Revisionary outputs its own message
         echo '<p style="text-align:center">' . presspermit_usage_message($translate) . '</p>';
         define('PRESSPERMIT_USAGE_MESSAGE_DONE', true);
     }

@@ -141,7 +141,7 @@ $consts = [
 foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 'type' => $type];
 
 
-if (defined("REVISIONARY_VERSION")) {
+if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined("REVISIONARY_VERSION")) {
     $type = 'third-party';
     $consts = [
         'SCOPER_DEFAULT_MONITOR_GROUPS' => "",

@@ -909,4 +909,52 @@ class PermissionsUpdate
 
         return !empty($any_inserts);
     }
+
+    /*
+    * Custom function to force child page exceptions to be regenerated
+    */
+    public static function ensureExceptionPropagation() {
+        global $wpdb;
+
+        $exceptions = $wpdb->get_results(
+            "SELECT * FROM $wpdb->ppc_exceptions WHERE for_item_source = 'post' AND via_item_source = 'post'"
+        );
+        
+        foreach($exceptions as $exc) {
+            $items = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM $wpdb->ppc_exception_items WHERE exception_id = %d AND assign_for = 'children' AND inherited_from = 0",
+                    $exc->exception_id
+                )
+            );
+
+            foreach($items as $exc_item) {
+                $child_items = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT * FROM $wpdb->ppc_exception_items WHERE inherited_from = %d",
+                        $exc_item->eitem_id
+                    )
+                );
+
+                if (!$child_items) {
+                    $insert_agents = [];
+                    $insert_agents[$exc->agent_id] = true;
+
+                    $args = ['assign_for' => 'children'];
+                    $_assigned_items = self::insertExceptions(
+                        $exc->mod_type,
+                        $exc->operation,
+                        $exc->via_item_source,
+                        $exc->via_item_type,
+                        $exc->for_item_source,
+                        $exc->for_item_type,
+                        $exc_item->item_id,
+                        $exc->agent_type,
+                        $insert_agents,
+                        $args
+                    );
+                }
+            }
+        }
+    }
 }

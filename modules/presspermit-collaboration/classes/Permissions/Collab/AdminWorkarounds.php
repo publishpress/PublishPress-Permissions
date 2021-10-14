@@ -374,7 +374,9 @@ class AdminWorkarounds
 
         $pos_from = strpos($query, "FROM $posts");
 		$pos_where = strpos($query, "WHERE ");
-		
+        
+        // @todo: use 'wp_count_posts' filter instead?
+
         if ((strpos($query, "ELECT post_status, COUNT( * ) AS num_posts ") || (strpos($query, "ELECT COUNT( 1 )") && $pos_from && (!$pos_where || ($pos_from < $pos_where)))) 
         && preg_match("/FROM\s*{$posts}\s*WHERE post_type\s*=\s*'([^ ]+)'/", $query, $matches)
         ) {
@@ -413,40 +415,52 @@ class AdminWorkarounds
                         ]
                     );
 
-                    // Additional queries triggered by posts_request filter breaks all subsequent filters which would have operated on this query (@todo: review)
-                    if (defined('REVISIONARY_VERSION') && version_compare(REVISIONARY_VERSION, '1.5-alpha', '<')) {
-                        if (class_exists('RevisionaryAdminHardway_Ltd'))
-                            $query = \RevisionaryAdminHardway_Ltd::flt_last_resort_query($query);
-
-                        if (class_exists('RevisionaryAdminHardway'))
-                            $query = \RevisionaryAdminHardway::flt_include_pending_revisions($query);
-                    }
-
-                    if (defined('REVISIONARY_VERSION')) {
-                        if (version_compare(REVISIONARY_VERSION, '1.5-alpha', '<')) {
+                    if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+                        $revision_status_csv = rvy_revision_statuses(['return' => 'csv']);
+                        
+                        if (!strpos($query, "AND post_mime_type NOT IN ($revision_status_csv)")) {
                             $query = str_replace(
                                 " post_type = '{$matches[1]}'", 
-
-                                "( post_type = '{$matches[1]}' OR ( post_type = 'revision' AND post_status IN ('pending','future')"
-                                . " AND post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )", 
-                                
+                                "( post_type = '{$matches[1]}' AND post_mime_type NOT IN ($revision_status_csv) )", 
                                 $query
                             );
-                        } else {
-                            $query = str_replace(
-                                " post_type = '{$matches[1]}'", 
+                        }
+                    } else {
+                        // Additional queries triggered by posts_request filter breaks all subsequent filters which would have operated on this query (@todo: review)
+                        if (defined('REVISIONARY_VERSION') && version_compare(REVISIONARY_VERSION, '1.5-alpha', '<')) {
+                            if (class_exists('RevisionaryAdminHardway_Ltd'))
+                                $query = \RevisionaryAdminHardway_Ltd::flt_last_resort_query($query);
 
-                                "( post_type = '{$matches[1]}' OR ( post_status IN ('pending-revision','future-revision')"
-                                . " AND comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )", 
-                                
-                                $query
-                            );
+                            if (class_exists('RevisionaryAdminHardway'))
+                                $query = \RevisionaryAdminHardway::flt_include_pending_revisions($query);
+                        }
 
-                            preg_match("/{$posts}.post_status\s*IN\s*\('([^ ]+')\)/", $query, $matches);
+                        if (defined('REVISIONARY_VERSION')) {
+                            if (version_compare(REVISIONARY_VERSION, '1.5-alpha', '<')) {
+                                $query = str_replace(
+                                    " post_type = '{$matches[1]}'", 
 
-                            if (!empty($matches[1])) {
-                                $query = str_replace($matches[1], $matches[1] . ", 'pending-revision', 'future-revision'", $query);
-                            }     
+                                    "( post_type = '{$matches[1]}' OR ( post_type = 'revision' AND post_status IN ('pending','future')"
+                                    . " AND post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )", 
+                                    
+                                    $query
+                                );
+                            } else {
+                                $query = str_replace(
+                                    " post_type = '{$matches[1]}'", 
+
+                                    "( post_type = '{$matches[1]}' OR ( post_status IN ('pending-revision','future-revision')"
+                                    . " AND comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )", 
+                                    
+                                    $query
+                                );
+
+                                preg_match("/{$posts}.post_status\s*IN\s*\('([^ ]+')\)/", $query, $matches);
+
+                                if (!empty($matches[1])) {
+                                    $query = str_replace($matches[1], $matches[1] . ", 'pending-revision', 'future-revision'", $query);
+                                }     
+                            }
                         }
                     }
                 }

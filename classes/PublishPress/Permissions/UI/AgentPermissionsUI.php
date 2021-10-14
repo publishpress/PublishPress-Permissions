@@ -303,7 +303,7 @@ class AgentPermissionsUI
         ?>
 
         <?php
-        if (defined('REVISIONARY_VERSION') && !$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
+        if ((defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) && !$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) {
             $msg = __('To assign page-specific PublishPress Revision permissions, enable the Collaborative Publishing module.', 'press-permit-core');
             echo "<div>$msg</div>";
         }
@@ -849,14 +849,16 @@ class AgentPermissionsUI
                         if (!$operation_obj = $pp_admin->getOperationObject($operation, $for_type))
                             continue;
 
+                        $op_label = (!empty($operation_obj->abbrev)) ? $operation_obj->abbrev : $operation_obj->label;
+
                         if ('assign' == $operation) {
                             $op_caption = ($for_type)
-                                ? sprintf(__('%1$s (%2$s: %3$s)', 'press-permit-core'), $operation_obj->label, $for_type_obj->labels->singular_name, $via_type_caption)
-                                : sprintf(__('%1$s %2$s %3$s', 'press-permit-core'), $operation_obj->label, $via_type_caption, $for_type_obj->labels->singular_name);
+                                ? sprintf(__('%1$s (%2$s: %3$s)', 'press-permit-core'), $op_label, $for_type_obj->labels->singular_name, $via_type_caption)
+                                : sprintf(__('%1$s %2$s %3$s', 'press-permit-core'), $op_label, $via_type_caption, $for_type_obj->labels->singular_name);
                         } elseif (in_array($operation, ['manage', 'associate'], true)) {
-                            $op_caption = sprintf(__('%1$s %2$s', 'press-permit-core'), $operation_obj->label, $via_type_caption);
+                            $op_caption = sprintf(__('%1$s - %2$s', 'press-permit-core'), $op_label, $via_type_caption);
                         } else {
-                            $op_caption = sprintf(__('%1$s %2$s', 'press-permit-core'), $operation_obj->label, $for_type_obj->labels->singular_name);
+                            $op_caption = sprintf(__('%1$s - %2$s', 'press-permit-core'), $op_label, $for_type_obj->labels->name);
                         }
 
                         echo "<div class='type-roles-wrapper'>";
@@ -1043,13 +1045,18 @@ class AgentPermissionsUI
                             switch ($_op) {
                                 case 'read':
                                 case 'edit':
+                                case 'copy':
                                 case 'revise':
                                 case 'publish':
                                 case 'post_associate':
                                 case 'assign':
                                     $mirror_ops = ['read', 'edit'];
 
-                                    if (defined('REVISIONARY_VERSION')) {
+                                    if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+                                        $mirror_ops []= 'copy';
+                                    }
+
+                                    if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) {
                                         $mirror_ops []= 'revise';
                                     }
 
@@ -1148,14 +1155,27 @@ class AgentPermissionsUI
                     $show_all_url = esc_url(add_query_arg('show_propagated', '1', $_SERVER['REQUEST_URI']));
                     $show_all_link = "&nbsp;&nbsp;<a href='$show_all_url'>";
 
-                    if (empty($_REQUEST['show_propagated'])) {
+                    if (defined('WP_DEBUG')) {
+                        $fix_child_url = esc_url(add_query_arg('pp_fix_child_exceptions', '1', $_SERVER['REQUEST_URI']));
+                        $fix_child_link = "&nbsp;&nbsp;<a href='$fix_child_url'>";
+                        $fix_child_exceptions_link = '&nbsp;&nbsp;&bull;' . sprintf(__(' %1$sfix sub-%2$s permissions %3$s', 'press-permit-core'), $fix_child_link, strtolower($via_type_obj->labels->name), '</a>');
+                    } else {
+                        $fix_child_exceptions_link = '';
+                    }
+
+                    if (empty($_REQUEST['show_propagated']) || $fix_child_exceptions_link) {
                         if ('term' == $via_src) {
                             echo '<div class="pp-current-roles-note">'
                                 . sprintf(__('note: Permissions inherited from parent %1$s are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')
                                 . '</div>';
                         } else {
+                            $show_all_caption = (empty($_REQUEST['show_propagated']))
+                            ? sprintf(__('note: Permissions inherited from parent %1$s or terms are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')
+                            : '';
+
                             echo '<div class="pp-current-roles-note">'
-                                . sprintf(__('note: Permissions inherited from parent %1$s or terms are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')
+                                . $show_all_caption
+                                . $fix_child_exceptions_link
                                 . '</div>';
                         }
                     }

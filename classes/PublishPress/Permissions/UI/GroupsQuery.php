@@ -154,7 +154,7 @@ class GroupQuery
         }
 
         $skip_meta_ids = [];
-        if (!defined('REVISIONARY_VERSION') || defined('SCOPER_DEFAULT_MONITOR_GROUPS') || defined('PP_DEFAULT_MONITOR_GROUPS')) {
+        if ((!defined('PUBLISHPRESS_REVISIONS_VERSION') && !defined('REVISIONARY_VERSION')) || defined('SCOPER_DEFAULT_MONITOR_GROUPS') || defined('PP_DEFAULT_MONITOR_GROUPS')) {
             $skip_meta_ids = array_merge($skip_meta_ids, ['rv_pending_rev_notice_ed_nr_', 'rv_scheduled_rev_notice_ed_nr_']);
         }
         if ($skip_meta_ids) {
