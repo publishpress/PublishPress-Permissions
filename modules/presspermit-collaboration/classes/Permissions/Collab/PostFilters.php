@@ -5,7 +5,11 @@ class PostFilters
 {
     function __construct()
     {
-        if (defined('REVISIONARY_VERSION')) {
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+            require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisions/PostFilters.php');
+            new Revisions\PostFilters();
+        
+        } elseif (defined('REVISIONARY_VERSION')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisionary/PostFilters.php');
             new Revisionary\PostFilters();
         }

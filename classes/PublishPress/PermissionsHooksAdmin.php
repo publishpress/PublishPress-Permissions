@@ -174,7 +174,7 @@ class PermissionsHooksAdmin
     function act_revisions_dependency() {
         global $pagenow;
 
-        if (defined('REVISIONARY_VERSION')) {
+        if (defined("PUBLISHPRESS_REVISIONS_VERSION") || defined('REVISIONARY_VERSION')) {
             if (!defined('PRESSPERMIT_COLLAB_VERSION')) {
                 if (!presspermitPluginPage() && (empty($_REQUEST['page']) || !in_array($_REQUEST['page'], ['revisionary-q', 'revisionary-settings'])) && ('edit.php' !== $pagenow)) {
                     return;

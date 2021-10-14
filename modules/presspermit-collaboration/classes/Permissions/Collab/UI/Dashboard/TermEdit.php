@@ -18,7 +18,7 @@ class TermEdit
     {
         $pp = presspermit();
 
-        foreach (['edit', 'fork', 'revise', 'assign'] as $op) {
+        foreach (['edit', 'fork', 'copy', 'revise', 'assign'] as $op) {
             if ($pp->admin()->canSetExceptions(
                 $op, 
                 $for_item_type, 

@@ -72,7 +72,7 @@ class PostEdit
 
     function flt_item_edit_exception_ops($operations, $for_source_name, $for_item_type)
     {
-        foreach (['edit', 'fork', 'revise', 'associate'] as $op) {
+        foreach (['edit', 'fork', 'copy', 'revise', 'associate'] as $op) {
             if (presspermit()->admin()->canSetExceptions($op, $for_item_type, ['for_source_name' => $for_source_name])) {
                 $operations[$op] = true;
             }

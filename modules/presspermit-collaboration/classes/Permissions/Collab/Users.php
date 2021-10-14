@@ -36,6 +36,7 @@ class Users
         if (
         (('lower_levels' == $editing_limitation) && ($levels[$args[2]] >= $levels[$args[1]]))
         || ($levels[$args[2]] > $levels[$args[1]])
+        || apply_filters('presspermit_block_user_edit', false, $args[2])
         ) {
             $wp_sitecaps = array_diff_key(
                 $wp_sitecaps, 

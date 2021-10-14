@@ -538,6 +538,7 @@ class PostFilters
     public function getPostsWhere($args)
     {
         $defaults = [
+            'has_cap_check' => false,   // TRUE: this function call is to determine per-post editing / deletion capability;  FALSE: just determining which posts to list
             'post_types' => [],
             'source_alias' => false,
             'src_table' => '',
@@ -578,7 +579,7 @@ class PostFilters
                     $required_operation = (presspermit_is_preview()) ? 'edit' : 'read';
                 }
             } else {
-                $required_operation = (PWP::isFront() && !presspermit_is_preview()) ? 'read' : 'edit';
+                $required_operation = (PWP::isFront() && (!presspermit_is_preview() || (count($post_types) == 1 && ('attachment' == reset($post_types))) )) ? 'read' : 'edit';
             }
             
             $args['required_operation'] = $required_operation;
@@ -637,7 +638,7 @@ class PostFilters
                 $use_statuses = array_merge($use_statuses, $limit_statuses);
             }
         } else {
-            $use_statuses = PWP::getPostStatuses(['internal' => false, 'post_type' => $post_types], '', 'object', ['context' => 'edit']);
+            $use_statuses = PWP::getPostStatuses(['internal' => false, 'post_type' => $post_types], 'object', 'and', ['context' => 'edit']);
         }
 
         $use_statuses = apply_filters('presspermit_query_post_statuses', $use_statuses, $args );
@@ -735,6 +736,15 @@ class PostFilters
 
                                         if (!empty($user->allcaps[$list_cap])) {
                                             $reqd_caps[$key] = $list_cap;
+                                        } else {
+                                            // @todo: API?
+                                            if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+                                                $revise_cap = str_replace('edit_', 'revise_', $cap);
+
+                                                if (!empty($user->allcaps[$list_cap])) {
+                                                    $reqd_caps[$key] = $revise_cap;
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -942,7 +952,6 @@ class PostFilters
             remove_action( 'admin_init', array( 'WP_Privacy_Policy_Content', 'text_change_check' ), 100 );
         }
 
-        //$return = array_diff(map_meta_cap($cap_name, $user_id, $_post), [null]);  // post types which leave some basic cap properties undefined result in nulls
         $return = array_diff(map_meta_cap($cap_name, $user_id, $_post->ID), [null]);  // post types which leave some basic cap properties undefined result in nulls
         wp_cache_delete(-1, 'posts');
         presspermit()->meta_cap_post = false;
@@ -1000,9 +1009,22 @@ class PostFilters
                 global $current_user;
                 $list_others_cap = str_replace('edit_', 'list_', $type_obj->cap->edit_others_posts);
 
-                $replace_caps[$list_others_cap] = (!empty($current_user->allcaps[$type_obj->cap->edit_posts]))
-                ? $type_obj->cap->edit_posts
-                : str_replace('edit_', 'list_', $type_obj->cap->edit_posts);
+                if (!empty($current_user->allcaps[$type_obj->cap->edit_posts])) {
+                    $replace_caps[$list_others_cap] = $type_obj->cap->edit_posts;
+                } else {
+                    $require_cap = str_replace('edit_', 'list_', $type_obj->cap->edit_posts);
+
+                    // @todo: API?
+                    if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+                        $revise_cap = str_replace('edit_', 'revise_', $type_obj->cap->edit_posts);
+                        
+                        if (!empty($current_user->allcaps[$revise_cap])) {
+                            $require_cap = $revise_cap;
+                        }
+                    }
+
+                    $replace_caps[$list_others_cap] = $require_cap;
+                }
             }
 
             foreach ($replace_caps as $cap_name => $base_cap) {

@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.8
 Requires PHP: 5.6.20
-Stable tag: 3.5.7
+Stable tag: 3.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -137,12 +137,19 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Upgrade Notice ==
 
-= 3.5.7 =
+= 3.6 =
 Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
 
 == Changelog ==
 
-= 3.5.7 - 15 Jul 2021 =
+= 3.6 - 14 Oct 2021 =
+* Compat : PublishPress Revisions 3
+* Fixed : Non-Administrators could not view image gallery in post preview
+* Fixed : Page Structure settings did not prevent creation of top level pages in Gutenberg
+* Feature : Edit Group Permissions screen - "Fix sub-Pages permissions" link causes Specific Permissions to be re-propagated to sub-pages if WP_DEBUG is defined (url argument: pp_fix_child_exceptions)
+* Compat : PublishPress Revisions - Specific Permissions for "Revise" did not cause display of "Edit" link in Admin Bar
+
+= 3.5.7 - 26 Jul 2021 =
 * Fixed : Nav Menu Edit - Permissions configuration did not make private pages selectable
 * Fixed : Nav Menu Edit - If Pages metabox results are paged, custom Front Page and Privacy Page were forced to the top of every results page
 * Compat : WP Engine - Long wp-admin screen loads because excessive clearance of WP Engine cache caused WordPress to execute Update Plugins check on each request

@@ -107,6 +107,10 @@ class ItemsMetabox extends \Walker_Nav_Menu
             'update_post_meta_cache' => false,
         ];
 
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+            $args['suppress_filters'] = false;
+        }
+
         if ('attachment' == $post_type_name) {
             $args['post_status'] = 'inherit';
         }

@@ -45,7 +45,11 @@ class DashboardFilters
 
         add_filter('presspermit_post_status_types', [$this, 'flt_status_links'], 5);
 
-        if (defined('REVISIONARY_VERSION')) {
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+            require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisions/PostFilters.php');
+            new \PublishPress\Permissions\Collab\Revisions\PostFilters();
+
+        } elseif (defined('REVISIONARY_VERSION')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisionary/PostFilters.php');
             new \PublishPress\Permissions\Collab\Revisionary\PostFilters();
         }

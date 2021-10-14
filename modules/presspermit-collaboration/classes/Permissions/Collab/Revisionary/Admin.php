@@ -148,7 +148,7 @@ class Admin
 
     public function flt_mapMetaCap($caps, $meta_cap, $user_id, $wp_args)
     {
-        if (in_array($meta_cap, ['edit_post', 'edit_page'], true) && !empty($wp_args[0]) 
+        if ($user_id && in_array($meta_cap, ['edit_post', 'edit_page'], true) && !empty($wp_args[0]) 
 			&& function_exists('rvy_get_option') && function_exists('rvy_default_options') // Revisions plugin does not initialize on plugins.php URL
 		) {
             global $current_user;
