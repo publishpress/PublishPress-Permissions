@@ -135,12 +135,11 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 8. Create your own Workflow Statuses
 9. Create your own Privacy Statuses
 
-== Upgrade Notice ==
-
-= 3.6 =
-Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
-
 == Changelog ==
+
+= 3.6.2 - 9 Nov 2021 =
+* Fixed : Nav Menu Editor - Offered to add unpublished posts to menu; post metabox paging failed if unpublished items present
+* Fixed : Front end Nav Menu filter was applied regardless of "Disable all filtering for anonymous users" setting
 
 = 3.6 - 14 Oct 2021 =
 * Compat : PublishPress Revisions 3
