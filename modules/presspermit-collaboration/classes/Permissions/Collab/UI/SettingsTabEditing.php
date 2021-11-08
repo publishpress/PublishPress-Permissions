@@ -183,11 +183,12 @@ class SettingsTabEditing
                                             $id = 'force_default_privacy-' . $object_type;
                                             $name = "force_default_privacy[$object_type]";
                                             $style = ($setting) ? '' : ' style="display:none"';
-                                            $checked = (!empty($force_values[$object_type])) ? 'checked="checked" ' : '';
+                                            $checked = (!empty($force_values[$object_type]) || PWP::isBlockEditorActive($object_type)) ? 'checked="checked" ' : '';
+                                            $disabled = (PWP::isBlockEditorActive($object_type)) ? " disabled=disabled " : '';
                                             ?>
                                             <input name='<?php echo $name; ?>' type='hidden' value='0'/>
                                             &nbsp;<label<?php echo $style; ?> for="<?php echo $id; ?>"><input
-                                                    type="checkbox" <?php echo $checked; ?>id="<?php echo $id; ?>"
+                                                    type="checkbox" <?php echo $checked; ?><?php echo $disabled; ?>id="<?php echo $id; ?>"
                                                     name="<?php echo $name; ?>"
                                                     value="1"/><?php if ($do_force_option) : ?>&nbsp;<?php _e('lock', 'press-permit-core'); ?><?php endif; ?>
                                         </label>
