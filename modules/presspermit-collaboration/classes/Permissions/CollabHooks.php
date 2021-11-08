@@ -365,7 +365,7 @@ class CollabHooks
                     }
                     */
 
-                    if ($force = presspermit()->getTypeOption('force_default_privacy', $args['post_type'])) {
+                    if ($force = presspermit()->getTypeOption('force_default_privacy', $args['post_type']) || PWP::isBlockEditorActive($args['post_type'])) {
                         // only apply if status is currently registered and PP-enabled for the post type
                         if (PWP::getPostStatuses(['name' => $default_privacy, 'post_type' => $args['post_type']])) {
                             if (!empty($args['return_meta']))
