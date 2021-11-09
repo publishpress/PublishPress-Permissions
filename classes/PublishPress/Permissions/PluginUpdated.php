@@ -46,6 +46,8 @@ class PluginUpdated
                 // Delete any invalid user metagroup relationships from bad buffer_metagroup_id values
                 self::syncWordPressRoles();
             }
+        
+        	do_action('presspermit_version_updated', $prev_version);
 
             if (version_compare($prev_version, '3.3.3', '<')) {
                 // Activation of invalid "Custom permissions for Authors" setting on Edit Author screen broke Authors > Authors listing and editing access

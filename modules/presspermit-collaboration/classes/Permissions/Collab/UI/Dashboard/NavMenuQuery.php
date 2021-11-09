@@ -29,9 +29,13 @@ class NavMenuQuery
         $query->query['include'] = '';
         $query->query['post__in'] = '';
 
-        if (empty($query->query_vars['post_status']) || ('trash' != $query->query_vars['post_status'])) {
-            $query->query_vars['post_status'] = '';
-            $query->query['post_status'] = '';
+        if (empty($query->query_vars['post_status']) || ('trash' != $query->query_vars['post_status'])) {            
+            $statuses = (!defined('PRESSPERMIT_MENU_EDITOR_ADD_UNPUBLISHED'))
+            ? get_post_stati(['public' => true, 'private' => true], 'names', 'OR')
+            : '';
+
+            $query->query_vars['post_status'] = $statuses;
+            $query->query['post_status'] = $statuses;
         }
 
         $query->query['suppress_filters'] = false;

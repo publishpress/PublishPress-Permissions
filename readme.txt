@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.8
 Requires PHP: 5.6.20
-Stable tag: 3.6
+Stable tag: 3.6.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -135,12 +135,11 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 8. Create your own Workflow Statuses
 9. Create your own Privacy Statuses
 
-== Upgrade Notice ==
-
-= 3.6 =
-Press Permit Core + PP extension users: download PublishPress Permissions Pro from publishpress.com instead of upgrading to this version.
-
 == Changelog ==
+
+= 3.6.2 - 9 Nov 2021 =
+* Fixed : Nav Menu Editor - Offered to add unpublished posts to menu; post metabox paging failed if unpublished items present
+* Fixed : Front end Nav Menu filter was applied regardless of "Disable all filtering for anonymous users" setting
 
 = 3.6 - 14 Oct 2021 =
 * Compat : PublishPress Revisions 3

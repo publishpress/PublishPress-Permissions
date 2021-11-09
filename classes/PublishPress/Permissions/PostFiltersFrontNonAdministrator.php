@@ -6,7 +6,9 @@ class PostFiltersFrontNonAdministrator
 {
     public function __construct() { // Ubermenu: intermittant failure to display top level menu items
         if (!defined('PP_DISABLE_NAV_MENU_FILTER') && (!defined('UBERMENU_VERSION') || presspermit()->getOption('force_nav_menu_filter'))) {
-            add_filter('wp_get_nav_menu_items', [$this, 'fltNavMenuItems'], 50, 3);
+            if (is_user_logged_in() || !presspermit()->getOption('anonymous_unfiltered')) {
+            	add_filter('wp_get_nav_menu_items', [$this, 'fltNavMenuItems'], 50, 3);
+            }
         }
 
         global $wp_query;
