@@ -137,6 +137,9 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 
 == Changelog ==
 
+= 3.6.3 - 16 Nov 2021 =
+* Compat : PublishPress Revisions - Revisions Submission permissions did not correctly adjust Edit Posts / Pages listing in some configurations (also requires Revisions 3.0.2)
+
 = 3.6.2 - 9 Nov 2021 =
 * Fixed : Nav Menu Editor - Offered to add unpublished posts to menu; post metabox paging failed if unpublished items present
 * Fixed : Front end Nav Menu filter was applied regardless of "Disable all filtering for anonymous users" setting
