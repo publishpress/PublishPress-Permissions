@@ -1,13 +1,6 @@
 <?php
 namespace PublishPress\Permissions\Collab\Revisions;
 
-
-// @todo: restore capability allowance for listing query only
-
-// @todo: introduce copy_posts, revise_posts capabilities ?
-
-
-//use \PressShack\LibArray as Arr;
 class Admin
 {
     function __construct() {
@@ -17,9 +10,6 @@ class Admin
         /*
         add_filter('presspermit_get_exception_items', [$this, 'flt_get_exception_items'], 10, 5);
         add_filter('presspermit_term_restrictions_clause', [$this, 'fltTermRestrictionsClause'], 10, 2);
-        add_filter('presspermit_additions_clause', [$this, 'flt_additions_clause'], 10, 4);
-        add_filter('presspermit_term_include_clause', [$this, 'flt_term_include_clause'], 10, 2);
-        add_filter('presspermit_exception_clause', [$this, 'flt_pp_exception_clause'], 10, 4);
         */
 
         add_filter('presspermit_administrator_caps', [$this, 'flt_pp_administrator_caps'], 5);
@@ -90,6 +80,14 @@ class Admin
                         } else {
                             $caps []= str_replace('edit_', 'list_', $post_type_obj->cap->edit_others_posts);
                         }
+
+                        $copy_cap = str_replace('edit_', 'copy_', $type_obj->cap->edit_others_posts);
+                        
+                        if (!empty($current_user->allcaps[$copy_cap])) {
+                            $caps[]= $copy_cap;
+                        } else {
+                            $caps []= str_replace('edit_', 'copy_', $post_type_obj->cap->edit_others_posts);
+                        }
                     }
                 }
 
@@ -104,129 +102,6 @@ class Admin
 
     
     /*
-    public function flt_pp_exception_clause($clause, $required_operation, $post_type, $args = [])
-    {
-        $defaults = ['logic' => 'NOT IN', 'ids' => [], 'src_table' => ''];
-        $args = array_merge($defaults, $args);
-        foreach (array_keys($defaults) as $var) {
-            $$var = $args[$var];
-        }
-
-        $revision_base_status_csv = rvy_revision_base_statuses(['return' => 'csv']);
-	    $revision_status_csv = rvy_revision_statuses(['return' => 'csv']);
-
-        return "( $clause OR ( $src_table.post_status IN ($revision_base_status_csv) AND $src_table.post_mime_type IN ($revision_status_csv) AND $src_table.comment_count $logic ('" . implode("','", $ids) . "') ) )";
-    }
-
-    public function flt_term_include_clause($clause, $args = [])
-    {
-        global $wpdb;
-
-        $defaults = ['tt_ids' => [], 'src_table' => ''];
-        $args = array_merge($defaults, $args);
-        foreach (array_keys($defaults) as $var) {
-            $$var = $args[$var];
-        }
-
-        $revision_base_status_csv = rvy_revision_base_statuses(['return' => 'csv']);
-	    $revision_status_csv = rvy_revision_statuses(['return' => 'csv']);
-
-        $clause .= " OR ( $src_table.post_status IN ($revision_base_status_csv) AND $src_table.post_mime_type IN ($revision_status_csv) AND $src_table.comment_count IN" 
-        . " ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $tt_ids) . "') ) )";
-        
-        return $clause;
-    }
-
-    public function flt_additions_clause($clause, $operation, $post_type, $args)
-    {
-        //$args = compact( 'status', 'in_clause', 'src_table' ) 
-
-        $append_clause = '';
-
-        if (in_array($operation, ['edit', 'delete'], true) && empty($args['status']) 
-        && !in_array($post_type, apply_filters('presspermit_unrevisable_types', []), true)) {
-            $user = presspermit()->getUser();
-
-            if ('post' == $args['via_item_source']) {
-                $hide_others_revisions = rvy_get_option('revisor_lock_others_revisions') 
-                && (
-                    (!empty($type_obj->cap->edit_posts) && empty($type_obj->cap->edit_others_posts))
-                    || (!empty($type_obj->cap->edit_others_posts) && empty($user->allcaps[$type_obj->cap->edit_others_posts]))
-                );
-
-                $revision_base_status_csv = rvy_revision_base_statuses(['return' => 'csv']);
-	            $revision_status_csv = rvy_revision_statuses(['return' => 'csv']);
-                $revision_statuses_clause = "({$args['src_table']}.post_status IN ($revision_base_statuses_csv) AND {$args['src_table']}.post_mime_type IN ($revision_status_csv) )";
-
-                // If we are hiding other revisions from revisors, need to distinguish 
-                // between 'edit' exceptions and 'revise' exceptions (which are merged upstream for other reasons).
-                if ($hide_others_revisions && empty($user->allcaps['edit_others_revisions'])) {
-                    $revise_ids = [];
-
-                    $via_item_type = (isset($args['via_item_type'])) ? $args['via_item_type'] : $post_type;
-                    $revise_ids = $user->getExceptionPosts( 
-                        'revise', 
-                        'additional', 
-                        $via_item_type, 
-                        ['status' => $args['status']]
-                    );
-
-                    $edit_ids = ($revise_ids) ? array_diff($args['ids'], $revise_ids) : $args['ids'];
-                    
-                    if ( $edit_ids || $revise_ids ) {
-                        $parent_clause = [];
-                        
-                        if ( $edit_ids ) {
-                            $parent_clause []= "( {$args['src_table']}.comment_count IN ('" . implode("','", $edit_ids) . "') )";
-                        }
-                        
-                        if ( $revise_ids ) {
-                            //$status_csv = "'" . implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'or')) . "'";
-
-                            $parent_clause []= "( " . PWP::postAuthorClause($args) 
-                            . " AND " . "{$args['src_table']}.comment_count IN ('" . implode("','", $revise_ids) . "') )";  // AND {$args['src_table']}.post_status IN ($status_csv) )";
-                        }
-                        
-                        $parent_clause = 'AND (' . Arr::implode(' OR ', $parent_clause) . ' )';
-
-                        $append_clause .= " OR ( $revision_statuses_clause $parent_clause )";
-                    }
-                } else {
-                    // Not hiding other users' revisions from Revisors, so list all posts with 'edit' or 'revise' exceptions regardless of author.
-                    $append_clause .= " OR ( $revision_statuses_clause AND {$args['src_table']}.comment_count {$args['in_clause']} )";
-                }
-            } elseif ('term' == $args['via_item_source']) {
-                $revise_tt_ids = [];
-
-                foreach(presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
-                    $tt_ids = $user->getExceptionTerms( 
-                        'revise', 
-                        'additional', 
-                        $post_type, 
-                        $taxonomy, 
-                        ['status' => $args['status'], 'merge_universals' => true]
-                    );
-                    
-                    $revise_tt_ids = array_merge($revise_tt_ids, $tt_ids);
-                }
-
-                if ($revise_tt_ids) {
-                    global $wpdb;
-
-                    $parent_tt_clause = "( {$args['src_table']}.comment_count IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $revise_tt_ids) . "') ) )";
-                
-                    $append_clause .= " OR ( $revision_statuses_clause AND $parent_tt_clause )";
-                }
-			}
-		}
-
-        if ($append_clause) {
-            $clause = "({$args['src_table']}.post_mime_type NOT IN ($revision_statuses_csv) AND ($clause)) $append_clause";
-        }
-
-		return $clause;
-    }
-
     // merge revise exceptions into edit exceptions
     public function flt_get_exception_items($exception_items, $operation, $mod_type, $for_item_type, $args = [])
     {
