@@ -23,6 +23,10 @@ class CapabilityFilters
             return;
         }
 
+        if (rvy_get_option('copy_posts_capability')) {
+            return;
+        }
+
         $user = presspermit()->getUser();
 
         foreach(array_keys($revisionary->enabled_post_types) as $post_type) {
@@ -75,6 +79,10 @@ class CapabilityFilters
                             $post_terms[$taxonomy] = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids']);
                         }
                         
+                        if (!empty($term_ids[''])) { //  @todo: prevent this return structure
+                            $term_ids = $term_ids[''];
+                        }
+
                         if (array_intersect($term_ids, $post_terms[$taxonomy])) {
                             $can_do = false;
                             break;
@@ -96,6 +104,10 @@ class CapabilityFilters
                     if ($term_ids = $user->getExceptionTerms($operation, 'include', $post_type, $taxonomy, ['status' => true, 'merge_universals' => true, 'return_term_ids' => true])) {
                         if (!isset($post_terms[$taxonomy])) {
                             $post_terms[$taxonomy] = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids']);
+                        }
+
+                        if (!empty($term_ids[''])) { //  @todo: prevent this return structure
+                            $term_ids = $term_ids[''];
                         }
 
                         if (!empty($term_ids) && !array_intersect($term_ids, $post_terms[$taxonomy])) {
@@ -121,6 +133,10 @@ class CapabilityFilters
                             $post_terms[$taxonomy] = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids']);
                         }
                         
+                        if (!empty($term_ids[''])) { //  @todo: prevent this return structure
+                            $term_ids = $term_ids[''];
+                        }
+
                         if (array_intersect($term_ids, $post_terms[$taxonomy])) {
                             $can_do = true;
                             break;
@@ -134,8 +150,12 @@ class CapabilityFilters
     }
 
     function fltCanCopy($can_copy, $post_id, $base_status, $revision_status, $args) {
-        if (presspermit()->isAdministrator() || rvy_in_revision_workflow($post_id)) {
-            return $can_submit;
+        if (rvy_in_revision_workflow($post_id)) {
+            return false;
+        }
+        
+        if (presspermit()->isAdministrator()) {
+            return $can_copy;
         }
 
         $post_type = (!empty($args['type_obj'])) ? $args['type_obj']->name : get_post_field('post_type', $post_id);
@@ -151,7 +171,8 @@ class CapabilityFilters
             return $can_copy;
         }
 
-        return $this->fltPostAccessApplyExceptions($can_copy, $operation, $post_type, $post_id);
+        // Possession of a submit_post permission also grants implicit copy_post permission.  This is partly for consistency with Revisions 2.x behavior
+        return $this->fltPostAccessApplyExceptions($can_copy, $operation, $post_type, $post_id) || $this->fltPostAccessApplyExceptions($can_copy, 'revise', $post_type, $post_id);
     }
 
     function fltCanSubmit($can_submit, $post_id, $new_base_status, $new_revision_status, $args) {

@@ -6,11 +6,8 @@ class Admin
     function __construct() {
         add_filter('map_meta_cap', [$this, 'flt_mapMetaCap'], 3, 4);
 
-        // @todo: adapt this for copy_posts exceptions
-        /*
         add_filter('presspermit_get_exception_items', [$this, 'flt_get_exception_items'], 10, 5);
         add_filter('presspermit_term_restrictions_clause', [$this, 'fltTermRestrictionsClause'], 10, 2);
-        */
 
         add_filter('presspermit_administrator_caps', [$this, 'flt_pp_administrator_caps'], 5);
     }
@@ -100,8 +97,6 @@ class Admin
         return $caps;
     }
 
-    
-    /*
     // merge revise exceptions into edit exceptions
     public function flt_get_exception_items($exception_items, $operation, $mod_type, $for_item_type, $args = [])
     {
@@ -132,7 +127,13 @@ class Admin
             $user->retrieveExceptions('revise', 'post');
         }
 
-        if (!isset($user->except['revise_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type])) {
+        if (!isset($user->except['copy_post'])) {
+            $user->retrieveExceptions('copy', 'post');
+        }
+
+        if (!isset($user->except['revise_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type])
+        && !isset($user->except['copy_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type])
+        ) {
             return $exception_items;
         }
 
@@ -146,6 +147,15 @@ class Admin
             $exception_items[$_status] = array_merge(
                 $exception_items[$_status], 
                 $user->except['revise_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type][$_status]
+            );
+        }
+
+        foreach (array_keys($user->except['copy_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type]) as $_status) {
+            Arr::setElem($exception_items, [$_status]);
+
+            $exception_items[$_status] = array_merge(
+                $exception_items[$_status], 
+                $user->except['copy_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type][$_status]
             );
         }
 
@@ -193,15 +203,55 @@ class Admin
         $excluded_ttids_published = [];
 
         foreach (presspermit()->getEnabledTaxonomies($tx_args) as $taxonomy) {
-            $tx_additional_ids = ($merge_additions)
-                ? $user->getExceptionTerms($required_operation, 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
-                : [];
-
             foreach ($mod_types as $mod) {
                 if ($tt_ids = $user->getExceptionTerms('revise', $mod, $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])) {    
-                    $tx_additional_ids = ($merge_additions)
-                    ? $user->getExceptionTerms('revise', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
-                    : [];
+                    if ($merge_additions) {
+                        $tx_additional_ids = array_merge(
+                            //$user->getExceptionTerms('copy', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true]),
+                            $user->getExceptionTerms('revise', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
+                        );
+                    } else {
+                        $tx_additional_ids = [];
+                    }
+                    
+                    $published_stati_csv = implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'OR' ));
+
+                    if ('include' == $mod) {
+                        if ($tx_additional_ids) {
+                            $tt_ids = array_merge($tt_ids, $tx_additional_ids);
+                        }
+
+                        $term_include_clause = apply_filters(
+                            'presspermit_term_include_clause',
+                            "( $src_table.post_status NOT IN ('$published_stati_csv') OR $src_table.ID IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $tt_ids) . "') ) )",
+                            compact('tt_ids', 'src_table')
+                        );
+
+                        $where .= " AND ( $term_include_clause $term_additions_clause $post_additions_clause $type_exemption_clause )";
+                        continue 2;
+
+                    } else {
+                        if ($tx_additional_ids) {
+                            $tt_ids = array_diff($tt_ids, $tx_additional_ids);
+                        }
+
+                        $excluded_ttids_published = array_merge($excluded_ttids_published, $tt_ids);
+                    }
+                }
+            }
+        }
+
+        foreach (presspermit()->getEnabledTaxonomies($tx_args) as $taxonomy) {
+            foreach ($mod_types as $mod) {
+                if ($tt_ids = $user->getExceptionTerms('copy', $mod, $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])) {    
+                    if ($merge_additions) {
+                        $tx_additional_ids = array_merge(
+                            $user->getExceptionTerms('copy', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
+                            //$user->getExceptionTerms('revise', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
+                        );
+                    } else {
+                        $tx_additional_ids = [];
+                    }
                     
                     $published_stati_csv = implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'OR' ));
 
@@ -238,5 +288,4 @@ class Admin
 
         return $where;
     }
-    */
 }
