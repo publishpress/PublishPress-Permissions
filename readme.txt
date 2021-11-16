@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, user, private, category, pages, privacy, ca
 Requires at least: 4.9.7
 Tested up to: 5.8
 Requires PHP: 5.6.20
-Stable tag: 3.6.2
+Stable tag: 3.6.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -237,6 +237,9 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 3.6.3 - 16 Nov 2021 =
+* Compat : PublishPress Revisions - Revisions Submission permissions did not correctly adjust Edit Posts / Pages listing in some configurations (also requires Revisions 3.0.2)
 
 = 3.6.2 - 9 Nov 2021 =
 * Fixed : Nav Menu Editor - Offered to add unpublished posts to menu; post metabox paging failed if unpublished items present
