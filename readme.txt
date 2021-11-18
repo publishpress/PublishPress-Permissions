@@ -1,7 +1,7 @@
 === PublishPress Permissions: Control User Access for Posts, Pages, Categories, Tags ===
 
 Contributors: publishpress, kevinB, stevejburge, andergmartins
-Tags: restrict, access, permissions, user, private, category, pages, privacy, capabilities, role, scoper
+Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.9.7
 Tested up to: 5.8
 Requires PHP: 5.6.20
@@ -70,7 +70,7 @@ PublishPress Permissions allows you to create your own user groups. Imagine you 
 
 [Click here to see how to use custom user groups](https://publishpress.com/knowledge-base/groups/).
 
-## Feaure #6. Show Teasers for Restricted Content (Pro Version) ##
+## Feature #6. Show Teasers for Restricted Content (Pro Version) ##
 
 PublishPress Permissions Pro allows you to display a teaser for unreadable content. This is perfect for making small snippets of your content available to the public. You can have teaser text that is publicly available, followed by private content that is only visible for your site's users. If you choose to display a login form, the redirect will go to the originally requested content.
 [Click here to see how to display content teasers](https://publishpress.com/knowledge-base/how-to-create-a-teaser-for-private-content-in-wordpress/).
@@ -109,7 +109,7 @@ The Permissions plugin integrates with other popular plugins:
 * [bbPress language permissions](https://publishpress.com/knowledge-base/bbpress-permissions/): bbPress is the most popular forum software for WordPress. With PublishPress Permissions Pro, you can manage access and to important bbPress features.
 
 
-= Join PublishPress and get the Pro plugins =
+## Join PublishPress and get the Pro plugins ##
 
 The Pro versions of the PublishPress plugins are well worth your investment. The Pro versions have extra features and faster support. [Click here to join PublishPress](https://publishpress.com/pricing/).
 
