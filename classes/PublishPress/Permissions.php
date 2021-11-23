@@ -59,7 +59,7 @@ class Permissions
 
     private function __construct()
     {
-
+        add_filter('presspermit_unfiltered_content', [$this, 'fltPluginCompatUnfilteredContent'], 5, 1);
     }
 
     public function capDefs() {
@@ -680,6 +680,17 @@ class Permissions
     public function isContentAdministrator($user_id = false, $args = [])
     {
         return $this->isAdministrator($user_id, 'content', $args);
+    }
+
+    public function fltPluginCompatUnfilteredContent($unfiltered) {
+        // Public Post Preview: Preserve compat by dropping all Permissions filtering, unless integration is enabled through Pro plugin
+        if (!empty($_REQUEST['_ppp']) && !is_admin() && empty($_POST) && class_exists('DS_Public_Post_Preview') && !defined('PRESSPERMIT_DISABLE_PPP_PASSTHROUGH')
+        && (!defined('PRESSPERMIT_PRO_VERSION') || !presspermit()->moduleActive('compatibility'))
+        ) {
+            $unfiltered = true;
+        }
+
+        return $unfiltered;
     }
 
     public function isUserUnfiltered($user_id = false, $args = [])
