@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.8
 Requires PHP: 5.6.20
-Stable tag: 3.6.3
+Stable tag: 3.6.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -237,6 +237,12 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 3.6.4 - 23 Nov 2021 =
+* Compat : PublishPress Revisions - Published custom post types not listed to Revisors under some configurations (also requires Revisions 3.0.5)
+* Compat : Public Post Preview - Disable Permissions filtering for public preview requests
+* Compat : Database servers that return column names all lowercase
+* Fixed : PHP Notice (undefined name property) on Edit Permission Group screen under some conditions
 
 = 3.6.3 - 16 Nov 2021 =
 * Compat : PublishPress Revisions - Revisions Submission permissions did not correctly adjust Edit Posts / Pages listing in some configurations (also requires Revisions 3.0.2)

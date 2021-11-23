@@ -98,6 +98,8 @@ class Capabilities
 
             $cap_properties = array_keys($type_caps);
 
+			$cap_properties = array_merge($type_caps, ['list_published_posts', 'list_private_posts']);
+
             if ('attachment' == $post_type) {  
 				$cap_properties = array_diff(
                     $cap_properties, 
@@ -144,6 +146,14 @@ class Capabilities
 						unset($cap_properties[$k]);
 					}
 				}
+			}
+
+			if (!empty($wp_post_types[$post_type]->cap->edit_published_posts)) {
+				$wp_post_types[$post_type]->cap->list_published_posts = str_replace('edit_', 'list_', $wp_post_types[$post_type]->cap->edit_published_posts);
+			}
+
+			if (!empty($wp_post_types[$post_type]->cap->edit_private_posts)) {
+				$wp_post_types[$post_type]->cap->list_private_posts = str_replace('edit_', 'list_', $wp_post_types[$post_type]->cap->edit_private_posts);
 			}
 
 			if (!$cap_properties) { 

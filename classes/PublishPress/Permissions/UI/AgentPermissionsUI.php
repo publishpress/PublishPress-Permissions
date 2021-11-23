@@ -840,10 +840,13 @@ class AgentPermissionsUI
                     else
                         $for_src = (taxonomy_exists($for_type) || !$for_type) ? 'term' : 'post';
 
-                    if (!$for_type)
+                    if (!$for_type) {
                         $for_type_obj = (object)['labels' => (object)['singular_name' => __('(all post types)', 'press-permit-core')]];
-                    elseif (!$for_type_obj = $pp->getTypeObject($for_src, $for_type))
+                        $for_type_obj->labels->name = $for_type_obj->labels->singular_name;
+                        
+                    } elseif (!$for_type_obj = $pp->getTypeObject($for_src, $for_type)) {
                         continue;
+                    }
 
                     foreach (array_keys($exceptions[$via_src][$via_type][$for_type]) as $operation) {
                         if (!$operation_obj = $pp_admin->getOperationObject($operation, $for_type))
@@ -857,8 +860,10 @@ class AgentPermissionsUI
                                 : sprintf(__('%1$s %2$s %3$s', 'press-permit-core'), $op_label, $via_type_caption, $for_type_obj->labels->singular_name);
                         } elseif (in_array($operation, ['manage', 'associate'], true)) {
                             $op_caption = sprintf(__('%1$s - %2$s', 'press-permit-core'), $op_label, $via_type_caption);
-                        } else {
+                        } elseif (!empty($for_type_obj->labels->name)) {
                             $op_caption = sprintf(__('%1$s - %2$s', 'press-permit-core'), $op_label, $for_type_obj->labels->name);
+                        } else {
+                            $op_caption = sprintf(__('%1$s - %2$s', 'press-permit-core'), $op_label, $for_type_obj->label);
                         }
 
                         echo "<div class='type-roles-wrapper'>";

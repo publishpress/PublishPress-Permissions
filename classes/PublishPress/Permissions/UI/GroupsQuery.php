@@ -266,6 +266,12 @@ class GroupQuery
             );
         }
 
+        foreach($this->results as $k => $row) {
+            if (empty($row->ID) && !empty($row->id)) {
+                $this->results[$k]->ID = $this->results[$k]->id;
+            }
+        }
+
         if ($this->query_vars['count_total']) {
             $this->total_groups = $wpdb->get_var("SELECT COUNT(*) $this->query_from $this->query_join $this->query_where");
         }
