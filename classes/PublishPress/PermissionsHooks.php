@@ -347,8 +347,9 @@ class PermissionsHooks
         add_filter('the_posts', [$this, 'fltPostsListing'], 50);
         add_action('admin_enqueue_scripts', [$this, 'fltAdminPostsListing'], 50);  // 'the_posts' filter is not applied on edit.php for hierarchical types
 
-        if (!defined('PP_UNFILTERED_PAGE_URI'))
+        if (defined('PP_LEGACY_PAGE_URI_FILTER')) {
             add_filter('get_page_uri', [$this, 'fltGetPageUri'], 5, 2);
+        }
 
         do_action('presspermit_init');
     }
