@@ -142,6 +142,7 @@ PublishPress Permissions creates and uses the following tables: pp_groups, pp_gr
 * Compat : Public Post Preview - Disable Permissions filtering for public preview requests
 * Compat : Database servers that return column names all lowercase
 * Fixed : PHP Notice (undefined name property) on Edit Permission Group screen under some conditions
+* Fixed : Page editor: permalink preview did not include parent pages
 
 = 3.6.3 - 16 Nov 2021 =
 * Compat : PublishPress Revisions - Revisions Submission permissions did not correctly adjust Edit Posts / Pages listing in some configurations (also requires Revisions 3.0.2)
