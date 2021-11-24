@@ -238,6 +238,10 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.6.5 - 24 Nov 2021 =
+* Fixed : PHP Notice "Undefined index: list_published_posts"
+* Compat : PublishPress Revisions - PHP Notice "Undefined variable: type_obj"
+
 = 3.6.4 - 23 Nov 2021 =
 * Compat : PublishPress Revisions - Published custom post types not listed to Revisors under some configurations (also requires Revisions 3.0.5)
 * Compat : Public Post Preview - Disable Permissions filtering for public preview requests
