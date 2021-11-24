@@ -92,13 +92,23 @@ class Capabilities
 
             $wp_post_types[$post_type]->map_meta_cap = true;
 
+			if (!isset($wp_post_types[$post_type]->cap->list_published_posts)) {
+				$cap_name = ('page' == $post_type) ? 'list_published_pages' : 'list_published_posts';
+				$wp_post_types[$post_type]->cap->list_published_posts = $cap_name;
+				$this->all_type_caps[$cap_name] = (isset($this->all_type_caps[$cap_name])) ? $this->all_type_caps[$cap_name]++ : 1;
+			}
+
+			if (!isset($wp_post_types[$post_type]->cap->list_private_posts)) {
+				$cap_name = ('page' == $post_type) ? 'list_private_pages' : 'list_private_posts';
+				$wp_post_types[$post_type]->cap->list_private_posts = $cap_name;
+				$this->all_type_caps[$cap_name] = (isset($this->all_type_caps[$cap_name])) ? $this->all_type_caps[$cap_name]++ : 1;
+			}
+
             $type_caps = array_diff_key((array)$wp_post_types[$post_type]->cap, $core_meta_caps);
 
             $cap_base = ('attachment' == $post_type) ? 'file' : $post_type;
 
             $cap_properties = array_keys($type_caps);
-
-			$cap_properties = array_merge($type_caps, ['list_published_posts', 'list_private_posts']);
 
             if ('attachment' == $post_type) {  
 				$cap_properties = array_diff(
