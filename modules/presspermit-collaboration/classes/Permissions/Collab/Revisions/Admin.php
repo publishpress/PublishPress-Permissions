@@ -70,7 +70,7 @@ class Admin
 
                 if (!presspermit()->doing_cap_check && $post_type_obj) {
                     if (!empty($post_type_obj->cap->edit_others_posts) && empty($current_user->allcaps[$post_type_obj->cap->edit_others_posts])) {
-                        $revise_cap = str_replace('edit_', 'revise_', $type_obj->cap->edit_others_posts);
+                        $revise_cap = str_replace('edit_', 'revise_', $post_type_obj->cap->edit_others_posts);
                         
                         if (!empty($current_user->allcaps[$revise_cap])) {
                             $caps[]= $revise_cap;
@@ -78,7 +78,7 @@ class Admin
                             $caps []= str_replace('edit_', 'list_', $post_type_obj->cap->edit_others_posts);
                         }
 
-                        $copy_cap = str_replace('edit_', 'copy_', $type_obj->cap->edit_others_posts);
+                        $copy_cap = str_replace('edit_', 'copy_', $post_type_obj->cap->edit_others_posts);
                         
                         if (!empty($current_user->allcaps[$copy_cap])) {
                             $caps[]= $copy_cap;
