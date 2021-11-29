@@ -13,7 +13,7 @@ class CollabHooks
         if (strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') 
         && isset($_REQUEST['action'])
         && in_array(
-            $_REQUEST['action'], 
+            $_REQUEST['action'] ?? null, 
             apply_filters('presspermit_unfiltered_ajax_actions',
             ['et_fb_ajax_drop_autosave',
             'et_builder_resolve_post_content',
