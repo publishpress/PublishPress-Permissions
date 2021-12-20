@@ -821,11 +821,9 @@ class ItemsMetabox extends \Walker_Nav_Menu
      */
     public static function ajax_menu_quick_search()
     {
-        $request = $_REQUEST;
-
         $args = [];
-        $type = isset($request['type']) ? $request['type'] : '';
-        $query = isset($request['q']) ? $request['q'] : '';
+        $type = isset($_REQUEST['type']) ? sanitize_key($_REQUEST['type']) : '';
+        $query = isset($_REQUEST['q']) ? sanitize_text_field($_REQUEST['q']) : '';
 
         $args['walker'] = new ItemsMetabox;
         $args['is_search_result'] = true;
