@@ -60,6 +60,7 @@ class AgentPermissionsAjax
                             \PublishPress\Permissions\DB\PermissionsUpdate::removeRolesById($_ass_ids);
                         }
                     }
+                    do_action('presspermit_edited_group', $agent_type, $agent_id, true);
                 }
 
                 echo '<!--ppResponse-->' . implode('|', $input_vals) . '<--ppResponse-->';
@@ -103,6 +104,7 @@ class AgentPermissionsAjax
                             \PublishPress\Permissions\DB\PermissionsUpdate::removeExceptionItemsById($_eitem_ids);
                         }
                     }
+                    do_action('presspermit_edited_group', $agent_type, $agent_id, true);
                 }
 
                 echo '<!--ppResponse-->' . implode('|', $input_vals) . '<--ppResponse-->';
@@ -160,6 +162,7 @@ class AgentPermissionsAjax
                     }
                 }
 
+                do_action('presspermit_edited_group', $agent_type, $agent_id, true);
                 echo '<!--ppResponse-->' . $_GET['pp_ajax_agent_permissions'] . '~' . implode('|', $edited_input_ids) . '<--ppResponse-->';
                 break;
 
@@ -209,6 +212,7 @@ class AgentPermissionsAjax
                         }
                     }
 
+                    do_action('presspermit_edited_group', $agent_type, $agent_id, true);
                     echo '<!--ppResponse-->' . 'exceptions_mirror' . '~' . implode('|', $edited_input_ids) . '<--ppResponse-->';
                     break;
                 }
