@@ -101,8 +101,8 @@ class AgentsAjax
 
             $orderby = (0 === strpos($orig_search_str, ' ')) ? 'user_login' : 'user_registered DESC';
 
-            $um_vals = (!empty($_GET['pp_usermeta_val'])) ? $_GET['pp_usermeta_val'] : [];
             $um_keys = (!empty($_GET['pp_usermeta_key'])) ? array_map('pp_permissions_sanitize_entry', $_GET['pp_usermeta_key']) : [];
+            $um_vals = (!empty($_GET['pp_usermeta_val'])) ? array_map('sanitize_text_field', $_GET['pp_usermeta_val']) : [];
 
             if (defined('PP_USER_LASTNAME_SEARCH') && !defined('PP_USER_SEARCH_FIELD')) {
                 $default_search_field = 'last_name';
@@ -208,7 +208,7 @@ class AgentsAjax
                 } elseif ($omit_admins) {
                     if ($admin_roles = $pp_admin->getAdministratorRoles()) {  // Administrators can't be excluded; no need to include or enable them
                         global $wpdb;
-                        $role_csv = implode("','", array_keys($admin_roles));
+                        $role_csv = implode("','", array_map('sanitize_key', array_keys($admin_roles)));
                         $omit_users = $wpdb->get_col(
                             "SELECT u.ID FROM $wpdb->users AS u INNER JOIN $wpdb->pp_group_members AS gm ON u.ID = gm.user_id"
                             . " INNER JOIN $wpdb->pp_groups AS g ON gm.group_id = g.ID"
