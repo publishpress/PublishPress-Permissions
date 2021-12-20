@@ -143,7 +143,7 @@ class PostForking
             if (($args[1] != $user->ID) || !presspermit()->getOption('fork_require_edit_others'))
                 return $wp_sitecaps;
 
-            $_post = get_post($args[2]);
+            $_post = get_post((int) $args[2]);
             if ('fork' == $_post->post_type) {
                 if (get_post_field('post_author', $_post->post_parent) != $user->ID) {
                     if ($parent_type_obj = get_post_type_object(get_post_field('post_type', $_post->post_parent))) {
