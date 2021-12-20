@@ -178,7 +178,7 @@ class TermsListing
         }
 
         if (!empty($_REQUEST['taxonomy'])) {  // using this with edit-link-categories
-            if ($tx_obj = get_taxonomy($_REQUEST['taxonomy'])) {
+            if ($tx_obj = get_taxonomy(sanitize_key($_REQUEST['taxonomy']))) {
                 $cap_name = $tx_obj->cap->manage_terms;
             }
         }
@@ -189,7 +189,7 @@ class TermsListing
 
         if (!empty(presspermit()->getUser()->allcaps[$cap_name])
         ) {
-            if (!presspermit()->getUser()->getExceptionTerms('manage', 'include', $_REQUEST['taxonomy'], $_REQUEST['taxonomy'], ['merge_universals' => true])) {
+            if (!presspermit()->getUser()->getExceptionTerms('manage', 'include', sanitize_key($_REQUEST['taxonomy']), sanitize_key($_REQUEST['taxonomy']), ['merge_universals' => true])) {
             	return;
             }
         }
