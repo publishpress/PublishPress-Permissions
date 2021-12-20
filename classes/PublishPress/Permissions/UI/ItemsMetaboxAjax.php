@@ -21,27 +21,31 @@ class ItemsMetaboxAjax
             $items = (array) get_taxonomies( [ 'show_ui' => true ], 'object' );
         }
 
-        if ( ! empty( $_POST['item-object'] ) && isset( $items[$_POST['item-object']] ) ) {
+        if ( ! empty( $_POST['item-object'] ) ) {
             $item_type = sanitize_key($_POST['item-object']);
-            $item = $items[$item_type];
 
-            ob_start();
-            call_user_func_array($callback, [
-                null,
-                [
-                    'id' => 'add-' . $item->name,
-                    'title' => $item->labels->name,
-                    'callback' => $callback,
-                    'args' => $item,
-                ]
-            ]);
+            if (!empty($items[$item_type])) {
+                $item = $items[$item_type];
 
-            $markup = ob_get_clean();
+                ob_start();
 
-            echo json_encode([
-                'replace-id' => $type . '-' . $item->name,
-                'markup' => $markup,
-            ]);
+                call_user_func_array($callback, [
+                    null,
+                    [
+                        'id' => 'add-' . $item->name,
+                        'title' => $item->labels->name,
+                        'callback' => $callback,
+                        'args' => $item,
+                    ]
+                ]);
+
+                $markup = ob_get_clean();
+                
+                echo json_encode([
+                    'replace-id' => $type . '-' . $item->name,
+                    'markup' => $markup,
+                ]);
+            }
         }
 
         exit;
