@@ -474,6 +474,14 @@ class CapabilityFilters
 
             $pp = presspermit();
 
+            // Don't filter the 'edit_post' request that Gutenberg applies right after trashing a post. WP will still block editing.
+            if (('edit' == $required_operation) && $pp->doingREST()) {
+                $_post = get_post($post_id);
+
+                if (is_a($_post, 'WP_Post') && ('trash' == $_post->post_status)) {
+                    return $wp_sitecaps;
+                }
+            }
             // If this cap inquiry is for a single item but multiple items are being listed, we will query for the original metacap on all items (mapping it for each applicable status) and buffer the results
             //
             // (Perf enhancement when listing display will check caps for each item to determine whether to display an action link)
