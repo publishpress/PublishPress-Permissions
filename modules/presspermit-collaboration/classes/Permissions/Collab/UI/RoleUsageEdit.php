@@ -38,7 +38,7 @@ class RoleUsageEdit {
         if (!isset($_REQUEST['role']))
             wp_die('No role specified.');
 
-        $role_name = sanitize_text_field($_REQUEST['role']);
+        $role_name = pp_permissions_sanitize_entry($_REQUEST['role']);
 
         $cap_caster = $pp->capCaster();
         $cap_caster->definePatternCaps();

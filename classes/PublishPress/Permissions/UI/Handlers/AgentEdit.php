@@ -180,8 +180,8 @@ class AgentEdit
             foreach ($agent_ids as $_agent_id) {
                 if ($_agent_id) {
                     foreach ($_POST['pp_add_role'] as $add_role) {
-                        $attrib_cond = (!empty($add_role['attrib_cond'])) ? ':' . $add_role['attrib_cond'] : '';
-                        $role = (isset($add_role['role'])) ? $add_role['role'] : '';
+                        $attrib_cond = (!empty($add_role['attrib_cond'])) ? ':' . pp_permissions_sanitize_entry($add_role['attrib_cond']) : '';
+                        $role = (isset($add_role['role'])) ? pp_permissions_sanitize_entry($add_role['role']) : '';
 
                         presspermit()->assignRoles(["{$role}{$attrib_cond}" => [$_agent_id => true]], $agent_type);
                     }

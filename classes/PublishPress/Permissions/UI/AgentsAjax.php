@@ -20,7 +20,7 @@ class AgentsAjax
         $search_str = sanitize_text_field($_GET['pp_agent_search']);
         $agent_type = sanitize_key($_GET['pp_agent_type']);
         $agent_id = (int)$_GET['pp_agent_id'];
-        $topic = sanitize_text_field(str_replace('\\:', ',', $_GET['pp_topic']));
+        $topic = pp_permissions_sanitize_entry(str_replace('\\:', ',', $_GET['pp_topic']));
         $omit_admins = (bool)$_GET['pp_omit_admins'];
         $context = (isset($_GET['pp_context'])) ? sanitize_key($_GET['pp_context']) : '';
 
@@ -101,13 +101,13 @@ class AgentsAjax
 
             $orderby = (0 === strpos($orig_search_str, ' ')) ? 'user_login' : 'user_registered DESC';
 
-            $um_keys = (!empty($_GET['pp_usermeta_key'])) ? $_GET['pp_usermeta_key'] : [];
             $um_vals = (!empty($_GET['pp_usermeta_val'])) ? $_GET['pp_usermeta_val'] : [];
+            $um_keys = (!empty($_GET['pp_usermeta_key'])) ? array_map('pp_permissions_sanitize_entry', $_GET['pp_usermeta_key']) : [];
 
             if (defined('PP_USER_LASTNAME_SEARCH') && !defined('PP_USER_SEARCH_FIELD')) {
                 $default_search_field = 'last_name';
             } elseif (defined('PP_USER_SEARCH_FIELD')) {
-                $default_search_field = PP_USER_SEARCH_FIELD;
+                $default_search_field = pp_permissions_sanitize_entry(constant('PP_USER_SEARCH_FIELD'));
             } else {
                 $default_search_field = '';
             }

@@ -19,7 +19,7 @@ class RoleUsage
             case 'update' :
                 $pp = presspermit();
 
-                $role_name = sanitize_text_field($_REQUEST['role']);
+                $role_name = pp_permissions_sanitize_entry($_REQUEST['role']);
                 check_admin_referer('pp-update-role-usage_' . $role_name);
 
                 // overall pattern role enable

@@ -287,7 +287,7 @@ class AdminWorkarounds
             case 'add-menu_item':
                 if (presspermit()->getOption('admin_nav_menu_filter_items')) {
                     $object_id = (isset($_REQUEST['menu-item-object-id'])) ? (int)$_REQUEST['menu-item-object-id'] : 0;
-                    $menu = isset($_REQUEST['menu']) ? $_REQUEST['menu'] : 0;
+                    $menu = isset($_REQUEST['menu']) ? pp_permissions_sanitize_entry($_REQUEST['menu']) : 0;
 
                     if (defined('PPCE_RESTRICT_MENU_TOP_LEVEL') && empty($_REQUEST['menu_item']['menu-item-parent-id'])) {
                         // prevent new menu items from going to top level
