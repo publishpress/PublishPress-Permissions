@@ -26,7 +26,7 @@ class AgentPermissionsAjax
             $agent_clause = '';
         }
 
-        $action = $_GET['pp_ajax_agent_permissions'];
+        $action = sanitize_key($_GET['pp_ajax_agent_permissions']);
 
         switch ($action) {
             case 'roles_remove':
