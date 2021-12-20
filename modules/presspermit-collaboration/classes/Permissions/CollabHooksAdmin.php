@@ -182,12 +182,15 @@ class CollabHooksAdmin
     {
         if (in_array($referer, ['bulk-posts', 'inlineeditnonce'], true)) {
             if ('bulk-posts' == $referer) {
-                if (!empty($_REQUEST['action']) && !is_numeric($_REQUEST['action']))
-                    $action = $_REQUEST['action'];
-                elseif (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2']))
-                    $action = $_REQUEST['action2'];
-                else
+                if (!empty($_REQUEST['action']) && !is_numeric($_REQUEST['action'])) {
+                    $action = sanitize_key($_REQUEST['action']);
+
+                } elseif (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2'])) {
+                    $action = sanitize_key($_REQUEST['action2']);
+                
+                } else {
                     $action = '';
+                }
 
                 if ('edit' != $action)
                     return;
@@ -225,7 +228,7 @@ class CollabHooksAdmin
     {
         if (!empty($_REQUEST['add_member_page'])) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/BulkEdit.php');
-            Collab\UI\Dashboard\BulkEdit::add_author_pages($_REQUEST);
+            Collab\UI\Dashboard\BulkEdit::add_author_pages(stripslashes_deep($_REQUEST));
         }
     }
 
