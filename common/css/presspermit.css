@@ -508,3 +508,8 @@ text-decoration: underline;
 .wp-core-ui .pp-agents input {
   vertical-align: text-bottom;
 }
+
+#pp-permissions-wrapper ul.subsubsub {
+float: none;
+}
+}
