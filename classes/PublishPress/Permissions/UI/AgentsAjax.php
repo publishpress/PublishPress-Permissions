@@ -17,12 +17,15 @@ class AgentsAjax
         $pp_groups = $pp->groups();
 
         $authors_clause = '';
+  
+        $orig_search_str = sanitize_text_field($_GET['pp_agent_search']);
 
-        $orig_search_str = $_GET['pp_agent_search'];
         $search_str = sanitize_text_field($_GET['pp_agent_search']);
-        $agent_type = sanitize_key($_GET['pp_agent_type']);
+        $agent_type = pp_permissions_sanitize_entry($_GET['pp_agent_type']);
         $agent_id = (int)$_GET['pp_agent_id'];
-        $topic = pp_permissions_sanitize_entry(str_replace('\\:', ',', $_GET['pp_topic']));
+        $topic = pp_permissions_sanitize_entry($_GET['pp_topic']);
+        $topic = str_replace(':', ',', $topic);
+
         $omit_admins = (bool)$_GET['pp_omit_admins'];
         $context = (isset($_GET['pp_context'])) ? sanitize_key($_GET['pp_context']) : '';
 
@@ -52,7 +55,7 @@ class AgentsAjax
 
                     $operations = apply_filters('presspermit_item_edit_exception_ops', $ops, 'post', $arr_topic[1]);
 
-                    if (!in_array($arr_topic[0], $operations, true)) {
+                    if (empty($operations[$arr_topic[0]])) {
                         die(-1);
                     }
                 }
