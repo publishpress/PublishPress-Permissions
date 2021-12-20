@@ -4,6 +4,20 @@ function presspermit() {
     return \PublishPress\Permissions::instance();
 }
 
+/**
+ * Sanitizes a string entry
+ *
+ * Keys are used as internal identifiers. Uppercase or lowercase alphanumeric characters,
+ * spaces, periods, commas, plusses, asterisks, colons, pipes, parentheses, dashes and underscores are allowed.
+ *
+ * @param string $entry String entry
+ * @return string Sanitized entry
+ */
+function pp_permissions_sanitize_entry( $entry ) {
+    $entry = preg_replace( '/[^a-zA-Z0-9 \.\,\+\*\:\|\(\)_\-]/', '', $entry );
+    return $entry;
+}
+
 function presspermitPluginPage()
 {
     static $pp_plugin_page = null;

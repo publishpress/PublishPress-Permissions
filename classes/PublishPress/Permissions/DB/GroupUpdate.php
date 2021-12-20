@@ -30,8 +30,6 @@ class GroupUpdate
 
         $members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
 
-        $user_ids = (array)$user_ids;
-
         if (!presspermit()->groups()->getGroup($group_id, $agent_type)) {
             return;
         }
@@ -39,6 +37,8 @@ class GroupUpdate
         $data = Arr::subset($args, ['member_type', 'status', 'start_date_gmt', 'end_date_gmt']);
         $data['date_limited'] = intval($date_limited);
         $data['group_id'] = $group_id;
+
+        $user_ids = array_map('intval', (array) $user_ids);
 
         foreach ($user_ids as $user_id) {
             if (!$user_id) {
@@ -82,7 +82,9 @@ class GroupUpdate
 
         $members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
 
-        $id_in = "'" . implode("', '", (array)$user_ids) . "'";
+        $user_ids = array_map('intval', (array) $user_ids);
+
+        $id_in = "'" . implode("', '", $user_ids) . "'";
         $wpdb->query(
             $wpdb->prepare(
                 "DELETE FROM $members_table WHERE member_type = %s AND group_id = %d AND user_id IN ($id_in)",

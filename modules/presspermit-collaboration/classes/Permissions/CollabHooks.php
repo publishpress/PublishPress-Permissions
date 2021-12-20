@@ -286,7 +286,7 @@ class CollabHooks
             return $wp_sitecaps;
         }
 
-        $orig_cap = (isset($args[0])) ? $args[0] : reset($orig_reqd_caps);
+        $orig_cap = (isset($args[0])) ? sanitize_key($args[0]) : reset($orig_reqd_caps);
 
         // If user can edit the current post, credit edit_published_posts, edit_published_pages, publish_posts capabilities
         if (in_array($orig_cap, ['edit_published_posts', 'edit_published_pages', 'publish_posts'])) {
@@ -309,7 +309,7 @@ class CollabHooks
         // Divi Page Builder
 		if (defined('ET_BUILDER_THEME')) {
 			if (!empty($_REQUEST['action']) && ('edit' == $_REQUEST['action']) && !empty($_REQUEST['post'])) {
-				if ($_post = get_post($_REQUEST['post'])) {
+				if ($_post = get_post((int) $_REQUEST['post'])) {
 					global $current_user;
 					if (in_array($_post->post_status, ['draft', 'auto-draft']) && ($_post->post_author == $current_user->ID) && !$_post->post_name) {
 						return $meta_caps;

@@ -17,7 +17,7 @@ class TermEditWorkarounds
         if (!$tx->hierarchical)
             return;
 
-        $stored_term = get_term_by('id', $_POST['tag_ID'], $taxonomy);
+        $stored_term = get_term_by('id', (int) $_POST['tag_ID'], $taxonomy);
 
         $selected_parent = (int)$_POST['parent'];
 

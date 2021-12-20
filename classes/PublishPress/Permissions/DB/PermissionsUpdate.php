@@ -176,6 +176,8 @@ class PermissionsUpdate
             $agent_ids = array_merge($agent_ids, array_keys($agents[$_assign_for]));
         }
 
+        $agent_ids = array_map('intval', $agent_ids);
+
         $where = "e.agent_type = '$agent_type' AND e.agent_id IN ('" . implode("','", $agent_ids) . "') AND e.operation = '$operation'"
             . " AND e.via_item_source = '$via_item_source' AND e.via_item_type = '$via_item_type'"
             . " AND e.for_item_source = '$for_item_source' AND e.for_item_type = '$for_item_type' AND e.for_item_status = '$for_item_status'";

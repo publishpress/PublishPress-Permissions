@@ -471,7 +471,7 @@ class NavMenus
             /*
             $menu_id = self::determine_selected_menu();
             if ( ! $menu_id && isset( $_REQUEST['menu'] ) )
-                $menu_id = $_REQUEST['menu'];
+                $menu_id = pp_permissions_sanitize_entry($_REQUEST['menu']);
             
             if ( ! $menu_id )
                 return $new_option_value;

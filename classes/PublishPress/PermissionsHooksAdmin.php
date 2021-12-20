@@ -232,7 +232,7 @@ class PermissionsHooksAdmin
             $dismissals = [];
         }
 
-        $msg_id = (isset($_REQUEST['msg_id'])) ? $_REQUEST['msg_id'] : 'post_blockage_priority';
+        $msg_id = (isset($_REQUEST['msg_id'])) ? sanitize_key($_REQUEST['msg_id']) : 'post_blockage_priority';
         $dismissals[$msg_id] = true;
         update_option('presspermit_dismissals', $dismissals);
     }

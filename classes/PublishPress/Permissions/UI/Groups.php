@@ -11,17 +11,20 @@ class Groups
         $pp_admin = $pp->admin();
         $pp_groups = $pp->groups();
 
-        if (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2']))
-            $action = $_REQUEST['action2'];
-        elseif (!empty($_REQUEST['action']) && !is_numeric($_REQUEST['action']))
-            $action = $_REQUEST['action'];
-        elseif (!empty($_REQUEST['pp_action']))
-            $action = $_REQUEST['pp_action'];
-        else
+        if (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2'])) {
+            $action = sanitize_key($_REQUEST['action2']);
+
+        } elseif (!empty($_REQUEST['action']) && !is_numeric($_REQUEST['action'])) {
+            $action = sanitize_key($_REQUEST['action']);
+
+        } elseif (!empty($_REQUEST['pp_action'])) {
+            $action = sanitize_key($_REQUEST['pp_action']);
+        } else {
             $action = '';
+        }
 
         if ( ! in_array($action, ['delete', 'bulkdelete'])) {
-            $agent_type = (!empty($_REQUEST['agent_type'])) ? $_REQUEST['agent_type'] : 'pp_group';
+            $agent_type = (!empty($_REQUEST['agent_type'])) ? sanitize_key($_REQUEST['agent_type']) : 'pp_group';
         } else {
             $agent_type = '';
         }

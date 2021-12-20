@@ -400,6 +400,6 @@ class TermEdit
         add_thickbox();
         wp_enqueue_script('media-upload');
 
-        ItemEdit::scriptItemEdit($_REQUEST['taxonomy']);
+        ItemEdit::scriptItemEdit(sanitize_key($_REQUEST['taxonomy']));
     }
 }

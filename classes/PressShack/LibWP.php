@@ -234,11 +234,13 @@ class LibWP
         } elseif (in_array($pagenow, ['admin-ajax.php']) && !empty($_REQUEST['taxonomy'])) {
             $object_type = sanitize_key($_REQUEST['taxonomy']);
         } elseif (!empty($_POST['post_ID'])) {
-            if ($_post = get_post($_POST['post_ID']))
+            if ($_post = get_post((int) $_POST['post_ID'])) {
                 $object_type = $_post->post_type;
+            }
         } elseif (!empty($_GET['post'])) {  // post.php
-            if ($_post = get_post($_GET['post']))
+            if ($_post = get_post((int) $_GET['post'])) {
                 $object_type = $_post->post_type;
+        	}
         }
 
         if (empty($object_type)) {

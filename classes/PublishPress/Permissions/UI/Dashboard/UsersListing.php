@@ -407,7 +407,9 @@ class UsersListing
         if (!current_user_can('list_users'))
             return;
 
-        $group_id = $_REQUEST['pp-bulk-group' . $sfx];
+        $group_id = (int) $_REQUEST['pp-bulk-group' . $sfx];
+
+        $users = (!empty($_REQUEST['users'])) ? array_map('intval', $_REQUEST['users']) : [];
 
         if (!current_user_can('pp_manage_members')) {
             if (!in_array($group_id, apply_filters('presspermit_admin_groups', []))) {
@@ -415,14 +417,14 @@ class UsersListing
             }
 
             global $current_user;
-            $_REQUEST['users'] = array_diff($_REQUEST['users'], [$current_user->ID]);
+            $users = array_diff($users, [$current_user->ID]);
         }
 
         if (!empty($_REQUEST['pp-add-group-members' . $sfx])) {
-            presspermit()->groups()->addGroupUser($group_id, $_REQUEST['users']);
+            presspermit()->groups()->addGroupUser($group_id, $users);
 
         } elseif (!empty($_REQUEST['pp-remove-group-members' . $sfx])) {
-            presspermit()->groups()->removeGroupUser($group_id, $_REQUEST['users']);
+            presspermit()->groups()->removeGroupUser($group_id, $users);
         }
     }
 

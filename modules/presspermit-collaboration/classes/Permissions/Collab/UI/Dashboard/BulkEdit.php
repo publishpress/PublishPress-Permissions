@@ -28,7 +28,7 @@ class BulkEdit
                 $meta_keys = array_merge($meta_keys, explode(",", PP_AUTHOR_POST_META));
             }
 
-            $pattern_id = (isset($data["member_page_pattern_{$post_type}"])) ? trim($data["member_page_pattern_{$post_type}"]) : '';
+            $pattern_id = (isset($data["member_page_pattern_{$post_type}"])) ? (int) trim($data["member_page_pattern_{$post_type}"]) : '';
             if ($pattern_id) {
                 if (!is_numeric($pattern_id)) {
                     $slug = sanitize_key($pattern_id);
@@ -74,7 +74,7 @@ class BulkEdit
 
             $post_meta['_pp_auto_inserted'] = "{$pattern_post_id}:{$post_parent}";
 
-            $title_pattern = isset($data["member_page_title"]) ? $data["member_page_title"] : '';
+            $title_pattern = isset($data["member_page_title"]) ? sanitize_text_field($data["member_page_title"]) : '';
             if (false === strpos($title_pattern, '[username]') && false === strpos($title_pattern, '[userid]')) {
                 $title_pattern .= ' [userid]';
             }
@@ -87,7 +87,7 @@ class BulkEdit
                 )
             );
             
-            $data['users'] = array_diff($data['users'], $users_done);
+            $data['users'] = array_diff(array_map('intval', $data['users']), $users_done);
 
             if (!count($data['users'])) {
                 $location = add_query_arg('ppmessage', 3, $location);
