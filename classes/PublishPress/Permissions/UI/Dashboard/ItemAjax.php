@@ -25,7 +25,7 @@ class ItemAjax
                 $op = $arr_sfx[0];
                 $for_item_type = $arr_sfx[1];
                 $agent_type = $arr_sfx[2];
-                $item_id = $_GET['item_id'];
+                $item_id = (int) $_GET['item_id'];
                 $for_item_source = (taxonomy_exists($for_item_type)) ? 'term' : 'post';
                 $agent_ids = explode(',', PWP::sanitizeCSV($_GET['agent_ids']));
 
