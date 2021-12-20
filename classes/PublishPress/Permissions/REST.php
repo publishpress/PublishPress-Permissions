@@ -231,7 +231,9 @@ class REST
                                 $check_cap = false;
                             }
 
-                            if ($check_cap && ! current_user_can($check_cap, $this->post_id)) {
+                            if ($check_cap && ! current_user_can($check_cap, $this->post_id) 
+                            && (('edit' != $this->operation) || ('trash' != get_post_field('post_status', $this->post_id)))
+                            ) { // Avoid conflicts with WP trashing. WP will still prevent editing of trashed posts
                                 return self::rest_denied();
                             }
                         }
