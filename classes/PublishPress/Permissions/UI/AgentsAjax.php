@@ -187,6 +187,7 @@ class AgentsAjax
                 "SELECT ID, user_login, display_name FROM $wpdb->users $join $where $authors_clause ORDER BY $orderby $limit_clause"
             );
 
+            /*
             if (defined('PRESSPERMIT_DEBUG_USER_QUERY') && empty($agent_id)) {
                 error_log('PublishPress Permissions User Query:');
                 error_log(serialize($_GET));
@@ -196,6 +197,7 @@ class AgentsAjax
                 error_log("$num results");
                 error_log($wpdb->last_error);
             }
+            */
 
             if ($results) {
                 $omit_users = [];
