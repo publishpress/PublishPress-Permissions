@@ -16,6 +16,8 @@ class AgentsAjax
         $pp_admin = $pp->admin();
         $pp_groups = $pp->groups();
 
+        $authors_clause = '';
+
         $orig_search_str = $_GET['pp_agent_search'];
         $search_str = sanitize_text_field($_GET['pp_agent_search']);
         $agent_type = sanitize_key($_GET['pp_agent_type']);
