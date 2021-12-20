@@ -171,12 +171,22 @@ class CapabilityFilters
             return $can_copy;
         }
 
-        // Possession of a submit_post permission also grants implicit copy_post permission.  This is partly for consistency with Revisions 2.x behavior
-        return $this->fltPostAccessApplyExceptions($can_copy, $operation, $post_type, $post_id) || $this->fltPostAccessApplyExceptions($can_copy, 'revise', $post_type, $post_id);
+        if ($can_copy) {
+            // Apply blocking exceptions for Create Revision operation
+            return $this->fltPostAccessApplyExceptions($can_copy, $operation, $post_type, $post_id);
+
+        } else {
+        	// Possession of a submit_post permission also grants implicit copy_post permission.  This is partly for consistency with Revisions 2.x behavior
+        	return $this->fltPostAccessApplyExceptions($can_copy, $operation, $post_type, $post_id) || $this->fltPostAccessApplyExceptions($can_copy, 'revise', $post_type, $post_id);
+    	}
     }
 
     function fltCanSubmit($can_submit, $post_id, $new_base_status, $new_revision_status, $args) {
-        if (presspermit()->isAdministrator() || !rvy_in_revision_workflow($post_id) || ('pending' != $new_base_status)) {
+        if ('pending' != $new_base_status || !rvy_in_revision_workflow($post_id)) {
+            return false;
+        }
+
+        if (presspermit()->isAdministrator()) {
             return $can_submit;
         }
 
