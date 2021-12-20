@@ -106,7 +106,7 @@ class Admin
             return $exception_items;
 
         // Modify Posts listing, but not 'edit_post' capability check
-        if (presspermit()->doing_cap_check) {
+        if (presspermit()->doing_cap_check && empty($args['merge_related_operations'])) {
             return $exception_items;
         }
 
