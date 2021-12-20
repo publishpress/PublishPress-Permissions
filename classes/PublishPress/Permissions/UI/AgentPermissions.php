@@ -61,16 +61,18 @@ class AgentPermissions
 
         $url = apply_filters('presspermit_groups_base_url', 'admin.php');
 
-        if (isset($_REQUEST['wp_http_referer']))
-            $wp_http_referer = $_REQUEST['wp_http_referer'];
-        elseif (isset($_SERVER['HTTP_REFERER']) && !strpos($_SERVER['HTTP_REFERER'], 'page=presspermit-group-new'))
-            $wp_http_referer = $_SERVER['HTTP_REFERER'];
-        else
+        if (isset($_REQUEST['wp_http_referer'])) {
+            $wp_http_referer = sanitize_url($_REQUEST['wp_http_referer']);
+
+        } elseif (isset($_SERVER['HTTP_REFERER']) && !strpos($_SERVER['HTTP_REFERER'], 'page=presspermit-group-new')) {
+            $wp_http_referer = sanitize_url($_SERVER['HTTP_REFERER']);
+        } else {
             $wp_http_referer = '';
+        }
 
         $wp_http_referer = remove_query_arg(['update', 'delete_count'], stripslashes($wp_http_referer));
 
-        $group_variant = ! empty($_REQUEST['group_variant']) ? $_REQUEST['group_variant'] : 'pp_group';
+        $group_variant = ! empty($_REQUEST['group_variant']) ? sanitize_key($_REQUEST['group_variant']) : 'pp_group';
 
         $groups_link = ($wp_http_referer && strpos($wp_http_referer, 'presspermit-groups')) 
         ? add_query_arg('group_variant', $group_variant, $wp_http_referer)
