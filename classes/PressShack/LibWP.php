@@ -269,7 +269,7 @@ class LibWP
         } elseif (!is_admin() && !empty($wp_query) && is_singular()) {
             if (!empty($wp_query)) {
                 if (!empty($wp_query->query_vars) && !empty($wp_query->query_vars['p'])) {
-                    return $wp_query->query_vars['p'];
+                    return (int) $wp_query->query_vars['p'];
                 } elseif (!empty($wp_query->query['post_type']) && !empty($wp_query->query['name'])) {
                     global $wpdb;
                     return $wpdb->get_var(
