@@ -120,7 +120,7 @@ class Settings
         
             <?php
             $default_tab = (isset($_REQUEST['pp_tab']) && isset($ui->tab_captions[$_REQUEST['pp_tab']]))
-                ? $_REQUEST['pp_tab'] : 'install';
+                ? sanitize_key($_REQUEST['pp_tab']) : 'install';
 
             $default_tab = apply_filters('presspermit_options_default_tab', $default_tab);
 
