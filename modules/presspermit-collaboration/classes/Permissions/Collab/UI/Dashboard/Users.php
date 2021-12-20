@@ -19,7 +19,7 @@ class Users
                 <?php if ( !empty($_REQUEST['ppmessage']) ) {
                 switch( $_REQUEST['ppmessage'] ) {
                 case 1: ?>
-                var msg = '<?php printf(_n('%s author page added', '%s author pages added', $_REQUEST['ppcount'], 'press-permit-core'), $_REQUEST['ppcount']);?>';
+                var msg = '<?php printf(_n('%s author page added', '%s author pages added', (int) $_REQUEST['ppcount'], 'press-permit-core'), (int) $_REQUEST['ppcount']);?>';
                 var cls = 'updated';
                 <?php
                 break;
