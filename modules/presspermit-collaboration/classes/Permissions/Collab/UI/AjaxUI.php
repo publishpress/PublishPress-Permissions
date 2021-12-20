@@ -18,7 +18,7 @@ class AjaxUI
                 $op_captions['copy'] = (object)['label' => __('Create Revision of'), 'abbrev' => __('Create Revision'), 'noun_label' => __('New Revision', 'press-permit-core')];
                 $op_captions['revise'] = (object)['label' => __('Submit Revision of'), 'abbrev' => __('Submit Revision'), 'noun_label' => __('Submitted Revision', 'press-permit-core')];
             }
-        
+
             foreach(['label', 'abbrev', 'noun_label'] as $prop) {
                 $op_captions['copy']->$prop = str_replace(' ', '&nbsp;', $op_captions['copy']->$prop);
                 $op_captions['revise']->$prop = str_replace(' ', '&nbsp;', $op_captions['revise']->$prop);

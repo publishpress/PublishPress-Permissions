@@ -16,6 +16,8 @@ class AgentsAjax
         $pp_admin = $pp->admin();
         $pp_groups = $pp->groups();
 
+        $authors_clause = '';
+  
         $orig_search_str = sanitize_text_field($_GET['pp_agent_search']);
 
         $search_str = sanitize_text_field($_GET['pp_agent_search']);
@@ -141,12 +143,14 @@ class AgentsAjax
                 $where = "WHERE 1=1";
             }
 
-            if ($role_filter = sanitize_text_field($_GET['pp_role_search'])) {
-                global $current_blog;
-                $blog_prefix = $wpdb->get_blog_prefix($current_blog->blog_id);
+            if (!empty($_GET['pp_role_search'])) {
+                if ($role_filter = sanitize_text_field($_GET['pp_role_search'])) {
+                    global $current_blog;
+                    $blog_prefix = $wpdb->get_blog_prefix($current_blog->blog_id);
 
-                $um_keys[] = "{$blog_prefix}capabilities";
-                $um_vals[] = $role_filter;
+                    $um_keys[] = "{$blog_prefix}capabilities";
+                    $um_vals[] = $role_filter;
+                }
             }
 
             // append where clause for meta value criteria
@@ -190,6 +194,7 @@ class AgentsAjax
                 "SELECT ID, user_login, display_name FROM $wpdb->users $join $where $authors_clause ORDER BY $orderby $limit_clause"
             );
 
+            /*
             if (defined('PRESSPERMIT_DEBUG_USER_QUERY') && empty($agent_id)) {
                 error_log('PublishPress Permissions User Query:');
                 error_log(serialize($_GET));
@@ -199,6 +204,7 @@ class AgentsAjax
                 error_log("$num results");
                 error_log($wpdb->last_error);
             }
+            */
 
             if ($results) {
                 $omit_users = [];

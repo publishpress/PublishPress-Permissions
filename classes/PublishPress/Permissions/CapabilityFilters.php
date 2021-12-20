@@ -250,7 +250,7 @@ class CapabilityFilters
 
                                 $exc_post_type = apply_filters('presspermit_exception_post_type', $item_type, $op, $_args);
 
-                                if ($additional_ids = $user->getExceptionPosts($op, 'additional', $exc_post_type, ['status' => true])) {
+                                if ($additional_ids = $user->getExceptionPosts($op, 'additional', $exc_post_type, ['status' => true, 'merge_related_operations' => true])) {
                                     $additional_ids = Arr::flatten(array_intersect_key($additional_ids, $valid_stati));
 
                                     if (defined('PP_RESTRICTION_PRIORITY') && PP_RESTRICTION_PRIORITY) {
@@ -473,6 +473,24 @@ class CapabilityFilters
             global $wpdb;
 
             $pp = presspermit();
+
+            // Don't filter the 'edit_post' request that Gutenberg applies right after trashing a post. WP will still block editing.
+            if (('edit' == $required_operation) && $pp->doingREST()) {
+                $_post = get_post($post_id);
+
+                if (is_a($_post, 'WP_Post') && ('trash' == $_post->post_status)) {
+                    return $wp_sitecaps;
+                }
+            }
+
+            // Gutenberg editor: allow the Trash button to be displayed right after initial post save, before the status has been refreshed
+            if (('delete' == $required_operation) && $pp->doingREST()) {
+                $_post = get_post($post_id);
+
+                if (is_a($_post, 'WP_Post') && ('auto-draft' == $_post->post_status) && ($_post->post_author == $pp->getUser()->ID)) {
+                    return $wp_sitecaps;
+                }
+            }
 
             // If this cap inquiry is for a single item but multiple items are being listed, we will query for the original metacap on all items (mapping it for each applicable status) and buffer the results
             //

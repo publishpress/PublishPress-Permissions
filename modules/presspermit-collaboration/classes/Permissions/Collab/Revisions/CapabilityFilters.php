@@ -12,6 +12,62 @@ class CapabilityFilters
 
         add_filter('revisionary_can_copy', [$this, 'fltCanCopy'], 10, 5);
         add_filter('revisionary_can_submit', [$this, 'fltCanSubmit'], 10, 5);
+
+        add_filter('user_has_cap', [$this, 'fltUserHasReviseCap'], 200, 3);
+
+        // Permissions compat: Ensure Gutenberg doesn't block Subscribers with revise permissions for specific pages
+        add_action('init', [$this, 'actEnableLimitedRevisors'], 5);
+    }
+
+	function actEnableLimitedRevisors($user_id) {
+		global $current_user;
+
+		if (is_admin()) {
+			if ($post_id = rvy_detect_post_id()) {
+				if ('draft-revision' == rvy_in_revision_workflow($post_id)) {
+					if ($post = get_post($post_id)) {
+						if ($current_user->ID == $post->post_author) {
+							if ($type_obj = get_post_type_object($post->post_type)) {
+								$current_user->allcaps[$type_obj->cap->edit_posts] = true;
+							}
+
+                            // note: this capability does not affect access to published posts or other users' posts
+							$current_user->allcaps['edit_posts'] = true;
+						}
+					}
+				}
+			}
+		}
+    }
+
+    function fltUserHasReviseCap($wp_sitecaps, $orig_reqd_caps, $args) {
+        global $current_user;
+        
+        $args = (array) $args;
+
+        if (!array_diff($orig_reqd_caps, array_keys(array_filter($wp_sitecaps)))) {
+            return $wp_sitecaps;
+        }
+
+        $orig_cap = (isset($args[0])) ? sanitize_key($args[0]) : '';
+
+        if (isset($args[2])) {
+            if (is_object($args[2])) {
+                $args[2] = (isset($args[2]->ID)) ? $args[2]->ID : 0;
+            }
+        } else {
+            $item_id = 0;
+        }
+
+        $item_id = (isset($args[2])) ? (int) $args[2] : 0;
+
+        if ($item_id && ('edit_post' == $orig_cap) && rvy_in_revision_workflow($item_id) && ($current_user->ID == get_post_field('post_author', $item_id))) {
+            if (current_user_can('copy_post', rvy_post_id($item_id))) {
+                return array_merge($wp_sitecaps, array_fill_keys($orig_reqd_caps, true));
+            }
+        }
+
+        return $wp_sitecaps;
     }
 
     // @todo: confirm this is no longer needed
@@ -171,12 +227,22 @@ class CapabilityFilters
             return $can_copy;
         }
 
-        // Possession of a submit_post permission also grants implicit copy_post permission.  This is partly for consistency with Revisions 2.x behavior
-        return $this->fltPostAccessApplyExceptions($can_copy, $operation, $post_type, $post_id) || $this->fltPostAccessApplyExceptions($can_copy, 'revise', $post_type, $post_id);
+        if ($can_copy) {
+            // Apply blocking exceptions for Create Revision operation
+            return $this->fltPostAccessApplyExceptions($can_copy, $operation, $post_type, $post_id);
+
+        } else {
+        	// Possession of a submit_post permission also grants implicit copy_post permission.  This is partly for consistency with Revisions 2.x behavior
+        	return $this->fltPostAccessApplyExceptions($can_copy, $operation, $post_type, $post_id) || $this->fltPostAccessApplyExceptions($can_copy, 'revise', $post_type, $post_id);
+    	}
     }
 
     function fltCanSubmit($can_submit, $post_id, $new_base_status, $new_revision_status, $args) {
-        if (presspermit()->isAdministrator() || !rvy_in_revision_workflow($post_id) || ('pending' != $new_base_status)) {
+        if ('pending' != $new_base_status || !rvy_in_revision_workflow($post_id)) {
+            return false;
+        }
+
+        if (presspermit()->isAdministrator()) {
             return $can_submit;
         }
 

@@ -188,8 +188,8 @@ class AdminWorkarounds
                         wp_die(__('You do not have permission to update that Navigation Menu', 'press-permit-core'));
                     } else {
                         wp_die(__('You do not have permission to create new Navigation Menus', 'press-permit-core'));
+                    }
                 }
-            }
             }
         } elseif (false !== strpos($referer_name, 'delete-nav_menu-')) {
             if (!$pp->isUserUnfiltered() 
@@ -289,7 +289,7 @@ class AdminWorkarounds
 
             case 'add-menu_item':
                 if (presspermit()->getOption('admin_nav_menu_filter_items')) {
-                    $object_id = (isset($_REQUEST['menu-item-object-id'])) ? (int)$_REQUEST['menu-item-object-id'] : 0;
+                    $object_id = (isset($_REQUEST['menu-item-object-id'])) ? (int) $_REQUEST['menu-item-object-id'] : 0;
                     $menu = isset($_REQUEST['menu']) ? pp_permissions_sanitize_entry($_REQUEST['menu']) : 0;
 
                     if (defined('PPCE_RESTRICT_MENU_TOP_LEVEL') && empty($_REQUEST['menu_item']['menu-item-parent-id'])) {
