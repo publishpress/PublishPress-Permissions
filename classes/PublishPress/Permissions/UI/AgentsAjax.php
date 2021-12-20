@@ -140,12 +140,14 @@ class AgentsAjax
                 $where = "WHERE 1=1";
             }
 
-            if ($role_filter = sanitize_text_field($_GET['pp_role_search'])) {
-                global $current_blog;
-                $blog_prefix = $wpdb->get_blog_prefix($current_blog->blog_id);
+            if (!empty($_GET['pp_role_search'])) {
+                if ($role_filter = sanitize_text_field($_GET['pp_role_search'])) {
+                    global $current_blog;
+                    $blog_prefix = $wpdb->get_blog_prefix($current_blog->blog_id);
 
-                $um_keys[] = "{$blog_prefix}capabilities";
-                $um_vals[] = $role_filter;
+                    $um_keys[] = "{$blog_prefix}capabilities";
+                    $um_vals[] = $role_filter;
+                }
             }
 
             // append where clause for meta value criteria
