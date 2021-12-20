@@ -22,7 +22,8 @@ class ItemsMetaboxAjax
         }
 
         if ( ! empty( $_POST['item-object'] ) && isset( $items[$_POST['item-object']] ) ) {
-            $item = $items[ $_POST['item-object'] ];
+            $item_type = sanitize_key($_POST['item-object']);
+            $item = $items[$item_type];
 
             ob_start();
             call_user_func_array($callback, [
