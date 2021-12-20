@@ -482,6 +482,16 @@ class CapabilityFilters
                     return $wp_sitecaps;
                 }
             }
+
+            // Gutenberg editor: allow the Trash button to be displayed right after initial post save, before the status has been refreshed
+            if (('delete' == $required_operation) && $pp->doingREST()) {
+                $_post = get_post($post_id);
+
+                if (is_a($_post, 'WP_Post') && ('auto-draft' == $_post->post_status) && ($_post->post_author == $pp->getUser()->ID)) {
+                    return $wp_sitecaps;
+                }
+            }
+
             // If this cap inquiry is for a single item but multiple items are being listed, we will query for the original metacap on all items (mapping it for each applicable status) and buffer the results
             //
             // (Perf enhancement when listing display will check caps for each item to determine whether to display an action link)
