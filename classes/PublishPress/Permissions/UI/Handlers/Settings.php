@@ -80,7 +80,11 @@ class Settings
 
         $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
 
-        $reviewed_options = array_merge(explode(',', $_POST['all_options']), explode(',', $_POST['all_otype_options']));
+        $reviewed_options = array_map('sanitize_key', array_merge(
+            explode(',', $_POST['all_options']), 
+            explode(',', $_POST['all_otype_options'])
+        ));
+
         foreach ($reviewed_options as $option_name) {
             $pp->deleteOption($default_prefix . $option_name, $args);
         }
@@ -94,7 +98,7 @@ class Settings
 
         $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
 
-        foreach (explode(',', $_POST['all_options']) as $option_basename) {
+        foreach (array_map('sanitize_key', explode(',', $_POST['all_options'])) as $option_basename) {
             $value = isset($_POST[$option_basename]) ? $_POST[$option_basename] : '';
 
             if (!is_array($value))
@@ -103,7 +107,7 @@ class Settings
             $pp->updateOption($default_prefix . $option_basename, stripslashes_deep($value), $args);
         }
 
-        foreach (explode(',', $_POST['all_otype_options']) as $option_basename) {
+        foreach (array_map('sanitize_key', explode(',', $_POST['all_otype_options'])) as $option_basename) {
             // support stored default values (to apply to any post type which does not have an explicit setting)
             if (isset($_POST[$option_basename][0])) {
                 $_POST[$option_basename][''] = $_POST[$option_basename][0];
@@ -145,7 +149,7 @@ class Settings
 
         // add deactivations (unchecked from Active list)
         if (!empty($_POST['presspermit_reviewed_modules'])) {
-            $reviewed_modules = array_fill_keys( explode(',', $_POST['presspermit_reviewed_modules']), (object)[]);
+            $reviewed_modules = array_fill_keys( array_map('sanitize_key', explode(',', $_POST['presspermit_reviewed_modules'])), (object)[]);
 
             $deactivated = array_merge(
                 $deactivated,
@@ -176,7 +180,7 @@ class Settings
             }
 
             $pp->updateOption('deactivated_modules', $deactivated);
-            $tab = (!empty($_POST['pp_tab'])) ? "&pp_tab={$_POST['pp_tab']}" : '';
+            $tab = (!empty($_POST['pp_tab'])) ? "&pp_tab={" . sanitize_key($_POST['pp_tab']) . "}" : '';
             wp_redirect(admin_url("admin.php?page=presspermit-settings$tab&presspermit_submit_redirect=1"));
         }
         // =====================================================
