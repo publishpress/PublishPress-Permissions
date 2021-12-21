@@ -18,10 +18,10 @@ class AjaxUI
                 $op_captions['copy'] = (object)['label' => __('Create Revision of'), 'abbrev' => __('Create Revision'), 'noun_label' => __('New Revision', 'press-permit-core')];
                 $op_captions['revise'] = (object)['label' => __('Submit Revision of'), 'abbrev' => __('Submit Revision'), 'noun_label' => __('Submitted Revision', 'press-permit-core')];
             }
-        
+
             foreach(['label', 'abbrev', 'noun_label'] as $prop) {
-                $op_captions['copy']->$prop = str_replace(' ', '&nbsp;', $op_captions['copy']->$prop);
-                $op_captions['revise']->$prop = str_replace(' ', '&nbsp;', $op_captions['revise']->$prop);
+                $op_captions['copy']->$prop = html_entity_decode($op_captions['copy']->$prop);
+                $op_captions['revise']->$prop = html_entity_decode($op_captions['revise']->$prop);
             }
         } elseif (defined('REVISIONARY_VERSION')) {
             $op_captions['revise'] = (object)['label' => __('Revise'), 'noun_label' => __('Revision', 'press-permit-core')];
@@ -32,23 +32,23 @@ class AjaxUI
 
         $op_captions = array_merge($op_captions, [
             'associate' => (object)[
-                'label' => __('Set as Parent', 'press-permit-core'), 
-                'noun_label' => __('Set as Parent', 'press-permit-core'), 
+                'label' => __('Set as Parent', 'press-permit-core'),
+                'noun_label' => __('Set as Parent', 'press-permit-core'),
                 'agent_label' => __('Set as Parent', 'press-permit-core')
             ],
-            
+
             'assign' => (object)[
-                'label' => __('Assign Term', 'press-permit-core'), 
+                'label' => __('Assign Term', 'press-permit-core'),
                 'noun_label' => __('Assignment', 'press-permit-core')
             ],
 
             /*'publish' => (object)[
-                'label' => __('Publish'), 
+                'label' => __('Publish'),
                 'noun_label' => __('Publishing', 'press-permit-core')
             ],*/
 
             'manage' => (object)[
-                'label' => __('Manage'), 
+                'label' => __('Manage'),
                 'noun_label' => __('Management', 'press-permit-core')
             ],
         ]);
