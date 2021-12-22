@@ -75,9 +75,9 @@ class PostFilters
 
         if ($wp_query->is_preview && defined('REVISIONARY_VERSION')) {
             if (!empty($wp_query->query['p'])) {
-                $post_id = $wp_query->query['p'];
+                $post_id = (int) $wp_query->query['p'];
             } elseif(!empty($wp_query->query['page_id'])) {
-                $post_id = $wp_query->query['page_id'];
+                $post_id = (int) $wp_query->query['page_id'];
             } else {
                 return;
             }
