@@ -413,7 +413,7 @@ class CapabilityFilters
 
         $post_type = PWP::findPostType($post_id); // will be pulled from object
 
-        $pp_reqd_caps = array_map('sanitize_key', (array)$args[0]); // already cast to array
+        $pp_reqd_caps = array_map('pp_permissions_sanitize_key', (array)$args[0]); // already cast to array
 
         //=== Allow PP modules or other plugins to modify some variables
         //
