@@ -16,7 +16,7 @@ class AgentPermissionsAjax
 
         $html = '';
 
-        $agent_type = (!empty($_GET['agent_type'])) ? sanitize_key($_GET['agent_type']) : '';
+        $agent_type = (!empty($_GET['agent_type'])) ? pp_permissions_sanitize_key($_GET['agent_type']) : '';
         $agent_id = (!empty($_GET['agent_id'])) ? (int)$_GET['agent_id'] : 0;
 
         // safeguard prevents accidental modification of roles for other groups / users
@@ -26,7 +26,7 @@ class AgentPermissionsAjax
             $agent_clause = '';
         }
 
-        $action = sanitize_key($_GET['pp_ajax_agent_permissions']);
+        $action = pp_permissions_sanitize_key($_GET['pp_ajax_agent_permissions']);
 
         switch ($action) {
             case 'roles_remove':

@@ -16,7 +16,7 @@ class Permissions
 
         $roles = [];
 
-        $agent_type = sanitize_key($agent_type);
+        $agent_type = pp_permissions_sanitize_key($agent_type);
 
         if ($query_agent_ids) {
             static $agent_roles;

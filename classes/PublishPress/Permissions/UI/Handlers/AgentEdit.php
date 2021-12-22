@@ -10,7 +10,7 @@ class AgentEdit
     public function __construct() {
         require_once(PRESSPERMIT_CLASSPATH . '/DB/GroupUpdate.php');
 
-        $action = (isset($_REQUEST['action'])) ? sanitize_key($_REQUEST['action']) : '';
+        $action = (isset($_REQUEST['action'])) ? pp_permissions_sanitize_key($_REQUEST['action']) : '';
 
         $url = apply_filters('presspermit_groups_base_url', 'admin.php');
         $redirect = $err = false;
@@ -20,7 +20,7 @@ class AgentEdit
 
         $pp = presspermit();
 
-        $agent_type = sanitize_key($_REQUEST['agent_type']);
+        $agent_type = pp_permissions_sanitize_key($_REQUEST['agent_type']);
 
         switch ($action) {
             case 'update':
@@ -52,7 +52,7 @@ class AgentEdit
                     \PublishPress\Permissions\DB\Cloner::clonePermissions(
                         'pp_group', 
                         $agent_id, 
-                        sanitize_key($_REQUEST['pp_select_role'])
+                        pp_permissions_sanitize_key($_REQUEST['pp_select_role'])
                     );
                     
                     $redirect = "$url?page=presspermit-edit-permissions&agent_id=$agent_id&agent_type=$agent_type&updated=1&pp_cloned=1";
@@ -112,7 +112,7 @@ class AgentEdit
 
                 check_admin_referer('pp-create-group', '_wpnonce_pp-create-group');
 
-                $agent_type = (isset($_REQUEST['agent_type'])) ? sanitize_key($_REQUEST['agent_type']) : '';
+                $agent_type = (isset($_REQUEST['agent_type'])) ? pp_permissions_sanitize_key($_REQUEST['agent_type']) : '';
                 if (!$agent_type = apply_filters('presspermit_query_group_type', $agent_type))
                     $agent_type = 'pp_group';
 
@@ -207,7 +207,7 @@ class AgentEdit
                 $exc = apply_filters('presspermit_add_exception', $exc);
 
                 foreach (['mod_type', 'item_id', 'operation', 'attrib_cond', 'via_type', 'for_type', 'for_item', 'for_children'] as $var) {
-                    $$var = (isset($exc[$var])) ? sanitize_key($exc[$var]) : '';
+                    $$var = (isset($exc[$var])) ? pp_permissions_sanitize_key($exc[$var]) : '';
                 }
 
                 $item_id = (isset($exc['item_id'])) ? (int) $exc['item_id'] : 0;

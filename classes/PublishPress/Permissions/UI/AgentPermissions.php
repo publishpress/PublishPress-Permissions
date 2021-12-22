@@ -22,7 +22,7 @@ class AgentPermissions
 
         require_once(PRESSPERMIT_CLASSPATH . '/UI/AgentPermissionsUI.php');
 
-        $agent_type = (!empty($_REQUEST['agent_type'])) ? sanitize_key($_REQUEST['agent_type']) : 'pp_group';
+        $agent_type = (!empty($_REQUEST['agent_type'])) ? pp_permissions_sanitize_key($_REQUEST['agent_type']) : 'pp_group';
 
         if (empty($_REQUEST['agent_id'])) {
             $agent_id = 0;
@@ -72,7 +72,7 @@ class AgentPermissions
 
         $wp_http_referer = remove_query_arg(['update', 'delete_count'], stripslashes($wp_http_referer));
 
-        $group_variant = ! empty($_REQUEST['group_variant']) ? sanitize_key($_REQUEST['group_variant']) : 'pp_group';
+        $group_variant = ! empty($_REQUEST['group_variant']) ? pp_permissions_sanitize_key($_REQUEST['group_variant']) : 'pp_group';
 
         $groups_link = ($wp_http_referer && strpos($wp_http_referer, 'presspermit-groups')) 
         ? add_query_arg('group_variant', $group_variant, $wp_http_referer)

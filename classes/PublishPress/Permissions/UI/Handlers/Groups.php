@@ -19,13 +19,13 @@ class Groups
             $agent_type = 'pp_group';
 
         if (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2'])) {
-            $action = sanitize_key($_REQUEST['action2']);
+            $action = pp_permissions_sanitize_key($_REQUEST['action2']);
 
         } elseif (!empty($_REQUEST['action']) && !is_numeric($_REQUEST['action'])) {
-            $action = sanitize_key($_REQUEST['action']);
+            $action = pp_permissions_sanitize_key($_REQUEST['action']);
 
         } elseif (!empty($_REQUEST['pp_action'])) {
-            $action = sanitize_key($_REQUEST['pp_action']);
+            $action = pp_permissions_sanitize_key($_REQUEST['pp_action']);
         } else {
             $action = '';
         }
@@ -38,7 +38,7 @@ class Groups
                 if (!current_user_can('pp_delete_groups'))
                     wp_die(__('You are not permitted to do that.', 'press-permit-core'));
 
-                $group_variant = (! empty($_REQUEST['group_variant'])) ? sanitize_key($_REQUEST['group_variant']) : 'pp_group';
+                $group_variant = (! empty($_REQUEST['group_variant'])) ? pp_permissions_sanitize_key($_REQUEST['group_variant']) : 'pp_group';
                 $redirect = add_query_arg('group_variant', $group_variant, $redirect);
 
                 if (empty($_REQUEST['groups']) && empty($_REQUEST['group'])) {
