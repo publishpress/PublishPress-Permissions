@@ -203,9 +203,7 @@ class AgentEdit
             $mirror_to_ops = (!empty($_REQUEST['pp_add_exceptions_mirror_ops'])) ? $_REQUEST['pp_add_exceptions_mirror_ops'] : [];
 			*/
 
-            $add_exceptions = stripslashes_deep($_POST['pp_add_exception']);
-
-            foreach ($add_exceptions as $exc) {
+            foreach ($_POST['pp_add_exception'] as $exc) {
                 $exc = apply_filters('presspermit_add_exception', $exc);
 
                 foreach (['mod_type', 'item_id', 'operation', 'attrib_cond', 'via_type', 'for_type', 'for_item', 'for_children'] as $var) {
