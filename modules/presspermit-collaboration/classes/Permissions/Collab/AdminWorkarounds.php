@@ -50,13 +50,13 @@ class AdminWorkarounds
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');
             new NavMenus();
 
-            $action = (isset($_REQUEST['action'])) ? sanitize_key($_REQUEST['action']) : '';
+            $action = (isset($_REQUEST['action'])) ? pp_permissions_sanitize_key($_REQUEST['action']) : '';
 
             if ('add-menu-item' == $action) {
                 if (isset($_REQUEST['menu-item'])) {
                     foreach ($_REQUEST['menu-item'] as $menu_item) {  // normally just one element in array
-                        $menu_item_type = (isset($menu_item['menu-item-type'])) ? sanitize_key($menu_item['menu-item-type']) : '';
-                        $object_type = (isset($menu_item['menu-item-object'])) ? sanitize_key($menu_item['menu-item-object']) : '';
+                        $menu_item_type = (isset($menu_item['menu-item-type'])) ? pp_permissions_sanitize_key($menu_item['menu-item-type']) : '';
+                        $object_type = (isset($menu_item['menu-item-object'])) ? pp_permissions_sanitize_key($menu_item['menu-item-object']) : '';
                         $object_id = (isset($menu_item['menu-item-object-id'])) ? (int) $menu_item['menu-item-object-id'] : '';
 
                         if (!NavMenus::can_edit_menu_item(0, compact(['menu_item_type', 'object_type', 'object_id']))) {
@@ -92,7 +92,7 @@ class AdminWorkarounds
             if ($none_text == $text) {
                 $user = presspermit()->getUser();
 
-                $taxonomy = (isset($_REQUEST['taxonomy'])) ? sanitize_key($_REQUEST['taxonomy']) : 'category';
+                $taxonomy = (isset($_REQUEST['taxonomy'])) ? pp_permissions_sanitize_key($_REQUEST['taxonomy']) : 'category';
 
                 $additional_tt_ids = $user->getExceptionTerms('associate', 'additional', $taxonomy, $taxonomy, ['merge_universals' => true]);
 
@@ -224,7 +224,7 @@ class AdminWorkarounds
             case 'add-category':
                 $user = presspermit()->getUser();
 
-                $taxonomy = (isset($_REQUEST['taxonomy'])) ? sanitize_key($_REQUEST['taxonomy']) : 'category';
+                $taxonomy = (isset($_REQUEST['taxonomy'])) ? pp_permissions_sanitize_key($_REQUEST['taxonomy']) : 'category';
 
                 if ($tx_obj = get_taxonomy($taxonomy))
                     $cap_name = $tx_obj->cap->manage_terms;
@@ -489,7 +489,7 @@ class AdminWorkarounds
         // SELECT ID, post_title, post_status, post_date FROM $wpdb->posts WHERE post_type = '$what' AND post_status IN ('draft', 'publish') AND ($search) ORDER BY post_date_gmt DESC LIMIT 50
         if (strpos($query, "ELECT ID, post_title, post_status, post_date FROM")) {
             if (!empty($_POST['post_type']))
-                $query = apply_filters('presspermit_posts_request', $query, ['post_types' => sanitize_key($_POST['post_type'])]);
+                $query = apply_filters('presspermit_posts_request', $query, ['post_types' => pp_permissions_sanitize_key($_POST['post_type'])]);
         }
 
         // parent_dropdown() - in case a plugin or theme calls it :
@@ -531,7 +531,7 @@ class AdminWorkarounds
 
                     if (!empty($qry_vars['post'])) {
                         $pp = presspermit();
-                        $taxonomy = sanitize_key($_REQUEST['tax']);
+                        $taxonomy = pp_permissions_sanitize_key($_REQUEST['tax']);
                         
                         $ok_tags = get_terms(
                             ['taxonomy' => $taxonomy, 

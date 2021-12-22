@@ -18,13 +18,24 @@ function pp_permissions_sanitize_entry( $entry ) {
     return $entry;
 }
 
+/*
+ * Same as sanitize_key(), but without applying filters
+ */
+function pp_permissions_sanitize_key( $key ) {
+    $raw_key = $key;
+    $key     = strtolower( $key );
+    $key     = preg_replace( '/[^a-z0-9_\-]/', '', $key );
+    
+    return $key;
+}
+
 function presspermitPluginPage()
 {
     static $pp_plugin_page = null;
 
     if (is_null($pp_plugin_page)) {
         $pp_plugin_page = (is_admin() && isset($_REQUEST['page']) && (0 === strpos($_REQUEST['page'], 'presspermit-')))
-            ? sanitize_key($_REQUEST['page'])
+            ? pp_permissions_sanitize_key($_REQUEST['page'])
             : false;
     }
 

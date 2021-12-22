@@ -147,14 +147,14 @@ class REST
                     $this->referer = reset($this->referer);
                 }
 
-                $this->operation = (isset($this->params['context'])) ? sanitize_key($this->params['context']) : '';
+                $this->operation = (isset($this->params['context'])) ? pp_permissions_sanitize_key($this->params['context']) : '';
                 if ('view' == $this->operation) {
                     $this->operation = 'read';
                 }
 
 			  // voluntary filtering of get_items (for WYSIWY can edit, etc.)
                 if ($this->is_view_method && ('read' == $this->operation) && !empty($_REQUEST['operation'])) {
-                    $this->operation = sanitize_key($_REQUEST['operation']);
+                    $this->operation = pp_permissions_sanitize_key($_REQUEST['operation']);
                 }
 			
                 // NOTE: setting or default may be adapted downstream

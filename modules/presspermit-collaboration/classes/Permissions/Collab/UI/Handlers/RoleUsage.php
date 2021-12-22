@@ -5,7 +5,7 @@ class RoleUsage
 {
     public static function handleRequest() 
     {
-        $action = (isset($_REQUEST['action'])) ? sanitize_key($_REQUEST['action']) : '';
+        $action = (isset($_REQUEST['action'])) ? pp_permissions_sanitize_key($_REQUEST['action']) : '';
 
         $url = apply_filters('presspermit_role_usage_base_url', 'admin.php');
         $redirect = $err = false;

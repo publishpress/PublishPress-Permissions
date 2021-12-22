@@ -158,7 +158,7 @@ class PostFilters
             return $clauses;
         }
 
-        $action = (isset($_REQUEST['action'])) ? sanitize_key($_REQUEST['action']) : '';
+        $action = (isset($_REQUEST['action'])) ? pp_permissions_sanitize_key($_REQUEST['action']) : '';
 
         if (
             defined('PP_MEDIA_LIB_UNFILTERED') && (('upload.php' == $pagenow)

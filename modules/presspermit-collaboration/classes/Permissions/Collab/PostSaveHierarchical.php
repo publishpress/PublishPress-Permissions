@@ -155,7 +155,7 @@ class PostSaveHierarchical
 
         global $wpdb;
         $valid_parents = $wpdb->get_col(
-            "SELECT ID FROM $wpdb->posts WHERE post_type = '" . sanitize_key($post_type) . "' AND post_status IN ($statuses_csv) AND ID > 0 ORDER BY post_parent, ID ASC"
+            "SELECT ID FROM $wpdb->posts WHERE post_type = '" . pp_permissions_sanitize_key($post_type) . "' AND post_status IN ($statuses_csv) AND ID > 0 ORDER BY post_parent, ID ASC"
         );
 
         $valid_parents = array_diff($valid_parents, $descendants, (array)$post_id);

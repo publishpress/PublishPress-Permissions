@@ -9,7 +9,7 @@ class AgentPermissionsUI
 {
     public static function roleAssignmentScripts()
     {
-        $agent_type = (isset($_REQUEST['agent_type'])) ? sanitize_key($_REQUEST['agent_type']) : 'pp_group';
+        $agent_type = (isset($_REQUEST['agent_type'])) ? pp_permissions_sanitize_key($_REQUEST['agent_type']) : 'pp_group';
         $agent_id = (isset($_REQUEST['agent_id'])) ? (int)$_REQUEST['agent_id'] : 0;
 
         $vars = [
@@ -49,7 +49,7 @@ class AgentPermissionsUI
             'ajaxurl' => admin_url(''),
         ];
 
-        $vars['agentType'] = (isset($_REQUEST['agent_type'])) ? sanitize_key($_REQUEST['agent_type']) : 'pp_group';
+        $vars['agentType'] = (isset($_REQUEST['agent_type'])) ? pp_permissions_sanitize_key($_REQUEST['agent_type']) : 'pp_group';
         $vars['agentID'] = (isset($_REQUEST['agent_id'])) ? (int)$_REQUEST['agent_id'] : 0;
 
         // Simulate Nav Menu setup
