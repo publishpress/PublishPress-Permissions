@@ -38,9 +38,9 @@ class ItemAjax
                 $args = ['post_types' => (array)$for_item_type, 'agent_type' => $agent_type, 'operations' => $op, 'agent_id' => $agent_ids];
 
                 $exc_data->loadExceptions(
-                    sanitize_key($_GET['via_item_source']),
+                    pp_permissions_sanitize_key($_GET['via_item_source']),
                     $for_item_source,
-                    sanitize_key($_GET['via_item_type']),
+                    pp_permissions_sanitize_key($_GET['via_item_type']),
                     $item_id,
                     $args
                 );

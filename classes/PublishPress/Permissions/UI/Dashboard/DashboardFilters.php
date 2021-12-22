@@ -51,7 +51,7 @@ class DashboardFilters
             new UsersListing();
 
         } elseif (('edit.php' == $pagenow) || PWP::isAjax('inline-save')) {
-            $post_type = isset($_REQUEST['post_type']) ? sanitize_key($_REQUEST['post_type']) : 'post';
+            $post_type = isset($_REQUEST['post_type']) ? pp_permissions_sanitize_key($_REQUEST['post_type']) : 'post';
             if (in_array($post_type, presspermit()->getEnabledPostTypes(), true)) {
                 require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/PostsListing.php');
                 new PostsListing();
@@ -61,7 +61,7 @@ class DashboardFilters
             in_array($pagenow, ['edit-tags.php']) || (defined('DOING_AJAX') && DOING_AJAX
                 && isset($_REQUEST['action']) && in_array($_REQUEST['action'], ['inline-save-tax', 'add-tag']))
         ) {
-            if (!empty($_REQUEST['taxonomy']) && presspermit()->isTaxonomyEnabled(sanitize_key($_REQUEST['taxonomy']))) {
+            if (!empty($_REQUEST['taxonomy']) && presspermit()->isTaxonomyEnabled(pp_permissions_sanitize_key($_REQUEST['taxonomy']))) {
                 require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/TermsListing.php');
                 new TermsListing();
             }
@@ -130,7 +130,7 @@ class DashboardFilters
     {
         $pp = presspermit();
 
-        $agent_type = ( isset($_REQUEST['agent_type']) ) ? sanitize_key($_REQUEST['agent_type']) : 'pp_group';
+        $agent_type = ( isset($_REQUEST['agent_type']) ) ? pp_permissions_sanitize_key($_REQUEST['agent_type']) : 'pp_group';
 		$agent_id = ( isset($_REQUEST['agent_id']) ) ? (int) $_REQUEST['agent_id'] : 0;
 
         $load_role_scripts = $pp->groups()->userCan('pp_manage_members', $agent_id, $agent_type)
@@ -167,7 +167,7 @@ class DashboardFilters
 
     public static function actMenuHandler()
     {
-        $pp_page = sanitize_key($_GET['page']);
+        $pp_page = pp_permissions_sanitize_key($_GET['page']);
 
         if (in_array($pp_page, [
             'presspermit-settings', 'presspermit-groups', 'presspermit-users',
@@ -284,7 +284,7 @@ class DashboardFilters
 
         if (in_array($pp_plugin_page, ['presspermit-edit-permissions'], true)) {
             $titles = ['presspermit-edit-permissions' => __('Edit Permissions', 'press-permit-core')];
-            add_submenu_page(sanitize_key($permissions_title), $titles[$pp_plugin_page], '', 'read', $pp_plugin_page, $handler);
+            add_submenu_page(pp_permissions_sanitize_key($permissions_title), $titles[$pp_plugin_page], '', 'read', $pp_plugin_page, $handler);
         }
 
         do_action('presspermit_admin_menu');

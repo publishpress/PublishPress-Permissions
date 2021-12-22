@@ -235,13 +235,13 @@ class LibWP
                 }
             }
         } elseif (in_array($pagenow, ['post-new.php', 'edit.php'])) {
-            $object_type = !empty($_GET['post_type']) ? sanitize_key($_GET['post_type']) : 'post';
+            $object_type = !empty($_GET['post_type']) ? pp_permissions_sanitize_key($_GET['post_type']) : 'post';
 
         } elseif (in_array($pagenow, ['edit-tags.php'])) {
-            $object_type = !empty($_REQUEST['taxonomy']) ? sanitize_key($_REQUEST['taxonomy']) : 'category';
+            $object_type = !empty($_REQUEST['taxonomy']) ? pp_permissions_sanitize_key($_REQUEST['taxonomy']) : 'category';
 
         } elseif (in_array($pagenow, ['admin-ajax.php']) && !empty($_REQUEST['taxonomy'])) {
-            $object_type = sanitize_key($_REQUEST['taxonomy']);
+            $object_type = pp_permissions_sanitize_key($_REQUEST['taxonomy']);
 
         } elseif (!empty($_POST['post_ID'])) {
             if ($_post = get_post((int) $_POST['post_ID'])) {
