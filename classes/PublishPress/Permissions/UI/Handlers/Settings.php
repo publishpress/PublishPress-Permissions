@@ -80,7 +80,7 @@ class Settings
 
         $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
 
-        $reviewed_options = array_map('sanitize_key', array_merge(
+        $reviewed_options = array_map('pp_permissions_sanitize_key', array_merge(
             explode(',', $_POST['all_options']), 
             explode(',', $_POST['all_otype_options'])
         ));
@@ -98,7 +98,7 @@ class Settings
 
         $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
 
-        foreach (array_map('sanitize_key', explode(',', $_POST['all_options'])) as $option_basename) {
+        foreach (array_map('pp_permissions_sanitize_key', explode(',', $_POST['all_options'])) as $option_basename) {
             $value = isset($_POST[$option_basename]) ? $_POST[$option_basename] : '';
 
             if (!is_array($value))
@@ -107,7 +107,7 @@ class Settings
             $pp->updateOption($default_prefix . $option_basename, stripslashes_deep($value), $args);
         }
 
-        foreach (array_map('sanitize_key', explode(',', $_POST['all_otype_options'])) as $option_basename) {
+        foreach (array_map('pp_permissions_sanitize_key', explode(',', $_POST['all_otype_options'])) as $option_basename) {
             // support stored default values (to apply to any post type which does not have an explicit setting)
             if (isset($_POST[$option_basename][0])) {
                 $_POST[$option_basename][''] = $_POST[$option_basename][0];
@@ -149,7 +149,7 @@ class Settings
 
         // add deactivations (unchecked from Active list)
         if (!empty($_POST['presspermit_reviewed_modules'])) {
-            $reviewed_modules = array_fill_keys( array_map('sanitize_key', explode(',', $_POST['presspermit_reviewed_modules'])), (object)[]);
+            $reviewed_modules = array_fill_keys( array_map('pp_permissions_sanitize_key', explode(',', $_POST['presspermit_reviewed_modules'])), (object)[]);
 
             $deactivated = array_merge(
                 $deactivated,
