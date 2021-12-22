@@ -31,7 +31,7 @@ class PostFilters
         global $current_user;
 
         if (!empty($args['has_cap_check']) && in_array($args['has_cap_check'], ['read_post', 'edit_post']) && !empty($args['limit_ids']) && !presspermit_is_preview()) {
-            $post_id = reset($args['limit_ids']);
+            $post_id = (int) reset($args['limit_ids']);
         } elseif ('edit' == $args['required_operation']) {
             $post_id = PWP::getPostID();
         }
@@ -79,9 +79,9 @@ class PostFilters
 
         if ($wp_query->is_preview && defined('PUBLISHPRESS_REVISIONS_VERSION')) {
             if (!empty($wp_query->query['p'])) {
-                $post_id = $wp_query->query['p'];
+                $post_id = (int) $wp_query->query['p'];
             } elseif(!empty($wp_query->query['page_id'])) {
-                $post_id = $wp_query->query['page_id'];
+                $post_id = (int) $wp_query->query['page_id'];
             } else {
                 return;
             }

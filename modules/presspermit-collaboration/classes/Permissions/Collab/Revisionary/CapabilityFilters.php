@@ -77,7 +77,7 @@ class CapabilityFilters
             if ( false !== strpos( urldecode($_SERVER['REQUEST_URI']), 'admin.php?page=rvy-revisions') ) {
                 $object_type = $this->postTypeFromCaps($reqd_caps);
             } else {
-                $object_type = PWP::findPostType((int) $args[0]); // $args[0] is object id; type property will be pulled from object
+                $object_type = PWP::findPostType($args[0]); // $args[0] is object id; type property will be pulled from object
             }
 
 
@@ -85,7 +85,7 @@ class CapabilityFilters
             // (which may be included in the edit listing only for revision submission)
             if (in_array($pagenow, ['edit.php', 'edit-tags.php', 'admin-ajax.php']) && !empty($_REQUEST['action']) 
             && ((-1 != $_REQUEST['action']) || (isset($_REQUEST['action2']) && -1 != $_REQUEST['action2']))) {
-                $reqd_caps = $admin_class::fix_table_edit_reqd_caps($reqd_caps, $orig_cap, get_post((int) $args[0]), get_post_type_object($object_type));
+                $reqd_caps = $admin_class::fix_table_edit_reqd_caps($reqd_caps, $orig_cap, get_post($args[0]), get_post_type_object($object_type));
             }
         }
 
