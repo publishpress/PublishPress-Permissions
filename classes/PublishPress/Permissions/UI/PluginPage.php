@@ -50,19 +50,19 @@ class PluginPage
         if ('presspermit-groups' == presspermitPluginPage()) {
             // @todo: eliminate redundancy with Groups::__construct()
             if (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2'])) {
-                $action = sanitize_key($_REQUEST['action2']);
+                $action = pp_permissions_sanitize_key($_REQUEST['action2']);
 
             } elseif (!empty($_REQUEST['action']) && !is_numeric($_REQUEST['action'])) {
-                $action = sanitize_key($_REQUEST['action']);
+                $action = pp_permissions_sanitize_key($_REQUEST['action']);
 
             } elseif (!empty($_REQUEST['pp_action'])) {
-                $action = sanitize_key($_REQUEST['pp_action']);
+                $action = pp_permissions_sanitize_key($_REQUEST['pp_action']);
             } else {
                 $action = '';
             }
 
             if ( ! in_array($action, ['delete', 'bulkdelete'])) {
-                $agent_type = (!empty($_REQUEST['agent_type'])) ? sanitize_key($_REQUEST['agent_type']) : 'pp_group';
+                $agent_type = (!empty($_REQUEST['agent_type'])) ? pp_permissions_sanitize_key($_REQUEST['agent_type']) : 'pp_group';
             } else {
                 $agent_type = '';
             }
@@ -90,9 +90,9 @@ class PluginPage
     }
 
     public static function getAgentType($default_type = '') {
-        $_agent_type = (isset($_REQUEST['agent_type'])) ? sanitize_key($_REQUEST['agent_type']) : $default_type;
+        $_agent_type = (isset($_REQUEST['agent_type'])) ? pp_permissions_sanitize_key($_REQUEST['agent_type']) : $default_type;
 
-        if (!$agent_type = sanitize_key(apply_filters('presspermit_query_group_type', $_agent_type))) {
+        if (!$agent_type = pp_permissions_sanitize_key(apply_filters('presspermit_query_group_type', $_agent_type))) {
             $agent_type = 'pp_group';
         }
 
@@ -104,7 +104,7 @@ class PluginPage
             $matches = [];
             if (preg_match("/group_variant=([0-9a-zA-Z_\-]+)/", urldecode($_REQUEST['_wp_http_referer']), $matches)) {
                 if ($matches[1]) {
-                    $group_variant = sanitize_key($matches[1]);
+                    $group_variant = pp_permissions_sanitize_key($matches[1]);
                 }
             }
         } elseif (empty($_REQUEST['group_variant']) && !current_user_can('edit_users')) {
@@ -112,9 +112,9 @@ class PluginPage
         }
 
         if (empty($group_variant)) {
-            $group_variant = (isset($_REQUEST['group_variant'])) ? sanitize_key($_REQUEST['group_variant']) : '';
+            $group_variant = (isset($_REQUEST['group_variant'])) ? pp_permissions_sanitize_key($_REQUEST['group_variant']) : '';
         }
 
-        return sanitize_key(apply_filters('presspermit_query_group_variant', $group_variant));
+        return pp_permissions_sanitize_key(apply_filters('presspermit_query_group_variant', $group_variant));
     }
 }

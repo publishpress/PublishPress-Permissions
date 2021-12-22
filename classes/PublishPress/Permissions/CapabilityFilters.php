@@ -109,7 +109,7 @@ class CapabilityFilters
         }
 
         $args = (array)$args;
-        $orig_cap = (isset($args[0])) ? sanitize_key($args[0]) : '';
+        $orig_cap = (isset($args[0])) ? pp_permissions_sanitize_key($args[0]) : '';
 
         if (isset($args[2])) {
             if (is_object($args[2]))
@@ -465,7 +465,7 @@ class CapabilityFilters
         $query_args = ['required_operation' => $required_operation, 'post_types' => $post_type, 'skip_teaser' => true];
 
         // generate a string key for this set of required caps, for use below in checking, caching the filtered results
-        $cap_arg = ( 'edit_page' == $args[0] ) ? 'edit_post' : sanitize_key($args[0]); // minor perf boost on uploads.php, TODO: move to PPCE
+        $cap_arg = ( 'edit_page' == $args[0] ) ? 'edit_post' : pp_permissions_sanitize_key($args[0]); // minor perf boost on uploads.php, TODO: move to PPCE
         $capreqs_key = ($memcache_disabled) ? false : $cap_arg . $pp->flags['cache_key_suffix'] . md5(serialize($query_args));
 
         // Check whether this object id was already tested for the same reqd_caps in a previous execution of this function within the same http request
@@ -511,7 +511,7 @@ class CapabilityFilters
             }
 
             $query_args['limit_ids'] = $listed_ids;
-            $query_args['has_cap_check'] = sanitize_key($args[0]);
+            $query_args['has_cap_check'] = pp_permissions_sanitize_key($args[0]);
             $request = PostFilters::constructPostsRequest(['fields' => "$wpdb->posts.ID"], $query_args);
 
             // run the query

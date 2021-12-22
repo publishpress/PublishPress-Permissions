@@ -17,7 +17,7 @@ class UserGroupsUpdate
             if (empty($_POST[$agent_type]))
                 continue;
 
-            $status = (isset($_POST['pp_membership_status'])) ? sanitize_key($_POST['pp_membership_status']) : 'active';
+            $status = (isset($_POST['pp_membership_status'])) ? pp_permissions_sanitize_key($_POST['pp_membership_status']) : 'active';
 
             if ($user_id == $pp->getUser()->ID)
                 $stored_groups = (array)$pp->getUser()->groups[$agent_type];

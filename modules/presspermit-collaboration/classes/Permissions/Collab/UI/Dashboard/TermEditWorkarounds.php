@@ -9,7 +9,7 @@ class TermEditWorkarounds
         if (!isset($_POST['tag_ID']))
             return;
 
-        $taxonomy = sanitize_key($_POST['taxonomy']);
+        $taxonomy = pp_permissions_sanitize_key($_POST['taxonomy']);
 
         if (!$tx = get_taxonomy($taxonomy))
             return;

@@ -19,7 +19,6 @@ class AgentsAjax
         $authors_clause = '';
 
         $orig_search_str = sanitize_text_field($_GET['pp_agent_search']);
-
         $search_str = sanitize_text_field($_GET['pp_agent_search']);
         $agent_type = pp_permissions_sanitize_entry($_GET['pp_agent_type']);
         $agent_id = (int)$_GET['pp_agent_id'];
@@ -27,7 +26,7 @@ class AgentsAjax
         $topic = str_replace(':', ',', $topic);
 
         $omit_admins = (bool)$_GET['pp_omit_admins'];
-        $context = (isset($_GET['pp_context'])) ? sanitize_key($_GET['pp_context']) : '';
+        $context = (isset($_GET['pp_context'])) ? pp_permissions_sanitize_key($_GET['pp_context']) : '';
 
         if (strpos($topic, ',')) {
             $arr_topic = explode(',', $topic);

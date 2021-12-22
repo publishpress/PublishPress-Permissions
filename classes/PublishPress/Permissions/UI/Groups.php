@@ -12,19 +12,19 @@ class Groups
         $pp_groups = $pp->groups();
 
         if (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2'])) {
-            $action = sanitize_key($_REQUEST['action2']);
+            $action = pp_permissions_sanitize_key($_REQUEST['action2']);
 
         } elseif (!empty($_REQUEST['action']) && !is_numeric($_REQUEST['action'])) {
-            $action = sanitize_key($_REQUEST['action']);
+            $action = pp_permissions_sanitize_key($_REQUEST['action']);
 
         } elseif (!empty($_REQUEST['pp_action'])) {
-            $action = sanitize_key($_REQUEST['pp_action']);
+            $action = pp_permissions_sanitize_key($_REQUEST['pp_action']);
         } else {
             $action = '';
         }
 
         if ( ! in_array($action, ['delete', 'bulkdelete'])) {
-            $agent_type = (!empty($_REQUEST['agent_type'])) ? sanitize_key($_REQUEST['agent_type']) : 'pp_group';
+            $agent_type = (!empty($_REQUEST['agent_type'])) ? pp_permissions_sanitize_key($_REQUEST['agent_type']) : 'pp_group';
         } else {
             $agent_type = '';
         }
@@ -215,7 +215,7 @@ class Groups
 
                     <form action="<?php echo "$url" ?>" method="get">
                         <input type="hidden" name="page" value="presspermit-groups"/>
-                        <input type="hidden" name="agent_type" value="<?php echo $agent_type ?>"/>
+                        <input type="hidden" name="agent_type" value="<?php echo esc_attr($agent_type); ?>"/>
                         <?php
                         $groups_list_table->search_box(__('Search Groups', 'press-permit-core'), 'group', '', 2);
                         ?>

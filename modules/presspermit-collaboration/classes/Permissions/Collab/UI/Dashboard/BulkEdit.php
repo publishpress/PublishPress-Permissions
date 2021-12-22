@@ -12,7 +12,7 @@ class BulkEdit
                 $location = $referer;
         }
 
-        $post_type = (isset($data['member_page_type'])) ? sanitize_key($data['member_page_type']) : '';
+        $post_type = (isset($data['member_page_type'])) ? pp_permissions_sanitize_key($data['member_page_type']) : '';
         $type_obj = get_post_type_object($post_type);
 
         if (empty($data['users'])) {
@@ -31,7 +31,7 @@ class BulkEdit
             $pattern_id = (isset($data["member_page_pattern_{$post_type}"])) ? (int) trim($data["member_page_pattern_{$post_type}"]) : '';
             if ($pattern_id) {
                 if (!is_numeric($pattern_id)) {
-                    $slug = sanitize_key($pattern_id);
+                    $slug = pp_permissions_sanitize_key($pattern_id);
                     $pattern_post = $wpdb->get_row($wpdb->prepare(
                         "SELECT ID, post_content, post_parent FROM $wpdb->posts WHERE post_name = %s AND post_type = %s LIMIT 1", 
                         $slug, 

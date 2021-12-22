@@ -38,7 +38,7 @@ class GroupNew
             <div id="message" class="updated">
                 <p><strong><?php _e('Group created.', 'press-permit-core') ?>&nbsp;</strong>
                     <?php
-                    $group_variant = ! empty($_REQUEST['group_variant']) ? sanitize_key($_REQUEST['group_variant']) : 'pp_group';
+                    $group_variant = ! empty($_REQUEST['group_variant']) ? pp_permissions_sanitize_key($_REQUEST['group_variant']) : 'pp_group';
 
                     $groups_link = ($wp_http_referer && strpos($wp_http_referer, 'presspermit-groups')) 
                     ? $wp_http_referer
@@ -64,7 +64,7 @@ class GroupNew
                 ?>
                 <h1><?php
                     $agent_type = (isset($_REQUEST['agent_type']) && $pp_groups->groupTypeEditable($_REQUEST['agent_type']))
-                        ? sanitize_key($_REQUEST['agent_type'])
+                        ? pp_permissions_sanitize_key($_REQUEST['agent_type'])
                         : 'pp_group';
 
                     if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type))

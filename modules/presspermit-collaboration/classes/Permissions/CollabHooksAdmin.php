@@ -183,10 +183,10 @@ class CollabHooksAdmin
         if (in_array($referer, ['bulk-posts', 'inlineeditnonce'], true)) {
             if ('bulk-posts' == $referer) {
                 if (!empty($_REQUEST['action']) && !is_numeric($_REQUEST['action'])) {
-                    $action = sanitize_key($_REQUEST['action']);
+                    $action = pp_permissions_sanitize_key($_REQUEST['action']);
 
                 } elseif (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2'])) {
-                    $action = sanitize_key($_REQUEST['action2']);
+                    $action = pp_permissions_sanitize_key($_REQUEST['action2']);
                 
                 } else {
                     $action = '';
