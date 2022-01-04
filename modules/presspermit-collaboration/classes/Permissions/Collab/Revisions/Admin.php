@@ -78,12 +78,14 @@ class Admin
                             $caps []= str_replace('edit_', 'list_', $post_type_obj->cap->edit_others_posts);
                         }
 
-                        $copy_cap = str_replace('edit_', 'copy_', $post_type_obj->cap->edit_others_posts);
-                        
-                        if (!empty($current_user->allcaps[$copy_cap])) {
-                            $caps[]= $copy_cap;
-                        } else {
-                            $caps []= str_replace('edit_', 'copy_', $post_type_obj->cap->edit_others_posts);
+                        if (rvy_get_option('copy_posts_capability')) {
+                            $copy_cap = str_replace('edit_', 'copy_', $post_type_obj->cap->edit_others_posts);
+                            
+                            if (!empty($current_user->allcaps[$copy_cap])) {
+                                $caps[]= $copy_cap;
+                            } else { 
+                                $caps []= str_replace('edit_', 'copy_', $post_type_obj->cap->edit_others_posts);
+                            }
                         }
                     }
                 }
