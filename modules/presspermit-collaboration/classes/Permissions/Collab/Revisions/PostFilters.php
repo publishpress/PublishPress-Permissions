@@ -54,9 +54,24 @@ class PostFilters
     }
 
     function fltBaseCapReplacements($replace_caps, $reqd_caps, $post_type) {
+        global $current_user;
+        
         if ($type_obj = get_post_type_object($post_type)) {
             if (!empty($type_obj->cap->edit_posts)) {
                 $replace_caps['list_others_revisions'] = $type_obj->cap->edit_posts;
+                $replace_caps['edit_others_drafts'] = $type_obj->cap->edit_posts;
+
+                if (!empty($type_obj->cap->edit_others_posts)) {
+                    $copy_others_cap = str_replace('edit_', 'copy_', $type_obj->cap->edit_others_posts);
+
+                    $replace_caps[$copy_others_cap] = str_replace('edit_', 'copy_', $type_obj->cap->edit_posts);
+                }
+
+                // Don't block Contributors from editing their own drafts (copy_others requirement initially applied to map_meta_cap filter via Posts filtering)
+                if (!empty($current_user->allcaps[$type_obj->cap->edit_posts])) {
+                    $copy_cap = str_replace('edit_', 'copy_', $type_obj->cap->edit_posts);
+                    $replace_caps[$copy_cap] = $type_obj->cap->edit_posts;
+                }
             }
         }
 
