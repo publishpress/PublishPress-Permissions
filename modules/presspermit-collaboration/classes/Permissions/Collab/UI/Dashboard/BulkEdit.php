@@ -3,8 +3,12 @@ namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class BulkEdit
 {
-    public static function add_author_pages($data)
+    public static function add_author_pages($data = [])
     {
+        if (!$data) {
+            $data = $_REQUEST; // sanitize below in this function, per-element
+        }
+
         $location = 'users.php';
 
         if ($referer = wp_get_referer()) {
