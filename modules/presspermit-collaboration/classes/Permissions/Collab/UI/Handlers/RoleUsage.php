@@ -29,7 +29,7 @@ class RoleUsage
                     $role_usage = array_merge($role_usage, array_fill_keys(array_keys($pp->role_defs->direct_roles), 'direct'));
                 }
 
-                $role_usage[$role_name] = (isset($_POST['pp_role_usage'])) ? stripslashes_deep($_POST['pp_role_usage']) : 0;
+                $role_usage[$role_name] = (isset($_POST['pp_role_usage'])) ? pp_permissions_sanitize_key($_POST['pp_role_usage']) : 0;
 
                 $pp->updateOption('role_usage', $role_usage);
 
