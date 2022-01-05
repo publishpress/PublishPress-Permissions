@@ -228,7 +228,7 @@ class CollabHooksAdmin
     {
         if (!empty($_REQUEST['add_member_page'])) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/BulkEdit.php');
-            Collab\UI\Dashboard\BulkEdit::add_author_pages(stripslashes_deep($_REQUEST));
+            Collab\UI\Dashboard\BulkEdit::add_author_pages();
         }
     }
 
