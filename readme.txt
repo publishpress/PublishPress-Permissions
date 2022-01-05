@@ -238,6 +238,17 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.6.6 - 5 Jan 2022 =
+* Compat : PublishPress Revisions - Contributors couldn't edit own draft posts if "Prevent Revisors from editing other user's drafts" setting enabled
+* Compat : PublishPress Revisions - "Revise" permissions assigned under previous Revisions versions did not enable revision creation
+* Compat : PublishPress Revisions - Restrictive permissions for revision creation were not applied
+* Compat : PublishPress Revisions - limited revisors could not edit newly created revision under some Permissions configurations
+* Fixed : Error message after trashing a post in Gutenberg editor (although trashing was successful)
+* Fixed : Trash button not initally displayed after creating a post (requires page reload)
+* Fixed : Permissions table header styling was broken if custom styling is applied to certain standard WP classes
+* Fixed : Edit User screen - Permissions box styling was broken if custom styling is applied to certain standard WP classes
+* Fixed : Input sanitization consistency
+
 = 3.6.5 - 24 Nov 2021 =
 * Fixed : PHP Notice "Undefined index: list_published_posts"
 * Compat : PublishPress Revisions - PHP Notice "Undefined variable: type_obj"
