@@ -25,7 +25,7 @@ class MediaQuery
         if ($do_parent_subquery = !isset($args['query_contexts']) || !in_array('comments', (array)$args['query_contexts'], true)) {  // comment queries don't append parent subquery, but do enforce edit_others_attached_files setting if PPCE is active
             // generate a subquery based on user's permissions to the post attachments are tied to
             $_post_types = array_diff(get_post_types(['public' => true, 'show_ui' => true], 'names', 'or'), ['attachment']);
-            $public_types_csv = implode("','", $_post_types);
+            $public_types_csv = implode("','", array_map('sanitize_key', $_post_types));
 
             if (!empty($args['limit_ids']) && (1 == count($args['limit_ids']))) {
                 if ($_post = get_post(reset($args['limit_ids']))) {
@@ -48,7 +48,7 @@ class MediaQuery
             }
 
             $pp_where = apply_filters('presspermit_posts_where', '', $_args);
-            $type_csv = implode("','", $_post_types);
+            $type_csv = implode("','", array_map('sanitize_key', $_post_types));
             
             if (defined('PRESSPERMIT_MEDIA_IGNORE_UNREGISTERED_PARENT_TYPES')) {
                 // treat media attached to unregistered post types as unattached, to avoid improper and confusing filtering
@@ -76,7 +76,7 @@ class MediaQuery
             $own_clause = (apply_filters('presspermit_read_own_attachments', false, $args)) ? PWP::postAuthorClause($args) . ' OR ' : '';
 
             if (apply_filters('presspermit_attachments_allow_unfiltered_parent', class_exists('SlideDeckPlugin', false))) {
-                $pp_type_csv = implode("','", array_merge(presspermit()->getEnabledPostTypes(), ['revision', 'attachment']));
+                $pp_type_csv = implode("','", array_map('sanitize_key', array_merge(presspermit()->getEnabledPostTypes(), ['revision', 'attachment'])));
                 $non_pp_parent_clause = " OR ( $src_table.post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type NOT IN ('$pp_type_csv') ) )";
             } else
                 $non_pp_parent_clause = '';

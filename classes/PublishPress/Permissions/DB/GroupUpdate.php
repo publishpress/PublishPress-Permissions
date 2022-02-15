@@ -28,7 +28,7 @@ class GroupUpdate
 
         global $wpdb;
 
-        $members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
+        $wpdb->members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
 
         if (!presspermit()->groups()->getGroup($group_id, $agent_type)) {
             return;
@@ -48,7 +48,7 @@ class GroupUpdate
             $data['user_id'] = $user_id;
 
             if ($already_member = $wpdb->get_col($wpdb->prepare(
-                "SELECT user_id FROM $members_table WHERE group_id = %d AND user_id = %d",
+                "SELECT user_id FROM $wpdb->members_table WHERE group_id = %d AND user_id = %d",
                 $group_id,
                 $user_id
             ))) {
@@ -56,7 +56,7 @@ class GroupUpdate
                 return;
             } else {
                 $data['add_date_gmt'] = current_time('mysql', 1);
-                $wpdb->insert($members_table, $data);
+                $wpdb->insert($wpdb->members_table, $data);
             }
 
             do_action('presspermit_add_group_user', $group_id, $user_id, $args);
@@ -80,14 +80,14 @@ class GroupUpdate
             return;
         }
 
-        $members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
+        $wpdb->members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
 
         $user_ids = array_map('intval', (array) $user_ids);
 
-        $id_in = "'" . implode("', '", $user_ids) . "'";
+        $id_csv = implode("', '", array_map('intval', $user_ids));
         $wpdb->query(
             $wpdb->prepare(
-                "DELETE FROM $members_table WHERE member_type = %s AND group_id = %d AND user_id IN ($id_in)",
+                "DELETE FROM $wpdb->members_table WHERE member_type = %s AND group_id = %d AND user_id IN ('$id_csv')",
                 $member_type,
                 $group_id
             )
@@ -129,9 +129,7 @@ class GroupUpdate
 
         global $wpdb;
 
-        $members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
-
-        $user_clause = "AND user_id IN ('" . implode("', '", array_map('intval', (array)$user_ids)) . "')";
+        $wpdb->members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
 
         if (isset($cols['date_limited'])) {
             $cols['date_limited'] = (int)$cols['date_limited'];
@@ -148,13 +146,22 @@ class GroupUpdate
         $status = (isset($cols['status'])) ? $cols['status'] : '';
 
         $prev = [];
-        $results = $wpdb->get_results($wpdb->prepare("SELECT * FROM $members_table WHERE group_id = %d $user_clause", $group_id));
+
+        $user_id_csv = implode("', '", array_map('intval', (array)$user_ids));
+
+        $results = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM $wpdb->members_table WHERE group_id = %d AND user_id IN ('$user_id_csv')", 
+                $group_id
+            )
+        );
+
         foreach ($results as $row) {
             $prev[$row->user_id] = $row;
         }
 
         foreach ((array)$user_ids as $user_id) {
-            $wpdb->update($members_table, $cols, ['group_id' => $group_id, 'user_id' => $user_id]);
+            $wpdb->update($wpdb->members_table, $cols, ['group_id' => $group_id, 'user_id' => $user_id]);
 
             $_prev = (isset($prev[$user_id])) ? $prev[$user_id] : '';
 
@@ -242,9 +249,14 @@ class GroupUpdate
 
         $groupdata['group_description'] = strip_tags($groupdata['group_description']);
 
-        $groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, $agent_type);
+        $wpdb->groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, $agent_type);
 
-        if ($prev = $wpdb->get_row($wpdb->prepare("SELECT * FROM $groups_table WHERE ID = %d", $group_id))) {
+        if ($prev = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM $wpdb->groups_table WHERE ID = %d", 
+                $group_id
+            )
+        )) {
             if (($prev->group_name != $groupdata['group_name']) && !self::groupNameAvailable($groupdata['group_name'], $agent_type)) {
                 return false;
             }
@@ -264,9 +276,14 @@ class GroupUpdate
     {
         global $wpdb;
 
-        $groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, $agent_type);
+        $wpdb->groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, $agent_type);
 
-        if ($string && !$wpdb->get_var($wpdb->prepare("SELECT ID FROM $groups_table WHERE group_name = %s LIMIT 1", $string))) {
+        if ($string && !$wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT ID FROM $wpdb->groups_table WHERE group_name = %s LIMIT 1", 
+                $string
+            )
+        )) {
             return true;
         }
     }

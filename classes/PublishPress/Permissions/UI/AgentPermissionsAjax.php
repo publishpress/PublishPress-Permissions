@@ -21,7 +21,11 @@ class AgentPermissionsAjax
 
         // safeguard prevents accidental modification of roles for other groups / users
         if ($agent_type && $agent_id) {
-            $agent_clause = "agent_type = '$agent_type' AND agent_id = '$agent_id' AND";
+            $agent_clause = $wpdb->prepare(
+                "agent_type = %s AND agent_id = %d AND",
+                $agent_type,
+                $agent_id
+            );
         } else {
             $agent_clause = '';
         }
@@ -49,14 +53,31 @@ class AgentPermissionsAjax
                 if ($deleted_ass_ids) {
                     require_once(PRESSPERMIT_CLASSPATH . '/DB/PermissionsUpdate.php');
 
+                    $id_csv = implode("','", array_map('intval', $deleted_ass_ids));
+
                     $results = $wpdb->get_results(
                         "SELECT agent_type, agent_id, role_name FROM $wpdb->ppc_roles"
-                        . " WHERE $agent_clause assignment_id IN ('" . implode("','", $deleted_ass_ids) . "')"
+                        . " WHERE $agent_clause assignment_id IN ('$id_csv')"
                     );
 
                     foreach ($results as $row) {
-                        $this_group_clase = ($agent_clause) ? $agent_clause : "agent_type = '$row->agent_type' AND agent_id = '$row->agent_id' AND";
-                        if ($_ass_ids = $wpdb->get_col("SELECT assignment_id FROM $wpdb->ppc_roles WHERE $this_group_clase role_name='$row->role_name'")) {
+                        if ($agent_clause) {
+                            $this_group_clase = $agent_clause;
+                        } else {
+                            $this_group_clase = $wpdb->prepare(
+                                "agent_type = %s AND agent_id = %d AND",
+                                $row->agent_type,
+                                $row->agent_id
+                            );
+                        }
+
+                        if ($_ass_ids = $wpdb->get_col(
+                                $wpdb->prepare(
+                                    "SELECT assignment_id FROM $wpdb->ppc_roles WHERE $this_group_clase role_name=%s",
+                                    $row->role_name
+                                )
+                            )
+                        ) {
                             \PublishPress\Permissions\DB\PermissionsUpdate::removeRolesById($_ass_ids);
                         }
                     }
@@ -92,16 +113,22 @@ class AgentPermissionsAjax
 
                     $exc_clause = ($agent_clause) ? "exception_id IN ( SELECT exception_id FROM $wpdb->ppc_exceptions WHERE $agent_clause 1=1 ) AND" : '';
 
+                    $eitem_id_csv = implode("','", array_map('intval', $deleted_eitem_ids));
+
                     // safeguard against accidental deletion of a different agent's exceptions
                     $results = $wpdb->get_results(
                         "SELECT exception_id, item_id FROM $wpdb->ppc_exception_items"
-                        . " WHERE $exc_clause eitem_id IN ('" . implode("','", $deleted_eitem_ids) . "')"
+                        . " WHERE $exc_clause eitem_id IN ('$eitem_id_csv')"
                     );
 
                     foreach ($results as $row) {
                         // also delete any redundant item exceptions for this agent
                         if ($_eitem_ids = $wpdb->get_col(
-                            "SELECT eitem_id FROM $wpdb->ppc_exception_items WHERE exception_id='$row->exception_id' AND item_id='$row->item_id'"
+                            $wpdb->prepare(
+                                "SELECT eitem_id FROM $wpdb->ppc_exception_items WHERE exception_id=%d AND item_id=%d",
+                                $row->exception_id,
+                                $row->item_id
+                            )
                         )) {
                             \PublishPress\Permissions\DB\PermissionsUpdate::removeExceptionItemsById($_eitem_ids);
                         }
@@ -139,10 +166,12 @@ class AgentPermissionsAjax
                         $agent_clause = '';
                     }
 
+                    $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
+
                     if ($row = $wpdb->get_row(
                         "SELECT * FROM $wpdb->ppc_exception_items AS i"
                         . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
-                        . " WHERE $agent_clause eitem_id IN ('" . implode("','", $eitem_ids) . "') LIMIT 1"
+                        . " WHERE $agent_clause eitem_id IN ('$eitem_id_csv') LIMIT 1"
                     )) {
                         $args = (array)$row;
 
@@ -208,10 +237,12 @@ class AgentPermissionsAjax
                             $agent_clause = '';
                         }
 
+                        $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
+
                         foreach ($results = $wpdb->get_results(
                             "SELECT * FROM $wpdb->ppc_exception_items AS i"
                             . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
-                            . " WHERE $agent_clause eitem_id IN ('" . implode("','", $eitem_ids) . "')"
+                            . " WHERE $agent_clause eitem_id IN ('$eitem_id_csv')"
                         ) as $row) {
                             $args = (array)$row;
                             $args['operation'] = $mirror_op;
@@ -254,7 +285,8 @@ class AgentPermissionsAjax
         }
 
         global $wpdb;
-        $results = $wpdb->get_results("SELECT assignment_id, role_name FROM $wpdb->ppc_roles WHERE assignment_id IN ('" . implode("','", $ass_ids) . "')");
+        $add_ids_csv = implode("','", array_map('intval', $ass_ids));
+        $results = $wpdb->get_results("SELECT assignment_id, role_name FROM $wpdb->ppc_roles WHERE assignment_id IN ('$ass_ids_csv')");
 
         $remove_ids = [];
 

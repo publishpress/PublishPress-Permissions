@@ -213,7 +213,8 @@ class PluginUpdated
             . "WHERE ( e.via_item_source = 'post' AND i.item_id NOT IN ( SELECT ID FROM $wpdb->posts ) )"
             . " OR ( e.via_item_source = 'term' AND i.item_id NOT IN ( SELECT term_taxonomy_id FROM $wpdb->term_taxonomy ) )"
         )) {
-            $wpdb->query("DELETE FROM $wpdb->ppc_exception_items WHERE eitem_id IN ('" . implode("','", $orphan_ids) . "')");
+            $orphan_id_csv = implode("','", array_map('intval', $orphan_ids));
+            $wpdb->query("DELETE FROM $wpdb->ppc_exception_items WHERE eitem_id IN ('$orphan_id_csv')");
         }
     }
 
@@ -271,11 +272,11 @@ class PluginUpdated
         $metagroups = $stored_metagroups = $all_role_metagroups = $stored_role_metagroups = $insert_sql_rows = $delete_clauses = [];
 
         if ($blog_id_arg) {
-            $members_table = ($blog_id_arg > 1)
+            $wpdb->members_table = ($blog_id_arg > 1)
                 ? $wpdb->base_prefix . $blog_id_arg . '_' . 'pp_group_members'
                 : $wpdb->base_prefix . 'pp_group_members';
         } else {
-            $members_table = $wpdb->pp_group_members;
+            $wpdb->members_table = $wpdb->pp_group_members;
         }
 
         $length_limit = apply_filters('presspermit_rolename_max_length', 40);
@@ -349,9 +350,9 @@ class PluginUpdated
             }
 
             if ($delete_metagroup_ids) {
-                $id_in = implode("','", $delete_metagroup_ids);
-                $wpdb->query("DELETE FROM $wpdb->pp_groups WHERE ID IN ('$id_in')");
-                $wpdb->query("DELETE FROM $members_table WHERE group_id IN ('$id_in')");
+                $id_csv = implode("','", array_map('intval', $delete_metagroup_ids));
+                $wpdb->query("DELETE FROM $wpdb->pp_groups WHERE ID IN ('$id_csv')");
+                $wpdb->query("DELETE FROM $wpdb->members_table WHERE group_id IN ('$id_csv')");
             }
         }
 
@@ -374,21 +375,43 @@ class PluginUpdated
         }
 
         if ($user_ids || !defined('PP_SKIP_USER_SYNC') || !PP_SKIP_USER_SYNC) {
-            $user_clause = ($user_ids) ? 'AND user_id IN (' . implode(', ', array_map('intval', $user_ids)) . ')' : '';
+            $group_id_csv = implode("','", array_map('intval', $all_role_metagroups));
 
             // which user roles are already represented by PP metagroup membership?
+            if ($user_ids) {
+                $user_id_csv = implode("','", array_map('intval', $user_ids));
+
             $results = $wpdb->get_results(
-                "SELECT group_id, user_id FROM $members_table WHERE group_id IN ('" . implode("','", $all_role_metagroups) . "') $user_clause"
+                    "SELECT group_id, user_id FROM $wpdb->members_table WHERE group_id IN ('$group_id_csv') AND user_id IN ('$user_id_csv')"
             );
+            } else {
+                $results = $wpdb->get_results(
+                    "SELECT group_id, user_id FROM $wpdb->members_table WHERE group_id IN ('$group_id_csv')"
+                );
+            }
 
             foreach ($results as $key => $row) {
                 $stored_role_metagroups[$row->user_id][] = $row->group_id;
             }
 
             // Now step through every WP usermeta capabilities record, synchronizing PP metagroup membership with WP role and custom caps
+            if ($user_ids) {
+                $user_id_csv = implode("','", array_map('intval', $user_ids));
+
             $usermeta = $wpdb->get_results(
-                "SELECT user_id, meta_value FROM $wpdb->usermeta WHERE meta_key = '{$wpdb->prefix}capabilities' $user_clause"
+                    $wpdb->prepare(
+                        "SELECT user_id, meta_value FROM $wpdb->usermeta WHERE meta_key = %s AND user_id IN ('$user_id_csv')",
+                        "{$wpdb->prefix}capabilities"
+                    )
+                );
+            } else {
+                $usermeta = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT user_id, meta_value FROM $wpdb->usermeta WHERE meta_key = %s",
+                        "{$wpdb->prefix}capabilities"
+                    )
             );
+            }
 
             foreach (array_keys($usermeta) as $key) {
                 $user_caps = maybe_unserialize($usermeta[$key]->meta_value);
@@ -401,23 +424,34 @@ class PluginUpdated
                 $user_id = $usermeta[$key]->user_id;
 
                 if (isset($stored_role_metagroups[$user_id])) {
-                    if ($delete_role_metagroups = array_diff($stored_role_metagroups[$user_id], $user_role_metagroups))
-                        $delete_clauses[] = "user_id = '$user_id' AND group_id IN ('" . implode("','", $delete_role_metagroups) . "')";
+                    if ($delete_role_metagroups = array_diff($stored_role_metagroups[$user_id], $user_role_metagroups)) {
+                        $group_id_csv = implode("','", array_map('intval', $delete_role_metagroups));
+
+                        $delete_clauses[] = $wpdb->prepare(
+                            "user_id = %d AND group_id IN ('$group_id_csv')",
+                            $user_id
+                        );
+                    }
                 }
 
                 if (isset($stored_role_metagroups[$user_id]))
                     $user_role_metagroups = array_diff($user_role_metagroups, $stored_role_metagroups[$user_id]);
 
-                foreach ($user_role_metagroups as $group_id)
-                    $insert_sql_rows[] = "('$user_id', '$group_id', 'member', 'active')";
+                foreach ($user_role_metagroups as $group_id) {
+                    $insert_sql_rows[] = $wpdb->prepare(
+                        "(%d, %d, 'member', 'active')",
+                        $user_id,
+                        $group_id
+                    );
+                }
             }
 
             if ($delete_clauses) {
-                $wpdb->query("DELETE FROM $members_table WHERE ( " . implode(' ) OR ( ', $delete_clauses) . " )");
+                $wpdb->query("DELETE FROM $wpdb->members_table WHERE ( " . implode(' ) OR ( ', $delete_clauses) . " )");
             }
 
             if ($insert_sql_rows) {
-                $wpdb->query("INSERT INTO $members_table (user_id, group_id, member_type, status ) VALUES " . implode(',', $insert_sql_rows));
+                $wpdb->query("INSERT INTO $wpdb->members_table (user_id, group_id, member_type, status ) VALUES " . implode(',', $insert_sql_rows));
             }
         }
 

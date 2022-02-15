@@ -378,9 +378,11 @@ class UsersListing
                 . " INNER JOIN $wpdb->ppc_roles AS r ON r.agent_id = ug.group_id AND r.agent_type = 'pp_group' )";
         }
 
-        if (!empty($_REQUEST['pp_group'])) {
-            global $wpdb;
-            $query_obj->query_where .= " AND ID IN ( SELECT user_id FROM $wpdb->pp_group_members WHERE group_id = '" . (int)$_REQUEST['pp_group'] . "' )";
+        if ($pp_group = presspermit_REQUEST_int('pp_group')) {
+            $query_obj->query_where .= $wpdb->prepare(
+                " AND ID IN ( SELECT user_id FROM $wpdb->pp_group_members WHERE group_id = %d )",
+                $pp_group
+            );
         }
 
         return $query_obj;

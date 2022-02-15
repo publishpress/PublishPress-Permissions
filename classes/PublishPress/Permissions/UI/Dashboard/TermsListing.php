@@ -240,22 +240,33 @@ class TermsListing
             return;
         }
 
-        if (!empty($_REQUEST['pp_universal'])) {
-            $typenow = '';
+        $for_type = $typenow;
+
+        if (!presspermit_empty_REQUEST('pp_universal')) {
+            $for_type = '';
         } elseif (empty($typenow)) {
-            $typenow = (isset($_REQUEST['post_type'])) ? pp_permissions_sanitize_key($_REQUEST['post_type']) : '';
+            $for_type = presspermit_REQUEST_key('post_type');
         }
 
         $this->exceptions = [];
 
         if (!empty($listed_tt_ids)) {
-            $agent_type_csv = implode("','", array_merge(['user'], presspermit()->groups()->getGroupTypes()));
-            $id_csv = implode("','", $listed_tt_ids);
-            $post_type = (!empty($_REQUEST['pp_universal'])) ? '' : $typenow;
+            $agent_type_csv = implode("','", array_map('sanitize_key', array_merge(['user'], presspermit()->groups()->getGroupTypes())));
+            $id_csv = implode("','", array_map('intval', $listed_tt_ids));
+            $post_type = (!presspermit_empty_REQUEST('pp_universal')) ? '' : $for_type;
 
-            $for_type_csv = ($typenow) ? "'$post_type'" : "'', '$taxonomy'";
+            $for_types = ($typenow) ? [$post_type] : ['', $taxonomy];
+            $for_type_csv = implode("','", array_map('sanitize_key', $for_types));
 
-            $results = $wpdb->get_results("SELECT DISTINCT i.item_id, e.operation FROM $wpdb->ppc_exceptions AS e INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id WHERE e.for_item_type IN ($for_type_csv) AND e.via_item_source = 'term' AND e.via_item_type = '$taxonomy' AND e.agent_type IN ('$agent_type_csv') AND i.item_id IN ('$id_csv')");
+            $results = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT DISTINCT i.item_id, e.operation FROM $wpdb->ppc_exceptions AS e"
+                    . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
+                    . " WHERE e.for_item_type IN ('$for_type_csv') AND e.via_item_source = 'term' AND e.via_item_type = %s AND e.agent_type IN ('$agent_type_csv') AND i.item_id IN ('$id_csv')",
+
+                    $taxonomy
+                )
+            );
 
             foreach ($results as $row) {
                 $this->exceptions[$row->item_id][] = $row->operation;

@@ -31,18 +31,28 @@ class Cloner
         $source_agent_id = $source_agent->ID;
 
         // =========== Roles Import =============
-        $exc_query = "SELECT role_name FROM $wpdb->ppc_roles WHERE agent_type = %s AND agent_id = %d";
-        $target_roles = $wpdb->get_col($wpdb->prepare($exc_query, $agent_type, $agent_id));
+        $target_roles = $wpdb->get_col($wpdb->prepare("SELECT role_name FROM $wpdb->ppc_roles WHERE agent_type = %s AND agent_id = %d", $agent_type, $agent_id));
 
-        $source_roles = $wpdb->get_col($wpdb->prepare($exc_query, $agent_type, $source_agent_id));
+        $source_roles = $wpdb->get_col($wpdb->prepare("SELECT role_name FROM $wpdb->ppc_roles WHERE agent_type = %s AND agent_id = %d", $agent_type, $source_agent_id));
         foreach ($source_roles as $role_name) {
             $wpdb->insert_id = 0;
-            $sql = "INSERT INTO $wpdb->ppc_roles (agent_id, agent_type, role_name, assigner_id) SELECT * FROM"
-                . " ( SELECT '$agent_id' AS a, '$agent_type' AS b, '$role_name' AS c, '$current_user_id' AS d ) AS tmp WHERE NOT EXISTS"
-                . " (SELECT 1 FROM $wpdb->ppc_roles WHERE agent_type = '$agent_type' AND agent_id = '$agent_id' AND role_name = '$role_name')"
-                . " LIMIT 1";
 
-            $wpdb->query($sql);
+            $wpdb->query(
+                $wpdb->prepare(
+                    "INSERT INTO $wpdb->ppc_roles (agent_id, agent_type, role_name, assigner_id) SELECT * FROM"
+                    . " ( SELECT %s AS a, %s AS b, %s AS c, %s AS d ) AS tmp WHERE NOT EXISTS"
+                    . " (SELECT 1 FROM $wpdb->ppc_roles WHERE agent_type = %s AND agent_id = %s AND role_name = %s)"
+                    . " LIMIT 1",
+                    
+                    $agent_id,
+                    $agent_type,
+                    $role_name,
+                    $current_user_id,
+                    $agent_type,
+                    $agent_id,
+                    $role_name
+                )
+            );
         }
 
         // =========== Exceptions Import ===========
@@ -50,16 +60,17 @@ class Cloner
         $log_eitem_ids = [];
         $target_agent_data = compact('agent_type', 'agent_id');
 
-        $exc_query = "SELECT exception_id, for_item_source, for_item_type, for_item_status, operation, mod_type,"
-            . " via_item_source, via_item_type FROM $wpdb->ppc_exceptions WHERE agent_type = %s AND agent_id = %d";
+        $target_exceptions = $wpdb->get_results($wpdb->prepare("SELECT exception_id, for_item_source, for_item_type, for_item_status, operation, mod_type,"
+        . " via_item_source, via_item_type FROM $wpdb->ppc_exceptions WHERE agent_type = %s AND agent_id = %d", $agent_type, $agent_id), OBJECT_K);
 
-        $target_exceptions = $wpdb->get_results($wpdb->prepare($exc_query, $agent_type, $agent_id), OBJECT_K);
+        $source_exceptions = $wpdb->get_results($wpdb->prepare("SELECT exception_id, for_item_source, for_item_type, for_item_status, operation, mod_type,"
+        . " via_item_source, via_item_type FROM $wpdb->ppc_exceptions WHERE agent_type = %s AND agent_id = %d", $agent_type, $source_agent_id), OBJECT_K);
 
-        $source_exceptions = $wpdb->get_results($wpdb->prepare($exc_query, $agent_type, $source_agent_id), OBJECT_K);
+        $exc_id_csv = implode("','", array_map('intval', array_keys($source_exceptions)));
 
         $source_eitems = $wpdb->get_results(
             "SELECT eitem_id, exception_id, item_id, assign_for, inherited_from FROM $wpdb->ppc_exception_items"
-            . " WHERE exception_id IN ('" . implode("','", array_keys($source_exceptions)) . "')"
+            . " WHERE exception_id IN ('$exc_id_csv')"
         );
 
         foreach ($source_eitems as $row) {
@@ -68,12 +79,24 @@ class Cloner
             $target_exception_id = self::get_exception_id($target_exceptions, $target_exception_data, $target_agent_data);
 
             $wpdb->insert_id = 0;
-            $sql = "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, assigner_id, item_id) SELECT * FROM"
-                . " ( SELECT '" . trim($row->assign_for) . "' AS a, '$target_exception_id' AS b, '$current_user_id' AS c, '$row->item_id' AS d ) AS tmp"
-                . " WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = '" . trim($row->assign_for) . "'"
-                . " AND exception_id = '$target_exception_id' AND item_id = '$row->item_id') LIMIT 1";
 
-            $wpdb->query($sql);
+            $wpdb->query(
+                $wpdb->prepare(
+                    "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, assigner_id, item_id) SELECT * FROM"
+                    . " ( SELECT %s AS a, %s AS b, %d AS c, %d AS d ) AS tmp"
+                    . " WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = %s"
+                    . " AND exception_id = %d AND item_id = %d) LIMIT 1",
+
+                    trim($row->assign_for),
+                    $target_exception_id,
+                    $current_user_id,
+                    $row->item_id,
+                    trim($row->assign_for),
+                    $target_exception_id,
+                    $row->item_id
+                )
+            );
+
             if ($wpdb->insert_id) {
                 $target_eitem_id = (int)$wpdb->insert_id;
 

@@ -94,10 +94,12 @@ class ItemExceptionsData
                 $ids = array_merge($ids, (array)$agent_id);  // ajax passes in specific id(s)
             }
 
+            $id_csv = implode("','", array_map('intval', $ids));
+
             if ('user' == $agent_type) {
                 $this->agent_info['user'] = $wpdb->get_results(
                     "SELECT ID, user_login as name, display_name FROM $wpdb->users"
-                    . " WHERE ID IN ('" . implode("','", array_map('intval', $ids)) . "')"
+                    . " WHERE ID IN ('$id_csv')"
                     . " ORDER BY user_login",
                     OBJECT_K
                 );
@@ -167,8 +169,11 @@ class ItemExceptionsData
         }
 
         // determine if inclusions are set for any agents
-        $where = ('term' == $via_item_source) ? "AND e.via_item_type = '$via_item_type'" : '';
-        $where .= ('term' == $via_item_source) ? '' : " AND e.for_item_source = '$for_item_source'";
+        if ('term' == $via_item_source) {
+            $where = $wpdb->prepare(" AND e.via_item_type = %s", $via_item_type);
+        } else {
+            $where = $wpdb->prepare(" AND e.for_item_source = %s", $for_item_source);
+        }
 
         $query_users = (isset($this->agent_info['user'])) ? array_keys($this->agent_info['user']) : [];
         if (!empty($args['agent_type']) && ('user' == $args['agent_type']) && !empty($args['agent_id']))
@@ -177,10 +182,10 @@ class ItemExceptionsData
         $agents_clause = [];
 
         if (!empty($args['agent_type']) && ('user' != $args['agent_type']))
-            $agents_clause[] = "( e.agent_type = '" . $args['agent_type'] . "' )";
+            $agents_clause[] = $wpdb->prepare("( e.agent_type = %s )", $args['agent_type']);
 
         if ($query_users)
-            $agents_clause[] = "( e.agent_type != 'user' OR e.agent_id IN ('" . implode("','", $query_users) . "') )";
+            $agents_clause[] = "( e.agent_type != 'user' OR e.agent_id IN ('" . implode("','", array_map('intval', $query_users)) . "') )";
 
         $agents_clause = ($agents_clause) ? Arr::implode(' OR ', $agents_clause) : '1=1';
 
@@ -190,9 +195,13 @@ class ItemExceptionsData
         // Populate only for wp roles, groups and users with stored exceptions.  Will query for additional individual users as needed.
         foreach ($_assignment_modes as $_assign_for) {
             $results = $wpdb->get_results(
+                $wpdb->prepare(
                 "SELECT DISTINCT e.agent_type, e.agent_id, e.operation, e.for_item_type FROM $wpdb->ppc_exceptions AS e"
                 . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
-                . " WHERE $agents_clause AND i.assign_for = '$_assign_for' AND e.mod_type = 'include' $where"
+                    . " WHERE $agents_clause AND i.assign_for = %s AND e.mod_type = 'include' $where",
+
+                    $_assign_for
+                )
             );
 
             foreach ($results as $row) {

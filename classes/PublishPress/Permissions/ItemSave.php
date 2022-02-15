@@ -151,13 +151,13 @@ class ItemSave
 
             // assign propagating exceptions from new parent
             if ($set_parent) {
-                $id_clause = "AND i.item_id IN ('" . implode("','", array_merge($descendant_ids, (array)$item_id)) . "')";
+                $descendent_id_csv = implode("','", array_map('intval', array_merge($descendant_ids, (array) $item_id)));
 
                 $retain_exceptions = $wpdb->get_results(
                     $wpdb->prepare(
                         "SELECT * FROM $wpdb->ppc_exception_items AS i"
                         . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
-                        . " WHERE i.assign_for = 'item' AND i.inherited_from = '0' AND e.via_item_source = %s $id_clause",
+                        . " WHERE i.assign_for = 'item' AND i.inherited_from = '0' AND e.via_item_source = %s AND i.item_id IN ('$descendent_id_csv')",
                         $via_item_source
                     )
                 );

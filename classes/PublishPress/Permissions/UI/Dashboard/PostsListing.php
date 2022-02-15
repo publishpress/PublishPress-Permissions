@@ -53,9 +53,9 @@ class PostsListing
                 $this->exceptions = [];
 
                 if (!empty($pp->listed_ids[$typenow])) {
-                    $agent_type_csv = implode("','", array_merge(['user'], $pp->groups()->getGroupTypes()));
+                    $agent_type_csv = implode("','", array_map('sanitize_key', array_merge(['user'], $pp->groups()->getGroupTypes())));
 
-                    $id_csv = implode("','", array_keys($pp->listed_ids[$typenow]));
+                    $id_csv = implode("','", array_map('intval', array_keys($pp->listed_ids[$typenow])));
                     $results = $wpdb->get_results(
                         "SELECT DISTINCT i.item_id, e.operation FROM $wpdb->ppc_exceptions AS e"
                         . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"

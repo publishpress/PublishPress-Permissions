@@ -40,7 +40,13 @@ class SourceConfig
     {
         global $wpdb;
 
-        $results = (array)$wpdb->get_results("SHOW TABLES LIKE '$table_name'");
+        $results = (array)$wpdb->get_results(
+            $wpdb->prepare(
+                "SHOW TABLES LIKE %s",
+                $table_name
+            )
+        );
+
         return (bool)reset($results);
     }
 

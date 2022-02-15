@@ -380,14 +380,14 @@ class PageFilters
 
         // WP core does not include private pages in query.  Include private statuses in anticipation of user-specific filtering
         if (is_array($post_status))
-            $where_status = "AND post_status IN ('" . implode("','", $post_status) . "')";
+            $where_status = "AND post_status IN ('" . implode("','", array_map('sanitize_key', $post_status)) . "')";
         elseif ($post_status && (('publish' != $post_status) || ($is_front && !$frontend_list_private)))
             $where_status = $wpdb->prepare("AND post_status = %s", $post_status);
         elseif ($is_front)
-            $where_status = "AND post_status IN ('" . implode("','", $safeguard_statuses) . "')";
+            $where_status = "AND post_status IN ('" . implode("','", array_map('sanitize_key', $safeguard_statuses)) . "')";
         else {
-            // @TODO: Revisionary 2.0 : query replacement workaround due to previous clause here: AND post_status NOT IN [internal=true]
-            $where_status = "AND post_status IN ('" . implode("','", get_post_stati(['internal' => false])) . "')";
+            // todo: Revisionary 2.0 : query replacement workaround due to previous clause here: AND post_status NOT IN [internal=true]
+            $where_status = "AND post_status IN ('" . implode("','", array_map('sanitize_key', get_post_stati(['internal' => false]))) . "')";
         }
 
         $where_id = '';
@@ -407,7 +407,7 @@ class PageFilters
             // We are in the front end and the teaser is enabled for pages
 
             // TODO: move to Teaser
-            $query = str_replace("post_status = 'publish'", " post_status IN ('" . implode("','", $safeguard_statuses) . "')", $query);
+            $query = str_replace("post_status = 'publish'", " post_status IN ('" . implode("','", array_map('sanitize_key', $safeguard_statuses)) . "')", $query);
 
             $pages = $wpdb->get_results($query);  // execute unfiltered query
 
@@ -464,10 +464,10 @@ class PageFilters
             }
 
             // Execute the filtered query
-            $pages = $wpdb->get_results(
-                "SELECT {$distinct} $_fields FROM $wpdb->posts {$clauses['join']}"
-                . " WHERE 1=1 {$clauses['where']} {$clauses['orderby']} {$clauses['limits']}"
-            );
+
+            $query = "SELECT {$distinct} $_fields FROM $wpdb->posts {$clauses['join']} WHERE 1=1 {$clauses['where']} {$clauses['orderby']} {$clauses['limits']}";
+
+            $pages = $wpdb->get_results($query);
         }
 
         if (empty($pages)) {

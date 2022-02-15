@@ -74,9 +74,8 @@ class CommentFilters
 
         // @todo: move to filter
         if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
-        	$revision_status_csv = rvy_revision_statuses(['return' => 'csv']);
-
-        	$where .= " AND post_mime_type NOT IN ($revision_status_csv)";
+        	$revision_status_csv = implode("','", array_map('sanitize_key', rvy_revision_statuses()));
+        	$where .= " AND post_mime_type NOT IN ('$revision_status_csv')";
 		}
 
         $clauses = $this->fltCommentsClauses(['join' => '', 'where' => ''], false, ['required_operation' => 'edit']);
