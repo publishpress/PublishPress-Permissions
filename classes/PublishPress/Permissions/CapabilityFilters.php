@@ -283,13 +283,19 @@ class CapabilityFilters
                                     if ($enabled_taxonomies = $pp->getEnabledTaxonomies(['object_type' => $item_type])) {
                                         global $wpdb;
 
-                                        if ($item_id) {
-                                            $query = "SELECT tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
-                                                . " INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_taxonomy_id = tr.term_taxonomy_id"
-                                                . " WHERE tt.taxonomy IN ('" . implode("','", $enabled_taxonomies) . "') AND tr.object_id = '$item_id'";
-                                        }
+                                        $taxonomies_csv = implode("','", array_map('sanitize_key', $enabled_taxonomies));
 
-                                        if (!$item_id || $post_ttids = $wpdb->get_col($query)) {
+                                        if (!$item_id 
+                                        || $post_ttids = $wpdb->get_col(
+                                                $wpdb->prepare(
+                                                    "SELECT tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
+                                                . " INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_taxonomy_id = tr.term_taxonomy_id"
+                                                    . " WHERE tt.taxonomy IN ('$taxonomies_csv') AND tr.object_id = %d",
+
+                                                    $item_id
+                                                )
+                                            )
+                                        ) {
                                             foreach ($pp->getEnabledTaxonomies(['object_type' => $item_type]) as $taxonomy) {
                                                 if ($additional_tt_ids = $user->getExceptionTerms($op, 'additional', $item_type, $taxonomy, ['status' => true])) {
                                                     $additional_tt_ids = Arr::flatten(array_intersect_key($additional_tt_ids, $valid_stati));
@@ -515,7 +521,8 @@ class CapabilityFilters
             $request = PostFilters::constructPostsRequest(['fields' => "$wpdb->posts.ID"], $query_args);
 
             // run the query
-            $request .= " AND $wpdb->posts.ID IN ('" . implode("', '", $listed_ids) . "')";
+            $id_csv = implode("', '", array_map('intval', $listed_ids));
+            $request .= " AND $wpdb->posts.ID IN ('$id_csv')";
             $qkey = md5($request);
 
             // a different has_cap inquiry may have generated the same query, so check cache before executing the query

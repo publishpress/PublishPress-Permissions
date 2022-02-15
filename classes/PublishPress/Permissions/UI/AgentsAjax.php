@@ -189,21 +189,9 @@ class AgentsAjax
                 $limit_clause = (defined('PP_USER_SEARCH_UNLIMITED')) ? '' : 'LIMIT 10000';
             }
 
-            $results = $wpdb->get_results(
-                "SELECT ID, user_login, display_name FROM $wpdb->users $join $where $authors_clause ORDER BY $orderby $limit_clause"
-            );
+            $query = "SELECT ID, user_login, display_name FROM $wpdb->users $join $where $authors_clause ORDER BY $orderby $limit_clause";
 
-            /*
-            if (defined('PRESSPERMIT_DEBUG_USER_QUERY') && empty($agent_id)) {
-                error_log('PublishPress Permissions User Query:');
-                error_log(serialize($_GET));
-                error_log("SELECT ID, user_login, display_name FROM $wpdb->users $join $where $authors_clause ORDER BY $orderby $limit_clause");
-                error_log($wpdb->last_query);
-                $num = count($results);
-                error_log("$num results");
-                error_log($wpdb->last_error);
-            }
-            */
+            $results = $wpdb->get_results($query);
 
             if ($results) {
                 $omit_users = [];

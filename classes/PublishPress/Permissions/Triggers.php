@@ -248,12 +248,12 @@ class Triggers
         global $wpdb;
 
         foreach ((array)$terms as $term) {
-            $stati_csv = "'" . implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'or')) . "'";
+            $stati_csv = implode("','", array_map('sanitize_key', get_post_stati(['public' => true, 'private' => true], 'names', 'or')));
             $count = $wpdb->get_var(
                 $wpdb->prepare(
                     "SELECT COUNT(*) FROM $wpdb->term_relationships, $wpdb->posts"
                     . " WHERE $wpdb->posts.ID = $wpdb->term_relationships.object_id"
-                    . " AND post_status IN ($stati_csv) AND term_taxonomy_id = %d",
+                    . " AND post_status IN ('$stati_csv') AND term_taxonomy_id = %d",
                     $term
                 )
             );

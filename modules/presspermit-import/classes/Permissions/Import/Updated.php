@@ -13,7 +13,13 @@ class Updated
                 if ($wpdb->get_results("SHOW TABLES LIKE '$wpdb->pp_groups'")) {
                     if ($misnamed_anon_group_id = $wpdb->get_var("SELECT ID FROM $wpdb->pp_groups WHERE group_name = '[Anonymous]'")) {
                         if ($wpdb->get_results("SHOW TABLES LIKE '$wpdb->ppc_roles'")) {
-                            if ($proper_anon_group_id = $wpdb->get_var("SELECT ID FROM $wpdb->pp_groups WHERE group_name = '" . '{Anonymous}' . "'")) {
+                            if ($proper_anon_group_id = $wpdb->get_var(
+                                    $wpdb->prepare(
+                                        "SELECT ID FROM $wpdb->pp_groups WHERE group_name = %s",
+                                        '{Anonymous}'
+                                    )
+                                )
+                            ) {
                                 // properly named anonymous group was already created by PP
                                 $wpdb->update($wpdb->ppc_roles, ['agent_id' => $proper_anon_group_id], ['agent_type' => 'pp_group', 'agent_id' => $misnamed_anon_group_id]);
                                 $wpdb->update($wpdb->ppc_exceptions, ['agent_id' => $proper_anon_group_id], ['agent_type' => 'pp_group', 'agent_id' => $misnamed_anon_group_id]);

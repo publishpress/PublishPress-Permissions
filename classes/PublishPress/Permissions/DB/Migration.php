@@ -113,7 +113,8 @@ class Migration
         global $wpdb;
 
         if ($eitem_ids = self::get_propagated_attachment_exceptions()) {
-            $wpdb->query("UPDATE $wpdb->ppc_exception_items SET inherited_from = 0 WHERE eitem_id IN ('" . implode("','", $eitem_ids) . "')");
+            $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
+            $wpdb->query("UPDATE $wpdb->ppc_exception_items SET inherited_from = 0 WHERE eitem_id IN ('$eitem_id_csv')");
 
             // keep a log in case questions arise
             if (!$arr = get_option('ppc_exposed_attachment_eitems'))
@@ -133,19 +134,25 @@ class Migration
             "SELECT eitem_id FROM $wpdb->ppc_exception_items AS i INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
             . " WHERE e.for_item_source = 'post' AND e.for_item_type = 'attachment' AND i.assign_for = 'children'"
         )) {
-            $wpdb->query("DELETE FROM $wpdb->ppc_exception_items WHERE eitem_id IN ('" . implode("','", $eitem_ids) . "')");
+            $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
+            $wpdb->query("DELETE FROM $wpdb->ppc_exception_items WHERE eitem_id IN ('$eitem_id_csv')");
         }
 
         // page exceptions should not be propagated to attachments (but were prior to 2.1.35)
         foreach (['read', 'associate'] as $operation) { // retain editing exceptions - to be exposed by self::get_propagated_attachment_exceptions()
             $mod_type_clause = ('associate' == $operation) ? '' : "AND e.mod_type != 'include'"; // keep include exceptions in case they are being relied upon to modify access to other media.  They will be exposed by self::get_propagated_attachment_exceptions().
 
-            $qry = "SELECT eitem_id, item_id FROM $wpdb->ppc_exception_items AS i"
+            if ($results = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT eitem_id, item_id FROM $wpdb->ppc_exception_items AS i"
                 . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
                 . " WHERE i.inherited_from > 0 AND e.for_item_source = 'post' AND e.for_item_type = 'attachment'"
-                . " AND e.operation = '$operation' $mod_type_clause";
+                        . " AND e.operation = %s $mod_type_clause",
 
-            if ($results = $wpdb->get_results($qry)) {
+                        $operation
+                    )
+                )
+            ) {
                 $eitem_ids = [];
                 $item_ids = [];
 
@@ -154,7 +161,8 @@ class Migration
                     $item_ids[] = $row->item_id;
                 }
 
-                $wpdb->query("DELETE FROM $wpdb->ppc_exception_items WHERE eitem_id IN ('" . implode("','", $eitem_ids) . "')");
+                $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
+                $wpdb->query("DELETE FROM $wpdb->ppc_exception_items WHERE eitem_id IN ('$eitem_id_csv')");
 
                 // keep a log in case questions arise
                 if (!$arr = get_option("ppc_deleted_{$operation}_exc_attachments"))

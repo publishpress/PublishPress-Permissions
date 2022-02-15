@@ -420,8 +420,12 @@ class CapabilityFiltersAdmin
             if ($tx_obj->hierarchical) {
                 global $wpdb;
                 // don't filter current parent category out of selection UI even if current user can't manage it
-                $clauses['where'] .= " OR t.term_id = (SELECT parent FROM $wpdb->term_taxonomy"
-                . " WHERE taxonomy = '$tx_obj->name' AND term_id = '" . intval($_REQUEST['tag_ID']) . "') ";
+                    $clauses['where'] .= $wpdb->prepare(
+                        " OR t.term_id = (SELECT parent FROM $wpdb->term_taxonomy WHERE taxonomy = %s AND term_id = %d) ",
+                        $tx_obj->name,
+                        intval($_REQUEST['tag_ID'])
+                    );
+                }
             }
         }
 

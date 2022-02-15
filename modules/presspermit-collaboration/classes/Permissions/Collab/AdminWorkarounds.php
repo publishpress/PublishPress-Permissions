@@ -443,8 +443,13 @@ class AdminWorkarounds
                                 $query = str_replace(
                                     " post_type = '{$matches[1]}'", 
 
-                                    "( post_type = '{$matches[1]}' OR ( post_type = 'revision' AND post_status IN ('pending','future')"
-                                    . " AND post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )", 
+                                    $wpdb->prepare(
+                                        "( post_type = %s OR ( post_type = 'revision' AND post_status IN ('pending','future')"
+                                        . " AND post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s ) ) )",
+
+                                        $matches[1],
+                                        $matches[1]
+                                    ), 
                                     
                                     $query
                                 );
@@ -452,9 +457,13 @@ class AdminWorkarounds
                                 $query = str_replace(
                                     " post_type = '{$matches[1]}'", 
 
-                                    "( post_type = '{$matches[1]}' OR ( post_status IN ('pending-revision','future-revision')"
-                                    . " AND comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )", 
+                                    $wpdb->prepare(
+                                        "( post_type = %s OR ( post_status IN ('pending-revision','future-revision')"
+                                        . " AND comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s ) ) )", 
                                     
+                                        $matches[1],
+                                        $matches[1]
+                                    ),
                                     $query
                                 );
 

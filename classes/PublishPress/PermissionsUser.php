@@ -78,6 +78,8 @@ class PermissionsUser extends \WP_User
 
     public function getUsergroupsClause($table_alias, $args = [])
     {
+        global $wpdb;
+        
         $args = array_merge(['context' => '', $args]);
 
         $table_alias = ($table_alias) ? "$table_alias." : '';
@@ -85,7 +87,10 @@ class PermissionsUser extends \WP_User
         $pp = presspermit();
         $pp_groups = $pp->groups();
 
-        $arr = ["{$table_alias}agent_type = 'user' AND {$table_alias}agent_id = '$this->ID'"];
+        $arr = [$wpdb->prepare(
+                    "{$table_alias}agent_type = 'user' AND {$table_alias}agent_id = %d",
+                    $this->ID
+                )];
 
         foreach ($pp_groups->getGroupTypes([], 'names') as $agent_type) {
             if (('pp_net_group' == $agent_type) && !$pp->getOption('netwide_groups')) {
@@ -173,11 +178,10 @@ class PermissionsUser extends \WP_User
                     if ($missing_role_group_names = array_diff($this->roles, $have_role_group_names)) {
                         global $wpdb;
 
-                        $groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups);
+                        $wpdb->groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups);
 
                         $add_metagroups = $wpdb->get_results(
-                            "SELECT * FROM $groups_table WHERE metagroup_type = 'wp_role' AND metagroup_id IN ('"
-                            . implode("','", $missing_role_group_names) . "')"
+                            "SELECT * FROM $wpdb->groups_table WHERE metagroup_type = 'wp_role' AND metagroup_id IN ('$id_csv')"
                         );
 
                         foreach ($add_metagroups as $row) {
@@ -211,9 +215,7 @@ class PermissionsUser extends \WP_User
             $roles_retrieved[$u_g_clause] = true;
         }
 
-        $qry = "SELECT role_name FROM $wpdb->ppc_roles AS uro WHERE 1=1 $u_g_clause";
-
-        if ($results = $wpdb->get_results($qry)) {
+        if ($results = $wpdb->get_results("SELECT role_name FROM $wpdb->ppc_roles AS uro WHERE 1=1 $u_g_clause")) {
             foreach ($results as $row) {
                 $this->site_roles[$row->role_name] = true;
             }

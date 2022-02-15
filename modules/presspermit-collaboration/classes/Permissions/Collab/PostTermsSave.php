@@ -28,9 +28,6 @@ class PostTermsSave
 
         $fields = $args['fields'];
 
-        $object_id_array = $object_ids;
-        $object_ids = implode(', ', $object_ids);
-
         $select_this = '';
         if ('all' == $fields) {
             $select_this = 't.*, tt.*';
@@ -40,19 +37,20 @@ class PostTermsSave
             $select_this = 't.name';
         }
 
-        $where = [
-            "tt.taxonomy = '$taxonomy'",
-            "tr.object_id IN ($object_ids)",
-        ];
-
-        $where = implode(' AND ', $where);
-
-        $query = "SELECT $select_this FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id"
-        . " INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE $where";
+        $object_id_array = $object_ids;
+        $object_id_csv = implode("','", array_map('intval', $object_ids));
 
         $objects = false;
         if ('all' == $fields) {
-            $_terms = $wpdb->get_results($query);
+            $_terms = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT $select_this FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id"
+                    . " INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy = %s AND tr.object_id IN ('$object_id_csv')",
+
+                    $taxonomy
+                )
+            );
+
             $object_id_index = [];
             foreach ($_terms as $key => $term) {
                 $term = sanitize_term($term, $taxonomy, 'raw');
@@ -67,7 +65,15 @@ class PostTermsSave
             $objects = true;
 
         } elseif ('ids' == $fields || 'names' == $fields || 'slugs' == $fields) {
-            $_terms = $wpdb->get_col($query);
+            $_terms = $wpdb->get_col(
+                $wpdb->prepare(
+                    "SELECT $select_this FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id"
+                    . " INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy = %s AND tr.object_id IN ('$object_id_csv')",
+                    
+                    $taxonomy
+                )
+            );
+
             $_field = ('ids' == $fields) ? 'term_id' : 'name';
             foreach ($_terms as $key => $term) {
                 $_terms[$key] = sanitize_term_field($_field, $term, $term, $taxonomy, 'raw');
@@ -75,9 +81,13 @@ class PostTermsSave
             $terms = array_merge($terms, $_terms);
         } elseif ('tt_ids' == $fields) {
             $terms = $wpdb->get_col(
+                $wpdb->prepare(
                 "SELECT tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
                 . " INNER JOIN $wpdb->term_taxonomy AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id"
-                . " WHERE tr.object_id IN ($object_ids) AND tt.taxonomy = '$taxonomy'"
+                    . " WHERE tr.object_id IN ('$object_id_csv') AND tt.taxonomy = %s",
+
+                    $taxonomy
+                )
             );
         }
 

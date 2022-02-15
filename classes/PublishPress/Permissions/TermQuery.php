@@ -47,18 +47,27 @@ class TermQuery
             );
         } else {
             $join = '';
-            $stati = get_post_stati(['public' => true, 'private' => true], 'names', 'or');
-            $status_clause = ($stati) ? "AND post_status IN ('" . implode("', '", $stati) . "')" : '';
-            $type_status_clause = "AND post_type IN ('" . implode("', '", $object_types) . "') $status_clause";
+            
+            if ($stati = get_post_stati(['public' => true, 'private' => true], 'names', 'or')) {
+                $stati_csv = implode("', '", array_map('sanitize_key', $stati));
+                $status_clause = "AND post_status IN ('$stati_csv')";
+            } else {
+                $status_clause = '';
+            }
+
+            $types_csv = implode("', '", array_map('sanitize_key', $object_types));
+            $type_status_clause = "AND post_type IN ('$types_csv') $status_clause";
         }
 
         if (!$required_operation) {
             $required_operation = (PWP::isFront() && !presspermit_is_preview()) ? 'read' : 'edit';
         }
 
+        $term_id_csv = implode("','", array_map('intval', array_keys($term_ids)));
+
         $qry = "SELECT tr.object_id, tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
         . " INNER JOIN $wpdb->posts ON object_id = $wpdb->posts.ID $join"
-        . " WHERE tr.term_taxonomy_id IN ('" . implode("','", array_keys($term_ids)) . "') $type_status_clause";
+        . " WHERE tr.term_taxonomy_id IN ('$term_id_csv') $type_status_clause";
 
         static $cache_results;
 
@@ -69,11 +78,7 @@ class TermQuery
         if (isset($cache_results[$qry])) {
             $results = $cache_results[$qry];
         } else {
-            $results = $wpdb->get_results(
-                "SELECT tr.object_id, tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
-                . " INNER JOIN $wpdb->posts ON object_id = $wpdb->posts.ID $join"
-                . " WHERE tr.term_taxonomy_id IN ('" . implode("','", array_keys($term_ids)) . "') $type_status_clause"
-            );
+            $results = $wpdb->get_results($qry);
 
             $cache_results[$qry] = $results;
         }
