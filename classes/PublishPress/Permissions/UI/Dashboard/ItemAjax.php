@@ -9,9 +9,17 @@ class ItemAjax
             exit;
 		}
 
+        if (!$item_id = presspermit_GET_int('item_id')) {
+            exit;
+        }
+        
+        if (!$pp_ajax_item = presspermit_GET_key('pp_ajax_item')) {
+            exit;
+    	}
+
         $html = '';
 
-        switch ($_GET['pp_ajax_item']) {
+        switch ($pp_ajax_item) {
 
             case 'get_agent_exception_ui':
                 if (!is_user_logged_in()) {
@@ -19,16 +27,50 @@ class ItemAjax
                     exit;
                 }
 
-                if (!$arr_sfx = explode(':', PWP::sanitizeCSV($_GET['id_sfx']))) {
+				if (!current_user_can('pp_assign_roles')) {
+					exit;	
+				}
+
+                if (!$id_sfx = presspermit_GET_var('id_sfx')) {
+                    exit;
+                }
+
+                if (!$arr_sfx = explode(':', PWP::sanitizeCSV($id_sfx))) {
                     return '';
                 }
 
                 $op = $arr_sfx[0];
                 $for_item_type = $arr_sfx[1];
                 $agent_type = $arr_sfx[2];
-                $item_id = (int) $_GET['item_id'];
                 $for_item_source = (taxonomy_exists($for_item_type)) ? 'term' : 'post';
-                $agent_ids = explode(',', PWP::sanitizeCSV($_GET['agent_ids']));
+
+                $via_item_type = presspermit_GET_key('via_item_type');
+                
+                $agent_ids = (presspermit_is_GET('agent_ids')) ? explode(',', PWP::sanitizeCSV(presspermit_GET_var('agent_ids'))) : [];
+
+                if (('post' == $via_item_source) && $item_id && !current_user_can('edit_post', $item_id)) {
+                    exit;
+                }
+
+                if (('term' == $via_item_source) && $item_id && !current_user_can('edit_term', $item_id)) {
+                    exit;
+                }
+
+                if ('term' == $for_item_source) {
+                    $ops = presspermit()->admin()->canSetExceptions('read', $for_item_type, compact('via_item_source', 'for_item_source', 'via_item_type'))
+                    ? ['read' => true] : [];
+
+                    $operations = apply_filters('presspermit_item_edit_exception_ops', $ops, 'term', $for_item_type);
+                } else {
+                    $ops = presspermit()->admin()->canSetExceptions('read', $for_item_type, compact('via_item_source', 'for_item_source'))
+                    ? ['read' => true] : [];
+
+                    $operations = apply_filters('presspermit_item_edit_exception_ops', $ops, 'post', $for_item_type);
+                }
+
+                if (empty($operations[$op])) {
+                    exit;
+                }
 
                 echo "<!--ppSfx-->" . esc_html("$op|$for_item_type|$agent_type") . "<--ppSfx-->"
                     . "<!--ppResponse-->";
@@ -39,9 +81,9 @@ class ItemAjax
                 $args = ['post_types' => (array)$for_item_type, 'agent_type' => $agent_type, 'operations' => $op, 'agent_id' => $agent_ids];
 
                 $exc_data->loadExceptions(
-                    pp_permissions_sanitize_key($_GET['via_item_source']),
+                    $via_item_source,
                     $for_item_source,
-                    pp_permissions_sanitize_key($_GET['via_item_type']),
+                    $via_item_type,
                     $item_id,
                     $args
                 );
@@ -55,7 +97,7 @@ class ItemAjax
                     ? is_taxonomy_hierarchical($via_item_type)
                     : is_post_type_hierarchical($via_item_type);
 
-                $hierarchical = apply_filters('presspermit_do_assign_for_children_ui', $hierarchical, $_GET['via_item_type'], $args);
+                $hierarchical = apply_filters('presspermit_do_assign_for_children_ui', $hierarchical, $via_item_type, $args);
                 $default_select = true;
 
                 $exc_render->setOptions($agent_type);
