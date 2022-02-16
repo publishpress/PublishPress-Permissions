@@ -12,6 +12,14 @@ class PostSaveHierarchical
             return $parent_id;
         }
 
+        if (presspermit()->doing_rest) {
+            $rest = \PublishPress\Permissions\REST::instance();
+            
+            if (!empty($rest) && 'WP_REST_Attachments_Controller' == $rest->endpoint_class) {
+                return $parent_id;
+            }
+        }
+
         $selected_parent_id = $parent_id;
         $post_id = PWP::getPostID();
 
