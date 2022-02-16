@@ -427,7 +427,7 @@ class Permissions
 
             if (('edit' == $required_operation) 
             && ((!$type_obj || empty($type_obj->cap->edit_published_posts) || empty($user->allcaps[$type_obj->cap->edit_published_posts]))                                         // prevent Revise exceptions from allowing Authors to restore revisions
-                || ('revision.php' != $pagenow) && (!defined('DOING_AJAX') || ! DOING_AJAX || empty($_REQUEST['action']) || ('get-revision-diffs' != $_REQUEST['action']))
+                || ('revision.php' != $pagenow) && (!defined('DOING_AJAX') || ! DOING_AJAX || !presspermit_is_REQUEST('action', 'get-revision-diffs'))
                 )
             ) {
                 if (empty($args['has_cap_check'])) {
