@@ -506,7 +506,7 @@ class AdminWorkarounds
         // SELECT ID, post_title, post_status, post_date FROM $wpdb->posts WHERE post_type = '$what' AND post_status IN ('draft', 'publish') AND ($search) ORDER BY post_date_gmt DESC LIMIT 50
         if (strpos($query, "ELECT ID, post_title, post_status, post_date FROM")) {
             if ($_post_type = presspermit_POST_key('post_type')) {
-                $query = apply_filters('presspermit_posts_request', $query, ['post_types' => pp_permissions_sanitize_key($_POST['post_type'])]);
+                $query = apply_filters('presspermit_posts_request', $query, ['post_types' => $_post_type]);
 			}
         }
 
