@@ -25,7 +25,7 @@ class ItemEdit
             ?>
             <script type="text/javascript">
                 /* <![CDATA[ */
-                var pp_hier_type = '<?php echo $type_obj->hierarchical; ?>';
+                var pp_hier_type = '<?php echo esc_attr($type_obj->hierarchical); ?>';
                 /* ]]> */
             </script>
             <?php
