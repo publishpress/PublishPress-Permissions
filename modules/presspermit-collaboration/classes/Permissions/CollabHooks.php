@@ -5,7 +5,7 @@ class CollabHooks
 {
     function __construct() {
         // Divi Page Builder
-        if (!empty($_REQUEST['action']) && ('editpost' == $_REQUEST['action']) && !empty($_REQUEST['et_pb_use_builder']) && !empty($_REQUEST['auto_draft'])) {
+        if (presspermit_is_REQUEST('action', 'editpost') && !presspermit_empty_REQUEST('et_pb_use_builder') && !presspermit_empty_REQUEST('auto_draft')) {
             return;
         }
 
