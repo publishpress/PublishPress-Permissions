@@ -745,7 +745,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
                 <?php
                 if ($search = presspermit_REQUEST_var('quick-search-taxonomy-' . $taxonomy_name)) {
-                    $searched = esc_attr($_REQUEST['quick-search-taxonomy-' . $taxonomy_name]);
+                    $searched = pp_permissions_sanitize_entry($search);
                     $search_results = get_terms(
                         $taxonomy_name,
                         ['name__like' => $searched, 'fields' => 'all', 'orderby' => 'count', 'order' => 'DESC', 'hierarchical' => false]
