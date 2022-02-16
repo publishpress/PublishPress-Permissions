@@ -16,10 +16,13 @@ class PermissionsMeta
 
         $pp = presspermit();
 
+        $count = [];
+
         $item_types = array_merge(
             $pp->getEnabledPostTypes(),
             $pp->getEnabledTaxonomies(),
-            $pp->groups()->getGroupTypes(['editable' => true])
+            $pp->groups()->getGroupTypes(['editable' => true]),
+            ['']
         );
 
         $types_csv = implode("','", array_map('sanitize_key', $item_types));
