@@ -310,7 +310,7 @@ class NavMenus
                         ] as $property => $col
                     ) {
                         if (isset($_POST[$col][$menu_item_id]))
-                            $posted_vals[$property] = $_POST[$col][$menu_item_id];
+                            $posted_vals[$property] = sanitize_text_field($_POST[$col][$menu_item_id]);
                     }
 
                     if (isset($posted_vals['classes']))
