@@ -11,8 +11,9 @@ class UserGroupsUpdate
         $group_types = $pp->groups()->getGroupTypes(['editable' => true]);
 
         foreach ($group_types as $agent_type) {
-            if (('pp_group' == $agent_type) && in_array('pp_net_group', $group_types, true) && (1 == get_current_blog_id()))
+            if (('pp_group' == $agent_type) && in_array('pp_net_group', $group_types, true) && (1 == get_current_blog_id())) {
                 continue;
+            }
 
             if (presspermit_empty_POST($agent_type)) {
                 continue;
