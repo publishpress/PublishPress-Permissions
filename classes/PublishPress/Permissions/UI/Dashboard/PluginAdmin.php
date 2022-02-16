@@ -28,6 +28,16 @@ class PluginAdmin
 
         if (!$this->typeUsageStored()) {
             if (get_post_types(['public' => true, '_builtin' => false])) {
+                $do_message = true;
+            }
+        }
+
+        if (!empty($do_message)) {
+            $wp_list_table = _get_list_table('WP_Plugins_List_Table');
+
+            echo '<tr class="plugin-update-tr"><td colspan="' . esc_attr($wp_list_table->get_column_count())
+                . '" class="plugin-update"><div class="update-message">';
+                
                 $url = admin_url('admin.php?page=presspermit-settings');
 
             printf(
@@ -35,8 +45,6 @@ class PluginAdmin
                 '<a href="' . esc_url($url) . '">',
                     '</a>'
                 );
-            }
-        }
 
         if (presspermit()->isPro() && (is_network_admin() || !is_multisite())) {
             $key = presspermit()->getOption('edd_key');
@@ -45,21 +53,17 @@ class PluginAdmin
             if (in_array($keyStatus, ['invalid', 'expired'])) {
                 require_once PRESSPERMIT_CLASSPATH . '/PluginStatus.php';
                 
-                if ($message) {
-                    $message .= '<br /><br />';
+                    echo '<br /><br />';
+                    
+                    if ('expired' == $keyStatus) {
+                        \PublishPress\Permissions\PluginStatus::renewalMsg();
+                    } else {
+                        \PublishPress\Permissions\PluginStatus::buyMsg();
                 }
-                
-                $message .= ('expired' == $keyStatus) 
-                ? \PublishPress\Permissions\PluginStatus::renewalMsg() 
-                : \PublishPress\Permissions\PluginStatus::buyMsg();
             }
         }
 
-        if ($message) {
-            $wp_list_table = _get_list_table('WP_Plugins_List_Table');
-
-            echo '<tr class="plugin-update-tr"><td colspan="' . $wp_list_table->get_column_count()
-                . '" class="plugin-update"><div class="update-message">' . $message . '</div></td></tr>';
+            echo '</div></td></tr>';
         }
     }
 
