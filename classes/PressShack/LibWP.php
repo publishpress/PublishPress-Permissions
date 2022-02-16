@@ -75,8 +75,8 @@ class LibWP
 		}
 
 		$pluginsState = array(
-			'classic-editor' => class_exists( 'Classic_Editor' ), // is_plugin_active('classic-editor/classic-editor.php'),
-			'gutenberg'      => function_exists( 'the_gutenberg_project' ), //is_plugin_active('gutenberg/gutenberg.php'),
+			'classic-editor' => class_exists( 'Classic_Editor' ),
+			'gutenberg'      => function_exists( 'the_gutenberg_project' ),
 			'gutenberg-ramp' => class_exists('Gutenberg_Ramp'),
 		);
 		
