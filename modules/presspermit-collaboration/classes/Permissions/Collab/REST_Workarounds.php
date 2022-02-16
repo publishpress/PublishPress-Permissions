@@ -38,10 +38,14 @@ class REST_Workarounds
 
     function actHandleRestTermAssignment()
     {
-        if (false === strpos($_SERVER['REQUEST_URI'], '/wp-json/wp/v2'))
+        if (empty($_SERVER['REQUEST_URI'])) {
+            return;
+        }
+
+        if (false === strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/wp-json/wp/v2'))
             return;
 
-        $request_uri = $_SERVER['REQUEST_URI'];
+        $request_uri = esc_url_raw($_SERVER['REQUEST_URI']);
 
         $pp = presspermit();
 

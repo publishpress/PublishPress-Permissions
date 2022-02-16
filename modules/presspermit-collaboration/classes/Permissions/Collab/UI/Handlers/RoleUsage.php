@@ -49,7 +49,7 @@ class RoleUsage
 
         if ($redirect) {
             if ($wp_http_referer = presspermit_REQUEST_var('wp_http_referer'))  {
-                $redirect = add_query_arg('wp_http_referer', urlencode(sanitize_url($_REQUEST['wp_http_referer'])), $redirect);
+                $redirect = add_query_arg('wp_http_referer', urlencode(esc_url_raw($wp_http_referer)), $redirect);
             }
 
             $redirect = esc_url_raw(add_query_arg('update', 1, $redirect));

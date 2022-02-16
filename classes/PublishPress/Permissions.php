@@ -86,7 +86,7 @@ class Permissions
         if ($arr_url) {
             $path = isset($arr_url['path']) ? $arr_url['path'] : '';
 
-            if (0 === strpos($_SERVER['REQUEST_URI'], $path . '/wp-json/oembed/')) {
+            if (0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), $path . '/wp-json/oembed/')) {
                 return true;
             }
         }
@@ -104,11 +104,11 @@ class Permissions
         if ($arr_url) {
             $path = isset($arr_url['path']) ? $arr_url['path'] : '';
 
-			if (0 === strpos($_SERVER['REQUEST_URI'], $path . '/wp-json/oembed/')) {
+			if (0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), $path . '/wp-json/oembed/')) {
 				return false;	
 			}
 
-            if (0 === strpos($_SERVER['REQUEST_URI'], $path . '/wp-json/')) {
+            if (0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), $path . '/wp-json/')) {
                 return true;
             }
         }
@@ -130,7 +130,7 @@ class Permissions
 
         // Divi Page Builder editor init
 		if (!defined('PRESSPERMIT_DISABLE_DIVI_CLEARANCE') && !empty($_REQUEST['et_fb']) && !empty($_REQUEST['et_bfb']) 
-		&& 0 === strpos($_SERVER['REQUEST_URI'], '/?page_id') 
+		&& 0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/?page_id') 
 		&& !is_admin() && !defined('DOING_AJAX') && empty($_REQUEST['action']) 
         && empty($_REQUEST['post']) && empty($_REQUEST['post_id']) && empty($_REQUEST['post_ID']) && empty($_REQUEST['p'])
 		) {

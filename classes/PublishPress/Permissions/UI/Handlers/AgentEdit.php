@@ -131,12 +131,12 @@ class AgentEdit
             presspermit()->admin()->errors = $retval;
         } elseif ($redirect) {
             if ($wp_http_referer = presspermit_REQUEST_var('wp_http_referer')) {
-                $arr = explode('/', $_REQUEST['wp_http_referer']);
+                $arr = explode('/', esc_url_raw($wp_http_referer));
                 if ($arr && !defined('PP_LEGACY_HTTP_REDIRECT')) {
-                    $wp_http_referer = sanitize_url(array_pop($arr));
+                    $wp_http_referer = esc_url_raw(array_pop($arr));
                     $redirect = add_query_arg('wp_http_referer', urlencode($wp_http_referer), $redirect);
                 } else {
-                    $redirect = add_query_arg('wp_http_referer', urlencode(sanitize_url($_REQUEST['wp_http_referer'])), $redirect);
+                    $redirect = add_query_arg('wp_http_referer', urlencode(esc_url_raw($wp_http_referer)), $redirect);
                 }
             }
 

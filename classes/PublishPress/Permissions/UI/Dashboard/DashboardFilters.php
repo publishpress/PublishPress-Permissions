@@ -113,7 +113,7 @@ class DashboardFilters
         } 
         
         if (('presspermit-settings' == presspermitPluginPage()) || (('plugin-install.php' == $pagenow)
-            && strpos($_SERVER['HTTP_REFERER'], 'presspermit-settings'))
+            && isset($_SERVER['HTTP_REFERER']) && strpos(esc_url_raw($_SERVER['HTTP_REFERER']), 'presspermit-settings'))
         ) {
             wp_enqueue_style('presspermit-settings', PRESSPERMIT_URLPATH . '/common/css/settings.css', [], PRESSPERMIT_VERSION);
         }
@@ -210,7 +210,7 @@ class DashboardFilters
 
     public function actBuildMenu()
     {
-        if (strpos($_SERVER['REQUEST_URI'], 'wp-admin/network/')) {
+        if (!empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'wp-admin/network/')) {
             return;
         }
 
@@ -344,8 +344,8 @@ class DashboardFilters
             return;
         }
 
-        if (('index.php' == $pagenow) && strpos($_SERVER['REQUEST_URI'], '.php')
-            && !strpos($_SERVER['REQUEST_URI'], 'index.php')
+        if (('index.php' == $pagenow) && !empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), '.php')
+            && !strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'index.php')
         ) {
             $pagenow = '';
         }
