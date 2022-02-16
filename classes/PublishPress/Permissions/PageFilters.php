@@ -275,7 +275,7 @@ class PageFilters
         $join = '';
         $where = "$exclusions $inclusions ";
 
-        if ('' !== $meta_key || '' !== $meta_value) {                                           // @todo: review
+        if ('' !== $meta_key || '' !== $meta_value) {                                           // todo: review
             $join = " INNER JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id";   // PressPermit modification: was LEFT JOIN in WP core
 
             // meta_key and meta_value might be slashed
