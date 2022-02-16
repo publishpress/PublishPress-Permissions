@@ -118,7 +118,7 @@ class Permissions
 
     public function checkInitInterrupt() {
         if (defined('ISCVERSION') || defined('PRESSPERMIT_LIMIT_ASYNC_UPLOAD_FILTERING')) {
-            if ( is_admin() && strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php') && ! empty($_POST['attachment_id']) && ! empty($_POST['fetch']) && ( 3 == $_POST['fetch']) ) {
+            if ( is_admin() && isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'async-upload.php') && !presspermit_empty_POST('attachment_id') && presspermit_is_POST('fetch', 3)) {
                 if ($att = get_post(presspermit_POST_int('attachment_id'))) {
                     global $current_user;
                     if ( $att->post_author == $current_user->ID && ! defined( 'PP_UPLOADS_FORCE_FILTERING' ) ) {
@@ -129,13 +129,13 @@ class Permissions
         }
 
         // Divi Page Builder editor init
-		if (!defined('PRESSPERMIT_DISABLE_DIVI_CLEARANCE') && !empty($_REQUEST['et_fb']) && !empty($_REQUEST['et_bfb']) 
-		&& 0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/?page_id') 
-		&& !is_admin() && !defined('DOING_AJAX') && empty($_REQUEST['action']) 
-        && empty($_REQUEST['post']) && empty($_REQUEST['post_id']) && empty($_REQUEST['post_ID']) && empty($_REQUEST['p'])
-		) {
-			return true;
-		}
+        if (!defined('PRESSPERMIT_DISABLE_DIVI_CLEARANCE') && !presspermit_empty_REQUEST('et_fb') && !presspermit_empty_REQUEST('et_bfb') 
+        && 0 === strpos($_SERVER['REQUEST_URI'], '/?page_id') 
+        && !is_admin() && !defined('DOING_AJAX') && presspermit_empty_REQUEST('action') 
+            && presspermit_empty_REQUEST('post') && presspermit_empty_REQUEST('post_id') && presspermit_empty_REQUEST('post_ID') && presspermit_empty_REQUEST('p')
+        ) {
+          return true;
+        }
     }
 
     private function load($args = [])

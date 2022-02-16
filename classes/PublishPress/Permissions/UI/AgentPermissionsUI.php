@@ -815,7 +815,7 @@ class AgentPermissionsUI
 
         echo '<div id="pp_current_exceptions_inner">';
 
-        if (empty($_REQUEST['all_types']) && !empty($exceptions['post'])) {
+        if (presspermit_empty_REQUEST('all_types') && !empty($exceptions['post'])) {
             $all_types = array_fill_keys(array_merge($post_types, $taxonomies, ['']), true);
 
             // hide topic, reply assignments even if they are somehow saved/imported without inherited_from value
