@@ -132,12 +132,15 @@ class PermissionsUpdate
         );
     }
 
-    // see function doc for presspermit_assign_exceptions
-    // 
-    // additional arguments recognized by self::insertExceptions():
-    //    is_auto_insertion = false  (if true, skips logging the item as having a manually modified role assignment)
+    /*
+     * See function doc for presspermit_assign_exceptions
+     * 
+     * Additional arguments recognized by self::insertExceptions():
+     *    is_auto_insertion = false  (if true, skips logging the item as having a manually modified role assignment)
+     *    agents[assign_for][agent_id] = has_access 
+     */
     public static function assignExceptions($agents, $agent_type = 'pp_group', $args = [])
-    {   // agents[assign_for][agent_id] = has_access 
+    {
         $defaults = [
             'operation' => '',
             'mod_type' => '',
