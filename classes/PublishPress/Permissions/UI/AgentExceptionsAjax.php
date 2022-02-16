@@ -6,8 +6,11 @@ class AgentExceptionsAjax
 {
     public function __construct() 
     {
-
         if (!$pp_for_type = presspermit_GET_key('pp_for_type')) {
+            exit;
+        }
+
+        if (!$pp_ajax_agent_exceptions = presspermit_GET_var('pp_ajax_agent_exceptions')) {
             exit;
         }
 
