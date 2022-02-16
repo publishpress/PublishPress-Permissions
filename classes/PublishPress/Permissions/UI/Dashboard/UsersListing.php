@@ -273,24 +273,28 @@ class UsersListing
                         $role_titles[] = $wp_roles->role_names[$role_name];
                 }
 
-                if (isset($role_info[$id]) && isset($role_info[$id]['roles']))
+                if (isset($role_info[$id]) && isset($role_info[$id]['roles'])) {
                     $role_titles = array_merge($role_titles, array_keys($role_info[$id]['roles']));
+                }
 
                 $display_limit = 3;
                 if (count($role_titles) > $display_limit) {
                     $excess = count($role_titles) - $display_limit;
                     $role_titles = array_slice($role_titles, 0, $display_limit);
-                    $role_titles[] = sprintf(esc_html__('%s more', 'press-permit-core'), (int) $excess);
+                    $role_titles[] = sprintf(__('%s more', 'press-permit-core'), (int) $excess);
                 }
 
-                $role_str = '<span class="pp-group-site-roles">' . implode(', ', $role_titles) . '</span>';
-
-                if (current_user_can('pp_assign_roles') && (is_multisite() || current_user_can('edit_user', $id))) {
+                if ($do_edit_link = current_user_can('pp_assign_roles') && (is_multisite() || current_user_can('edit_user', $id))) {
                     $edit_link = "admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_id=$id&amp;agent_type=user";
-                    $role_str = "<a href=\"$edit_link\">$role_str</a><br />";
+                    echo "<a href='" . esc_url($edit_link) . "'>";
                 }
 
-                return $role_str;
+                echo '<span class="pp-group-site-roles">' . esc_html(implode(', ', $role_titles)) . '</span>';
+
+                if ($do_edit_link) {
+                    echo '</a>';	
+                }
+				
                 break;
 
             case 'pp_exceptions':
