@@ -20,8 +20,6 @@ class AgentEdit
 
         $pp = presspermit();
 
-        $agent_type = pp_permissions_sanitize_key($_REQUEST['agent_type']);
-
         switch ($action) {
             case 'update':
                 $agent_id = presspermit_REQUEST_int('agent_id');

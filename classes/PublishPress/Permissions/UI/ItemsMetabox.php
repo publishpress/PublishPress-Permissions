@@ -234,7 +234,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
                         add_filter('posts_clauses', '_filter_query_attachment_filenames');
                     }
 
-                    $searched = esc_attr($_REQUEST['quick-search-posttype-' . $post_type_name]);
+                    $searched = sanitize_text_field($search);
                     $post_status = ('attachment' == $post_type_name) ? 'inherit' : '';
                     $search_results = query_posts(['s' => $searched, 'post_type' => $post_type_name, 'fields' => 'all', 'order' => 'DESC', 'post_status' => $post_status]);
 

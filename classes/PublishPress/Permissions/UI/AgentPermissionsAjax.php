@@ -46,7 +46,7 @@ class AgentPermissionsAjax
 
                 $deleted_ass_ids = [];
 
-                $input_vals = explode('|', PWP::sanitizeCSV($_GET['pp_ass_ids']));
+                $input_vals = explode('|', PWP::sanitizeCSV(sanitize_text_field($pp_ass_ids)));
                 foreach ($input_vals as $id_csv) {
                     $ass_ids = $this->editableAssignmentIDs(explode(',', $id_csv));
                     $deleted_ass_ids = array_merge($deleted_ass_ids, $ass_ids);
@@ -102,7 +102,7 @@ class AgentPermissionsAjax
 
                 $deleted_eitem_ids = [];
 
-                $input_vals = explode('|', PWP::sanitizeCSV($_GET['pp_eitem_ids']));
+                $input_vals = explode('|', PWP::sanitizeCSV(sanitize_text_field($pp_eitem_ids)));
                 foreach ($input_vals as $id_csv) {
                     $eitem_ids = $this->editableEitemIDs(explode(',', $id_csv));
                     $deleted_eitem_ids = array_merge($deleted_eitem_ids, $eitem_ids);
@@ -157,7 +157,7 @@ class AgentPermissionsAjax
                 $edited_input_ids = [];
                 $all_eitem_ids = [];
 
-                $input_vals = explode('|', PWP::sanitizeCSV($_GET['pp_eitem_ids']));
+                $input_vals = explode('|', PWP::sanitizeCSV(sanitize_text_field($pp_eitem_ids)));
 
                 foreach ($input_vals as $id_csv) {
                     $eitem_ids = $this->editableEitemIDs(explode(',', $id_csv));
@@ -228,7 +228,7 @@ class AgentPermissionsAjax
                     $edited_input_ids = [];
                     $all_eitem_ids = [];
 
-                    $input_vals = explode('|', PWP::sanitizeCSV($_GET['pp_eitem_ids']));
+                    $input_vals = explode('|', PWP::sanitizeCSV(sanitize_text_field($pp_eitem_ids)));
 
                     foreach ($input_vals as $id_csv) {
                         $eitem_ids = $this->editableEitemIDs(explode(',', $id_csv));

@@ -158,7 +158,7 @@ class CapabilityFilters
 
         } else { // post_id is not a revision
             if (('read' == $required_operation) && (
-                strpos($_SERVER['SCRIPT_NAME'], 'wp-admin/revision.php') || (defined('DOING_AJAX') && DOING_AJAX 
+                (isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'wp-admin/revision.php')) || (defined('DOING_AJAX') && DOING_AJAX 
                 && presspermit_is_REQUEST('action', 'get-revision-diffs')))
             ) {
                 $return['required_operation'] = 'edit';

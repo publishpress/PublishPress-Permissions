@@ -49,7 +49,7 @@ class CapabilityFilters
             return $wp_sitecaps;
         }
 
-        $orig_cap = (isset($args[0])) ? pp_permissions_sanitize_key($args[0]) : '';
+        $orig_cap = (isset($args[0])) ? sanitize_key($args[0]) : '';
 
         if (isset($args[2])) {
             if (is_object($args[2])) {
