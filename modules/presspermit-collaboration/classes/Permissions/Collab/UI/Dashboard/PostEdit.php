@@ -13,7 +13,7 @@ class PostEdit
 
         add_filter('presspermit_item_edit_exception_ops', [$this, 'flt_item_edit_exception_ops'], 10, 3);
 
-        if (!empty($_REQUEST['message']) && (6 == $_REQUEST['message'])) {
+        if (presspermit_is_REQUEST('message', 6)) {
             add_filter('post_updated_messages', [$this, 'flt_post_updated_messages']);
         }
 
