@@ -121,7 +121,7 @@ class PostTermsSave
 
         if ('category' == $taxonomy) {
             if ($post_category = presspermit_POST_int('post_category')) {
-				return array_map('intval', self::fltPreObjectTerms((array)$_POST['post_category'], $taxonomy));
+				return array_map('intval', self::fltPreObjectTerms((array) array_map('intval', $post_category), $taxonomy));
             }
         } else {
             $tx_obj = get_taxonomy($taxonomy);
@@ -134,7 +134,7 @@ class PostTermsSave
                 if (is_taxonomy_hierarchical($taxonomy) && is_array($_POST['tax_input'][$taxonomy])) {
                     return array_map('intval', $_POST['tax_input'][$taxonomy]);
                 } else {
-                    $term_info = self::parseTermNames($_POST['tax_input'][$taxonomy], $taxonomy);
+                    $term_info = self::parseTermNames(array_map('sanitize_key', $_POST['tax_input'][$taxonomy]), $taxonomy);
                     return array_map('intval', self::fltPreObjectTerms($term_info['terms'], $taxonomy));
                 }
             } elseif ('post_tag' == $taxonomy && !presspermit_empty_POST('tags_input')) {
@@ -319,13 +319,13 @@ class PostTermsSave
             if (!$tx_obj = get_taxonomy($taxonomy))
                 return $selected_terms;
 
-            // For now, always check the DB for default terms.  @todo: only if the default_term_option property is set
+            // For now, always check the DB for default terms.  todo: only if the default_term_option property is set
             if (isset($tx_obj->default_term_option))
                 $default_term_option = $tx_obj->default_term_option;
             else
                 $default_term_option = "default_{$taxonomy}";
 
-            // avoid recursive filtering.  @todo: use remove_filter so we can call get_option, support filtering by other plugins 
+            // avoid recursive filtering.  todo: use remove_filter so we can call get_option, support filtering by other plugins 
             global $wpdb;
             $default_terms = (array)maybe_unserialize($wpdb->get_var(
                 $wpdb->prepare(

@@ -70,7 +70,7 @@ class PostEditCustomize
         if ($sitewide_requirement && !$sitewide_requirement_met) {
             do_action('presspermit_hide_admin_divs', $object_id, $hide_ids, $sitewide_requirement);
 
-            echo("\n<style type='text/css'>\n<!--\n");
+            echo "\n<style type='text/css'>\n<!--\n";
 
             $removeable_metaboxes = apply_filters(
                 'presspermit_removeable_metaboxes', 
@@ -95,7 +95,7 @@ class PostEditCustomize
                     remove_meta_box($id, $object_type, 'advanced');
                 } else {
                     // hide via CSS if the element is not a removeable metabox
-                    echo "#$id { display: none !important; }\n";
+                    echo "#" . esc_attr($id) . " { display: none !important; }\n";
                 }
             }
 

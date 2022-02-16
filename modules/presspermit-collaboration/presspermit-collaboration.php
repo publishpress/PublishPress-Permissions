@@ -44,7 +44,7 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
             $ext_version = PRESSPERMIT_VERSION;
 
             if (is_admin()) {
-                $title = __('Collaborative Publishing', 'press-permit-core');
+                $title = esc_html__('Collaborative Publishing', 'press-permit-core');
             } else {
                 $title = 'Collaborative Publishing';
             }

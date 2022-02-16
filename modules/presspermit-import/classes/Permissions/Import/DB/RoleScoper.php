@@ -22,7 +22,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
     public function __construct() // some PHP versions do not allow subclass constructor to be private
     {
         parent::__construct();
-        $this->import_types = ['sites' => __('Sites', 'press-permit-core'), 'groups' => __('Groups', 'press-permit-core'), 'group_members' => __('Group Members', 'press-permit-core'), 'site_roles' => __('General Roles', 'press-permit-core'), 'item_roles' => __('Term / Object Roles', 'press-permit-core'), 'restrictions' => __('Restrictions', 'press-permit-core'), 'options' => __('Options', 'press-permit-core')];
+        $this->import_types = ['sites' => esc_html__('Sites', 'press-permit-core'), 'groups' => esc_html__('Groups', 'press-permit-core'), 'group_members' => esc_html__('Group Members', 'press-permit-core'), 'site_roles' => esc_html__('General Roles', 'press-permit-core'), 'item_roles' => esc_html__('Term / Object Roles', 'press-permit-core'), 'restrictions' => esc_html__('Restrictions', 'press-permit-core'), 'options' => esc_html__('Options', 'press-permit-core')];
     }
 
     function doImport($import_type = 'rs')
@@ -236,8 +236,6 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                 $role_name = implode('_', $arr);
             }
 
-            //pp_dump($item_type);
-
             if (post_type_exists($item_type)) {
                 $item_source = 'post';
 
@@ -325,9 +323,6 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
         $imported_restrictions = $wpdb->get_results($wpdb->prepare("SELECT source_id, import_tbl, import_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d", $this->getTableCode($wpdb->role_scope_rs)), OBJECT_K);
         
-        //echo 'imported: ';
-        //var_dump($imported_restrictions);
-
         $pp_agent_id = [];
         $results = $wpdb->get_results("SELECT metagroup_id, ID FROM $wpdb->pp_groups WHERE metagroup_type = 'wp_role'");
         foreach ($results as $row) {
@@ -1050,14 +1045,14 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
         $rs_base_role = $rolename_arr[count($rolename_arr) - 1];
 
         if ('private' == $rolename_arr[0]) {
-            $data['for_item_type'] = implode('_', array_slice($rolename_arr, 1, count($rolename_arr) - 2));  // $arr[1];  - unknown number of elems because type name may have underscores
+            $data['for_item_type'] = implode('_', array_slice($rolename_arr, 1, count($rolename_arr) - 2));  // array index 1  - unknown number of elems because type name may have underscores
 
             if (('subscriber' == $rs_base_role) && ('term' != $scope))
                 $data['for_item_status'] = '';
             else
                 $data['for_item_status'] = 'post_status:private';
         } else {
-            $data['for_item_type'] = implode('_', array_slice($rolename_arr, 0, count($rolename_arr) - 1));  // $arr[0];
+            $data['for_item_type'] = implode('_', array_slice($rolename_arr, 0, count($rolename_arr) - 1));  // array index 0
             $data['for_item_status'] = '';
         }
 
@@ -1250,8 +1245,6 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                 break;
             }
 
-            //pp_errlog("edit exception_id $edit_exception_id, publish exception_id $publish_exception_id");
-
             // If a corresponding publish exception row is not stored, insert one
             if (!$publish_exception_id) {
                 $data = (array) $exc;
@@ -1301,7 +1294,6 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                     }
 
                     $query = rtrim($query, ',');
-                    //pp_errlog($query);
 
                     $wpdb->query($query);
                 }

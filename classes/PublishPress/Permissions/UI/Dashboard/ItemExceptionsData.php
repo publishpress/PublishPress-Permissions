@@ -2,8 +2,6 @@
 
 namespace PublishPress\Permissions\UI\Dashboard;
 
-//use \PressShack\LibArray as Arr;
-
 class ItemExceptionsData
 {
     public $agent_info = [];

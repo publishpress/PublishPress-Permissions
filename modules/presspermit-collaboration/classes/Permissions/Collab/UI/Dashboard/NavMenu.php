@@ -1,7 +1,6 @@
 <?php
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
-//use \PressShack\LibWP as PWP;
 use \PublishPress\Permissions\Collab\NavMenus as NavMenus;
 
 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');
@@ -89,8 +88,8 @@ class NavMenu
             global $wp_meta_boxes;
             unset($wp_meta_boxes['nav-menus']['side']['default']['nav-menu-theme-locations']);
 
-            if (strpos($_SERVER['REQUEST_URI'], 'nav-menus.php?action=locations')) {
-                wp_die(__('You are not permitted to manage menu locations', 'press-permit-core'));
+            if (!empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'nav-menus.php?action=locations')) {
+                wp_die(esc_html__('You are not permitted to manage menu locations', 'press-permit-core'));
             }
         }
     }
@@ -142,7 +141,7 @@ class NavMenu
                 <?php
                 $comma = '';
                 foreach( $uneditable_items as $id ) {
-                    echo "#delete-{$id},#cancel-{$id}";
+                    echo "#delete-" . esc_attr($id) . ",#cancel-" . esc_attr($id);
                     $comma = ',';
                 }
 
@@ -230,12 +229,12 @@ class NavMenu
                 $comma = '';
                 if ( presspermit()->getOption( 'admin_nav_menu_partial_editing' ) ) {
                     foreach( $uneditable_items as $id ) {
-                        echo "{$comma}#menu-item-{$id} a.item-delete,#menu-item-{$id} span.meta-sep,#menu-item-{$id}";
+                        echo esc_attr($comma) . "#menu-item-" . esc_attr($id) . " a.item-delete,#menu-item-" . esc_attr($id) . " span.meta-sep,#menu-item-" . esc_attr($id);
                         $comma = ',';
                     }
                 } else {
                     foreach( $uneditable_items as $id ) {
-                        echo "{$comma}#menu-item-{$id},#delete-{$id},#cancel-{$id}";
+                        echo esc_attr($comma) . "#menu-item-" . esc_attr($id) . ",#delete-" . esc_attr($id) . ",#cancel-". esc_attr($id);
                         $comma = ',';
                     }
                 }
@@ -265,7 +264,7 @@ class NavMenu
             <script type="text/javascript">
                 /* <![CDATA[ */
                 jQuery(document).ready(function ($) {
-                    $('#menu-name').attr('disabled', 'disabled').attr('name', 'menu-name-label').after('<input type="hidden" name="menu-name" value="<?php echo $menu_name;?>" />');
+                    $('#menu-name').attr('disabled', 'disabled').attr('name', 'menu-name-label').after('<input type="hidden" name="menu-name" value="<?php echo esc_attr($menu_name);?>" />');
                 });
                 /* ]]> */
             </script>
@@ -292,8 +291,7 @@ class NavMenu
                 jQuery(document).ready(function ($) {
                     <?php
                     foreach ($uneditable_items as $id) {
-                        //echo "$('#menu-item-{$id}').removeClass().addClass('menu-item-edit-inactive');";
-                        echo "$('#menu-item-{$id}').removeClass('menu-item').addClass('menu-item-edit-inactive');";
+                        echo "$('#menu-item-" . esc_attr($id) . "').removeClass('menu-item').addClass('menu-item-edit-inactive');";
                     }
                     ?>
                 });

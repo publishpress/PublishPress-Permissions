@@ -32,7 +32,7 @@ class AdminFilters
         // called by ajax-exceptions-ui
         add_filter('presspermit_exception_operations', [$this, 'fltExceptionOperations'], 2, 3);
         add_filter('presspermit_exception_via_types', [$this, 'fltExceptionViaTypes'], 10, 5);
-        add_filter('presspermit_exceptions_status_ui', [$this, 'fltExceptionsStatusUi'], 4, 3);
+        add_action('presspermit_exceptions_status_ui', [$this, 'actExceptionsStatusUi'], 4, 2);
 
         add_filter('presspermit_ajax_role_ui_vars', [$this, 'actAjaxRoleVars'], 10, 2);
         add_filter('presspermit_get_type_roles', [$this, 'fltGetTypeRoles'], 10, 3);
@@ -144,8 +144,8 @@ class AdminFilters
         $types['pp_group'] = (object)[
             'name' => 'pp_group', 
             'labels' => (object)[
-                'singular_name' => __('Permission Group', 'press-permit-core'), 
-                'name' => __('Permission Groups', 'press-permit-core')
+                'singular_name' => esc_html__('Permission Group', 'press-permit-core'), 
+                'name' => esc_html__('Permission Groups', 'press-permit-core')
                 ]
             ];
         
@@ -157,7 +157,7 @@ class AdminFilters
         if (empty($args['agent']) || empty($args['agent']->metagroup_id) 
         || !in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all'], true)) 
         {
-            echo "<option value='_term_'>" . __('term (manage)', 'press-permit-core') . '</option>';
+            echo "<option value='_term_'>" . esc_html__('term (manage)', 'press-permit-core') . '</option>';
         }
     }
 
@@ -179,10 +179,10 @@ class AdminFilters
         return UI\AjaxUI::fltExceptionViaTypes($types, $for_source_name, $for_type, $operation, $mod_type);
     }
 
-    function fltExceptionsStatusUi($html, $for_type, $args = [])
+    function actExceptionsStatusUi($for_type, $args = [])
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/AjaxUI.php');
-        return UI\AjaxUI::fltExceptionsStatusUi($html, $for_type, $args);
+        UI\AjaxUI::actExceptionsStatusUi($for_type, $args);
     }
 
     function fltGetRoleTitle($role_title, $args)
@@ -193,7 +193,7 @@ class AdminFilters
         if (!empty($matches[1])) {
             $taxonomy = $matches[1];
             if ($tx_obj = get_taxonomy($taxonomy))
-                $role_title = sprintf(__('%s Manager', 'press-permit-core'), $tx_obj->labels->singular_name);
+                $role_title = sprintf(esc_html__('%s Manager', 'press-permit-core'), $tx_obj->labels->singular_name);
         }
 
         return $role_title;

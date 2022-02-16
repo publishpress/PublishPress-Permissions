@@ -55,12 +55,12 @@ class ItemSave
 
         if ($posted_exceptions && !$disallow_manual_entry && $can_assign_roles) {
             foreach (array_keys($posted_exceptions) as $for_item_type) {
-                $for_item_type = pp_permissions_sanitize_key($for_item_type);
+                $for_item_type = sanitize_key($for_item_type);
                 
                 $_for_type = ('(all)' == $for_item_type) ? '' : $for_item_type;
 
                 foreach (array_keys($posted_exceptions[$for_item_type]) as $op) {
-                    $op = pp_permissions_sanitize_key($op);
+                    $op = sanitize_key($op);
                     $_for_item_source = $for_item_source;
                     
                     if (('term' == $for_item_source) || (('term' == $via_item_source) && in_array($op, ['manage', 'associate'] ) ) ) {
@@ -78,14 +78,14 @@ class ItemSave
                     }
 
                     foreach (array_keys($posted_exceptions[$for_item_type][$op]) as $agent_type) {
-                        $agent_type = pp_permissions_sanitize_key($agent_type);
+                        $agent_type = sanitize_key($agent_type);
 
                         $args['for_item_type'] = $_for_type;
                         $args['for_item_source'] = $_for_item_source;
                         $args['operation'] = $op;
                         $args['agent_type'] = $agent_type;
 
-                        // assignments[assign_for][agent_id] = has_access 
+                        // posted_exceptions [for_item_type] [op] [agent_type] [assign_for] [agent_id] = has_access 
                         $pp->assignExceptions($posted_exceptions[$for_item_type][$op][$agent_type], $agent_type, $args);
                     }
                 }
@@ -170,7 +170,7 @@ class ItemSave
                 // propagate exception from new parent to this item and its branch of sub-items
                 require_once(PRESSPERMIT_CLASSPATH.'/DB/PermissionsUpdate.php');
                 
-                $force_for_item_type = (isset($args['force_for_item_type'])) ? $args['force_for_item_type'] : false; // @todo: why is this variable not already set?
+                $force_for_item_type = (isset($args['force_for_item_type'])) ? $args['force_for_item_type'] : false; // todo: why is this variable not already set?
                 $_args = compact('retain_exceptions', 'force_for_item_type');
 
                 $_args['parent_exceptions'] = DB\PermissionsUpdate::getParentExceptions(
@@ -196,7 +196,7 @@ class ItemSave
                     );
                 }
             }
-        } // endif new parent selection (or new item)
+        }
 
         return !empty($any_inserts);
     }

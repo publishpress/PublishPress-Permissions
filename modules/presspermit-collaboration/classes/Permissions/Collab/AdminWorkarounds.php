@@ -55,9 +55,9 @@ class AdminWorkarounds
 
             if ('add-menu-item' == $action) {
                 if ($menu_items = presspermit_REQUEST_var('menu-item')) {
-                    foreach ($_REQUEST['menu-item'] as $menu_item) {  // normally just one element in array
-                        $menu_item_type = (isset($menu_item['menu-item-type'])) ? pp_permissions_sanitize_key($menu_item['menu-item-type']) : '';
-                        $object_type = (isset($menu_item['menu-item-object'])) ? pp_permissions_sanitize_key($menu_item['menu-item-object']) : '';
+                    foreach (array_map('sanitize_key', $menu_items) as $menu_item) {  // normally just one element in array
+                        $menu_item_type = (isset($menu_item['menu-item-type'])) ? $menu_item['menu-item-type'] : '';
+                        $object_type = (isset($menu_item['menu-item-object'])) ? $menu_item['menu-item-object'] : '';
                         $object_id = (isset($menu_item['menu-item-object-id'])) ? (int) $menu_item['menu-item-object-id'] : '';
 
                         if (!NavMenus::can_edit_menu_item(0, compact(['menu_item_type', 'object_type', 'object_id']))) {
@@ -144,7 +144,7 @@ class AdminWorkarounds
                 if (('themes.php' == $menu[$key][2]) 
                 && empty($current_user->allcaps['edit_theme_options']) && ('edit_theme_options' == $menu[$key][1])) 
                 {
-                    $menu[$key][0] = __('Menus');
+                    $menu[$key][0] = esc_html__('Menus');
                     $menu[$key][1] = 'manage_nav_menus';
                     $menu[$key][2] = 'nav-menus.php';
                 }
@@ -188,9 +188,9 @@ class AdminWorkarounds
             if (empty ($current_user->allcaps['edit_theme_options']) || !empty($use_term_roles['nav_menu'])) {
                 if (!current_user_can($tx->cap->manage_terms, $menu_id)) {
                     if ($menu_id) {
-                        wp_die(__('You do not have permission to update that Navigation Menu', 'press-permit-core'));
+                        wp_die(esc_html__('You do not have permission to update that Navigation Menu', 'press-permit-core'));
                     } else {
-                        wp_die(__('You do not have permission to create new Navigation Menus', 'press-permit-core'));
+                        wp_die(esc_html__('You do not have permission to create new Navigation Menus', 'press-permit-core'));
                     }
                 }
             }
@@ -198,7 +198,7 @@ class AdminWorkarounds
             if (!$pp->isUserUnfiltered() 
             && empty($current_user->allcaps['edit_theme_options']) && empty($current_user->allcaps['delete_menus'])) 
             {
-                wp_die(__('You do not have permission to delete that Navigation Menu.', 'press-permit-core'));
+                wp_die(esc_html__('You do not have permission to delete that Navigation Menu.', 'press-permit-core'));
             }
         } elseif (false !== strpos($referer_name, 'delete-menu_item_')) {
             if ($pp->getOption('admin_nav_menu_filter_items')) {
@@ -385,7 +385,7 @@ class AdminWorkarounds
         $pos_from = strpos($query, "FROM $posts");
 		$pos_where = strpos($query, "WHERE ");
         
-        // @todo: use 'wp_count_posts' filter instead?
+        // todo: use 'wp_count_posts' filter instead?
 
         if ((strpos($query, "ELECT post_status, COUNT( * ) AS num_posts ") || (strpos($query, "ELECT COUNT( 1 )") && $pos_from && (!$pos_where || ($pos_from < $pos_where)))) 
         && preg_match("/FROM\s*{$posts}\s*WHERE post_type\s*=\s*'([^ ]+)'/", $query, $matches)
@@ -436,7 +436,7 @@ class AdminWorkarounds
                             );
                         }
                     } else {
-                        // Additional queries triggered by posts_request filter breaks all subsequent filters which would have operated on this query (@todo: review)
+                        // Additional queries triggered by posts_request filter breaks all subsequent filters which would have operated on this query (todo: review)
                         if (defined('REVISIONARY_VERSION') && version_compare(REVISIONARY_VERSION, '1.5-alpha', '<')) {
                             if (class_exists('RevisionaryAdminHardway_Ltd'))
                                 $query = \RevisionaryAdminHardway_Ltd::flt_last_resort_query($query);
@@ -520,18 +520,16 @@ class AdminWorkarounds
                 if (!$page_temp || $page_temp->post_parent) {
                     $selected = ($page_temp && !empty($page_temp->post_parent)) ? $page_temp->post_parent : '';
 
-                    if ($output = wp_dropdown_pages(
+                    wp_dropdown_pages(
                         ['post_type' => 'page', 
-                        'exclude_tree' => $object_id, 
-                        'selected' => $selected, 
+                        'exclude_tree' => esc_attr($object_id), 
+                        'selected' => esc_attr($selected), 
                         'name' => 'parent_id', 
-                        'show_option_none' => __('(no parent)'), 
+                        'show_option_none' => esc_html__('(no parent)'), 
                         'sort_column' => 'menu_order, post_title', 
-                        'echo' => 0
-                        ])
-                    ) { 
-                        echo $output;
-                    }
+                        'echo' => 1
+                        ]
+                    );
                 }
                 $query = "SELECT ID, post_parent FROM $posts WHERE 1=2";
 
@@ -542,8 +540,7 @@ class AdminWorkarounds
         if (defined('DOING_AJAX')) {
             if (strpos($query, "ELECT t.name FROM") && !empty($_REQUEST['tax']) && !empty($_SERVER['HTTP_REFERER'])) {
                 if ($taxonomy = presspermit_REQUEST_key('tax')) {
-	                $parsed = parse_url($_SERVER['HTTP_REFERER']);
-	
+                    $parsed = wp_parse_url(esc_url_raw($_SERVER['HTTP_REFERER']));
 	                if (!empty($parsed['query'])) {
 	                    $qry_vars = [];
 	                    wp_parse_str($parsed['query'], $qry_vars);

@@ -2,14 +2,12 @@
 
 namespace PublishPress\Permissions\UI;
 
-//use \PressShack\LibWP as PWP;
-
 class AgentPermissions
 {
     public function __construct() {
         // called by Dashboard\DashboardFilters::actMenuHandler
 
-        // @todo: separate function for update messages 
+        // todo: separate function for update messages 
 
         $pp = presspermit();
         $pp_admin = $pp->admin();
@@ -33,7 +31,7 @@ class AgentPermissions
             $agent = (object)['metagroup_type' => ''];
 
             if ('user' != $agent_type)
-                wp_die(__('No user/group specified.', 'press-permit-core'));
+                wp_die(esc_html__('No user/group specified.', 'press-permit-core'));
         } else {
             $agent_id = (int)$_REQUEST['agent_id'];
             $agent = $pp_groups->getAgent($agent_id, $agent_type);
@@ -43,19 +41,20 @@ class AgentPermissions
 
         if ('user' == $agent_type) {
             if (!current_user_can('pp_administer_content') || !current_user_can('list_users'))
-                wp_die(__('You are not permitted to do that.', 'press-permit-core'));
+                wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
 
             if ($agent_id && empty($agent->ID))
-                wp_die(__('Invalid user ID.', 'press-permit-core'));
+                wp_die(esc_html__('Invalid user ID.', 'press-permit-core'));
         } else {
             if (!$pp_groups->userCan('pp_edit_groups', $agent_id, $agent_type))
-                wp_die(__('You are not permitted to do that.', 'press-permit-core'));
+                wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
 
             if (('wp_role' == $metagroup_type) && !current_user_can('pp_administer_content'))
-                wp_die(__('You are not permitted to do that.', 'press-permit-core'));
+                wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
 
-            if (!$agent)
-                wp_die(__('Invalid group ID.', 'press-permit-core'));
+            if (!$agent) {
+                wp_die(esc_html__('Invalid group ID.', 'press-permit-core'));
+            }
         }
 
         if ($metagroup_type) {  // metagroups cannot have name/description manually edited
@@ -99,11 +98,11 @@ class AgentPermissions
                         <strong><?php esc_html_e('Permissions cloned.', 'press-permit-core') ?>&nbsp;</strong>
 
                     <?php else : ?>
-                        <strong><?php _e('Group updated.', 'press-permit-core') ?>&nbsp;</strong>
+                        <strong><?php esc_html_e('Group updated.', 'press-permit-core') ?>&nbsp;</strong>
 
                         <?php
                         if ($wp_http_referer) : ?>
-                            <a href="<?php echo esc_url($groups_link); ?>"><?php _e('Back to groups list', 'press-permit-core'); ?></a>
+                            <a href="<?php echo esc_url($groups_link); ?>"><?php esc_html_e('Back to groups list', 'press-permit-core'); ?></a>
                         <?php endif; ?>
 
                     <?php endif; ?>
@@ -114,10 +113,10 @@ class AgentPermissions
         <?php elseif (presspermit_is_GET('created')) : ?>
             <div id="message" class="updated">
                 <p>
-                    <strong><?php _e('Group created.', 'press-permit-core') ?>&nbsp;</strong>
+                    <strong><?php esc_html_e('Group created.', 'press-permit-core') ?>&nbsp;</strong>
                     <?php
                     if ($wp_http_referer) : ?>
-                        <a href="<?php echo esc_url($groups_link); ?>"><?php _e('Back to groups list', 'press-permit-core'); ?></a>
+                        <a href="<?php echo esc_url($groups_link); ?>"><?php esc_html_e('Back to groups list', 'press-permit-core'); ?></a>
                     <?php endif; ?>
                 </p>
             </div>
@@ -127,7 +126,11 @@ class AgentPermissions
             <?php
         if (!empty($pp_admin->errors) && is_wp_error($pp_admin->errors)) : ?>
             <div class="error">
-                <p><?php echo implode("</p>\n<p>", $pp_admin->errors->get_error_messages()); ?></p>
+            <?php 
+            foreach($pp_admin->errors->get_error_messages() as $msg) {
+                echo '<p>' . esc_html($msg) . '</p>';
+            }
+            ?>
             </div>
         <?php endif; ?>
 
@@ -137,23 +140,23 @@ class AgentPermissions
                 <h1 class="wp-heading-inline"><?php
 
                     if ('user' == $agent_type) {
-                        ($agent_id) ? _e('Edit User Permissions', 'press-permit-core') : _e('Add User Permissions', 'press-permit-core');
+                        ($agent_id) ? esc_html_e('Edit User Permissions', 'press-permit-core') : esc_html_e('Add User Permissions', 'press-permit-core');
 
                     } elseif ('wp_role' == $metagroup_type) {
                         if (defined('PUBLISHPRESS_CAPS_VERSION')) {
                             printf(
-                                __('Edit Permission Group (%sWordPress Role%s)', 'press-permit-core'),
-                                '<a href="' . admin_url("admin.php?page=capsman&action=edit&role={$agent->metagroup_id}") . '" title="' . esc_attr(__('Edit role capabilities directly', 'press-permit-core')) . '">',
+                                esc_html__('Edit Permission Group (%sWordPress Role%s)', 'press-permit-core'),
+                                '<a href="' . esc_url(admin_url("admin.php?page=capsman&action=edit&role={$agent->metagroup_id}")) . '" title="' . esc_attr(esc_html__('Edit role capabilities directly', 'press-permit-core')) . '">',
                                 '</a>'
                             );
                         } else {
-                            _e('Edit Permission Group (WordPress Role)', 'press-permit-core');
+                            esc_html_e('Edit Permission Group (WordPress Role)', 'press-permit-core');
                         }
                     } elseif ('pp_group' == $agent_type) {
-                        _e('Edit Permission Group', 'press-permit-core');
+                        esc_html_e('Edit Permission Group', 'press-permit-core');
 
                     } elseif ($group_type_obj = $pp_groups->getGroupTypeObject($agent_type)) {
-                        printf(__('Edit Permissions (%s)', 'press-permit-core'), $group_type_obj->labels->singular_name);
+                        printf(esc_html__('Edit Permissions (%s)', 'press-permit-core'), esc_html($group_type_obj->labels->singular_name));
                     }
                     ?></h1>
 
@@ -166,7 +169,7 @@ class AgentPermissions
                             $_url = add_query_arg(['agent_type' => $agent_type], $_url);
                         }
                     ?>
-                        <a href="<?php echo $_url;?>" class="page-title-action"><?php _e('Add New');?></a>
+                        <a href="<?php echo esc_url($_url);?>" class="page-title-action"><?php esc_html_e('Add New');?></a>
                     <?php endif;?>
     
                 </header>
@@ -176,14 +179,14 @@ class AgentPermissions
                         action="<?php echo esc_url($url); ?>" method="post" <?php do_action('presspermit_group_edit_form_tag'); ?>>
                         <?php wp_nonce_field('pp-update-group_' . $agent_id) ?>
 
-                        <input type="hidden" name="agent_type" value="<?php echo $agent_type;?>"/>
+                        <input type="hidden" name="agent_type" value="<?php echo esc_attr($agent_type);?>"/>
 
                         <?php if ($wp_http_referer) : ?>
                             <input type="hidden" name="wp_http_referer" value="<?php echo esc_url($wp_http_referer); ?>"/>
                         <?php endif; ?>
 
                         <?php
-                        $disabled = (!$pp_groups->groupTypeEditable($agent_type) || $agent->metagroup_id) ? 'disabled="disabled"' : '';
+                        $disabled = (!$pp_groups->groupTypeEditable($agent_type) || $agent->metagroup_id) ? ' disabled ' : '';
 
                         // @todo: better html / css for update button pos
                         ?>
@@ -193,8 +196,8 @@ class AgentPermissions
                                     <table class="form-table">
                                         <?php if (('user' == $agent_type) && $agent_id && ($agent->name != $agent->user_login)) : ?>
                                             <tr>
-                                                <th><label for="user_login"><?php echo __('User Login:', 'press-permit-core'); ?></label></th>
-                                                <td><?php echo $agent->user_login; ?>
+                                                <th><label for="user_login"><?php echo esc_html__('User Login:', 'press-permit-core'); ?></label></th>
+                                                <td><?php echo esc_html($agent->user_login); ?>
                                                 </td>
                                             </tr>
                                         <?php endif; ?>
@@ -202,15 +205,15 @@ class AgentPermissions
                                         <?php if ($agent_id) : ?>
                                             <tr>
                                                 <th><label>
-                                                        <!-- <label for="group_name"> --><?php echo __('Name:', 'press-permit-core'); ?></label>
+                                                        <!-- <label for="group_name"> --><?php echo esc_html__('Name:', 'press-permit-core'); ?></label>
                                                 </th>
                                                 <td>
                                                     <?php if (('user' == $agent_type)) :
-                                                        echo "<a href='user-edit.php?user_id=$agent_id'>$agent->name</a>";
+                                                        echo "<a href='" . esc_url('user-edit.php?user_id=' . (int) $agent_id) . "'>" . esc_html($agent->name) . "</a>";
                                                     else : ?>
                                                         <input type="text" name="group_name" id="group_name"
                                                             value="<?php echo esc_attr($agent->name); ?>"
-                                                            class="regular-text" <?php echo $disabled; ?> />
+                                                            class="regular-text" <?php echo esc_attr($disabled); ?> />
                                                     <?php endif; ?>
                                                 </td>
                                             </tr>
@@ -225,14 +228,14 @@ class AgentPermissions
                                                 ?>
                                                 <tr>
                                                     <th><label>
-                                                            <!-- <label for="user_login"> --><?php echo __('Primary Role:', 'press-permit-core'); ?></label>
+                                                            <!-- <label for="user_login"> --><?php echo esc_html__('Primary Role:', 'press-permit-core'); ?></label>
                                                     </th>
                                                     <td><?php
                                                         if ($role_group_id = $pp_groups->getMetagroup('wp_role', $primary_role, ['cols' => 'id'])) {
-                                                            echo "<a href='admin.php?page=presspermit-edit-permissions&action=edit&agent_type=pp_group&agent_id=$role_group_id'>"
-                                                                . $wp_roles->role_names[$primary_role] . '</a>';
+                                                            echo "<a href='" . esc_url('admin.php?page=presspermit-edit-permissions&action=edit&agent_type=pp_group&agent_id="' . (int) $role_group_id) . "'>"
+                                                                . esc_html($wp_roles->role_names[$primary_role]) . '</a>';
                                                         } else {
-                                                            echo $wp_roles->role_names[$primary_role];
+                                                            echo esc_html($wp_roles->role_names[$primary_role]);
                                                         }
                                                         ?>
                                                     </td>
@@ -243,10 +246,10 @@ class AgentPermissions
                                         <?php elseif ($agent_id) : ?>
                                             <tr>
                                                 <th>
-                                                    <label for="description"><?php echo PWP::__wp('Description:', 'press-permit-core'); ?></label>
+                                                    <label for="description"><?php echo esc_html(PWP::__wp('Description:', 'press-permit-core')); ?></label>
                                                 </th>
                                                 <td>
-                                                    <textarea name="description" id="description" rows="3" cols="40" class="regular-text <?php echo $disabled; ?>"><?php echo esc_attr($agent->group_description) ?></textarea>
+                                                    <textarea name="description" id="description" rows="3" cols="40" class="regular-text <?php echo esc_attr($disabled); ?>"><?php echo esc_html($agent->group_description) ?></textarea>
                                                 </td>
                                             </tr>
                                         <?php endif; ?>
@@ -260,7 +263,7 @@ class AgentPermissions
                                                 || apply_filters('presspermit_metagroup_editable', false, $agent->metagroup_type, $agent_id))
                                         ) {
 	                                        ?>
-	                                        <input type="submit" name="submit" id="submit" class="button button-primary pp-primary-button" value="<?php echo __('Update Group', 'press-permit-core') ?>">
+	                                        <input type="submit" name="submit" id="submit" class="button button-primary pp-primary-button" value="<?php esc_attr_e('Update Group', 'press-permit-core') ?>">
 	                                        <?php
                                         }
                                         ?>
@@ -336,7 +339,7 @@ class AgentPermissions
                                 );
 
                                 $role_group_caption = sprintf(
-                                    __('Supplemental Roles %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
+                                    esc_html__('Supplemental Roles %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
                                     '<small>',
                                     "<a class='pp-show-groups' href='#'>",
                                     '</a>',
@@ -360,7 +363,7 @@ class AgentPermissions
                                 }
 
                                 $role_group_caption = sprintf(
-                                    __('Specific Permissions %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
+                                    esc_html__('Specific Permissions %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
                                     '<small>',
                                     "<a class='pp-show-groups' href='#'>",
                                     '</a>',
@@ -373,13 +376,13 @@ class AgentPermissions
                                 <h4>
                                     <?php
                                     $url = "users.php";
-                                    printf(__('View currently stored user permissions:', 'press-permit-core'));
+                                    printf(esc_html__('View currently stored user permissions:', 'press-permit-core'));
                                     ?>
                                 </h4>
                                 <ul class="pp-notes">
-                                    <li><?php printf(__('%1$sUsers who have Supplemental Roles assigned directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_roles=1'>", '</a>'); ?></li>
-                                    <li><?php printf(__('%1$sUsers who have Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_exceptions=1'>", '</a>'); ?></li>
-                                    <li><?php printf(__('%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_perms=1'>", '</a>'); ?></li>
+                                    <li><?php printf(esc_html__('%1$sUsers who have Supplemental Roles assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_roles=1") . "'>", '</a>'); ?></li>
+                                    <li><?php printf(esc_html__('%1$sUsers who have Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_exceptions=1") . "'>", '</a>'); ?></li>
+                                    <li><?php printf(esc_html__('%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s', 'press-permit-core'), "<a href='". esc_url("$url?pp_user_perms=1") . "'>", '</a>'); ?></li>
                                 </ul>
                                 <?php
                             }
@@ -389,16 +392,16 @@ class AgentPermissions
 
                     if ($pp_admin->bulkRolesEnabled()) {
                         echo '<div class="pp_exceptions_notes">';
-                        echo '<div><strong>' . __('Specific Permissions Explained:', 'press-permit-core') . '</strong>';
+                        echo '<div><strong>' . esc_html__('Specific Permissions Explained:', 'press-permit-core') . '</strong>';
                         echo "<ul>";
-                        echo "<li>" . __('"Block" : Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core') . '</li>';
-                        echo "<li>" . __('"Limit to" : Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.', 'press-permit-core') . '</li>';
-                        echo "<li>" . __('"Enable" : Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core') . '</li>';
+                        echo "<li>" . esc_html__('"Block" : Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core') . '</li>';
+                        echo "<li>" . esc_html__('"Limit to" : Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.', 'press-permit-core') . '</li>';
+                        echo "<li>" . esc_html__('"Enable" : Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core') . '</li>';
                         echo "</ul>";
                         echo '</div>';
 
                         echo '<div>';
-                        _e('Keep in mind that Roles and Specific Permissions can be assigned to WP Roles, BuddyPress Groups, Custom Groups and/or individual Users.  "Enable" and "Limit to" adjustments are unavailable for groups in some contexts.', 'press-permit-core');
+                        esc_html_e('Keep in mind that Roles and Specific Permissions can be assigned to WP Roles, BuddyPress Groups, Custom Groups and/or individual Users.  "Enable" and "Limit to" adjustments are unavailable for groups in some contexts.', 'press-permit-core');
                         echo '</div>';
                         echo '</div>';
                     }

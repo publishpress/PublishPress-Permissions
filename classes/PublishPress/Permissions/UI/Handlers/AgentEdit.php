@@ -2,12 +2,11 @@
 
 namespace PublishPress\Permissions\UI\Handlers;
 
-//use \PressShack\LibWP as PWP;
-//use \PublishPress\Permissions\DB as DB;
-
 class AgentEdit
 {
     public function __construct() {
+        global $current_user;
+        
         require_once(PRESSPERMIT_CLASSPATH . '/DB/GroupUpdate.php');
 
         $action = presspermit_REQUEST_key('action');
@@ -17,10 +16,9 @@ class AgentEdit
 
         if (!$agent_type = presspermit_REQUEST_key('agent_type')) {
             return;
+        }
 
         $pp = presspermit();
-
-        $agent_type = pp_permissions_sanitize_key($_REQUEST['agent_type']);
 
         switch ($action) {
             case 'update':
@@ -28,7 +26,7 @@ class AgentEdit
                 check_admin_referer('pp-update-group_' . $agent_id);
 
                 if (!$pp->groups()->userCan('pp_edit_groups', $agent_id, $agent_type))
-                    wp_die(__('You are not permitted to do that.', 'press-permit-core'));
+                    wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
 
                 if ($pp->groups()->groupTypeEditable($agent_type)) {
                     $group = $pp->groups()->getGroup($agent_id, $agent_type);
@@ -76,7 +74,6 @@ class AgentEdit
                     $this->triggerGroupEdit($agent_id, $agent_type);
                 }
 
-                global $current_user;
                 update_user_option($current_user->ID, 'pp-permissions-tab', 'pp-add-roles');
 
                 $redirect = "$url?page=presspermit-edit-permissions&agent_id=$agent_id&agent_type=$agent_type&updated=1&pp_roles=1";
@@ -99,7 +96,6 @@ class AgentEdit
                     $this->triggerGroupEdit($agent_id, $agent_type);
                 }
 
-                global $current_user;
                 update_user_option($current_user->ID, 'pp-permissions-tab', 'pp-add-exceptions');
 
                 $redirect = "$url?page=presspermit-edit-permissions&agent_id=$agent_id&agent_type=$agent_type&updated=1&pp_exc=1";
@@ -107,10 +103,10 @@ class AgentEdit
                 break;
 
             case 'creategroup':
-                if (!current_user_can('pp_create_groups'))
-                    wp_die(__('You are not permitted to do that.', 'press-permit-core'));
-
                 check_admin_referer('pp-create-group', '_wpnonce_pp-create-group');
+
+                if (!current_user_can('pp_create_groups'))
+                    wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
 
                 $agent_type = presspermit_REQUEST_key('agent_type');
 
@@ -133,12 +129,12 @@ class AgentEdit
             presspermit()->admin()->errors = $retval;
         } elseif ($redirect) {
             if ($wp_http_referer = presspermit_REQUEST_var('wp_http_referer')) {
-                $arr = explode('/', $_REQUEST['wp_http_referer']);
+                $arr = explode('/', esc_url_raw($wp_http_referer));
                 if ($arr && !defined('PP_LEGACY_HTTP_REDIRECT')) {
-                    $wp_http_referer = sanitize_url(array_pop($arr));
+                    $wp_http_referer = esc_url_raw(array_pop($arr));
                     $redirect = add_query_arg('wp_http_referer', urlencode($wp_http_referer), $redirect);
                 } else {
-                    $redirect = add_query_arg('wp_http_referer', urlencode(sanitize_url($_REQUEST['wp_http_referer'])), $redirect);
+                    $redirect = add_query_arg('wp_http_referer', urlencode(esc_url_raw($wp_http_referer)), $redirect);
                 }
             }
 
@@ -146,7 +142,7 @@ class AgentEdit
             wp_redirect($redirect);
             exit;
         }
-    } // end function __construct()
+    }
 
     private function triggerGroupEdit($group_id, $agent_type, $members_only = false)
     {
@@ -208,7 +204,7 @@ class AgentEdit
                 $exc = apply_filters('presspermit_add_exception', $exc);
 
                 foreach (['mod_type', 'item_id', 'operation', 'attrib_cond', 'via_type', 'for_type', 'for_item', 'for_children'] as $var) {
-                    $$var = (isset($exc[$var])) ? pp_permissions_sanitize_key($exc[$var]) : '';
+                    $$var = (isset($exc[$var])) ? sanitize_key($exc[$var]) : '';
                 }
 
                 $item_id = (isset($exc['item_id'])) ? (int) $exc['item_id'] : 0;
@@ -299,12 +295,12 @@ class AgentEdit
 
             /* checking that username has been typed */
             if (!$group->group_name) {
-                $errors->add('group_name', __('<strong>ERROR</strong>: Please enter a group name.', 'press-permit-core'));
+                $errors->add('group_name', esc_html__('<strong>ERROR</strong>: Please enter a group name.', 'press-permit-core'));
 
             } elseif (!$update && !\PublishPress\Permissions\DB\GroupUpdate::groupNameAvailable($group->group_name, $agent_type)) {
                 $errors->add(
                     'user_login', 
-                    __('<strong>ERROR</strong>: This group name is already registered. Please choose another one.', 'press-permit-core')
+                    esc_html__('<strong>ERROR</strong>: This group name is already registered. Please choose another one.', 'press-permit-core')
                 );
             }
 

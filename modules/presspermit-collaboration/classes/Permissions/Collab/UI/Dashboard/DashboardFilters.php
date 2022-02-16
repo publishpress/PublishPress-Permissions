@@ -1,9 +1,6 @@
 <?php
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
-//use \PublishPress\Permissions\Collab as Collab;
-//use \PublishPress\Permissions\Collab\UI as UI;
-
 class DashboardFilters
 {
     function __construct()
@@ -94,8 +91,8 @@ class DashboardFilters
         if ('presspermit-role-usage' == presspermitPluginPage()) {
             add_submenu_page(
                 $pp_options_menu, 
-                __('Role Usage', 'press-permit-core'), 
-                __('Role Usage', 'press-permit-core'), 
+                esc_html__('Role Usage', 'press-permit-core'), 
+                esc_html__('Role Usage', 'press-permit-core'), 
                 'read', 
                 'presspermit-role-usage', 
                 $handler
@@ -105,8 +102,8 @@ class DashboardFilters
         if ('presspermit-role-usage-edit' == presspermitPluginPage()) {
             add_submenu_page(
                 $pp_options_menu, 
-                __('Edit Role Usage', 'press-permit-core'), 
-                __('Edit Role Usage', 'press-permit-core'), 
+                esc_html__('Edit Role Usage', 'press-permit-core'), 
+                esc_html__('Edit Role Usage', 'press-permit-core'), 
                 'read', 
                 'presspermit-role-usage-edit', 
                 $handler
@@ -193,7 +190,7 @@ class DashboardFilters
                 [(object)[
                     'attrib_type' => 'moderation', 
                     'url' => "admin.php?page=presspermit-statuses&attrib_type=moderation", 
-                    'label' => __('Workflow', 'press-permit-core')
+                    'label' => esc_html__('Workflow', 'press-permit-core')
                     ]
                 ],
                 $links

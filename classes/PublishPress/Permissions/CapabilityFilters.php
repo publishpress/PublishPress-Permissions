@@ -29,7 +29,7 @@ class CapabilityFilters
 
         $this->meta_caps = apply_filters('presspermit_meta_caps', ['read_post' => 'read', 'read_page' => 'read']);
 
-        $this->cap_data_sources = []; // $arr[$cap_name] = source_name (but default to 'post' data source if unspecified)
+        $this->cap_data_sources = []; // array : [$cap_name] = source_name (but default to 'post' data source if unspecified)
         $this->cap_data_sources = apply_filters('presspermit_cap_data_sources', $this->cap_data_sources);
 
         // Since PP activation implies that this plugin should take custody
@@ -50,13 +50,6 @@ class CapabilityFilters
         if (defined('PP_DISABLE_CAP_CACHE')) {
             add_action('presspermit_has_post_cap_pre', [$this, 'disableCapCache'], 10, 4);
         }
-
-        /*
-        // As of 4.8, need to impose current_user_can('read_post') on REST view request for a single public post, because WP_REST_Posts_Controller does not
-        if ( ! $pp->isContentAdministrator() && ! $pp->moduleActive('collaboration') ) {
-            add_filter( 'rest_request_after_callbacks', [$this, 'fltConfirmRestReadable'], 20, 3 );
-        }
-        */
 
         do_action('presspermit_cap_filters');
     }
@@ -109,7 +102,7 @@ class CapabilityFilters
         }
 
         $args = (array)$args;
-        $orig_cap = (isset($args[0])) ? pp_permissions_sanitize_key($args[0]) : '';
+        $orig_cap = (isset($args[0])) ? sanitize_key($args[0]) : '';
 
         if (isset($args[2])) {
             if (is_object($args[2]))
@@ -419,7 +412,7 @@ class CapabilityFilters
 
         $post_type = PWP::findPostType($post_id); // will be pulled from object
 
-        $pp_reqd_caps = array_map('pp_permissions_sanitize_key', (array)$args[0]); // already cast to array
+        $pp_reqd_caps = array_map('sanitize_key', (array)$args[0]); // already cast to array
 
         //=== Allow PP modules or other plugins to modify some variables
         //
@@ -470,7 +463,7 @@ class CapabilityFilters
         $query_args = ['required_operation' => $required_operation, 'post_types' => $post_type, 'skip_teaser' => true];
 
         // generate a string key for this set of required caps, for use below in checking, caching the filtered results
-        $cap_arg = ( 'edit_page' == $args[0] ) ? 'edit_post' : pp_permissions_sanitize_key($args[0]); // minor perf boost on uploads.php, TODO: move to PPCE
+        $cap_arg = ( 'edit_page' == $args[0] ) ? 'edit_post' : sanitize_key($args[0]); // minor perf boost on uploads.php, TODO: move to PPCE
         $capreqs_key = ($memcache_disabled) ? false : $cap_arg . $pp->flags['cache_key_suffix'] . md5(serialize($query_args));
 
         // Check whether this object id was already tested for the same reqd_caps in a previous execution of this function within the same http request
@@ -516,7 +509,7 @@ class CapabilityFilters
             }
 
             $query_args['limit_ids'] = $listed_ids;
-            $query_args['has_cap_check'] = pp_permissions_sanitize_key($args[0]);
+            $query_args['has_cap_check'] = sanitize_key($args[0]);
             $request = PostFilters::constructPostsRequest(['fields' => "$wpdb->posts.ID"], $query_args);
 
             // run the query
@@ -549,17 +542,8 @@ class CapabilityFilters
         }
 
         if ($this_id_okay) {
-            //pp_debug_echo( "PASSED for {$orig_reqd_caps[0]}<br />" );
             return array_merge($wp_sitecaps, array_fill_keys($orig_reqd_caps, true));
         } else {
-            // ================= TEMPORARY DEBUG CODE ===================
-            //pp_dump($args);
-            //pp_dump($orig_reqd_caps);
-            //pp_dump($pp_reqd_caps);
-            //pp_debug_echo( "user_has_cap FAILED ($post_id) !!!!!!!" );
-            //pp_debug_echo( '<br />' );
-            // ============== (end temporary debug code ==================
-
             return array_diff_key($wp_sitecaps, array_fill_keys($orig_reqd_caps, true));  // return user's sitewide caps, minus the caps we were checking for
         }
     }

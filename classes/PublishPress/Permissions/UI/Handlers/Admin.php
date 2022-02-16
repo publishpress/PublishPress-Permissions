@@ -14,13 +14,15 @@ class Admin
                 || presspermit_is_POST('action', ['pp_updateroles', 'pp_updateexceptions', 'pp_updateclone'])
                 || ((presspermit_is_REQUEST('_wp_http_referer') && strpos(esc_url_raw(presspermit_REQUEST_var('_wp_http_referer')), 'presspermit-edit-permissions'))
                 || ('presspermit-group-new' == $pp_plugin_page)
-            ) {
-                add_action('presspermit_user_init', function()
-                {
-                    require_once(PRESSPERMIT_CLASSPATH . '/UI/Handlers/AgentEdit.php');
-                    new AgentEdit();
-                    do_action('presspermit_trigger_cache_flush');
-                });
+            )) {
+                add_action(
+                    'presspermit_user_init', 
+                    function() {
+                    	require_once(PRESSPERMIT_CLASSPATH . '/UI/Handlers/AgentEdit.php');
+                    	new AgentEdit();
+                    	do_action('presspermit_trigger_cache_flush');
+                    }
+                );
             }
         }
 

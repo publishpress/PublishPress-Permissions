@@ -155,7 +155,7 @@ class PageFilters
             return $results;
         }
 
-        // =========== PressPermit @todo: review
+        // =========== PressPermit todo: review
         if (is_admin() && ('any' === $post_status)) {
             $post_status = '';
         }
@@ -212,7 +212,7 @@ class PageFilters
             $hierarchical = false;
             $incpages = wp_parse_id_list($include);
             if (!empty($incpages)) {
-                foreach ($incpages as $incpage) {  // @todo: change to IN clause after confirming no issues with PP query parsing
+                foreach ($incpages as $incpage) {  // todo: change to IN clause after confirming no issues with PP query parsing
                     if ($incpage) {
                         if (empty($inclusions))
                             $inclusions = ' AND ( ID = ' . intval($incpage) . ' ';
@@ -230,7 +230,7 @@ class PageFilters
         if (!empty($exclude)) {
             $expages = wp_parse_id_list($exclude);
             if (!empty($expages)) {
-                foreach ($expages as $expage) { // @todo: change to IN clause after confirming no issues with PP query parsing
+                foreach ($expages as $expage) { // todo: change to IN clause after confirming no issues with PP query parsing
                     if (empty($exclusions))
                         $exclusions = ' AND ( ID <> ' . intval($expage) . ' ';
                     else
@@ -358,8 +358,6 @@ class PageFilters
         $where_post_type = $wpdb->prepare("post_type = %s", $post_type);
         $where_status = '';
 
-        global $current_user;
-
         $is_front = PWP::isFront();
         if ($is_front && !empty($current_user->ID))
             $frontend_list_private = !defined('PP_SUPPRESS_PRIVATE_PAGES'); // currently using Page option for all hierarchical types
@@ -391,7 +389,7 @@ class PageFilters
         }
 
         $where_id = '';
-        global $pagenow;
+
         if (is_admin() && in_array($pagenow, ['post.php', 'post-new.php'])) {
             global $post;
             if ($post)
@@ -422,7 +420,6 @@ class PageFilters
 
             $groupby = $distinct = '';
 
-            global $pagenow;
             if (in_array($pagenow, ['post.php', 'post-new.php']) || (defined('REST_REQUEST') && REST_REQUEST)) {
                 $clauses = apply_filters(
                     'presspermit_get_pages_clauses',
@@ -475,7 +472,7 @@ class PageFilters
             return apply_filters('presspermit_get_pages', [], $r);
         }
 
-        if ($child_of) {  // @todo: review (WP core is $child_of || $hierarchical)
+        if ($child_of) {  // todo: review (WP core is $child_of || $hierarchical)
             $pages = get_page_children($child_of, $pages);
         }
 

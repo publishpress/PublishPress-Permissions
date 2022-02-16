@@ -37,7 +37,7 @@ class RESTHelper
                 if ($pp->getEnabledPostTypes(['rest_base' => $rest_base])) {
                     if ($post_status_obj = get_post_status_object(get_post_field('post_status', $post_id))) {
                         if ($post_status_obj->public && !current_user_can('read_post', $post_id)) {
-                            return new \WP_Error('rest_forbidden', __("Sorry, you are not allowed to do that."), ['status' => 403]);
+                            return new \WP_Error('rest_forbidden', esc_html__("Sorry, you are not allowed to do that."), ['status' => 403]);
                         }
                     }
                 }

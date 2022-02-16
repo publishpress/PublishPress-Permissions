@@ -1,8 +1,6 @@
 <?php
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
-//use \PressShack\LibArray as Arr;
-
 class TermEdit
 {
     function __construct()
@@ -11,7 +9,6 @@ class TermEdit
 
         add_filter('presspermit_term_exceptions_metaboxes', [$this, 'term_exceptions_metaboxes'], 10, 3);
         add_action('presspermit_prep_metaboxes', [$this, 'pp_prep_metaboxes'], 10, 3);
-        //add_action( 'pp_update_item_exceptions', [$this, 'update_item_exceptions'], 10, 3 );
     }
 
     function flt_item_edit_exception_ops($operations, $for_item_source, $taxonomy, $for_item_type)
@@ -62,11 +59,11 @@ class TermEdit
 
                     $caption = ('associate' == $op) 
                     ? sprintf(
-                        __('Permissions: Select this %1$s as Parent', 'press-permit-core'), 
+                        esc_html__('Permissions: Select this %1$s as Parent', 'press-permit-core'), 
                         $tx->labels->singular_name
                     )
                     : sprintf(
-                        __('Permissions: %1$s this %2$s', 'press-permit-core'), 
+                        esc_html__('Permissions: %1$s this %2$s', 'press-permit-core'), 
                         $op_obj->label, 
                         $tx->labels->singular_name
                     );

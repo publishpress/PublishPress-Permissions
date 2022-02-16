@@ -171,9 +171,6 @@ class Capabilities
 				continue;
 			}
 
-			// Default plural slug
-			//$plural_type = "{$cap_base}s";
-			
 			$plural_type = self::getPlural($post_type, $wp_post_types[$post_type]);
 			
 			if ("{$cap_base}s" != $plural_type) {
@@ -224,8 +221,6 @@ class Capabilities
 
 			$wp_post_types[$post_type]->cap = (object) array_merge((array) $wp_post_types[$post_type]->cap, $type_caps);
 			
-			//$this->all_type_caps = array_merge($this->all_type_caps, array_fill_keys($type_caps, true));
-			
 			foreach(array_unique((array)$wp_post_types[$post_type]->cap) as $cap_name) {
 				if (!isset($this->all_type_caps[$cap_name])) {
 					$this->all_type_caps[$cap_name] = 1;
@@ -246,13 +241,13 @@ class Capabilities
         if ($type_obj && ! empty($type_obj->rest_base) && ($type_obj->rest_base != $slug) && ($type_obj->rest_base != "{$slug}s")) {
             // Use plural form from rest_base
             if ($pos = strpos($type_obj->rest_base, '/')) {
-                return pp_permissions_sanitize_key(substr($type_obj->rest_base, 0, $pos + 1));
+                return sanitize_key(substr($type_obj->rest_base, 0, $pos + 1));
             } else {
-                return pp_permissions_sanitize_key($type_obj->rest_base);
+                return sanitize_key($type_obj->rest_base);
             }
         } else {
             require_once (PRESSPERMIT_CLASSPATH_COMMON . '/Inflect.php');
-            return pp_permissions_sanitize_key(\PressShack\Inflect::pluralize($slug));	
+            return sanitize_key(\PressShack\Inflect::pluralize($slug));	
         }
     }
 }

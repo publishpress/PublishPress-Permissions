@@ -30,7 +30,7 @@ class PostEdit
             }
 
             $args['blockMainPage'] = true;
-            $args['selectCaption'] = __('(select...)', 'press-permit-core');
+            $args['selectCaption'] = esc_html__('(select...)', 'press-permit-core');
         } else {
             return;
         }

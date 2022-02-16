@@ -14,7 +14,7 @@ class Admin
 
     public function flt_pp_administrator_caps($caps)
     {
-        // @todo: why is edit_others_revisions cap required for Administrators in Edit Posts listing (but not Edit Pages) ?
+        // todo: why is edit_others_revisions cap required for Administrators in Edit Posts listing (but not Edit Pages) ?
 
         $caps['edit_revisions'] = true;
         $caps['edit_others_revisions'] = true;
@@ -27,14 +27,15 @@ class Admin
 
     public function flt_mapMetaCap($caps, $meta_cap, $user_id, $wp_args)
     {
+        global $current_user;
+
         if ($user_id && in_array($meta_cap, ['edit_post', 'edit_page'], true) && !empty($wp_args[0]) 
 			&& function_exists('rvy_get_option') && function_exists('rvy_default_options') // Revisions plugin does not initialize on plugins.php URL
 		) {
-            global $current_user;
             if ($user_id != $current_user->ID)
                 return $caps;
 
-            if ( false !== strpos($_SERVER['SCRIPT_NAME'], 'update.php') ) { // Revisionary does not load on update.php
+            if (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'update.php')) { // Revisionary does not load on update.php
                 return $caps;
             }
 
@@ -45,9 +46,6 @@ class Admin
             }
 
             if (rvy_get_option('require_edit_others_drafts') && apply_filters('revisionary_require_edit_others_drafts', true, $_post->post_type, $_post->post_status, $wp_args)) {
-                // for \PublishPress\Permissions\PostFilters::mapMetaCap()
-                global $current_user;
-
                 if ($current_user->ID == $_post->post_author) {
                     return $caps;
                 }
@@ -209,7 +207,6 @@ class Admin
                 if ($tt_ids = $user->getExceptionTerms('revise', $mod, $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])) {    
                     if ($merge_additions) {
                         $tx_additional_ids = array_merge(
-                            //$user->getExceptionTerms('copy', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true]),
                             $user->getExceptionTerms('revise', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
                         );
                     } else {
@@ -249,7 +246,6 @@ class Admin
                     if ($merge_additions) {
                         $tx_additional_ids = array_merge(
                             $user->getExceptionTerms('copy', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
-                            //$user->getExceptionTerms('revise', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
                         );
                     } else {
                         $tx_additional_ids = [];

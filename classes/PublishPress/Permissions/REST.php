@@ -3,7 +3,6 @@ namespace PublishPress\Permissions;
 
 class REST
 {
-    //var $request;
     var $is_view_method = false;
     var $endpoint_class = '';
     var $taxonomy = '';
@@ -136,8 +135,6 @@ class REST
                     continue;
                 }
 				
-                //$this->request = $request;
-
                 $this->is_view_method = in_array($method, [\WP_REST_Server::READABLE, 'GET']);
                 $this->params = $request->get_params();
                 
@@ -147,7 +144,7 @@ class REST
                     $this->referer = reset($this->referer);
                 }
 
-                $this->operation = (isset($this->params['context'])) ? pp_permissions_sanitize_key($this->params['context']) : '';
+                $this->operation = (isset($this->params['context'])) ? sanitize_key($this->params['context']) : '';
                 if ('view' == $this->operation) {
                     $this->operation = 'read';
                 }
@@ -189,7 +186,7 @@ class REST
 
                         if (!empty($params['exclude']) || !empty($params['parent_exclude'])) {
                             // Prevent Gutenberg from triggering needless post_name retrieval (for permalink generation) for each item in Page Parent dropdown
-                            if (!empty($_SERVER) && !empty($_SERVER['HTTP_REFERER']) && false !== strpos($_SERVER['HTTP_REFERER'], admin_url())) {
+                            if (!empty($_SERVER) && !empty($_SERVER['HTTP_REFERER']) && false !== strpos(esc_url_raw($_SERVER['HTTP_REFERER']), admin_url())) {
                                 global $wp_post_types;
 
                                 if (!$this->post_type) {

@@ -2,8 +2,6 @@
 
 namespace PublishPress\Permissions\DB;
 
-//use \PressShack\LibArray as Arr;
-
 class Permissions
 {
     public static function getRoles($agent_id, $agent_type = 'pp_group', $args = [])
@@ -16,7 +14,7 @@ class Permissions
 
         $roles = [];
 
-        $agent_type = pp_permissions_sanitize_key($agent_type);
+        $agent_type = sanitize_key($agent_type);
 
         if ($query_agent_ids) {
             static $agent_roles;
@@ -162,7 +160,6 @@ class Permissions
             ],
         ];
 
-        // valid return array is arr[for_item_source] = arr[via_item_src][via_item_type] = ['include', 'exclude']
         if ($add_source_types = apply_filters('presspermit_add_exception_source_types', [])) {
             $valid_src_types = array_merge($valid_src_types, $add_source_types);
         }
@@ -301,7 +298,7 @@ class Permissions
             if ($additional_ids)
                 $include_ids = array_unique(array_merge($include_ids, $additional_ids));
 
-            // @todo: how can this ever have array elements (PHP error log from one user)
+            // todo: how can this ever have array elements (PHP error log from one user)
             $include_ids = array_filter($include_ids, 'is_scalar');
 
             $where = " AND $col_id IN ('" . implode("','", array_unique($include_ids)) . "')";
@@ -412,16 +409,14 @@ class Permissions
         $revise_status_key = (defined('PRESSPERMIT_REVISE_TERMS_FOR_UNPUBLISHED') && function_exists('rvy_get_option') && rvy_get_option('pending_revision_unpublished')) ? '' : '{published}';
         $revise_ttids = [$revise_status_key => []];
 
-        global $revisionary, $pagenow;  // @todo: API
+        global $revisionary, $pagenow;  // todo: API
 
 
-        // @todo: remove revise_post merging with Revisions 3
+        // todo: remove revise_post merging with Revisions 3
 
         
         foreach (presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
             $tt_ids = $user->getExceptionTerms($required_operation, 'additional', $post_type, $taxonomy, ['status' => true, 'merge_universals' => true]);
-
-            global $pagenow;
 
             $type_obj = get_post_type_object($post_type);
 

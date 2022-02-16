@@ -7,7 +7,7 @@ function presspermit_usage_message($translate = true)
 {
     if (function_exists('memory_get_usage')) {
         if ($translate)
-            return sprintf(__('%1$s queries in %2$s seconds. %3$s MB used.', 'press-permit-core'), get_num_queries(), timer_stop(0, 2), round(memory_get_usage() / (1024 * 1024), 3), 'press-permit-core') . ' ';
+            return sprintf(esc_html__('%1$s queries in %2$s seconds. %3$s MB used.', 'press-permit-core'), get_num_queries(), timer_stop(0, 2), round(memory_get_usage() / (1024 * 1024), 3), 'press-permit-core') . ' ';
         else
             return get_num_queries() . ' queries in ' . timer_stop(0, 2) . ' seconds. ' . round(memory_get_usage() / (1024 * 1024), 3) . ' MB used. ';
     }
@@ -16,7 +16,7 @@ function presspermit_usage_message($translate = true)
 function presspermit_echo_usage_message($translate = true)
 {
     if (!defined('PUBLISHPRESS_REVISIONS_VERSION') && !defined('REVISIONARY_VERSION') && !defined('PRESSPERMIT_USAGE_MESSAGE_DONE') && !defined('AGP_NO_USAGE_MSG')) {  // Revisionary outputs its own message
-        echo '<p style="text-align:center">' . presspermit_usage_message($translate) . '</p>';
+        echo '<p style="text-align:center">' . esc_html(presspermit_usage_message($translate)) . '</p>';
         define('PRESSPERMIT_USAGE_MESSAGE_DONE', true);
     }
 }
@@ -40,8 +40,6 @@ if (!function_exists('pp_debug_echo')) {
     {
         if (!constant('PRESSPERMIT_DEBUG'))
             return;
-
-        echo($str);
     }
 }
 
@@ -58,9 +56,6 @@ if (!function_exists('pp_errlog')) {
 
         if (defined('PRESSPERMIT_DEBUG_LOGFILE'))
             error_log($msg . $append, 3, PRESSPERMIT_DEBUG_LOGFILE);
-
-        elseif (defined('PRESSPERMIT_ABSPATH') && is_writable(PRESSPERMIT_ABSPATH))
-            error_log($msg . $append, 3, PRESSPERMIT_ABSPATH . '/php_debug.txt');
     }
 }
 

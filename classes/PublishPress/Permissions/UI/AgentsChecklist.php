@@ -2,8 +2,6 @@
 
 namespace PublishPress\Permissions\UI;
 
-//use \PublishPress\Permissions\DB as DB;
-
 /**
  * AgentsChecklist class
  *
@@ -30,21 +28,28 @@ class AgentsChecklist
         $exec_count++;  // support abbreviated checkbox id for label association
 
         if ('eligible' == $agents_subset) {
-            $caption = __('eligible (%d):', 'press-permit-core');
-
             $item_assignments = array_intersect_key($item_assignments, $all_agents);
 
             if (!$agent_count = count($all_agents) - count($item_assignments))
                 return;
         } else {
-            $caption = __('current (%d):', 'press-permit-core');
             $agent_count = count($item_assignments);
         }
 
         echo "<div>";
         echo "<ul class='pp-list_horiz'><li>";
-        if ($show_subset_caption)
-            printf("<div class='pp-agents_caption'><strong>$caption</strong></div>", $agent_count);
+        if ($show_subset_caption) {
+            echo "<div class='pp-agents_caption'><strong>";
+
+            if ('eligible' == $agents_subset) {
+                printf(esc_html__('eligible (%d):', 'press-permit-core'), (int) $agent_count);
+            } else {
+                printf(esc_html__('current (%d):', 'press-permit-core'), (int) $agent_count);
+            }
+
+            echo "</strong></div>";
+        }
+
         echo '</li>';
 
         echo '</ul>';
@@ -102,21 +107,21 @@ class AgentsChecklist
 
             $ul_class = 'pp-agents-list_' . intval($list_width_ems);
 
-            echo "<div id='div_{$agents_subset}_{$name_attrib}' class='pp-{$agent_type} pp-{$agents_subset}'>"
+            echo "<div id='div_" . esc_attr("{$agents_subset}_{$name_attrib}") . "' class='" . esc_attr("pp-{$agent_type} pp-{$agents_subset}") . "'>"
                 . "<div class='pp-agents_emsized'>"
-                . "<ul class='pp-agents-list $ul_class' id='list_{$agents_subset}_{$name_attrib}'>";
+                . "<ul class='pp-agents-list " . esc_attr($ul_class) . "' id='" . esc_attr("list_{$agents_subset}_{$name_attrib}") . "'>";
         } else {
             $ul_class = "pp-agents-list_auto";
-            echo "<div class='pp-{$agent_type}'>"
-                . "<ul class='pp-agents-list $ul_class' id='list_{$agents_subset}_{$name_attrib}'>";
+            echo "<div class='pp-{" . esc_attr($agent_type) . "'>"
+                . "<ul class='pp-agents-list " . esc_attr($ul_class) . "' id='" . esc_attr("list_{$agents_subset}_{$name_attrib}") . "'>";
         }
 
         if (presspermit()->groups()->groupTypeEditable($agent_type)) {
             $edit_link_base = apply_filters('presspermit_groups_base_url', 'admin.php')
                 . "?page=presspermit-edit-permissions&amp;action=edit&amp;agent_type=$agent_type&amp;agent_id=";
 
-            $edit_title_text = __('view / edit group', 'press-permit-core');
-            $edit_caption = __('edit', 'press-permit-core');
+            $edit_title_text = esc_attr__('view / edit group', 'press-permit-core');
+            $edit_caption = esc_html__('edit', 'press-permit-core');
         } else
             $edit_link_base = '';
 
@@ -126,31 +131,29 @@ class AgentsChecklist
             if (!empty($agent->metagroup_id)) {
                 $display_name = (isset($agent->display_name)) ? $agent->display_name : '';
 
-                $li_title = "title='"
-                    . \PublishPress\Permissions\DB\Groups::getMetagroupDescript($agent->metagroup_type, $agent->metagroup_id, $display_name)
-                    . "'";
+                $li_title =  \PublishPress\Permissions\DB\Groups::getMetagroupDescript($agent->metagroup_type, $agent->metagroup_id, $display_name);
             } elseif (isset($full_captions[$id]))
-                $li_title = "title='{$full_captions[$id]}'";
+                $li_title = $full_captions[$id];
             else
-                $li_title = "title='{$captions[$id]}'";
+                $li_title = $captions[$id];
 
-            $checked = (isset($item_assignments[$id])) ? ' checked="checked"' : '';
-            $disabled = ($locked_ids && in_array($id, $locked_ids)) ? " disabled='disabled'" : '';
+            $checked = (isset($item_assignments[$id])) ? ' checked ' : '';
+            $disabled = ($locked_ids && in_array($id, $locked_ids)) ? " disabled " : '';
 
-            echo "<li $li_title>";
+            echo "<li title='" . esc_attr($li_title) . "'>";
 
             if ($hide_checkboxes)
                 echo '&bull; ';
             else
-                echo "<input type='checkbox' name='{$name_attrib}[]'{$disabled}{$checked} value='$id' id='r{$exec_count}_{$id}' />";
+                echo "<input type='checkbox' name='" . esc_attr($name_attrib) . "[]'" . esc_attr($disabled) . esc_attr($checked) . " value='" . esc_attr($id) . "' id='r" . esc_attr("{$exec_count}_{$id}") . "' />";
 
-            echo "<label for='r{$exec_count}_{$id}'>";
-            echo ' ' . $captions[$id];
+            echo "<label for='" . esc_attr("r{$exec_count}_{$id}"). "'>";
+            echo ' ' . esc_html($captions[$id]);
             echo '</label>';
 
             if ($edit_link_base && presspermit()->groups()->userCan('pp_edit_groups', $id, $agent_type))
-                echo ' <a href=" ' . $edit_link_base . $id . '" target="_blank" title="' . $edit_title_text . '">'
-                    . $edit_caption . '</a>';
+                echo ' <a href="' . esc_url($edit_link_base . $id) . '" target="_blank" title="' . esc_attr($edit_title_text) . '">'
+                    . esc_html($edit_caption) . '</a>';
 
             echo '</li>';
         } //foreach agent

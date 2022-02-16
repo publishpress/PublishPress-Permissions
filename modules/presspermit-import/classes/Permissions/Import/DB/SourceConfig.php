@@ -17,7 +17,7 @@ class SourceConfig
         $wpdb->user2role2object_rs = $wpdb->prefix . 'user2role2object_rs';
         $wpdb->role_scope_rs = $wpdb->prefix . 'role_scope_rs';
 
-        $prefix = $wpdb->prefix; // (! empty($wpdb->base_prefix) && $sitewide_groups) ? $wpdb->base_prefix : $wpdb->prefix;
+        $prefix = $wpdb->prefix;
 
         $wpdb->groups_basename = 'groups_rs';
         $wpdb->groups_rs = $prefix . $wpdb->groups_basename;

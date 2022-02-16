@@ -6,6 +6,8 @@ class PluginUpdated
 {
     public function __construct($prev_version)
     {
+        global $wpdb;
+
         // single-pass do loop to easily skip unnecessary version checks
         do {
             if (!$prev_version) {
@@ -20,15 +22,14 @@ class PluginUpdated
                 break;  // no need to run through version comparisons if no previous version
             }
 
-            // @todo: confirm this is only needed after Import from Role Scoper / Press Permit Beta
-            global $wpdb;
+            // todo: confirm this is only needed after Import from Role Scoper / Press Permit Beta
             $wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'buffer_metagroup_id_%'");
 
             if (version_compare($prev_version, '2.7-beta', '>=')
             && version_compare($prev_version, '2.7-beta3', '<')
             ) {
                 // Previous 2.7 betas added wrong capabilities
-                // (@todo: possibly migrate all capabilities, but not yet)
+                // (todo: possibly migrate all capabilities, but not yet)
                 if ($role = @get_role('administrator')) {
                     $role->remove_cap('presspermit_create_groups');
                     $role->remove_cap('presspermit_delete_groups');
@@ -111,18 +112,9 @@ class PluginUpdated
             } else break;
 
             if (version_compare($prev_version, '2.1.16-beta', '<')) {
-                global $wpdb;
                 $wpdb->query("UPDATE $wpdb->ppc_exceptions SET for_item_source = 'post' WHERE for_item_source = 'all'");
             } else break;
         } while (0); // end single-pass version check loop
-
-        /*
-        if ( $prev_version && is_admin() ) {
-            if ( preg_match( "/dev|alpha|beta|rc/i", PRESSPERMIT_VERSION ) && ! preg_match( "/dev|alpha|beta|rc/i", $prev_version ) ) {
-                presspermit()->admin()->notice( __( 'You have installed a development / beta version of PressPermit Pro. If this is a concern, see Permissions > Settings > Install > Beta Updates.', 'press-permit-core' ), 'updated' );
-            }
-        }
-        */
     }
 
     public static function deactivateModules($args = []) {

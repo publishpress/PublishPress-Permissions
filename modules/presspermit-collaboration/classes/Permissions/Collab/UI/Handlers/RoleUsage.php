@@ -11,7 +11,7 @@ class RoleUsage
         $redirect = $err = false;
 
         if (!current_user_can('pp_manage_settings'))
-            wp_die(__('You are not permitted to do that.', 'press-permit-core'));
+            wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
 
         $pp = presspermit();
 
@@ -23,7 +23,7 @@ class RoleUsage
 
                 $pp = presspermit();
 
-                $role_name = pp_permissions_sanitize_entry($_REQUEST['role']);
+                $role_name = pp_permissions_sanitize_entry($role);
                 check_admin_referer('pp-update-role-usage_' . $role_name);
 
                 // overall pattern role enable
@@ -49,7 +49,7 @@ class RoleUsage
 
         if ($redirect) {
             if ($wp_http_referer = presspermit_REQUEST_var('wp_http_referer'))  {
-                $redirect = add_query_arg('wp_http_referer', urlencode(sanitize_url($_REQUEST['wp_http_referer'])), $redirect);
+                $redirect = add_query_arg('wp_http_referer', urlencode(esc_url_raw($wp_http_referer)), $redirect);
             }
 
             $redirect = esc_url_raw(add_query_arg('update', 1, $redirect));

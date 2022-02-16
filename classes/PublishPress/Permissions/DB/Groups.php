@@ -69,7 +69,7 @@ class Groups
             if (isset($results[$key]->group_description))
                 $results[$key]->group_description = stripslashes($results[$key]->group_description);
 
-            // strip out Revisionary metagroups if we're not using them (@todo: API)
+            // strip out Revisionary metagroups if we're not using them (todo: API)
             if ($results[$key]->metagroup_type) {
                 if (!defined('PUBLISHPRESS_REVISIONS_VERSION') && !defined('REVISIONARY_VERSION') && ('rvy_notice' == $results[$key]->metagroup_type)) {
                     unset($results[$key]);
@@ -90,7 +90,7 @@ class Groups
             $$var = $args[$var];
         }
 
-        // If $group_id is an array of group objects, extract IDs into a separate array (@todo: review calling code)
+        // If $group_id is an array of group objects, extract IDs into a separate array (todo: review calling code)
         if (is_array($group_id)) {
             $first = current($group_id);
 
@@ -112,7 +112,6 @@ class Groups
         $wpdb->members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
 
         $status_clause = ($status) ? $wpdb->prepare("AND status = %s", $status) : '';
-        $mtype_clause = $wpdb->prepare("AND member_type = %s", $member_type);
 
         if ('id' == $cols) {
             if (!$results = $wpdb->get_col(
@@ -351,34 +350,34 @@ class Groups
         global $wp_roles;
 
         if ('wp_auth' == $meta_id) {
-            return __('Logged In', 'press-permit-core');
+            return esc_html__('Logged In', 'press-permit-core');
         } elseif ('wp_anon' == $meta_id) {
-            return __('Not Logged In', 'press-permit-core');
+            return esc_html__('Not Logged In', 'press-permit-core');
         } elseif ('wp_all' == $meta_id) {
-            return __('Everyone', 'press-permit-core');
+            return esc_html__('Everyone', 'press-permit-core');
         } elseif ('wp_role' == $metagroup_type) {
             switch ($meta_id) {
                 case 'rvy_pending_rev_notice':
-                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? __('Change Request Notifications', 'press-permit-core') : __('Pending Revision Monitors', 'press-permit-core');
+                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? esc_html__('Change Request Notifications', 'press-permit-core') : esc_html__('Pending Revision Monitors', 'press-permit-core');
                     break;
 
                 case 'rvy_scheduled_rev_notice':
-                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? __('Scheduled Change Notifications', 'press-permit-core') : __('Scheduled Revision Monitors', 'press-permit-core');
+                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? esc_html__('Scheduled Change Notifications', 'press-permit-core') : esc_html__('Scheduled Revision Monitors', 'press-permit-core');
                     break;
 
                 default:
-            		$role_display_name = isset($wp_roles->role_names[$meta_id]) ? __($wp_roles->role_names[$meta_id]) : $meta_id;
+            		$role_display_name = isset($wp_roles->role_names[$meta_id]) ? esc_html__($wp_roles->role_names[$meta_id]) : $meta_id;
             }
 
             return $role_display_name;
         } else {
             switch ($meta_id) {
                 case 'rvy_pending_rev_notice':
-                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? __('Change Request Notifications', 'press-permit-core') : __('Pending Revision Monitors', 'press-permit-core');
+                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? esc_html__('Change Request Notifications', 'press-permit-core') : esc_html__('Pending Revision Monitors', 'press-permit-core');
                     break;
 
                 case 'rvy_scheduled_rev_notice':
-                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? __('Scheduled Change Notifications', 'press-permit-core') : __('Scheduled Revision Monitors', 'press-permit-core');
+                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? esc_html__('Scheduled Change Notifications', 'press-permit-core') : esc_html__('Scheduled Revision Monitors', 'press-permit-core');
                     break;
 
                 default:
@@ -391,16 +390,16 @@ class Groups
     public static function getMetagroupDescript($metagroup_type, $meta_id, $default_descript = '')
     {
         if ('wp_auth' == $meta_id) {
-            return __('Authenticated site users (logged in)', 'press-permit-core');
+            return esc_html__('Authenticated site users (logged in)', 'press-permit-core');
         } elseif ('wp_anon' == $meta_id) {
-            return __('Anonymous users (not logged in)', 'press-permit-core');
+            return esc_html__('Anonymous users (not logged in)', 'press-permit-core');
         } elseif ('wp_all' == $meta_id) {
-            return __('All users (including anonymous)', 'press-permit-core');
+            return esc_html__('All users (including anonymous)', 'press-permit-core');
         } elseif ('wp_role' == $metagroup_type) {
             $role_display_name = self::getMetagroupName($metagroup_type, $meta_id);
             $role_display_name = str_replace('[WP ', '', $role_display_name);
             $role_display_name = str_replace(']', '', $role_display_name);
-            return sprintf(__('All users with the WordPress role of %s', 'press-permit-core'), $role_display_name);
+            return sprintf(esc_html__('All users with the WordPress role of %s', 'press-permit-core'), $role_display_name);
         } else {
             return $default_descript;
         }

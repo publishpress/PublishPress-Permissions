@@ -124,9 +124,6 @@ class PostFilters
                         . " AND $wpdb->posts.post_status IN ('inherit')"
                         . " AND $wpdb->posts.post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) ) ",
 
-                       // . " OR ( $wpdb->posts.post_status IN ('pending-revision', 'future-revision') "
-                       // . " AND $wpdb->posts.comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )", 
-                        
                         $where
                     );
                 }

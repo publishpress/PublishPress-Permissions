@@ -31,8 +31,10 @@ class ImportHooksAdmin
     function actAdminInit()
     {
         if (!presspermit_empty_POST('pp_rs_import') || !presspermit_empty_POST('pp_pp_import') || !presspermit_empty_POST('pp_undo_imports')) {
+            check_admin_referer('pp-rs-import', '_pp_import_nonce');
+
             require_once(PRESSPERMIT_IMPORT_CLASSPATH . '/Importer.php');
-            Import\Importer::handleSubmission();
+            Import\Importer::handleSubmission(); // action-specific nonce checks
         }
     }
 

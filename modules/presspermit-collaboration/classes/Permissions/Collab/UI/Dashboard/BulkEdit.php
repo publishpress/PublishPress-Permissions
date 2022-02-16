@@ -37,7 +37,7 @@ class BulkEdit
             $pattern_id = presspermit_REQUEST_int("member_page_pattern_{$post_type}");
             if ($pattern_id) {
                 if (!is_numeric($pattern_id)) {
-                    $slug = pp_permissions_sanitize_key($pattern_id);
+                    $slug = sanitize_key($pattern_id);
                     $pattern_post = $wpdb->get_row($wpdb->prepare(
                         "SELECT ID, post_content, post_parent FROM $wpdb->posts WHERE post_name = %s AND post_type = %s LIMIT 1", 
                         $slug, 

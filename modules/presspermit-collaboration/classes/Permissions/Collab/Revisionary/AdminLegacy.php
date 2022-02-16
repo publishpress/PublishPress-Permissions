@@ -1,7 +1,7 @@
 <?php
 namespace PublishPress\Permissions\Collab\Revisionary;
 
-//use \PressShack\LibArray as Arr;
+
 class AdminLegacy
 {
     function __construct() {
@@ -18,7 +18,7 @@ class AdminLegacy
 
     public function flt_pp_administrator_caps($caps)
     {
-        // @todo: why is edit_others_revisions cap required for Administrators in Edit Posts listing (but not Edit Pages) ?
+        // todo: why is edit_others_revisions cap required for Administrators in Edit Posts listing (but not Edit Pages) ?
 
         $caps['edit_revisions'] = true;
         $caps['edit_others_revisions'] = true;
@@ -67,7 +67,7 @@ class AdminLegacy
 
     public function flt_additions_clause($clause, $operation, $post_type, $args)
     {
-        //$args = compact( 'status', 'in_clause', 'src_table' ) 
+        // args elements: status, in_clause, src_table 
 
         if (in_array($operation, ['edit', 'delete'], true) && empty($args['status']) 
         && !in_array($post_type, apply_filters('presspermit_unrevisable_types', []), true)) {
@@ -147,12 +147,13 @@ class AdminLegacy
 
     public function flt_mapMetaCap($caps, $meta_cap, $user_id, $wp_args)
     {
+        global $current_user;
+
         if (in_array($meta_cap, ['edit_post', 'edit_page'], true)) {
-            global $current_user;
             if ($user_id != $current_user->ID)
                 return $caps;
 
-            if ( false !== strpos($_SERVER['SCRIPT_NAME'], 'update.php') ) { // Revisionary does not load on update.php
+            if (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'update.php')) { // Revisionary does not load on update.php
                 return $caps;
             }
 
@@ -171,10 +172,7 @@ class AdminLegacy
             if (!rvy_get_option('require_edit_others_drafts'))
                 return $caps;
 
-            // for \PublishPress\Permissions\PostFilters::mapMetaCap()
             if (isset($wp_args[0]) && is_object($wp_args[0])) {
-                global $current_user;
-
                 if ($current_user->ID == $wp_args[0]->post_author) {
                     return $caps;
                 }
@@ -258,9 +256,7 @@ class AdminLegacy
 
             $revision_uris = apply_filters('presspermit_revision_uris', ['edit.php', 'upload.php', 'widgets.php', 'admin-ajax.php', 'rvy-revisions', 'rvy-moderation']);
 
-            //if (is_admin() || !empty($_GET['preview'])) {
-                $revision_uris [] = 'index.php';
-            //}
+            $revision_uris [] = 'index.php';
 
             if (presspermit_is_preview() || in_array($pagenow, $revision_uris, true) || in_array(presspermitPluginPage(), $revision_uris, true)) {
                 $strip_capreqs = [];

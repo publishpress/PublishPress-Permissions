@@ -23,9 +23,6 @@ class RoleDefaults
                 ], true);
 
                 break;
-            //case 'reviewer':
-            // return array_fill_keys( ['read', $cap->edit_posts, $cap->edit_others_posts, $cap->delete_posts, $cap->delete_others_posts, 'upload_files', 'unfiltered_html'], true );
-            // break;
             case 'editor':
                 return array_fill_keys([
                     'read', $cap->read_private_posts, $cap->edit_posts, $cap->edit_published_posts, $cap->edit_private_posts,

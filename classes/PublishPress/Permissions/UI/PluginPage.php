@@ -26,14 +26,14 @@ class PluginPage
         if (presspermit_is_REQUEST('wp_screen_options')) {
             if (isset($_REQUEST['wp_screen_options']['option']) && ('groups_per_page' == $_REQUEST['wp_screen_options']['option'])) {
                 global $current_user;
-                update_user_option($current_user->ID, $_REQUEST['wp_screen_options']['option'], (int) $_REQUEST['wp_screen_options']['value']);
+                update_user_option($current_user->ID, sanitize_key($_REQUEST['wp_screen_options']['option']), (int) $_REQUEST['wp_screen_options']['value']);
             }
         }
     }
 
     public static function icon()
     {
-        echo '<div class="pp-icon"><img src="' . PRESSPERMIT_URLPATH . '/common/img/publishpress-logo-icon.png" alt="" /></div>';
+        echo '<div class="pp-icon"><img src="' . esc_url(PRESSPERMIT_URLPATH . '/common/img/publishpress-logo-icon.png') . '" alt="" /></div>';
     }
 
     public function actAdminHead()
@@ -48,7 +48,7 @@ class PluginPage
         }
 
         if ('presspermit-groups' == presspermitPluginPage()) {
-            // @todo: eliminate redundancy with Groups::__construct()
+            // todo: eliminate redundancy with Groups::__construct()
             if (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2'])) {
                 $action = presspermit_REQUEST_key('action2');
 
@@ -96,7 +96,7 @@ class PluginPage
             $_agent_type = $default_type;
         }
 
-        if (!$agent_type = pp_permissions_sanitize_key(apply_filters('presspermit_query_group_type', $_agent_type))) {
+        if (!$agent_type = sanitize_key(apply_filters('presspermit_query_group_type', $_agent_type))) {
             $agent_type = 'pp_group';
         }
 
@@ -107,9 +107,9 @@ class PluginPage
         if (presspermit_empty_REQUEST('group_variant') && !presspermit_empty_REQUEST('s')) {
             if ($wp_http_referer = presspermit_REQUEST_var('_wp_http_referer')) {
             $matches = [];
-            if (preg_match("/group_variant=([0-9a-zA-Z_\-]+)/", urldecode($_REQUEST['_wp_http_referer']), $matches)) {
+                if (preg_match("/group_variant=([0-9a-zA-Z_\-]+)/", urldecode(esc_url_raw($wp_http_referer)), $matches)) {
                 if ($matches[1]) {
-                    $group_variant = pp_permissions_sanitize_key($matches[1]);
+                        $group_variant = sanitize_key($matches[1]);
                 }
             }
             }
@@ -121,6 +121,6 @@ class PluginPage
             $group_variant = presspermit_REQUEST_key('group_variant');
         }
 
-        return pp_permissions_sanitize_key(apply_filters('presspermit_query_group_variant', $group_variant));
+        return sanitize_key(apply_filters('presspermit_query_group_variant', $group_variant));
     }
 }

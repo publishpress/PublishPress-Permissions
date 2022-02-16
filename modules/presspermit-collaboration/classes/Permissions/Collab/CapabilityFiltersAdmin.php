@@ -83,14 +83,6 @@ class CapabilityFiltersAdmin
     {
         global $current_user;
 
-        // parent clause already applied by Media::count_attachments_query()
-        // $force = ( empty($args['has_cap_check']) || presspermit()->getOption( 'edit_others_attached_files') ) && ( empty($args['pp_context']) || 'count_attachments' != $args['pp_context'] );
-
-        //return ! empty($args['has_cap_check']);
-
-        // TODO: review, test this further
-        //return ( empty($args['pp_context']) || 'count_attachments' != $args['pp_context'] || in_array( 'attachment', presspermit()->getEnabledPostTypes(), true ) );
-        
         return (empty($args['pp_context']) || 'count_attachments' != $args['pp_context']);
     }
 
@@ -118,14 +110,13 @@ class CapabilityFiltersAdmin
         if (('nav-menus.php' == $pagenow)
             || (('edit_theme_options' == reset($reqd_caps)) && ('edit_theme_options' == $orig_cap) && (PWP::doingAdminMenus() || (defined('DOING_AJAX') && DOING_AJAX)))
         ) {
-            //if ( ( 'nav-menus.php' == $pagenow ) || empty( $current_user->allcaps['edit_theme_options'] ) ) {
             if (empty($current_user->allcaps['edit_theme_options'])) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenuCapabilities.php');
                 $reqd_caps = NavMenuCapabilities::adjustCapRequirement($reqd_caps);
             }
         } else {
         	// Work around Divi Page Builder requiring excessive or off-type capabilities
-	        if (defined('ET_BUILDER_PLUGIN_VERSION') && strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php')) {
+	        if (defined('ET_BUILDER_PLUGIN_VERSION') && !empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'admin-ajax.php')) {
 	            $alt_caps = ['edit_posts' => ['edit_pages']];
 	            
 	            if (did_action('wp_ajax_et_fb_ajax_save') 
@@ -147,7 +138,7 @@ class CapabilityFiltersAdmin
 	            }
 	        }
 
-            // Work around WP's occasional use of literal 'cap_name' instead of $post_type_object->cap->$cap_name  @todo: review
+            // Work around WP's occasional use of literal 'cap_name' instead of $post_type_object->cap->$cap_name  todo: review
             // note: cap names for "post" type may be customized too
             //
             if (in_array($pagenow, ['edit.php', 'post.php', 'post-new.php', 'press-this.php', 'admin-ajax.php', 'upload.php', 'media.php']) 
@@ -244,7 +235,7 @@ class CapabilityFiltersAdmin
 
     function fltUserHasCapParams($params, $orig_reqd_caps, $args)
     {
-        // @todo: how can this ever execute prior to class inclusion in CollabHooks.php? (error with CAS integration)
+        // todo: how can this ever execute prior to class inclusion in CollabHooks.php? (error with CAS integration)
         if (!class_exists('\PublishPress\Permissions\Collab\Capabilities')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Capabilities.php');
         }
@@ -252,8 +243,6 @@ class CapabilityFiltersAdmin
         $caps = Capabilities::instance();
 
         // taxonomy caps
-        //$_all_taxonomy_caps = (isset( $caps->all_taxonomy_caps )) ? $caps->all_taxonomy_caps : [];
-        //if ( $type_caps = array_intersect( $orig_reqd_caps, array_keys( $_all_taxonomy_caps ) ) ) {
         if ($type_caps = array_intersect($orig_reqd_caps, array_keys($caps->all_taxonomy_caps))) {
 
 
@@ -304,14 +293,7 @@ class CapabilityFiltersAdmin
                     case $tx_obj->cap->manage_terms:
                         $op = 'manage';
                         break;
-                    /*
-                case $tx_obj->cap->edit_terms :
-                    $op = 'edit';
-                    break;
-                case $tx_obj->cap->delete_terms :
-                    $op = 'delete';
-                    break;
-                */
+
                     default:
                         $op = false;
                 }
@@ -468,17 +450,15 @@ class CapabilityFiltersAdmin
                     );
                 }
             } else {
-                $edit_link = "<a href='" . admin_url('index.php') . "'>" . __('Dashboard') . '</a>';
+                $edit_link = "<a href='" . admin_url('index.php') . "'>" . esc_html__('Dashboard') . '</a>';
             }
 
-            if (empty($arr_msg)) {
-                $arr_msg = [
-                    __('The requested modification was processed, but you can no longer edit the post.', 'press-permit-core'), 
-                    sprintf(__('Go to %s', 'press-permit-core'), $edit_link)
-                ];
-            }
-            
-            wp_die('<p>' . implode('</p><p>', $arr_msg) . '</p>');
+            wp_die(
+                '<p>' 
+                . esc_html__('The requested modification was processed, but you can no longer edit the post.', 'press-permit-core')
+                . '</p><p>'
+                . "<a href='" . esc_url(admin_url('index.php')) . "'>" . esc_html__('Dashboard') . '</a></p>'
+            );
         }
 
         return $location;

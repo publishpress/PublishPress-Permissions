@@ -20,7 +20,7 @@ class PostSaveHierarchical
         }
 
         // this filter is not intended to regulate attachment parent
-        if (strpos($_SERVER['REQUEST_URI'], 'async-upload.php') && !empty($_REQUEST['action']) && ('upload-attachment' == $_REQUEST['action'])) {
+        if (isset($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'async-upload.php') && presspermit_is_REQUEST('action', 'upload-attachment')) {
             return $parent_id;
         }
 
@@ -205,13 +205,6 @@ class PostSaveHierarchical
     //    revert page to previously stored parent if possible. Otherwise set status to "unpublished".
     public static function enforceTopPagesLock($status)
     {
-        /*
-        // overcome any denials of publishing rights which were not filterable by user_has_cap  @todo: confirm this is no longer necessary
-        if ( ('pending' == $status) && ( ('publish' == $_POST['post_status']) || ('Publish' == $_POST['original_publish'] ) ) )
-            if ( ! empty( $current_user->allcaps['publish_pages'] ) )
-                $status = 'publish';
-        */
-
         global $post;
 
         // user can't associate / un-associate a page with Main page unless they have edit_pages site-wide

@@ -11,7 +11,7 @@ class EyesOnly
     
     public function actRegister()
     {
-        sseo_register_parameter('pp_group', __('Permission Group', 'press-permit-core'));
+        sseo_register_parameter('pp_group', esc_html__('Permission Group', 'press-permit-core'));
     }
 
     public function fltShortcodeMatched($matched, $params, $shortcode_content)

@@ -8,7 +8,6 @@ class PermissionsHooksAdmin
 
     public function __construct()
     {
-        //add_action('wp_dashboard_setup', [$this, '_getVersionInfo']);  // retrieve version info in case there are any alerts
         add_action('presspermit_duplicate_module', [$this, 'duplicateModule'], 10, 2);
 
         add_filter('presspermit_pattern_roles', [$this, 'fltPatternRoles']);
@@ -134,7 +133,7 @@ class PermissionsHooksAdmin
 
     public function actLoadAjaxHandler()
     {
-        foreach (['item', 'agent_roles', 'agent_exceptions', 'agent_permissions', 'user', 'settings', 'items_metabox'] as $ajax_type) { // @todo: term_ui ?
+        foreach (['item', 'agent_roles', 'agent_exceptions', 'agent_permissions', 'user', 'settings', 'items_metabox'] as $ajax_type) { // todo: term_ui ?
             if (isset($_REQUEST["pp_ajax_{$ajax_type}"])) {
                 $class_name = str_replace('_', '', ucwords( $ajax_type, '_') ) . 'Ajax';
                 
@@ -160,10 +159,10 @@ class PermissionsHooksAdmin
 
     public function fltPatternRoles($roles)
     {
-        $roles['subscriber']->labels = (object)['name' => __('Subscribers', 'press-permit-core'), 'singular_name' => __('Subscriber', 'press-permit-core')];
-        $roles['contributor']->labels = (object)['name' => __('Contributors', 'press-permit-core'), 'singular_name' => __('Contributor', 'press-permit-core')];
-        $roles['author']->labels = (object)['name' => __('Authors', 'press-permit-core'), 'singular_name' => __('Author', 'press-permit-core')];
-        $roles['editor']->labels = (object)['name' => __('Editors', 'press-permit-core'), 'singular_name' => __('Editor', 'press-permit-core')];
+        $roles['subscriber']->labels = (object)['name' => esc_html__('Subscribers', 'press-permit-core'), 'singular_name' => esc_html__('Subscriber', 'press-permit-core')];
+        $roles['contributor']->labels = (object)['name' => esc_html__('Contributors', 'press-permit-core'), 'singular_name' => esc_html__('Contributor', 'press-permit-core')];
+        $roles['author']->labels = (object)['name' => esc_html__('Authors', 'press-permit-core'), 'singular_name' => esc_html__('Author', 'press-permit-core')];
+        $roles['editor']->labels = (object)['name' => esc_html__('Editors', 'press-permit-core'), 'singular_name' => esc_html__('Editor', 'press-permit-core')];
 
         return $roles;
     }
@@ -179,11 +178,11 @@ class PermissionsHooksAdmin
 
                 $msg = current_user_can('pp_manage_settings')
                 ? sprintf(
-                    __('Please %senable the Collaborative Publishing module%s for PublishPress Revisions integration.', 'press-permit-core'),
+                    esc_html__('Please %senable the Collaborative Publishing module%s for PublishPress Revisions integration.', 'press-permit-core'),
                     '<a href="' . admin_url('admin.php?page=presspermit-settings') . '" style="text-decoration:underline">',
                     '</a>'
                 )
-                : __('PublishPress Revisions integration requires the Collaborative Publishing module. Please notify your Administrator.', 'press-permit-core');
+                : esc_html__('PublishPress Revisions integration requires the Collaborative Publishing module. Please notify your Administrator.', 'press-permit-core');
 
                 presspermit()->admin()->notice($msg);
             }
@@ -201,8 +200,8 @@ class PermissionsHooksAdmin
                      'pp-edit-permissions' => 'presspermit-edit-permissions',
                  ] as $old_slug => $new_slug) {
             if (
-                strpos($_SERVER['REQUEST_URI'], "page=$old_slug")
-                && (false !== strpos($_SERVER['REQUEST_URI'], 'admin.php'))
+                strpos(esc_url_raw($_SERVER['REQUEST_URI']), "page=$old_slug")
+                && (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'admin.php'))
             ) {
                 global $submenu;
 
@@ -215,7 +214,7 @@ class PermissionsHooksAdmin
                     }
                 }
 
-                $arr_url = parse_url($_SERVER['REQUEST_URI']);
+                $arr_url = wp_parse_url(esc_url_raw($_SERVER['REQUEST_URI']));
                 wp_redirect(admin_url('admin.php?' . str_replace("page=$old_slug", "page=$new_slug", $arr_url['query'])));
                 exit;
             }
@@ -229,7 +228,7 @@ class PermissionsHooksAdmin
             $dismissals = [];
         }
 
-        $msg_id = (isset($_REQUEST['msg_id'])) ? pp_permissions_sanitize_key($_REQUEST['msg_id']) : 'post_blockage_priority';
+        $msg_id = (isset($_REQUEST['msg_id'])) ? sanitize_key($_REQUEST['msg_id']) : 'post_blockage_priority';
         $dismissals[$msg_id] = true;
         update_option('presspermit_dismissals', $dismissals);
     }

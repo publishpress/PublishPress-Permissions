@@ -1,9 +1,6 @@
 <?php
 namespace PublishPress\Permissions;
 
-//use \PressShack\LibWP as PWP;
-//use \PressShack\LibArray as Arr;
-
 class CollabHooksAdminNonAdministrator
 {
     function __construct()
@@ -59,7 +56,7 @@ class CollabHooksAdminNonAdministrator
         if (defined('REST_REQUEST') && presspermit()->doingREST()) {
             $rest = \PublishPress\Permissions\REST::instance();
 
-            // (Terms listing)
+            // Terms listing
             if ('WP_REST_Terms_Controller' == $rest->endpoint_class) {
                 return ('edit' == $rest->operation) ? 'manage' : $rest->operation;
             }
@@ -84,7 +81,7 @@ class CollabHooksAdminNonAdministrator
 
             // Force term retrieval for Gutenberg UI construction to be filtered by 'assign' exceptions, not 'read' exceptions
             if ((empty($args['required_operation']) || ($args['required_operation'] == 'read'))) {
-                if (!empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')) {
+                if (!empty($_SERVER['HTTP_REFERER']) && strpos(esc_url_raw($_SERVER['HTTP_REFERER']), 'wp-admin/post')) {
                     $args['required_operation'] = 'assign';
                 }
             }

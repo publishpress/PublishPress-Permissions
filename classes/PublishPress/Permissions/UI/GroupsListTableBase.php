@@ -12,10 +12,8 @@ class GroupsListTableBase extends \WP_List_Table
     }
 
     // Moved out of class GroupsListTable to support sharing with subclasses
-    public function single_row_role_column($column_name, $group_id, $can_manage_group, $edit_link, $attributes)
+    public function single_row_role_column($column_name, $group_id, $can_manage_group, $edit_link, $args = [])
     {
-        $r = '';
-
         switch ($column_name) {
             case 'roles':
                 $role_str = '';
@@ -23,6 +21,7 @@ class GroupsListTableBase extends \WP_List_Table
                 if (isset($this->role_info[$group_id])) {
                     if (isset($this->role_info[$group_id]['roles'])) {
                         $display_limit = 3;
+                        $any_role = true;
 
                         $role_titles = [];
                         $i = 0;
@@ -34,18 +33,30 @@ class GroupsListTableBase extends \WP_List_Table
                             }
                         }
 
-                        $role_str = '<span class="pp-group-site-roles">' . implode(',&nbsp; ', $role_titles) . '</span>';
-
-                        if (count($this->role_info[$group_id]['roles']) > $display_limit) {
-                            $role_str = sprintf(__('%s, more...', 'press-permit-core'), $role_str);
+                        if ($can_manage_group) {
+                            echo "<a href='" . esc_url($edit_link) . "'>";
                         }
 
+                        echo '<span class="pp-group-site-roles">';
+
+                        if (count($this->role_info[$group_id]['roles']) > $display_limit) {
+                            printf(esc_html__('%s, more...', 'press-permit-core'), implode(', ', $role_titles));
+                        } else {
+                            echo implode(', ', $role_titles);
+                        }
+
+                        echo '</span>';
+
                         if ($can_manage_group) {
-                            $role_str = "<a href=\"$edit_link\">$role_str</a><br />";
+                            echo "</a><br />";
                         }
                     }
                 }
-                $r .= "<td $attributes>$role_str</td>";
+
+                if (empty($any_role) && !empty($args['none_link']) && !empty($args['none_title'])) {
+                    echo "<a href='" . esc_url($args['none_link']) . "'>" . esc_html($args['none_title']) . "</a>";
+                }
+
                 break;
 
             case 'exceptions':
@@ -54,32 +65,71 @@ class GroupsListTableBase extends \WP_List_Table
                 if (isset($this->exception_info[$group_id])) {
                     if (isset($this->exception_info[$group_id]['exceptions'])) {
                         $display_limit = 3;
+                        $any_exception = true;
 
                         $exc_titles = [];
                         $i = 0;
                         foreach ($this->exception_info[$group_id]['exceptions'] as $exc_title => $exc_count) {
                             $i++;
-                            $exc_titles[] = sprintf(__('%1$s (%2$s)', 'press-permit-core'), $exc_title, $exc_count);
+                            $exc_titles[] = sprintf(esc_html__('%1$s (%2$s)', 'press-permit-core'), $exc_title, $exc_count);
                             if ($i >= $display_limit) {
                                 break;
                             }
                         }
 
-                        $exc_str = '<span class="pp-group-site-roles">' . implode(',&nbsp; ', $exc_titles) . '</span>';
-
-                        if (count($this->exception_info[$group_id]['exceptions']) > $display_limit) {
-                            $exc_str = sprintf(__('%s, more...', 'press-permit-core'), $exc_str);
+                        if ($can_manage_group) {
+                            echo "<a href='" . esc_url($edit_link) . "'>";
                         }
 
+                        echo '<span class="pp-group-site-roles">';
+
+                        if (isset($this->role_info[$group_id]) && count($this->role_info[$group_id]['roles']) > $display_limit) {
+                            printf(esc_html__('%s, more...', 'press-permit-core'), esc_html(implode(', ', $exc_titles)));
+                        } else {
+                            echo esc_html(implode(', ', $exc_titles));
+                        }
+
+                        echo '</span>';
+
                         if ($can_manage_group) {
-                            $exc_str = "<a href=\"$edit_link\">$exc_str</a><br />";
+                            echo "</a><br />";
                         }
                     }
                 }
-                $r .= "<td $attributes>$exc_str</td>";
+
+                if (empty($any_exception) && !empty($args['none_link']) && !empty($args['none_title'])) {
+                    echo "<a href='" . esc_url($args['none_link']) . "'>" . esc_html($args['none_title']) . "</a>";
+                }
+
                 break;
         }
+    }
 
-        return $r;
+    protected function row_actions( $actions, $always_visible = false ) {
+		$action_count = count( $actions );
+
+		if ( ! $action_count ) {
+			return '';
+		}
+
+		$mode = get_user_setting( 'posts_list_mode', 'list' );
+
+		if ( 'excerpt' === $mode ) {
+			$always_visible = true;
+		}
+
+		echo '<div class="' . ( $always_visible ? 'row-actions visible' : 'row-actions' ) . '">';
+
+		$i = 0;
+
+		foreach ( $actions as $action => $link ) {
+			++$i;
+			$sep = ( $i < $action_count ) ? ' | ' : '';
+			echo "<span class='" . esc_attr($action) . "'>" . $link . esc_html($sep) . "</span>";  // row action link is escaped upstream
+		}
+
+		echo '</div>';
+
+		echo '<button type="button" class="toggle-row"><span class="screen-reader-text">' . __( 'Show more details' ) . '</span></button>';
     }
 } // end class

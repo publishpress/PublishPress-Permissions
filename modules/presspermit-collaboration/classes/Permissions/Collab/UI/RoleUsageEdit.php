@@ -1,8 +1,6 @@
 <?php
 namespace PublishPress\Permissions\Collab\UI;
 
-//use \PressShack\LibWP as PWP;
-
 /**
  * Edit user administration panel.
  *
@@ -26,22 +24,22 @@ class RoleUsageEdit {
         $url = apply_filters('presspermit_role_usage_base_url', 'admin.php');
 
         if ($wp_http_referer = presspermit_REQUEST_key('wp_http_referer')) {
-            $wp_http_referer = sanitize_url($_REQUEST['wp_http_referer']);
+            $wp_http_referer = esc_url_raw($wp_http_referer);
 
         } elseif ($http_referer = presspermit_SERVER_var('HTTP_REFERER')) {
-            $wp_http_referer = remove_query_arg(['update', 'edit', 'delete_count'], sanitize_url($_SERVER['HTTP_REFERER']));
+            $wp_http_referer = remove_query_arg(['update', 'edit', 'delete_count'], esc_url_raw(presspermit_SERVER_var('HTTP_REFERER')));
         } else {
             $wp_http_referer = '';
         }
 
         if (!current_user_can('pp_manage_settings'))
-            wp_die(__('You are not permitted to do that.', 'press-permit-core'));
+            wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
 
         if (!$role = presspermit_REQUEST_key('role')) {
             wp_die('No role specified.');
 		}
 
-        $role_name = pp_permissions_sanitize_entry($_REQUEST['role']);
+        $role_name = pp_permissions_sanitize_entry($role);
 
         $cap_caster = $pp->capCaster();
         $cap_caster->definePatternCaps();
@@ -58,7 +56,7 @@ class RoleUsageEdit {
 
         if (presspermit_is_GET('update') && empty($pp->admin()->errors)) : ?>
             <div id="message" class="updated">
-                <p><strong><?php _e('Role Usage updated.', 'press-permit-core') ?>&nbsp;</strong>
+                <p><strong><?php esc_html_e('Role Usage updated.', 'press-permit-core') ?>&nbsp;</strong>
                 </p>
             </div>
         <?php endif; ?>
@@ -66,7 +64,11 @@ class RoleUsageEdit {
         <?php
         if (!empty($pp->admin()->errors) && is_wp_error($pp->admin()->errors)) : ?>
             <div class="error">
-                <p><?php echo implode("</p>\n<p>", $pp->admin()->errors->get_error_messages()); ?></p>
+            <?php 
+            foreach($pp->admin->errors->get_error_messages() as $msg) {
+                echo '<p>' . esc_html($msg) . '</p>';
+            }
+            ?>
             </div>
         <?php endif; ?>
 
@@ -87,7 +89,7 @@ class RoleUsageEdit {
 
                 <table class="form-table">
                     <tr class="form-field">
-                        <th><label for="role_usage_label"><?php _e('Usage', 'press-permit-core') ?></label></th>
+                        <th><label for="role_usage_label"><?php esc_html_e('Usage', 'press-permit-core') ?></label></th>
                         <td>
                             <div id='pp_role_usage_limitations'>
                                 <div>
@@ -95,9 +97,9 @@ class RoleUsageEdit {
                                     $usage = RoleUsageQuery::get_role_usage($role_name);
                                     ?>
                                     <select id='pp_role_usage' name='pp_role_usage' autocomplete='off'>
-                                    <option value='0' <?php if ($usage == 0) echo 'selected="selected"'; ?>><?php _e('no supplemental assignment', 'press-permit-core'); ?></option>
-                                    <option value='pattern' <?php if ($usage == 'pattern') echo 'selected="selected"'; ?>><?php _e('Pattern Role', 'press-permit-core'); ?></option>
-                                    <option value='direct' <?php if ($usage == 'direct') echo 'selected="selected"'; ?>><?php _e('Direct Assignment', 'press-permit-core'); ?></option>
+                                    <option value='0' <?php if ($usage == 0) echo ' selected '; ?>><?php esc_html_e('no supplemental assignment', 'press-permit-core'); ?></option>
+                                    <option value='pattern' <?php if ($usage == 'pattern') echo ' selected '; ?>><?php esc_html_e('Pattern Role', 'press-permit-core'); ?></option>
+                                    <option value='direct' <?php if ($usage == 'direct') echo ' selected '; ?>><?php esc_html_e('Direct Assignment', 'press-permit-core'); ?></option>
                                     </select>
                                 </div>
                             </div>
@@ -107,17 +109,17 @@ class RoleUsageEdit {
                     <?php
                     if (!empty($cap_caster->pattern_role_type_caps[$role_name])) : ?>
                         <tr class="form-field">
-                            <th><label for="post_caps_label"><?php _e('Post Capabilities', 'press-permit-core') ?></label></th>
+                            <th><label for="post_caps_label"><?php esc_html_e('Post Capabilities', 'press-permit-core') ?></label></th>
                             <td class='pp-cap_list'>
                                 <?php
                                 printf(
-                                    __('Type-specific and/or status-specific equivalents of the following capabilities are included in supplemental %s roles:', 'press-permit-core'), 
-                                    $role_obj->labels->singular_name
+                                    esc_html__('Type-specific and/or status-specific equivalents of the following capabilities are included in supplemental %s roles:', 'press-permit-core'), 
+                                    esc_html($role_obj->labels->singular_name)
                                 );
                                 
                                 $cap_names = array_keys($cap_caster->pattern_role_type_caps[$role_name]);
                                 sort($cap_names);
-                                echo "<ul><li>" . implode("</li><li>", $cap_names) . "</li></ul>";
+                                echo "<ul><li>" . implode("</li><li>", array_map('esc_html', $cap_names)) . "</li></ul>";
                                 ?>
                             </td>
                         </tr>
@@ -131,17 +133,17 @@ class RoleUsageEdit {
                             <td></td>
                         </tr>
                         <tr class="form-field">
-                            <th><label for="arbitrary_caps_label"><?php _e('Arbitrary Capabilities', 'press-permit-core') ?></label></th>
+                            <th><label for="arbitrary_caps_label"><?php esc_html_e('Arbitrary Capabilities', 'press-permit-core') ?></label></th>
                             <td class='pp-cap_list'>
                                 <?php
                                 printf(
-                                    __('The following capabilities are included in supplemental %s roles:', 'press-permit-core')
-                                    , $role_obj->labels->singular_name
+                                    esc_html__('The following capabilities are included in supplemental %s roles:', 'press-permit-core'),
+                                    esc_html($role_obj->labels->singular_name)
                                 );
                                 
                                 $site_caps = array_keys($cap_caster->pattern_role_arbitrary_caps[$role_name]);
                                 sort($site_caps);
-                                echo "<ul><li>" . implode("</li><li>", $site_caps) . "</li></ul>";
+                                echo "<ul><li>" . implode("</li><li>", array_map('esc_html', $site_caps)) . "</li></ul>";
                                 ?>
                             </td>
                         </tr>
@@ -153,13 +155,13 @@ class RoleUsageEdit {
                             <td></td>
                         </tr>
                         <tr class="form-field">
-                            <th><label for="role_caps_label"><?php _e('Role Capabilities', 'press-permit-core') ?></label></th>
+                            <th><label for="role_caps_label"><?php esc_html_e('Role Capabilities', 'press-permit-core') ?></label></th>
                             <td class='pp-cap_list'>
                                 <?php
-                                _e('All capabilities defined for this WordPress role will be applied in supplemental assignments:', 'press-permit-core');
+                                esc_html_e('All capabilities defined for this WordPress role will be applied in supplemental assignments:', 'press-permit-core');
                                 $role_caps = array_keys($wp_roles->role_objects[$role_name]->capabilities);
                                 sort($role_caps);
-                                echo "<ul><li>" . implode("</li><li>", $role_caps) . "</li></ul>";
+                                echo "<ul><li>" . implode("</li><li>", array_map('esc_html', $role_caps)) . "</li></ul>";
                                 ?>
                             </td>
                         </tr>
@@ -173,7 +175,7 @@ class RoleUsageEdit {
                 if (($usage == 'pattern') && $pp->getOption('display_hints')) {
                     echo '<br />';
                     $hint = '';
-                    RoleUsageHelper::other_notes(__('Notes regarding Pattern Roles', 'press-permit-core'));
+                    RoleUsageHelper::other_notes(esc_html__('Notes regarding Pattern Roles', 'press-permit-core'));
                 }
                 ?>
 
@@ -182,8 +184,8 @@ class RoleUsageEdit {
                 ?>
 
                 <p>
-                    <a href="<?php echo(esc_url(add_query_arg('page', 'presspermit-role-usage', admin_url($url)))); ?>">
-                    <?php _e('Back to Role Usage List', 'press-permit-core'); ?>
+                    <a href="<?php echo esc_url(add_query_arg('page', 'presspermit-role-usage', admin_url($url))); ?>">
+                    <?php esc_html_e('Back to Role Usage List', 'press-permit-core'); ?>
                     </a>
                 </p>
 

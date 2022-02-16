@@ -18,20 +18,20 @@ class SettingsTabCore
 
     public function optionTabs($tabs)
     {
-        $tabs['core'] = __('Core', 'press-permit-core');
+        $tabs['core'] = esc_html__('Core', 'press-permit-core');
         return $tabs;
     }
 
     public function sectionCaptions($sections)
     {
         $new = [
-            'taxonomies' => __('Filtered Taxonomies', 'press-permit-core'),
-            'post_types' => __('Filtered Post Types', 'press-permit-core'),
-            'permissions' => __('Permissions', 'press-permit-core'),
-            'front_end' => __('Front End', 'press-permit-core'),
-            'admin' => __('Admin Back End', 'press-permit-core'),
-            'user_profile' => __('User Management / Profile', 'press-permit-core'),
-            'db_maint' => __('Database Maintenance', 'press-permit-core'),
+            'taxonomies' => esc_html__('Filtered Taxonomies', 'press-permit-core'),
+            'post_types' => esc_html__('Filtered Post Types', 'press-permit-core'),
+            'permissions' => esc_html__('Permissions', 'press-permit-core'),
+            'front_end' => esc_html__('Front End', 'press-permit-core'),
+            'admin' => esc_html__('Admin Back End', 'press-permit-core'),
+            'user_profile' => esc_html__('User Management / Profile', 'press-permit-core'),
+            'db_maint' => esc_html__('Database Maintenance', 'press-permit-core'),
         ];
 
         $key = 'core';
@@ -43,18 +43,18 @@ class SettingsTabCore
     public function optionCaptions($captions)
     {
         $opt = [
-            'enabled_taxonomies' => __('Filtered Taxonomies', 'press-permit-core'),
-            'enabled_post_types' => __('Filtered Post Types', 'press-permit-core'),
-            'define_media_post_caps' => __('Enforce distinct edit, delete capability requirements for Media', 'press-permit-core'),
-            'define_create_posts_cap' => __('Use create_posts capability', 'press-permit-core'),
-            'media_search_results' => __('Search Results include Media', 'press-permit-core'),
-            'term_counts_unfiltered' => __("Performance: Don't filter category / tag counts", 'press-permit-core'),
-            'strip_private_caption' => __('Suppress "Private:" Caption', 'press-permit-core'),
-            'force_nav_menu_filter' => __('Filter Menu Items', 'press-permit-core'),
-            'display_user_profile_groups' => __('Permission Groups on User Profile', 'press-permit-core'),
-            'display_user_profile_roles' => __('Supplemental Roles on User Profile', 'press-permit-core'),
-            'new_user_groups_ui' => __('Select Permission Groups at User creation', 'press-permit-core'),
-            'post_blockage_priority' => __('Post-specific Permissions take priority', 'press-permit-core'),
+            'enabled_taxonomies' => esc_html__('Filtered Taxonomies', 'press-permit-core'),
+            'enabled_post_types' => esc_html__('Filtered Post Types', 'press-permit-core'),
+            'define_media_post_caps' => esc_html__('Enforce distinct edit, delete capability requirements for Media', 'press-permit-core'),
+            'define_create_posts_cap' => esc_html__('Use create_posts capability', 'press-permit-core'),
+            'media_search_results' => esc_html__('Search Results include Media', 'press-permit-core'),
+            'term_counts_unfiltered' => esc_html__("Performance: Don't filter category / tag counts", 'press-permit-core'),
+            'strip_private_caption' => esc_html__('Suppress "Private:" Caption', 'press-permit-core'),
+            'force_nav_menu_filter' => esc_html__('Filter Menu Items', 'press-permit-core'),
+            'display_user_profile_groups' => esc_html__('Permission Groups on User Profile', 'press-permit-core'),
+            'display_user_profile_roles' => esc_html__('Supplemental Roles on User Profile', 'press-permit-core'),
+            'new_user_groups_ui' => esc_html__('Select Permission Groups at User creation', 'press-permit-core'),
+            'post_blockage_priority' => esc_html__('Post-specific Permissions take priority', 'press-permit-core'),
         ];
 
         return array_merge($captions, $opt);
@@ -80,7 +80,7 @@ class SettingsTabCore
     {
         if (SettingsAdmin::instance()->getOption('display_hints')) {
             echo '<div class="pp-optionhint">';
-            _e("Basic settings for content filtering, management and presentation.", 'press-permit-core');
+            esc_html_e("Basic settings for content filtering, management and presentation.", 'press-permit-core');
             do_action('presspermit_options_form_hint');
             echo '</div>';
         }
@@ -97,7 +97,7 @@ class SettingsTabCore
         if (!empty($ui->form_options[$tab][$section])) :
             ?>
             <tr>
-                <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
                     <?php
                     $hint = SettingsAdmin::getStr('post_blockage_priority');
@@ -116,12 +116,12 @@ class SettingsTabCore
 
             ?>
             <tr>
-                <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
                     <?php
                     if ('term' == $scope) {
                         $option_name = 'enabled_taxonomies';
-                        _e('Modify permissions for these Taxonomies:', 'press-permit-core');
+                        esc_html_e('Modify permissions for these Taxonomies:', 'press-permit-core');
                         echo '<br />';
                         
                         $_args = (defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) ? [] : ['public' => true];
@@ -143,10 +143,10 @@ class SettingsTabCore
                         }
                     } else {
                         $option_name = 'enabled_post_types';
-                        _e('Modify permissions for these Post Types:', 'press-permit-core');
+                        esc_html_e('Modify permissions for these Post Types:', 'press-permit-core');
                         $types = get_post_types(['public' => true, 'show_ui' => true], 'object', 'or');
 
-                        // @todo: review wp_block permissions filtering
+                        // todo: review wp_block permissions filtering
                         $omit_types = apply_filters('presspermit_unfiltered_post_types', ['wp_block']);
 
                         if ($omit_types) {
@@ -177,37 +177,37 @@ class SettingsTabCore
                     ?>
 
                     <?php if ('nav_menu' == $key) : ?>
-                        <input name="<?php echo($name); ?>" type="hidden" id="<?php echo($id); ?>" value="1"/>
+                                <input name="<?php echo esc_attr($name); ?>" type="hidden" id="<?php echo esc_attr($id); ?>" value="1"/>
                     <?php else : ?>
                     <?php if (isset($hidden_types[$key])) : ?>
-                        <input name="<?php echo($name); ?>" type="hidden" value="<?php echo $hidden_types[$key]; ?>"/>
+                                <input name="<?php echo esc_attr($name); ?>" type="hidden" value="<?php echo esc_attr($hidden_types[$key]); ?>"/>
                     <?php else : 
-                        $locked = (!empty($locked_types[$key])) ? 'disabled=disabled' : '';
+                                    $locked = (!empty($locked_types[$key])) ? ' disabled ' : '';
                         ?>
                     <div class="agp-vtight_input">
-                        <input name="<?php echo $name; ?>" type="hidden" value="<?php echo (empty($locked_types[$key])) ? '0' : '1';?>"/>
-                        <label for="<?php echo($id); ?>" title="<?php echo($key); ?>">
-                            <input name="<?php echo (empty($locked_types[$key])) ? $name : ''; ?>" type="checkbox" id="<?php echo($id); ?>"
-                                   value="1" <?php checked('1', !empty($enabled[$key])); echo $locked; ?> />
+                                <input name="<?php echo esc_attr($name); ?>" type="hidden" value="<?php echo (empty($locked_types[$key])) ? '0' : '1';?>"/>
+                                <label for="<?php echo esc_attr($id); ?>" title="<?php echo esc_attr($key); ?>">
+                                    <input name="<?php if (empty($locked_types[$key])) echo esc_attr($name); ?>" type="checkbox" id="<?php echo esc_attr($id); ?>"
+                                        value="1" <?php checked('1', !empty($enabled[$key])); echo esc_attr($locked); ?> />
 
                             <?php
                             if (isset($obj->labels_pp)) {
-                                echo $obj->labels_pp->name;
+                                        echo esc_html($obj->labels_pp->name);
                             } elseif (isset($obj->labels->name)) {
-                                echo $obj->labels->name;
+                                        echo esc_html($obj->labels->name);
                             } else {
-                                echo $key;
+                                        echo esc_html($key);
                             }
 
-                            echo('</label>');
+                                    echo '</label>';
                             
                             if (!empty($enabled[$key]) && isset($obj->capability_type) && !in_array($obj->capability_type, [$obj->name, 'post', 'page'])) {
                                 if ($cap_type_obj = get_post_type_object($obj->capability_type)) {
-                                    echo '&nbsp;(' . sprintf(__('%s capabilities'), $cap_type_obj->labels->singular_name) . ')';
+                                            echo '&nbsp;(' . esc_html(sprintf(__('%s capabilities'), $cap_type_obj->labels->singular_name)) . ')';
                                 }
                             }
 
-                            echo('</div>');
+                                    echo '</div>';
                             endif;
                             endif; // displaying checkbox UI
 
@@ -216,15 +216,14 @@ class SettingsTabCore
 
                             if ('object' == $scope) {
                                 if ($pp->getOption('display_hints')) {
-                                    //if ( $types = get_post_types( [ 'public' => true, '_builtin' => false ] ) ) :
                                     ?>
                                     <div class="pp-subtext pp-no-hide">
                                         <?php
                                         printf(
-                                            __('%1$sNote%2$s: This causes type-specific capabilities to be required for editing ("edit_things" instead of "edit_posts"). You can %3$sassign supplemental roles%4$s for the post type or add the capabilities directly to a WordPress role.'),
+                                    esc_html__('%1$sNote%2$s: This causes type-specific capabilities to be required for editing ("edit_things" instead of "edit_posts"). You can %3$sassign supplemental roles%4$s for the post type or add the capabilities directly to a WordPress role.'),
                                             '<span class="pp-important">',
                                             '</span>',
-                                            "<a href='" . admin_url('?page=presspermit-groups') . "'>",
+                                    "<a href='" . esc_url(admin_url('?page=presspermit-groups')) . "'>",
                                             '</a>'
                                         );
                                         ?>
@@ -237,16 +236,15 @@ class SettingsTabCore
                                         <div class="pp-subtext pp-settings-caption">
                                             <?php
                                             if ($pp->keyActive()) {
-                                                echo SettingsAdmin::getStr('bbp_compat_prompt');
+                                        SettingsAdmin::echoStr('bbp_compat_prompt');
                                             } else {
-                                                echo SettingsAdmin::getStr('bbp_pro_prompt');
+                                        SettingsAdmin::echoStr('bbp_pro_prompt');
                                             }
 
                                             ?>
                                         </div>
                                     <?php
                                     endif;
-                                    //endif;
                                 }
 
                                 echo '<div>';
@@ -263,36 +261,39 @@ class SettingsTabCore
                                     $ret = $ui->optionCheckbox('define_media_post_caps', $tab, $section, $hint, '');
                                 }
 
+                        $ret = $ui->optionCheckbox('define_create_posts_cap', $tab, $section, '', '', ['hint_class' => 'pp-no-hide']);
+
+                        echo '<div class="pp-subtext pp-no-hide">';
+
                                 if (defined('PUBLISHPRPESS_CAPS_VERSION')) {
                                     $url = admin_url('admin.php?page=capsman');
 
-                                    $hint = sprintf(
-                                        __(
+                            printf(
+                                esc_html__(
                                             '%1$sNote:%2$s If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types. You can %3$sadd these capabilities to any role%4$s that needs it.', 
                                             'press-permit-core'
                                         ),
                                         '<span class="pp-important">',
                                         '</span>',
-                                        '<a href="' . $url . '">',
+                                '<a href="' . esc_url($url) . '">',
                                         '</a>'
                                     );
                                 } else {
                                     $url = Settings::pluginInfoURL('capability-manager-enhanced');
 
-                                    $hint = sprintf(
-                                        __(
+                            printf(
+                                esc_html__(
                                             '%1$sNote:%2$s If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types. You can use a WordPress role editor like %3$sPublishPress Capabilities%4$s to add these capabilities to any role that needs it.', 
                                             'press-permit-core'
                                         ),
                                         '<span class="pp-important">',
                                         '</span>',
-                                        '<span class="plugins update-message"><a href="' . $url . '" class="thickbox" title=" PublishPress Capabilities">',
+                                '<span class="plugins update-message"><a href="' . esc_url($url) . '" class="thickbox" title=" PublishPress Capabilities">',
                                         '</a></span>'
                                     );
                                 }
 
-                                $ret = $ui->optionCheckbox('define_create_posts_cap', $tab, $section, $hint, '', ['hint_class' => 'pp-no-hide']);
-                                echo '</div>';
+                        echo '</div></div>';
                             }
                             ?>
                 </td>
@@ -304,7 +305,7 @@ class SettingsTabCore
         if (!empty($ui->form_options[$tab][$section])) :
             ?>
             <tr>
-                <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
                     <?php
                     $ui->optionCheckbox('media_search_results', $tab, $section, '');
@@ -328,7 +329,7 @@ class SettingsTabCore
         if (!empty($ui->form_options[$tab][$section])) :
             ?>
             <tr>
-                <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
                     <?php
                     $ui->optionCheckbox('display_branding', $tab, $section, '', '<br />');
@@ -343,7 +344,7 @@ class SettingsTabCore
                     ?>
                     <div class="pp-hint">
                     <?php
-                    printf(__('%sPosts / Pages Listing:%s %s', 'press-permit-core'), '<b>', '</b>', $hint);
+                    printf(esc_html__('%sPosts / Pages Listing:%s %s', 'press-permit-core'), '<b>', '</b>', esc_html($hint));
                     ?>
                     </p>
                 </td>
@@ -355,7 +356,7 @@ class SettingsTabCore
         if (!empty($ui->form_options[$tab][$section])) :
             ?>
             <tr>
-                <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
                     <?php
                     $hint = '';
@@ -374,5 +375,5 @@ class SettingsTabCore
         <?php
         endif; // any options accessable in this section
         
-    } // end function optionsUI()
+    }
 }

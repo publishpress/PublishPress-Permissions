@@ -22,7 +22,7 @@ class SettingsTabImport
 
     function fltOptionTabs($tabs)
     {
-        $tabs['import'] = __('Import', 'press-permit-core');
+        $tabs['import'] = esc_html__('Import', 'press-permit-core');
         return $tabs;
     }
 
@@ -42,36 +42,36 @@ class SettingsTabImport
                 <tr>
                     <td>
                         <div class='rsu-issue'>
-                        <h4><?php _e('Role Scoper Import Results:', 'press-permit-core'); ?></h4>
+                        <h4><?php esc_html_e('Role Scoper Import Results:', 'press-permit-core'); ?></h4>
                         <ul>
                         <?php
 
                         if ($rs_import->timed_out && array_diff($rs_import->num_imported, ['0'])) :
                             ?>
-                            <li class="pp-warning"><?php _e('Import completed partially, but reached time limit. Please run again.'); ?></li>
+                            <li class="pp-warning"><?php esc_html_e('Import completed partially, but reached time limit. Please run again.'); ?></li>
                         <?php
                         endif;
 
                         if (!empty($rs_import->return_error) && (defined('PRESSPERMIT_DEBUG') || defined('WP_DEBUG'))) :
                             ?>
-                            <li class="pp-warning"><?php echo $rs_import->return_error; ?></li>
+                            <li class="pp-warning"><?php echo esc_html($rs_import->return_error); ?></li>
                         <?php
                         endif;
 
                         if ($rs_import->sites_examined) :
                             ?>
-                            <li><?php printf(_n('1 site examined:', '%1$s sites examined:', $rs_import->sites_examined, 'press-permit-core'), $rs_import->sites_examined); ?></li>
+                            <li><?php printf(esc_html(_n('1 site examined:', '%1$s sites examined:', (int) $rs_import->sites_examined, 'press-permit-core')), (int) $rs_import->sites_examined); ?></li>
                         <?php
                         endif;
 
                         if (!array_diff($rs_import->num_imported, ['0'])) :
                             ?>
-                            <li class="pp-warning"><?php _e('Nothing to import!', 'press-permit-core'); ?></li>
+                            <li class="pp-warning"><?php esc_html_e('Nothing to import!', 'press-permit-core'); ?></li>
                         <?php else :
                             foreach ($rs_import->num_imported as $import_type => $num) :
                                 if (!$num) continue;
                                 ?>
-                                <li class="pp-success"><?php printf(__('%1$s imported: %2$s', 'press-permit-core'), $rs_import->import_types[$import_type], $num); ?></li>
+                                <li class="pp-success"><?php printf(esc_html__('%1$s imported: %2$s', 'press-permit-core'), esc_html($rs_import->import_types[$import_type]), (int) $num); ?></li>
                             <?php
                             endforeach;
                         endif;
@@ -89,7 +89,7 @@ class SettingsTabImport
             <table class="form-table pp-form-table pp-options-table">
                 <tr>
                     <td>
-                        <h4 class="pp-success"><?php _e('Previous import values have been deleted', 'press-permit-core'); ?></h4>
+                        <h4 class="pp-success"><?php esc_html_e('Previous import values have been deleted', 'press-permit-core'); ?></h4>
                     </td>
                 </tr>
             </table>
@@ -99,19 +99,22 @@ class SettingsTabImport
 
     function actOptionsUI()
     {
+        global $wpdb;
+
         $ui = SettingsAdmin::instance(); 
         $tab = 'import';
 
         echo '<tr><td>';
 
         if ($offer_rs = $this->hasUnimported('rs')) :
+            wp_nonce_field('pp-rs-import', '_pp_import_nonce');
             ?>
             <h3>
-                <?php _e('Role Scoper Import', 'press-permit-core'); ?>
+                <?php esc_html_e('Role Scoper Import', 'press-permit-core'); ?>
             </h3>
 
             <p>
-                <?php _e('Migrates Role Scoper Options, Role Groups, Roles and Restrictions to PublishPress Permissions.', 'press-permit-core'); ?>
+                <?php esc_html_e('Migrates Role Scoper Options, Role Groups, Roles and Restrictions to PublishPress Permissions.', 'press-permit-core'); ?>
             </p>
 
             <br />
@@ -119,11 +122,10 @@ class SettingsTabImport
             <input name="pp_rs_import" type="submit" value="Do Import"/>
 
             <?php
-            global $wpdb;
             if ($count = $wpdb->get_var("SELECT COUNT(i.ID) FROM $wpdb->ppi_imported AS i INNER JOIN $wpdb->ppi_runs AS r ON i.run_id = r.ID AND r.import_type = 'rs'")) :
                 ?>
                 <span class='prev-imports'>
-                <?php printf(_n(' (%s configuration item previously imported)', ' (%s configuration items previously imported)', $count), $count); ?>
+                <?php printf(esc_html(_n(' (%s configuration item previously imported)', ' (%s configuration items previously imported)', (int) $count)), (int) $count); ?>
             </span>
             <?php
             endif;
@@ -131,7 +133,7 @@ class SettingsTabImport
             
             <br /><br />
             <div class='rsu-issue rsu-notes'>
-            <?php _e('<strong>Notes:</strong>', 'press-permit-core'); ?>
+            <?php esc_html_e('Notes:', 'press-permit-core'); ?>
 
             <?php 
             SettingsTabImportNotes::displayNotes();
@@ -142,7 +144,7 @@ class SettingsTabImport
 
         if (!$offer_rs && !$offer_pp && empty($_POST['pp_rs_import']) && empty($_POST['pp_pp_import'])) : ?>
             <p>
-                <?php _e('Nothing to import!', 'press-permit-core'); ?>
+                <?php esc_html_e('Nothing to import!', 'press-permit-core'); ?>
             </p>
         <?php
         endif;
@@ -151,7 +153,7 @@ class SettingsTabImport
             ?>
             <div class="pp-hint pp-optionhint">
                 <?php
-                echo SettingsAdmin::getStr('pp-import-disable');
+                SettingsAdmin::echoStr('pp-import-disable');
                 ?>
             </div>
         <?php
@@ -162,8 +164,6 @@ class SettingsTabImport
         </tr>
 
         <?php
-        global $wpdb;
-
         if (is_multisite()) {
             $site_clause = (is_main_site()) ? "AND site > 0" : "AND site = %d";  // if on main site, will undo import for all sites
         } else {
@@ -181,18 +181,17 @@ class SettingsTabImport
                 <td>
 
                     <?php
-                    $msg = __("All imported groups, roles, permissions and options will be deleted. Are you sure?", 'press-permit-core');
-                    $js_call = "javascript:if (confirm('$msg')) {return true;} else {return false;}";
+                    $msg = esc_html__("All imported groups, roles, permissions and options will be deleted. Are you sure?", 'press-permit-core');
                     ?>
                     <div style="float:right">
-                        <input name="pp_undo_imports" type="submit" value="<?php _e('Undo All Imports', 'press-permit-core'); ?>"
-                               onclick="<?php echo $js_call; ?>"/>
+                        <input name="pp_undo_imports" type="submit" value="<?php esc_attr_e('Undo All Imports', 'press-permit-core'); ?>"
+                               onclick="<?php echo "javascript:if (confirm('" . esc_attr($msg) . "')) {return true;} else {return false;}"; ?>"/>
                     </div>
                 </td>
             </tr>
         <?php
         endif;
-    } // end function optionsUI()
+    }
 
     private function hasInstallation($install_code)
     {

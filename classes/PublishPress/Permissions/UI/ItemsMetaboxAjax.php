@@ -23,7 +23,7 @@ class ItemsMetaboxAjax
         }
 
         if ( ! empty( $_POST['item-object'] ) ) {
-            $item_type = pp_permissions_sanitize_key($_POST['item-object']);
+            $item_type = sanitize_key($_POST['item-object']);
 
             if (!empty($items[$item_type])) {
                 $item = $items[$item_type];

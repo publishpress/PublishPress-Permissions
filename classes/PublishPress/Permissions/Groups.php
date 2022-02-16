@@ -51,9 +51,9 @@ class Groups
     private function initGroupLabels($args = [])
     {
         if (isset($this->group_types['pp_group']) && ('group' == $this->group_types['pp_group']->labels->singular_name)) {
-            $this->group_types['pp_group']->labels->singular_name = __('Custom Group', 'press-permit-core');
-            $this->group_types['pp_group']->labels->plural_name = __('Custom Groups', 'press-permit-core');
-            $this->group_types['pp_group']->labels->name = __('Groups', 'press-permit-core');
+            $this->group_types['pp_group']->labels->singular_name = esc_html__('Custom Group', 'press-permit-core');
+            $this->group_types['pp_group']->labels->plural_name = esc_html__('Custom Groups', 'press-permit-core');
+            $this->group_types['pp_group']->labels->name = esc_html__('Groups', 'press-permit-core');
         }
     }
 
@@ -179,7 +179,7 @@ class Groups
             ))) {
                 $result->name = stripslashes($result->name);
                 $result->group_description = stripslashes($result->group_description);
-                $result->group_name = $result->name;  // @todo: review usage of these properties
+                $result->group_name = $result->name;  // todo: review usage of these properties
             }
         } elseif ('user' == $agent_type) {
             if ($result = new \WP_User($agent_id)) {

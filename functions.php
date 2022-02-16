@@ -147,8 +147,8 @@ function presspermitPluginPage()
     static $pp_plugin_page = null;
 
     if (is_null($pp_plugin_page)) {
-        $pp_plugin_page = (is_admin() && isset($_REQUEST['page']) && (0 === strpos($_REQUEST['page'], 'presspermit-')))
-            ? pp_permissions_sanitize_key($_REQUEST['page'])
+        $pp_plugin_page = (is_admin() && isset($_REQUEST['page']) && (0 === strpos(sanitize_key($_REQUEST['page']), 'presspermit-')))
+            ? sanitize_key($_REQUEST['page'])
             : false;
     }
 

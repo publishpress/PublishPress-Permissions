@@ -21,7 +21,7 @@ class NavMenus
 
     public function fltTermsSkipFiltering($skip, $taxonomies, $args)
     {
-        if (('nav_menu' != reset($taxonomies))) // && ! presspermit()->getOption( 'admin_nav_menu_filter_items' ) )
+        if (('nav_menu' != reset($taxonomies)))
             $skip = true;
 
         return $skip;
@@ -29,7 +29,7 @@ class NavMenus
 
     public function fltTermsArgs($args, $taxonomies)
     {
-        if (('nav_menu' != reset($taxonomies))) // && presspermit()->getOption( 'admin_nav_menu_filter_items' ) )
+        if (('nav_menu' != reset($taxonomies)))
             $args['hide_empty'] = true;
 
         return $args;
@@ -182,10 +182,8 @@ class NavMenus
 
     public static function flt_police_menu_item_parent($post_parent, $object_id, $post_arr_keys, $post_arr)
     {
-        //if ( empty( $post_arr['post_date_gmt'] ) ) {
         $menu = self::determine_selected_menu();
         $post_parent = self::flt_menu_item_parent($post_parent, $object_id, $menu);
-        //}
 
         return $post_parent;
     }
@@ -290,7 +288,6 @@ class NavMenus
     {
         if ($menu_item = get_post($menu_item_id)) {
             if ('nav_menu_item' == $menu_item->post_type) {
-                //$item_type = get_post_meta( $menu_item_id, '_menu_item_type', true );
                 $object_type = get_post_meta($menu_item_id, '_menu_item_object', true);
                 $object_id = get_post_meta($menu_item_id, '_menu_item_object_id', true);
 
@@ -381,23 +378,23 @@ class NavMenus
                     switch ($menu_operation) {
                         case 'move':
                             wp_die(sprintf(
-                                __('You do not have permission to move the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
-                                $stored_vals['title'],
-                                $link
+                                esc_html__('You do not have permission to move the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
+                                esc_html($stored_vals['title']),
+                                esc_url($link)
                             ));
                             break;
                         case 'delete':
                             wp_die(sprintf(
-                                __('You do not have permission to delete the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
-                                $stored_vals['title'], 
-                                $link
+                                esc_html__('You do not have permission to delete the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
+                                esc_html($stored_vals['title']), 
+                                esc_url($link)
                             ));
                             break;
                         default:
                             wp_die(sprintf(
-                                __('You do not have permission to edit the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
-                                $stored_vals['title'], 
-                                $link
+                                esc_html__('You do not have permission to edit the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
+                                esc_html($stored_vals['title']), 
+                                esc_url($link)
                             ));
                     } // end switch
                 }

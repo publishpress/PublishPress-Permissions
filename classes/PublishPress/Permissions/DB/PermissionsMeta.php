@@ -31,13 +31,10 @@ class PermissionsMeta
         ? "COUNT(i.item_id)" 
         : "COUNT(DISTINCT i.exception_id, i.item_id)";
 
-        $agent_type = pp_permissions_sanitize_key($agent_type);
-
         if (('user' == $agent_type) && $join_groups) {
             $results = [];
 
             foreach ($pp->groups()->getGroupTypes([], 'object') as $group_type => $gtype_obj) {
-                global $wpdb;
                 if (!empty($gtype_obj->schema['members'])) {
                     $sm = pp_permissions_sanitize_entry($gtype_obj->schema['members']);
                     $wpdb->members_table = pp_permissions_sanitize_entry($sm['members_table']);
@@ -119,11 +116,10 @@ class PermissionsMeta
                     else
                         $lbl = $op_obj->label;
 
-                    //$lbl = sprintf( __('%2$s: %1$s', 'press-permit-core'), $op_lbl, $type_label );
                 } elseif (isset($op_obj->abbrev))
                     $lbl = $op_obj->abbrev;
                 else
-                    $lbl = sprintf(__('%1$s %2$s', 'press-permit-core'), $op_obj->label, $type_label);
+                    $lbl = sprintf(esc_html__('%1$s %2$s', 'press-permit-core'), $op_obj->label, $type_label);
             } else {
                 $lbl = $type_label;
             }
@@ -200,9 +196,6 @@ class PermissionsMeta
 
         foreach ($results as $row) {
             $arr_role = explode(':', $row->role_name);
-            //$base_role_name = $arr_role[0];
-            //$source_name = $arr_role[1];
-            //$item_type = $arr_role[2];
 
             $no_ext = !$pp->moduleActive('collaboration') && !$pp->moduleActive('status-control');
             $no_custom_stati = !$pp->moduleActive('status-control');

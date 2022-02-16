@@ -28,7 +28,6 @@ class CommentFilters
         if (is_admin() && defined('PP_NO_COMMENT_FILTERING')) {
             global $current_user;
 
-            //if ( empty( $current_user->allcaps['moderate_comments'] ) )
             return $clauses;
         }
 
@@ -72,7 +71,7 @@ class CommentFilters
         $where = ($post_id > 0) ? $wpdb->prepare("comment_post_ID = %d", $post_id) : '1=1';
         $where = apply_filters('presspermit_count_comments_where', $where, $post_id);
 
-        // @todo: move to filter
+        // todo: move to filter
         if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
         	$revision_status_csv = implode("','", array_map('sanitize_key', rvy_revision_statuses()));
         	$where .= " AND post_mime_type NOT IN ('$revision_status_csv')";

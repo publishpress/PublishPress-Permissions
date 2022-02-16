@@ -28,15 +28,23 @@ class PluginAdmin
 
         if (!$this->typeUsageStored()) {
             if (get_post_types(['public' => true, '_builtin' => false])) {
-                $url = admin_url('admin.php?page=presspermit-settings');
-
-                $message = sprintf(
-                    __('PublishPress Permissions needs directions. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered.', 'press-permit-core'),
-                    '<a href="' . $url . '">',
-                    '</a>'
-                );
+                $do_message = true;
             }
         }
+
+        if (!empty($do_message)) {
+            $wp_list_table = _get_list_table('WP_Plugins_List_Table');
+
+            echo '<tr class="plugin-update-tr"><td colspan="' . esc_attr($wp_list_table->get_column_count())
+                . '" class="plugin-update"><div class="update-message">';
+                
+                $url = admin_url('admin.php?page=presspermit-settings');
+
+            printf(
+                esc_html__('PublishPress Permissions needs directions. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered.', 'press-permit-core'),
+                '<a href="' . esc_url($url) . '">',
+                    '</a>'
+                );
 
         if (presspermit()->isPro() && (is_network_admin() || !is_multisite())) {
             $key = presspermit()->getOption('edd_key');
@@ -45,21 +53,17 @@ class PluginAdmin
             if (in_array($keyStatus, ['invalid', 'expired'])) {
                 require_once PRESSPERMIT_CLASSPATH . '/PluginStatus.php';
                 
-                if ($message) {
-                    $message .= '<br /><br />';
+                    echo '<br /><br />';
+                    
+                    if ('expired' == $keyStatus) {
+                        \PublishPress\Permissions\PluginStatus::renewalMsg();
+                    } else {
+                        \PublishPress\Permissions\PluginStatus::buyMsg();
                 }
-                
-                $message .= ('expired' == $keyStatus) 
-                ? \PublishPress\Permissions\PluginStatus::renewalMsg() 
-                : \PublishPress\Permissions\PluginStatus::buyMsg();
             }
         }
 
-        if ($message) {
-            $wp_list_table = _get_list_table('WP_Plugins_List_Table');
-
-            echo '<tr class="plugin-update-tr"><td colspan="' . $wp_list_table->get_column_count()
-                . '" class="plugin-update"><div class="update-message">' . $message . '</div></td></tr>';
+            echo '</div></td></tr>';
         }
     }
 
@@ -68,7 +72,7 @@ class PluginAdmin
     {
         if ($file == plugin_basename(PRESSPERMIT_FILE)) {
             if (!is_network_admin()) {
-                $links[] = "<a href='admin.php?page=presspermit-settings'>" . PWP::__wp('Settings') . "</a>";
+                $links[] = "<a href='admin.php?page=presspermit-settings'>" . esc_html(PWP::__wp('Settings')) . "</a>";
             }
         }
 
@@ -93,7 +97,7 @@ class PluginAdmin
 
             presspermit()->admin()->notice(
                 sprintf(
-                    __('Thanks for activating %1$s. Please go to %2$sPermissions > Settings%3$s to enable Post Types and Taxonomies for custom permissions.', 'press-permit-core'),
+                    esc_html__('Thanks for activating %1$s. Please go to %2$sPermissions > Settings%3$s to enable Post Types and Taxonomies for custom permissions.', 'press-permit-core'),
                     $plugin_title,
 					'<a href="' . $url . '">',
                     '</a>'
@@ -107,7 +111,7 @@ class PluginAdmin
         $id = (!empty($args['ignore_dismissal'])) ? '' : 'authors-integration-version';
 
         presspermit()->admin()->notice(
-            __('Please upgrade PublishPress Authors to version 3.8.0 or later for Permissions integration.', 'press-permit-core'),
+            esc_html__('Please upgrade PublishPress Authors to version 3.8.0 or later for Permissions integration.', 'press-permit-core'),
             $id,
             $args
         );

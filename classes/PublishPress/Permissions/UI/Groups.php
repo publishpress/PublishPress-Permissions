@@ -64,8 +64,8 @@ class Groups
 
                     <div class="wrap pressshack-admin-wrapper" id="pp-permissions-wrapper">
                         <?php PluginPage::icon(); ?>
-                        <h1><?php _e('Delete Groups'); ?></h1>
-                        <p><?php echo _n('You have specified this group for deletion:', 'You have specified these groups for deletion:', count($groupids), 'press-permit-core'); ?></p>
+                        <h1><?php esc_html_e('Delete Groups'); ?></h1>
+                        <p><?php echo esc_html(_n('You have specified this group for deletion:', 'You have specified these groups for deletion:', count($groupids), 'press-permit-core')); ?></p>
                         <ul>
                             <?php
                             $go_delete = 0;
@@ -81,7 +81,7 @@ class Groups
                                         || ('wp_role' == $group->metagroup_type && \PublishPress\Permissions\DB\Groups::isDeletedRole($group->metagroup_id))
                                     ) {
                                         echo "<li><input type=\"hidden\" name=\"users[]\" value=\"" . esc_attr($id) . "\" />"
-                                            . sprintf(__('ID #%1s: %2s'), $id, $group->name)
+                                            . sprintf(esc_html__('ID #%1s: %2s'), esc_html($id), esc_html($group->name))
                                             . "</li>\n";
 
                                         $go_delete++;
@@ -92,9 +92,9 @@ class Groups
                         </ul>
                         <?php if ($go_delete) : ?>
                             <input type="hidden" name="action" value="dodelete"/>
-                            <?php submit_button(__('Confirm Deletion'), 'secondary'); ?>
+                            <?php submit_button(esc_html__('Confirm Deletion'), 'secondary'); ?>
                         <?php else : ?>
-                            <p><?php _e('There are no valid groups selected for deletion.', 'press-permit-core'); ?></p>
+                            <p><?php esc_html_e('There are no valid groups selected for deletion.', 'press-permit-core'); ?></p>
                         <?php endif; ?>
                     </div>
                 </form>
@@ -106,20 +106,19 @@ class Groups
                 $groups_list_table->prepare_items();
                 $total_pages = $groups_list_table->get_pagination_arg('total_pages');
 
-                $messages = [];
                 if ($update = presspermit_GET_key('update')) :
-                    switch ($_GET['update']) {
+                    switch ($update) {
                         case 'del':
                         case 'del_many':
                             $delete_count = presspermit_GET_int('delete_count');
 
-                            $messages[] = '<div id="message" class="updated"><p>'
-                                . sprintf(_n('%s group deleted', '%s groups deleted', $delete_count, 'press-permit-core'), $delete_count)
+                            echo '<div id="message" class="updated"><p>'
+                                . esc_html(sprintf(_n('%s group deleted', '%s groups deleted', (int) $delete_count, 'press-permit-core'), (int) $delete_count))
                                 . '</p></div>';
 
                             break;
                         case 'add':
-                            $messages[] = '<div id="message" class="updated"><p>' . __('New group created.', 'press-permit-core') . '</p></div>';
+                            echo '<div id="message" class="updated"><p>' . esc_html__('New group created.', 'press-permit-core') . '</p></div>';
                             break;
                     }
                 endif;
@@ -134,17 +133,14 @@ class Groups
                         <ul>
                             <?php
                             foreach ($pp_admin->errors->get_error_messages() as $err)
-                                echo "<li>$err</li>\n";
+                                echo "<li>" . esc_html($err) . "</li>\n";
                             ?>
                         </ul>
                     </div>
                 <?php
                 endif;
 
-                if (!empty($messages)) {
-                    foreach ($messages as $msg)
-                        echo $msg;
-                } ?>
+                ?>
 
                 <div class="wrap pressshack-admin-wrapper presspermit-groups" id="pp-permissions-wrapper">
                     <header>
@@ -168,7 +164,7 @@ class Groups
                                 $_url = add_query_arg(['agent_type' => $agent_type], $_url);
                             }
                             ?>
-                            <a href="<?php echo $_url;?>" class="page-title-action"><?php _e('Add New');?></a>
+                            <a href="<?php echo esc_url($_url);?>" class="page-title-action"><?php esc_html_e('Add New');?></a>
                         <?php endif;
 
                         if ($pp->getOption('display_hints')) {
@@ -177,7 +173,7 @@ class Groups
                             if (defined('PP_GROUPS_HINT')) {
                                 echo esc_html(PP_GROUPS_HINT);
                             } else {
-                                echo esc_html(__("Permission Groups adjust user access with type-specific Roles and item-specific Permissions. To customize permissions for a single user instead, click their Role in the Users listing.", 'press-permit-core'));
+                                echo esc_html__("Permission Groups adjust user access with type-specific Roles and item-specific Permissions. To customize permissions for a single user instead, click their Role in the Users listing.", 'press-permit-core');
                             }
 
                             echo '</div><br />';
@@ -186,42 +182,53 @@ class Groups
                         $group_types = [];
 
                         if (current_user_can('pp_administer_content'))
-                            $group_types['wp_role'] = (object)['labels' => (object)['singular_name' => __('WordPress Role', 'press-permit-core'), 'plural_name' => __('WordPress Roles', 'press-permit-core')]];
+                            $group_types['wp_role'] = (object)['labels' => (object)['singular_name' => esc_html__('WordPress Role', 'press-permit-core'), 'plural_name' => esc_html__('WordPress Roles', 'press-permit-core')]];
 
-                        $group_types['pp_group'] = (object)['labels' => (object)['singular_name' => __('Custom Group', 'press-permit-core'), 'plural_name' => __('Custom Groups', 'press-permit-core')]];
+                        $group_types['pp_group'] = (object)['labels' => (object)['singular_name' => esc_html__('Custom Group', 'press-permit-core'), 'plural_name' => esc_html__('Custom Groups', 'press-permit-core')]];
 
                         // currently faking WP Role as a "group type", but want it listed before BuddyPress Group
                         $group_types = apply_filters('presspermit_list_group_types', array_merge($group_types, $pp_groups->getGroupTypes([], 'object')));
 
-                        $class = (!$group_variant) ? 'class="current"' : '';
-                        $links = ["<li><a href='admin.php?page=presspermit-groups' $class>" . __('All', 'press-permit-core') . "</a></li>"];
+                        echo '<ul class="subsubsub">';
+                        printf(esc_html__('%1$sGroup Type:%2$s %3$s', 'press-permit-core'), '<li class="pp-gray">', '</li>', '');
+
+                        $class = (!$group_variant) ? 'current' : '';
                         
+                        echo "<li><a href='admin.php?page=presspermit-groups' class='" . esc_attr($class) . "'>" . esc_html__('All', 'press-permit-core') . "</a>&nbsp;|&nbsp;</li>";
+                        
+                        $i = 0;
                         foreach ($group_types as $_group_type => $gtype_obj) {
                             $agent_type_str = ('wp_role' == $_group_type) ? "&agent_type=pp_group" : "&agent_type=$_group_type";
                             $gvar_str = "&group_variant=$_group_type";
-                            $class = strpos($agent_type_str, $agent_type) && ($group_variant && strpos($gvar_str, $group_variant))
-                                ? 'class="current"' : '';
+                            $class = strpos($agent_type_str, $agent_type) && ($group_variant && strpos($gvar_str, $group_variant)) ? 'current' : '';
 
                             $group_label = (!empty($gtype_obj->labels->plural_name)) ? $gtype_obj->labels->plural_name : $gtype_obj->labels->singular_name;
-                            $links[] = "<li><a href='admin.php?page=presspermit-groups{$agent_type_str}{$gvar_str}' $class>{$group_label}</a></li>";
+                           
+                            $i++;
+                            
+                            echo "<li><a href='" . esc_url("admin.php?page=presspermit-groups{$agent_type_str}{$gvar_str}") . "' class='" . esc_attr($class) . "'>" . esc_html($group_label) . "</a>";
+
+                            if ($i < count($group_types)) {
+                                echo "&nbsp;|&nbsp;";
+                            }
+
+                            echo '</li>';
                         }
 
-                        echo '<ul class="subsubsub">';
-                        printf(__('%1$sGroup Type:%2$s %3$s', 'press-permit-core'), '<li class="pp-gray">', '</li>', implode('&nbsp;|&nbsp;', $links));
                         echo '</ul>';
 
                         if (!empty($groupsearch))
-                            printf('<span class="subtitle">' . __('Search Results for &#8220;%s&#8221;', 'press-permit-core') . '</span>', esc_html($groupsearch)); ?>
+                            printf('<span class="subtitle">' . esc_html__('Search Results for &#8220;%s&#8221;', 'press-permit-core') . '</span>', esc_html($groupsearch)); ?>
                     </h1>
                     </header>
                     
                     <?php $groups_list_table->views(); ?>
 
-                    <form action="<?php echo "$url" ?>" method="get">
+                    <form action="<?php echo esc_url($url);?>" method="get">
                         <input type="hidden" name="page" value="presspermit-groups"/>
                         <input type="hidden" name="agent_type" value="<?php echo esc_attr($agent_type); ?>"/>
                         <?php
-                        $groups_list_table->search_box(__('Search Groups', 'press-permit-core'), 'group', '', 2);
+                        $groups_list_table->search_box(esc_html__('Search Groups', 'press-permit-core'), 'group', '', 2);
                         ?>
 
                         <?php $groups_list_table->display(); ?>
@@ -235,17 +242,19 @@ class Groups
                         defined('BP_VERSION') && !$pp->moduleActive('compatibility')
                         && $pp->getOption('display_extension_hints')
                     ) {
+                        echo "<div class='pp-ext-promo'>";
+                        
                         if (presspermit()->isPro()) {
-                            $msg = __('To assign roles or permissions to BuddyPress groups, activate the Compatibility Pack module', 'press-permit-core');
+                            echo esc_html__('To assign roles or permissions to BuddyPress groups, activate the Compatibility Pack module', 'press-permit-core');
                         } else {
-                            $msg = sprintf(
-                                __('To assign roles or permissions to BuddyPress groups, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                            printf(
+                                esc_html__('To assign roles or permissions to BuddyPress groups, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
                                 '<a href="https://publishpress.com/pricing/">',
                                 '</a>'
                             );
                         }
 
-                        echo "<div class='pp-ext-promo'>$msg</div>";
+                        echo "</div>";
                     }
                     ?>
 

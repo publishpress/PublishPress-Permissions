@@ -86,7 +86,7 @@ class Permissions
         if ($arr_url) {
             $path = isset($arr_url['path']) ? $arr_url['path'] : '';
 
-            if (0 === strpos($_SERVER['REQUEST_URI'], $path . '/wp-json/oembed/')) {
+            if (0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), $path . '/wp-json/oembed/')) {
                 return true;
             }
         }
@@ -104,11 +104,11 @@ class Permissions
         if ($arr_url) {
             $path = isset($arr_url['path']) ? $arr_url['path'] : '';
 
-			if (0 === strpos($_SERVER['REQUEST_URI'], $path . '/wp-json/oembed/')) {
+			if (0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), $path . '/wp-json/oembed/')) {
 				return false;	
 			}
 
-            if (0 === strpos($_SERVER['REQUEST_URI'], $path . '/wp-json/')) {
+            if (0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), $path . '/wp-json/')) {
                 return true;
             }
         }
@@ -129,13 +129,13 @@ class Permissions
         }
 
         // Divi Page Builder editor init
-		if (!defined('PRESSPERMIT_DISABLE_DIVI_CLEARANCE') && !presspermit_empty_REQUEST('et_fb') && !presspermit_empty_REQUEST('et_bfb') 
-		&& 0 === strpos($_SERVER['REQUEST_URI'], '/?page_id') 
-		&& !is_admin() && !defined('DOING_AJAX') && presspermit_empty_REQUEST('action') 
-        && presspermit_empty_REQUEST('post') && presspermit_empty_REQUEST('post_id') && presspermit_empty_REQUEST('post_ID') && presspermit_empty_REQUEST('p')
-		) {
-			return true;
-		}
+        if (!defined('PRESSPERMIT_DISABLE_DIVI_CLEARANCE') && !presspermit_empty_REQUEST('et_fb') && !presspermit_empty_REQUEST('et_bfb') 
+        && 0 === strpos($_SERVER['REQUEST_URI'], '/?page_id') 
+        && !is_admin() && !defined('DOING_AJAX') && presspermit_empty_REQUEST('action') 
+            && presspermit_empty_REQUEST('post') && presspermit_empty_REQUEST('post_id') && presspermit_empty_REQUEST('post_ID') && presspermit_empty_REQUEST('p')
+        ) {
+          return true;
+        }
     }
 
     private function load($args = [])
@@ -295,8 +295,6 @@ class Permissions
 
         $dir = PRESSPERMIT_ABSPATH . '/modules/';
 
-        // @todo: dir()
-
         $available_modules = $this->getAvailableModules();
 
         foreach($available_modules as $module) {
@@ -310,7 +308,6 @@ class Permissions
 
     public function getAvailableModules($args = [])
     {
-        // @todo: dir()
         $modules = [
             'presspermit-circles',
             'presspermit-collaboration',
@@ -432,7 +429,7 @@ class Permissions
     {
         global $current_user;
 
-        // @todo: review (Add New Media)
+        // todo: review (Add New Media)
         if (empty($current_user) || ! isset($this->cap_defs)) {
             return;
         }
@@ -535,10 +532,11 @@ class Permissions
         }
     }
 
-    // $args['labels']['name'] = translationed caption
-    // $args['labels']['name'] = translated caption
-    // $args['default_caps'] = [cap_name => true, another_cap_name => true] defines caps for pattern roles which do not have a corresponding WP role 
-    //
+    /*
+     * USAGE: args['labels']['name'] = translationed caption
+     * USAGE: args['labels']['name'] = translated caption
+     * USAGE: args['default_caps'] = [cap_name => true, another_cap_name => true] defines caps for pattern roles which do not have a corresponding WP role 
+     */
     public function registerPatternRole($role_name, $args = [])
     {
         $role_obj = (object)$args;
@@ -652,7 +650,6 @@ class Permissions
         update_option("presspermit_$option_basename", $option_val);
 
         do_action('presspermit_update_option', $option_basename, $option_val, $args);
-        //do_action( 'pp_update_option', $option_basename, $option_val, $args );  // old action was never hooked by any extension
     }
 
     public function deleteOption($option_basename, $args = [])
@@ -667,7 +664,7 @@ class Permissions
         delete_option("presspermit_{$option_basename}");
     }
 
-    // Change the active value for a site option, but don't update database // @todo: review
+    // Change the active value for a site option, but don't update database // todo: review
     public function setSiteOption($option_basename, $value)
     {
         $this->site_options[$option_basename] = $value;
@@ -696,7 +693,7 @@ class Permissions
 
     public function isUserUnfiltered($user_id = false, $args = [])
     {
-        // @todo: any other Gutenberg Administrator requests to filter?
+        // todo: any other Gutenberg Administrator requests to filter?
         $is_unfiltered = $this->isAdministrator($user_id, 'unfiltered', $args) 
         && (!defined('REST_REQUEST') || ! REST_REQUEST || (presspermit_empty_REQUEST('parent_exclude') || did_action('presspermit_refresh_administrator_check'))); // page parent dropdown
 
@@ -770,7 +767,7 @@ class Permissions
 
         $types = get_post_types(array_merge($args, ['public' => true, 'show_ui' => true]), 'names', 'or');
 
-        $omit_types = apply_filters('presspermit_unfiltered_post_types', ['wp_block']); // @todo: review wp_block filtering
+        $omit_types = apply_filters('presspermit_unfiltered_post_types', ['wp_block']); // todo: review wp_block filtering
 
         $object_types = array_diff_key($types, array_fill_keys($omit_types, true));
 
@@ -983,7 +980,7 @@ class Permissions
             $$var = (isset($args[$var])) ? $args[$var] : $defaults[$var];
         }
 
-        $slug = pp_permissions_sanitize_key($slug);
+        $slug = sanitize_key($slug);
 
         // avoid lockout in case of editing plugin via wp-admin
         if (constant('PRESSPERMIT_DEBUG') && is_admin() && presspermit_editing_plugin()) {
