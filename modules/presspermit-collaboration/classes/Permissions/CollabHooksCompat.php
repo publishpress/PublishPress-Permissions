@@ -10,7 +10,7 @@ class CollabHooksCompat
         add_action('presspermit_roles_defined', [$this, 'actAdjustDefaultPatternRoles']);
 
         add_filter('presspermit_operations', [$this, 'fltOperations']);
-        add_filter('presspermit_define_pattern_caps', [$this, 'fltDefinePatternCaps']);
+        add_action('presspermit_define_pattern_caps', [$this, 'actDefinePatternCaps']);
         add_filter('presspermit_apply_arbitrary_caps', [$this, 'fltApplyArbitraryCaps'], 10, 3);
     }
 
@@ -39,7 +39,7 @@ class CollabHooksCompat
         return $ops;
     }
 
-    function fltDefinePatternCaps($pattern_role_caps)
+    function actDefinePatternCaps($pattern_role_caps)
     {
         $type_obj = get_taxonomy('category');
         $type_caps['category'] = array_intersect_key(get_object_vars($type_obj->cap), array_fill_keys(['manage_terms'], true));
