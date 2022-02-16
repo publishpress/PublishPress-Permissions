@@ -270,7 +270,7 @@ class CapabilityFiltersAdmin
                         global $post_type;
 
                         $op = 'assign';
-                        $taxonomy = $term_obj->taxonomy;
+                        $return_taxonomy = $term_obj->taxonomy;
                         if (!empty($post_type))
                             $item_type = $post_type;
                     }
@@ -285,7 +285,7 @@ class CapabilityFiltersAdmin
                 }
 
                 $tx_obj = get_taxonomy($item_type);
-                $taxonomy = $item_type;
+                $return_taxonomy = $item_type;
 
                 $base_cap = reset($type_caps);
 
@@ -300,6 +300,10 @@ class CapabilityFiltersAdmin
             }
 
             $return = compact('type_caps', 'item_type', 'is_term_cap', 'op', 'taxonomy');
+
+            if (!empty($return_taxonomy)) {
+                $return['taxonomy'] = $return_taxonomy;
+            }
 
             if (empty($params['item_id'])) {
                 $qvar = ('nav_menu' == $item_type) ? 'menu' : 'tag_ID';
