@@ -237,8 +237,9 @@ class PostSaveHierarchical
         if (presspermit_empty_POST('parent_id')) {
             if (!$already_published) {  // This should only ever happen if the POST data is manually fudged
                 if ($post_status_object = get_post_status_object($status)) {
-                    if ($post_status_object->public || $post_status_object->private)
+                    if ($post_status_object->public || $post_status_object->private) {
                         $status = 'draft';
+                    }
                 }
             }
         }
