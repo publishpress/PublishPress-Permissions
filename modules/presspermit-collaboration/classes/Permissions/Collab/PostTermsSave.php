@@ -127,7 +127,7 @@ class PostTermsSave
             $tx_obj = get_taxonomy($taxonomy);
             if ($tx_obj && !empty($tx_obj->object_terms_post_var)) {
                 if (presspermit_is_POST($tx_obj->object_terms_post_var)) {
-                    return array_map('intval', $_POST[$tx_obj->object_terms_post_var]);
+                    return array_map('intval', presspermit_POST_var($tx_obj->object_terms_post_var));
                 }
 
             } elseif (!empty($_POST['tax_input'][$taxonomy])) {
