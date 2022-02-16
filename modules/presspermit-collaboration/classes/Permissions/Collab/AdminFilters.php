@@ -300,8 +300,9 @@ class AdminFilters
 
     function fltPostStatus($status)
     {
-        if (presspermit()->isUserUnfiltered() || ('auto-draft' == $status) || strpos($_SERVER['REQUEST_URI'], 'nav-menus.php'))
+        if (presspermit()->isUserUnfiltered() || ('auto-draft' == $status) || (!empty($_SERVER['REQUEST_URI']) && strpos(sanitize_text_field($_SERVER['REQUEST_URI']), 'nav-menus.php'))) {
             return $status;
+        }
 
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostEdit.php');
         return PostEdit::fltPostStatus($status);
