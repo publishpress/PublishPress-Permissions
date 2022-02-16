@@ -171,10 +171,7 @@ class SettingsTabImport
         }
 
         if ($wpdb->get_col(
-                $wpdb->prepare(
-                    "SELECT run_id FROM $wpdb->ppi_imported WHERE run_id > 0 $site_clause",
-                    get_current_blog_id()
-                )
+                "SELECT run_id FROM $wpdb->ppi_imported WHERE run_id > 0 $site_clause"
             ) 
         ) : ?>
             <tr>
