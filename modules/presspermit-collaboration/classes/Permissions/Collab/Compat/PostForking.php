@@ -86,6 +86,8 @@ class PostForking
             $$var = $args[$var];
         }
 
+        global $wpdb;
+
         $pp = presspermit();
 
         if (!is_admin() || $pp->isContentAdministrator() || !$this->any_forking_caps() || ('edit' != $required_operation))
@@ -99,7 +101,6 @@ class PostForking
 
         if ($fork_exceptions = \PublishPress\Permissions\DB\Permissions::addExceptionClauses('1=1', 'fork', $post_type, $_args)) {
             if ($pp->getOption('fork_published_only')) {
-                global $wpdb;
                 $stati = apply_filters('presspermit_forkable_stati', get_post_stati(['public' => true, 'private' => true], 'names', 'or'));
                 $src_table = ($source_alias) ? $source_alias : $wpdb->posts;
                 $status_clause = "$src_table.post_status IN ('" . implode("','", $stati) . "') AND ";
@@ -108,8 +109,6 @@ class PostForking
 
             $author_clause = '';
             if ($pp->getOption('fork_require_edit_others')) {
-                global $wpdb;
-
                 $user = presspermit()->getUser();
 
                 $type_obj = get_post_type_object($post_type);

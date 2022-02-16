@@ -6,6 +6,8 @@ class PluginUpdated
 {
     public function __construct($prev_version)
     {
+        global $wpdb;
+
         // single-pass do loop to easily skip unnecessary version checks
         do {
             if (!$prev_version) {
@@ -111,7 +113,6 @@ class PluginUpdated
             } else break;
 
             if (version_compare($prev_version, '2.1.16-beta', '<')) {
-                global $wpdb;
                 $wpdb->query("UPDATE $wpdb->ppc_exceptions SET for_item_source = 'post' WHERE for_item_source = 'all'");
             } else break;
         } while (0); // end single-pass version check loop

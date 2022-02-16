@@ -54,8 +54,6 @@ class CollabHooks
         if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
             add_action('presspermit_init_rvy_interface', [$this, 'init_rvy_interface']);
     
-            global $pagenow;
-
             // also needed for Admin Bar filtering
             if ((!defined('DOING_AJAX') || !DOING_AJAX) && ('async-upload.php' != $pagenow)) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisions/Admin.php");
@@ -83,8 +81,6 @@ class CollabHooks
     
             $legacy_suffix = version_compare(REVISIONARY_VERSION, '1.5-alpha', '<') ? 'Legacy' : '';
             
-            global $pagenow;
-
             // also needed for Admin Bar filtering
             if ((!defined('DOING_AJAX') || !DOING_AJAX) && ('async-upload.php' != $pagenow)) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/Admin{$legacy_suffix}.php");
@@ -204,15 +200,15 @@ class CollabHooks
 
     public function init_rvy_interface()
     {
+        global $revisionary;
+
         if (class_exists('RevisionsContentRoles')) {
-            global $revisionary;
             if (!empty($revisionary) && method_exists($revisionary, 'set_content_roles')) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisions/ContentRoles.php');
                 $revisionary->set_content_roles(new Collab\Revisions\ContentRoles());
             }
 
         } elseif (class_exists('RevisionaryContentRoles')) {
-            global $revisionary;
             if (!empty($revisionary) && method_exists($revisionary, 'set_content_roles')) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisionary/ContentRoles.php');
                 $revisionary->set_content_roles(new Collab\Revisionary\ContentRoles());

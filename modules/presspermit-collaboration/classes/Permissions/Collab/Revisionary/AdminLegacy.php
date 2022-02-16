@@ -147,8 +147,9 @@ class AdminLegacy
 
     public function flt_mapMetaCap($caps, $meta_cap, $user_id, $wp_args)
     {
+        global $current_user;
+
         if (in_array($meta_cap, ['edit_post', 'edit_page'], true)) {
-            global $current_user;
             if ($user_id != $current_user->ID)
                 return $caps;
 
@@ -172,8 +173,6 @@ class AdminLegacy
                 return $caps;
 
             if (isset($wp_args[0]) && is_object($wp_args[0])) {
-                global $current_user;
-
                 if ($current_user->ID == $wp_args[0]->post_author) {
                     return $caps;
                 }

@@ -418,8 +418,6 @@ class Permissions
         foreach (presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
             $tt_ids = $user->getExceptionTerms($required_operation, 'additional', $post_type, $taxonomy, ['status' => true, 'merge_universals' => true]);
 
-            global $pagenow;
-
             $type_obj = get_post_type_object($post_type);
 
             if (('edit' == $required_operation) 

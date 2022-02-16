@@ -84,8 +84,9 @@ class TermsListing
 
     public function fltCustomColumn($val, $column_name, $id)
     {
+        global $taxonomy;
+
         if ('pp_ttid' == $column_name) {
-            global $taxonomy;
             $ttid = PWP::termidToTtid($id, $taxonomy);
             echo esc_attr("$id ($ttid)");
         }
@@ -100,7 +101,6 @@ class TermsListing
             $got_data = true;
         }
 
-        global $taxonomy;
         $id = PWP::termidToTtid($id, $taxonomy);
 
         if (!empty($this->exceptions[$id])) {

@@ -148,10 +148,11 @@ class Admin
 
     public function flt_mapMetaCap($caps, $meta_cap, $user_id, $wp_args)
     {
+        global $current_user;
+
         if ($user_id && in_array($meta_cap, ['edit_post', 'edit_page'], true) && !empty($wp_args[0]) 
 			&& function_exists('rvy_get_option') && function_exists('rvy_default_options') // Revisions plugin does not initialize on plugins.php URL
 		) {
-            global $current_user;
             if ($user_id != $current_user->ID)
                 return $caps;
 
@@ -170,8 +171,6 @@ class Admin
             }
 
             if (rvy_get_option('require_edit_others_drafts') && apply_filters('revisionary_require_edit_others_drafts', true, $_post->post_type, $_post->post_status, $wp_args)) {
-                global $current_user;
-
                 if ($current_user->ID == $_post->post_author) {
                     return $caps;
                 }

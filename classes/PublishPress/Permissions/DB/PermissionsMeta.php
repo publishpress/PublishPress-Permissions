@@ -31,13 +31,10 @@ class PermissionsMeta
         ? "COUNT(i.item_id)" 
         : "COUNT(DISTINCT i.exception_id, i.item_id)";
 
-        $agent_type = pp_permissions_sanitize_key($agent_type);
-
         if (('user' == $agent_type) && $join_groups) {
             $results = [];
 
             foreach ($pp->groups()->getGroupTypes([], 'object') as $group_type => $gtype_obj) {
-                global $wpdb;
                 if (!empty($gtype_obj->schema['members'])) {
                     $sm = pp_permissions_sanitize_entry($gtype_obj->schema['members']);
                     $wpdb->members_table = pp_permissions_sanitize_entry($sm['members_table']);

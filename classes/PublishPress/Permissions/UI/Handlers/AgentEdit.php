@@ -5,6 +5,8 @@ namespace PublishPress\Permissions\UI\Handlers;
 class AgentEdit
 {
     public function __construct() {
+        global $current_user;
+        
         require_once(PRESSPERMIT_CLASSPATH . '/DB/GroupUpdate.php');
 
         $action = presspermit_REQUEST_key('action');
@@ -74,7 +76,6 @@ class AgentEdit
                     $this->triggerGroupEdit($agent_id, $agent_type);
                 }
 
-                global $current_user;
                 update_user_option($current_user->ID, 'pp-permissions-tab', 'pp-add-roles');
 
                 $redirect = "$url?page=presspermit-edit-permissions&agent_id=$agent_id&agent_type=$agent_type&updated=1&pp_roles=1";
@@ -97,7 +98,6 @@ class AgentEdit
                     $this->triggerGroupEdit($agent_id, $agent_type);
                 }
 
-                global $current_user;
                 update_user_option($current_user->ID, 'pp-permissions-tab', 'pp-add-exceptions');
 
                 $redirect = "$url?page=presspermit-edit-permissions&agent_id=$agent_id&agent_type=$agent_type&updated=1&pp_exc=1";

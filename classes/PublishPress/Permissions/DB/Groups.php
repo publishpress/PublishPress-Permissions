@@ -112,7 +112,6 @@ class Groups
         $wpdb->members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
 
         $status_clause = ($status) ? $wpdb->prepare("AND status = %s", $status) : '';
-        $mtype_clause = $wpdb->prepare("AND member_type = %s", $member_type);
 
         if ('id' == $cols) {
             if (!$results = $wpdb->get_col(

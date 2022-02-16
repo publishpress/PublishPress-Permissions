@@ -127,10 +127,10 @@ class UsersListing
     {
         $pp_groups = presspermit()->groups();
 
+        global $wp_list_table, $wp_roles;
+
         switch ($column_name) {
             case 'pp_groups':
-                global $wp_list_table;
-
                 static $all_groups;
                 static $all_group_types;
 
@@ -207,7 +207,6 @@ class UsersListing
                 break;
 
             case 'pp_roles':
-                global $wp_list_table, $wp_roles;
                 static $role_info;
 
                 $role_str = '';
@@ -295,7 +294,6 @@ class UsersListing
                 break;
 
             case 'pp_exceptions':
-                global $wp_list_table;
                 return DashboardFilters::listAgentExceptions('user', $id, ['query_agent_ids' => array_keys($wp_list_table->items)]);
                 break;
 

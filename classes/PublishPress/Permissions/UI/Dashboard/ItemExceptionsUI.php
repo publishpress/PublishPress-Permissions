@@ -135,8 +135,6 @@ class ItemExceptionsUI
                     $reqd_caps = false;
                 }
             }
-
-            global $wp_roles;
             ?>
 
             <table class="pp-item-exceptions-ui pp-exc-<?php echo esc_attr($agent_type); ?>" style="width:100%">

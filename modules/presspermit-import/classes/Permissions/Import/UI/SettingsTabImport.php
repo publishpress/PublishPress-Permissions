@@ -99,6 +99,8 @@ class SettingsTabImport
 
     function actOptionsUI()
     {
+        global $wpdb;
+
         $ui = SettingsAdmin::instance(); 
         $tab = 'import';
 
@@ -119,7 +121,6 @@ class SettingsTabImport
             <input name="pp_rs_import" type="submit" value="Do Import"/>
 
             <?php
-            global $wpdb;
             if ($count = $wpdb->get_var("SELECT COUNT(i.ID) FROM $wpdb->ppi_imported AS i INNER JOIN $wpdb->ppi_runs AS r ON i.run_id = r.ID AND r.import_type = 'rs'")) :
                 ?>
                 <span class='prev-imports'>
@@ -162,8 +163,6 @@ class SettingsTabImport
         </tr>
 
         <?php
-        global $wpdb;
-
         if (is_multisite()) {
             $site_clause = (is_main_site()) ? "AND site > 0" : "AND site = %d";  // if on main site, will undo import for all sites
         } else {

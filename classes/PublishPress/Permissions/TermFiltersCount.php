@@ -209,7 +209,6 @@ class TermFiltersCount
         // In addition, without the pp_tallyTermCounts() call, WP will hide terms that have no public posts (even if this user can read some of the pvt posts).
         // Post counts will be incremented to include child terms only if $pad_counts is true
         if (!defined('XMLRPC_REQUEST') && (1 == count($taxonomies))) {
-            global $pagenow;
             if ((!is_admin() || !in_array($pagenow, ['post.php', 'post-new.php']))
                 && (!defined('PP_UNFILTERED_TERM_COUNTS') || is_admin())
                 && (in_array($pagenow, ['edit-tags.php']) || !presspermit()->getOption('term_counts_unfiltered'))
