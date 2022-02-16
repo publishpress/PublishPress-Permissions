@@ -159,7 +159,7 @@ class Permissions
             'display_user_profile_groups' => 0,
             'display_user_profile_roles' => 0,
             'new_user_groups_ui' => 1,
-            'beta_updates' => false,        // @todo: EDD integration, or eliminate
+            'beta_updates' => false,        // todo: EDD integration, or eliminate
             'admin_hide_uneditable_posts' => 1,
             'post_blockage_priority' => 1,
             'media_search_results' => 1,
