@@ -1165,10 +1165,9 @@ class AgentPermissionsUI
 
                     endif;
 
-                    $show_all_url = add_query_arg('show_propagated', '1', esc_url_raw($_SERVER['REQUEST_URI']));
-                    $show_all_link = "&nbsp;&nbsp;<a href='$show_all_url'>";
-
                     if ((presspermit_empty_REQUEST('show_propagated') || !empty($fix_child_exceptions_link)) && !empty($_SERVER['REQUEST_URI'])) {
+                    	$show_all_url = add_query_arg('show_propagated', '1', esc_url_raw($_SERVER['REQUEST_URI']));
+
                         if ('term' == $via_src) {
                             echo '<div class="pp-current-roles-note">'
                                 . sprintf(
