@@ -98,7 +98,7 @@ class PostFilters
             } elseif(!empty($wp_query->query['page_id'])) {
                 $post_id = (int) $wp_query->query['page_id'];
             } else {
-                return;
+                return $object_types;
             }
 
             if ($_post = get_post($post_id)) {
