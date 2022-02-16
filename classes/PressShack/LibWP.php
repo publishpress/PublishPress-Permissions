@@ -464,7 +464,7 @@ class LibWP
 
     public static function isMuPlugin($plugin_path = '')
     {
-        if ( ! $plugin_path && defined(PRESSPERMIT_FILE) ) {
+        if ( ! $plugin_path && defined('PRESSPERMIT_FILE') ) {
             $plugin_path = PRESSPERMIT_FILE;
         }
         return (defined('WPMU_PLUGIN_DIR') && (false !== strpos($plugin_path, WPMU_PLUGIN_DIR)));
