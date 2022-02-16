@@ -107,6 +107,7 @@ class SettingsTabImport
         echo '<tr><td>';
 
         if ($offer_rs = $this->hasUnimported('rs')) :
+            wp_nonce_field('pp-rs-import', '_pp_import_nonce');
             ?>
             <h3>
                 <?php esc_html_e('Role Scoper Import', 'press-permit-core'); ?>
