@@ -88,8 +88,9 @@ class DashboardFiltersNonAdministrator
                 $_post_type = 'post';
             }
 
-            if (!in_array($_post_type, presspermit()->getEnabledPostTypes(), true))
+            if (!in_array($_post_type, presspermit()->getEnabledPostTypes(), true)) {
                 return;
+            }
 
             if ($wp_type = get_post_type_object($_post_type)) {
                 $cap_check = (isset($wp_type->cap->create_posts)) ? $wp_type->cap->create_posts : $wp_type->cap->edit_posts;
