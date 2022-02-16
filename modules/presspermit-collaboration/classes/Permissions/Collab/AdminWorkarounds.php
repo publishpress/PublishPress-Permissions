@@ -539,7 +539,7 @@ class AdminWorkarounds
         }
 
         if (defined('DOING_AJAX')) {
-            if (strpos($query, "ELECT t.name FROM") && !empty($_REQUEST['tax']) && !empty($_SERVER['HTTP_REFERER'])) {
+            if (strpos($query, "ELECT t.name FROM") && !empty($_SERVER['HTTP_REFERER'])) {
                 if ($taxonomy = presspermit_REQUEST_key('tax')) {
                     $parsed = wp_parse_url(esc_url_raw($_SERVER['HTTP_REFERER']));
 	                if (!empty($parsed['query'])) {
