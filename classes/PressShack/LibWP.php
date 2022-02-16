@@ -21,7 +21,7 @@ class LibWP
      */
     public static function isBlockEditorActive($post_type = '', $args = [])
     {
-        global $current_user;
+        global $current_user, $wp_version;
 
         $defaults = ['suppress_filter' => false, 'force_refresh' => false];
         $args = array_merge($defaults, $args);
