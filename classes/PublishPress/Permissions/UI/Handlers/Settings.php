@@ -189,6 +189,7 @@ class Settings
             $pp->updateOption('deactivated_modules', $deactivated);
             $tab = (!presspermit_empty_POST('pp_tab')) ? "&pp_tab={" . presspermit_POST_key('pp_tab') . "}" : '';
             wp_redirect(admin_url("admin.php?page=presspermit-settings$tab&presspermit_submit_redirect=1"));
+            exit;
         }
         // =====================================================
     }
