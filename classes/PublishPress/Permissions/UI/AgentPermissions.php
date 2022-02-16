@@ -188,7 +188,7 @@ class AgentPermissions
                         <?php
                         $disabled = (!$pp_groups->groupTypeEditable($agent_type) || $agent->metagroup_id) ? ' disabled ' : '';
 
-                        // @todo: better html / css for update button pos
+                        // todo: better html / css for update button pos
                         ?>
                         <table class="pp-agent-profile">
                             <tr>
