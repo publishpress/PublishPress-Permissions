@@ -27,8 +27,7 @@ class Settings
                 include_once(PRESSPERMIT_ABSPATH . '/includes/renewal-redirect.php');
             }
 
-            exit;
-        }
+        $args = apply_filters('presspermit_handle_submission_args', []); // todo: is this used?
 
         if (presspermit_is_POST('pp_submission_topic', 'options')) {
 
@@ -45,24 +44,6 @@ class Settings
 
         } elseif (isset($_POST['pp_role_usage_defaults'])) {
             delete_option('presspermit_role_usage');
-            presspermit()->refreshOptions();
-        }
-    }
-
-    private function handleSubmission($action)
-    {
-        $args = apply_filters('presspermit_handle_submission_args', []); // @todo: is this used?
-
-        if (empty($_POST['pp_submission_topic']))
-            return;
-
-        if ('options' == $_POST['pp_submission_topic']) {
-            $method = "{$action}Options";
-            if (method_exists($this, $method))
-                call_user_func([$this, $method], $args);
-
-            do_action('presspermit_handle_submission', $action, $args);
-
             presspermit()->refreshOptions();
         }
     }
@@ -85,13 +66,20 @@ class Settings
 
         $pp = presspermit();
 
+        if (!$all_options = presspermit_POST_var('all_options')) {
+            return;
+        }
 
         $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
 
-        $reviewed_options = array_map('pp_permissions_sanitize_key', array_merge(
-            explode(',', $_POST['all_options']), 
-            explode(',', $_POST['all_otype_options'])
-        ));
+        $reviewed_options = array_map('sanitize_key', explode(',', sanitize_text_field($all_options)));
+
+        if ($all_otype_options = presspermit_POST_var('all_otype_options')) {
+            $reviewed_options = array_merge(
+                $reviewed_options, 
+                array_map('sanitize_key', explode(',', sanitize_text_field($all_otype_options)))
+            );
+        }
 
         foreach ($reviewed_options as $option_name) {
             $pp->deleteOption($default_prefix . $option_name, $args);
@@ -104,23 +92,35 @@ class Settings
 
         $pp = presspermit();
 
+        if (!$all_options = presspermit_POST_var('all_options')) {
+            return;
+        }
+
         do_action('presspermit_update_options', $args);
 
         $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
 
-        foreach (array_map('pp_permissions_sanitize_key', explode(',', $_POST['all_options'])) as $option_basename) {
+        foreach (array_map('pp_permissions_sanitize_entry', explode(',', sanitize_text_field($all_options))) as $option_basename) {
             $value = presspermit_POST_var($option_basename);
 
-            if (!is_array($value))
-                $value = trim($value);
+            $_value = apply_filters('presspermit_custom_sanitize_setting', null, $option_basename, $value);
 
-            $pp->updateOption($default_prefix . $option_basename, stripslashes_deep($value), $args);
+            if ($_value !== null) {
+                $value = $_value;
+            } elseif (!is_array($value)) {
+                $value = trim(sanitize_text_field($value));
+            } else {
+                $value = array_map('sanitize_text_field', $value);
+            }
+
+            $pp->updateOption($default_prefix . $option_basename, $value, $args);
         }
 
-        foreach (array_map('pp_permissions_sanitize_key', explode(',', $_POST['all_otype_options'])) as $option_basename) {
+        if ($all_otype_options = presspermit_POST_var('all_otype_options')) {
+            foreach (array_map('pp_permissions_sanitize_entry', explode(',', sanitize_text_field($all_otype_options))) as $option_basename) {
             // support stored default values (to apply to any post type which does not have an explicit setting)
             if (isset($_POST[$option_basename][0])) {
-                $_POST[$option_basename][''] = $_POST[$option_basename][0];
+                    $_POST[$option_basename][''] = pp_permissions_sanitize_entry(sanitize_text_field($_POST[$option_basename][0]));
                 unset($_POST[$option_basename][0]);
             }
 
@@ -133,15 +133,12 @@ class Settings
                 $value = array_merge($value, $current);
             }
 
-            if (isset($_POST[$option_basename])) {
-                $value = array_merge($value, $_POST[$option_basename]);
+                if ($option_val = presspermit_POST_var($option_basename)) {
+                    $value = array_merge($value, array_map('pp_permissions_sanitize_entry', $option_val));
             }
 
-            foreach (array_keys($value) as $key) {
-                $value[$key] = stripslashes_deep($value[$key]);
+                $pp->updateOption($default_prefix . $option_basename, $value, $args);
             }
-
-            $pp->updateOption($default_prefix . $option_basename, $value, $args);
         }
 
         if (!presspermit_empty_POST('post_blockage_priority')) {  // once this is switched on manually, don't ever default-disable it again
@@ -174,7 +171,7 @@ class Settings
         if ($deactivated_modules = presspermit_POST_var('presspermit_deactivated_modules')) {
             $deactivated = array_diff_key(
                 $deactivated, 
-                $_POST['presspermit_deactivated_modules']
+                array_map('sanitize_key', (array) $deactivated_modules)
             );
         }
 
