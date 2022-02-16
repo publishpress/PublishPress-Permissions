@@ -902,7 +902,7 @@ class AgentPermissionsUI
                                     if ('post_status' == $attrib) {
                                         if ($status_obj = get_post_status_object($_status)) {
                                             $status_label = $status_obj->label;
-                                        } elseif ('{unpublished}' == $_status) {  // @todo: API
+                                        } elseif ('{unpublished}' == $_status) {  // todo: API
                                             $status_label = esc_html__('unpublished', 'press-permit-core');
                                         } else {
                                             $status_label = $status;
