@@ -52,7 +52,7 @@ class PostsListing
     public function act_maybe_hide_quickedit()
     {
         if (Collab::isLimitedEditor() && !current_user_can('pp_force_quick_edit')) {
-            // @todo: better quick/bulk edit support for limited editors
+            // todo: better quick/bulk edit support for limited editors
             ?>
             <style type="text/css">
                 .editinline, div.tablenav div.actions select option[value="edit"] {

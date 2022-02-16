@@ -54,7 +54,7 @@ class AgentExceptionsAjax
         switch ($pp_ajax_agent_exceptions) {
 
             case 'get_operation_options':
-                // @todo: deal with login timeout in JS to avoid multiple messages
+                // todo: deal with login timeout in JS to avoid multiple messages
                 if (!is_user_logged_in()) {
                     echo '<span>' . esc_html__('(login timed out)', 'press-permit-core') . '</span>';
                     exit;
@@ -81,7 +81,7 @@ class AgentExceptionsAjax
                 break;
 
             case 'get_mod_options':
-                // @todo: deal with login timeout in JS to avoid multiple messages
+                // todo: deal with login timeout in JS to avoid multiple messages
                 if (!is_user_logged_in()) {
                     echo '<span>' . esc_html__('(login timed out)', 'press-permit-core') . '</span>';
                     exit;
@@ -121,7 +121,7 @@ class AgentExceptionsAjax
                 break;
 
             case 'get_via_type_options':
-                // @todo: deal with login timeout in JS to avoid multiple messages
+                // todo: deal with login timeout in JS to avoid multiple messages
                 if (!is_user_logged_in()) {
                     echo '<option>' . esc_html__('(login timed out)', 'press-permit-core') . '</option>';
                     exit;

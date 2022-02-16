@@ -155,7 +155,7 @@ class PageFilters
             return $results;
         }
 
-        // =========== PressPermit @todo: review
+        // =========== PressPermit todo: review
         if (is_admin() && ('any' === $post_status)) {
             $post_status = '';
         }

@@ -179,7 +179,7 @@ class Groups
             ))) {
                 $result->name = stripslashes($result->name);
                 $result->group_description = stripslashes($result->group_description);
-                $result->group_name = $result->name;  // @todo: review usage of these properties
+                $result->group_name = $result->name;  // todo: review usage of these properties
             }
         } elseif ('user' == $agent_type) {
             if ($result = new \WP_User($agent_id)) {

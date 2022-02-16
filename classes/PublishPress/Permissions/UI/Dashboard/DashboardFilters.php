@@ -334,7 +334,7 @@ class DashboardFilters
     }
 
     // support NextGenGallery uploader and other custom jquery calls which WP treats as index.php ( otherwise user_can_access_admin_page() fails )
-    // @todo: review
+    // todo: review
     public function actNggUploaderWorkaround()
     {
         global $pagenow;

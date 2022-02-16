@@ -298,7 +298,7 @@ class Permissions
             if ($additional_ids)
                 $include_ids = array_unique(array_merge($include_ids, $additional_ids));
 
-            // @todo: how can this ever have array elements (PHP error log from one user)
+            // todo: how can this ever have array elements (PHP error log from one user)
             $include_ids = array_filter($include_ids, 'is_scalar');
 
             $where = " AND $col_id IN ('" . implode("','", array_unique($include_ids)) . "')";
@@ -409,10 +409,10 @@ class Permissions
         $revise_status_key = (defined('PRESSPERMIT_REVISE_TERMS_FOR_UNPUBLISHED') && function_exists('rvy_get_option') && rvy_get_option('pending_revision_unpublished')) ? '' : '{published}';
         $revise_ttids = [$revise_status_key => []];
 
-        global $revisionary, $pagenow;  // @todo: API
+        global $revisionary, $pagenow;  // todo: API
 
 
-        // @todo: remove revise_post merging with Revisions 3
+        // todo: remove revise_post merging with Revisions 3
 
         
         foreach (presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {

@@ -191,7 +191,7 @@ class SettingsTabImport
             </tr>
         <?php
         endif;
-    } // end function optionsUI()
+    }
 
     private function hasInstallation($install_code)
     {

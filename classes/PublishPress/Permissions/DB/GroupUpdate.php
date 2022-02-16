@@ -174,7 +174,7 @@ class GroupUpdate
     {
         global $wpdb;
 
-        // possible @todo: pre-query user groups so we can do_action('presspermit_delete_group_user')
+        // possible todo: pre-query user groups so we can do_action('presspermit_delete_group_user')
 
         $wpdb->delete($wpdb->pp_group_members, compact('user_id'));
     }

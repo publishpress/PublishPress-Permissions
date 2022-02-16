@@ -18,7 +18,7 @@ class AdminLegacy
 
     public function flt_pp_administrator_caps($caps)
     {
-        // @todo: why is edit_others_revisions cap required for Administrators in Edit Posts listing (but not Edit Pages) ?
+        // todo: why is edit_others_revisions cap required for Administrators in Edit Posts listing (but not Edit Pages) ?
 
         $caps['edit_revisions'] = true;
         $caps['edit_others_revisions'] = true;
@@ -67,7 +67,7 @@ class AdminLegacy
 
     public function flt_additions_clause($clause, $operation, $post_type, $args)
     {
-        //$args = compact( 'status', 'in_clause', 'src_table' ) 
+        // args elements: status, in_clause, src_table 
 
         if (in_array($operation, ['edit', 'delete'], true) && empty($args['status']) 
         && !in_array($post_type, apply_filters('presspermit_unrevisable_types', []), true)) {

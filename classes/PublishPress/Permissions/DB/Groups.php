@@ -69,7 +69,7 @@ class Groups
             if (isset($results[$key]->group_description))
                 $results[$key]->group_description = stripslashes($results[$key]->group_description);
 
-            // strip out Revisionary metagroups if we're not using them (@todo: API)
+            // strip out Revisionary metagroups if we're not using them (todo: API)
             if ($results[$key]->metagroup_type) {
                 if (!defined('PUBLISHPRESS_REVISIONS_VERSION') && !defined('REVISIONARY_VERSION') && ('rvy_notice' == $results[$key]->metagroup_type)) {
                     unset($results[$key]);
@@ -90,7 +90,7 @@ class Groups
             $$var = $args[$var];
         }
 
-        // If $group_id is an array of group objects, extract IDs into a separate array (@todo: review calling code)
+        // If $group_id is an array of group objects, extract IDs into a separate array (todo: review calling code)
         if (is_array($group_id)) {
             $first = current($group_id);
 

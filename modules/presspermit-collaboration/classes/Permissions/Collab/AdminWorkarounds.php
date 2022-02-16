@@ -385,7 +385,7 @@ class AdminWorkarounds
         $pos_from = strpos($query, "FROM $posts");
 		$pos_where = strpos($query, "WHERE ");
         
-        // @todo: use 'wp_count_posts' filter instead?
+        // todo: use 'wp_count_posts' filter instead?
 
         if ((strpos($query, "ELECT post_status, COUNT( * ) AS num_posts ") || (strpos($query, "ELECT COUNT( 1 )") && $pos_from && (!$pos_where || ($pos_from < $pos_where)))) 
         && preg_match("/FROM\s*{$posts}\s*WHERE post_type\s*=\s*'([^ ]+)'/", $query, $matches)
@@ -436,7 +436,7 @@ class AdminWorkarounds
                             );
                         }
                     } else {
-                        // Additional queries triggered by posts_request filter breaks all subsequent filters which would have operated on this query (@todo: review)
+                        // Additional queries triggered by posts_request filter breaks all subsequent filters which would have operated on this query (todo: review)
                         if (defined('REVISIONARY_VERSION') && version_compare(REVISIONARY_VERSION, '1.5-alpha', '<')) {
                             if (class_exists('RevisionaryAdminHardway_Ltd'))
                                 $query = \RevisionaryAdminHardway_Ltd::flt_last_resort_query($query);

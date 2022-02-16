@@ -727,7 +727,7 @@ class PostFilters
                                         if (!empty($user->allcaps[$list_cap])) {
                                             $reqd_caps[$key] = $list_cap;
                                         } else {
-                                            // @todo: API?
+                                            // todo: API?
                                             if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
                                                 $revise_cap = str_replace('edit_', 'revise_', $cap);
 
@@ -1004,7 +1004,7 @@ class PostFilters
                 } else {
                     $require_cap = str_replace('edit_', 'list_', $type_obj->cap->edit_posts);
 
-                    // @todo: API?
+                    // todo: API?
                     if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
                         $revise_cap = str_replace('edit_', 'revise_', $type_obj->cap->edit_posts);
                         

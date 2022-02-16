@@ -319,13 +319,13 @@ class PostTermsSave
             if (!$tx_obj = get_taxonomy($taxonomy))
                 return $selected_terms;
 
-            // For now, always check the DB for default terms.  @todo: only if the default_term_option property is set
+            // For now, always check the DB for default terms.  todo: only if the default_term_option property is set
             if (isset($tx_obj->default_term_option))
                 $default_term_option = $tx_obj->default_term_option;
             else
                 $default_term_option = "default_{$taxonomy}";
 
-            // avoid recursive filtering.  @todo: use remove_filter so we can call get_option, support filtering by other plugins 
+            // avoid recursive filtering.  todo: use remove_filter so we can call get_option, support filtering by other plugins 
             global $wpdb;
             $default_terms = (array)maybe_unserialize($wpdb->get_var(
                 $wpdb->prepare(

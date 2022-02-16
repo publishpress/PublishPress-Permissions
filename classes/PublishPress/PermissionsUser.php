@@ -11,10 +11,10 @@ namespace PublishPress;
  */
 class PermissionsUser extends \WP_User
 {
-    var $groups = [];       // $groups[agent_type][group id] = 1
+    var $groups = [];       // USAGE: groups [agent_type] [group id] = 1
     var $site_roles = [];
     // note: nullstring for_item_type means all post types
-    var $except = [];       // $except[{operation}_{for_item_source}][via_item_source][via_item_type]['include' or 'exclude'][for_item_type][for_item_status] = array of stored IDs / term_taxonomy_ids
+    var $except = [];       // USAGE: except [{operation}_{for_item_source}] [via_item_source] [via_item_type] ['include' or 'exclude'] [for_item_type] [for_item_status] = array of stored IDs / term_taxonomy_ids
     var $cfg = [];
 
     public function __construct($id = 0, $name = '', $args = [])
@@ -337,7 +337,7 @@ class PermissionsUser extends \WP_User
     {
         global $current_user;
 
-        							// @todo: review (Add New Media)
+        							// todo: review (Add New Media)
         if (empty($current_user) || !did_action('presspermit_init') || did_action('presspermit_user_reload')) {
             return $wp_blogcaps;
         }

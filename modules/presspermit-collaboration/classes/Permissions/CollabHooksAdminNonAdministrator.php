@@ -56,7 +56,7 @@ class CollabHooksAdminNonAdministrator
         if (defined('REST_REQUEST') && presspermit()->doingREST()) {
             $rest = \PublishPress\Permissions\REST::instance();
 
-            // (Terms listing)
+            // Terms listing
             if ('WP_REST_Terms_Controller' == $rest->endpoint_class) {
                 return ('edit' == $rest->operation) ? 'manage' : $rest->operation;
             }

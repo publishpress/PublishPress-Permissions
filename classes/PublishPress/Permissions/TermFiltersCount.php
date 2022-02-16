@@ -303,7 +303,7 @@ class TermFiltersCount
             }
         } elseif ('names' == $fields) {
 			foreach ( $terms as $term ) {
-                // @todo: track conditions, source for improper array population
+                // todo: track conditions, source for improper array population
                 if (is_object($term)) {
                     $_terms[] = $term->name;
                 } elseif (is_numeric($term) && count($taxonomies) == 1) {

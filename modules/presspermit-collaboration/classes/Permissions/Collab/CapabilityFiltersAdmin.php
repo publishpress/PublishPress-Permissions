@@ -138,7 +138,7 @@ class CapabilityFiltersAdmin
 	            }
 	        }
 
-            // Work around WP's occasional use of literal 'cap_name' instead of $post_type_object->cap->$cap_name  @todo: review
+            // Work around WP's occasional use of literal 'cap_name' instead of $post_type_object->cap->$cap_name  todo: review
             // note: cap names for "post" type may be customized too
             //
             if (in_array($pagenow, ['edit.php', 'post.php', 'post-new.php', 'press-this.php', 'admin-ajax.php', 'upload.php', 'media.php']) 
@@ -235,7 +235,7 @@ class CapabilityFiltersAdmin
 
     function fltUserHasCapParams($params, $orig_reqd_caps, $args)
     {
-        // @todo: how can this ever execute prior to class inclusion in CollabHooks.php? (error with CAS integration)
+        // todo: how can this ever execute prior to class inclusion in CollabHooks.php? (error with CAS integration)
         if (!class_exists('\PublishPress\Permissions\Collab\Capabilities')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Capabilities.php');
         }

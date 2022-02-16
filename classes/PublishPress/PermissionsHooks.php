@@ -266,7 +266,7 @@ class PermissionsHooks
             $this->loadContentFilters();
         }
 
-        // retrieve BP groups and other group types registered by 3rd party  @todo: default retrieve_site_roles arg to false?
+        // retrieve BP groups and other group types registered by 3rd party  todo: default retrieve_site_roles arg to false?
         $pp_user = $pp->getUser(false, '', ['retrieve_site_roles' => false]);
         $pp_user->retrieveExtraGroups();
         $pp_user->getSiteRoles();
@@ -309,7 +309,7 @@ class PermissionsHooks
 
         // no further filtering on update requests for other plugins 
         if (is_admin() && ('update.php' == $pagenow)) {
-            // @todo: review with EDD
+            // todo: review with EDD
 
             if (!presspermit_is_REQUEST('action', 'presspermit-pro')) {
                 do_action('presspermit_init');

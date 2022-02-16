@@ -20,7 +20,7 @@ class Admin
 
     public function flt_pp_administrator_caps($caps)
     {
-        // @todo: why is edit_others_revisions cap required for Administrators in Edit Posts listing (but not Edit Pages) ?
+        // todo: why is edit_others_revisions cap required for Administrators in Edit Posts listing (but not Edit Pages) ?
 
         $caps['edit_revisions'] = true;
         $caps['edit_others_revisions'] = true;
@@ -59,7 +59,7 @@ class Admin
 
     public function flt_additions_clause($clause, $operation, $post_type, $args)
     {
-        //$args = compact( 'status', 'in_clause', 'src_table' ) 
+        // args elements: status, in_clause, src_table
 
         $append_clause = '';
 
@@ -170,7 +170,6 @@ class Admin
             }
 
             if (rvy_get_option('require_edit_others_drafts') && apply_filters('revisionary_require_edit_others_drafts', true, $_post->post_type, $_post->post_status, $wp_args)) {
-                // for \PublishPress\Permissions\PostFilters::mapMetaCap()
                 global $current_user;
 
                 if ($current_user->ID == $_post->post_author) {

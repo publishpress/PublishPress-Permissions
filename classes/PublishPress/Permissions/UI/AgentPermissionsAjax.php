@@ -308,7 +308,7 @@ class AgentPermissionsAjax
 
     private function editableEitemIDs($ass_ids)
     {
-        // governed universally by $pp_admin->bulkRolesEnabled();
+        // governed universally by pp_admin->bulkRolesEnabled()
         return $ass_ids;
     }
 }

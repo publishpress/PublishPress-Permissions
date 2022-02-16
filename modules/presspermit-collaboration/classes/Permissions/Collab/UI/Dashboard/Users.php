@@ -7,7 +7,7 @@ class Users
         add_action('admin_print_footer_scripts', [$this, 'act_add_member_page_js']);
     }
 
-    // @todo: move to js
+    // todo: move to js
     public function act_add_member_page_js()
     {
         if (!presspermit()->getOption('add_author_pages'))

@@ -20,7 +20,7 @@ class REST_Workarounds
         global $wp_taxonomies;
 
 		// Prevent WP_REST_Posts_Controller::handle_terms from making a redundant, unfilterable wp_set_object_terms() call
-		// @todo: WP Trac ticket
+		// todo: WP Trac ticket
 
         if ($type_obj = get_post_type_object($post->post_type)) {
             $this->buffer_taxonomies = $wp_taxonomies;

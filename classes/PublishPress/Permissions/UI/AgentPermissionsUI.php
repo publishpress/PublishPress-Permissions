@@ -555,7 +555,7 @@ class AgentPermissionsUI
         else
             $_args['extra_cols'][] = 'i.inherited_from';
 
-        // @todo: Determine how exception items can become orphaned, eliminate this routine check
+        // todo: Determine how exception items can become orphaned, eliminate this routine check
         require_once(PRESSPERMIT_CLASSPATH . '/DB/Permissions.php');
         \PublishPress\Permissions\DB\Permissions::expose_orphaned_exception_items();
 
@@ -586,7 +586,7 @@ class AgentPermissionsUI
         if (!$roles)
             return;
 
-        // @todo: still necessary?
+        // todo: still necessary?
         $has_roles = false;
         foreach (array_keys($roles) as $key) {
             if (!empty($roles[$key]))

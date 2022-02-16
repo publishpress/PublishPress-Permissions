@@ -85,7 +85,7 @@ class ItemSave
                         $args['operation'] = $op;
                         $args['agent_type'] = $agent_type;
 
-                        // assignments[assign_for][agent_id] = has_access 
+                        // posted_exceptions [for_item_type] [op] [agent_type] [assign_for] [agent_id] = has_access 
                         $pp->assignExceptions($posted_exceptions[$for_item_type][$op][$agent_type], $agent_type, $args);
                     }
                 }

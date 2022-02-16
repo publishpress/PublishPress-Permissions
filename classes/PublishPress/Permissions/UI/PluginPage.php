@@ -48,7 +48,7 @@ class PluginPage
         }
 
         if ('presspermit-groups' == presspermitPluginPage()) {
-            // @todo: eliminate redundancy with Groups::__construct()
+            // todo: eliminate redundancy with Groups::__construct()
             if (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2'])) {
                 $action = presspermit_REQUEST_key('action2');
 

@@ -429,7 +429,7 @@ class Permissions
     {
         global $current_user;
 
-        // @todo: review (Add New Media)
+        // todo: review (Add New Media)
         if (empty($current_user) || ! isset($this->cap_defs)) {
             return;
         }
@@ -532,10 +532,11 @@ class Permissions
         }
     }
 
-    // $args['labels']['name'] = translationed caption
-    // $args['labels']['name'] = translated caption
-    // $args['default_caps'] = [cap_name => true, another_cap_name => true] defines caps for pattern roles which do not have a corresponding WP role 
-    //
+    /*
+     * USAGE: args['labels']['name'] = translationed caption
+     * USAGE: args['labels']['name'] = translated caption
+     * USAGE: args['default_caps'] = [cap_name => true, another_cap_name => true] defines caps for pattern roles which do not have a corresponding WP role 
+     */
     public function registerPatternRole($role_name, $args = [])
     {
         $role_obj = (object)$args;
@@ -663,7 +664,7 @@ class Permissions
         delete_option("presspermit_{$option_basename}");
     }
 
-    // Change the active value for a site option, but don't update database // @todo: review
+    // Change the active value for a site option, but don't update database // todo: review
     public function setSiteOption($option_basename, $value)
     {
         $this->site_options[$option_basename] = $value;
@@ -692,7 +693,7 @@ class Permissions
 
     public function isUserUnfiltered($user_id = false, $args = [])
     {
-        // @todo: any other Gutenberg Administrator requests to filter?
+        // todo: any other Gutenberg Administrator requests to filter?
         $is_unfiltered = $this->isAdministrator($user_id, 'unfiltered', $args) 
         && (!defined('REST_REQUEST') || ! REST_REQUEST || (presspermit_empty_REQUEST('parent_exclude') || did_action('presspermit_refresh_administrator_check'))); // page parent dropdown
 
