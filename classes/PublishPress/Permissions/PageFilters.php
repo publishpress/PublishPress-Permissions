@@ -295,7 +295,12 @@ class PageFilters
                 $where .= " AND post_parent IN ($post_parent__in)";
             }
         } elseif ($parent >= 0) {  // ========= PressPermit filter
-            $where .= $wpdb->prepare(' AND ' . apply_filters('presspermit_get_pages_parent', 'post_parent = %d ', $args), $parent);
+            $where .= ' AND ' 
+            . apply_filters(
+                'presspermit_get_pages_parent',
+                $wpdb->prepare('post_parent = %d ', $parent),
+                $args
+            );
         }
 
         $orderby_array = [];
