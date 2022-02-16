@@ -270,7 +270,7 @@ class AdminFilters
         // Don't allow media attachment page to be cleared if user has editing capability (conflict with Image Source Control plugin)
         if (!$parent_id && $orig_parent_id 
         && (
-            false !== strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php')
+            (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'async-upload.php'))
             || ('attachment' == PWP::findPostType())
             || (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'admin-ajax.php') && presspermit_is_REQUEST('action', ['save-attachment', 'save-attachment-compat']))
             )

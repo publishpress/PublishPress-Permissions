@@ -72,8 +72,9 @@ class DashboardFiltersNonAdministrator
     function flt_posts_request_bypass($bypass, $request, $args)
     {
         // if Media Library filtering is disabled, don't filter listing for TinyMCE popup either
-        if (defined('PP_MEDIA_LIB_UNFILTERED') && strpos($_SERVER['SCRIPT_NAME'], 'wp-admin/media-upload.php'))
+        if (defined('PP_MEDIA_LIB_UNFILTERED') && (isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'wp-admin/media-upload.php'))) {
             return true;
+        }
 
         return $bypass;
     }
