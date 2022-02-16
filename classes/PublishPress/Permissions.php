@@ -130,7 +130,7 @@ class Permissions
 
         // Divi Page Builder editor init
         if (!defined('PRESSPERMIT_DISABLE_DIVI_CLEARANCE') && !presspermit_empty_REQUEST('et_fb') && !presspermit_empty_REQUEST('et_bfb') 
-        && 0 === strpos($_SERVER['REQUEST_URI'], '/?page_id') 
+		&& 0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/?page_id') 
         && !is_admin() && !defined('DOING_AJAX') && presspermit_empty_REQUEST('action') 
             && presspermit_empty_REQUEST('post') && presspermit_empty_REQUEST('post_id') && presspermit_empty_REQUEST('post_ID') && presspermit_empty_REQUEST('p')
         ) {
