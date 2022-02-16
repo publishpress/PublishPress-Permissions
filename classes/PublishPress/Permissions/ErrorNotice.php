@@ -35,10 +35,10 @@ class ErrorNotice
             isset($pagenow) && ('update.php' != $pagenow)
             && in_array($err, ['old_pp', 'old_wp', 'old_extension', 'duplicate_module'], true)
         ) {
-            return;  // @todo: review which messages to limit to update.php
+            return;  // todo: review which messages to limit to update.php
         }
 
-        // @todo: Review which of the remaining plugin initialization error strings can be translated (some are executed very early).
+        // todo: Review which of the remaining plugin initialization error strings can be translated (some are executed very early).
         switch ($err) {
             case 'multiple_pp':
                 if (is_admin() && ('plugins.php' == $pagenow) && !strpos(urldecode($_SERVER['REQUEST_URI']), 'deactivate')) {

@@ -2,14 +2,12 @@
 
 namespace PublishPress\Permissions\UI;
 
-//use \PressShack\LibWP as PWP;
-
 class AgentPermissions
 {
     public function __construct() {
         // called by Dashboard\DashboardFilters::actMenuHandler
 
-        // @todo: separate function for update messages 
+        // todo: separate function for update messages 
 
         $pp = presspermit();
         $pp_admin = $pp->admin();

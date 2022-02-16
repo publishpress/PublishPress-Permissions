@@ -8,7 +8,6 @@ class PermissionsHooksAdmin
 
     public function __construct()
     {
-        //add_action('wp_dashboard_setup', [$this, '_getVersionInfo']);  // retrieve version info in case there are any alerts
         add_action('presspermit_duplicate_module', [$this, 'duplicateModule'], 10, 2);
 
         add_filter('presspermit_pattern_roles', [$this, 'fltPatternRoles']);
@@ -201,8 +200,8 @@ class PermissionsHooksAdmin
                      'pp-edit-permissions' => 'presspermit-edit-permissions',
                  ] as $old_slug => $new_slug) {
             if (
-                strpos($_SERVER['REQUEST_URI'], "page=$old_slug")
-                && (false !== strpos($_SERVER['REQUEST_URI'], 'admin.php'))
+                strpos(esc_url_raw($_SERVER['REQUEST_URI']), "page=$old_slug")
+                && (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'admin.php'))
             ) {
                 global $submenu;
 
@@ -215,7 +214,7 @@ class PermissionsHooksAdmin
                     }
                 }
 
-                $arr_url = parse_url($_SERVER['REQUEST_URI']);
+                $arr_url = wp_parse_url(esc_url_raw($_SERVER['REQUEST_URI']));
                 wp_redirect(admin_url('admin.php?' . str_replace("page=$old_slug", "page=$new_slug", $arr_url['query'])));
                 exit;
             }
@@ -229,7 +228,7 @@ class PermissionsHooksAdmin
             $dismissals = [];
         }
 
-        $msg_id = (isset($_REQUEST['msg_id'])) ? pp_permissions_sanitize_key($_REQUEST['msg_id']) : 'post_blockage_priority';
+        $msg_id = (isset($_REQUEST['msg_id'])) ? sanitize_key($_REQUEST['msg_id']) : 'post_blockage_priority';
         $dismissals[$msg_id] = true;
         update_option('presspermit_dismissals', $dismissals);
     }

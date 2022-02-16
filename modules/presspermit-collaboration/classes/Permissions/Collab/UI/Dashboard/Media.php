@@ -8,7 +8,7 @@ class Media
         if (strpos($query, 'WHERE ')) {
             static $att_sanity_count = 0;
 
-            if ($att_sanity_count > 5) {  // @todo: why does this apply filtering to 300+ queries on at least one MS installation?
+            if ($att_sanity_count > 5) {  // todo: why does this apply filtering to 300+ queries on at least one MS installation?
                 return false;
             }
 

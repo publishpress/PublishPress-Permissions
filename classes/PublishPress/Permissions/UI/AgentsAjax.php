@@ -12,6 +12,14 @@ class AgentsAjax
             return;
         }
 
+        if (!$agent_type = pp_permissions_sanitize_entry(presspermit_GET_key('pp_agent_type'))) {
+            return;
+        }
+
+        if (!$topic = pp_permissions_sanitize_entry(presspermit_GET_key('pp_topic'))) {
+            return;
+        }
+
         $pp = presspermit();
         $pp_admin = $pp->admin();
         $pp_groups = $pp->groups();
@@ -19,10 +27,8 @@ class AgentsAjax
         $authors_clause = '';
 
         $orig_search_str = presspermit_GET_var('pp_agent_search');
-        $search_str = sanitize_text_field($_GET['pp_agent_search']);
-        $agent_type = pp_permissions_sanitize_entry($_GET['pp_agent_type']);
+        $search_str = sanitize_text_field($orig_search_str);
         $agent_id = presspermit_GET_int('pp_agent_id');
-        $topic = pp_permissions_sanitize_entry($_GET['pp_topic']);
         $topic = str_replace(':', ',', $topic);
 
         $omit_admins = !presspermit_empty_GET('pp_omit_admins');
@@ -143,8 +149,7 @@ class AgentsAjax
             }
 
             if ($pp_role_search = presspermit_GET_var('pp_role_search')) {
-                if ($role_filter = sanitize_text_field($_GET['pp_role_search'])) {
-                    global $current_blog;
+                if ($role_filter = sanitize_text_field($pp_role_search)) {
                     $blog_prefix = $wpdb->get_blog_prefix($current_blog->blog_id);
 
                     $um_keys[] = "{$blog_prefix}capabilities";
@@ -203,8 +208,8 @@ class AgentsAjax
                     $omit_users = $pp_groups->getGroupMembers($agent_id, $group_type, 'id', ['member_type' => $topic, 'status' => 'any']);
                 } elseif ($omit_admins) {
                     if ($admin_roles = $pp_admin->getAdministratorRoles()) {  // Administrators can't be excluded; no need to include or enable them
-                        global $wpdb;
-                        $role_csv = implode("','", array_map('pp_permissions_sanitize_key', array_keys($admin_roles)));
+
+                        $role_csv = implode("','", array_map('sanitize_key', array_keys($admin_roles)));
                         $omit_users = $wpdb->get_col(
                             "SELECT u.ID FROM $wpdb->users AS u INNER JOIN $wpdb->pp_group_members AS gm ON u.ID = gm.user_id"
                             . " INNER JOIN $wpdb->pp_groups AS g ON gm.group_id = g.ID"

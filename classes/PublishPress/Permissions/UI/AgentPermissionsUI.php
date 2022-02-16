@@ -2,9 +2,6 @@
 
 namespace PublishPress\Permissions\UI;
 
-//use \PressShack\LibWP as PWP;
-//use \PressShack\LibArray as Arr;
-
 class AgentPermissionsUI
 {
     public static function roleAssignmentScripts()
@@ -558,7 +555,7 @@ class AgentPermissionsUI
         else
             $_args['extra_cols'][] = 'i.inherited_from';
 
-        // @todo: Determine how exception items can become orphaned, eliminate this routine check
+        // todo: Determine how exception items can become orphaned, eliminate this routine check
         require_once(PRESSPERMIT_CLASSPATH . '/DB/Permissions.php');
         \PublishPress\Permissions\DB\Permissions::expose_orphaned_exception_items();
 
@@ -589,7 +586,7 @@ class AgentPermissionsUI
         if (!$roles)
             return;
 
-        // @todo: still necessary?
+        // todo: still necessary?
         $has_roles = false;
         foreach (array_keys($roles) as $key) {
             if (!empty($roles[$key]))
@@ -1168,7 +1165,7 @@ class AgentPermissionsUI
 
                     endif;
 
-                    $show_all_url = esc_url(add_query_arg('show_propagated', '1', $_SERVER['REQUEST_URI']));
+                    $show_all_url = add_query_arg('show_propagated', '1', esc_url_raw($_SERVER['REQUEST_URI']));
                     $show_all_link = "&nbsp;&nbsp;<a href='$show_all_url'>";
 
                     if ((presspermit_empty_REQUEST('show_propagated') || !empty($fix_child_exceptions_link)) && !empty($_SERVER['REQUEST_URI'])) {

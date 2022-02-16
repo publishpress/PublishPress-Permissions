@@ -105,8 +105,6 @@ class TermFiltersCount
                     $selects = array( 't.term_id', 'tt.parent', 'tt.count', 't.name', 'tt.taxonomy' );
                     break;
                 case 'count':
-                    //$orderby = '';
-                    //$order   = '';
                     $selects = array( 'COUNT(*)' );
                     break;
                 case 'id=>name':
@@ -211,7 +209,6 @@ class TermFiltersCount
         // In addition, without the pp_tallyTermCounts() call, WP will hide terms that have no public posts (even if this user can read some of the pvt posts).
         // Post counts will be incremented to include child terms only if $pad_counts is true
         if (!defined('XMLRPC_REQUEST') && (1 == count($taxonomies))) {
-            global $pagenow;
             if ((!is_admin() || !in_array($pagenow, ['post.php', 'post-new.php']))
                 && (!defined('PP_UNFILTERED_TERM_COUNTS') || is_admin())
                 && (in_array($pagenow, ['edit-tags.php']) || !presspermit()->getOption('term_counts_unfiltered'))
@@ -305,7 +302,7 @@ class TermFiltersCount
             }
         } elseif ('names' == $fields) {
 			foreach ( $terms as $term ) {
-                // @todo: track conditions, source for improper array population
+                // todo: track conditions, source for improper array population
                 if (is_object($term)) {
                     $_terms[] = $term->name;
                 } elseif (is_numeric($term) && count($taxonomies) == 1) {
@@ -359,17 +356,6 @@ class TermFiltersCount
         if ( ! empty( $_terms ) ) {
             $terms = $_terms;
         }
-
-        // Don't redundantly apply limits
-        /*
-		if ( $hierarchical && $number && is_array( $terms ) ) {
-			if ( $offset >= count( $terms ) ) {
-				$terms = array();
-			} else {
-				$terms = array_slice( $terms, $offset, $number, true );
-			}
-        }
-        */
 
         // === end standard WP block ===
 

@@ -78,7 +78,7 @@ class PostFiltersFront
     {
         global $current_user, $wpdb;
 
-        // possible @todo: implement in any other PP filters?
+        // possible todo: implement in any other PP filters?
         require_once(PRESSPERMIT_CLASSPATH_COMMON . '/SqlTokenizer.php');
         $parser = new \PressShack\SqlTokenizer();
         $post_type = $parser->ParseArg($where, 'post_type');

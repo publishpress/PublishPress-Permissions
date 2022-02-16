@@ -2,9 +2,6 @@
 
 namespace PublishPress\Permissions\UI\Dashboard;
 
-//use \PressShack\LibWP as PWP;
-//use \PressShack\LibArray as Arr;
-
 require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/ItemEdit.php');
 
 class TermEdit
@@ -266,6 +263,7 @@ class TermEdit
         <?php
 
         if ($post_type) {
+            echo '<br />';
             self::universalExceptionsNote($tag, $taxonomy, $post_type);
         }
         ?>

@@ -1,8 +1,6 @@
 <?php
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
-//use \PressShack\LibArray as Arr;
-
 class TermEdit
 {
     function __construct()
@@ -11,7 +9,6 @@ class TermEdit
 
         add_filter('presspermit_term_exceptions_metaboxes', [$this, 'term_exceptions_metaboxes'], 10, 3);
         add_action('presspermit_prep_metaboxes', [$this, 'pp_prep_metaboxes'], 10, 3);
-        //add_action( 'pp_update_item_exceptions', [$this, 'update_item_exceptions'], 10, 3 );
     }
 
     function flt_item_edit_exception_ops($operations, $for_item_source, $taxonomy, $for_item_type)

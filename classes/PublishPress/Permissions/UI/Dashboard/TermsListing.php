@@ -16,20 +16,21 @@ class TermsListing
 
         if (presspermit_empty_REQUEST('tag_ID')) {
             if ($taxonomy = presspermit_REQUEST_key('taxonomy')) {
-            add_filter("manage_edit-{$taxonomy}_columns", [$this, 'fltDefineColumns']);
-            add_filter("manage_{$taxonomy}_columns", [$this, 'fltDefineColumns']);
-            add_filter("manage_{$taxonomy}_custom_column", [$this, 'fltCustomColumn'], 10, 3);
-
-            add_action('after-' . $taxonomy . '-table', [$this, 'actShowNotes']);
-
-            if (is_taxonomy_hierarchical($taxonomy)) {
-                $tx_children = get_option("{$taxonomy}_children");
-
-                    if (!$tx_children || !is_array($tx_children) || !presspermit_empty_REQUEST('clear_db_cache') || !get_option("_ppperm_refresh_{$taxonomy}_children")) {
-                    delete_option("{$taxonomy}_children");
-
-                    update_option("_ppperm_refresh_{$taxonomy}_children", true);
-                }
+	            add_filter("manage_edit-{$taxonomy}_columns", [$this, 'fltDefineColumns']);
+	            add_filter("manage_{$taxonomy}_columns", [$this, 'fltDefineColumns']);
+	            add_filter("manage_{$taxonomy}_custom_column", [$this, 'fltCustomColumn'], 10, 3);
+	
+	            add_action('after-' . $taxonomy . '-table', [$this, 'actShowNotes']);
+	
+	            if (is_taxonomy_hierarchical($taxonomy)) {
+	                $tx_children = get_option("{$taxonomy}_children");
+	
+	                if (!$tx_children || !is_array($tx_children) || !presspermit_empty_REQUEST('clear_db_cache') || !get_option("_ppperm_refresh_{$taxonomy}_children")) {
+	                    delete_option("{$taxonomy}_children");
+	
+	                    update_option("_ppperm_refresh_{$taxonomy}_children", true);
+	                }
+	            }
             }
         }
     }
@@ -84,8 +85,9 @@ class TermsListing
 
     public function fltCustomColumn($val, $column_name, $id)
     {
+        global $taxonomy;
+
         if ('pp_ttid' == $column_name) {
-            global $taxonomy;
             $ttid = PWP::termidToTtid($id, $taxonomy);
             echo esc_attr("$id ($ttid)");
         }
@@ -100,7 +102,6 @@ class TermsListing
             $got_data = true;
         }
 
-        global $taxonomy;
         $id = PWP::termidToTtid($id, $taxonomy);
 
         if (!empty($this->exceptions[$id])) {

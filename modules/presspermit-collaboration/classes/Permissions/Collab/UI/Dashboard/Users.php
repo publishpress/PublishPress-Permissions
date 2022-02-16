@@ -7,7 +7,7 @@ class Users
         add_action('admin_print_footer_scripts', [$this, 'act_add_member_page_js']);
     }
 
-    // @todo: move to js
+    // todo: move to js
     public function act_add_member_page_js()
     {
         if (!presspermit()->getOption('add_author_pages'))
@@ -82,7 +82,6 @@ class Users
                     '<span id="member_page_pattern_div_<?php echo esc_attr($post_type);?>" class="member-page-pattern" style="display:none;margin-left:10px;" title="<?php echo esc_attr($title);?>" >' +
                     <?php
                     if ($type_obj->hierarchical && ($total_posts < 200)) {
-                        // @todo: ajax
                         $dropdown_args = [
                             'post_type' => esc_attr($post_type),
                             'name' => esc_attr($input_name),

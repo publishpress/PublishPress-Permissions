@@ -1,8 +1,6 @@
 <?php
 namespace PublishPress\Permissions\UI\Dashboard;
 
-//use \PressShack\LibWP as PWP;
-
 require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/ItemEdit.php');
 
 class PostEdit
@@ -188,7 +186,7 @@ class PostEdit
         <script type="text/javascript">
             /* <![CDATA[ */
             jQuery(document).ready(function ($) {
-                $('#pageparentdiv div.inside p').first().wrapInner('<a href="post.php?post=<?php echo $post->post_parent; ?>&amp;action=edit">');
+                $('#pageparentdiv div.inside p').first().wrapInner('<a href="post.php?post=<?php echo esc_attr($post->post_parent); ?>&amp;action=edit">');
             });
             /* ]]> */
         </script>

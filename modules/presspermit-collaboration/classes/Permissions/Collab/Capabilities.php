@@ -108,10 +108,6 @@ class Capabilities
                     presspermit()->capDefs();
                 }
 
-                // Default plural slug
-                //$plural_type = "{$taxonomy}s";
-
-                //$plural_type = presspermit()->capDefs()->getPlural($taxonomy, $wp_taxonomies[$taxonomy]);
                 $plural_type = \PublishPress\Permissions\Capabilities::getPlural($taxonomy, $wp_taxonomies[$taxonomy]);
 
                 if ("{$taxonomy}s" != $plural_type) {
@@ -200,7 +196,6 @@ class Capabilities
         }
 
         // make sure Nav Menu Managers can also add menu items
-        global $wp_taxonomies;
         $wp_taxonomies['nav_menu']->cap->assign_terms = 'manage_nav_menus';
 
         $this->processed_taxonomies = array_merge($this->processed_taxonomies, $use_taxonomies);

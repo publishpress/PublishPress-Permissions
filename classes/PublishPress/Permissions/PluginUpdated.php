@@ -6,6 +6,8 @@ class PluginUpdated
 {
     public function __construct($prev_version)
     {
+        global $wpdb;
+
         // single-pass do loop to easily skip unnecessary version checks
         do {
             if (!$prev_version) {
@@ -111,18 +113,9 @@ class PluginUpdated
             } else break;
 
             if (version_compare($prev_version, '2.1.16-beta', '<')) {
-                global $wpdb;
                 $wpdb->query("UPDATE $wpdb->ppc_exceptions SET for_item_source = 'post' WHERE for_item_source = 'all'");
             } else break;
         } while (0); // end single-pass version check loop
-
-        /*
-        if ( $prev_version && is_admin() ) {
-            if ( preg_match( "/dev|alpha|beta|rc/i", PRESSPERMIT_VERSION ) && ! preg_match( "/dev|alpha|beta|rc/i", $prev_version ) ) {
-                presspermit()->admin()->notice( __( 'You have installed a development / beta version of PressPermit Pro. If this is a concern, see Permissions > Settings > Install > Beta Updates.', 'press-permit-core' ), 'updated' );
-            }
-        }
-        */
     }
 
     public static function deactivateModules($args = []) {

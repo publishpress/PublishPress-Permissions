@@ -10,7 +10,7 @@ class PluginAdmin
 
         add_action('after_plugin_row_' . plugin_basename(PRESSPERMIT_FILE), [$this, 'actCorePluginStatus'], 10, 3);
 
-        if (!empty($_REQUEST['activate']) || !empty($_REQUEST['activate-multi'])) {
+        if (!presspermit_empty_REQUEST('activate') || !presspermit_empty_REQUEST('activate-multi')) {
             if (get_option('presspermit_activation')) {
                 delete_option('presspermit_activation');
                 $this->activationNotice();

@@ -1,8 +1,6 @@
 <?php
 namespace PublishPress\Permissions\Collab\UI;
 
-//use \PressShack\LibWP as PWP;
-
 /**
  * Edit user administration panel.
  *
@@ -26,10 +24,10 @@ class RoleUsageEdit {
         $url = apply_filters('presspermit_role_usage_base_url', 'admin.php');
 
         if ($wp_http_referer = presspermit_REQUEST_key('wp_http_referer')) {
-            $wp_http_referer = sanitize_url($_REQUEST['wp_http_referer']);
+            $wp_http_referer = esc_url_raw($wp_http_referer);
 
         } elseif ($http_referer = presspermit_SERVER_var('HTTP_REFERER')) {
-            $wp_http_referer = remove_query_arg(['update', 'edit', 'delete_count'], sanitize_url($_SERVER['HTTP_REFERER']));
+            $wp_http_referer = remove_query_arg(['update', 'edit', 'delete_count'], esc_url_raw(presspermit_SERVER_var('HTTP_REFERER')));
         } else {
             $wp_http_referer = '';
         }
@@ -41,7 +39,7 @@ class RoleUsageEdit {
             wp_die('No role specified.');
 		}
 
-        $role_name = pp_permissions_sanitize_entry($_REQUEST['role']);
+        $role_name = pp_permissions_sanitize_entry($role);
 
         $cap_caster = $pp->capCaster();
         $cap_caster->definePatternCaps();

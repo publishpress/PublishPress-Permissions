@@ -7,7 +7,7 @@ class CapabilityFilters
     {
         add_filter('presspermit_has_post_cap_vars', [$this, 'has_post_cap_vars'], 10, 4);
 
-        // @todo: confirm no longer needed
+        // todo: confirm no longer needed
         add_action('presspermit_user_init', [$this, 'actGrantListingCaps']);
 
         add_filter('revisionary_can_copy', [$this, 'fltCanCopy'], 10, 5);
@@ -49,7 +49,7 @@ class CapabilityFilters
             return $wp_sitecaps;
         }
 
-        $orig_cap = (isset($args[0])) ? pp_permissions_sanitize_key($args[0]) : '';
+        $orig_cap = (isset($args[0])) ? sanitize_key($args[0]) : '';
 
         if (isset($args[2])) {
             if (is_object($args[2])) {
@@ -70,7 +70,7 @@ class CapabilityFilters
         return $wp_sitecaps;
     }
 
-    // @todo: confirm this is no longer needed
+    // todo: confirm this is no longer needed
 
     function actGrantListingCaps() {
         global $current_user, $revisionary;
@@ -88,7 +88,7 @@ class CapabilityFilters
         foreach(array_keys($revisionary->enabled_post_types) as $post_type) {
             $type_obj = get_post_type_object($post_type);
 
-            // @todo: custom privacy caps
+            // todo: custom privacy caps
             foreach(['edit_published_posts', 'edit_private_posts'] as $prop) {
                 if (!empty($type_obj->cap->$prop) && empty($current_user->allcaps[$type_obj->cap->$prop])) {
                     if (!empty($current_user->allcaps[$type_obj->cap->edit_posts]) || !empty($current_user->allcaps['submit_changes'])) {
@@ -101,11 +101,11 @@ class CapabilityFilters
         }
     }
 
-    // @todo: move to a general module
+    // todo: move to a general module
     function fltPostAccessApplyExceptions($can_do, $operation, $post_type, $post_id, $args = []) {
-        // @todo: implement PP_RESTRICTION_PRIORITY ?
+        // todo: implement PP_RESTRICTION_PRIORITY ?
         
-        // @todo: implement for specific revision statuses
+        // todo: implement for specific revision statuses
 
         $user = presspermit()->getUser();
 
@@ -123,9 +123,7 @@ class CapabilityFilters
             ? $user->except[$op_key]['post']['']['exclude'][$post_type]['']
             : [];
 
-            //var_dump($user->except[$op_key]['post']['']['exclude']);
-
-            // @todo: implement status-specific exception storage for custom workflow?
+            // todo: implement status-specific exception storage for custom workflow?
 
             // check for term-assigned exceptions
             if ($can_do = !in_array($post_id, $items)) {
@@ -135,7 +133,7 @@ class CapabilityFilters
                             $post_terms[$taxonomy] = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids']);
                         }
                         
-                        if (!empty($term_ids[''])) { //  @todo: prevent this return structure
+                        if (!empty($term_ids[''])) { //  todo: prevent this return structure
                             $term_ids = $term_ids[''];
                         }
 
@@ -162,7 +160,7 @@ class CapabilityFilters
                             $post_terms[$taxonomy] = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids']);
                         }
 
-                        if (!empty($term_ids[''])) { //  @todo: prevent this return structure
+                        if (!empty($term_ids[''])) { //  todo: prevent this return structure
                             $term_ids = $term_ids[''];
                         }
 
@@ -189,7 +187,7 @@ class CapabilityFilters
                             $post_terms[$taxonomy] = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids']);
                         }
                         
-                        if (!empty($term_ids[''])) { //  @todo: prevent this return structure
+                        if (!empty($term_ids[''])) { //  todo: prevent this return structure
                             $term_ids = $term_ids[''];
                         }
 
@@ -220,7 +218,7 @@ class CapabilityFilters
             $operation = 'copy';
 
         //} elseif ('future' == $base_status) {
-            // @todo: review possible implementation for scheduled revisions
+            // todo: review possible implementation for scheduled revisions
             //$operation = 'schedule'
 
         } else {

@@ -218,8 +218,6 @@ class GroupQuery
             $reqd_caps = apply_filters('presspermit_edit_groups_reqd_caps', 'pp_manage_members', 'edit-group');
 
             if (!current_user_can($reqd_caps)) {
-                global $wpdb;
-
                 $exc_agent_type = (in_array($this->agent_type, ['pp_group', 'pp_net_group'], true)) ? 'pp_group' : $this->agent_type;
 
                 $user = presspermit()->getUser();

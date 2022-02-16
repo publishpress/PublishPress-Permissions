@@ -35,7 +35,7 @@ class Triggers
         add_action('edited_term', [$this, 'actSaveTerm'], 10, 3);
         add_action('delete_term', [$this, 'actDeleteTerm'], 10, 3);
 
-        // @todo: make this optional
+        // todo: make this optional
         // include private posts in the post count for each term
         global $wp_taxonomies;
         foreach ($wp_taxonomies as $key => $t) {

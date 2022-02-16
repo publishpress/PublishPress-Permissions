@@ -38,7 +38,7 @@ class Groups
                 if (!current_user_can('pp_delete_groups'))
                     wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
 
-                $group_variant = (! empty($_REQUEST['group_variant'])) ? pp_permissions_sanitize_key($_REQUEST['group_variant']) : 'pp_group';
+                $group_variant = (! empty($_REQUEST['group_variant'])) ? sanitize_key($_REQUEST['group_variant']) : 'pp_group';
                 $redirect = add_query_arg('group_variant', $group_variant, $redirect);
 
                 if (empty($_REQUEST['groups']) && empty($_REQUEST['group'])) {

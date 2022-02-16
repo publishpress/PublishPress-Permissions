@@ -15,8 +15,8 @@ class GroupNew
             $wp_http_referer = esc_url_raw($wp_http_referer);
 
         } elseif ($http_referer = presspermit_SERVER_var('HTTP_REFERER')) {
-            if (!strpos($_SERVER['HTTP_REFERER'], 'page=presspermit-group-new')) {
-                $wp_http_referer = sanitize_url($_SERVER['HTTP_REFERER']);
+            if (!strpos(esc_url_raw($http_referer), 'page=presspermit-group-new')) {
+                $wp_http_referer = esc_url_raw($http_referer);
             } else {
                 $wp_http_referer = '';
             }

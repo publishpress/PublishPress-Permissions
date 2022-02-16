@@ -156,7 +156,7 @@ class Settings
 
         // add deactivations (unchecked from Active list)
         if ($reviewed_modules = presspermit_POST_var('presspermit_reviewed_modules')) {
-            $reviewed_modules = array_fill_keys( array_map('pp_permissions_sanitize_key', explode(',', $_POST['presspermit_reviewed_modules'])), (object)[]);
+            $reviewed_modules = array_fill_keys(array_map('sanitize_key', explode(',', sanitize_text_field($reviewed_modules))), (object)[]);
 
             $deactivated = array_merge(
                 $deactivated,

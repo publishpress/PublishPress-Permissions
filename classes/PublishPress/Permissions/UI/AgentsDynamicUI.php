@@ -2,8 +2,6 @@
 
 namespace PublishPress\Permissions\UI;
 
-//use \PressShack\LibWP as PWP;
-
 /**
  * AgentsDynamicUI class
  *

@@ -2,9 +2,6 @@
 
 namespace PublishPress\Permissions\UI\Dashboard;
 
-//use \PressShack\LibArray as Arr;
-//use \PublishPress\Permissions\API as API;
-
 class UsersListing
 {
     public function __construct() {
@@ -130,10 +127,10 @@ class UsersListing
     {
         $pp_groups = presspermit()->groups();
 
+        global $wp_list_table, $wp_roles;
+
         switch ($column_name) {
             case 'pp_groups':
-                global $wp_list_table;
-
                 static $all_groups;
                 static $all_group_types;
 
@@ -210,7 +207,6 @@ class UsersListing
                 break;
 
             case 'pp_roles':
-                global $wp_list_table, $wp_roles;
                 static $role_info;
 
                 $role_str = '';

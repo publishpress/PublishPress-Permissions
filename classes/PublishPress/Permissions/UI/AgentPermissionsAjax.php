@@ -46,7 +46,7 @@ class AgentPermissionsAjax
 
                 $deleted_ass_ids = [];
 
-                $input_vals = explode('|', PWP::sanitizeCSV($_GET['pp_ass_ids']));
+                $input_vals = explode('|', PWP::sanitizeCSV(sanitize_text_field($pp_ass_ids)));
                 foreach ($input_vals as $id_csv) {
                     $ass_ids = $this->editableAssignmentIDs(explode(',', $id_csv));
                     $deleted_ass_ids = array_merge($deleted_ass_ids, $ass_ids);
@@ -102,7 +102,7 @@ class AgentPermissionsAjax
 
                 $deleted_eitem_ids = [];
 
-                $input_vals = explode('|', PWP::sanitizeCSV($_GET['pp_eitem_ids']));
+                $input_vals = explode('|', PWP::sanitizeCSV(sanitize_text_field($pp_eitem_ids)));
                 foreach ($input_vals as $id_csv) {
                     $eitem_ids = $this->editableEitemIDs(explode(',', $id_csv));
                     $deleted_eitem_ids = array_merge($deleted_eitem_ids, $eitem_ids);
@@ -157,7 +157,7 @@ class AgentPermissionsAjax
                 $edited_input_ids = [];
                 $all_eitem_ids = [];
 
-                $input_vals = explode('|', PWP::sanitizeCSV($_GET['pp_eitem_ids']));
+                $input_vals = explode('|', PWP::sanitizeCSV(sanitize_text_field($pp_eitem_ids)));
 
                 foreach ($input_vals as $id_csv) {
                     $eitem_ids = $this->editableEitemIDs(explode(',', $id_csv));
@@ -228,7 +228,7 @@ class AgentPermissionsAjax
                     $edited_input_ids = [];
                     $all_eitem_ids = [];
 
-                    $input_vals = explode('|', PWP::sanitizeCSV($_GET['pp_eitem_ids']));
+                    $input_vals = explode('|', PWP::sanitizeCSV(sanitize_text_field($pp_eitem_ids)));
 
                     foreach ($input_vals as $id_csv) {
                         $eitem_ids = $this->editableEitemIDs(explode(',', $id_csv));
@@ -258,7 +258,6 @@ class AgentPermissionsAjax
                     }
 
                     do_action('presspermit_exception_items_mirrored', $all_eitem_ids, $agent_type, $agent_id);
-                    do_action('presspermit_edited_group', $agent_type, $agent_id, true);
                     
                     echo '<!--ppResponse-->' . 'exceptions_mirror' . '~' . esc_attr(implode('|', $edited_input_ids)) . '<--ppResponse-->';
                     break;
@@ -308,7 +307,7 @@ class AgentPermissionsAjax
 
     private function editableEitemIDs($ass_ids)
     {
-        // governed universally by $pp_admin->bulkRolesEnabled();
+        // governed universally by pp_admin->bulkRolesEnabled()
         return $ass_ids;
     }
 }

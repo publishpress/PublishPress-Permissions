@@ -155,7 +155,7 @@ class PageFilters
             return $results;
         }
 
-        // =========== PressPermit @todo: review
+        // =========== PressPermit todo: review
         if (is_admin() && ('any' === $post_status)) {
             $post_status = '';
         }
@@ -358,8 +358,6 @@ class PageFilters
         $where_post_type = $wpdb->prepare("post_type = %s", $post_type);
         $where_status = '';
 
-        global $current_user;
-
         $is_front = PWP::isFront();
         if ($is_front && !empty($current_user->ID))
             $frontend_list_private = !defined('PP_SUPPRESS_PRIVATE_PAGES'); // currently using Page option for all hierarchical types
@@ -422,7 +420,6 @@ class PageFilters
 
             $groupby = $distinct = '';
 
-            global $pagenow;
             if (in_array($pagenow, ['post.php', 'post-new.php']) || (defined('REST_REQUEST') && REST_REQUEST)) {
                 $clauses = apply_filters(
                     'presspermit_get_pages_clauses',

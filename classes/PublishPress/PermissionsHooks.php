@@ -104,12 +104,6 @@ class PermissionsHooks
     // log request and handler parameters for possible reference by subsequent PP filters; block unpermitted create/edit/delete requests 
     function fltRestPreDispatch($rest_response, $rest_server, $request)
     {
-        /*
-        if (presspermit()->isContentAdministrator()) {
-            return $rest_response;
-        }
-        */
-
         require_once(PRESSPERMIT_CLASSPATH . '/REST.php');
         return Permissions\REST::instance()->pre_dispatch($rest_response, $rest_server, $request);
     }
@@ -187,9 +181,6 @@ class PermissionsHooks
         }
 
         if (!$ver || !is_array($ver) || empty($ver['db_version']) || version_compare(PRESSPERMIT_DB_VERSION, $ver['db_version'], '!=')) {
-            //require_once(PRESSPERMIT_CLASSPATH . '/DB/DatabaseSetup.php');  // do this earlier
-            //new Permissions\DB\DatabaseSetup($ver['db_version']);
-
             if (!$ver) {
                 require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
                 new Permissions\PluginUpdated('');
@@ -218,14 +209,7 @@ class PermissionsHooks
                 require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
                 Permissions\PluginUpdated::syncWordPressRoles();
             }
-        } /*else { // execute earlier
-            // first execution after install
-            if (!get_option('ppperm_added_role_caps_21beta')) {
-                require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
-                Permissions\PluginUpdated::populateRoles(true);
             }
-        }
-        */
         // --- end version check ---
 
         // already loaded these early, so apply filter again for modules
@@ -269,7 +253,8 @@ class PermissionsHooks
         // Don't filter legacy / development versions of REST api unless constant defined
         if (
             defined('JSON_API_VERSION') && !defined('PP_FILTER_JSON_REST')
-            && (false !== strpos($_SERVER['REQUEST_URI'], apply_filters('json_url_prefix', 'wp-json')))
+            && isset($_SERVER['REQUEST_URI'])
+            && (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), apply_filters('json_url_prefix', 'wp-json')))
         ) {
             return;
         }
@@ -282,7 +267,7 @@ class PermissionsHooks
             $this->loadContentFilters();
         }
 
-        // retrieve BP groups and other group types registered by 3rd party  @todo: default retrieve_site_roles arg to false?
+        // retrieve BP groups and other group types registered by 3rd party  todo: default retrieve_site_roles arg to false?
         $pp_user = $pp->getUser(false, '', ['retrieve_site_roles' => false]);
         $pp_user->retrieveExtraGroups();
         $pp_user->getSiteRoles();
@@ -325,7 +310,7 @@ class PermissionsHooks
 
         // no further filtering on update requests for other plugins 
         if (is_admin() && ('update.php' == $pagenow)) {
-            // @todo: review with EDD
+            // todo: review with EDD
 
             if (!presspermit_is_REQUEST('action', 'presspermit-pro')) {
                 do_action('presspermit_init');

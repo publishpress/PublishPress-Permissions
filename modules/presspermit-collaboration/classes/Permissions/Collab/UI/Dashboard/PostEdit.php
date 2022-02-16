@@ -313,8 +313,7 @@ class PostEdit
             <div id="pp_author_search_ui_base" style="display:none">
                 <div class="pp-agent-select pp-agents-selection"><?php $agents->agentsUI('user', [], 'select-author', [], $args); ?></div>
             </div>
-            <?
-            ?>
+
             <script type="text/javascript">
                 /* <![CDATA[ */
                 jQuery(document).ready(function ($) {

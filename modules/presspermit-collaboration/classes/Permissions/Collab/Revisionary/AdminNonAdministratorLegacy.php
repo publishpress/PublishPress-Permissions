@@ -1,7 +1,6 @@
 <?php
 namespace PublishPress\Permissions\Collab\Revisionary;
 
-//use \PressShack\LibArray as Arr;
 class AdminNonAdministratorLegacy
 {
     function __construct() {

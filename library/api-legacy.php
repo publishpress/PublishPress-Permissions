@@ -1,6 +1,4 @@
 <?php
-//use \PublishPress\Permissions\API as API;
-
 // =========================== Capabilities API (Legacy Wrappers) ===========================
 
 if (!function_exists('pp_get_user')) {

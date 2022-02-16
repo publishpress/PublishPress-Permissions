@@ -6,7 +6,7 @@ class PluginStatus
 {
     public static function renewalMsg()
     {
-        // @todo: replace these string with EDD integration equivalents
+        // todo: replace these string with EDD integration equivalents
 
         printf(
             esc_html__('Your license key has expired. For updates to PublishPress Permissions Pro and priority support, %splease renew%s.', 'press-permit-core'),

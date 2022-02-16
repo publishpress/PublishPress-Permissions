@@ -135,8 +135,6 @@ class ItemExceptionsUI
                     $reqd_caps = false;
                 }
             }
-
-            global $wp_roles;
             ?>
 
             <table class="pp-item-exceptions-ui pp-exc-<?php echo esc_attr($agent_type); ?>" style="width:100%">
@@ -193,7 +191,7 @@ class ItemExceptionsUI
                                     </thead>
                                 <?php endif; ?>
                                 <tbody>
-                                <?php // @todo: why is agent_id=0 in current_exceptions array?
+                                <?php // todo: why is agent_id=0 in current_exceptions array?
                                 if ($any_stored) {
                                     if ('wp_role' == $agent_type) {
                                         foreach ($current_exceptions[$op][$agent_type] as $agent_id => $agent_exceptions) {

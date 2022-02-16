@@ -38,17 +38,6 @@ class PostsListing
             global $post;
 
             if (!in_array($post->post_status, ['draft', 'public', 'private', 'pending'], true)) {
-                // duplicate status display avoidance is currently handled elsewhere
-                /*
-                global $publishpress;
-
-                if ($publishpress && method_exists($publishpress->custom_status, 'get_custom_status_by')) {
-                    if ($publishpress->custom_status->get_custom_status_by('slug', $post->post_status)) {
-                        return;
-                    }
-                }
-                */
-
                 if ($status_obj = get_post_status_object($post->post_status)) {
                     if (!empty($status_obj->private) || (!empty($status_obj->moderation) && ('future' != $post->post_status))) {
                         echo esc_html($status_obj->label);
@@ -63,7 +52,7 @@ class PostsListing
     public function act_maybe_hide_quickedit()
     {
         if (Collab::isLimitedEditor() && !current_user_can('pp_force_quick_edit')) {
-            // @todo: better quick/bulk edit support for limited editors
+            // todo: better quick/bulk edit support for limited editors
             ?>
             <style type="text/css">
                 .editinline, div.tablenav div.actions select option[value="edit"] {

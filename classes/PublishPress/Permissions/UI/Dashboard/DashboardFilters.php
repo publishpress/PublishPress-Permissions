@@ -2,9 +2,6 @@
 
 namespace PublishPress\Permissions\UI\Dashboard;
 
-//use \PublishPress\Permissions\UI as UI;
-//use \PressShack\LibWP as PWP;
-
 // menu icons by Jonas Rask: https://www.jonasraskdesign.com/
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
@@ -116,7 +113,7 @@ class DashboardFilters
         } 
         
         if (('presspermit-settings' == presspermitPluginPage()) || (('plugin-install.php' == $pagenow)
-            && strpos($_SERVER['HTTP_REFERER'], 'presspermit-settings'))
+            && isset($_SERVER['HTTP_REFERER']) && strpos(esc_url_raw($_SERVER['HTTP_REFERER']), 'presspermit-settings'))
         ) {
             wp_enqueue_style('presspermit-settings', PRESSPERMIT_URLPATH . '/common/css/settings.css', [], PRESSPERMIT_VERSION);
         }
@@ -213,7 +210,7 @@ class DashboardFilters
 
     public function actBuildMenu()
     {
-        if (strpos($_SERVER['REQUEST_URI'], 'wp-admin/network/')) {
+        if (!empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'wp-admin/network/')) {
             return;
         }
 
@@ -233,13 +230,7 @@ class DashboardFilters
             //  Manually set menu indexes for positioning below Users menu
             global $menu;
 
-            /*
-            $pp_cred_key = (!defined('PP_DISABLE_MENU_TWEAK') && !defined('OZH_MENU_VER')
-                && isset($menu[70]) && $menu[70][2] == 'users.php' && !isset($menu[72]))
-                ? 72 : null;
-            */
-
-            $permissions_title = __('Permissions', 'press-permit-core');
+            $permissions_title = esc_html__('Permissions', 'press-permit-core');
 
             $menu_order = 72;
 
@@ -294,7 +285,7 @@ class DashboardFilters
 
         if (in_array($pp_plugin_page, ['presspermit-edit-permissions'], true)) {
             $titles = ['presspermit-edit-permissions' => esc_html__('Edit Permissions', 'press-permit-core')];
-            add_submenu_page(pp_permissions_sanitize_key($permissions_title), $titles[$pp_plugin_page], '', 'read', $pp_plugin_page, $handler);
+            add_submenu_page(sanitize_key($permissions_title), $titles[$pp_plugin_page], '', 'read', $pp_plugin_page, $handler);
         }
 
         do_action('presspermit_admin_menu');
@@ -343,7 +334,7 @@ class DashboardFilters
     }
 
     // support NextGenGallery uploader and other custom jquery calls which WP treats as index.php ( otherwise user_can_access_admin_page() fails )
-    // @todo: review
+    // todo: review
     public function actNggUploaderWorkaround()
     {
         global $pagenow;
@@ -353,8 +344,8 @@ class DashboardFilters
             return;
         }
 
-        if (('index.php' == $pagenow) && strpos($_SERVER['REQUEST_URI'], '.php')
-            && !strpos($_SERVER['REQUEST_URI'], 'index.php')
+        if (('index.php' == $pagenow) && !empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), '.php')
+            && !strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'index.php')
         ) {
             $pagenow = '';
         }

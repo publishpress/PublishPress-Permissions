@@ -55,14 +55,6 @@ class Profile
         $post_types = $pp->getEnabledPostTypes([], 'object');
         $taxonomies = $pp->getEnabledTaxonomies([], 'object');
 
-        /*
-            $is_administrator = current_user_can( 'pp_administer_content' ) && current_user_can('list_users');
-    
-            $edit_url = ( $is_administrator ) 
-            ? "admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_id=$user->ID&amp;agent_type=user" 
-            : '';
-            */
-
         $user->retrieveExtraGroups();
         $user->getSiteRoles();
 
@@ -78,13 +70,6 @@ class Profile
                 );
             }
         }
-
-        // @todo: review
-        /*
-            $link = ( current_user_can( 'pp_assign_roles' ) ) 
-            ? "admin.php?page=presspermit-edit-permissions&amp;action=edit&agent_type=user&amp;agent_id=$user->ID" 
-            : '';
-            */
 
         \PublishPress\Permissions\UI\AgentPermissionsUI::currentRolesUI(
             $roles,
@@ -148,9 +133,6 @@ class Profile
             if (!in_array($agent_type, ['pp_group', 'pp_net_group'], true)) {
                 continue;
             }
-
-            // @todo: review
-            //$reqd_caps = (array) apply_filters( 'presspermit_edit_groups_reqd_caps', ['pp_edit_groups'] );
 
             $editable_ids = (current_user_can('pp_manage_members'))
                 ? array_keys($all_groups)
