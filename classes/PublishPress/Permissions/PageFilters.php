@@ -389,7 +389,7 @@ class PageFilters
         }
 
         $where_id = '';
-        global $pagenow;
+
         if (is_admin() && in_array($pagenow, ['post.php', 'post-new.php'])) {
             global $post;
             if ($post)

@@ -6,6 +6,8 @@ class AgentsAjax
 {
     public function __construct() 
     {
+        global $wpdb, $current_blog;
+
         require_once(ABSPATH . '/wp-admin/includes/user.php');
 
         if (!presspermit_is_GET('pp_agent_search')) {
@@ -91,9 +93,6 @@ class AgentsAjax
         }
 
         if ('user' == $agent_type) {
-            global $wpdb;
-
-            global $current_blog;
             if (isset($current_blog) && is_object($current_blog) && isset($current_blog->blog_id)) {
                 $blog_prefix = $wpdb->get_blog_prefix($current_blog->blog_id);
             } else {

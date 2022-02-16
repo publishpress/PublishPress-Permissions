@@ -23,7 +23,6 @@ class PluginUpdated
             }
 
             // todo: confirm this is only needed after Import from Role Scoper / Press Permit Beta
-			global $wpdb;
             $wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'buffer_metagroup_id_%'");
 
             if (version_compare($prev_version, '2.7-beta', '>=')
