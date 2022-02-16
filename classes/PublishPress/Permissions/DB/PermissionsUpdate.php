@@ -151,11 +151,11 @@ class PermissionsUpdate
 
         $args = array_merge($defaults, (array)$args);
         foreach (array_keys($defaults) as $var) {
-            $$var = (is_string($args[$var])) ? pp_permissions_sanitize_key($args[$var]) : $args[$var];
+            $$var = (is_string($args[$var])) ? sanitize_key($args[$var]) : $args[$var];
         }
 
         $item_id = (int)$args['item_id'];
-        $agent_type = pp_permissions_sanitize_key($agent_type);
+        $agent_type = sanitize_key($agent_type);
         $for_item_status = (isset($args['for_item_status'])) ? PWP::sanitizeCSV($for_item_status) : '';
 
         // temp workaround for Revisionary (otherwise lose page-assigned roles on revision approval)
@@ -509,16 +509,16 @@ class PermissionsUpdate
 
         $assigner_id = $current_user->ID;
 
-        $operation = pp_permissions_sanitize_key($operation);
-        $via_item_source = pp_permissions_sanitize_key($via_item_source);
-        $for_item_source = pp_permissions_sanitize_key($for_item_source);
-        $for_item_type = pp_permissions_sanitize_key($for_item_type);
+        $operation = sanitize_key($operation);
+        $via_item_source = sanitize_key($via_item_source);
+        $for_item_source = sanitize_key($for_item_source);
+        $for_item_type = sanitize_key($for_item_type);
         $item_id = (int)$item_id;
-        $agent_type = pp_permissions_sanitize_key($agent_type);
-        $mod_type = pp_permissions_sanitize_key($mod_type);
-        $via_item_type = pp_permissions_sanitize_key($via_item_type);
+        $agent_type = sanitize_key($agent_type);
+        $mod_type = sanitize_key($mod_type);
+        $via_item_type = sanitize_key($via_item_type);
         $for_item_status = PWP::sanitizeCSV($for_item_status);
-        $assign_for = pp_permissions_sanitize_key($assign_for);
+        $assign_for = sanitize_key($assign_for);
 
         if ('children' == $assign_for) {
             if ('term' == $via_item_source) {

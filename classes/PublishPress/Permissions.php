@@ -980,7 +980,7 @@ class Permissions
             $$var = (isset($args[$var])) ? $args[$var] : $defaults[$var];
         }
 
-        $slug = pp_permissions_sanitize_key($slug);
+        $slug = sanitize_key($slug);
 
         // avoid lockout in case of editing plugin via wp-admin
         if (constant('PRESSPERMIT_DEBUG') && is_admin() && presspermit_editing_plugin()) {

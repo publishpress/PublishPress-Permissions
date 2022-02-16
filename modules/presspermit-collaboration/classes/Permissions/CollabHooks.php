@@ -279,7 +279,7 @@ class CollabHooks
             return $wp_sitecaps;
         }
 
-        $orig_cap = (isset($args[0])) ? pp_permissions_sanitize_key($args[0]) : reset($orig_reqd_caps);
+        $orig_cap = (isset($args[0])) ? sanitize_key($args[0]) : reset($orig_reqd_caps);
 
         // If user can edit the current post, credit edit_published_posts, edit_published_pages, publish_posts capabilities
         if (in_array($orig_cap, ['edit_published_posts', 'edit_published_pages', 'publish_posts'])) {

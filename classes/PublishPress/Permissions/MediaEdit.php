@@ -80,7 +80,7 @@ class MediaEdit
             case 'add_post_meta':
                 $caps = map_meta_cap('edit_post', $user_id, $post->ID);
 
-                $meta_key = isset($args[1]) ? pp_permissions_sanitize_key($args[1]) : false;
+                $meta_key = isset($args[1]) ? sanitize_key($args[1]) : false;
 
                 if ($meta_key && has_filter("auth_post_meta_{$meta_key}")) {
                     /**

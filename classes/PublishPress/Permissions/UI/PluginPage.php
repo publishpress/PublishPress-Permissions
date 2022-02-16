@@ -96,7 +96,7 @@ class PluginPage
             $_agent_type = $default_type;
         }
 
-        if (!$agent_type = pp_permissions_sanitize_key(apply_filters('presspermit_query_group_type', $_agent_type))) {
+        if (!$agent_type = sanitize_key(apply_filters('presspermit_query_group_type', $_agent_type))) {
             $agent_type = 'pp_group';
         }
 
@@ -109,7 +109,7 @@ class PluginPage
             $matches = [];
             if (preg_match("/group_variant=([0-9a-zA-Z_\-]+)/", urldecode($_REQUEST['_wp_http_referer']), $matches)) {
                 if ($matches[1]) {
-                    $group_variant = pp_permissions_sanitize_key($matches[1]);
+                        $group_variant = sanitize_key($matches[1]);
                 }
             }
             }
@@ -121,6 +121,6 @@ class PluginPage
             $group_variant = presspermit_REQUEST_key('group_variant');
         }
 
-        return pp_permissions_sanitize_key(apply_filters('presspermit_query_group_variant', $group_variant));
+        return sanitize_key(apply_filters('presspermit_query_group_variant', $group_variant));
     }
 }

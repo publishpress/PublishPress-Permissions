@@ -206,7 +206,7 @@ class AgentEdit
                 $exc = apply_filters('presspermit_add_exception', $exc);
 
                 foreach (['mod_type', 'item_id', 'operation', 'attrib_cond', 'via_type', 'for_type', 'for_item', 'for_children'] as $var) {
-                    $$var = (isset($exc[$var])) ? pp_permissions_sanitize_key($exc[$var]) : '';
+                    $$var = (isset($exc[$var])) ? sanitize_key($exc[$var]) : '';
                 }
 
                 $item_id = (isset($exc['item_id'])) ? (int) $exc['item_id'] : 0;

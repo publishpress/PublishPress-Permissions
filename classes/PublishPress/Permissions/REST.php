@@ -144,7 +144,7 @@ class REST
                     $this->referer = reset($this->referer);
                 }
 
-                $this->operation = (isset($this->params['context'])) ? pp_permissions_sanitize_key($this->params['context']) : '';
+                $this->operation = (isset($this->params['context'])) ? sanitize_key($this->params['context']) : '';
                 if ('view' == $this->operation) {
                     $this->operation = 'read';
                 }
