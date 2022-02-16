@@ -209,7 +209,6 @@ class Admin
                 if ($tt_ids = $user->getExceptionTerms('revise', $mod, $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])) {    
                     if ($merge_additions) {
                         $tx_additional_ids = array_merge(
-                            //$user->getExceptionTerms('copy', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true]),
                             $user->getExceptionTerms('revise', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
                         );
                     } else {
@@ -249,7 +248,6 @@ class Admin
                     if ($merge_additions) {
                         $tx_additional_ids = array_merge(
                             $user->getExceptionTerms('copy', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
-                            //$user->getExceptionTerms('revise', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
                         );
                     } else {
                         $tx_additional_ids = [];

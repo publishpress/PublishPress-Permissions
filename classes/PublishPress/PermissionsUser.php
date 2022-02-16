@@ -19,8 +19,6 @@ class PermissionsUser extends \WP_User
 
     public function __construct($id = 0, $name = '', $args = [])
     {
-        //pp_log_mem_usage( 'begin PP_User' );
-
         $defaults = ['retrieve_site_roles' => true];
         $args = array_merge($defaults, (array)$args);
         foreach (array_keys($defaults) as $var) {
@@ -48,8 +46,6 @@ class PermissionsUser extends \WP_User
         }
 
         add_filter('map_meta_cap', [$this, 'reinstateCaps'], 99, 3);
-
-        //pp_log_mem_usage( 'new User done' );
     }
 
     public function retrieveExtraGroups($args = [])

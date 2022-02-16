@@ -123,9 +123,7 @@ class CapabilityFilters
             ? $user->except[$op_key]['post']['']['exclude'][$post_type]['']
             : [];
 
-            //var_dump($user->except[$op_key]['post']['']['exclude']);
-
-            // @todo: implement status-specific exception storage for custom workflow?
+            // todo: implement status-specific exception storage for custom workflow?
 
             // check for term-assigned exceptions
             if ($can_do = !in_array($post_id, $items)) {

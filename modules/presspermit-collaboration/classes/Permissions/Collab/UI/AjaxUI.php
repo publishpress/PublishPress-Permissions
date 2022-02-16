@@ -42,11 +42,6 @@ class AjaxUI
                 'noun_label' => esc_html__('Assignment', 'press-permit-core')
             ],
 
-            /*'publish' => (object)[
-                'label' => __('Publish'), 
-                'noun_label' => __('Publishing', 'press-permit-core')
-            ],*/
-
             'manage' => (object)[
                 'label' => esc_html__('Manage'), 
                 'noun_label' => esc_html__('Management', 'press-permit-core')
@@ -102,7 +97,6 @@ class AjaxUI
             $op_obj = $pp->admin()->getOperationObject('manage');
             $ops['manage'] = $op_obj->label;
 
-            //if ( is_taxonomy_hierarchical( $for_item_type ) )
             $op_obj = $pp->admin()->getOperationObject('associate');
             $ops['associate'] = $op_obj->agent_label;
 

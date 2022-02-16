@@ -42,9 +42,6 @@ class Settings
 
         do_action('presspermit_options_ui');
 
-        //$pp->load_config(); // @todo: confirm this is not needed ( $role_defs->defineRoles() )
-        //$pp->loadContentFilters();
-
         $ui = SettingsAdmin::instance();
 
         $ui->all_options = [];

@@ -196,7 +196,7 @@ class ItemSave
                     );
                 }
             }
-        } // endif new parent selection (or new item)
+        }
 
         return !empty($any_inserts);
     }

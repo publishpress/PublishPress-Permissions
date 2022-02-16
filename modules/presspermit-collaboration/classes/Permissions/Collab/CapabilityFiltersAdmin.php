@@ -83,14 +83,6 @@ class CapabilityFiltersAdmin
     {
         global $current_user;
 
-        // parent clause already applied by Media::count_attachments_query()
-        // $force = ( empty($args['has_cap_check']) || presspermit()->getOption( 'edit_others_attached_files') ) && ( empty($args['pp_context']) || 'count_attachments' != $args['pp_context'] );
-
-        //return ! empty($args['has_cap_check']);
-
-        // TODO: review, test this further
-        //return ( empty($args['pp_context']) || 'count_attachments' != $args['pp_context'] || in_array( 'attachment', presspermit()->getEnabledPostTypes(), true ) );
-        
         return (empty($args['pp_context']) || 'count_attachments' != $args['pp_context']);
     }
 
@@ -118,7 +110,6 @@ class CapabilityFiltersAdmin
         if (('nav-menus.php' == $pagenow)
             || (('edit_theme_options' == reset($reqd_caps)) && ('edit_theme_options' == $orig_cap) && (PWP::doingAdminMenus() || (defined('DOING_AJAX') && DOING_AJAX)))
         ) {
-            //if ( ( 'nav-menus.php' == $pagenow ) || empty( $current_user->allcaps['edit_theme_options'] ) ) {
             if (empty($current_user->allcaps['edit_theme_options'])) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenuCapabilities.php');
                 $reqd_caps = NavMenuCapabilities::adjustCapRequirement($reqd_caps);
@@ -252,8 +243,6 @@ class CapabilityFiltersAdmin
         $caps = Capabilities::instance();
 
         // taxonomy caps
-        //$_all_taxonomy_caps = (isset( $caps->all_taxonomy_caps )) ? $caps->all_taxonomy_caps : [];
-        //if ( $type_caps = array_intersect( $orig_reqd_caps, array_keys( $_all_taxonomy_caps ) ) ) {
         if ($type_caps = array_intersect($orig_reqd_caps, array_keys($caps->all_taxonomy_caps))) {
 
 
@@ -304,14 +293,7 @@ class CapabilityFiltersAdmin
                     case $tx_obj->cap->manage_terms:
                         $op = 'manage';
                         break;
-                    /*
-                case $tx_obj->cap->edit_terms :
-                    $op = 'edit';
-                    break;
-                case $tx_obj->cap->delete_terms :
-                    $op = 'delete';
-                    break;
-                */
+
                     default:
                         $op = false;
                 }

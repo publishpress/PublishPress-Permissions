@@ -142,8 +142,6 @@ class CollabHooks
         add_action('presspermit_cap_filters', [$this, 'actLoadCapFilters']);
         add_action('presspermit_page_filters', [$this, 'actLoadWorkaroundFilters']);
 
-        //add_filter('presspermit_get_terms_is_term_admin', [$this, 'flt_get_terms_is_term_admin'], 10, 2);  // @todo: should this be applied?
-
         // if PPS is active, hook into its visibility forcing mechanism and UI (applied by PPS for specific pages)
         add_filter('presspermit_getItemCondition', [$this, 'fltForceDefaultVisibility'], 10, 4);
         add_filter('presspermit_read_own_attachments', [$this, 'fltReadOwnAttachments'], 10, 2);
@@ -171,7 +169,6 @@ class CollabHooks
             'publish_author_pages' => 0,
             'editor_hide_html_ids' => '',
             'editor_ids_sitewide_requirement' => 0,
-            /*'prevent_default_forking_caps' => 0,*/
             'fork_published_only' => 0,
             'fork_require_edit_others' => 0,
             'force_taxonomy_cols' => 0,
@@ -358,15 +355,6 @@ class CollabHooks
         if (('post' == $source_name) && ('force_visibility' == $attribute) && !$item_condition && isset($args['post_type'])) {
             if (empty($args['assign_for']) || ('item' == $args['assign_for'])) {
                 if ($default_privacy = presspermit()->getTypeOption('default_privacy', $args['post_type'])) {
-
-                    /*
-                    // @todo: Force default privacy with Gutenberg
-                    if ((defined('PRESSPERMIT_STATUSES_VERSION') && version_compare(PRESSPERMIT_STATUSES_VERSION, '2.7-beta', '<')) 
-                    && PWP::is-BlockEditorActive($args['post_type'])) {
-                        return $item_condition;
-                    }
-                    */
-
                     if ($force = presspermit()->getTypeOption('force_default_privacy', $args['post_type']) || PWP::isBlockEditorActive($args['post_type'])) {
                         // only apply if status is currently registered and PP-enabled for the post type
                         if (PWP::getPostStatuses(['name' => $default_privacy, 'post_type' => $args['post_type']])) {
@@ -506,19 +494,6 @@ class CollabHooks
         return $caps;
     }
 
-    /*
-    function flt_get_terms_is_term_admin($is_term_admin, $taxonomy)
-    {
-        global $pagenow;
-
-        return $is_term_admin
-            || in_array($pagenow, ['edit-tags.php', 'term.php'])
-            || ('nav_menu' == $taxonomy && ('nav-menus.php' == $pagenow)
-                || (('admin-ajax.php' == $pagenow) && (!empty($_REQUEST['action']) 
-                && in_array($_REQUEST['action'], ['add-menu-item', 'menu-locations-save']))));
-    }
-    */
-
     function actLoadWorkaroundFilters()
     { 
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PageFilters.php');
@@ -597,11 +572,4 @@ class CollabHooks
 
         return $terms;
     }
-
-    /* // this is now handled by fltPreObjectTerms instead
-    function flt_default_term( $default_term_id, $taxonomy = 'category' ) {
-        require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
-        return PostTermsSave::flt_default_term( $default_term_id, $taxonomy );
-    }
-    */
 }

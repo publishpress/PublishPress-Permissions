@@ -1,9 +1,6 @@
 <?php
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
-//use \PublishPress\Permissions\Collab as Collab;
-//use \PublishPress\Permissions\Collab\UI as UI;
-
 class DashboardFilters
 {
     function __construct()

@@ -48,7 +48,6 @@ class PostSave
                 $stored_terms = Collab::getObjectTerms($object_id, $taxonomy, ['fields' => 'ids', 'pp_no_filter' => true]);
 
                 if (!$selected_terms = Collab::getPostedObjectTerms($taxonomy)) {
-                    //$selected_terms = self::get_user_default_terms($taxonomy); (method also commented out)
                     continue;   // don't pre-insert if no terms selected, or selection cannot be detected
                 }
 
@@ -68,11 +67,4 @@ class PostSave
 
         return $set_terms;
     }
-    
-    /*
-    private static function get_user_default_terms($taxonomy)
-    {
-        return apply_filters('presspermit_pre_object_terms', [], $taxonomy);
-    }
-    */
 }

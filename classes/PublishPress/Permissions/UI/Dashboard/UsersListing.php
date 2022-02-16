@@ -2,9 +2,6 @@
 
 namespace PublishPress\Permissions\UI\Dashboard;
 
-//use \PressShack\LibArray as Arr;
-//use \PublishPress\Permissions\API as API;
-
 class UsersListing
 {
     public function __construct() {

@@ -2,8 +2,6 @@
 
 namespace PublishPress\Permissions\DB;
 
-//use \PressShack\LibArray as Arr;
-
 class GroupUpdate
 {
     /**

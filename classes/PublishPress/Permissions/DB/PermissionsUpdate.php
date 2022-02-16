@@ -2,8 +2,6 @@
 
 namespace PublishPress\Permissions\DB;
 
-//use \PressShack\LibWP as PWP;
-
 class PermissionsUpdateHelper
 {
     var $insertion_action_enabled = true;

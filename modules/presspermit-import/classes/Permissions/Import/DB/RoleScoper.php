@@ -236,8 +236,6 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                 $role_name = implode('_', $arr);
             }
 
-            //pp_dump($item_type);
-
             if (post_type_exists($item_type)) {
                 $item_source = 'post';
 
@@ -325,9 +323,6 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
         $imported_restrictions = $wpdb->get_results($wpdb->prepare("SELECT source_id, import_tbl, import_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d", $this->getTableCode($wpdb->role_scope_rs)), OBJECT_K);
         
-        //echo 'imported: ';
-        //var_dump($imported_restrictions);
-
         $pp_agent_id = [];
         $results = $wpdb->get_results("SELECT metagroup_id, ID FROM $wpdb->pp_groups WHERE metagroup_type = 'wp_role'");
         foreach ($results as $row) {
@@ -1250,8 +1245,6 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                 break;
             }
 
-            //pp_errlog("edit exception_id $edit_exception_id, publish exception_id $publish_exception_id");
-
             // If a corresponding publish exception row is not stored, insert one
             if (!$publish_exception_id) {
                 $data = (array) $exc;
@@ -1301,7 +1294,6 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                     }
 
                     $query = rtrim($query, ',');
-                    //pp_errlog($query);
 
                     $wpdb->query($query);
                 }

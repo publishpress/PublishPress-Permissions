@@ -2,8 +2,6 @@
 
 namespace PublishPress\Permissions\DB;
 
-//use \PressShack\LibArray as Arr;
-
 class Permissions
 {
     public static function getRoles($agent_id, $agent_type = 'pp_group', $args = [])
@@ -162,7 +160,6 @@ class Permissions
             ],
         ];
 
-        // valid return array is arr[for_item_source] = arr[via_item_src][via_item_type] = ['include', 'exclude']
         if ($add_source_types = apply_filters('presspermit_add_exception_source_types', [])) {
             $valid_src_types = array_merge($valid_src_types, $add_source_types);
         }

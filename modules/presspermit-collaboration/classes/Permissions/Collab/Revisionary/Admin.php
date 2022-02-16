@@ -1,7 +1,7 @@
 <?php
 namespace PublishPress\Permissions\Collab\Revisionary;
 
-//use \PressShack\LibArray as Arr;
+
 class Admin
 {
     function __construct() {
@@ -356,9 +356,7 @@ class Admin
 
             $revision_uris = apply_filters('presspermit_revision_uris', ['edit.php', 'upload.php', 'widgets.php', 'revision.php', 'admin-ajax.php', 'rvy-revisions', 'revisionary-q']);
 
-            //if (is_admin() || !empty($_GET['preview'])) {
                 $revision_uris [] = 'index.php';
-            //}
 
             if (presspermit_is_preview() || in_array($pagenow, $revision_uris, true) || in_array(presspermitPluginPage(), $revision_uris, true) || in_array($plugin_page, $revision_uris, true)) {
                 $strip_capreqs = [];

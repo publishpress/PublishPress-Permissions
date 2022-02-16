@@ -2,9 +2,6 @@
 
 namespace PublishPress\Permissions\UI;
 
-//use \PressShack\LibWP as PWP;
-//use \PressShack\LibArray as Arr;
-
 class AgentPermissionsUI
 {
     public static function roleAssignmentScripts()

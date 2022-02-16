@@ -2,9 +2,6 @@
 
 namespace PublishPress\Permissions\UI\Dashboard;
 
-//use \PublishPress\Permissions\UI as UI;
-//use \PressShack\LibWP as PWP;
-
 // menu icons by Jonas Rask: https://www.jonasraskdesign.com/
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
@@ -232,12 +229,6 @@ class DashboardFilters
         if ('presspermit-groups' == $pp_cred_menu) {
             //  Manually set menu indexes for positioning below Users menu
             global $menu;
-
-            /*
-            $pp_cred_key = (!defined('PP_DISABLE_MENU_TWEAK') && !defined('OZH_MENU_VER')
-                && isset($menu[70]) && $menu[70][2] == 'users.php' && !isset($menu[72]))
-                ? 72 : null;
-            */
 
             $permissions_title = __('Permissions', 'press-permit-core');
 

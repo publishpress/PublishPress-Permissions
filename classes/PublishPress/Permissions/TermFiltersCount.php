@@ -105,8 +105,6 @@ class TermFiltersCount
                     $selects = array( 't.term_id', 'tt.parent', 'tt.count', 't.name', 'tt.taxonomy' );
                     break;
                 case 'count':
-                    //$orderby = '';
-                    //$order   = '';
                     $selects = array( 'COUNT(*)' );
                     break;
                 case 'id=>name':
@@ -359,17 +357,6 @@ class TermFiltersCount
         if ( ! empty( $_terms ) ) {
             $terms = $_terms;
         }
-
-        // Don't redundantly apply limits
-        /*
-		if ( $hierarchical && $number && is_array( $terms ) ) {
-			if ( $offset >= count( $terms ) ) {
-				$terms = array();
-			} else {
-				$terms = array_slice( $terms, $offset, $number, true );
-			}
-        }
-        */
 
         // === end standard WP block ===
 

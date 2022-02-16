@@ -108,10 +108,6 @@ class Capabilities
                     presspermit()->capDefs();
                 }
 
-                // Default plural slug
-                //$plural_type = "{$taxonomy}s";
-
-                //$plural_type = presspermit()->capDefs()->getPlural($taxonomy, $wp_taxonomies[$taxonomy]);
                 $plural_type = \PublishPress\Permissions\Capabilities::getPlural($taxonomy, $wp_taxonomies[$taxonomy]);
 
                 if ("{$taxonomy}s" != $plural_type) {

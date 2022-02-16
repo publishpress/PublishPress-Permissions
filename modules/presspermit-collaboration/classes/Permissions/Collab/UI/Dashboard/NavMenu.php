@@ -1,7 +1,6 @@
 <?php
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
-//use \PressShack\LibWP as PWP;
 use \PublishPress\Permissions\Collab\NavMenus as NavMenus;
 
 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');

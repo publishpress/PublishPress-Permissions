@@ -229,7 +229,6 @@ class DatabaseSetup
                             }
 
                             // Get the default value from the array
-                            //echo "{$cfields[strtolower($tablefield->Field)]}<br>";
                             if (preg_match("| DEFAULT '(.*)'|i", $cfields[strtolower($tablefield->Field)], $matches)) {
                                 $default_value = $matches[1];
                                 if ($tablefield->Default != $default_value) {

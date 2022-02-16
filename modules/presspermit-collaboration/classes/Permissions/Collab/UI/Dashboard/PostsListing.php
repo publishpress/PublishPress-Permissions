@@ -38,17 +38,6 @@ class PostsListing
             global $post;
 
             if (!in_array($post->post_status, ['draft', 'public', 'private', 'pending'], true)) {
-                // duplicate status display avoidance is currently handled elsewhere
-                /*
-                global $publishpress;
-
-                if ($publishpress && method_exists($publishpress->custom_status, 'get_custom_status_by')) {
-                    if ($publishpress->custom_status->get_custom_status_by('slug', $post->post_status)) {
-                        return;
-                    }
-                }
-                */
-
                 if ($status_obj = get_post_status_object($post->post_status)) {
                     if (!empty($status_obj->private) || (!empty($status_obj->moderation) && ('future' != $post->post_status))) {
                         echo esc_html($status_obj->label);

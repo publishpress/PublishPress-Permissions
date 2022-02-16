@@ -8,7 +8,6 @@ class PermissionsHooksAdmin
 
     public function __construct()
     {
-        //add_action('wp_dashboard_setup', [$this, '_getVersionInfo']);  // retrieve version info in case there are any alerts
         add_action('presspermit_duplicate_module', [$this, 'duplicateModule'], 10, 2);
 
         add_filter('presspermit_pattern_roles', [$this, 'fltPatternRoles']);

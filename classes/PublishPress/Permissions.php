@@ -295,8 +295,6 @@ class Permissions
 
         $dir = PRESSPERMIT_ABSPATH . '/modules/';
 
-        // @todo: dir()
-
         $available_modules = $this->getAvailableModules();
 
         foreach($available_modules as $module) {
@@ -310,7 +308,6 @@ class Permissions
 
     public function getAvailableModules($args = [])
     {
-        // @todo: dir()
         $modules = [
             'presspermit-circles',
             'presspermit-collaboration',
@@ -652,7 +649,6 @@ class Permissions
         update_option("presspermit_$option_basename", $option_val);
 
         do_action('presspermit_update_option', $option_basename, $option_val, $args);
-        //do_action( 'pp_update_option', $option_basename, $option_val, $args );  // old action was never hooked by any extension
     }
 
     public function deleteOption($option_basename, $args = [])

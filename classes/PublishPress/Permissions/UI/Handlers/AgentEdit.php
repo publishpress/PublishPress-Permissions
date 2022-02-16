@@ -2,9 +2,6 @@
 
 namespace PublishPress\Permissions\UI\Handlers;
 
-//use \PressShack\LibWP as PWP;
-//use \PublishPress\Permissions\DB as DB;
-
 class AgentEdit
 {
     public function __construct() {

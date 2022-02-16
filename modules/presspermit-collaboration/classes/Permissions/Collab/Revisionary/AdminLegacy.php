@@ -1,7 +1,7 @@
 <?php
 namespace PublishPress\Permissions\Collab\Revisionary;
 
-//use \PressShack\LibArray as Arr;
+
 class AdminLegacy
 {
     function __construct() {
@@ -171,7 +171,6 @@ class AdminLegacy
             if (!rvy_get_option('require_edit_others_drafts'))
                 return $caps;
 
-            // for \PublishPress\Permissions\PostFilters::mapMetaCap()
             if (isset($wp_args[0]) && is_object($wp_args[0])) {
                 global $current_user;
 
@@ -258,9 +257,7 @@ class AdminLegacy
 
             $revision_uris = apply_filters('presspermit_revision_uris', ['edit.php', 'upload.php', 'widgets.php', 'admin-ajax.php', 'rvy-revisions', 'rvy-moderation']);
 
-            //if (is_admin() || !empty($_GET['preview'])) {
-                $revision_uris [] = 'index.php';
-            //}
+            $revision_uris [] = 'index.php';
 
             if (presspermit_is_preview() || in_array($pagenow, $revision_uris, true) || in_array(presspermitPluginPage(), $revision_uris, true)) {
                 $strip_capreqs = [];

@@ -104,12 +104,6 @@ class PermissionsHooks
     // log request and handler parameters for possible reference by subsequent PP filters; block unpermitted create/edit/delete requests 
     function fltRestPreDispatch($rest_response, $rest_server, $request)
     {
-        /*
-        if (presspermit()->isContentAdministrator()) {
-            return $rest_response;
-        }
-        */
-
         require_once(PRESSPERMIT_CLASSPATH . '/REST.php');
         return Permissions\REST::instance()->pre_dispatch($rest_response, $rest_server, $request);
     }
@@ -187,9 +181,6 @@ class PermissionsHooks
         }
 
         if (!$ver || !is_array($ver) || empty($ver['db_version']) || version_compare(PRESSPERMIT_DB_VERSION, $ver['db_version'], '!=')) {
-            //require_once(PRESSPERMIT_CLASSPATH . '/DB/DatabaseSetup.php');  // do this earlier
-            //new Permissions\DB\DatabaseSetup($ver['db_version']);
-
             if (!$ver) {
                 require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
                 new Permissions\PluginUpdated('');
@@ -218,14 +209,7 @@ class PermissionsHooks
                 require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
                 Permissions\PluginUpdated::syncWordPressRoles();
             }
-        } /*else { // execute earlier
-            // first execution after install
-            if (!get_option('ppperm_added_role_caps_21beta')) {
-                require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
-                Permissions\PluginUpdated::populateRoles(true);
             }
-        }
-        */
         // --- end version check ---
 
         // already loaded these early, so apply filter again for modules

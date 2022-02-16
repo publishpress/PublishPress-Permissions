@@ -51,13 +51,6 @@ class CapabilityFilters
             add_action('presspermit_has_post_cap_pre', [$this, 'disableCapCache'], 10, 4);
         }
 
-        /*
-        // As of 4.8, need to impose current_user_can('read_post') on REST view request for a single public post, because WP_REST_Posts_Controller does not
-        if ( ! $pp->isContentAdministrator() && ! $pp->moduleActive('collaboration') ) {
-            add_filter( 'rest_request_after_callbacks', [$this, 'fltConfirmRestReadable'], 20, 3 );
-        }
-        */
-
         do_action('presspermit_cap_filters');
     }
 
@@ -549,17 +542,8 @@ class CapabilityFilters
         }
 
         if ($this_id_okay) {
-            //pp_debug_echo( "PASSED for {$orig_reqd_caps[0]}<br />" );
             return array_merge($wp_sitecaps, array_fill_keys($orig_reqd_caps, true));
         } else {
-            // ================= TEMPORARY DEBUG CODE ===================
-            //pp_dump($args);
-            //pp_dump($orig_reqd_caps);
-            //pp_dump($pp_reqd_caps);
-            //pp_debug_echo( "user_has_cap FAILED ($post_id) !!!!!!!" );
-            //pp_debug_echo( '<br />' );
-            // ============== (end temporary debug code ==================
-
             return array_diff_key($wp_sitecaps, array_fill_keys($orig_reqd_caps, true));  // return user's sitewide caps, minus the caps we were checking for
         }
     }

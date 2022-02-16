@@ -3,7 +3,6 @@ namespace PublishPress\Permissions;
 
 class REST
 {
-    //var $request;
     var $is_view_method = false;
     var $endpoint_class = '';
     var $taxonomy = '';
@@ -136,8 +135,6 @@ class REST
                     continue;
                 }
 				
-                //$this->request = $request;
-
                 $this->is_view_method = in_array($method, [\WP_REST_Server::READABLE, 'GET']);
                 $this->params = $request->get_params();
                 

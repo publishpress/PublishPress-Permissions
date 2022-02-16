@@ -1,8 +1,6 @@
 <?php
 namespace PublishPress\Permissions\UI\Dashboard;
 
-//use \PressShack\LibWP as PWP;
-
 require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/ItemEdit.php');
 
 class PostEdit

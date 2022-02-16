@@ -2,8 +2,6 @@
 
 namespace PublishPress\Permissions\UI;
 
-//use \PublishPress\Permissions\DB as DB;
-
 /**
  * AgentsChecklist class
  *

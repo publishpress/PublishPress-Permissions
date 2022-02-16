@@ -1,8 +1,6 @@
 <?php
 namespace PublishPress\Permissions\Collab\UI;
 
-//use \PressShack\LibWP as PWP;
-
 /**
  * Edit user administration panel.
  *

@@ -71,7 +71,6 @@ class CapabilityFilters
 
         if (('read' != $op) && (!$item_status || (!$status_obj->public && !$status_obj->private))) {
             $stati['post_status:{unpublished}'] = true;
-            //$stati['{unpublished}'] = true;
         }
 
         return $stati;

@@ -1,9 +1,6 @@
 <?php
 namespace PublishPress\Permissions;
 
-//use \PressShack\LibWP as PWP;
-//use \PressShack\LibArray as Arr;
-
 class CollabHooksAdminNonAdministrator
 {
     function __construct()

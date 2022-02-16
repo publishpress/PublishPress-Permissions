@@ -119,7 +119,6 @@ class PermissionsMeta
                     else
                         $lbl = $op_obj->label;
 
-                    //$lbl = sprintf( __('%2$s: %1$s', 'press-permit-core'), $op_lbl, $type_label );
                 } elseif (isset($op_obj->abbrev))
                     $lbl = $op_obj->abbrev;
                 else
@@ -200,9 +199,6 @@ class PermissionsMeta
 
         foreach ($results as $row) {
             $arr_role = explode(':', $row->role_name);
-            //$base_role_name = $arr_role[0];
-            //$source_name = $arr_role[1];
-            //$item_type = $arr_role[2];
 
             $no_ext = !$pp->moduleActive('collaboration') && !$pp->moduleActive('status-control');
             $no_custom_stati = !$pp->moduleActive('status-control');

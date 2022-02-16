@@ -71,7 +71,6 @@ class MediaQuery
         if ($admin_others_unattached || $can_edit_others_sitewide) {
             $author_clause = '';
         } else {
-            //$author_clause = "AND $src_table.post_author = {$current_user->ID}";
             $author_clause = "AND " . PWP::postAuthorClause($args);
         }
 

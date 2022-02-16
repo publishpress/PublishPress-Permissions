@@ -2,9 +2,6 @@
 
 namespace PublishPress\Permissions\UI;
 
-//use \PressShack\LibWP as PWP;
-//use \PublishPress\Permissions\DB as DB;
-
 require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsListTableBase.php');
 require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsQuery.php');
 require_once(PRESSPERMIT_CLASSPATH . '/DB/Groups.php');

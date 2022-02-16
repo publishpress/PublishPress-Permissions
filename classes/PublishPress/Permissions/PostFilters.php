@@ -50,15 +50,8 @@ class PostFilters
 
         add_filter('presspermit_force_post_metacap_check', [$this, 'fltForcePostMetacapCheck'], 10, 2);
 
-        //add_filter( 'posts_request', [$this, 'flt_debug_query'], 999 );
-
         do_action('presspermit_post_filters');
     }
-
-    //function flt_debug_query( $query ) {
-    // pp_debug_echo( $query . '<br /><br />' );
-    // return $query;
-    //}
 
     public function fltLogAnonResults($results)
     {
@@ -225,7 +218,6 @@ class PostFilters
             if (in_array($action, $edit_actions, true)) {
                 $_wp_query->query_vars['required_operation'] = 'edit';
             } elseif (!empty($_wp_query->post_type) && is_scalar($_wp_query->post_type)) {
-                //$ajax_required_operation = apply_filters( 'presspermit_ajax_required_operation', ['ai1ec_event' => 'read'] );
                 $ajax_required_operation = apply_filters('presspermit_ajax_required_operation', []);
 
                 foreach (array_keys($ajax_required_operation) as $arg) {
@@ -464,7 +456,6 @@ class PostFilters
 
         // Prepend so we don't disturb any orderby/groupby/limit clauses which are along for the ride
         if ($where_prepend) {
-            //$where = apply_filters('presspermit_objects_where', " $where_prepend $where", 'post');
             $where = " $where_prepend $where";
         }
 
@@ -518,7 +509,6 @@ class PostFilters
 
         if (!$src_table) {
             $src_table = ($source_alias) ? $source_alias : $wpdb->posts;
-            //$args['src_table'] = $src_table;
         }
 
         $ppma_join = 
