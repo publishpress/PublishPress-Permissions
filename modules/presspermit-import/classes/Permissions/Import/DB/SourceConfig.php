@@ -97,16 +97,18 @@ class SourceConfig
                 $item_roles = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->user2role2object_rs WHERE role_type = 'rs' AND scope IN ( 'term', 'object' ) AND date_limited = '0' AND content_date_limited = '0' AND assignment_id NOT IN ( SELECT source_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d )", $importer->getTableCode($wpdb->user2role2object_rs)));
                 $site_roles = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->user2role2object_rs WHERE role_type = 'rs' AND scope = 'blog' AND date_limited = '0' AND content_date_limited = '0' AND assignment_id NOT IN ( SELECT source_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d )", $importer->getTableCode($wpdb->user2role2object_rs)));
 
-                if (!empty($_REQUEST['show_unimported'])) {
-                    pp_debug_echo('groups:');
-                    pp_dump($groups);
-                    pp_debug_echo('<br />site roles:');
-                    pp_dump($site_roles);
-                    pp_debug_echo('<br />restrictions:');
-                    pp_dump($restrictions);
-                    pp_debug_echo('<br />item roles:');
-                    pp_dump($item_roles);
+                /*
+                if (!presspermit_empty_REQUEST('show_unimported') && defined('PRESSPERMIT_DEBUG')) {
+                    echo 'groups:';
+                    var_dump($groups);
+                    echo '<br />site roles:';
+                    var_dump($site_roles);
+                    echo '<br />restrictions:';
+                    var_dump($restrictions);
+                    echo '<br />item roles:';
+                    var_dump($item_roles);
                 }
+                */
 
                 return $groups || $restrictions || $item_roles || $site_roles;
                 break;
