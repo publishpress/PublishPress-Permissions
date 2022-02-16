@@ -12,17 +12,17 @@ class ItemExceptionsRenderUI
     public function __construct()
     {
         $this->opt_labels = [
-            'default' => __('(default access)', 'press-permit-core'),
-            'default_yes' => __('(default: Yes)', 'press-permit-core'),
-            'default_no' => __('(default: No)', 'press-permit-core'),
-            'no_setting' => __('(no setting)', 'press-permit-core'),
-            'enabled' => __('Enabled', 'press-permit-core'),
-            'blocked' => __('Blocked', 'press-permit-core'),
-            'default_blocked' => __('(Blocked)', 'press-permit-core'),
-            'unblocked' => __('Unblocked', 'press-permit-core'),
+            'default' => esc_html__('(default access)', 'press-permit-core'),
+            'default_yes' => esc_html__('(default: Yes)', 'press-permit-core'),
+            'default_no' => esc_html__('(default: No)', 'press-permit-core'),
+            'no_setting' => esc_html__('(no setting)', 'press-permit-core'),
+            'enabled' => esc_html__('Enabled', 'press-permit-core'),
+            'blocked' => esc_html__('Blocked', 'press-permit-core'),
+            'default_blocked' => esc_html__('(Blocked)', 'press-permit-core'),
+            'unblocked' => esc_html__('Unblocked', 'press-permit-core'),
         ];
 
-        $this->opt_class = ['' => " class='pp-def' ", 0 => " class='pp-no2' ", 1 => " class='pp-yes' ", 2 => " class='pp-yes2' "];
+        $this->opt_class = ['' => "pp-def", 0 => "pp-no2", 1 => "pp-yes", 2 => "pp-yes2"];
     }
 
     public function setOptions($agent_type)
@@ -125,10 +125,10 @@ class ItemExceptionsRenderUI
 
             if ($reqd_caps) {
                 if (!array_diff($reqd_caps, array_keys($role_caps)) || $is_unfiltered) {
-                    $this->opt_class[''] = " class='pp-yes' ";
+                    $this->opt_class[''] = "pp-yes";
                     $this->options['standard'][''] = $this->opt_labels['default_yes'];
                 } else {
-                    $this->opt_class[''] = " class='pp-no' ";
+                    $this->opt_class[''] = "pp-no";
                     $this->options['standard'][''] = $this->opt_labels['default_no'];
                 }
             }
@@ -150,7 +150,7 @@ class ItemExceptionsRenderUI
                 $_name = \PublishPress\Permissions\DB\Groups::getMetagroupName('wp_role', $agent_info->metagroup_id, $_name);
             }
         } elseif (('user' == $agent_type) && !empty($agent_info->display_name) && ($agent_info->display_name != $agent_info->name)) {
-            $title = " title='$agent_info->display_name'";
+            $title = $agent_info->display_name;
         } else {
             $title = '';
         }
@@ -175,17 +175,17 @@ class ItemExceptionsRenderUI
 
                 if ($_inclusions_active) {
                     $option_set = 'includes';
-                    $this->opt_class[''] = " class='pp-no' ";
+                    $this->opt_class[''] = "pp-no";
                 } else {
                     $option_set = 'standard';
 
                     if (!$this->opt_class['']) {
-                        $this->opt_class[''] = " class='pp-def' ";
+                        $this->opt_class[''] = "pp-def";
                     }
                 }
 
                 if (!empty($is_unfiltered) && ($current_val === '')) {  // Disable UI for unfiltered users unless an (ineffective) exception is already stored
-                    $disabled = ' disabled="disabled"';
+                    $disabled = ' disabled ';
                 } else {
                     $disabled = (('children' == $assign_for)
                         && apply_filters(
@@ -194,7 +194,7 @@ class ItemExceptionsRenderUI
                             $for_item_type,
                             ['operation' => $op]
                         ))
-                        ? ' disabled="disabled" ' : '';
+                        ? ' disabled ' : '';
                 }
 
                 $for_type = ($for_item_type) ? $for_item_type : '(all)';

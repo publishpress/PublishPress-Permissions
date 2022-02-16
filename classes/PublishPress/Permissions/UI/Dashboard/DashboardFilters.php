@@ -230,7 +230,7 @@ class DashboardFilters
             //  Manually set menu indexes for positioning below Users menu
             global $menu;
 
-            $permissions_title = __('Permissions', 'press-permit-core');
+            $permissions_title = esc_html__('Permissions', 'press-permit-core');
 
             $menu_order = 72;
 
