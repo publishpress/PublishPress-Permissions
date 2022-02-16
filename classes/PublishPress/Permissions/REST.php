@@ -282,7 +282,7 @@ class REST
     private function rest_denied()
     {
         // leave a diagnostic clue that the 403 was triggered by PublishPress Permissions
-        $msg = (in_array(get_locale(), ['en_EN', 'en_US'])) ? "Sorry, you are not permitted to do that." : __("Sorry, you are not allowed to do that.");
+        $msg = (in_array(get_locale(), ['en_EN', 'en_US'])) ? "Sorry, you are not permitted to do that." : esc_html__("Sorry, you are not allowed to do that.");
         return new \WP_Error('rest_forbidden', $msg, ['status' => 403]);
     }
 
