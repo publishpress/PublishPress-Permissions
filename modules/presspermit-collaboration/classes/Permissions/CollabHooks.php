@@ -4,6 +4,8 @@ namespace PublishPress\Permissions;
 class CollabHooks
 {
     function __construct() {
+        global $pagenow;
+
         // Divi Page Builder
         if (!empty($_REQUEST['action']) && ('editpost' == $_REQUEST['action']) && !empty($_REQUEST['et_pb_use_builder']) && !empty($_REQUEST['auto_draft'])) {
             return;
