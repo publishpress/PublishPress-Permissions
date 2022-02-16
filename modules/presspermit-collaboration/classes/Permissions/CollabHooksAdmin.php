@@ -16,7 +16,7 @@ class CollabHooksAdmin
         add_action('presspermit_admin_handlers', [$this, 'actAdminHandlers']);
         add_action('load-post.php', [$this, 'actMaybeOverrideKses']);
         add_action('check_admin_referer', [$this, 'actCheckAdminReferer']);
-        add_filter('pre_get_posts', [$this, 'actPreGetPosts']);
+        add_action('pre_get_posts', [$this, 'actPreGetPosts']);
 
         add_filter('presspermit_user_has_group_cap', [$this, 'fltUserHasGroupCap'], 10, 4);
         add_filter('presspermit_can_set_exceptions', [$this, 'fltCanSetExceptions'], 10, 4);
