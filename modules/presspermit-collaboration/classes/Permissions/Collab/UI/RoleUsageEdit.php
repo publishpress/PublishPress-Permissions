@@ -39,7 +39,7 @@ class RoleUsageEdit {
             wp_die('No role specified.');
 		}
 
-        $role_name = pp_permissions_sanitize_entry($_REQUEST['role']);
+        $role_name = pp_permissions_sanitize_entry($role);
 
         $cap_caster = $pp->capCaster();
         $cap_caster->definePatternCaps();

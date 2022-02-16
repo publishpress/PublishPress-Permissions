@@ -55,9 +55,9 @@ class AdminWorkarounds
 
             if ('add-menu-item' == $action) {
                 if ($menu_items = presspermit_REQUEST_var('menu-item')) {
-                    foreach ($_REQUEST['menu-item'] as $menu_item) {  // normally just one element in array
-                        $menu_item_type = (isset($menu_item['menu-item-type'])) ? pp_permissions_sanitize_key($menu_item['menu-item-type']) : '';
-                        $object_type = (isset($menu_item['menu-item-object'])) ? pp_permissions_sanitize_key($menu_item['menu-item-object']) : '';
+                    foreach (array_map('sanitize_key', $menu_items) as $menu_item) {  // normally just one element in array
+                        $menu_item_type = (isset($menu_item['menu-item-type'])) ? $menu_item['menu-item-type'] : '';
+                        $object_type = (isset($menu_item['menu-item-object'])) ? $menu_item['menu-item-object'] : '';
                         $object_id = (isset($menu_item['menu-item-object-id'])) ? (int) $menu_item['menu-item-object-id'] : '';
 
                         if (!NavMenus::can_edit_menu_item(0, compact(['menu_item_type', 'object_type', 'object_id']))) {

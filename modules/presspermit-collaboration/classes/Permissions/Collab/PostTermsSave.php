@@ -121,7 +121,7 @@ class PostTermsSave
 
         if ('category' == $taxonomy) {
             if ($post_category = presspermit_POST_int('post_category')) {
-				return array_map('intval', self::fltPreObjectTerms((array)$_POST['post_category'], $taxonomy));
+				return array_map('intval', self::fltPreObjectTerms((array) array_map('intval', $post_category), $taxonomy));
             }
         } else {
             $tx_obj = get_taxonomy($taxonomy);
@@ -134,7 +134,7 @@ class PostTermsSave
                 if (is_taxonomy_hierarchical($taxonomy) && is_array($_POST['tax_input'][$taxonomy])) {
                     return array_map('intval', $_POST['tax_input'][$taxonomy]);
                 } else {
-                    $term_info = self::parseTermNames($_POST['tax_input'][$taxonomy], $taxonomy);
+                    $term_info = self::parseTermNames(array_map('sanitize_key', $_POST['tax_input'][$taxonomy]), $taxonomy);
                     return array_map('intval', self::fltPreObjectTerms($term_info['terms'], $taxonomy));
                 }
             } elseif ('post_tag' == $taxonomy && !presspermit_empty_POST('tags_input')) {

@@ -55,7 +55,7 @@ class GroupsListTable extends GroupsListTableBase
     {
         global $groupsearch;
 
-        $groupsearch = isset($_REQUEST['s']) ? sanitize_text_field($_REQUEST['s']) : '';
+        $groupsearch = sanitize_text_field(presspermit_REQUEST_var('s'));
 
         $groups_per_page = $this->get_items_per_page('groups_per_page');
 
@@ -70,11 +70,11 @@ class GroupsListTable extends GroupsListTableBase
         $args['search'] = '*' . $args['search'] . '*';
 
         if ($orderby = presspermit_REQUEST_var('orderby')) {
-            $args['orderby'] = PWP::sanitizeWord($_REQUEST['orderby']);
+            $args['orderby'] = PWP::sanitizeWord($orderby);
         }
 
         if ($order = presspermit_REQUEST_var('order')) {
-            $args['order'] = PWP::sanitizeWord($_REQUEST['order']);
+            $args['order'] = PWP::sanitizeWord($order);
         }
 
         // Query the user IDs for this page
