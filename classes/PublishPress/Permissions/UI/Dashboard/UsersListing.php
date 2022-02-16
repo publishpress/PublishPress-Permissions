@@ -407,6 +407,10 @@ class UsersListing
         if (!current_user_can('list_users'))
             return;
 
+        if (empty($_REQUEST['pp-bulk-group' . $sfx])) {
+            return;
+        }
+
         $group_id = (int) $_REQUEST['pp-bulk-group' . $sfx];
 
         $users = (!empty($_REQUEST['users'])) ? array_map('intval', $_REQUEST['users']) : [];

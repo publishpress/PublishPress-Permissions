@@ -79,6 +79,10 @@ class Permissions
     public function doingEmbed() {
         static $arr_url;
 
+        if (!isset($_SERVER['REQUEST_URI'])) {
+            return false;
+        }
+
         if (!isset($arr_url)) {
             $arr_url = wp_parse_url(get_option('siteurl'));
         }
@@ -96,6 +100,10 @@ class Permissions
 
     public function isRESTurl() {
         static $arr_url;
+
+        if (!isset($_SERVER['REQUEST_URI'])) {
+            return false;
+        }
 
         if (!isset($arr_url)) {
             $arr_url = wp_parse_url(get_option('siteurl'));
@@ -126,6 +134,10 @@ class Permissions
                     }
                 }
             }
+        }
+
+        if (!isset($_SERVER['REQUEST_URI'])) {
+            return;
         }
 
         // Divi Page Builder editor init

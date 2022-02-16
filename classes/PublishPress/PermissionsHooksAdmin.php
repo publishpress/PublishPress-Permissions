@@ -20,13 +20,13 @@ class PermissionsHooksAdmin
         }
 
         // make sure empty terms are included in quick search results in "Set Specific Permissions" term selection metaboxes
-        if (PWP::isAjax('pp-menu-quick-search')) {
+        if (PWP::isAjax('pp-menu-quick-search') && !empty($_REQUEST['action'])) {
             require_once(PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
             add_action('wp_ajax_' . presspermit_REQUEST_key('action'), ['\PublishPress\Permissions\UI\ItemsMetabox', 'ajax_menu_quick_search'], 1);
         }
 
         // thanks to GravityForms for the nifty dismissal script
-        if (in_array(basename($_SERVER['PHP_SELF']), ['admin.php', 'admin-ajax.php'])) {
+        if (!empty($_SERVER['PHP_SELF']) && in_array(basename($_SERVER['PHP_SELF']), ['admin.php', 'admin-ajax.php'])) {
             add_action('wp_ajax_pp_dismiss_msg', [$this, 'dashboardDismissMsg']);
         }
 
@@ -216,6 +216,10 @@ class PermissionsHooksAdmin
     // For old extensions linking to page=pp-settings.php, redirect to page=presspermit-settings, preserving other request args
     public function actSettingsPageMaybeRedirect()
     {
+        if (!isset($_SERVER['REQUEST_URI'])) {
+            return;
+        }
+
         foreach ([
                      'pp-settings' => 'presspermit-settings',
                      'pp-groups' => 'presspermit-groups',
