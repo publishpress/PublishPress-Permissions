@@ -354,6 +354,6 @@ class DashboardFilters
     public static function listAgentExceptions($agent_type, $id, $args = [])
     {
         require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/Profile.php');
-        return Profile::listAgentExceptions($agent_type, $id, $args);
+        Profile::listAgentExceptions($agent_type, $id, $args);
     }
 } // end class
