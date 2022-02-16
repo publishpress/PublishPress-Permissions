@@ -212,37 +212,12 @@ class PluginUpdated
 
     public static function dropGroupIndexesSql()
     {
-        global $wpdb;
-
-        return [
-            "DROP INDEX `pp_group_meta_id` ON $wpdb->pp_groups",
-            "DROP INDEX `pp_group_metaid` ON $wpdb->pp_groups",
-            "DROP INDEX `pp_statuskey` ON $wpdb->pp_group_members",
-            "DROP INDEX `pp_status_key` ON $wpdb->pp_group_members",
-            "DROP INDEX `pp_datekey` ON $wpdb->pp_group_members",
-            "DROP INDEX `pp_date_key` ON $wpdb->pp_group_members",
-        ];
+        // obsolete
     }
 
     public static function doIndexDrop($arr_sql, $option_key, $prevent_retry = true)
     {
-        global $wpdb;
-
-        // in case of failure, don't do this more than once
-        if ($prevent_retry) {
-            if (get_option($option_key) && !$arr_sql) {
-                return;
-            }
-        }
-
-        update_option($option_key, true);
-
-        $wpdb->suppress_errors = true;
-        foreach ($arr_sql as $sql) {
-            @$wpdb->query($sql);
-        }
-
-        $wpdb->suppress_errors = false;
+        // obsolete
     }
 
     public static function syncWordPressRoles($user_ids = '', $role_name_arg = '', $blog_id_arg = '')
