@@ -66,8 +66,7 @@ if (!function_exists('pp_backtrace_dump')) {
             return;
 
         $bt = debug_backtrace();
-
-        pp_dump($bt, false, false);
+        var_dump($bt);
 
         if ($die)
             die;
