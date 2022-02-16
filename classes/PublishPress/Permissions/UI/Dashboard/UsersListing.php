@@ -296,10 +296,9 @@ class UsersListing
             case 'pp_exceptions':
                 DashboardFilters::listAgentExceptions('user', $id, ['query_agent_ids' => array_keys($wp_list_table->items)]);
                 break;
-
-            default:
-                return $content;
         }
+
+                return $content;
     }
 
     public static function fltUserQuery($query)
