@@ -115,7 +115,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             'update_post_meta_cache' => false,
         ];
 
-        if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('PP_EDIT_PERMISSIONS_POSTS_METABOX_FILTER')) {
             $args['suppress_filters'] = false;
         }
 
