@@ -294,7 +294,7 @@ class UsersListing
                 break;
 
             case 'pp_exceptions':
-                return DashboardFilters::listAgentExceptions('user', $id, ['query_agent_ids' => array_keys($wp_list_table->items)]);
+                DashboardFilters::listAgentExceptions('user', $id, ['query_agent_ids' => array_keys($wp_list_table->items)]);
                 break;
 
             default:
