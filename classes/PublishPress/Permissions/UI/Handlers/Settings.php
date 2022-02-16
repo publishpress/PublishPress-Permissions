@@ -6,6 +6,8 @@ class Settings
 {
     public function __construct()
     {
+    	check_admin_referer('pp-update-options');
+    	
         if (!current_user_can('pp_manage_settings'))
             wp_die(esc_html(PWP::__wp('Cheatin&#8217; uh?')));
 
@@ -67,8 +69,6 @@ class Settings
 
     private function updateOptions($args)
     {
-        check_admin_referer('pp-update-options');
-
         $this->updatePageOptions($args);
 
         global $wpdb;
@@ -81,9 +81,10 @@ class Settings
 
     private function defaultOptions($args)
     {
+        check_admin_referer('pp-update-options');
+
         $pp = presspermit();
 
-        check_admin_referer('pp-update-options');
 
         $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
 
@@ -99,6 +100,8 @@ class Settings
 
     private function updatePageOptions($args)
     {
+        check_admin_referer('pp-update-options');
+
         $pp = presspermit();
 
         do_action('presspermit_update_options', $args);

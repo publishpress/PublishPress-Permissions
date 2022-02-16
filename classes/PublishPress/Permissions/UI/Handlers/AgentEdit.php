@@ -103,10 +103,10 @@ class AgentEdit
                 break;
 
             case 'creategroup':
+                check_admin_referer('pp-create-group', '_wpnonce_pp-create-group');
+
                 if (!current_user_can('pp_create_groups'))
                     wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
-
-                check_admin_referer('pp-create-group', '_wpnonce_pp-create-group');
 
                 $agent_type = presspermit_REQUEST_key('agent_type');
 
