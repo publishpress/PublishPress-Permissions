@@ -263,10 +263,10 @@ class Profile
             $exception_info = \PublishPress\Permissions\DB\PermissionsMeta::countExceptions($agent_type, $args);
         }
 
-        $exc_str = '';
-
         if (isset($exception_info[$id])) {
             if (isset($exception_info[$id]['exceptions'])) {
+                $any_exceptions = true;
+
                 $exc_titles = [];
                 $i = 0;
                 foreach ($exception_info[$id]['exceptions'] as $exc_title => $exc_count) {
@@ -289,7 +289,8 @@ class Profile
                 }
             }
         }
-        return $exc_str;
+
+        return !empty($any_exceptions);
     }
 
     private static function abbreviatedExceptionsList($agent_type, $agent_id, $args = [])
@@ -316,7 +317,23 @@ class Profile
         $new_permissions_link = $maybe_display_note && $pp->isUserAdministrator()
             && $pp->admin()->bulkRolesEnabled() && current_user_can('list_users');
 
-        if (!$exceptions_ui = self::listAgentExceptions($agent_type, $agent_id, $args)) {
+        ob_start();
+        ?>
+        <div style="clear:both;"></div>
+        <div id='ppcurrentExceptionsUI' class='pp-group-box <?php echo esc_attr($class); ?>'>
+            <h3>
+                <?php
+                if ($edit_url) echo "<a href='" . esc_url($edit_url) . "'>" . esc_html($caption) . "</a>"; else echo esc_html($caption);
+                ?>
+            </h3>
+        <?php 
+        if (!$any_exceptions_listed = self::listAgentExceptions($agent_type, $agent_id, $args)) :
+            ob_clean();
+        else :?>
+        </div>
+        <?php endif;
+
+        if (!$any_exceptions_listed) {
             if (('user' == $agent_type) && ($join_groups != 'groups_only') && $new_permissions_link) : ?>
                 <div style="clear:both;"></div>
                 <div id='pp_current_user_exceptions_ui' class='pp-group-box <?php echo esc_attr($class); ?>'>
@@ -338,21 +355,6 @@ class Profile
                 </div>
             <?php
             endif;
-
-            return;
         }
-        ?>
-        <div style="clear:both;"></div>
-        <div id='ppcurrentExceptionsUI' class='pp-group-box <?php echo $class; ?>'>
-            <h3>
-                <?php
-                echo ($edit_url) ? "<a href='{$edit_url}'>{$caption}</a>" : $caption;
-                ?>
-            </h3>
-            <?php
-            echo $exceptions_ui;
-            ?>
-        </div>
-        <?php
     }
 }
