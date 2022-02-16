@@ -142,7 +142,7 @@ class AgentEdit
             wp_redirect($redirect);
             exit;
         }
-    } // end function __construct()
+    }
 
     private function triggerGroupEdit($group_id, $agent_type, $members_only = false)
     {
