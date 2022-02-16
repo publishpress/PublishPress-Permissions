@@ -18,7 +18,7 @@ class TermsListing
             if ($taxonomy = presspermit_REQUEST_key('taxonomy')) {
 	            add_filter("manage_edit-{$taxonomy}_columns", [$this, 'fltDefineColumns']);
 	            add_filter("manage_{$taxonomy}_columns", [$this, 'fltDefineColumns']);
-	            add_filter("manage_{$taxonomy}_custom_column", [$this, 'fltCustomColumn'], 10, 3);
+                add_action("manage_{$taxonomy}_custom_column", [$this, 'fltCustomColumn'], 10, 3);
 	
 	            add_action('after-' . $taxonomy . '-table', [$this, 'actShowNotes']);
 	
