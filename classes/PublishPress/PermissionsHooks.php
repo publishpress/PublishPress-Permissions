@@ -253,7 +253,8 @@ class PermissionsHooks
         // Don't filter legacy / development versions of REST api unless constant defined
         if (
             defined('JSON_API_VERSION') && !defined('PP_FILTER_JSON_REST')
-            && (false !== strpos($_SERVER['REQUEST_URI'], apply_filters('json_url_prefix', 'wp-json')))
+            && isset($_SERVER['REQUEST_URI'])
+            && (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), apply_filters('json_url_prefix', 'wp-json')))
         ) {
             return;
         }

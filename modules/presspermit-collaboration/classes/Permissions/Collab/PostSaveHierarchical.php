@@ -20,7 +20,7 @@ class PostSaveHierarchical
         }
 
         // this filter is not intended to regulate attachment parent
-        if (strpos($_SERVER['REQUEST_URI'], 'async-upload.php') && !empty($_REQUEST['action']) && ('upload-attachment' == $_REQUEST['action'])) {
+        if (isset($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'async-upload.php') && presspermit_is_REQUEST('action', 'upload-attachment')) {
             return $parent_id;
         }
 

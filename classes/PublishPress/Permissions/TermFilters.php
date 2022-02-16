@@ -98,7 +98,7 @@ class TermFilters
             if (presspermit()->doing_rest) {
                 $operation = REST::instance()->operation;
 
-            } elseif (!empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')) {
+            } elseif (!empty($_SERVER['HTTP_REFERER']) && strpos(esc_url_raw($_SERVER['HTTP_REFERER']), 'wp-admin/post')) {
                 $operation = 'edit';
             }
 
@@ -210,7 +210,7 @@ class TermFilters
             
             if ($rest->is_posts_request) {
                 if (empty($args['required_operation']) || ('assign' != $args['required_operation'])) {
-                    if (!empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')) {
+                    if (!empty($_SERVER['HTTP_REFERER']) && strpos(esc_url_raw($_SERVER['HTTP_REFERER']), 'wp-admin/post')) {
                         $args['required_operation'] = 'edit';
                     } else {
                         $args['required_operation'] = $rest->operation;
@@ -275,7 +275,7 @@ class TermFilters
                 if (defined('REST_REQUEST') && REST_REQUEST && ('assign' == $args['required_operation']) && !isset($args['object_type'])) {
                     // todo: WP Trac ticket for post_id or post_type argument in terms query a better solution
                     if (!empty($_SERVER['HTTP_REFERER'])) {
-                        $referer = $_SERVER['HTTP_REFERER'];
+                        $referer = esc_url_raw($_SERVER['HTTP_REFERER']);
 
                         $matches = [];
                         preg_match("/wp-admin\/post\.php\?post=([0-9]+)/", $referer, $matches);

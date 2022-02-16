@@ -200,8 +200,8 @@ class PermissionsHooksAdmin
                      'pp-edit-permissions' => 'presspermit-edit-permissions',
                  ] as $old_slug => $new_slug) {
             if (
-                strpos($_SERVER['REQUEST_URI'], "page=$old_slug")
-                && (false !== strpos($_SERVER['REQUEST_URI'], 'admin.php'))
+                strpos(esc_url_raw($_SERVER['REQUEST_URI']), "page=$old_slug")
+                && (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'admin.php'))
             ) {
                 global $submenu;
 
@@ -214,7 +214,7 @@ class PermissionsHooksAdmin
                     }
                 }
 
-                $arr_url = parse_url($_SERVER['REQUEST_URI']);
+                $arr_url = wp_parse_url(esc_url_raw($_SERVER['REQUEST_URI']));
                 wp_redirect(admin_url('admin.php?' . str_replace("page=$old_slug", "page=$new_slug", $arr_url['query'])));
                 exit;
             }

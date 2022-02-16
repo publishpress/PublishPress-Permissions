@@ -9,10 +9,11 @@ class CollabHooks
             return;
         }
 
-        // Divi Page Builder  @todo: test whether these can be implemented with 'presspermit_unfiltered_ajax' filter in PostFilters::fltPostsClauses instead
-        if (strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') 
-        && isset($_REQUEST['action'])
-        && in_array(
+        add_filter('presspermit_item_edit_exception_ops', [$this, 'fltItemEditExceptionOps'], 10, 4);
+
+        // Divi Page Builder  todo: test whether these can be implemented with 'presspermit_unfiltered_ajax' filter in PostFilters::fltPostsClauses instead
+        if (presspermit_SERVER_var('REQUEST_URI') && strpos(esc_url_raw(presspermit_SERVER_var('REQUEST_URI')), 'admin-ajax.php')) {
+            if (in_array(
             presspermit_REQUEST_key('action'), 
             apply_filters('presspermit_unfiltered_ajax_actions',
 	            ['et_fb_ajax_drop_autosave',
@@ -23,9 +24,9 @@ class CollabHooks
 	            'et_fb_update_builder_assets',
 	            ]
             )
-        )
-        ) {
+            )) {
             return;
+        }
         }
 
         // Divi Page Builder
@@ -237,7 +238,7 @@ class CollabHooks
 
     function actPreventTrashSuffixing($wp_query)
     {
-        if (strpos($_SERVER['REQUEST_URI'], 'wp-admin/nav-menus.php') 
+        if (!empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'wp-admin/nav-menus.php') 
         && presspermit_is_POST('action', 'update')
         ) {
             $bt = debug_backtrace();
@@ -393,7 +394,11 @@ class CollabHooks
             new Collab\XmlRpc();
         }
 
-        if (false !== strpos($_SERVER['REQUEST_URI'], '/wp-json/wp/v2')) {
+        if (empty($_SERVER['REQUEST_URI'])) {
+            return;
+        }
+
+        if (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/wp-json/wp/v2')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/REST_Workarounds.php');
             new Collab\REST_Workarounds();
         }

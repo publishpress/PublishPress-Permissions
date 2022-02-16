@@ -107,7 +107,7 @@ class PluginPage
         if (presspermit_empty_REQUEST('group_variant') && !presspermit_empty_REQUEST('s')) {
             if ($wp_http_referer = presspermit_REQUEST_var('_wp_http_referer')) {
             $matches = [];
-            if (preg_match("/group_variant=([0-9a-zA-Z_\-]+)/", urldecode($_REQUEST['_wp_http_referer']), $matches)) {
+                if (preg_match("/group_variant=([0-9a-zA-Z_\-]+)/", urldecode(esc_url_raw($wp_http_referer)), $matches)) {
                 if ($matches[1]) {
                         $group_variant = sanitize_key($matches[1]);
                 }

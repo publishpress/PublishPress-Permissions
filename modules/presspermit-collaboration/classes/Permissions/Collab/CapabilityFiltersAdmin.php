@@ -116,7 +116,7 @@ class CapabilityFiltersAdmin
             }
         } else {
         	// Work around Divi Page Builder requiring excessive or off-type capabilities
-	        if (defined('ET_BUILDER_PLUGIN_VERSION') && strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php')) {
+	        if (defined('ET_BUILDER_PLUGIN_VERSION') && !empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'admin-ajax.php')) {
 	            $alt_caps = ['edit_posts' => ['edit_pages']];
 	            
 	            if (did_action('wp_ajax_et_fb_ajax_save') 

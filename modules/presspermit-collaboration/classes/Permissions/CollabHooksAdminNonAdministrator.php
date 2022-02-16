@@ -81,7 +81,7 @@ class CollabHooksAdminNonAdministrator
 
             // Force term retrieval for Gutenberg UI construction to be filtered by 'assign' exceptions, not 'read' exceptions
             if ((empty($args['required_operation']) || ($args['required_operation'] == 'read'))) {
-                if (!empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')) {
+                if (!empty($_SERVER['HTTP_REFERER']) && strpos(esc_url_raw($_SERVER['HTTP_REFERER']), 'wp-admin/post')) {
                     $args['required_operation'] = 'assign';
                 }
             }
