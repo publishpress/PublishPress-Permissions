@@ -339,8 +339,8 @@ class DashboardFilters
     {
         global $pagenow;
 
-        $site_url = parse_url(get_option('siteurl'));
-        if (isset($site_url['path']) && $_SERVER['REQUEST_URI'] == $site_url['path'] . '/wp-admin/') {
+        $site_url = wp_parse_url(get_option('siteurl'));
+        if (isset($site_url['path']) && !empty($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] == $site_url['path'] . '/wp-admin/') {
             return;
         }
 
