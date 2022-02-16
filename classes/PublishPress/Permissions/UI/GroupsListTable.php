@@ -110,7 +110,7 @@ class GroupsListTable extends GroupsListTableBase
 
     public function no_items()
     {
-        _e('No matching groups were found.', 'press-permit-core');
+        esc_html_e('No matching groups were found.', 'press-permit-core');
     }
 
     public function get_views()
@@ -149,7 +149,7 @@ class GroupsListTable extends GroupsListTableBase
             current_user_can('pp_delete_groups')
             && !presspermit_is_REQUEST('group_variant', $this->deleted_roles_listed())
         ) {
-            $actions['delete'] = __('Delete', 'press-permit-core');
+            $actions['delete'] = esc_html__('Delete', 'press-permit-core');
         }
 
         return $actions;
@@ -163,12 +163,12 @@ class GroupsListTable extends GroupsListTableBase
 
         $c = [
             'cb' => $bulk_check_all,
-            'group_name' => __('Name', 'press-permit-core'),
-            'group_type' => __('Type', 'press-permit-core'),
+            'group_name' => esc_html__('Name', 'press-permit-core'),
+            'group_type' => esc_html__('Type', 'press-permit-core'),
             'num_users' => _x('Users', 'count', 'press-permit-core'),
             'roles' => _x('Roles', 'count', 'press-permit-core'),
             'exceptions' => _x('Permissions', 'count', 'press-permit-core'),
-            'description' => __('Description', 'press-permit-core'),
+            'description' => esc_html__('Description', 'press-permit-core'),
         ];
 
         $c = apply_filters('presspermit_manage_groups_columns', $c);
@@ -187,11 +187,8 @@ class GroupsListTable extends GroupsListTableBase
 
     public function display_rows()
     {
-        $style = '';
-
         foreach ($this->items as $group) {
-            $style = (' class="alternate"' == $style) ? '' : ' class="alternate"';
-            echo "\n\t", $this->single_row($group, $style);
+            $this->single_row($group);
         }
     }
 
@@ -203,7 +200,7 @@ class GroupsListTable extends GroupsListTableBase
      * @param int $num_users Optional. User count to display for this group.
      * @return string
      */
-    public function single_row($group, $style = '')
+    public function single_row($group)
     {
         static $base_url;
         static $members_cap;
@@ -213,7 +210,7 @@ class GroupsListTable extends GroupsListTableBase
         $pp_groups = $pp->groups();
 
         if (!isset($base_url)) {
-            $base_url = apply_filters('presspermit_groups_base_url', 'admin.php'); // @todo: filter based on menu usage
+            $base_url = apply_filters('presspermit_groups_base_url', 'admin.php'); // todo: filter based on menu usage
 
             $is_administrator = $pp->isUserAdministrator();
         }
@@ -243,7 +240,6 @@ class GroupsListTable extends GroupsListTableBase
 
         // Set up the hover actions for this user
         $actions = [];
-        $checkbox = '';
 
         $can_manage_group = $is_administrator || $pp_groups->userCan('pp_edit_groups', $group_id, $this->agent_type);
         
@@ -254,11 +250,9 @@ class GroupsListTable extends GroupsListTableBase
         // Check if the group for this row is editable
         if ($can_manage_group) {
             $edit_link = $base_url . "?page=presspermit-edit-permissions&amp;action=edit{$agent_type_clause}&amp;agent_id={$group_id}";
-            $edit = "<strong><a href=\"$edit_link\">$group->group_name</a></strong><br />";
-            $actions['edit'] = '<a href="' . $edit_link . '">' . PWP::__wp('Edit') . '</a>';
+            $actions['edit'] = '<a href="' . esc_url($edit_link) . '">' . esc_html(PWP::__wp('Edit')) . '</a>';
         } else {
             $edit_link = '';
-            $edit = '<strong>' . $group->group_name . '</strong>';
         }
 
         $can_delete_group = $is_administrator || current_user_can('pp_delete_groups', $group_id);
@@ -270,111 +264,121 @@ class GroupsListTable extends GroupsListTableBase
             || ('wp_role' == $group->metagroup_type && \PublishPress\Permissions\DB\Groups::isDeletedRole($group->metagroup_id)))
         ) {
             $actions['delete'] = "<a class='submitdelete' href='"
-                . wp_nonce_url($base_url . "?page=presspermit-groups&amp;pp_action=delete{$agent_type_clause}&amp;group=$group_id", 'pp-bulk-groups')
-                . "'>" . __('Delete') . "</a>";
+                . esc_url(wp_nonce_url($base_url . "?page=presspermit-groups&amp;pp_action=delete{$agent_type_clause}&amp;group=$group_id", 'pp-bulk-groups'))
+                . "'>" . esc_html__('Delete') . "</a>";
         }
 
         $actions = apply_filters('presspermit_group_row_actions', $actions, $group);
-        $edit .= $this->row_actions($actions);
 
-        // Set up the checkbox ( because the group or group members are editable, otherwise it's empty )
-        if (
-            $actions && (!$group->metagroup_id || (('wp_role' == $group->metagroup_type)
-                    && \PublishPress\Permissions\DB\Groups::isDeletedRole($group->metagroup_id)))
-        ) {
-            $checkbox = "<input type='checkbox' name='groups[]' id='group_{$group_id}' value='{$group_id}' />";
-        } else {
-            $checkbox = '';
-        }
-
-        $r = "<tr id='group-$group_id'$style>";
+        echo "<tr id='group-" . (int) $group_id . "'>";
 
         list($columns, $hidden) = $this->get_column_info();
 
         foreach ($columns as $column_name => $column_display_name) {
-            $class = "class=\"$column_name column-$column_name\"";
+            $class = "$column_name column-$column_name";
 
-            $style = '';
-            if (in_array($column_name, $hidden, true)) {
-                $style = ' style="display:none;"';
-            }
-
-            $attributes = "$class $style";
+            $style = (in_array($column_name, $hidden, true)) ? 'display:none;' : '';
 
             switch ($column_name) {
                 case 'cb':
-                    $r .= "<th scope='row' class='check-column'>$checkbox</th>";
+                    echo "<th scope='row' class='check-column'>";
+
+        // Set up the checkbox ( because the group or group members are editable, otherwise it's empty )
+                    if ($actions && (!$group->metagroup_id || (('wp_role' == $group->metagroup_type)
+                    && \PublishPress\Permissions\DB\Groups::isDeletedRole($group->metagroup_id)))
+        ) {
+                        echo "<input type='checkbox' name='groups[]' id='group_" . (int) $group_id . "' value='" . (int) $group_id . "' />";
+        }
+
+                    echo '</th>';
                     break;
+
                 case 'group_name':
-                    $r .= "<td $attributes>$edit</td>";
+                    echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
+
+                    // Check if the group for this row is editable
+                    if ($can_manage_group) {
+                        echo "<strong><a href='" . esc_url($edit_link) . "'>" . esc_html($group->group_name) . "</a></strong><br />";
+                    } else {
+                        echo '<strong>' . esc_html($group->group_name) . '</strong>';
+            }
+
+                    $this->row_actions($actions);
+
+                    echo '</td>';
                     break;
+                    
                 case 'group_type':
+                    echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
+
                     switch ($group->metagroup_type) {
                         case 'wp_role' :
                             switch ($group->metagroup_id) {
                                 case 'wp_anon':
                                 case 'wp_auth':
                                 case 'wp_all':
-                                    $type_caption = __('Login State', 'press-permit-core');
+                                    esc_html_e('Login State', 'press-permit-core');
                                     break;
                                 default:
-                                    $type_caption = __('WordPress Role');
+                                    esc_html_e('WordPress Role');
                             }
 
                             break;
                         case '' :
-                            $type_caption = __('Custom Group', 'press-permit-core');
+                            esc_html_e('Custom Group', 'press-permit-core');
                             break;
                         case 'rvy_notice':
-                            $type_caption = __('Workflow', 'press-permit-core');
+                            esc_html_e('Workflow', 'press-permit-core');
                             break;
                         default:
                             if (!$type_caption = apply_filters('presspermit_group_type_caption', '', $group->metagroup_type)) {
                                 $type_caption = ucwords(str_replace('_', ' ', $group->metagroup_type));
                             }
+
+                            echo esc_html($type_caption);
                     }
 
-                    $r .= "<td $attributes>$type_caption</td>";
+                    echo '</td>';
                     break;
                 case 'num_users':
+                    echo "<td class='posts column-num_users num' style='" . esc_attr($style) . "'>";
+
                     if ('wp_role' == $group->metagroup_type) {
                         $num_users = $this->countRoleUsers($group->metagroup_id);
                     } else {
                         $num_users = $pp_groups->getGroupMembers($group_id, $this->agent_type, 'count');
                     }
 
-                    $attributes = 'class="posts column-num_users num"' . $style;
-                    $r .= "<td $attributes>";
-
                     if ('wp_role' == $group->metagroup_type) {
-                        if (in_array($group->metagroup_id, ['wp_anon', 'wp_all', 'wp_auth'])) {
-                            $r .= '';
-                        } else {
+                        if (!in_array($group->metagroup_id, ['wp_anon', 'wp_all', 'wp_auth'])) {
                             $user_url = admin_url("users.php?role={$group->metagroup_id}");
-                            $r .= "<a href='$user_url'>$num_users</a>";
+                            echo "<a href='" . esc_url($user_url) . "'>" . (int) $num_users . "</a>";
                         }
                     } else {
-                        $r .= $num_users;
+                        echo (int) $num_users;
                     }
 
-                    $r .= "</td>";
+                    echo '</td>';
                     break;
                 case 'roles':
                 case 'exceptions':
-                    $r .= $this->single_row_role_column($column_name, $group_id, $can_manage_group, $edit_link, $attributes);
+                    echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
+                    $this->single_row_role_column($column_name, $group_id, $can_manage_group, $edit_link);
+                    echo '</td>';
                     break;
                 case 'description':
-                    $r .= "<td $attributes>$group->group_description</td>";
+                    echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
+                    echo esc_html($group->group_description);
+                    echo '</td>';
                     break;
+                    
                 default:
-                    $r .= "<td $attributes>";
-                    $r .= apply_filters('presspermit_manage_groups_custom_column', '', $column_name, $group_id, $this);
-                    $r .= "</td>";
+                    echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
+                    do_action('presspermit_manage_groups_custom_column', $column_name, $group_id, $this);
+                    echo '</td>';
             }
         }
-        $r .= '</tr>';
-
-        return $r;
+        echo '</tr>';
     }
 
     /**
@@ -394,7 +398,7 @@ class GroupsListTable extends GroupsListTableBase
      * @access public
      *
      */
-    public function search_box($text, $input_id, $type = '', $tabindex = '', $other_attributes = '')
+    public function search_box($text, $input_id, $type = '', $tabindex = '', $unused = '')
     {
         if (presspermit_empty_REQUEST('s') && !$this->has_items()) {
             return;
@@ -413,42 +417,26 @@ class GroupsListTable extends GroupsListTableBase
         // Remove empty items, remove duplicate items, and finally build a string.
         $class = implode(' ', array_unique(array_filter($classes)));
 
-        if (is_array($other_attributes) && isset($other_attributes['id'])) {
-            unset($other_attributes['id']);
-        }
-
-        $attributes = '';
-        if (is_array($other_attributes)) {
-            foreach ($other_attributes as $attribute => $value) {
-                $attributes .= $attribute . '="' . esc_attr($value) . '" '; // Trailing space is important
-            }
-        } elseif (!empty($other_attributes)) { // Attributes provided as a string
-            $attributes = $other_attributes;
-        }
-
-        $attr = ($class) ? ' class="' . esc_attr($class) . '"' : '';
-        $attr .= ' ' . $attributes;
-
-        if (!empty($_REQUEST['orderby'])) {
-            echo '<input type="hidden" name="orderby" value="' . esc_attr($_REQUEST['orderby']) . '" />';
+        if ($orderby = presspermit_request_var('orderby')) {
+            echo '<input type="hidden" name="orderby" value="' . esc_attr(sanitize_text_field($orderby)) . '" />';
         }
 
         if ($order = presspermit_REQUEST_key('order')) {
-            echo '<input type="hidden" name="order" value="' . esc_attr($_REQUEST['order']) . '" />';
+            echo '<input type="hidden" name="order" value="' . esc_attr($order) . '" />';
         }
 
         if ($post_mime_type = presspermit_REQUEST_key('post_mime_type')) {
-            echo '<input type="hidden" name="post_mime_type" value="' . esc_attr($_REQUEST['post_mime_type']) . '" />';
+            echo '<input type="hidden" name="post_mime_type" value="' . esc_attr($post_mime_type) . '" />';
         }
 
         if ($detached = presspermit_REQUEST_int('detached')) {
-            echo '<input type="hidden" name="detached" value="' . esc_attr($_REQUEST['detached']) . '" />';
+            echo '<input type="hidden" name="detached" value="' . esc_attr($detached) . '" />';
         }
         ?>
         <p class="search-box">
-            <label class="screen-reader-text" for="<?php echo esc_attr($input_id); ?>"><?php echo $text; ?>:</label>
+            <label class="screen-reader-text" for="<?php echo esc_attr($input_id); ?>"><?php echo esc_html($text); ?>:</label>
             <input type="search" id="<?php echo esc_attr($input_id); ?>" name="s" value="
-                            <?php _admin_search_query(); ?>" <?php echo $attr; ?> <?php echo ($tabindex) ? ' tabindex="' . $tabindex . '"' : ''; ?> />
+                            <?php _admin_search_query(); ?>" class="<?php echo esc_attr($class);?>" <?php if ($tabindex) echo ' tabindex="' . (int) $tabindex . '"'; ?> />
 
             <?php
             $attribs = ($tabindex) ? ['id' => 'search-submit', 'tabindex' => $tabindex + 1] : ['id' => 'search-submit'];

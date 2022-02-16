@@ -24,7 +24,6 @@ class AgentsDynamicUI
             'context' => '',
             'label_select' => _x('Select &gt;', 'user', 'press-permit-core'),
             'label_unselect' => _x('&lt; Unselect', 'user', 'press-permit-core'),
-            'label_selections' => __('Current Selections:', 'press-permit-core'),
             'display_stored_selections' => true,
             'create_dropdowns' => false,
             'width' => '',
@@ -58,24 +57,24 @@ class AgentsDynamicUI
         if (true === $label_headline) {
             if ('user' == $agent_type) {
                 if ($default_search_field) {
-                    $search_caption = __(ucwords(str_replace('_', ' ', $default_search_field)), 'press-permit-core');
-                    $label_headline = sprintf(__('Find Users by %s', 'press-permit-core'), $search_caption);
+                    $search_caption = esc_html__(ucwords(str_replace('_', ' ', $default_search_field)), 'press-permit-core');
+                    $label_headline = sprintf(esc_html__('Find Users by %s', 'press-permit-core'), $search_caption);
                 } else {
-                    $label_headline = __('Search Users', 'press-permit-core');
+                    $label_headline = esc_html__('Search Users', 'press-permit-core');
                 }
             } else {
-                $label_headline = __('Search Custom Groups', 'press-permit-core');
+                $label_headline = esc_html__('Search Custom Groups', 'press-permit-core');
             }
         }
         ?>
         <div>
 
         </div>
-        <table id="pp-agent-selection_<?php echo $id_suffix; ?>-wrapper" class="pp-agents-selection">
+        <table id="pp-agent-selection_<?php echo esc_attr($id_suffix); ?>-wrapper" class="pp-agents-selection">
             <tr>
-                <td id="pp-agent-selection_<?php echo $id_suffix; ?> " style="vertical-align:top">
+                <td id="pp-agent-selection_<?php echo esc_attr($id_suffix); ?> " style="vertical-align:top">
                     <div class="pp-search-box-with-icon-wrapper">
-                        <input id="agent_search_text_<?php echo $id_suffix; ?>" placeholder="<?php echo $label_headline; ?>" type="text" size="18"/>
+                        <input id="agent_search_text_<?php echo esc_attr($id_suffix); ?>" placeholder="<?php echo esc_attr($label_headline); ?>" type="text" size="18"/>
                         <i class="dashicons dashicons-search"></i>
                     </div>
 
@@ -84,7 +83,7 @@ class AgentsDynamicUI
                         <?php
                         $title = (!defined('PP_USER_SEARCH_META_FIELDS') && $pp->isUserAdministrator()
                             && $pp->getOption('advanced_options') && $pp->getOption('display_hints'))
-                            ? __('For additional fields, define constant PP_USER_SEARCH_META_FIELDS', 'press-permit-core') : '';
+                            ? esc_html__('For additional fields, define constant PP_USER_SEARCH_META_FIELDS', 'press-permit-core') : '';
 
                         $fields = ['first_name' => __('First Name', 'press-permit-core'), 'last_name' => __('Last Name', 'press-permit-core'), 'nickname' => __('Nickname', 'press-permit-core')];
 
@@ -93,7 +92,7 @@ class AgentsDynamicUI
                             $custom_fields = explode(',', $custom_fields);
 
                             foreach ($custom_fields as $cfield) {
-                                $fields[$cfield] = __(ucwords(str_replace('_', ' ', $cfield)), 'press-permit-core');
+                                $fields[$cfield] = esc_html__(ucwords(str_replace('_', ' ', $cfield)), 'press-permit-core');
                             }
                         }
 
@@ -110,20 +109,20 @@ class AgentsDynamicUI
                                 echo ' style="display:none;"';
                             }
                             ?>>
-                                <select id="pp_search_user_meta_key_<?php echo $i; ?>_<?php echo $id_suffix; ?>" autocomplete="off">
-                                    <option value=""><?php _e('(user field)', 'press-permit-core'); ?></option>
+                                <select id="pp_search_user_meta_key_<?php echo esc_attr($i); ?>_<?php echo esc_attr($id_suffix); ?>" autocomplete="off">
+                                    <option value=""><?php esc_html_e('(user field)', 'press-permit-core'); ?></option>
 
                                     <?php foreach ($fields as $field => $lbl) : ?>
-                                        <option value="<?php echo $field; ?>"><?php echo $lbl; ?></option>
+                                        <option value="<?php echo esc_attr($field); ?>"><?php echo esc_html($lbl); ?></option>
                                     <?php endforeach; ?>
                                 </select>
 
-                                <input id="pp_search_user_meta_val_<?php echo $i; ?>_<?php echo $id_suffix; ?>" class="pp-user-meta-field" 
+                                <input id="pp_search_user_meta_val_<?php echo esc_attr($i); ?>_<?php echo esc_attr($id_suffix); ?>" class="pp-user-meta-field" 
                                        type="text" <?php
                                 if (presspermit_empty_GET("pp_search_user_meta_key_{$i}_{$id_suffix}")) {
                                     echo 'style="display:none"';
                                 }
-                                ?> title="<?php echo $title; ?>" size="8"/>
+                                ?> title="<?php echo esc_attr($title); ?>" size="8"/>
 
                                 <?php if ($i < $ilim - 1) : ?>
                                     &nbsp;<span class="pp-usermeta-field-more" <?php
@@ -140,8 +139,8 @@ class AgentsDynamicUI
                     <?php endif; ?>
 
                     <?php if (('user' == $agent_type) && $pp->getOption('user_search_by_role')) : ?>
-                        <select id="pp_search_role_<?php echo $id_suffix; ?>" class="pp-search-role" autocomplete="off">
-                            <option value=""><?php _e('(any WP role)', 'press-permit-core'); ?></option>
+                        <select id="pp_search_role_<?php echo esc_attr($id_suffix); ?>" class="pp-search-role" autocomplete="off">
+                            <option value=""><?php esc_html_e('(any WP role)', 'press-permit-core'); ?></option>
                             <?php wp_dropdown_roles(); ?>
                         </select>
                     <?php endif; ?>
@@ -157,17 +156,16 @@ class AgentsDynamicUI
             <tr>
                 <td>
                     <h4>
-                        <?php _e('Search Results:', 'press-permit-core'); ?>
+                        <?php esc_html_e('Search Results:', 'press-permit-core'); ?>
                         <img class="waiting" style="display:none;float:right"
                              src="<?php echo esc_url(admin_url('images/wpspin_light.gif')) ?>" alt=""/>
                     </h4>
 
-                    <select id="agent_results_<?php echo $id_suffix; ?>" class="pp_agent_results" <?php
-                    if ($multi_select) : ?>multiple="multiple" style="height:160px;<?php else : ?>style="
-                            display:none;<?php endif; ?>" autocomplete="off">
+                    <select id="agent_results_<?php echo esc_attr($id_suffix); ?>" class="pp_agent_results" <?php
+                    if ($multi_select) : ?>multiple="multiple" style="height:160px;"<?php else : ?>style="display:none;"<?php endif; ?> autocomplete="off">
                     </select>
 
-                    <span id="agent_msg_<?php echo $id_suffix; ?>"></span>
+                    <span id="agent_msg_<?php echo esc_attr($id_suffix); ?>"></span>
                 </td>
 
                 <?php
@@ -178,10 +176,14 @@ class AgentsDynamicUI
 
                     ?>
                     <td class="pp-members-current">
-                        <h4><?php echo $label_selections; ?></h4>
+                        <h4>
+                        <?php if (!apply_filters('presspermit_suppress_agents_selection_label', false, $id_suffix, $args)):
+                            esc_html_e('Current Selections:', 'press-permit-core');
+                        endif;?>
+                        </h4>
 
-                        <select id='<?php echo $id_suffix; ?>' name='<?php echo $id_suffix; ?>[]' multiple='multiple'
-                                style='height:160px;<?php echo $width; ?>'>
+                        <select id='<?php echo esc_attr($id_suffix); ?>' name='<?php echo esc_attr($id_suffix); ?>[]' multiple='multiple'
+                                style='height:160px;<?php echo esc_attr($width); ?>'>
 
                             <?php
                             if ('user' == $agent_type) {
@@ -192,20 +194,26 @@ class AgentsDynamicUI
 
                             foreach ($current_selections as $agent) : ?>
                                 <?php
-                                $attribs = (isset($agent->display_name) && ($agent->user_login != $agent->display_name))
-                                    ? 'title="' . esc_attr($agent->display_name) . '"'
+                                $title = (isset($agent->display_name) && ($agent->user_login != $agent->display_name))
+                                    ? esc_attr($agent->display_name)
                                     : '';
 
                                 $data = apply_filters(
                                     'presspermit_agents_selection_ui_attribs',
-                                    ['attribs' => $attribs, 'user_caption' => $agent->$display_property],
+                                    ['title' => $title, 'user_caption' => $agent->$display_property],
                                     $agent_type,
                                     $id_suffix,
                                     $agent
                                 );
                                 ?>
 
-                                <option value="<?php echo $agent->ID; ?>" <?php echo $data['attribs']; ?>><?php echo $data['user_caption']; ?></option>
+                                <option value="<?php echo esc_attr($agent->ID); ?>" title="<?php echo esc_attr($data['title']); ?>" 
+                                <?php if (!empty($data['class']))           echo ' class="' . esc_attr($data['class']) . '"'; ?>
+                                <?php if (!empty($data['data-startdate']))  echo ' data-startdate="' . esc_attr($data['data-startdate']) . '"'; ?>
+                                <?php if (!empty($data['data-enddate']))    echo ' data-enddate="' . esc_attr($data['data-enddate']) . '"'; ?>
+                                >
+                                <?php echo esc_html($data['user_caption']); ?>
+                                </option>
                             <?php endforeach; ?>
 
                         </select><br/>
@@ -219,18 +227,18 @@ class AgentsDynamicUI
                 <?php do_action('presspermit_agents_selection_ui_select_pre', $id_suffix); ?>
 
                 <td>
-                    <button type="button" id="select_agents_<?php echo $id_suffix; ?>" class="pp_add button pp-default-button"
-                            style="<?php if (!$multi_select) : ?>;display:none;<?php endif; ?>">
+                    <button type="button" id="select_agents_<?php echo esc_attr($id_suffix); ?>" class="pp_add button pp-default-button"
+                            style="<?php if (!$multi_select) : ?>display:none;<?php endif; ?>">
 
-                        <?php echo $label_select; ?>
+                        <?php echo esc_html($label_select); ?>
                     </button>
                 </td>
 
                 <?php if ($display_stored_selections) : ?>
                     <td class="pp-members-current">
-                        <button type="button" id="unselect_agents_<?php echo $id_suffix; ?>" class="pp_remove button pp-default-button"
+                        <button type="button" id="unselect_agents_<?php echo esc_attr($id_suffix); ?>" class="pp_remove button pp-default-button"
                             style="margin-left: 24px;">
-                            <?php echo $label_unselect; ?></button>
+                            <?php echo esc_html($label_unselect); ?></button>
                     </td>
                 <?php endif; ?>
 
@@ -240,8 +248,8 @@ class AgentsDynamicUI
         $csv = ($current_selections) ? implode(',', array_keys($current_selections)) : '';
         $csv = apply_filters('presspermit_agents_selection_ui_csv', $csv, $id_suffix, $current_selections);
         ?>
-        <input type="hidden" id="<?php echo $id_suffix; ?>_csv" name="<?php echo $id_suffix; ?>_csv"
-               value="<?php echo $csv; ?>"/>
+        <input type="hidden" id="<?php echo esc_attr($id_suffix); ?>_csv" name="<?php echo esc_attr($id_suffix); ?>_csv"
+               value="<?php echo esc_attr($csv); ?>"/>
         <?php
     } // end function ajax_selection_ui
 
@@ -303,7 +311,7 @@ class AgentsDynamicUI
             <script type="text/javascript">
                 /* <![CDATA[ */
                 <?php foreach ($this->agents_js_queue as $args) : ?>
-                presspermitLoadAgentsJS('<?php echo($args['id_sfx']); ?>', '<?php echo($args['agent_type']); ?>', '<?php echo($args['context']); ?>', '<?php echo($args['agent_id']); ?>', '<?php echo($args['suppress_selection_js']); ?>', <?php echo ($author_selection_only) ? 'true' : 'false'; ?>);
+                presspermitLoadAgentsJS('<?php echo esc_attr($args['id_sfx']); ?>', '<?php echo esc_attr($args['agent_type']); ?>', '<?php echo esc_attr($args['context']); ?>', '<?php echo esc_attr($args['agent_id']); ?>', '<?php echo esc_attr($args['suppress_selection_js']); ?>', <?php if ($author_selection_only) echo 'true'; else echo 'false'; ?>);
                 <?php endforeach; ?>
                 /* ]]> */
             </script>

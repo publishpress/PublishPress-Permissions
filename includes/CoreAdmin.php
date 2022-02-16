@@ -46,8 +46,8 @@ class CoreAdmin {
     function actAdminMenuPromos($pp_options_menu, $handler) {
         add_submenu_page(
             $pp_options_menu, 
-            __('Post Statuses', 'press-permit-core'), 
-            __('Post Statuses', 'press-permit-core'), 
+            esc_html__('Post Statuses', 'press-permit-core'), 
+            esc_html__('Post Statuses', 'press-permit-core'), 
             'read', 
             'presspermit-statuses', 
             $handler
@@ -55,8 +55,8 @@ class CoreAdmin {
 
         add_submenu_page(
             $pp_options_menu, 
-            __('Sync Posts', 'press-permit-core'), 
-            __('Sync Posts', 'press-permit-core'), 
+            esc_html__('Sync Posts', 'press-permit-core'), 
+            esc_html__('Sync Posts', 'press-permit-core'), 
             'read', 
             'presspermit-sync', 
             $handler
@@ -64,8 +64,8 @@ class CoreAdmin {
 
         add_submenu_page(
             $pp_options_menu, 
-            __('Teaser', 'press-permit-core'), 
-            __('Teaser', 'press-permit-core'), 
+            esc_html__('Teaser', 'press-permit-core'), 
+            esc_html__('Teaser', 'press-permit-core'), 
             'read', 
             'presspermit-teaser', 
             $handler
@@ -85,8 +85,8 @@ class CoreAdmin {
 
         add_submenu_page(
             $pp_cred_menu, 
-            __('Upgrade to Pro', 'press-permit-core'), 
-            __('Upgrade to Pro', 'press-permit-core'), 
+            esc_html__('Upgrade to Pro', 'press-permit-core'), 
+            esc_html__('Upgrade to Pro', 'press-permit-core'), 
             'read', 
             'permissions-pro', 
             ['PublishPress\Permissions\UI\Dashboard\DashboardFilters', 'actMenuHandler']
@@ -102,7 +102,7 @@ class CoreAdmin {
 
 		<script type="text/javascript">
             jQuery(document).ready(function($) {
-                $('#toplevel_page_presspermit-groups ul li:last a').attr('href', '<?php echo $url;?>').attr('target', '_blank').css('font-weight', 'bold').css('color', '#FEB123');
+                $('#toplevel_page_presspermit-groups ul li:last a').attr('href', '<?php echo esc_url($url);?>').attr('target', '_blank').css('font-weight', 'bold').css('color', '#FEB123');
             });
         </script>
 		<?php

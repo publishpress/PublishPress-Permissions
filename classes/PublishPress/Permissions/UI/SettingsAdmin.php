@@ -28,6 +28,14 @@ class SettingsAdmin
         
     }
 
+    public static function echoStr($string_id) {
+        if ($custom_echo = apply_filters('presspermit_admin_echo_string', false, $string_id)) {
+            return;
+        } else {
+            echo esc_html(self::getStr($string_id));
+        }
+    }
+
     public static function getStr($string_id) {
         switch ($string_id) {
 
@@ -66,18 +74,18 @@ class SettingsAdmin
         return __('To customize editing permissions, enable the Collaborative Publishing module.', 'press-permit-core-hints');
 
         case 'display_user_profile_roles' :
-        return __('note: Groups and Roles are always displayed in "Edit User"', 'press-permit-core-hints');
+        return __('Note: Groups and Roles are always displayed in "Edit User"', 'press-permit-core-hints');
 
         
         // Advanced
         case 'advanced_options_enabled' :
-        return __("<strong>Note:</strong> if you disable these settings, the stored values (including Role Usage adjustments) are retained but ignored.", 'press-permit-core-hints');
+        return __("Note: if you disable these settings, the stored values (including Role Usage adjustments) are retained but ignored.", 'press-permit-core-hints');
 
         case 'advanced_options_disabled' :
-        return __('Most sites don\'t need advanced settings. But enable them if you need to work with custom WP Roles or apply performance tweaks.', 'press-permit-core-hints');
+        return __("Most sites don't need advanced settings. But enable them if you need to work with custom WP Roles or apply performance tweaks.", 'press-permit-core-hints');
 
         case 'anonymous_unfiltered' :
-        return sprintf(__('Disable Permissions filtering for users who are not logged in.', 'press-permit-core-hints'), '<span class="pp-warning"><strong>', '</strong></span>');
+        return __('Disable Permissions filtering for users who are not logged in.', 'press-permit-core-hints');
 
         case 'suppress_administrator_metagroups' :
         return __('If checked, pages blocked from the "All" or "Logged In" groups will still be listed to Administrators.', 'press-permit-core-hints');
@@ -151,7 +159,7 @@ class SettingsAdmin
         return __('Fork published posts only.', 'press-permit-core-hints');
 
         case 'fork_require_edit_others' :
-        return __('If a user lacks the edit_others_posts capability for the post type, they cannot fork other&apos;s posts either.', 'press-permit-core-hints');
+        return __("If a user lacks the edit_others_posts capability for the post type, they cannot fork other's posts either.", 'press-permit-core-hints');
 
         case 'non_admins_set_edit_exceptions' :
         return __('If enabled, presence of the pp_set_edit_exceptions, pp_set_associate_exceptions, etc. capabilities in the WP role will be honored. See list of capabilities below.', 'press-permit-core-hints');
@@ -171,89 +179,89 @@ class SettingsAdmin
         switch ($constant) {
 
         case 'PP_NON_EDITORS_SET_EDIT_EXCEPTIONS' :
-		return __("Enable post contributors or authors with pp_set_edit_exceptions capability to set editing Permissions on posts authored by others", 'press-permit-core-hints');
+		return esc_html__("Enable post contributors or authors with pp_set_edit_exceptions capability to set editing Permissions on posts authored by others", 'press-permit-core-hints');
 
         // 'editing'
         case 'PP_DISABLE_FORKING_SUPPORT' :
-		return __("Don't try to integrate with the Post Forking plugin", 'press-permit-core-hints');
+		return esc_html__("Don't try to integrate with the Post Forking plugin", 'press-permit-core-hints');
 
         case 'PP_LOCK_OPTION_PAGES_ONLY' :
-		return __("Permissions setting 'Pages can be set or removed from Top Level by' applies to 'page' type only", 'press-permit-core-hints');
+		return esc_html__("Permissions setting 'Pages can be set or removed from Top Level by' applies to 'page' type only", 'press-permit-core-hints');
 
         case 'PPCE_LIMITED_EDITORS_TOP_LEVEL_PUBLISH' :
-		return __("If user cannot generally save pages to top level but a page they are editing is already there, allow it to stay at top level even if not yet published ", 'press-permit-core-hints');
+		return esc_html__("If user cannot generally save pages to top level but a page they are editing is already there, allow it to stay at top level even if not yet published ", 'press-permit-core-hints');
 
         case 'PPC_ASSOCIATION_NOFILTER' :
-		return __("Circle membership does not limit page association (page parent setting) ability", 'press-permit-core-hints');
+		return esc_html__("Circle membership does not limit page association (page parent setting) ability", 'press-permit-core-hints');
 
         case 'PP_AUTO_DEFAULT_TERM' :
-		return __("When saving a post, if default term (of any taxonomy) is not in user's subset of assignable terms, substitute first available", 'press-permit-core-hints');
+		return esc_html__("When saving a post, if default term (of any taxonomy) is not in user's subset of assignable terms, substitute first available", 'press-permit-core-hints');
 
         case 'PP_AUTO_DEFAULT_CATEGORY' :
-		return __("When saving a post, if default category is not in user's subset of assignable categories, substitute first available", 'press-permit-core-hints');
+		return esc_html__("When saving a post, if default category is not in user's subset of assignable categories, substitute first available", 'press-permit-core-hints');
 
         case 'PP_AUTO_DEFAULT_POST_TAG' :
-		return __("When saving a post, if default tag is not in user's subset of assignable tags, substitute first available", 'press-permit-core-hints');
+		return esc_html__("When saving a post, if default tag is not in user's subset of assignable tags, substitute first available", 'press-permit-core-hints');
 
         case 'PP_AUTO_DEFAULT_CUSTOM_TAXOMY_NAME_HERE' :
-		return __("When saving a post, if default term (of specified taxonomy) is not in user's subset of assignable tags, substitute first available", 'press-permit-core-hints');
+		return esc_html__("When saving a post, if default term (of specified taxonomy) is not in user's subset of assignable tags, substitute first available", 'press-permit-core-hints');
 
         case 'PP_NO_AUTO_DEFAULT_TERM' :
-		return __("When saving a post, never auto-assign a term (of any taxonomy), even if it is the user's only assignable term", 'press-permit-core-hints');
+		return esc_html__("When saving a post, never auto-assign a term (of any taxonomy), even if it is the user's only assignable term", 'press-permit-core-hints');
 
         case 'PP_AUTO_DEFAULT_CATEGORY' :
-		return __("When saving a post, never auto-assign a category, even if it is the user's only assignable category", 'press-permit-core-hints');
+		return esc_html__("When saving a post, never auto-assign a category, even if it is the user's only assignable category", 'press-permit-core-hints');
 
         case 'PP_NO_AUTO_DEFAULT_POST_TAG' :
-		return __("When saving a post, never auto-assign a tag, even if it is the user's only assignable tag", 'press-permit-core-hints');
+		return esc_html__("When saving a post, never auto-assign a tag, even if it is the user's only assignable tag", 'press-permit-core-hints');
 
         case 'PP_NO_AUTO_DEFAULT_CUSTOM_TAXOMY_NAME_HERE' :
-		return __("When saving a post, never auto-assign a term (of specified taxonomy), even if it is the user's only assignable term", 'press-permit-core-hints');
+		return esc_html__("When saving a post, never auto-assign a term (of specified taxonomy), even if it is the user's only assignable term", 'press-permit-core-hints');
 
         case 'PPCE_DISABLE_CATEGORY_RETENTION' :
-		return __("When a limited user updates a post, strip out currently stored categories they don't have permission to assign", 'press-permit-core-hints');
+		return esc_html__("When a limited user updates a post, strip out currently stored categories they don't have permission to assign", 'press-permit-core-hints');
 
         case 'PPCE_DISABLE_POST_TAG_RETENTION' :
-		return __("When a limited user updates a post, strip out currently stored tags they don't have permission to assign", 'press-permit-core-hints');
+		return esc_html__("When a limited user updates a post, strip out currently stored tags they don't have permission to assign", 'press-permit-core-hints');
 
         case 'PPCE_DISABLE_CUSTOM_TAXOMY_NAME_HERE_RETENTION' :
-		return __("When a limited user updates a post, strip out currently stored terms (of specified taxonomy) they don't have permission to assign", 'press-permit-core-hints');
+		return esc_html__("When a limited user updates a post, strip out currently stored terms (of specified taxonomy) they don't have permission to assign", 'press-permit-core-hints');
 
         case 'PP_NO_MODERATION' :
-		return __("Don't define an 'Approved' status, even if Status Control module is active", 'press-permit-core-hints');
+		return esc_html__("Don't define an 'Approved' status, even if Status Control module is active", 'press-permit-core-hints');
 
     
         // 'nav-menu-manage'
         case 'PP_SUPPRESS_APPEARANCE_LINK' :
-		return __("If user has Nav Menu management capabilities but can't 'edit_theme_options', strip link out of wp-admin Appearance Menu instead of linking it to nav-menus", 'press-permit-core-hints');
+		return esc_html__("If user has Nav Menu management capabilities but can't 'edit_theme_options', strip link out of wp-admin Appearance Menu instead of linking it to nav-menus", 'press-permit-core-hints');
 
         case 'PP_STRICT_MENU_CAPS' :
-		return __("Don't credit implicit 'manage_nav_menus' capability to users who have 'edit_theme_options' or 'switch_themes' capability", 'press-permit-core-hints');
+		return esc_html__("Don't credit implicit 'manage_nav_menus' capability to users who have 'edit_theme_options' or 'switch_themes' capability", 'press-permit-core-hints');
 
         case 'PPCE_RESTRICT_MENU_TOP_LEVEL' :
-		return __("Prevent non-Administrators from adding new Nav Menu items to top level (add below existing editable items instead)", 'press-permit-core-hints');
+		return esc_html__("Prevent non-Administrators from adding new Nav Menu items to top level (add below existing editable items instead)", 'press-permit-core-hints');
 
         case 'PP_NAV_MENU_DEFAULT_TO_SUBITEM' :
-		return __("For non-Administrators, new Nav Menu items default to being a child of first editable item ", 'press-permit-core-hints');
+		return esc_html__("For non-Administrators, new Nav Menu items default to being a child of first editable item ", 'press-permit-core-hints');
 
         case 'PP_LEGACY_MENU_SETTINGS_ACCESS' :
-		return __("Don't require any additional capabilities for management of Nav Menu settings (normally require 'manage_menu_settings', 'edit_others_pages' or 'publish_pages') ", 'press-permit-core-hints');
+		return esc_html__("Don't require any additional capabilities for management of Nav Menu settings (normally require 'manage_menu_settings', 'edit_others_pages' or 'publish_pages') ", 'press-permit-core-hints');
 
         case 'PPCE_DISABLE_NAV_MENU_UPDATE_FILTERS' :
-		return __("Eliminate extra filtering queries on Nav Menu update, even for non-Administrators", 'press-permit-core-hints');
+		return esc_html__("Eliminate extra filtering queries on Nav Menu update, even for non-Administrators", 'press-permit-core-hints');
 
 
         // 'media'
         case 'PP_BLOCK_UNATTACHED_UPLOADS' :
-		return __("Don't allow non-Administrators to see others' unattached uploads, regardless of Permissions settings.  Their own unattached uploads are still accessible unless option 'own_attachments_always_editable' is set false", 'press-permit-core-hints');
+		return esc_html__("Don't allow non-Administrators to see others' unattached uploads, regardless of Permissions settings.  Their own unattached uploads are still accessible unless option 'own_attachments_always_editable' is set false", 'press-permit-core-hints');
 
 
         // 'admin'
         case 'PPCE_CAN_ASSIGN_OWN_ROLE' :
-		return __("Limited User Editors can assign their own role", 'press-permit-core-hints');
+		return esc_html__("Limited User Editors can assign their own role", 'press-permit-core-hints');
 
         case 'PP_AUTHOR_POST_META' :
-		return __("Post Meta fields to copy when using 'Add Author Page' dropdown on Users screen", 'press-permit-core-hints');
+		return esc_html__("Post Meta fields to copy when using 'Add Author Page' dropdown on Users screen", 'press-permit-core-hints');
 
         default:
         }
@@ -262,49 +270,49 @@ class SettingsAdmin
     }
 
     static function setCapabilityDescriptions($pp_caps) {
-        $pp_caps['pp_manage_settings'] = __('Modify these Permissions settings', 'press-permit-core-hints');
-        $pp_caps['pp_unfiltered'] = __('PublishPress Permissions does not apply any Supplemental Roles or Specific Permissions to limit or expand viewing or editing access', 'press-permit-core-hints');
-        $pp_caps['pp_administer_content'] = __('PublishPress Permissions implicitly grants capabilities for all post types and statuses, but does not apply Specific Permissions', 'press-permit-core-hints');
-        $pp_caps['pp_create_groups'] = __('Can create Permission Groups', 'press-permit-core-hints');
-        $pp_caps['pp_edit_groups'] = __('Can edit all Permission Groups (barring Specific Permissions)', 'press-permit-core-hints');
-        $pp_caps['pp_delete_groups'] = __('Can delete Permission Groups', 'press-permit-core-hints');
-        $pp_caps['pp_manage_members'] = __('If group editing is allowed, can also modify group membership', 'press-permit-core-hints');
-        $pp_caps['pp_assign_roles'] = __('Assign Supplemental Roles or Specific Permissions. Other capabilities may also be required.', 'press-permit-core-hints');
-        $pp_caps['pp_set_read_exceptions'] = __('Set Read Permissions for specific posts on Edit Post/Term screen (for non-Administrators lacking edit_users capability; may be disabled by Permissions Settings)', 'press-permit-core-hints');
+        $pp_caps['pp_manage_settings'] = esc_html__('Modify these Permissions settings', 'press-permit-core-hints');
+        $pp_caps['pp_unfiltered'] = esc_html__('PublishPress Permissions does not apply any Supplemental Roles or Specific Permissions to limit or expand viewing or editing access', 'press-permit-core-hints');
+        $pp_caps['pp_administer_content'] = esc_html__('PublishPress Permissions implicitly grants capabilities for all post types and statuses, but does not apply Specific Permissions', 'press-permit-core-hints');
+        $pp_caps['pp_create_groups'] = esc_html__('Can create Permission Groups', 'press-permit-core-hints');
+        $pp_caps['pp_edit_groups'] = esc_html__('Can edit all Permission Groups (barring Specific Permissions)', 'press-permit-core-hints');
+        $pp_caps['pp_delete_groups'] = esc_html__('Can delete Permission Groups', 'press-permit-core-hints');
+        $pp_caps['pp_manage_members'] = esc_html__('If group editing is allowed, can also modify group membership', 'press-permit-core-hints');
+        $pp_caps['pp_assign_roles'] = esc_html__('Assign Supplemental Roles or Specific Permissions. Other capabilities may also be required.', 'press-permit-core-hints');
+        $pp_caps['pp_set_read_exceptions'] = esc_html__('Set Read Permissions for specific posts on Edit Post/Term screen (for non-Administrators lacking edit_users capability; may be disabled by Permissions Settings)', 'press-permit-core-hints');
         
         if (class_exists('Fork', false)) {
-            $pp_caps['pp_set_fork_exceptions'] = __('Set Forking Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
+            $pp_caps['pp_set_fork_exceptions'] = esc_html__('Set Forking Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
         }
 
         if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) {
-            $pp_caps['pp_set_revise_exceptions'] = __('Set Revision Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
+            $pp_caps['pp_set_revise_exceptions'] = esc_html__('Set Revision Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
         }
 
-        $pp_caps['pp_set_edit_exceptions'] =            __('Set Editing Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
-        $pp_caps['pp_set_associate_exceptions'] =       __('Set Association (Parent) Permissions on Edit Post screen (where applicable)', 'press-permit-core-hints');
-        $pp_caps['pp_set_term_assign_exceptions'] =     __('Set Term Assignment Permissions on Edit Term screen (in relation to an editable post type)', 'press-permit-core-hints');
-        $pp_caps['pp_set_term_manage_exceptions'] =     __('Set Term Management Permissions on Edit Term screen', 'press-permit-core-hints');
-        $pp_caps['pp_set_term_associate_exceptions'] =  __('Set Term Association (Parent) Permissions on Edit Term screen', 'press-permit-core-hints');
+        $pp_caps['pp_set_edit_exceptions'] =            esc_html__('Set Editing Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
+        $pp_caps['pp_set_associate_exceptions'] =       esc_html__('Set Association (Parent) Permissions on Edit Post screen (where applicable)', 'press-permit-core-hints');
+        $pp_caps['pp_set_term_assign_exceptions'] =     esc_html__('Set Term Assignment Permissions on Edit Term screen (in relation to an editable post type)', 'press-permit-core-hints');
+        $pp_caps['pp_set_term_manage_exceptions'] =     esc_html__('Set Term Management Permissions on Edit Term screen', 'press-permit-core-hints');
+        $pp_caps['pp_set_term_associate_exceptions'] =  esc_html__('Set Term Association (Parent) Permissions on Edit Term screen', 'press-permit-core-hints');
 
-        $pp_caps['edit_own_attachments'] =          __('Edit own file uploads, even if they become attached to an uneditable post', 'press-permit-core-hints');
-        $pp_caps['list_others_unattached_files'] =  __('See other user&apos;s unattached file uploads in Media Library', 'press-permit-core-hints');
-        $pp_caps['pp_associate_any_page'] =         __('Disregard association permissions (for all hierarchical post types)', 'press-permit-core-hints');
+        $pp_caps['edit_own_attachments'] =          esc_html__('Edit own file uploads, even if they become attached to an uneditable post', 'press-permit-core-hints');
+        $pp_caps['list_others_unattached_files'] =  esc_html__("See other user's unattached file uploads in Media Library", 'press-permit-core-hints');
+        $pp_caps['pp_associate_any_page'] =         esc_html__('Disregard association permissions (for all hierarchical post types)', 'press-permit-core-hints');
 
-        $pp_caps['pp_list_all_files'] =     __('Do not alter the Media Library listing provided by WordPress', 'press-permit-core-hints');
-        $pp_caps['list_posts'] =            __('On the Posts screen, satisfy a missing edit_posts capability by listing uneditable drafts', 'press-permit-core-hints');
-        $pp_caps['list_others_posts'] =     __("On the Posts screen, satisfy a missing edit_others_posts capability by listing other user's uneditable posts", 'press-permit-core-hints');
-        $pp_caps['list_private_pages'] =    __('On the Pages screen, satisfy a missing edit_private_pages capability by listing uneditable private pages', 'press-permit-core-hints');
-        $pp_caps['pp_force_quick_edit'] =   __('Make Quick Edit and Bulk Edit available to non-Administrators even though some inappropriate selections may be possible', 'press-permit-core-hints');
+        $pp_caps['pp_list_all_files'] =     esc_html__('Do not alter the Media Library listing provided by WordPress', 'press-permit-core-hints');
+        $pp_caps['list_posts'] =            esc_html__('On the Posts screen, satisfy a missing edit_posts capability by listing uneditable drafts', 'press-permit-core-hints');
+        $pp_caps['list_others_posts'] =     esc_html__("On the Posts screen, satisfy a missing edit_others_posts capability by listing other user's uneditable posts", 'press-permit-core-hints');
+        $pp_caps['list_private_pages'] =    esc_html__('On the Pages screen, satisfy a missing edit_private_pages capability by listing uneditable private pages', 'press-permit-core-hints');
+        $pp_caps['pp_force_quick_edit'] =   esc_html__('Make Quick Edit and Bulk Edit available to non-Administrators even though some inappropriate selections may be possible', 'press-permit-core-hints');
 
         if (!defined('PRESSPERMIT_PRO_VERSION') && !presspermit()->moduleActive('status-control') && !presspermit()->keyActive()) {
             $pp_caps = array_merge(
                 $pp_caps,
                 [
-                    'pp_define_post_status' => __('(Permissions Pro capability)', 'press-permit-core-hints'),
-                    'pp_define_moderation' => __('(Permissions Pro capability)', 'press-permit-core-hints'),
-                    'pp_define_privacy' => __('(Permissions Pro capability)', 'press-permit-core-hints'),
-                    'set_posts_status' => __('(Permissions Pro capability)', 'press-permit-core-hints'),
-                    'pp_moderate_any' => __('(Permissions Pro capability)', 'press-permit-core-hints'),
+                    'pp_define_post_status' => esc_html__('(Permissions Pro capability)', 'press-permit-core-hints'),
+                    'pp_define_moderation' => esc_html__('(Permissions Pro capability)', 'press-permit-core-hints'),
+                    'pp_define_privacy' => esc_html__('(Permissions Pro capability)', 'press-permit-core-hints'),
+                    'set_posts_status' => esc_html__('(Permissions Pro capability)', 'press-permit-core-hints'),
+                    'pp_moderate_any' => esc_html__('(Permissions Pro capability)', 'press-permit-core-hints'),
                 ]
             );
         }
@@ -328,7 +336,7 @@ class SettingsAdmin
         return $val;
     }
 
-    public function optionCheckbox($option_name, $tab_name, $section_name, $hint_text = '', $trailing_html = '', $args = [])
+    public function optionCheckbox($option_name, $tab_name, $section_name, $hint_text = '', $trailing_break = '', $args = [])
     {
         $return = ['in_scope' => false, 'no_storage' => false, 'disabled' => false, 'title' => '', 'style' => '', 'div_style' => ''];
 
@@ -341,35 +349,35 @@ class SettingsAdmin
             else
                 $return['val'] = (!empty($args['no_storage'])) ? 0 : presspermit()->getOption($option_name);
 
-            $disabled_clause = (!empty($args['disabled']) || $this->hideNetworkOption($option_name)) ? "disabled='disabled'" : '';
+            $disabled = (!empty($args['disabled']) || $this->hideNetworkOption($option_name)) ? " disabled " : '';
             $style = (!empty($args['style'])) ? $args['style'] : '';
             $div_style = (!empty($args['div_style'])) ? $args['div_style'] : '';
 
-            $title = (!empty($args['title'])) ? " title='" . esc_attr($args['title']) . "'" : '';
+            $title = (!empty($args['title'])) ? $args['title'] : '';
 
-            echo "<div class='agp-opt-checkbox $option_name' $div_style>"
-                . "<label for='$option_name'{$title}>"
-                . "<input name='$option_name' type='checkbox' $disabled_clause $style id='$option_name' value='1' " . checked('1', $return['val'], false) . " /> "
-                . $this->option_captions[$option_name]
+            echo "<div class='agp-opt-checkbox " . esc_attr($option_name) . "' style='" . esc_attr($div_style) . "'>"
+                . "<label for='" . esc_attr($option_name) . "' title='" . esc_attr($title) . "'>"
+                . "<input name='" . esc_attr($option_name) . "' type='checkbox' " . esc_attr($disabled) . " style='" . esc_attr($style) . "' id='" . esc_attr($option_name) . "' value='1' " . esc_attr(checked('1', $return['val'], false)) . " /> "
+                . esc_html($this->option_captions[$option_name])
                 . "</label>";
 
             if ($hint_text && $this->display_hints) {
-                if (true === $hint_text) {
-                    $hint_text = self::getStr($option_name);
-                }
-
-                if ($hint_text) {
                     $hint_class = 'pp-subtext';
                     $hint_class .= (!empty($args['hint_class'])) ? ' ' . $args['hint_class'] : '';
 
-                    echo "<div class='$hint_class'>" . $hint_text . "</div>";
-                }
+                if (true === $hint_text) :?>
+                    <?php if (self::getStr($option_name)):?>
+                        <div class='<?php echo esc_attr($hint_class); ?>'><?php self::echoStr($option_name);?></div>
+                    <?php endif;?>
+                <?php else :?>
+                    <div class='<?php echo esc_attr($hint_class); ?>'><?php echo(esc_html($hint_text));?></div>
+                <?php endif;
             }
 
             echo "</div>";
 
-            if ($trailing_html)
-                echo $trailing_html;
+            if ($trailing_break)
+                echo '<br />';
 
             $return['in_scope'] = true;
         }

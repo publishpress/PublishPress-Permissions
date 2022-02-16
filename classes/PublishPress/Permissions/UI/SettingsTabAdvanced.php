@@ -22,27 +22,27 @@ class SettingsTabAdvanced
 
     public function optionTabs($tabs)
     {
-        $tabs['advanced'] = __('Advanced', 'press-permit-core');
+        $tabs['advanced'] = esc_html__('Advanced', 'press-permit-core');
         return $tabs;
     }
 
     public function sectionCaptions($sections)
     {
         $new = [
-            'enable' => __('Enable Advanced', 'press-permit-core'),
-            'file_filtering' => __('File Filtering', 'press-permit-core'),
-            'network' => __('Network-Wide Settings', 'press-permit-core'),
+            'enable' => esc_html__('Enable Advanced', 'press-permit-core'),
+            'file_filtering' => esc_html__('File Filtering', 'press-permit-core'),
+            'network' => esc_html__('Network-Wide Settings', 'press-permit-core'),
         ];
 
         if ($this->enabled) {
             $new = array_merge($new, [
-                'anonymous' => __('Content Filtering', 'press-permit-core'),
-                'permissions_admin' => __('Permissions Admin', 'press-permit-core'),
-                'user_permissions' => __('User Permissions', 'press-permit-core'),
-                'capabilities' => __('Permissions Capabilities', 'press-permit-core'),
-                'role_integration' => __('Role Integration', 'press-permit-core'),
-                'constants' => __('Constants', 'press-permit-core'),
-                'misc' => __('Miscellaneous', 'press-permit-core'),
+                'anonymous' => esc_html__('Content Filtering', 'press-permit-core'),
+                'permissions_admin' => esc_html__('Permissions Admin', 'press-permit-core'),
+                'user_permissions' => esc_html__('User Permissions', 'press-permit-core'),
+                'capabilities' => esc_html__('Permissions Capabilities', 'press-permit-core'),
+                'role_integration' => esc_html__('Role Integration', 'press-permit-core'),
+                'constants' => esc_html__('Constants', 'press-permit-core'),
+                'misc' => esc_html__('Miscellaneous', 'press-permit-core'),
             ]);
         }
 
@@ -53,18 +53,18 @@ class SettingsTabAdvanced
 
     public function optionCaptions($captions)
     {
-        $opt = ['advanced_options' => __('Enable advanced settings', 'press-permit-core')];
+        $opt = ['advanced_options' => esc_html__('Enable advanced settings', 'press-permit-core')];
 
         if ($this->enabled) {
             $opt = array_merge($opt, [
-                'anonymous_unfiltered' => sprintf(__('%1$sDisable%2$s all filtering for anonymous users', 'press-permit-core'), '<strong>', '</strong>'),
-                'suppress_administrator_metagroups' => sprintf(__('%1$sDo not apply%2$s metagroup permissions for Administrators', 'press-permit-core'), '<strong>', '</strong>'),
-                'user_search_by_role' => __('User Search: Filter by WP role', 'press-permit-core'),
-                'display_hints' => __('Display Administrative Hints', 'press-permit-core'),
-                'display_extension_hints' => __('Display Module Hints', 'press-permit-core'),
-                'dynamic_wp_roles' => __('Detect Dynamically Mapped WP Roles', 'press-permit-core'),
-                'non_admins_set_read_exceptions' => __('Non-Administrators can set Reading Permissions for their editable posts', 'press-permit-core'),
-                'users_bulk_groups' => __('Bulk Add / Remove Groups on Users Screen', 'press-permit-core'),
+                'anonymous_unfiltered' => sprintf(esc_html__('%1$sDisable%2$s all filtering for anonymous users', 'press-permit-core'), '', ''),
+                'suppress_administrator_metagroups' => sprintf(esc_html__('%1$sDo not apply%2$s metagroup permissions for Administrators', 'press-permit-core'), '', ''),
+                'user_search_by_role' => esc_html__('User Search: Filter by WP role', 'press-permit-core'),
+                'display_hints' => esc_html__('Display Administrative Hints', 'press-permit-core'),
+                'display_extension_hints' => esc_html__('Display Module Hints', 'press-permit-core'),
+                'dynamic_wp_roles' => esc_html__('Detect Dynamically Mapped WP Roles', 'press-permit-core'),
+                'non_admins_set_read_exceptions' => esc_html__('Non-Administrators can set Reading Permissions for their editable posts', 'press-permit-core'),
+                'users_bulk_groups' => esc_html__('Bulk Add / Remove Groups on Users Screen', 'press-permit-core'),
             ]);
         }
 
@@ -97,10 +97,10 @@ class SettingsTabAdvanced
 
             if (presspermit()->getOption('advanced_options')) {
                 if (presspermit()->moduleActive('collaboration')) {
-                    echo SettingsAdmin::getStr('advanced_options_enabled');
+                    SettingsAdmin::echoStr('advanced_options_enabled');
                 }
             } else {
-                echo SettingsAdmin::getStr('advanced_options_disabled');
+                SettingsAdmin::echoStr('advanced_options_disabled');
             }
             echo '</div>';
         }
@@ -116,7 +116,7 @@ class SettingsTabAdvanced
         $section = 'enable'; // --- ENABLE SECTION ---
         if (!empty($ui->form_options[$tab][$section])) : ?>
             <tr>
-                <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
                     <?php
                     $hint = '';
@@ -132,7 +132,7 @@ class SettingsTabAdvanced
             $section = 'anonymous'; // --- ANONYMOUS USERS SECTION ---
             if (!empty($ui->form_options[$tab][$section])) : ?>
                 <tr>
-                    <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                    <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                     <td>
                         <?php
                         $ui->optionCheckbox('anonymous_unfiltered', $tab, $section, true);
@@ -148,7 +148,7 @@ class SettingsTabAdvanced
             $section = 'custom_statuses'; // --- CUSTOM POST STATUSES SECTION ---
             if (!empty($ui->form_options[$tab][$section])) : ?>
                 <tr>
-                    <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                    <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                     <td>
                         <?php
                         do_action('presspermit_options_ui_insertion', $tab, $section);
@@ -160,7 +160,7 @@ class SettingsTabAdvanced
             $section = 'permissions_admin'; // --- PERMISSIONS ADMIN SECTION ---
             if (!empty($ui->form_options[$tab][$section])) : ?>
                 <tr>
-                    <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                    <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                     <td>
                         <?php
                         $ui->optionCheckbox('non_admins_set_read_exceptions', $tab, $section, true);
@@ -175,7 +175,7 @@ class SettingsTabAdvanced
             $section = 'user_permissions'; // --- PERMISSIONS ADMIN SECTION ---
             ?>
                 <tr>
-                    <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                    <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                     <td>
 
                         <div class="pp-user-permissions-help">
@@ -183,8 +183,8 @@ class SettingsTabAdvanced
                             <?php
                             $url = "users.php";
                             printf(
-                                __('For user-specific Supplemental Roles and Permissions, click a "Roles" cell on the %1$sUsers%2$s screen.', 'press-permit-core'),
-                                "<strong><a href='$url'>",
+                                esc_html__('For user-specific Supplemental Roles and Permissions, click a "Roles" cell on the %1$sUsers%2$s screen.', 'press-permit-core'),
+                                "<strong><a href='" . esc_url($url) . "'>",
                                 '</a></strong>'
                             );
                             ?>
@@ -194,24 +194,24 @@ class SettingsTabAdvanced
                         <div class="pp-hint pp-user-permissions-help">
                             <p>
                             <?php
-                            _e('To filter the Users list by Permissions, follow a link below:', 'press-permit-core');
+                            esc_html_e('To filter the Users list by Permissions, follow a link below:', 'press-permit-core');
                             ?>
                             </p>
 
                             <ul class="pp-notes">
-                                <li><?php printf(__('%1$sUsers who have no custom Permission Group membership%2$s', 'press-permit-core'), "<a href='$url?pp_no_group=1'>", '</a>'); ?></li>
+                                <li><?php printf(esc_html__('%1$sUsers who have no custom Permission Group membership%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_no_group=1") . "'>", '</a>'); ?></li>
                             </ul>
                             <br/>
                             <ul class="pp-notes">
-                                <li><?php printf(__('%1$sUsers who have Supplemental Roles assigned directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_roles=1'>", '</a>'); ?></li>
-                                <li><?php printf(__('%1$sUsers who have Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_exceptions=1'>", '</a>'); ?></li>
-                                <li><?php printf(__('%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s', 'press-permit-core'), "<a href='$url?pp_user_perms=1'>", '</a>'); ?></li>
+                                <li><?php printf(esc_html__('%1$sUsers who have Supplemental Roles assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_roles=1") . "'>", '</a>'); ?></li>
+                                <li><?php printf(esc_html__('%1$sUsers who have Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_exceptions=1") . "'>", '</a>'); ?></li>
+                                <li><?php printf(esc_html__('%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_perms=1") . "'>", '</a>'); ?></li>
                             </ul>
                             <br/>
                             <ul class="pp-notes">
-                                <li><?php printf(__('%1$sUsers who have Supplemental Roles (directly or via group)%2$s', 'press-permit-core'), "<a href='$url?pp_has_roles=1'>", '</a>'); ?></li>
-                                <li><?php printf(__('%1$sUsers who have Specific Permissions (directly or via group)%2$s', 'press-permit-core'), "<a href='$url?pp_has_exceptions=1'>", '</a>'); ?></li>
-                                <li><?php printf(__('%1$sUsers who have Supplemental Roles or Specific Permissions (directly or via group)%2$s', 'press-permit-core'), "<a href='$url?pp_has_perms=1'>", '</a>'); ?></li>
+                                <li><?php printf(esc_html__('%1$sUsers who have Supplemental Roles (directly or via group)%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_has_roles=1") . "'>", '</a>'); ?></li>
+                                <li><?php printf(esc_html__('%1$sUsers who have Specific Permissions (directly or via group)%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_has_exceptions=1") . "'>", '</a>'); ?></li>
+                                <li><?php printf(esc_html__('%1$sUsers who have Supplemental Roles or Specific Permissions (directly or via group)%2$s', 'press-permit-core'), "<a href='". esc_url("$url?pp_has_perms=1") . "'>", '</a>'); ?></li>
                             </ul>
                         </div>
 
@@ -219,7 +219,7 @@ class SettingsTabAdvanced
                             <span class="pp-subtext">
                                 <?php
                                 printf(
-                                    __('%1$snote%2$s: If you don&apos;t see the Roles column on the Users screen, make sure it is enabled in Screen Options. ', 'press-permit-core'),
+                                    esc_html__("%sNote%s: If you don't see the Roles column on the Users screen, make sure it is enabled in Screen Options. ", 'press-permit-core'),
                                     '<strong>',
                                     '</strong>'
                                 );
@@ -234,7 +234,7 @@ class SettingsTabAdvanced
             $section = 'misc'; // --- MISC SECTION ---
             if (!empty($ui->form_options[$tab][$section])) : ?>
                 <tr>
-                    <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                    <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                     <td>
                         <?php
                         $ui->optionCheckbox('users_bulk_groups', $tab, $section, '');
@@ -254,12 +254,12 @@ class SettingsTabAdvanced
             $section = 'role_integration'; // --- ROLE INTEGRATION SECTION ---
             if (!empty($ui->form_options[$tab][$section])) : ?>
                 <tr>
-                    <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                    <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                     <td>
                         <div>
                         <?php printf(
-                            __('To control the makeup of Supplemental Roles, see %1$sRole Usage%2$s.', 'press-permit-core'),
-                            '<strong><a href="' . admin_url('admin.php?page=presspermit-role-usage') . '">',
+                            esc_html__('To control the makeup of Supplemental Roles, see %1$sRole Usage%2$s.', 'press-permit-core'),
+                            '<strong><a href="' . esc_url(admin_url('admin.php?page=presspermit-role-usage')) . '">',
                             '</a></strong>'
                         );
                         ?>
@@ -280,21 +280,21 @@ class SettingsTabAdvanced
             ?>
             <tr>
                 <td scope="row" colspan="2"><span
-                            style="font-weight:bold"><?php echo $ui->section_captions[$tab][$section]; ?></span>
+                            style="font-weight:bold"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></span>
                     <span class="pp-capabilities-caption">
                         <span class="pp-subtext pp-no-hide">
                             <?php
                             if (defined('PUBLISHPRESS_CAPS_VERSION')) {
                                 $url = admin_url('admin.php?page=capsman');
                                 printf(
-                                    SettingsAdmin::getStr('pp_capabilities'),
-                                    '<a href="' . $url . '">',
+                                    esc_html(SettingsAdmin::getStr('pp_capabilities')),
+                                    '<a href="' . esc_url($url) . '">',
                                     '</a>'
                                 );
                             } else {
                                 printf(
-                                    SettingsAdmin::getStr('pp_capabilities_install_prompt'),
-                                    '<span class="plugins update-message"><a href="' . Settings::pluginInfoURL('capability-manager-enhanced')
+                                    esc_html(SettingsAdmin::getStr('pp_capabilities_install_prompt')),
+                                    '<span class="plugins update-message"><a href="' . esc_url(Settings::pluginInfoURL('capability-manager-enhanced'))
                                     . '" class="thickbox" title=" PublishPress Capabilities">PublishPress&nbsp;Capabilities</a></span>'
                                 );
                             }
@@ -308,8 +308,8 @@ class SettingsTabAdvanced
                     <table id="pp_cap_descripts" class="pp_cap_descripts pp-hint">
                         <thead>
                         <tr>
-                            <th class="cap-name"><?php _e('Capability Name', 'press-permit-core'); ?></th>
-                            <th><?php echo __('Description', 'press-permit-core'); ?></th>
+                            <th class="cap-name"><?php esc_html_e('Capability Name', 'press-permit-core'); ?></th>
+                            <th><?php echo esc_html__('Description', 'press-permit-core'); ?></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -320,8 +320,8 @@ class SettingsTabAdvanced
                         foreach ($pp_caps as $cap_name => $descript) :
                             ?>
                             <tr>
-                                <td class="cap-name"><?php echo $cap_name; ?></td>
-                                <td><?php echo $descript; ?></td>
+                                <td class="cap-name"><?php echo esc_html($cap_name); ?></td>
+                                <td><?php echo esc_html($descript); ?></td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
@@ -354,14 +354,14 @@ class SettingsTabAdvanced
                 ?>
                 <tr>
                     <td scope="row" colspan="2">
-                        <span style="font-weight:bold"><?php echo $ui->section_captions[$tab][$section]; ?></span>
+                        <span style="font-weight:bold"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></span>
 
                         <table id="pp_defined_constants" class="pp_cap_descripts">
                             <thead>
                             <tr>
-                                <th class="cap-name"><?php _e('Defined Constant', 'press-permit-core'); ?></th>
-                                <th class="const-value"><?php echo __('Setting', 'press-permit-core'); ?></th>
-                                <th><?php echo __('Description', 'press-permit-core'); ?></th>
+                                <th class="cap-name"><?php esc_html_e('Defined Constant', 'press-permit-core'); ?></th>
+                                <th class="const-value"><?php echo esc_html__('Setting', 'press-permit-core'); ?></th>
+                                <th><?php echo esc_html__('Description', 'press-permit-core'); ?></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -370,7 +370,7 @@ class SettingsTabAdvanced
                             foreach (array_keys($defined_constant_types) as $const_type) :
                                 ?>
                                 <tr class="const-section">
-                                    <td>--- <?php echo $ppc->constant_types[$const_type]; ?> ---</td>
+                                    <td>--- <?php echo esc_html($ppc->constant_types[$const_type]); ?> ---</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -385,9 +385,9 @@ class SettingsTabAdvanced
                                     }
                                     ?>
                                     <tr>
-                                        <td class="cap-name"><?php echo $const_name; ?></td>
-                                        <td><?php echo strval(constant($const_name)); ?></td>
-                                        <td><?php echo $ppc->constants[$const_name]->descript; ?></td>
+                                        <td class="cap-name"><?php echo esc_html($const_name); ?></td>
+                                        <td><?php echo esc_html(strval(constant($const_name))); ?></td>
+                                        <td><?php echo esc_html($ppc->constants[$const_name]->descript); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endforeach; ?>
@@ -398,9 +398,9 @@ class SettingsTabAdvanced
                         <table id="pp_available_constants" class="pp_cap_descripts pp-hint">
                             <thead>
                             <tr>
-                                <th class="cap-name"><?php _e('Available Constant', 'press-permit-core'); ?></th>
-                                <th class="const-value"><?php echo __('Setting', 'press-permit-core'); ?></th>
-                                <th><?php echo __('Description', 'press-permit-core'); ?></th>
+                                <th class="cap-name"><?php esc_html_e('Available Constant', 'press-permit-core'); ?></th>
+                                <th class="const-value"><?php echo esc_html__('Setting', 'press-permit-core'); ?></th>
+                                <th><?php echo esc_html__('Description', 'press-permit-core'); ?></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -414,7 +414,7 @@ class SettingsTabAdvanced
                                 ?>
                                 <?php if (isset($ppc->constant_types[$const_type])) : ?>
                                 <tr class="const-section">
-                                    <td>--- <?php echo $ppc->constant_types[$const_type]; ?> ---</td>
+                                    <td>--- <?php echo esc_html($ppc->constant_types[$const_type]); ?> ---</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -428,9 +428,9 @@ class SettingsTabAdvanced
                                     $class = (defined($const_name)) ? ' defined' : '';
                                     ?>
                                     <tr>
-                                        <td class="cap-name<?php echo $class; ?>"><?php echo $const_name; ?></td>
-                                        <td class="<?php echo $class; ?>"><?php echo (defined($const_name)) ? strval(constant($const_name)) : ''; ?></td>
-                                        <td class="<?php echo $class; ?>"><?php echo $ppc->constants[$const_name]->descript; ?></td>
+                                        <td class="cap-name<?php echo esc_attr($class); ?>"><?php echo esc_html($const_name); ?></td>
+                                        <td class="<?php echo esc_attr($class); ?>"><?php echo (defined($const_name)) ? esc_html(strval(constant($const_name))) : ''; ?></td>
+                                        <td class="<?php echo esc_attr($class); ?>"><?php echo esc_html($ppc->constants[$const_name]->descript); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endforeach; ?>
@@ -447,12 +447,12 @@ class SettingsTabAdvanced
             $section = 'network';
             ?>
             <tr>
-                <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
 
                     <div id="pp_modify_default_settings" class="pp-settings-code">
                         <?php
-                        _e('To modify one or more default settings network-wide, <strong>copy</strong> the following code into your theme&apos;s <strong>functions.php</strong> file (or some other file which is always executed and not auto-updated) and modify as desired:', 'press-permit-core');
+                        esc_html_e("To modify one or more default settings network-wide, <strong>copy</strong> the following code into your theme's <strong>functions.php</strong> file (or some other file which is always executed and not auto-updated) and modify as desired:", 'press-permit-core');
                         ?>
                         <textarea rows='10' cols='150' readonly='readonly'>
     // Use this filter if you want to change the default, but still allow manual setting
@@ -471,7 +471,7 @@ class SettingsTabAdvanced
 
                     <div id="pp_force_settings" class="pp-settings-code">
                         <?php
-                        _e('To force the value of one or more settings network-wide, <strong>copy</strong> the following code into your theme&apos;s <strong>functions.php</strong> file (or some other file which is always executed and not auto-updated) and modify as desired:', 'press-permit-core');
+                        esc_html_e("To force the value of one or more settings network-wide, <strong>copy</strong> the following code into your theme's <strong>functions.php</strong> file (or some other file which is always executed and not auto-updated) and modify as desired:", 'press-permit-core');
                         ?>
                         <textarea rows='13' cols='150' readonly='readonly'>
     // Use this filter if you want to force an option, blocking/disregarding manual setting
@@ -496,6 +496,6 @@ class SettingsTabAdvanced
                 </td>
             </tr>
             <?php
-        } // endif multisite
-    } // end function optionsUI()
+        }
+    }
 }

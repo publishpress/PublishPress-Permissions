@@ -36,7 +36,7 @@ class Groups
                 check_admin_referer('pp-bulk-groups');
 
                 if (!current_user_can('pp_delete_groups'))
-                    wp_die(__('You are not permitted to do that.', 'press-permit-core'));
+                    wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
 
                 $group_variant = (! empty($_REQUEST['group_variant'])) ? pp_permissions_sanitize_key($_REQUEST['group_variant']) : 'pp_group';
                 $redirect = add_query_arg('group_variant', $group_variant, $redirect);
@@ -72,7 +72,7 @@ class Groups
                 }
 
                 if (!$delete_ids)
-                    wp_die(__('You can&#8217;t delete that group.', 'press-permit-core'));
+                    wp_die(esc_html__('You can&#8217;t delete that group.', 'press-permit-core'));
 
                 $redirect = add_query_arg(['delete_count' => count($delete_ids), 'update' => $update], $redirect);
 
@@ -91,7 +91,7 @@ class Groups
                 check_admin_referer('pp-bulk-groups');
 
                 if (!current_user_can('pp_delete_groups'))
-                    wp_die(__('You are not permitted to do that.', 'press-permit-core'));
+                    wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
 
                 if (!empty($_REQUEST['groups'])) {
                     $redirect = esc_url_raw(add_query_arg([

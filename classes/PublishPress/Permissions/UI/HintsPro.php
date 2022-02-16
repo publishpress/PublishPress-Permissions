@@ -8,7 +8,7 @@ class HintsPro
     {
     ?>
 <div style="margin-top:5px">
-<a href="#pp-pro-info"><?php _e('Show list of Permissions Pro features and screencasts', 'press-permit-core'); ?></a>
+<a href="#pp-pro-info"><?php esc_html_e('Show list of Permissions Pro features and screencasts', 'press-permit-core'); ?></a>
 </div>
 
 <?php
@@ -86,92 +86,92 @@ ul.pro-pplinks li.spacer {
 
 <div id="pp_features" style="display:none">
 <div class="pp-logo"><a href="https://publishpress.com">
-        <img src="<?php echo $img_url; ?>pp-logo.png"/></a>
+        <img src="<?php echo esc_url($img_url); ?>pp-logo.png"/></a>
 
     <ul class="pp-features">
 
         <li>
-            <?php _e("Customize editing permissions per-category or per-post", $lang_id); ?>
+            <?php esc_html_e("Customize editing permissions per-category or per-post", $lang_id); ?>
             <a href="https://www.youtube.com/watch?v=0yOEBD8VE9c&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=3"
             target="_blank">
-                <img class="cme-play" src="<?php echo $img_url; ?>play.png"/></a></li>
+                <img class="cme-play" src="<?php echo esc_url($img_url); ?>play.png"/></a></li>
 
         <li>
-            <?php _e("Limit category/term assignment and page parent selection", $lang_id); ?>
+            <?php esc_html_e("Limit category/term assignment and page parent selection", $lang_id); ?>
             <a href="https://www.youtube.com/watch?v=QqvtxrqLPwY&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=4"
             target="_blank">
-                <img class="cme-play" src="<?php echo $img_url; ?>play.png"/></a></li>
+                <img class="cme-play" src="<?php echo esc_url($img_url); ?>play.png"/></a></li>
 
         <li>
-            <?php _e("File Access: regulate direct access to uploaded files", $lang_id); ?>
+            <?php esc_html_e("File Access: regulate direct access to uploaded files", $lang_id); ?>
             <a href="https://www.youtube.com/watch?v=kVusrdlgSps&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=15"
             target="_blank">
-                <img class="cme-play" src="<?php echo $img_url; ?>play.png"/></a></li>
+                <img class="cme-play" src="<?php echo esc_url($img_url); ?>play.png"/></a></li>
 
         <li>
-            <?php _e("Hidden Content Teaser", $lang_id); ?>
+            <?php esc_html_e("Hidden Content Teaser", $lang_id); ?>
             <a href="https://www.youtube.com/watch?v=d_5r8NKjxDQ&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=9"
             target="_blank">
-                <img class="cme-play" src="<?php echo $img_url; ?>play.png"/></a></li>
+                <img class="cme-play" src="<?php echo esc_url($img_url); ?>play.png"/></a></li>
 
         <li>
-            <?php _e("bbPress: customize viewing, topic creation or reply submission permissions per-forum", $lang_id); ?></li>
+            <?php esc_html_e("bbPress: customize viewing, topic creation or reply submission permissions per-forum", $lang_id); ?></li>
 
         <li>
-            <?php _e("Date-limited membership in Permissions Groups", $lang_id); ?>
+            <?php esc_html_e("Date-limited membership in Permissions Groups", $lang_id); ?>
             <a href="https://www.youtube.com/watch?v=hMOVvCy_9Ws&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=7"
             target="_blank">
-                <img class="cme-play" src="<?php echo $img_url; ?>play.png"/></a></li>
+                <img class="cme-play" src="<?php echo esc_url($img_url); ?>play.png"/></a></li>
 
         <li>
-            <?php _e("Custom Post Visibility statuses, fully implemented throughout wp-admin", $lang_id); ?>
+            <?php esc_html_e("Custom Post Visibility statuses, fully implemented throughout wp-admin", $lang_id); ?>
             <a href="https://www.youtube.com/watch?v=vM3Iwt3Jdak&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=6"
             target="_blank">
-                <img class="cme-play" src="<?php echo $img_url; ?>play.png"/></a></li>
+                <img class="cme-play" src="<?php echo esc_url($img_url); ?>play.png"/></a></li>
 
         <li>
-            <?php _e("Custom Moderation statuses for access-controlled, multi-step publishing workflow", $lang_id); ?>
+            <?php esc_html_e("Custom Moderation statuses for access-controlled, multi-step publishing workflow", $lang_id); ?>
             <a href="https://www.youtube.com/watch?v=v8VyKP3rIvk&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=8"
             target="_blank">
-                <img class="cme-play" src="<?php echo $img_url; ?>play.png"/></a></li>
+                <img class="cme-play" src="<?php echo esc_url($img_url); ?>play.png"/></a></li>
 
         <li>
-            <?php _e("Regulate permissions for PublishPress post statuses", $lang_id); ?>
+            <?php esc_html_e("Regulate permissions for PublishPress post statuses", $lang_id); ?>
             <a href="https://www.youtube.com/watch?v=eeZ6CBC5kQI&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=11"
             target="_blank">
-                <img class="cme-play" src="<?php echo $img_url; ?>play.png"/></a></li>
+                <img class="cme-play" src="<?php echo esc_url($img_url); ?>play.png"/></a></li>
 
         <li>
-            <?php _e("Customize the moderated editing of published content with Revisionary", $lang_id); ?>
+            <?php esc_html_e("Customize the moderated editing of published content with Revisionary", $lang_id); ?>
             <a href="https://www.youtube.com/watch?v=kCD6HQAjUXs&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=12"
             target="_blank">
-                <img class="cme-play" src="<?php echo $img_url; ?>play.png"/></a></li>
+                <img class="cme-play" src="<?php echo esc_url($img_url); ?>play.png"/></a></li>
 
         <li>
-            <?php _e("Grant supplemental content permissions to a BuddyPress group", $lang_id); ?>
+            <?php esc_html_e("Grant supplemental content permissions to a BuddyPress group", $lang_id); ?>
             <a href="https://www.youtube.com/watch?v=oABIT7wki_A&list=PLyelWaWwt1HxuwrZDRBO_c70Tm8A7lfb3&index=14"
             target="_blank">
-                <img class="cme-play" src="<?php echo $img_url; ?>play.png"/></a></li>
+                <img class="cme-play" src="<?php echo esc_url($img_url); ?>play.png"/></a></li>
 
         <li>
-            <?php _e("WPML integration to mirror permissions to translations", $lang_id); ?>
+            <?php esc_html_e("WPML integration to mirror permissions to translations", $lang_id); ?>
         </li>
 
         <li>
-            <?php _e("Help ticket system", $lang_id); ?>
+            <?php esc_html_e("Help ticket system", $lang_id); ?>
         </li>
     </ul>
 
     <ul class="pro-pplinks" style="display:none">
-        <li><a class="pp-screencasts" href="https://publishpress.com/permissions-start/" target="_blank"><?php _e('Knowledge Base', 'press-permit-core'); ?></a></li>
+        <li><a class="pp-screencasts" href="https://publishpress.com/permissions-start/" target="_blank"><?php esc_html_e('Knowledge Base', 'press-permit-core'); ?></a></li>
         <li class="spacer">&bull;</li>
-        <li><a href="https://publishpress.com/wp-content/uploads/2020/03/RoleScoper-Permissions-Feature-Grid.pdf" target="_blank"><?php _e('Detailed Feature Grid', 'press-permit-core'); ?></a></li>
+        <li><a href="https://publishpress.com/wp-content/uploads/2020/03/RoleScoper-Permissions-Feature-Grid.pdf" target="_blank"><?php esc_html_e('Detailed Feature Grid', 'press-permit-core'); ?></a></li>
         <li class="spacer">&bull;</li>
-        <li><a href="https://publishpress.com/contact/" target="_blank"><?php _e('Contact Us', 'press-permit-core'); ?></a></li>
+        <li><a href="https://publishpress.com/contact/" target="_blank"><?php esc_html_e('Contact Us', 'press-permit-core'); ?></a></li>
         <li class="spacer">&bull;</li>
-        <li><a href="https://publishpress.com/pricing/" target="_blank"><?php _e('Purchase', 'press-permit-core'); ?></a></li>
+        <li><a href="https://publishpress.com/pricing/" target="_blank"><?php esc_html_e('Purchase', 'press-permit-core'); ?></a></li>
         <li class="spacer">&bull;</li>
-        <li><a href="#pp-pro-hide"><?php _e('Hide', 'press-permit-core'); ?></a></li>
+        <li><a href="#pp-pro-hide"><?php esc_html_e('Hide', 'press-permit-core'); ?></a></li>
     </ul>
 
 </div>

@@ -7,7 +7,7 @@ class Settings
     public function __construct()
     {
         if (!current_user_can('pp_manage_settings'))
-            wp_die(PWP::__wp('Cheatin&#8217; uh?'));
+            wp_die(esc_html(PWP::__wp('Cheatin&#8217; uh?')));
 
         if (!empty($_REQUEST['presspermit_refresh_updates'])) {
             delete_site_transient('update_plugins');

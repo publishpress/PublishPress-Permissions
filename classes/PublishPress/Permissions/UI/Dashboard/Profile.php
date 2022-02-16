@@ -28,13 +28,13 @@ class Profile
             $roles,
             [
                 'read_only' => true,
-                'caption' => sprintf(__('Supplemental Roles %1$s(for this user)%2$s', 'press-permit-core'), '', ''),
+                'caption' => sprintf(esc_html__('Supplemental Roles %1$s(for this user)%2$s', 'press-permit-core'), '', ''),
                 'class' => 'pp-user-roles',
                 'link' => $edit_url
             ]
         );
 
-        $caption = sprintf(__('Specific Permissions %1$s(for user)%2$s', 'press-permit-core'), '', '');
+        $caption = sprintf(esc_html__('Specific Permissions %1$s(for user)%2$s', 'press-permit-core'), '', '');
         $new_permissions_link = true;
         $maybe_display_note = !$has_user_roles;
         $display_limit = 12;
@@ -91,7 +91,7 @@ class Profile
             [
                 'read_only' => true,
                 'link' => '',
-                'caption' => sprintf(__('Supplemental Roles %1$s(from primary role or group membership)%2$s', 'press-permit-core'), '', '')
+                'caption' => sprintf(esc_html__('Supplemental Roles %1$s(from primary role or group membership)%2$s', 'press-permit-core'), '', '')
             ]
         );
 
@@ -101,7 +101,7 @@ class Profile
             [
                 'edit_url' => '',
                 'class' => 'pp-group-roles',
-                'caption' => __('Specific Permissions (from primary role or group membership)', 'press-permit-core'),
+                'caption' => esc_html__('Specific Permissions (from primary role or group membership)', 'press-permit-core'),
                 'join_groups' => 'groups_only',
                 'display_limit' => 12
             ]
@@ -188,22 +188,22 @@ class Profile
                 continue;
             }
 
-            $style = ($initial_hide) ? "style='display:none'" : '';
+            $style = ($initial_hide) ? "display:none" : '';
 
-            echo "<div id='userprofile_groupsdiv_pp' class='pp-group-box pp-group_members' $style>";
+            echo "<div id='userprofile_groupsdiv_pp' class='pp-group-box pp-group_members' style='" . esc_attr($style) . "'>";
             echo "<h3>";
 
             if ('pp_group' == $agent_type) {
                 if (defined('GROUPS_CAPTION_RS')) {
-                    echo(GROUPS_CAPTION_RS);
+                    echo esc_html(GROUPS_CAPTION_RS);
                 } elseif (defined('PP_GROUPS_CAPTION')) {
-                    echo(PP_GROUPS_CAPTION);
+                    echo esc_html(PP_GROUPS_CAPTION);
                 } else {
-                    _e('Permission Groups', 'press-permit-core');
+                    esc_html_e('Permission Groups', 'press-permit-core');
                 }
             } else {
                 $group_type_obj = $pp_groups->getGroupTypeObject($agent_type);
-                echo $group_type_obj->labels->name;
+                echo esc_html($group_type_obj->labels->name);
             }
 
             echo "</h3>";
@@ -227,20 +227,20 @@ class Profile
                 ?>
                 <p>
                     <?php if (!$all_groups && $force_display) :
-                        _e('This user is not a member of any custom Permission Groups.', 'press-permit-core');
+                        esc_html_e('This user is not a member of any custom Permission Groups.', 'press-permit-core');
                         ?>&nbsp;&bull;&nbsp;
                     <?php endif; ?>
 
-                    <?php $title = esc_attr(__('Edit this user&apos;s group membership', 'press-permit-core')); ?>
-                    <a href='user-edit.php?user_id=<?php echo $user_id; ?>#userprofile_groupsdiv_pp'
-                       title='<?php echo($title); ?>'>
-                        <?php _e('add / edit membership'); ?>
+                    <?php $title = esc_attr(__("Edit this user's group membership", 'press-permit-core')); ?>
+                    <a href='user-edit.php?user_id=<?php echo esc_attr($user_id); ?>#userprofile_groupsdiv_pp'
+                       title='<?php echo esc_attr($title); ?>'>
+                        <?php esc_html_e('add / edit membership'); ?>
                     </a>
                     &nbsp;&nbsp;
                     <span class="pp-subtext">
                     <?php
                     $note = (defined('BP_VERSION'))
-                        ? __('note: BuddyPress Groups and other externally defined groups are not listed here, even if they modify permissions', 'press-permit-core')
+                        ? __('Note: BuddyPress Groups and other externally defined groups are not listed here, even if they modify permissions', 'press-permit-core')
                         : '';
 
                     $note = apply_filters(
@@ -250,7 +250,7 @@ class Profile
                         $args
                     );
 
-                    echo $note;
+                    echo esc_html($note);
                     ?>
                 </span>
                 </p>
@@ -289,7 +289,7 @@ class Profile
                 $i = 0;
                 foreach ($exception_info[$id]['exceptions'] as $exc_title => $exc_count) {
                     $i++;
-                    $exc_titles[] = sprintf(__('%1$s (%2$s)', 'press-permit-core'), $exc_title, $exc_count);
+                    $exc_titles[] = sprintf(esc_html__('%1$s (%2$s)', 'press-permit-core'), $exc_title, $exc_count);
                     if ($i >= $display_limit) {
                         break;
                     }
@@ -337,17 +337,17 @@ class Profile
         if (!$exceptions_ui = self::listAgentExceptions($agent_type, $agent_id, $args)) {
             if (('user' == $agent_type) && ($join_groups != 'groups_only') && $new_permissions_link) : ?>
                 <div style="clear:both;"></div>
-                <div id='pp_current_user_exceptions_ui' class='pp-group-box <?php echo $class; ?>'>
+                <div id='pp_current_user_exceptions_ui' class='pp-group-box <?php echo esc_attr($class); ?>'>
                     <h3>
                         <?php
-                        _e('Custom User Permissions', 'press-permit-core');
+                        esc_html_e('Custom User Permissions', 'press-permit-core');
                         ?>
                     </h3>
                     <p>
                         <?php
                         printf(
-                            __('Supplemental roles and specific permissions assigned to a user\'s primary role or other Permission Groups are usually the cleanest way to customize permissions.  You can also %1$scustomize this user directly%2$s.', 'press-permit-core'),
-                            "<a href='$edit_url'>",
+                            esc_html__('Supplemental roles and specific permissions assigned to a user\'s primary role or other Permission Groups are usually the cleanest way to customize permissions.  You can also %1$scustomize this user directly%2$s.', 'press-permit-core'),
+                            "<a href='" . esc_url($edit_url) . "'>",
                             '</a>'
                         );
 

@@ -156,9 +156,9 @@ class ItemExceptionsRenderUI
         }
         ?>
         <tr>
-            <td class='pp-exc-agent'><input type='hidden' value='<?php echo $agent_id; ?>'/>
-                <a href='<?php echo "{$this->base_url} $agent_id"; ?>' <?php echo $title; ?>
-                   target='_blank'><?php echo $_name; ?></a></td>
+            <td class='pp-exc-agent'><input type='hidden' value='<?php echo esc_attr($agent_id); ?>'/>
+                <a href='<?php echo esc_url("{$this->base_url}$agent_id"); ?>' title='<?php echo esc_attr($title); ?>'
+                   target='_blank'><?php echo esc_html($_name); ?></a></td>
             <?php
             foreach ($assignment_modes as $assign_for) {
                 if (!empty($agent_exceptions[$assign_for]['additional'])) {
@@ -200,7 +200,7 @@ class ItemExceptionsRenderUI
                 $for_type = ($for_item_type) ? $for_item_type : '(all)';
                 ?>
                 <td class="<?php echo ('children' == $assign_for) ? 'pp-exc-children' : 'pp-exc-item'; ?>">
-                    <select name='pp_exceptions<?php echo "[$for_type][$op][$agent_type][$assign_for][$agent_id]'{$this->opt_class[$current_val]}"; ?><?php echo $disabled; ?> autocomplete="off">
+                    <select name='pp_exceptions<?php echo esc_attr("[$for_type][$op][$agent_type][$assign_for][$agent_id]") . "' class='" . esc_attr($this->opt_class[$current_val]) . "'"; ?><?php echo esc_attr($disabled); ?> autocomplete="off">
                                         <?php
                     foreach ($this->options[$option_set] as $val => $lbl) :
                     if (('wp_role' == $agent_type) 
@@ -212,14 +212,16 @@ class ItemExceptionsRenderUI
                         continue;
                     }
                     ?>
-                                                            <option value='<?php echo "$val'{$this->opt_class[$val]}";
-                    selected($val, $current_val); ?>><?php echo $lbl; ?></option>
+                    <option value='<?php echo esc_attr("$val") . "' class='" . esc_attr($this->opt_class[$val]) . "' ";
+                    selected($val, $current_val); ?>>
+                    <?php echo esc_html($lbl); ?>
+                    </option>
                         <?php endforeach; ?>
                     </select>
                     <?php if ($disabled) : ?>
                         <input type="hidden"
-                               name='pp_exceptions<?php echo "[$for_type][$op][$agent_type][$assign_for][$agent_id]"; ?>'
-                               value="<?php echo $current_val; ?>"/>
+                               name='pp_exceptions<?php echo esc_attr("[$for_type][$op][$agent_type][$assign_for][$agent_id]"); ?>'
+                               value="<?php echo esc_attr($current_val); ?>"/>
                     <?php endif; ?>
 
                 </td>

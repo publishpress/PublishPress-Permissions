@@ -171,13 +171,17 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
         if (('plugins.php' == $pagenow) && !strpos(urldecode($_SERVER['REQUEST_URI']), 'deactivate')) {
             add_action('all_admin_notices', function()
             {
-                $msg = sprintf(
+                ?>
+                <div id='message' class='error fade' style='color:black'>
+                <?php
+                printf(
                     '<strong>Error:</strong> Multiple copies of %1$s activated. Only the copy in folder "%2$s" is functional.',
-                    'PressPermit',
-                    dirname(plugin_basename(PRESSPERMIT_FILE))
+                    'PublishPress Permissions',
+                    esc_html(dirname(plugin_basename(PRESSPERMIT_FILE)))
                 );
-
-                echo "<div id='message' class='error fade' style='color:black'>" . $msg . '</div>';
+                ?>
+                </div>
+                <?php
             }, 5);
         }
     }

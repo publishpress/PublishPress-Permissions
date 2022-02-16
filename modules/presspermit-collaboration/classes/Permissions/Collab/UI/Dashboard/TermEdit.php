@@ -62,11 +62,11 @@ class TermEdit
 
                     $caption = ('associate' == $op) 
                     ? sprintf(
-                        __('Permissions: Select this %1$s as Parent', 'press-permit-core'), 
+                        esc_html__('Permissions: Select this %1$s as Parent', 'press-permit-core'), 
                         $tx->labels->singular_name
                     )
                     : sprintf(
-                        __('Permissions: %1$s this %2$s', 'press-permit-core'), 
+                        esc_html__('Permissions: %1$s this %2$s', 'press-permit-core'), 
                         $op_obj->label, 
                         $tx->labels->singular_name
                     );

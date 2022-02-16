@@ -26,7 +26,7 @@ class GroupNew
             $wp_http_referer = '';
 
         if (!current_user_can('pp_create_groups'))
-            wp_die(__('You are not permitted to do that.', 'press-permit-core'));
+            wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
         ?>
 
         <?php
@@ -36,7 +36,7 @@ class GroupNew
 
         if (!presspermit_empty_GET('update') && empty($pp_admin->errors)) : ?>
             <div id="message" class="updated">
-                <p><strong><?php _e('Group created.', 'press-permit-core') ?>&nbsp;</strong>
+                <p><strong><?php esc_html_e('Group created.', 'press-permit-core') ?>&nbsp;</strong>
                     <?php
                     if (!$group_variant = presspermit_REQUEST_key('group_variant')) {
                         $group_variant = 'pp_group';
@@ -47,7 +47,7 @@ class GroupNew
                     : admin_url("admin.php?page=presspermit-groups&group_variant=$group_variant"); 
                     ?>
 
-                    <a href="<?php echo esc_url($groups_link); ?>"><?php _e('Back to groups list', 'press-permit-core'); ?></a>
+                    <a href="<?php echo esc_url($groups_link); ?>"><?php esc_html_e('Back to groups list', 'press-permit-core'); ?></a>
                 </p>
             </div>
         <?php endif; ?>
@@ -55,7 +55,11 @@ class GroupNew
             <?php
         if (!empty($pp_admin->errors) && is_wp_error($pp_admin->errors)) : ?>
             <div class="error">
-                <p><?php echo implode("</p>\n<p>", $pp_admin->errors->get_error_messages()); ?></p>
+            <?php 
+            foreach($pp_admin->errors->get_error_messages() as $msg) {
+                echo '<p>' . esc_html($msg) . '</p>';
+            }
+            ?>
             </div>
         <?php endif; ?>
 
@@ -72,15 +76,15 @@ class GroupNew
                     }
 
                     if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type))
-                        _e('Create New Permission Group', 'press-permit-core');
+                        esc_html_e('Create New Permission Group', 'press-permit-core');
                     else
-                        printf(__('Create New %s', 'press-permit-core'), $group_type_obj->labels->singular_name);
+                        printf(esc_html__('Create New %s', 'press-permit-core'), esc_html($group_type_obj->labels->singular_name));
                     ?></h1>
                 </header>
 
                 <form action="" method="post" id="creategroup" name="creategroup" class="pp-admin">
                     <input name="action" type="hidden" value="creategroup"/>
-                    <input name="agent_type" type="hidden" value="<?php echo $agent_type; ?>"/>
+                    <input name="agent_type" type="hidden" value="<?php echo esc_attr($agent_type); ?>"/>
                     <?php wp_nonce_field('pp-create-group', '_wpnonce_pp-create-group') ?>
 
                     <?php if ($wp_http_referer) : ?>
@@ -89,13 +93,13 @@ class GroupNew
 
                     <table class="form-table">
                         <tr class="form-field form-required">
-                            <th scope="row"><label for="group_name"><?php echo __('Name', 'press-permit-core'); ?></label></th>
+                            <th scope="row"><label for="group_name"><?php echo esc_html__('Name', 'press-permit-core'); ?></label></th>
                             <td><input type="text" name="group_name" id="group_name" value="" class="regular-text"
                                     tabindex="1"/></td>
                         </tr>
 
                         <tr class="form-field">
-                            <th><label for="description"><?php echo __('Description', 'press-permit-core'); ?></label></th>
+                            <th><label for="description"><?php echo esc_html__('Description', 'press-permit-core'); ?></label></th>
                             <td><input type="text" name="description" id="description" value="" class="regular-text" size="80"
                                     tabindex="2"/></td>
                         </tr>
@@ -107,14 +111,14 @@ class GroupNew
                     }
 
                     echo '<div class="pp-settings-caption" style="clear:both;"><br />';
-                    _e('Note: Supplemental Roles and other group settings can be configured here after the new group is created.', 'press-permit-core');
+                    esc_html_e('Note: Supplemental Roles and other group settings can be configured here after the new group is created.', 'press-permit-core');
                     echo '</div>';
 
                     do_action('presspermit_new_group_ui');
                     ?>
 
                     <?php
-                    submit_button(__('Create Group', 'press-permit-core'), 'primary large pp-submit', '', true, 'tabindex="3"');
+                    submit_button(esc_html__('Create Group', 'press-permit-core'), 'primary large pp-submit', '', true, 'tabindex="3"');
                     ?>
 
                 </form>

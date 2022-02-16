@@ -17,6 +17,10 @@ class AgentRolesAjax
             exit;
         }
 
+        if (!$pp_ajax_agent_roles = presspermit_GET_key('pp_ajax_agent_roles')) {
+            exit;
+        }
+
         $pp = presspermit();
         $pp_admin = $pp->admin();
 
@@ -24,8 +28,6 @@ class AgentRolesAjax
             exit;
         }
 
-        $for_item_source = pp_permissions_sanitize_key($_GET['pp_source_name']);
-        $for_item_type = pp_permissions_sanitize_key($_GET['pp_object_type']);
         $role_name = PWP::sanitizeCSV(presspermit_GET_var('pp_role_name'));
         
         $filterable_vars = ['for_item_source', 'for_item_type', 'role_name'];
@@ -36,13 +38,11 @@ class AgentRolesAjax
             }
         }
 
-        $html = '';
-
-        switch ($_GET['pp_ajax_agent_roles']) {
+        switch ($pp_ajax_agent_roles) {
 
             case 'get_role_options':
                 if (!is_user_logged_in()) {
-                    echo '<option>' . __('(login timed out)', 'press-permit-core') . '</option>';
+                    echo '<option>' . esc_html__('(login timed out)', 'press-permit-core') . '</option>';
                     exit;
                 }
 
@@ -53,34 +53,31 @@ class AgentRolesAjax
                 if ($roles = \PublishPress\Permissions\RoleAdmin::getTypeRoles($for_item_source, $for_item_type)) {
                     foreach ($roles as $_role_name => $role_title) {
                         if ($pp_admin->userCanAdminRole($_role_name, $for_item_type)) {
-                            $selected = ($_role_name == $role_name) ? "selected='selected'" : '';
-                            $html .= "<option value='$_role_name' $selected>$role_title</option>";
+                            $selected = ($_role_name == $role_name) ? ' selected ' : '';
+                            echo "<option value='" . esc_attr($_role_name) . "'" . esc_attr($selected) . "'>". esc_html($role_title) . "</option>";
                         }
                     }
                 } else {
-                    $caption = __('(invalid role definition)', 'press-permit-core');
-                    $html .= "<option value='' $selected>$caption</option>";
+                    echo "<option value='' " . esc_attr($selected) . ">" .  esc_html__('(invalid role definition)', 'press-permit-core') . "</option>";
                 }
                 break;
 
             case 'get_conditions_ui':
                 if (!is_user_logged_in()) {
-                    echo '<p>' . __('(login timed out)', 'press-permit-core') . '</p><div class="pp-checkbox">'
+                    echo '<p>' . esc_html__('(login timed out)', 'press-permit-core') . '</p><div class="pp-checkbox">'
                         . '<input type="checkbox" name="pp_select_for_item" style="display:none">'
                         . '<input type="checkbox" name="pp_select_for_item" style="display:none"></div>';
 
                     exit;
                 }
 
-                $checked = (!empty($pp->role_defs->direct_roles[$role_name])) ? ' checked="checked"' : '';
-
-                $standard_stati_ui = '<p class="pp-checkbox">'
-                    . '<input type="checkbox" id="pp_select_cond_" name="pp_select_cond[]" value=""' . $checked . ' /> '
-                    . '<label id="lbl_pp_select_cond_" for="pp_select_cond_">' . __('Standard statuses', 'press-permit-core') . '</label>'
-                    . '</p>';
+                $checked = (!empty($pp->role_defs->direct_roles[$role_name])) ? ' checked ' : '';
 
                 if (('post' != $for_item_source) || ('attachment' == $for_item_type)) {
-                    $html = $standard_stati_ui;
+                    echo '<p class="pp-checkbox">'
+                    . '<input type="checkbox" id="pp_select_cond_" name="pp_select_cond[]" value=""' . esc_attr($checked) . ' /> '
+                    . '<label id="lbl_pp_select_cond_" for="pp_select_cond_">' . esc_html__('Standard statuses', 'press-permit-core') . '</label>'
+                    . '</p>';
                 } elseif ($role_name) {
                     $type_obj = $pp->getTypeObject($for_item_source, $for_item_type);
                     $type_caps = $pp->getRoleCaps($role_name);
@@ -88,25 +85,30 @@ class AgentRolesAjax
                     $direct_assignment = (false === strpos($role_name, ':'));
 
                     if (!empty($type_caps['edit_posts']) || $direct_assignment) {
-                        $html = $standard_stati_ui;
+                        $do_standard_statuses_ui = true;
                     } else {
-                        $html = '';
-
                         if (empty($type_caps)) {
                             $arr_role_name = explode(':', $role_name);
                             if (in_array($arr_role_name[0], ['contributor', 'author', 'editor', 'revisor'], true)) {
-                                $html = $standard_stati_ui;
+                                $do_standard_statuses_ui = true;
+                            }
                             }
                         }
+
+                    if (!empty($do_standard_statuses_ui)) {
+                        echo '<p class="pp-checkbox">'
+                        . '<input type="checkbox" id="pp_select_cond_" name="pp_select_cond[]" value=""' . esc_attr($checked) . ' /> '
+                        . '<label id="lbl_pp_select_cond_" for="pp_select_cond_">' . esc_html__('Standard statuses', 'press-permit-core') . '</label>'
+                        . '</p>';
                     }
 
                     // edit_private, delete_private caps are normally cast from pattern role
                     if (isset($type_caps['read']) && (empty($type_caps['edit_posts']) || $direct_assignment)) {
                         $pvt_obj = get_post_status_object('private');
 
-                        $html .= '<p class="pp-checkbox pp_select_private_status">'
+                        echo '<p class="pp-checkbox pp_select_private_status">'
                             . '<input type="checkbox" id="pp_select_cond_post_status_private" name="pp_select_cond[]" value="post_status:private" />'
-                            . '<label for="pp_select_cond_post_status_private"> ' . sprintf(__('%s Visibility', 'press-permit-core'), $pvt_obj->label) . '</label>'
+                            . '<label for="pp_select_cond_post_status_private"> ' . sprintf(esc_html__('%s Visibility', 'press-permit-core'), esc_html($pvt_obj->label)) . '</label>'
                             . '</p>';
                     }
 
@@ -114,14 +116,10 @@ class AgentRolesAjax
                         break;
                     }
 
-                    $html = apply_filters('presspermit_permission_status_ui', $html, $for_item_type, $type_caps, $role_name);
+                    do_action('presspermit_permission_status_ui_done', $for_item_type, $type_caps, $role_name);
                 }
 
                 break;
         } // end switch
-
-        if ($html) {
-            echo $html;
-        }
     }
 }

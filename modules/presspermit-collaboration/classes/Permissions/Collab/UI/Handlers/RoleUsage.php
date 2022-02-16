@@ -11,7 +11,7 @@ class RoleUsage
         $redirect = $err = false;
 
         if (!current_user_can('pp_manage_settings'))
-            wp_die(__('You are not permitted to do that.', 'press-permit-core'));
+            wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
 
         $pp = presspermit();
 

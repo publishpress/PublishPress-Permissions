@@ -51,7 +51,7 @@ class PostsListing
 
                 if ($status_obj = get_post_status_object($post->post_status)) {
                     if (!empty($status_obj->private) || (!empty($status_obj->moderation) && ('future' != $post->post_status))) {
-                        echo $status_obj->label;
+                        echo esc_html($status_obj->label);
                     }
                 }
             }
@@ -111,8 +111,8 @@ class PostsListing
 
                 foreach( $moderation_statuses as $status => $status_obj ) :
                 ?>
-                if (!$('select[name="_status"] option[value="<?php echo $status;?>"]').length) {
-                    $('<option value="<?php echo $status;?>"><?php echo $status_obj->label;?></option>').insertBefore('select[name="_status"] option[value="pending"]');
+                if (!$('select[name="_status"] option[value="<?php echo esc_attr($status);?>"]').length) {
+                    $('<option value="<?php echo esc_attr($status);?>"><?php echo esc_html($status_obj->label);?></option>').insertBefore('select[name="_status"] option[value="pending"]');
                 }
                 <?php endforeach;?>
             });

@@ -73,7 +73,7 @@ class PostEdit
                     if (!in_array($post_type, $omit_types, true) && !defined("PP_NO_" . strtoupper($post_type) . "_EXCEPTIONS")) {
                         add_meta_box(
                             "pp_enable_type",
-                            __('Permissions Settings', 'press-permit-core'),
+                            esc_html__('Permissions Settings', 'press-permit-core'),
                             [$this, 'drawSettingsUI'],
                             $post_type,
                             'advanced',
@@ -95,11 +95,11 @@ class PostEdit
             if ($op_obj = $pp->admin()->getOperationObject($op, $post_type)) {
                 $caption = ('associate' == $op) 
                 ? sprintf(
-                    __('Permissions: Select this %s as Parent', 'press-permit-core'),
+                    esc_html__('Permissions: Select this %s as Parent', 'press-permit-core'),
                     $type_obj->labels->singular_name
                 )
                 : sprintf(
-                    __('Permissions: %s this %s', 'press-permit-core'),
+                    esc_html__('Permissions: %s this %s', 'press-permit-core'),
                     $op_obj->label,
                     $type_obj->labels->singular_name
                 );
@@ -147,7 +147,7 @@ class PostEdit
             ?>
             <label for="pp_enable_post_type"><input type="checkbox" name="pp_enable_post_type"
                                                     id="pp_enable_post_type"/>
-                <?php printf(__('enable custom permissions for %s', 'press-permit-core'), $type_obj->labels->name); ?>
+                <?php printf(esc_html__('enable custom permissions for %s', 'press-permit-core'), esc_html($type_obj->labels->name)); ?>
             </label>
         <?php
         endif;

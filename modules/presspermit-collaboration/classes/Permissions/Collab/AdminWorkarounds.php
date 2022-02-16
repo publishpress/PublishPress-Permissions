@@ -144,7 +144,7 @@ class AdminWorkarounds
                 if (('themes.php' == $menu[$key][2]) 
                 && empty($current_user->allcaps['edit_theme_options']) && ('edit_theme_options' == $menu[$key][1])) 
                 {
-                    $menu[$key][0] = __('Menus');
+                    $menu[$key][0] = esc_html__('Menus');
                     $menu[$key][1] = 'manage_nav_menus';
                     $menu[$key][2] = 'nav-menus.php';
                 }
@@ -188,9 +188,9 @@ class AdminWorkarounds
             if (empty ($current_user->allcaps['edit_theme_options']) || !empty($use_term_roles['nav_menu'])) {
                 if (!current_user_can($tx->cap->manage_terms, $menu_id)) {
                     if ($menu_id) {
-                        wp_die(__('You do not have permission to update that Navigation Menu', 'press-permit-core'));
+                        wp_die(esc_html__('You do not have permission to update that Navigation Menu', 'press-permit-core'));
                     } else {
-                        wp_die(__('You do not have permission to create new Navigation Menus', 'press-permit-core'));
+                        wp_die(esc_html__('You do not have permission to create new Navigation Menus', 'press-permit-core'));
                     }
                 }
             }
@@ -198,7 +198,7 @@ class AdminWorkarounds
             if (!$pp->isUserUnfiltered() 
             && empty($current_user->allcaps['edit_theme_options']) && empty($current_user->allcaps['delete_menus'])) 
             {
-                wp_die(__('You do not have permission to delete that Navigation Menu.', 'press-permit-core'));
+                wp_die(esc_html__('You do not have permission to delete that Navigation Menu.', 'press-permit-core'));
             }
         } elseif (false !== strpos($referer_name, 'delete-menu_item_')) {
             if ($pp->getOption('admin_nav_menu_filter_items')) {
@@ -520,18 +520,16 @@ class AdminWorkarounds
                 if (!$page_temp || $page_temp->post_parent) {
                     $selected = ($page_temp && !empty($page_temp->post_parent)) ? $page_temp->post_parent : '';
 
-                    if ($output = wp_dropdown_pages(
+                    wp_dropdown_pages(
                         ['post_type' => 'page', 
-                        'exclude_tree' => $object_id, 
-                        'selected' => $selected, 
+                        'exclude_tree' => esc_attr($object_id), 
+                        'selected' => esc_attr($selected), 
                         'name' => 'parent_id', 
-                        'show_option_none' => __('(no parent)'), 
+                        'show_option_none' => esc_html__('(no parent)'), 
                         'sort_column' => 'menu_order, post_title', 
-                        'echo' => 0
-                        ])
-                    ) { 
-                        echo $output;
-                    }
+                        'echo' => 1
+                        ]
+                    );
                 }
                 $query = "SELECT ID, post_parent FROM $posts WHERE 1=2";
 

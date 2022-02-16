@@ -22,7 +22,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
     public function __construct() // some PHP versions do not allow subclass constructor to be private
     {
         parent::__construct();
-        $this->import_types = ['sites' => __('Sites', 'press-permit-core'), 'groups' => __('Groups', 'press-permit-core'), 'group_members' => __('Group Members', 'press-permit-core'), 'site_roles' => __('General Roles', 'press-permit-core'), 'item_roles' => __('Term / Object Roles', 'press-permit-core'), 'restrictions' => __('Restrictions', 'press-permit-core'), 'options' => __('Options', 'press-permit-core')];
+        $this->import_types = ['sites' => esc_html__('Sites', 'press-permit-core'), 'groups' => esc_html__('Groups', 'press-permit-core'), 'group_members' => esc_html__('Group Members', 'press-permit-core'), 'site_roles' => esc_html__('General Roles', 'press-permit-core'), 'item_roles' => esc_html__('Term / Object Roles', 'press-permit-core'), 'restrictions' => esc_html__('Restrictions', 'press-permit-core'), 'options' => esc_html__('Options', 'press-permit-core')];
     }
 
     function doImport($import_type = 'rs')

@@ -38,16 +38,16 @@ class SettingsTabInstall
 
     public function optionTabs($tabs)
     {
-        $tabs['install'] = __('Installation', 'press-permit-core');
+        $tabs['install'] = esc_html__('Installation', 'press-permit-core');
         return $tabs;
     }
 
     public function sectionCaptions($sections)
     {
         $new = [
-            'key' => __('Account', 'press-permit-core'),
-            'version' => __('Version', 'press-permit-core'),
-            'modules' => __('Modules', 'press-permit-core'),
+            'key' => esc_html__('Account', 'press-permit-core'),
+            'version' => esc_html__('Version', 'press-permit-core'),
+            'modules' => esc_html__('Modules', 'press-permit-core'),
             'help' => PWP::__wp('Help'),
         ];
 
@@ -59,8 +59,8 @@ class SettingsTabInstall
     public function optionCaptions($captions)
     {
         $opt = [
-            'key' => __('settings', 'press-permit-core'),
-            'help' => __('settings', 'press-permit-core'),
+            'key' => esc_html__('settings', 'press-permit-core'),
+            'help' => esc_html__('settings', 'press-permit-core'),
         ];
 
         return array_merge($captions, $opt);
@@ -81,30 +81,10 @@ class SettingsTabInstall
 
     public function optionsPreUI()
     {
-        if (isset($_REQUEST['pp_config_uploaded']) && empty($_POST)) : ?>
+        if (presspermit_is_REQUEST('presspermit_refresh_done') && !!presspermit_empty_POST()) : ?>
             <div id="message" class="updated">
                 <p>
-                    <strong><?php _e('Configuration data was uploaded.', 'press-permit-core'); ?>&nbsp;</strong>
-                </p>
-            </div>
-        <?php elseif (isset($_REQUEST['pp_config_no_change']) && empty($_POST)) : ?>
-            <div id="message" class="updated error">
-                <p>
-                    <strong><?php _e('Configuration data is unchanged since last upload.', 'press-permit-core'); ?>&nbsp;</strong>
-                </p>
-            </div>
-        <?php elseif (isset($_REQUEST['pp_config_failed']) && empty($_POST)) : ?>
-            <div id="message" class="error">
-                <p>
-                    <strong><?php _e('Configuration data could not be uploaded.', 'press-permit-core'); ?>&nbsp;</strong>
-                </p>
-            </div>
-        <?php endif;
-
-        if (isset($_REQUEST['pp_refresh_done']) && empty($_POST)) : ?>
-            <div id="message" class="updated">
-                <p>
-                    <strong><?php _e('Version info was refreshed.', 'press-permit-core'); ?>&nbsp;</strong>
+                    <strong><?php esc_html_e('Version info was refreshed.', 'press-permit-core'); ?>&nbsp;</strong>
                 </p>
             </div>
         <?php endif;
@@ -147,26 +127,6 @@ class SettingsTabInstall
         $key_string = (is_array($opt_val) && count($opt_val) > 1) ? $opt_val[1] : ''; 
         $expire_date = (is_array($opt_val) && isset($opt_val['expire_date_gmt'])) ? $opt_val['expire_date_gmt'] : ''; 
 
-        if ($expired) {
-            if ($expire_days < 365) {
-                $msg = sprintf( 
-                    __('Your presspermit.com key has expired, but a <a href="%s">PublishPress renewal</a> discount may be available.', 'press-permit-core'),
-                    'admin.php?page=presspermit-settings&amp;pp_renewal=1'
-                );
-            }
-
-        } elseif ($modern_pro_version = get_option('presspermitpro_version')) {
-            $msg = __('Permissions Pro was previously active. You are now running the free version, with fewer features.', 'press-permit-core');
-
-        } elseif ($activated) {
-            $url = "https://publishpress.com/contact/?pp_topic=presspermit-migration&presspermit_account=$key_string";
-            
-            $msg = sprintf(
-                __('A presspermit.com key appears to be active. <a href="%s" target="_blank">Contact us</a> for assistance in migrating your account to publishpress.com.', 'press-permit-core'),
-                $url
-            );
-        }
-
         $downgrade_note = empty($modern_pro_version) && ((is_array($opt_val) && count($opt_val) > 1) || get_option('pps_version') || get_option('ppp_version'));
 
         if ($msg || $downgrade_note || $key_string) :
@@ -174,16 +134,36 @@ class SettingsTabInstall
             if (!empty($ui->form_options[$tab][$section]) && !$suppress_updates) : ?>
                 <tr>
                     <th scope="row">
-                        <span style="font-weight:bold;vertical-align:top"><?php echo $ui->section_captions[$tab][$section]; ?></span>
+                        <span style="font-weight:bold;vertical-align:top"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></span>
                     </th>
 
                     <td>
-                        <h4><?php _e('Further details for your installation:', 'press-permit-core');?></h4>
+                        <h4><?php esc_html_e('Further details for your installation:', 'press-permit-core');?></h4>
                         <ul id="presspermit-pro-install-details" class="pp-bullet-list">
 
-                            <?php if ($msg):?>
+                            <?php if (($expired && $expire_days < 365) || get_option('presspermitpro_version') || $activated):?>
                             <li>
-                            <?php echo $msg ?>
+                            <?php
+        if ($expired) {
+            if ($expire_days < 365) {
+                                    printf( 
+                                        esc_html__('Your presspermit.com key has expired, but a <a href="%s">PublishPress renewal</a> discount may be available.', 'press-permit-core'),
+                    'admin.php?page=presspermit-settings&amp;pp_renewal=1'
+                );
+            }
+
+        } elseif ($modern_pro_version = get_option('presspermitpro_version')) {
+                                echo esc_html__('Permissions Pro was previously active. You are now running the free version, with fewer features.', 'press-permit-core');
+
+        } elseif ($activated) {
+            $url = "https://publishpress.com/contact/?pp_topic=presspermit-migration&presspermit_account=$key_string";
+            
+                                printf(
+                                    esc_html__('A presspermit.com key appears to be active. <a href="%s" target="_blank">Contact us</a> for assistance in migrating your account to publishpress.com.', 'press-permit-core'),
+                                    esc_url($url)
+            );
+        }
+                            ?>
                             </li>
                             <?php endif;?>
 
@@ -191,9 +171,9 @@ class SettingsTabInstall
                             <li>
                             <?php 
                             if ($expire_date)
-                                printf(__("Original presspermit.com support key hash: <strong>%s</strong> (expires %s)"), $key_string, $expire_date);
+                                echo esc_html(sprintf(__("Original presspermit.com support key hash: <strong>%s</strong> (expires %s)"), esc_html($key_string), esc_html($expire_date)));
                             else
-                                printf(__("Original presspermit.com support key hash: <strong>%s</strong>"), $key_string, $expire_date);
+                                echo esc_html(sprintf(__("Original presspermit.com support key hash: <strong>%s</strong>"), esc_html($key_string), esc_html($expire_date)));
                             ?>
                             </li>
                             <?php endif;?>
@@ -202,8 +182,9 @@ class SettingsTabInstall
                             <li class='pp-pro-extensions-migration-note'>
                             <?php
                             printf(
-                                __('To temporarily restore Pro features before migrating to a publishpress.com account, delete this version and install <span style="white-space:nowrap"><a href="%s" target="_blank">Press Permit Core 2.6.x</a></span> using Plugins > Add New > Upload.', 'press-permit-core'),
-                                'https://downloads.wordpress.org/plugin/press-permit-core.' . self::LEGACY_VERSION . '.zip'
+                                esc_html__('To temporarily restore Pro features before migrating to a publishpress.com account, delete this version and install %sPress Permit Core 2.6.x%s using Plugins > Add New > Upload.', 'press-permit-core'),
+                                '<span style="white-space:nowrap"><a href="' . esc_url('https://downloads.wordpress.org/plugin/press-permit-core.' . self::LEGACY_VERSION . '.zip') . '" target="_blank">',
+                                '</a></span>'
                             );
                             ?>
                             </li>
@@ -219,13 +200,11 @@ class SettingsTabInstall
 
             ?>
             <tr>
-                <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
 
                     <?php
                     $update_info = [];
-
-                    $info_link = '';
 
                     if (!$suppress_updates) {
                         $wp_plugin_updates = get_site_transient('update_plugins');
@@ -239,28 +218,44 @@ class SettingsTabInstall
                             $_url = "plugin-install.php?tab=plugin-information&plugin=$slug&section=changelog&TB_iframe=true&width=600&height=800";
                             $info_url = ($use_network_admin) ? network_admin_url($_url) : admin_url($_url);
 
-                            $info_link = "<span class='update-message'> &bull; <a href='$info_url' class='thickbox'>"
-                                . sprintf(__('%s&nbsp;details', 'press-permit-core'), $wp_plugin_updates->response[plugin_basename(PRESSPERMIT_FILE)]->new_version)
-                                . '</a></span>';
+                            $do_info_link = true;
                         }
                     }
 
                     ?>
                     <p>
-                        <?php printf(__('PublishPress Permissions Version: %1$s %2$s', 'press-permit-core'), PRESSPERMIT_VERSION, $info_link); ?>
+                        <?php 
+                        if (!empty($do_info_link)) {
+                            printf(
+                                esc_html__('PublishPress Permissions Version: %1$s %2$s', 'press-permit-core'),
+
+                                esc_html(PRESSPERMIT_VERSION),
+
+                                "<span class='update-message'> &bull; <a href='" . esc_url($info_url) . "' class='thickbox'>"
+                                . sprintf(esc_html__('%s&nbsp;details', 'press-permit-core'), esc_html($wp_plugin_updates->response[plugin_basename(PRESSPERMIT_FILE)]->new_version))
+                                . '</a></span>'
+                            ); 
+                        } else {
+                            printf(
+                                esc_html__('PublishPress Permissions Version: %1$s %2$s', 'press-permit-core'),
+                                esc_html(PRESSPERMIT_VERSION), 
+                                ''
+                            );
+                        }
+                        ?>
                         <br/>
-                        <span style="display:none"><?php printf(__("Database Schema Version: %s", 'press-permit-core'), PRESSPERMIT_DB_VERSION); ?><br/></span>
+                        <span style="display:none"><?php printf(esc_html__("Database Schema Version: %s", 'press-permit-core'), esc_html(PRESSPERMIT_DB_VERSION)); ?><br/></span>
                     </p>
 
                     <p>
                     <?php
 
                     global $wp_version;
-                    printf(__("WordPress Version: %s", 'press-permit-core'), $wp_version);
+                    printf(esc_html__("WordPress Version: %s", 'press-permit-core'), esc_html($wp_version));
                     ?>
                     </p>
                     <p>
-                    <?php printf(__("PHP Version: %s", 'press-permit-core'), phpversion()); ?>
+                    <?php printf(esc_html__("PHP Version: %s", 'press-permit-core'), esc_html(phpversion())); ?>
                     </p>
                 </td>
             </tr>
@@ -272,7 +267,7 @@ class SettingsTabInstall
                 <th scope="row">
                     <?php
 
-                    echo $ui->section_captions[$tab][$section];
+                    echo esc_html($ui->section_captions[$tab][$section]);
                     ?>
                 </th>
                 <td>
@@ -287,38 +282,32 @@ class SettingsTabInstall
                     if ($pp_modules) : ?>
                         <?php
 
-                        $change_log_caption = __('<strong>Change Log</strong> (since your current version)', 'press-permit-core');
+                        $change_log_caption = esc_html__('<strong>Change Log</strong> (since your current version)', 'press-permit-core');
 
                         ?>
-                        <h4 style="margin-top:0"><?php _e('Active Modules:', 'press-permit-core'); ?></h4>
+                        <h4 style="margin-top:0"><?php esc_html_e('Active Modules:', 'press-permit-core'); ?></h4>
                         <table class="pp-extensions">
                             <?php foreach ($pp_modules as $slug => $plugin_info) :
-                                $info_link = '';
-                                $update_link = '';
-                                $alert = '';
                                 ?>
                                 <tr>
-                                    <td <?php if ($alert) {
-                                        echo 'colspan="2"';
-                                    }
-                                    ?>>
+                                    <td>
                                         <?php $id = "module_active_{$slug}";?>
 
-                                        <label for="<?php echo $id; ?>">
-                                            <input type="checkbox" id="<?php echo $id; ?>"
-                                                name="presspermit_active_modules[<?php echo $plugin_info->plugin_slug;?>]"
+                                        <label for="<?php echo esc_attr($id); ?>">
+                                            <input type="checkbox" id="<?php echo esc_attr($id); ?>"
+                                                name="presspermit_active_modules[<?php echo esc_attr($plugin_info->plugin_slug);?>]"
                                                 value="1" checked="checked" />
 
-                                            <?php echo __($plugin_info->label);?>
+                                            <?php echo esc_html__($plugin_info->label);?>
                                         </label>
 
                                         <?php
                                             echo ' <span class="pp-gray">'
-                                                . "</span> $info_link $update_link $alert"
+                                                . "</span>"
                                         ?>
                                     </td>
 
-                                    <?php if (!empty($ext_info) && !$alert) : ?>
+                                    <?php if (!empty($ext_info)) : ?>
                                         <td>
                                             <?php if (isset($ext_info->blurb[$slug])) : ?>
                                                 <span class="pp-ext-info"
@@ -326,7 +315,7 @@ class SettingsTabInstall
                                                         echo esc_attr($ext_info->descript[$slug]);
                                                     }
                                                     ?>">
-                                                <?php echo $ext_info->blurb[$slug]; ?>
+                                                <?php echo esc_html($ext_info->blurb[$slug]); ?>
                                             </span>
                                             <?php endif; ?>
                                         </td>
@@ -339,7 +328,9 @@ class SettingsTabInstall
                     <?php
                     endif;
 
-                    echo "<input type='hidden' name='presspermit_reviewed_modules' value='" . implode(',', $active_module_plugin_slugs) . "' />";
+                    $modules_csv = implode(',', $active_module_plugin_slugs);
+
+                    echo "<input type='hidden' name='presspermit_reviewed_modules' value='" . esc_attr($modules_csv) . "' />";
 
                     $inactive = $pp->getDeactivatedModules();
 
@@ -348,7 +339,7 @@ class SettingsTabInstall
 
                         <h4 style="margin-top:5px">
                             <?php
-                            _e('Inactive Modules:', 'press-permit-core')
+                            esc_html_e('Inactive Modules:', 'press-permit-core')
                             ?>
                         </h4>
 
@@ -361,12 +352,12 @@ class SettingsTabInstall
                                     
                                     <?php $id = "module_deactivated_{$slug}";?>
 
-                                    <label for="<?php echo $id; ?>">
-                                        <input type="checkbox" id="<?php echo $id; ?>"
-                                                name="presspermit_deactivated_modules[<?php echo $plugin_slug;?>]"
+                                    <label for="<?php echo esc_attr($id); ?>">
+                                        <input type="checkbox" id="<?php echo esc_attr($id); ?>"
+                                                name="presspermit_deactivated_modules[<?php echo esc_attr($plugin_slug);?>]"
                                                 value="1" />
 
-                                        <?php echo (!empty($ext_info->title[$slug])) ? $ext_info->title[$slug] : $this->prettySlug($slug);?></td>
+                                        <?php if (!empty($ext_info->title[$slug])) echo esc_html($ext_info->title[$slug]); else echo esc_html($this->prettySlug($slug));?></td>
                                     </label>
 
                                     <?php if (!empty($ext_info)) : ?>
@@ -377,7 +368,7 @@ class SettingsTabInstall
                                                         echo esc_attr($ext_info->descript[$slug]);
                                                     }
                                                     ?>">
-                                                <?php echo $ext_info->blurb[$slug]; ?>
+                                                <?php echo esc_html($ext_info->blurb[$slug]); ?>
                                             </span>
                                             <?php endif; ?>
                                         </td>
@@ -397,7 +388,7 @@ class SettingsTabInstall
                     sort($pro_modules);
                     if ($pro_modules) :
                         ?>
-                        <h4><?php _e('Pro Modules:', 'press-permit-core'); ?></h4>
+                        <h4><?php esc_html_e('Pro Modules:', 'press-permit-core'); ?></h4>
                         <table class="pp-extensions">
                             <?php foreach ($pro_modules as $plugin_slug) :
                                 $slug = str_replace('presspermit-', '', $plugin_slug);
@@ -407,12 +398,12 @@ class SettingsTabInstall
                                     
                                     <?php $id = "module_deactivated_{$slug}";?>
 
-                                    <label for="<?php echo $id; ?>">
-                                        <input type="checkbox" id="<?php echo $id; ?>" disabled="disabled"
-                                                name="presspermit_deactivated_modules[<?php echo $plugin_slug;?>]"
+                                    <label for="<?php echo esc_attr($id); ?>">
+                                        <input type="checkbox" id="<?php echo esc_attr($id); ?>" disabled 
+                                                name="presspermit_deactivated_modules[<?php echo esc_attr($plugin_slug);?>]"
                                                 value="1" />
 
-                                        <?php echo $this->prettySlug($slug);?></th>
+                                        <?php echo esc_html($this->prettySlug($slug));?></th>
                                     </label>
 
                                     <?php if (!empty($ext_info)) : ?>
@@ -423,7 +414,7 @@ class SettingsTabInstall
                                                         echo esc_attr($ext_info->descript[$slug]);
                                                     }
                                                     ?>">
-                                                <?php echo $ext_info->blurb[$slug]; ?>
+                                                <?php echo esc_html($ext_info->blurb[$slug]); ?>
                                             </span>
                                             <?php endif; ?>
                                         </td>
@@ -444,7 +435,7 @@ class SettingsTabInstall
         <?php
 
         endif; // any options accessable in this section
-    } // end function optionsUI()
+    }
 
     private function useNetworkUpdates()
     {
