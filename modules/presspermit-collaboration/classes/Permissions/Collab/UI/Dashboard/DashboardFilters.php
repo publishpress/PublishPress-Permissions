@@ -121,29 +121,23 @@ class DashboardFilters
 
     function quickpress_workaround()
     {  // need this for multiple qp entries by limited user
-        if (!presspermit()->isUserUnfiltered()) :
-            ?>
-            <?php
-            preg_match('/MSIE (.*?);/', $_SERVER['HTTP_USER_AGENT'], $matches);
-            $ie_version = (count($matches)) ? $matches[1] : 0;
-            if (!$ie_version || ($ie_version >= 9)) :
-                ?>
-                <script type="text/javascript">
-                    /* <![CDATA[ */
-                    if (typeof wp == 'undefined') {
-                        var wp = new Object();
-                        wp.media = new Object();
-                        wp.media.view = new Object();
-                        wp.media.view.settings = new Object();
-                        wp.media.view.settings.post = new Object();
+        if (!presspermit()->isUserUnfiltered() && isset($_SERVER['HTTP_USER_AGENT'])) :
+        ?>
+            <script type="text/javascript">
+                /* <![CDATA[ */
+                if (typeof wp == 'undefined') {
+                    var wp = new Object();
+                    wp.media = new Object();
+                    wp.media.view = new Object();
+                    wp.media.view.settings = new Object();
+                    wp.media.view.settings.post = new Object();
 
-                        wp.media.editor = new Object();
-                        wp.media.editor.remove = new Function();
-                        wp.media.editor.add = new Function();
-                    }
-                    /* ]]> */
-                </script>
-            <?php endif; ?>
+                    wp.media.editor = new Object();
+                    wp.media.editor.remove = new Function();
+                    wp.media.editor.add = new Function();
+                }
+                /* ]]> */
+            </script>
         <?php
         endif;
     }
