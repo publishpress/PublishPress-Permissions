@@ -28,15 +28,14 @@ class TermEdit
         }
     }
 
-    function term_exceptions_metaboxes($boxes, $taxonomy, $typenow)
+    function term_exceptions_metaboxes($boxes, $taxonomy, $use_post_type)
     {
-        global $typenow;
-        if (!$typenow) {  // term management / association exceptions UI only displed when editing "Universal Exceptions" (empty post type)
+        if (!$use_post_type) {  // term management / association exceptions UI only displed when editing "Universal Exceptions" (empty post type)
             $tx = get_taxonomy($taxonomy);
             $add_boxes = [];
 
             foreach (['manage', 'associate'] as $op) {
-                if ($op_obj = presspermit()->admin()->getOperationObject($op, $typenow)) {
+                if ($op_obj = presspermit()->admin()->getOperationObject($op, $use_post_type)) {
 
                     $caption = ('associate' == $op) 
                     ? sprintf(
