@@ -603,21 +603,29 @@ class Permissions
                 }
 
                 if (isset($this->net_options["presspermit_$option_basename"])) {
-                    return maybe_unserialize($this->net_options["presspermit_$option_basename"]);
+                    $val = maybe_unserialize($this->net_options["presspermit_$option_basename"]);
+                    if (is_string($val)) {$val = stripslashes($val);}
+                    return $val;
                 }
 
                 if (isset($this->default_options[$option_basename])) {
-                    return maybe_unserialize($this->default_options[$option_basename]);
+                    $val = maybe_unserialize($this->default_options[$option_basename]);
+                    if (is_string($val)) {$val = stripslashes($val);}
+                    return $val;
                 }
             }
         }
 
         if (isset($this->site_options["presspermit_$option_basename"])) {
-            return maybe_unserialize($this->site_options["presspermit_$option_basename"]);
+            $val = maybe_unserialize($this->site_options["presspermit_$option_basename"]);
+            if (is_string($val)) {$val = stripslashes($val);}
+            return $val;
         }
 
         if (isset($this->default_options[$option_basename])) {
-            return maybe_unserialize($this->default_options[$option_basename]);
+            $val = maybe_unserialize($this->default_options[$option_basename]);
+            if (is_string($val)) {$val = stripslashes($val);}
+            return $val;
         }
 
         // return null if option not set in db or defaults
