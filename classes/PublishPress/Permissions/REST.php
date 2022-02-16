@@ -186,7 +186,7 @@ class REST
 
                         if (!empty($params['exclude']) || !empty($params['parent_exclude'])) {
                             // Prevent Gutenberg from triggering needless post_name retrieval (for permalink generation) for each item in Page Parent dropdown
-                            if (!empty($_SERVER) && !empty($_SERVER['HTTP_REFERER']) && false !== strpos($_SERVER['HTTP_REFERER'], admin_url())) {
+                            if (!empty($_SERVER) && !empty($_SERVER['HTTP_REFERER']) && false !== strpos(esc_url_raw($_SERVER['HTTP_REFERER']), admin_url())) {
                                 global $wp_post_types;
 
                                 if (!$this->post_type) {
