@@ -8,7 +8,7 @@ class AgentsAjax
     {
         require_once(ABSPATH . '/wp-admin/includes/user.php');
 
-        if (!isset($_GET['pp_agent_search'])) {
+        if (!presspermit_is_GET('pp_agent_search')) {
             return;
         }
 
@@ -18,16 +18,16 @@ class AgentsAjax
 
         $authors_clause = '';
 
-        $orig_search_str = sanitize_text_field($_GET['pp_agent_search']);
+        $orig_search_str = presspermit_GET_var('pp_agent_search');
         $search_str = sanitize_text_field($_GET['pp_agent_search']);
         $agent_type = pp_permissions_sanitize_entry($_GET['pp_agent_type']);
-        $agent_id = (int)$_GET['pp_agent_id'];
+        $agent_id = presspermit_GET_int('pp_agent_id');
         $topic = pp_permissions_sanitize_entry($_GET['pp_topic']);
         $topic = str_replace(':', ',', $topic);
 
-        $omit_admins = (bool)$_GET['pp_omit_admins'];
-        $context = (isset($_GET['pp_context'])) ? pp_permissions_sanitize_key($_GET['pp_context']) : '';
-
+        $omit_admins = !presspermit_empty_GET('pp_omit_admins');
+        $context = presspermit_GET_key('pp_context');
+        
         if (strpos($topic, ',')) {
             $arr_topic = explode(',', $topic);
             if (isset($arr_topic[1])) {
@@ -105,8 +105,8 @@ class AgentsAjax
 
             $orderby = (0 === strpos($orig_search_str, ' ')) ? 'user_login' : 'user_registered DESC';
 
-            $um_keys = (!empty($_GET['pp_usermeta_key'])) ? array_map('pp_permissions_sanitize_entry', $_GET['pp_usermeta_key']) : [];
-            $um_vals = (!empty($_GET['pp_usermeta_val'])) ? array_map('sanitize_text_field', $_GET['pp_usermeta_val']) : [];
+            $um_keys = (!presspermit_empty_GET('pp_usermeta_key')) ? array_map('pp_permissions_sanitize_entry', presspermit_GET_var('pp_usermeta_key')) : [];
+            $um_vals = (!presspermit_empty_GET('pp_usermeta_val')) ? array_map('sanitize_text_field', presspermit_GET_var('pp_usermeta_val')) : [];
 
             if (defined('PP_USER_LASTNAME_SEARCH') && !defined('PP_USER_SEARCH_FIELD')) {
                 $default_search_field = 'last_name';
@@ -142,7 +142,7 @@ class AgentsAjax
                 $where = "WHERE 1=1";
             }
 
-            if (!empty($_GET['pp_role_search'])) {
+            if ($pp_role_search = presspermit_GET_var('pp_role_search')) {
                 if ($role_filter = sanitize_text_field($_GET['pp_role_search'])) {
                     global $current_blog;
                     $blog_prefix = $wpdb->get_blog_prefix($current_blog->blog_id);

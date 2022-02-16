@@ -458,9 +458,8 @@ class CapabilityFilters
         // skip the memcache under certain circumstances
         if (!$memcache_disabled) {
 			if ( 
-            ( ! empty( $_POST ) && ( 'post.php' == $pagenow ) && PWP::getTypeCap( $post_type, 'edit_post' ) == reset($pp_reqd_caps) )  				   // edit_post cap check on wp-admin/post.php submission   			
-            || ( ! empty($_GET['doaction']) && in_array( reset($pp_reqd_caps), ['delete_post', PWP::getTypeCap( $post_type, 'delete_post' )], true ) )  // bulk post/page deletion is broken by hascap buffering
-            /* || 'async-upload.php' == $pagenow */
+            (!presspermit_empty_POST() && ( 'post.php' == $pagenow ) && PWP::getTypeCap( $post_type, 'edit_post' ) == reset($pp_reqd_caps) )  				   // edit_post cap check on wp-admin/post.php submission   			
+            || (!presspermit_empty_GET('doaction') && in_array( reset($pp_reqd_caps), ['delete_post', PWP::getTypeCap( $post_type, 'delete_post' )], true ) )  // bulk post/page deletion is broken by hascap buffering
             ) { 
                 $this->memcache = [];
                 $memcache_disabled = true;

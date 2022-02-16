@@ -14,8 +14,8 @@ class TermsListing
             add_action('admin_print_footer_scripts', [$this, 'actScriptUniversalExceptions']);
         }
 
-        if (empty($_REQUEST['tag_ID'])) {
-            $taxonomy = pp_permissions_sanitize_key($_REQUEST['taxonomy']);
+        if (presspermit_empty_REQUEST('tag_ID')) {
+            if ($taxonomy = presspermit_REQUEST_key('taxonomy')) {
             add_filter("manage_edit-{$taxonomy}_columns", [$this, 'fltDefineColumns']);
             add_filter("manage_{$taxonomy}_columns", [$this, 'fltDefineColumns']);
             add_filter("manage_{$taxonomy}_custom_column", [$this, 'fltCustomColumn'], 10, 3);
@@ -25,7 +25,7 @@ class TermsListing
             if (is_taxonomy_hierarchical($taxonomy)) {
                 $tx_children = get_option("{$taxonomy}_children");
 
-                if (!$tx_children || !is_array($tx_children) || !empty($_REQUEST['clear_db_cache']) || !get_option("_ppperm_refresh_{$taxonomy}_children")) {
+                    if (!$tx_children || !is_array($tx_children) || !presspermit_empty_REQUEST('clear_db_cache') || !get_option("_ppperm_refresh_{$taxonomy}_children")) {
                     delete_option("{$taxonomy}_children");
 
                     update_option("_ppperm_refresh_{$taxonomy}_children", true);
@@ -38,8 +38,8 @@ class TermsListing
     {
         global $typenow;
 
-        if (empty($_REQUEST['pp_universal'])) {
-            $taxonomy = pp_permissions_sanitize_key($_REQUEST['taxonomy']);
+        if (presspermit_empty_REQUEST('pp_universal')) {
+            $taxonomy = presspermit_REQUEST_key('taxonomy');
             $tx_obj = get_taxonomy($taxonomy);
             $type_obj = get_post_type_object($typenow);
             $url = "edit-tags.php?taxonomy=$taxonomy&pp_universal=1";
@@ -65,8 +65,8 @@ class TermsListing
     {
         global $typenow;
 
-        if (empty($_REQUEST['pp_universal'])) {
-            $taxonomy = pp_permissions_sanitize_key($_REQUEST['taxonomy']);
+        if (presspermit_empty_REQUEST('pp_universal')) {
+            $taxonomy = presspermit_REQUEST_key('taxonomy');
             $type_obj = get_post_type_object($typenow);
             $title = __('Click to list/edit universal permissions', 'press-permit-core');
             $lbl = ($type_obj && $type_obj->labels) ? $type_obj->labels->singular_name : '';
@@ -140,7 +140,7 @@ class TermsListing
     {
         global $post_type;
 
-        if (empty($_REQUEST['pp_universal'])) {
+        if (presspermit_empty_REQUEST('pp_universal')) {
             return;
         }
         ?>
@@ -173,12 +173,12 @@ class TermsListing
     // In "Add New Term" form, hide the "Main" option from Parent dropdown if the logged user doesn't have manage_terms cap site-wide
     public function actScriptHideMainOption()
     {
-        if (!empty($_REQUEST['action']) && ('edit' == $_REQUEST['action'])) {
+        if (presspermit_is_REQUEST('action', 'edit')) {
             return;
         }
 
-        if (!empty($_REQUEST['taxonomy'])) {  // using this with edit-link-categories
-            if ($tx_obj = get_taxonomy(pp_permissions_sanitize_key($_REQUEST['taxonomy']))) {
+        if ($taxonomy = presspermit_REQUEST_key('taxonomy')) {  // using this with edit-link-categories
+            if ($tx_obj = get_taxonomy($taxonomy)) {
                 $cap_name = $tx_obj->cap->manage_terms;
             }
         }
@@ -189,7 +189,9 @@ class TermsListing
 
         if (!empty(presspermit()->getUser()->allcaps[$cap_name])
         ) {
-            if (!presspermit()->getUser()->getExceptionTerms('manage', 'include', pp_permissions_sanitize_key($_REQUEST['taxonomy']), pp_permissions_sanitize_key($_REQUEST['taxonomy']), ['merge_universals' => true])) {
+            $taxonomy = presspermit_REQUEST_key('taxonomy');
+
+            if (!presspermit()->getUser()->getExceptionTerms('manage', 'include', sanitize_key($taxonomy), sanitize_key($taxonomy), ['merge_universals' => true])) {
             	return;
             }
         }
@@ -208,7 +210,7 @@ class TermsListing
     {
         global $wp_object_cache, $wpdb, $typenow;
 
-        $taxonomy = pp_permissions_sanitize_key($_REQUEST['taxonomy']);
+        $taxonomy = presspermit_REQUEST_key('taxonomy');
 
         if (!empty($wp_object_cache) && (isset($wp_object_cache->cache[$taxonomy]) || isset($wp_object_cache->cache['terms']))) {
             $cache = (isset($wp_object_cache->cache[$taxonomy])) ? $wp_object_cache->cache[$taxonomy] : $wp_object_cache->cache['terms'];
@@ -233,7 +235,7 @@ class TermsListing
                 }
             }
 
-            if (empty($_REQUEST['paged'])) {
+            if (presspermit_empty_REQUEST('paged')) {
                 $listed_tt_ids[] = 0;
             }
         } else {

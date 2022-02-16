@@ -7,7 +7,7 @@ class AgentExceptionsAjax
     public function __construct() 
     {
 
-        if (empty($_GET['pp_for_type'])) {
+        if (!$pp_for_type = presspermit_GET_key('pp_for_type')) {
             exit;
         }
 
@@ -17,14 +17,14 @@ class AgentExceptionsAjax
             exit;
         }
 
-        $agent_type = pp_permissions_sanitize_key($_GET['pp_agent_type']);
-        $agent_id = (int)$_GET['pp_agent_id'];
+        $agent_type = presspermit_GET_key('pp_agent_type');
+        $agent_id = presspermit_GET_int('pp_agent_id');
 
-        $for_type = PWP::sanitizeCSV($_GET['pp_for_type']);
-        $operation = (isset($_GET['pp_operation'])) ? pp_permissions_sanitize_key($_GET['pp_operation']) : '';
-        $via_type = (isset($_GET['pp_via_type'])) ? pp_permissions_sanitize_key($_GET['pp_via_type']) : '';
-        $mod_type = (isset($_GET['pp_mod_type'])) ? pp_permissions_sanitize_key($_GET['pp_mod_type']) : '';
-        $item_id = (isset($_GET['pp_item_id'])) ? (int)$_GET['pp_item_id'] : 0;
+        $for_type = PWP::sanitizeCSV(presspermit_GET_var('pp_for_type'));
+        $operation = presspermit_GET_key('pp_operation');
+        $via_type = presspermit_GET_key('pp_via_type');
+        $mod_type = presspermit_GET_key('pp_mod_type');
+        $item_id = presspermit_GET_int('pp_item_id');
 
         if ('(all)' == $for_type) {
             $for_source_name = 'post';

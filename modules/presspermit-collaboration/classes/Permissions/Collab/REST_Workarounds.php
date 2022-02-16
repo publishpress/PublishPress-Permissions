@@ -75,7 +75,7 @@ class REST_Workarounds
                     $_POST['post_type'] = $type_rest_base;
                     break;
 
-                } elseif (!empty($_REQUEST[$rest_base])) { // legacy Gutenberg versions
+                } elseif ($terms = presspermit_REQUEST_var($rest_base)) { // legacy Gutenberg versions
                     $taxonomy = $tx_obj->name;
 
                     $user_terms = get_terms(

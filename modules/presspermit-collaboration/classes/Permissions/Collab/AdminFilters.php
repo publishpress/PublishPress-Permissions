@@ -64,7 +64,7 @@ class AdminFilters
 
     // If Pages metabox results are paged, prevent custom Front Page and Privacy Policy from being forced to the top of every page
     public function fltEditNavMenusIgnoreImportantPages($option_val) {
-        if (did_action('wp_ajax_menu-get-metabox') && !empty($_REQUEST['paged']) && (intval($_REQUEST['paged']) > 1)) {
+        if (did_action('wp_ajax_menu-get-metabox') && (presspermit_REQUEST_int('paged') > 1)) {
             $option_val = 0;
         }
 
@@ -252,14 +252,14 @@ class AdminFilters
             return $parent_id;
 
         // Avoid preview failure with ACF active
-        if (!empty($_REQUEST['wp-preview']) && ('dopreview' == $_REQUEST['wp-preview']) 
-        && !empty($_REQUEST['action']) && ('editpost' == $_REQUEST['action'])
-        && !empty($_REQUEST['post_ID']) && ($parent_id == $_REQUEST['post_ID'])
+        if (presspermit_is_REQUEST('wp-preview', 'dopreview') 
+        && presspermit_is_REQUEST('action', 'editpost')
+        && presspermit_is_REQUEST('post_ID', $parent_id)
         ) {
             return $parent_id;
         }
 
-        if (defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) && (false !== strpos($_REQUEST['action'], 'woocommerce_'))) {
+        if (defined('DOING_AJAX') && DOING_AJAX && !presspermit_empty_REQUEST('action') && (false !== strpos(presspermit_REQUEST_key('action'), 'woocommerce_'))) {
 			return $parent_id;
 		}
 
@@ -272,7 +272,7 @@ class AdminFilters
         && (
             false !== strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php')
             || ('attachment' == PWP::findPostType())
-            || (false !== strpos($_SERVER['SCRIPT_NAME'], 'admin-ajax.php') && in_array($_REQUEST['action'], ['save-attachment', 'save-attachment-compat']))
+            || (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'admin-ajax.php') && presspermit_is_REQUEST('action', ['save-attachment', 'save-attachment-compat']))
             )
         ) {
             if (current_user_can('edit_post', $orig_parent_id)) {

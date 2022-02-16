@@ -113,7 +113,7 @@ class ItemSave
             $$var = $args[$var];
         }
 
-        $is_new_term = ('term' != $via_item_source) ? false : !empty($_REQUEST['action']) && ('add-tag' == $_REQUEST['action']);
+        $is_new_term = ('term' != $via_item_source) ? false : presspermit_is_REQUEST('action', 'add-tag');
 
         // don't execute this action handler more than one per post save (may be called directly on pre-save cap check)
         static $did_items;

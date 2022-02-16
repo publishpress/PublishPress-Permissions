@@ -9,7 +9,11 @@ class AgentRolesAjax
 {
     public function __construct() 
     {
-        if (empty($_GET['pp_source_name']) || empty($_GET['pp_object_type'])) {
+        if (!$for_item_source = presspermit_GET_key('pp_source_name')) {
+            exit;
+        }
+
+        if (!$for_item_type = presspermit_GET_key('pp_object_type')) {
             exit;
         }
 
@@ -22,8 +26,8 @@ class AgentRolesAjax
 
         $for_item_source = pp_permissions_sanitize_key($_GET['pp_source_name']);
         $for_item_type = pp_permissions_sanitize_key($_GET['pp_object_type']);
-        $role_name = (isset($_GET['pp_role_name'])) ? PWP::sanitizeCSV($_GET['pp_role_name']) : '';
-
+        $role_name = PWP::sanitizeCSV(presspermit_GET_var('pp_role_name'));
+        
         $filterable_vars = ['for_item_source', 'for_item_type', 'role_name'];
         if ($force_vars = apply_filters('presspermit_ajax_role_ui_vars', [], compact($filterable_vars))) {
             $_vars = Arr::subset($force_vars, $filterable_vars);

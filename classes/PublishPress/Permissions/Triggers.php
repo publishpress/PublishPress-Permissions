@@ -78,8 +78,8 @@ class Triggers
     {
         if ($pp_only = (array) presspermit()->getOption('supplemental_role_defs')) {
 
-            if (!empty($_REQUEST['user_id'])) {  // display role already set for this user, regardless of pp_only setting
-                $user = new \WP_User((int)$_REQUEST['user_id']);
+            if ($user_id = presspermit_REQUEST_int('user_id')) {  // display role already set for this user, regardless of pp_only setting
+                $user = new \WP_User($user_id);
                 if (!empty($user->roles)) {
                     $pp_only = array_diff($pp_only, $user->roles);
                 }
@@ -153,7 +153,7 @@ class Triggers
 
     public function actUpdateUserGroups($user_id)
     {
-        if (empty($_POST['pp_editing_user_groups'])) { // otherwise we'd delete group assignments if another plugin calls do_action('profile_update') unexpectedly
+        if (!current_user_can('edit_users') || presspermit_empty_POST('pp_editing_user_groups')) { // otherwise we'd delete group assignments if another plugin calls do_action('profile_update') unexpectedly
             return;
         }
 

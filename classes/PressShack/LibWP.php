@@ -54,9 +54,9 @@ class LibWP
         }
 
         if (class_exists('Classic_Editor')) {
-			if (isset($_REQUEST['classic-editor__forget']) && (isset($_REQUEST['classic']) || isset($_REQUEST['classic-editor']))) {
+			if (presspermit_is_REQUEST('classic-editor__forget') && (presspermit_is_REQUEST('classic') || presspermit_is_REQUEST('classic-editor'))) {
 				return false;
-			} elseif (isset($_REQUEST['classic-editor__forget']) && !isset($_REQUEST['classic']) && !isset($_REQUEST['classic-editor'])) {
+			} elseif (presspermit_is_REQUEST('classic-editor__forget') && !presspermit_is_REQUEST('classic') && !presspermit_is_REQUEST('classic-editor')) {
 				return true;
 			} elseif (get_option('classic-editor-allow-users') === 'allow') {
 				if ($post_id = self::getPostID()) {
@@ -99,12 +99,12 @@ class LibWP
 		$conditions[] = self::isWp5()
                         && $pluginsState['classic-editor']
                         && (get_option('classic-editor-replace') === 'block'
-                            && ! isset($_GET['classic-editor__forget']));
+                            && ! presspermit_is_GET('classic-editor__forget'));
 
         $conditions[] = self::isWp5()
                         && $pluginsState['classic-editor']
                         && (get_option('classic-editor-replace') === 'classic'
-                            && isset($_GET['classic-editor__forget']));
+                            && presspermit_is_GET('classic-editor__forget'));
 
         $conditions[] = $pluginsState['gutenberg-ramp'] 
                         && apply_filters('use_block_editor_for_post', true, get_post(self::getPostID()), PHP_INT_MAX);
@@ -206,7 +206,7 @@ class LibWP
             $ajax_post_types = apply_filters('pp_ajax_post_types', ['ai1ec_doing_ajax' => 'ai1ec_event']);
 
             foreach (array_keys($ajax_post_types) as $arg) {
-                if (!empty($_REQUEST[$arg]) || (!empty($_REQUEST['action']) && ($arg == $_REQUEST['action']))) {
+                if (!presspermit_empty_REQUEST($arg) || presspermit_is_REQUEST('action', $arg)) {
                     return $ajax_post_types[$arg];
                 }
             }
@@ -235,20 +235,20 @@ class LibWP
                 }
             }
         } elseif (in_array($pagenow, ['post-new.php', 'edit.php'])) {
-            $object_type = !empty($_GET['post_type']) ? pp_permissions_sanitize_key($_GET['post_type']) : 'post';
+            $object_type = presspermit_is_GET('post_type') ? presspermit_GET_key('post_type') : 'post';
 
         } elseif (in_array($pagenow, ['edit-tags.php'])) {
-            $object_type = !empty($_REQUEST['taxonomy']) ? pp_permissions_sanitize_key($_REQUEST['taxonomy']) : 'category';
+            $object_type = !presspermit_empty_REQUEST('taxonomy') ? presspermit_REQUEST_key('taxonomy') : 'category';
 
-        } elseif (in_array($pagenow, ['admin-ajax.php']) && !empty($_REQUEST['taxonomy'])) {
-            $object_type = pp_permissions_sanitize_key($_REQUEST['taxonomy']);
+        } elseif (in_array($pagenow, ['admin-ajax.php']) && !presspermit_empty_REQUEST('taxonomy')) {
+            $object_type = presspermit_REQUEST_key('taxonomy');
 
-        } elseif (!empty($_POST['post_ID'])) {
-            if ($_post = get_post((int) $_POST['post_ID'])) {
+        } elseif ($_post_id = presspermit_POST_int('post_ID')) {
+            if ($_post = get_post($_post_id)) {
                 $object_type = $_post->post_type;
             }
-        } elseif (!empty($_GET['post'])) {  // post.php
-            if ($_post = get_post((int) $_GET['post'])) {
+        } elseif ($id = presspermit_GET_int('post')) {  // post.php
+            if ($_post = get_post($id)) {
                 $object_type = $_post->post_type;
             }
         }
@@ -292,14 +292,17 @@ class LibWP
                     );
                 }
             }
-        } elseif (isset($_REQUEST['post'])) {
-            return (int)$_REQUEST['post'];
-        } elseif (isset($_REQUEST['post_ID'])) {
-            return (int)$_REQUEST['post_ID'];
-        } elseif (isset($_REQUEST['post_id'])) {
-            return (int)$_REQUEST['post_id'];
-        } elseif (defined('WOOCOMMERCE_VERSION') && !empty($_REQUEST['product_id'])) {
-            return (int)$_REQUEST['product_id'];
+        } elseif (presspermit_is_REQUEST('post')) {
+            return presspermit_REQUEST_int('post');
+
+        } elseif (presspermit_is_REQUEST('post_ID')) {
+            return presspermit_REQUEST_int('post_ID');
+
+        } elseif (presspermit_is_REQUEST('post_id')) {
+            return presspermit_REQUEST_int('post_id');
+
+        } elseif (defined('WOOCOMMERCE_VERSION') && !presspermit_empty_REQUEST('product_id')) {
+            return presspermit_REQUEST_int('product_id');
         }
     }
 
@@ -477,7 +480,7 @@ class LibWP
 
     public static function isAjax($action)
     {
-        return defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) && in_array($_REQUEST['action'], (array)$action);
+        return defined('DOING_AJAX') && DOING_AJAX && $action && in_array(presspermit_REQUEST_var('action'), (array)$action);
     }
 
     public static function doingAdminMenus()

@@ -15,16 +15,20 @@ class AgentPermissions
         $pp_admin = $pp->admin();
         $pp_groups = $pp->groups();
 
-        if (!empty($_REQUEST['pp_fix_child_exceptions'])) {
+        if (!presspermit_empty_REQUEST('pp_fix_child_exceptions')) {
             require_once(PRESSPERMIT_CLASSPATH.'/DB/PermissionsUpdate.php');
             \PublishPress\Permissions\DB\PermissionsUpdate::ensureExceptionPropagation();
         }
 
         require_once(PRESSPERMIT_CLASSPATH . '/UI/AgentPermissionsUI.php');
 
-        $agent_type = (!empty($_REQUEST['agent_type'])) ? pp_permissions_sanitize_key($_REQUEST['agent_type']) : 'pp_group';
+        if (!$agent_type = presspermit_REQUEST_key('agent_type')) {
+            $agent_type = 'pp_group';
+        }
 
-        if (empty($_REQUEST['agent_id'])) {
+        if ($agent_id = presspermit_REQUEST_int('agent_id')) {
+            $agent = $pp_groups->getAgent($agent_id, $agent_type);
+        } else {
             $agent_id = 0;
             $agent = (object)['metagroup_type' => ''];
 
@@ -61,36 +65,38 @@ class AgentPermissions
 
         $url = apply_filters('presspermit_groups_base_url', 'admin.php');
 
-        if (isset($_REQUEST['wp_http_referer'])) {
-            $wp_http_referer = sanitize_url($_REQUEST['wp_http_referer']);
+        if ($wp_http_referer = presspermit_REQUEST_var('wp_http_referer')) {
+            $wp_http_referer = esc_url_raw($wp_http_referer);
 
-        } elseif (isset($_SERVER['HTTP_REFERER']) && !strpos($_SERVER['HTTP_REFERER'], 'page=presspermit-group-new')) {
-            $wp_http_referer = sanitize_url($_SERVER['HTTP_REFERER']);
+        } elseif (presspermit_SERVER_var('HTTP_REFERER') && !strpos(esc_url_raw(presspermit_SERVER_var('HTTP_REFERER')), 'page=presspermit-group-new')) {
+            $wp_http_referer = esc_url_raw(presspermit_SERVER_var('HTTP_REFERER'));
         } else {
             $wp_http_referer = '';
         }
 
         $wp_http_referer = remove_query_arg(['update', 'delete_count'], stripslashes($wp_http_referer));
 
-        $group_variant = ! empty($_REQUEST['group_variant']) ? pp_permissions_sanitize_key($_REQUEST['group_variant']) : 'pp_group';
+        if (!$group_variant = presspermit_REQUEST_key('group_variant')) {
+            $group_variant = 'pp_group';
+        }
 
         $groups_link = ($wp_http_referer && strpos($wp_http_referer, 'presspermit-groups')) 
         ? add_query_arg('group_variant', $group_variant, $wp_http_referer)
         : admin_url("admin.php?page=presspermit-groups&group_variant=$group_variant"); 
         ?>
 
-        <?php if (isset($_GET['updated'])) : ?>
+        <?php if (presspermit_is_GET('updated')) : ?>
             <div id="message" class="updated">
                 <p>
 
-                    <?php if (!empty($_REQUEST['pp_roles'])) : ?>
-                        <strong><?php _e('Roles updated.', 'press-permit-core') ?>&nbsp;</strong>
+                    <?php if (!presspermit_empty_REQUEST('pp_roles')) : ?>
+                        <strong><?php esc_html_e('Roles updated.', 'press-permit-core') ?>&nbsp;</strong>
 
-                    <?php elseif (!empty($_REQUEST['pp_exc'])) : ?>
-                        <strong><?php _e('Specific Permissions updated.', 'press-permit-core') ?>&nbsp;</strong>
+                    <?php elseif (!presspermit_empty_REQUEST('pp_exc')) : ?>
+                        <strong><?php esc_html_e('Specific Permissions updated.', 'press-permit-core') ?>&nbsp;</strong>
 
-                    <?php elseif (!empty($_REQUEST['pp_cloned'])) : ?>
-                        <strong><?php _e('Permissions cloned.', 'press-permit-core') ?>&nbsp;</strong>
+                    <?php elseif (!presspermit_empty_REQUEST('pp_cloned')) : ?>
+                        <strong><?php esc_html_e('Permissions cloned.', 'press-permit-core') ?>&nbsp;</strong>
 
                     <?php else : ?>
                         <strong><?php _e('Group updated.', 'press-permit-core') ?>&nbsp;</strong>
@@ -105,7 +111,7 @@ class AgentPermissions
                 </p>
             </div>
 
-        <?php elseif (isset($_GET['created'])) : ?>
+        <?php elseif (presspermit_is_GET('created')) : ?>
             <div id="message" class="updated">
                 <p>
                     <strong><?php _e('Group created.', 'press-permit-core') ?>&nbsp;</strong>

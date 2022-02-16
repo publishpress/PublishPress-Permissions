@@ -38,7 +38,7 @@ class DashboardFilters
             $is_post_admin = true;
 
         } elseif (('term.php' == $pagenow) || (('edit-tags.php' == $pagenow)
-                && !empty($_REQUEST['action']) && ('edit' == $_REQUEST['action']))
+                && presspermit_is_REQUEST('action', 'edit'))
         ) {
             if (current_user_can('pp_assign_roles')) {
                 require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/TermEdit.php');
@@ -51,7 +51,10 @@ class DashboardFilters
             new UsersListing();
 
         } elseif (('edit.php' == $pagenow) || PWP::isAjax('inline-save')) {
-            $post_type = isset($_REQUEST['post_type']) ? pp_permissions_sanitize_key($_REQUEST['post_type']) : 'post';
+            if (!$post_type = presspermit_REQUEST_key('post_type')) {
+                $post_type = 'post';
+            }
+
             if (in_array($post_type, presspermit()->getEnabledPostTypes(), true)) {
                 require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/PostsListing.php');
                 new PostsListing();
@@ -59,9 +62,9 @@ class DashboardFilters
             }
         } elseif (
             in_array($pagenow, ['edit-tags.php']) || (defined('DOING_AJAX') && DOING_AJAX
-                && isset($_REQUEST['action']) && in_array($_REQUEST['action'], ['inline-save-tax', 'add-tag']))
+                && presspermit_is_REQUEST('action', ['inline-save-tax', 'add-tag']))
         ) {
-            if (!empty($_REQUEST['taxonomy']) && presspermit()->isTaxonomyEnabled(pp_permissions_sanitize_key($_REQUEST['taxonomy']))) {
+            if (!presspermit_empty_REQUEST('taxonomy') && presspermit()->isTaxonomyEnabled(presspermit_REQUEST_key('taxonomy'))) {
                 require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/TermsListing.php');
                 new TermsListing();
             }
@@ -69,7 +72,7 @@ class DashboardFilters
             require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/PluginAdmin.php');
             new PluginAdmin();
         } else {
-            if (strpos($_SERVER['REQUEST_URI'], 'page=presspermit-groups') && isset($_REQUEST['wp_screen_options'])) {
+            if (presspermit_SERVER_var('REQUEST_URI') && strpos(esc_url_raw(presspermit_SERVER_var('REQUEST_URI')), 'page=presspermit-groups') && presspermit_is_REQUEST('wp_screen_options')) {
                 \PublishPress\Permissions\UI\PluginPage::handleScreenOptions();
             }
 
@@ -98,7 +101,7 @@ class DashboardFilters
 
         wp_enqueue_style('presspermit', PRESSPERMIT_URLPATH . '/common/css/presspermit.css', [], PRESSPERMIT_VERSION);
 
-        if ($pp_plugin_page || (!empty($_REQUEST['page']) && (0 === strpos($_REQUEST['page'], 'capsman')))) {
+        if ($pp_plugin_page || (!presspermit_empty_REQUEST('page') && (0 === strpos(presspermit_REQUEST_key('page'), 'capsman')))) {
             wp_enqueue_style('presspermit-plugin-pages', PRESSPERMIT_URLPATH . '/common/css/plugin-pages.css', [], PRESSPERMIT_VERSION);
             wp_enqueue_style('presspermit-admin-common', PRESSPERMIT_URLPATH . '/common/css/pressshack-admin.css', [], PRESSPERMIT_VERSION);
         }
@@ -130,8 +133,11 @@ class DashboardFilters
     {
         $pp = presspermit();
 
-        $agent_type = ( isset($_REQUEST['agent_type']) ) ? pp_permissions_sanitize_key($_REQUEST['agent_type']) : 'pp_group';
-		$agent_id = ( isset($_REQUEST['agent_id']) ) ? (int) $_REQUEST['agent_id'] : 0;
+        if (!$agent_type = presspermit_REQUEST_key('agent_type')) {
+            $agent_type = 'pp_group';
+        }
+
+		$agent_id = presspermit_REQUEST_int('agent_id');
 
         $load_role_scripts = $pp->groups()->userCan('pp_manage_members', $agent_id, $agent_type)
         || $pp->groups()->anyGroupManager() || current_user_can('pp_assign_roles')
@@ -167,7 +173,11 @@ class DashboardFilters
 
     public static function actMenuHandler()
     {
-        $pp_page = pp_permissions_sanitize_key($_GET['page']);
+        if (!$page = presspermit_GET_key('page')) {
+            return;
+        }
+
+        $pp_page = sanitize_key($page);
 
         if (in_array($pp_page, [
             'presspermit-settings', 'presspermit-groups', 'presspermit-users',
@@ -189,7 +199,7 @@ class DashboardFilters
     {
         global $pagenow;
 
-        if (empty($_REQUEST['noheader'])) {
+        if (presspermit_empty_REQUEST('noheader')) {
             global $wp_scripts;
             $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
             wp_enqueue_script('presspermit-misc', PRESSPERMIT_URLPATH . "/common/js/presspermit{$suffix}.js", ['jquery'], PRESSPERMIT_VERSION, true);

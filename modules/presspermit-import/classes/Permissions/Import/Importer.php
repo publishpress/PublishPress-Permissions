@@ -31,7 +31,7 @@ class Importer
 
     public static function handleSubmission()
     {
-        if (!empty($_POST['pp_rs_import'])) {
+        if (!presspermit_empty_POST('pp_rs_import')) {
             if (!current_user_can('pp_manage_settings'))
                 wp_die(__('You are not allowed to manage Permissions settings', 'press-permit-core'));
 
@@ -39,7 +39,7 @@ class Importer
             DB\RoleScoper::instance()->doImport();
         }
 
-        if (!empty($_POST['pp_undo_imports'])) {
+        if (!presspermit_empty_POST('pp_undo_imports')) {
             if (!current_user_can('pp_manage_settings'))
                 wp_die(__('You are not allowed to manage Permissions settings', 'press-permit-core'));
 

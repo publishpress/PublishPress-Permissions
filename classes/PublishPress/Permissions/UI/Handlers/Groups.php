@@ -18,14 +18,14 @@ class Groups
         if (!$agent_type = apply_filters('presspermit_query_group_type', ''))
             $agent_type = 'pp_group';
 
-        if (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2'])) {
-            $action = pp_permissions_sanitize_key($_REQUEST['action2']);
+        if (!presspermit_empty_REQUEST('action2') && !is_numeric(presspermit_REQUEST_var('action2'))) {
+            $action = presspermit_REQUEST_key('action2');
 
-        } elseif (!empty($_REQUEST['action']) && !is_numeric($_REQUEST['action'])) {
-            $action = pp_permissions_sanitize_key($_REQUEST['action']);
+        } elseif (!presspermit_empty_REQUEST('action') && !is_numeric(presspermit_REQUEST_var('action'))) {
+            $action = presspermit_REQUEST_key('action');
 
-        } elseif (!empty($_REQUEST['pp_action'])) {
-            $action = pp_permissions_sanitize_key($_REQUEST['pp_action']);
+        } elseif ($pp_action = presspermit_REQUEST_key('pp_action')) {
+            $action = presspermit_REQUEST_key('pp_action');
         } else {
             $action = '';
         }
@@ -97,7 +97,7 @@ class Groups
                     $redirect = esc_url_raw(add_query_arg([
                         'pp_action' => 'bulkdelete',
                         'agent_type' => $agent_type,
-                        'wp_http_referer' => isset($_REQUEST['wp_http_referer']) ? sanitize_url($_REQUEST['wp_http_referer']) : '',
+                        'wp_http_referer' => presspermit_is_REQUEST('wp_http_referer') ? esc_url_raw(presspermit_REQUEST_var('wp_http_referer')) : '',
                         'groups' => array_map('intval', $_REQUEST['groups'])
                     ], $redirect));
 
@@ -105,7 +105,7 @@ class Groups
                     exit();
                 }
 
-                if (empty($_REQUEST['group'])) {
+                if (presspermit_empty_REQUEST('group')) {
                     wp_redirect($redirect);
                     exit();
                 }

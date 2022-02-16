@@ -9,8 +9,11 @@ class AgentPermissionsUI
 {
     public static function roleAssignmentScripts()
     {
-        $agent_type = (isset($_REQUEST['agent_type'])) ? pp_permissions_sanitize_key($_REQUEST['agent_type']) : 'pp_group';
-        $agent_id = (isset($_REQUEST['agent_id'])) ? (int)$_REQUEST['agent_id'] : 0;
+        if (!$agent_type = presspermit_REQUEST_key('agent_type')) {
+            $agent_type = 'pp_group';
+        }
+
+		$agent_id = presspermit_REQUEST_int('agent_id');
 
         $vars = [
             'addRoles' => __('Add Roles', 'press-permit-core'),
@@ -49,8 +52,11 @@ class AgentPermissionsUI
             'ajaxurl' => admin_url(''),
         ];
 
-        $vars['agentType'] = (isset($_REQUEST['agent_type'])) ? pp_permissions_sanitize_key($_REQUEST['agent_type']) : 'pp_group';
-        $vars['agentID'] = (isset($_REQUEST['agent_id'])) ? (int)$_REQUEST['agent_id'] : 0;
+        if (!$vars['agentType'] = presspermit_REQUEST_key('agent_type')) {
+            $vars['agentType'] = 'pp_group';
+        }
+
+        $vars['agentID'] = presspermit_REQUEST_int('agent_id');
 
         // Simulate Nav Menu setup
         require_once( PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
@@ -543,7 +549,7 @@ class AgentPermissionsUI
             'return_raw_results' => true
         ];
 
-        if (empty($_REQUEST['show_propagated']))
+        if (presspermit_empty_REQUEST('show_propagated'))
             $_args['inherited_from'] = 0;
         else
             $_args['extra_cols'][] = 'i.inherited_from';
@@ -1168,7 +1174,7 @@ class AgentPermissionsUI
                         $fix_child_exceptions_link = '';
                     }
 
-                    if (empty($_REQUEST['show_propagated']) || $fix_child_exceptions_link) {
+                    if ((presspermit_empty_REQUEST('show_propagated') || !empty($fix_child_exceptions_link)) && !empty($_SERVER['REQUEST_URI'])) {
                         if ('term' == $via_src) {
                             echo '<div class="pp-current-roles-note">'
                                 . sprintf(__('note: Permissions inherited from parent %1$s are not displayed. %2$sshow all%3$s', 'press-permit-core'), $_caption, $show_all_link, '</a>')

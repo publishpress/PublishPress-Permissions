@@ -5,7 +5,7 @@ class RoleUsage
 {
     public static function handleRequest() 
     {
-        $action = (isset($_REQUEST['action'])) ? pp_permissions_sanitize_key($_REQUEST['action']) : '';
+        $action = presspermit_REQUEST_key('action');
 
         $url = apply_filters('presspermit_role_usage_base_url', 'admin.php');
         $redirect = $err = false;
@@ -17,6 +17,10 @@ class RoleUsage
 
         switch ($action) {
             case 'update' :
+                if (!$role = presspermit_REQUEST_key('role')) {
+                    break;
+                }
+
                 $pp = presspermit();
 
                 $role_name = pp_permissions_sanitize_entry($_REQUEST['role']);
@@ -29,7 +33,7 @@ class RoleUsage
                     $role_usage = array_merge($role_usage, array_fill_keys(array_keys($pp->role_defs->direct_roles), 'direct'));
                 }
 
-                $role_usage[$role_name] = (isset($_POST['pp_role_usage'])) ? pp_permissions_sanitize_key($_POST['pp_role_usage']) : 0;
+                $role_usage[$role_name] = presspermit_POST_key('pp_role_usage');
 
                 $pp->updateOption('role_usage', $role_usage);
 
@@ -44,7 +48,7 @@ class RoleUsage
         } // end switch
 
         if ($redirect) {
-            if (!empty($_REQUEST['wp_http_referer']))  {
+            if ($wp_http_referer = presspermit_REQUEST_var('wp_http_referer'))  {
                 $redirect = add_query_arg('wp_http_referer', urlencode(sanitize_url($_REQUEST['wp_http_referer'])), $redirect);
             }
 

@@ -39,7 +39,7 @@ class CollabHooksAdmin
 
         add_filter('presspermit_posts_clauses_intercept', [$this, 'fltEditNavMenuFilterDisable'], 10, 2);
 
-        if (class_exists('NestedPages') && !empty($_REQUEST['page']) && ('nestedpages' == $_REQUEST['page'])) {
+        if (class_exists('NestedPages') && presspermit_is_REQUEST('page', 'nestedpages')) {
             if (defined('PP_NESTED_PAGES_DISABLE_FILTERING') && !defined('PP_NESTED_PAGES_ENABLE_FILTERING')) {
                 add_filter(
                     'presspermit_posts_clauses_intercept', 
@@ -161,7 +161,7 @@ class CollabHooksAdmin
     function actDefaultPrivacyWorkaround()
     {
         global $pagenow;
-        if (!empty($_POST) && in_array($pagenow, ['post.php', 'post-new.php'])) {
+        if (!presspermit_empty_POST() && in_array($pagenow, ['post.php', 'post-new.php'])) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostEdit.php');
             Collab\PostEdit::defaultPrivacyWorkaround();
         }
@@ -169,8 +169,8 @@ class CollabHooksAdmin
 
     function actPreGetPosts($query_obj)
     {
-        if (defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action'])) {
-            switch ($_REQUEST['action']) {
+        if (defined('DOING_AJAX') && DOING_AJAX) {
+            switch (presspermit_REQUEST_key('action')) {
                 case 'find_posts':
                     $query_obj->query_vars['suppress_filters'] = false;
                     break;
@@ -182,11 +182,11 @@ class CollabHooksAdmin
     {
         if (in_array($referer, ['bulk-posts', 'inlineeditnonce'], true)) {
             if ('bulk-posts' == $referer) {
-                if (!empty($_REQUEST['action']) && !is_numeric($_REQUEST['action'])) {
-                    $action = pp_permissions_sanitize_key($_REQUEST['action']);
+                if (!presspermit_empty_REQUEST('action') && !is_numeric(presspermit_REQUEST_var('action'))) {
+                    $action = presspermit_REQUEST_key('action');
 
-                } elseif (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2'])) {
-                    $action = pp_permissions_sanitize_key($_REQUEST['action2']);
+                } elseif (!presspermit_empty_REQUEST('action2') && !is_numeric(presspermit_REQUEST_var('action2'))) {
+                    $action = presspermit_REQUEST_key('action2');
                 
                 } else {
                     $action = '';
@@ -203,7 +203,7 @@ class CollabHooksAdmin
 
     function actMaybeOverrideKses()
     {
-        if (!empty($_POST) && !empty($_POST['action']) && ('editpost' == $_POST['action'])) {
+        if (!presspermit_empty_POST() && presspermit_is_POST('action', 'editpost')) {
             if (current_user_can('unfiltered_html')) // initial core cap check in kses_init() is unfilterable
                 kses_remove_filters();
         }
@@ -211,7 +211,7 @@ class CollabHooksAdmin
 
     function actAdminHandlers()
     {
-        if (!empty($_POST)) {
+        if (!presspermit_empty_POST()) {
             if ('presspermit-role-usage-edit' == presspermitPluginPage()) {
                 add_action('presspermit_user_init', [$this, 'load_role_usage_edit_handler']);
             }
@@ -226,7 +226,7 @@ class CollabHooksAdmin
 
     function actAddAuthorPages()
     {
-        if (!empty($_REQUEST['add_member_page'])) {
+        if (!presspermit_empty_REQUEST('add_member_page')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/BulkEdit.php');
             Collab\UI\Dashboard\BulkEdit::add_author_pages();
         }

@@ -8,6 +8,10 @@ class AgentPermissionsAjax
         $pp = presspermit();
         $pp_admin = $pp->admin();
 
+        if (!$action = presspermit_GET_key('pp_ajax_agent_permissions')) {
+            exit;
+        }
+
         if (!$pp_admin->bulkRolesEnabled()) {
             exit;
         }
@@ -16,8 +20,8 @@ class AgentPermissionsAjax
 
         $html = '';
 
-        $agent_type = (!empty($_GET['agent_type'])) ? pp_permissions_sanitize_key($_GET['agent_type']) : '';
-        $agent_id = (!empty($_GET['agent_id'])) ? (int)$_GET['agent_id'] : 0;
+        $agent_type = presspermit_GET_key('agent_type');
+        $agent_id = presspermit_GET_int('agent_id');
 
         // safeguard prevents accidental modification of roles for other groups / users
         if ($agent_type && $agent_id) {
@@ -30,11 +34,9 @@ class AgentPermissionsAjax
             $agent_clause = '';
         }
 
-        $action = pp_permissions_sanitize_key($_GET['pp_ajax_agent_permissions']);
-
         switch ($action) {
             case 'roles_remove':
-                if (empty($_GET['pp_ass_ids'])) {
+                if ($pp_ass_ids = presspermit_GET_var('pp_ass_ids')) {
                     exit;
                 }
 
@@ -90,7 +92,7 @@ class AgentPermissionsAjax
                 break;
 
             case 'exceptions_remove':
-                if (empty($_GET['pp_eitem_ids'])) {
+                if (!$pp_eitem_ids = presspermit_GET_var('pp_eitem_ids')) {
                     exit;
                 }
 
@@ -144,7 +146,7 @@ class AgentPermissionsAjax
             case 'exceptions_propagate':
             case 'exceptions_unpropagate':
             case 'exceptions_children_only':
-                if (empty($_GET['pp_eitem_ids'])) {
+                if (!$pp_eitem_ids = presspermit_GET_var('pp_eitem_ids')) {
                     exit;
                 }
 
@@ -207,7 +209,7 @@ class AgentPermissionsAjax
             default:
                 // mirror specified existing exception items to specified operation
                 if (0 === strpos($action, 'exceptions_mirror_')) {
-                    if (empty($_GET['pp_eitem_ids'])) {
+                    if (!$pp_eitem_ids = presspermit_GET_var('pp_eitem_ids')) {
                         exit;
                     }
 

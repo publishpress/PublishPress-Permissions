@@ -11,11 +11,12 @@ class ItemsMetaboxAjax
 
         require_once( PRESSPERMIT_CLASSPATH . '/UI/ItemsMetabox.php' );
 
-        if ( isset( $_POST['item-type'] ) && 'post_type' == $_POST['item-type'] ) {
+        if (presspermit_is_POST('item-type', 'post_type')) {
             $type = 'posttype';
             $callback = ['\PublishPress\Permissions\UI\ItemsMetabox', 'post_type_meta_box'];
             $items = (array) presspermit()->getEnabledPostTypes([], 'object');
-        } elseif ( isset( $_POST['item-type'] ) && 'taxonomy' == $_POST['item-type'] ) {
+
+        } elseif (presspermit_is_POST('item-type', 'taxonomy')) {
             $type = 'taxonomy';
             $callback = ['\PublishPress\Permissions\UI\ItemsMetabox', 'taxonomy_meta_box'];
             $items = (array) get_taxonomies( [ 'show_ui' => true ], 'object' );

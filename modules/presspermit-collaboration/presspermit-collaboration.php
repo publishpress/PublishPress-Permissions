@@ -83,14 +83,16 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
                 new \PublishPress\Permissions\CollabHooksCompat();
 
                 // Divi Page Builder
-                if (!empty($_REQUEST['action']) && ('editpost' == $_REQUEST['action']) && !empty($_REQUEST['et_pb_use_builder']) && !empty($_REQUEST['auto_draft'])) {
+                if (presspermit_is_REQUEST('action', 'editpost') && !presspermit_empty_REQUEST('et_pb_use_builder') && !presspermit_empty_REQUEST('auto_draft')) {
                     return;
                 }
 
-                if (!empty($_REQUEST['action']) && ('edit' == $_REQUEST['action']) && !empty($_REQUEST['post'])) {
-                    if ($_post = get_post((int) $_REQUEST['post'])) {
-                        if ('auto-draft' == $_REQUEST['post']) {
-                            return;
+                if (presspermit_is_REQUEST('action', 'edit')) {
+                    if ($post_id = presspermit_REQUEST_int('post')) {
+                        if ($_post = get_post($post_id)) {
+                            if ('auto-draft' == $post_id) {
+                            	return;
+                            }
                         }
                     }
                 }

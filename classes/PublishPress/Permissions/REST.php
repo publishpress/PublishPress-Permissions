@@ -153,8 +153,8 @@ class REST
                 }
 
 			  // voluntary filtering of get_items (for WYSIWY can edit, etc.)
-                if ($this->is_view_method && ('read' == $this->operation) && !empty($_REQUEST['operation'])) {
-                    $this->operation = pp_permissions_sanitize_key($_REQUEST['operation']);
+                if ($this->is_view_method && ('read' == $this->operation) && !presspermit_empty_REQUEST('operation')) {
+                    $this->operation = presspermit_REQUEST_key('operation');
                 }
 			
                 // NOTE: setting or default may be adapted downstream

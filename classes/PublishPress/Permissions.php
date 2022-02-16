@@ -119,7 +119,7 @@ class Permissions
     public function checkInitInterrupt() {
         if (defined('ISCVERSION') || defined('PRESSPERMIT_LIMIT_ASYNC_UPLOAD_FILTERING')) {
             if ( is_admin() && strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php') && ! empty($_POST['attachment_id']) && ! empty($_POST['fetch']) && ( 3 == $_POST['fetch']) ) {
-                if ( $att = get_post((int) $_POST['attachment_id'] ) ) {
+                if ($att = get_post(presspermit_POST_int('attachment_id'))) {
                     global $current_user;
                     if ( $att->post_author == $current_user->ID && ! defined( 'PP_UPLOADS_FORCE_FILTERING' ) ) {
                         return true;
@@ -255,7 +255,7 @@ class Permissions
             new Permissions\DB\DatabaseSetup($db_ver);
         }
 
-        if (!empty($check_for_rs_migration) || !empty($_REQUEST['rs-migration-check'])) { // support http arg for test / troubleshooting
+        if (!empty($check_for_rs_migration) || !presspermit_empty_REQUEST('rs-migration-check')) { // support http arg for test / troubleshooting
             // This is a first-time activation. If Role Scoper was previously installed, enable Import module by default
             if (get_option('scoper_version')) {
                 update_option('presspermit_offer_rs_migration', true);
@@ -685,7 +685,7 @@ class Permissions
 
     public function fltPluginCompatUnfilteredContent($unfiltered) {
         // Public Post Preview: Preserve compat by dropping all Permissions filtering, unless integration is enabled through Pro plugin
-        if (!empty($_REQUEST['_ppp']) && !is_admin() && empty($_POST) && class_exists('DS_Public_Post_Preview') && !defined('PRESSPERMIT_DISABLE_PPP_PASSTHROUGH')
+        if (!presspermit_empty_REQUEST('_ppp') && !is_admin() && presspermit_empty_POST() && class_exists('DS_Public_Post_Preview') && !defined('PRESSPERMIT_DISABLE_PPP_PASSTHROUGH')
         && (!defined('PRESSPERMIT_PRO_VERSION') || !presspermit()->moduleActive('compatibility'))
         ) {
             $unfiltered = true;
@@ -698,7 +698,7 @@ class Permissions
     {
         // @todo: any other Gutenberg Administrator requests to filter?
         $is_unfiltered = $this->isAdministrator($user_id, 'unfiltered', $args) 
-        && (!defined('REST_REQUEST') || ! REST_REQUEST || (empty($_REQUEST['parent_exclude']) || did_action('presspermit_refresh_administrator_check'))); // page parent dropdown
+        && (!defined('REST_REQUEST') || ! REST_REQUEST || (presspermit_empty_REQUEST('parent_exclude') || did_action('presspermit_refresh_administrator_check'))); // page parent dropdown
 
         return apply_filters('presspermit_unfiltered', $is_unfiltered, $args);
     }

@@ -22,7 +22,7 @@ class PostFiltersFront
 
         add_filter('shortcode_atts_gallery', [$this, 'fltAttsGallery'], 10, 3);
 
-        if (!empty($_REQUEST['preview'])) {
+        if (!presspermit_empty_REQUEST('preview')) {
             add_filter('wp_link_pages_link', [$this, 'fltPagesLink']);
         }
 

@@ -8,9 +8,7 @@ class PostSaveHierarchical
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
             return $parent_id;
 
-        if (function_exists('bbp_get_version') && !empty($_REQUEST['action']) 
-        && in_array($_REQUEST['action'], ['bbp-new-topic', 'bbp-new-reply'])
-        ) {
+        if (function_exists('bbp_get_version') && presspermit_is_REQUEST('action', ['bbp-new-topic', 'bbp-new-reply'])) {
             return $parent_id;
         }
 
@@ -217,9 +215,8 @@ class PostSaveHierarchical
         global $post;
 
         // user can't associate / un-associate a page with Main page unless they have edit_pages site-wide
-        if (!empty($_POST['post_ID'])) {
-            $post_id = (int)$_POST['post_ID'];
-            $selected_parent_id = isset($_POST['parent_id']) ? (int)$_POST['parent_id'] : 0;
+        if ($post_id = presspermit_POST_int('post_ID')) {
+            $selected_parent_id = presspermit_POST_int('parent_id');
         } elseif (!empty($post)) {
             $post_id = $post->ID;
             $selected_parent_id = $post->post_parent;
@@ -244,7 +241,7 @@ class PostSaveHierarchical
             return $status;
         }
 
-        if (empty($_POST['parent_id'])) {
+        if (presspermit_empty_POST('parent_id')) {
             if (!$already_published) {  // This should only ever happen if the POST data is manually fudged
                 if ($post_status_object = get_post_status_object($status)) {
                     if ($post_status_object->public || $post_status_object->private)

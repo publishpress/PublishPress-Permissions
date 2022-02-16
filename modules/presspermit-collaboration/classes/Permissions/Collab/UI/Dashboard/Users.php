@@ -16,10 +16,10 @@ class Users
         <script type="text/javascript">
             /* <![CDATA[ */
             jQuery(document).ready(function ($) {
-                <?php if ( !empty($_REQUEST['ppmessage']) ) {
-                switch( $_REQUEST['ppmessage'] ) {
+                <?php if ( !presspermit_empty_REQUEST('ppmessage') ) {
+                switch(presspermit_REQUEST_int('ppmessage')) {
                 case 1: ?>
-                var msg = '<?php printf(_n('%s author page added', '%s author pages added', (int) $_REQUEST['ppcount'], 'press-permit-core'), (int) $_REQUEST['ppcount']);?>';
+                var msg = '<?php if (presspermit_is_REQUEST('ppcount')) printf(esc_html(_n('%s author page added', '%s author pages added', (int) presspermit_REQUEST_int('ppcount'), 'press-permit-core')), (int) presspermit_REQUEST_int('ppcount')); ?>';
                 var cls = 'updated';
                 <?php
                 break;
