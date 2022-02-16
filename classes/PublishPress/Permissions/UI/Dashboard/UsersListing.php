@@ -6,7 +6,7 @@ class UsersListing
 {
     public function __construct() {
         add_filter('manage_users_columns', [$this, 'fltUsersColumns']);
-        add_action('manage_users_custom_column', [$this, 'fltUsersCustomColumn'], 99, 3); // filter late in case other plugin filters do not retain passed value
+        add_filter('manage_users_custom_column', [$this, 'fltUsersCustomColumn'], 99, 3); // filter late in case other plugin filters do not retain passed value
         add_filter('manage_users_sortable_columns', [$this, 'fltUsersColumnsSortable']);
         
         add_filter('pre_user_query', [$this, 'fltUserQueryExceptions']);
