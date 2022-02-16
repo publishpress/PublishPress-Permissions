@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-    // @todo: merge these classes, slicker selectors
+    // todo: merge these classes, slicker selectors
     $(document).on('click', 'li.agp-agent a', function () {
         $(this).closest('div.inside').find('li.agp-agent').removeClass('agp-selected_agent').removeClass('agp-selected_agent_colorized').addClass('agp-unselected_agent').addClass('agp-unselected_agent_colorized');
         $(this).parent().addClass('agp-selected_agent').addClass('agp-selected_agent_colorized').removeClass('agp-unselected_agent').removeClass('agp-unselected_agent_colorized');

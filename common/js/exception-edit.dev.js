@@ -281,7 +281,7 @@ jQuery(document).ready(function ($) {
 
     var presspermitReloadOperation = function () {
         if ($('select[name="pp_select_x_for_type"]').val()) {
-            $('select[name="pp_select_x_for_type"] option.pp-opt-none').remove();  // @todo: review this
+            $('select[name="pp_select_x_for_type"] option.pp-opt-none').remove();  // todo: review this
             presspermitXajaxUI('get_operation_options', presspermitDrawOperations);
         } else
             $('.pp-select-x-operation').hide();
@@ -377,7 +377,7 @@ jQuery(document).ready(function ($) {
     $('select[name="pp_select_x_via_type"]').on('change', presspermitReloadAssignFor);
 
     $('select[name="pp_select_x_via_type"]').on('change', function () {
-        $('#pp_add_exception .postbox').hide();	// @todo: review this
+        $('#pp_add_exception .postbox').hide();	// todo: review this
 
         if ($(this).find('option').length) {
             var pp_via_type = $(this).val();
