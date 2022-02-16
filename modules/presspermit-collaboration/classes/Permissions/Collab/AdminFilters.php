@@ -45,8 +45,8 @@ class AdminFilters
         add_action('save_post', [$this, 'actSavePost'], 10, 3);
         add_filter('wp_insert_post_empty_content', [$this, 'fltLogInsertPost'], 10, 2);
 
-        add_filter('save_post', [$this, 'fltUnloadCurrentUserExceptions']);
-        add_filter('created_term', [$this, 'fltUnloadCurrentUserExceptions']);
+        add_action('save_post', [$this, 'actUnloadCurrentUserExceptions']);
+        add_action('created_term', [$this, 'actUnloadCurrentUserExceptions']);
 
         add_filter('editable_roles', [$this, 'fltEditableRoles'], 99);
 
@@ -96,7 +96,7 @@ class AdminFilters
         }
     }
 
-    function fltUnloadCurrentUserExceptions($item_id)
+    function actUnloadCurrentUserExceptions($item_id)
     {
         if (!empty(presspermit()->flags['ignore_save_post'])) {
             return;
