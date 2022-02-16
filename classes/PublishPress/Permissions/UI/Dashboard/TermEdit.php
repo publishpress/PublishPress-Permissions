@@ -263,6 +263,7 @@ class TermEdit
         <?php
 
         if ($post_type) {
+            echo '<br />';
             self::universalExceptionsNote($tag, $taxonomy, $post_type);
         }
         ?>
