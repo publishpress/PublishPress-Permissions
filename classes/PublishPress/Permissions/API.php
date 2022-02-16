@@ -88,10 +88,10 @@ class API
         return presspermit()->deleteExceptions($agent_ids, $agent_type);
     }
 
-    // $args['labels']['name'] = translationed caption
-    // $args['labels']['name'] = translated caption
-    // $args['default_caps'] = [cap_name => true, another_cap_name => true] defines caps for pattern roles which do not have a corresponding WP role 
-    //
+    /*
+     * args['labels']['name'] = translated caption
+     * args['default_caps'] = [cap_name => true, another_cap_name => true] defines caps for pattern roles which do not have a corresponding WP role 
+     */
     public static function registerPatternRole($role_name, $args = [])
     {
         return presspermit()->registerPatternRole($role_name, $args);

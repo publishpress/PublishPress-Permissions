@@ -133,7 +133,7 @@ class PermissionsHooksAdmin
 
     public function actLoadAjaxHandler()
     {
-        foreach (['item', 'agent_roles', 'agent_exceptions', 'agent_permissions', 'user', 'settings', 'items_metabox'] as $ajax_type) { // @todo: term_ui ?
+        foreach (['item', 'agent_roles', 'agent_exceptions', 'agent_permissions', 'user', 'settings', 'items_metabox'] as $ajax_type) { // todo: term_ui ?
             if (isset($_REQUEST["pp_ajax_{$ajax_type}"])) {
                 $class_name = str_replace('_', '', ucwords( $ajax_type, '_') ) . 'Ajax';
                 

@@ -212,7 +212,7 @@ class PageFilters
             $hierarchical = false;
             $incpages = wp_parse_id_list($include);
             if (!empty($incpages)) {
-                foreach ($incpages as $incpage) {  // @todo: change to IN clause after confirming no issues with PP query parsing
+                foreach ($incpages as $incpage) {  // todo: change to IN clause after confirming no issues with PP query parsing
                     if ($incpage) {
                         if (empty($inclusions))
                             $inclusions = ' AND ( ID = ' . intval($incpage) . ' ';
@@ -230,7 +230,7 @@ class PageFilters
         if (!empty($exclude)) {
             $expages = wp_parse_id_list($exclude);
             if (!empty($expages)) {
-                foreach ($expages as $expage) { // @todo: change to IN clause after confirming no issues with PP query parsing
+                foreach ($expages as $expage) { // todo: change to IN clause after confirming no issues with PP query parsing
                     if (empty($exclusions))
                         $exclusions = ' AND ( ID <> ' . intval($expage) . ' ';
                     else
@@ -472,7 +472,7 @@ class PageFilters
             return apply_filters('presspermit_get_pages', [], $r);
         }
 
-        if ($child_of) {  // @todo: review (WP core is $child_of || $hierarchical)
+        if ($child_of) {  // todo: review (WP core is $child_of || $hierarchical)
             $pages = get_page_children($child_of, $pages);
         }
 

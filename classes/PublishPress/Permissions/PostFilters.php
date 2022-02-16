@@ -183,7 +183,7 @@ class PostFilters
             }
         }
 
-        if (defined('DOING_AJAX') && DOING_AJAX) { // @todo: separate function to eliminate redundancy with Find::findPostType()
+        if (defined('DOING_AJAX') && DOING_AJAX) { // todo: separate function to eliminate redundancy with Find::findPostType()
             if (in_array($action, (array)apply_filters('presspermit_unfiltered_ajax', ['woocommerce_load_variations', 'woocommerce_add_variation', 'woocommerce_remove_variations', 'woocommerce_save_variations']), true)) {
                 return $clauses;
             }

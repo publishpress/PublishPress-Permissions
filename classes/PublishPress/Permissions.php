@@ -767,7 +767,7 @@ class Permissions
 
         $types = get_post_types(array_merge($args, ['public' => true, 'show_ui' => true]), 'names', 'or');
 
-        $omit_types = apply_filters('presspermit_unfiltered_post_types', ['wp_block']); // @todo: review wp_block filtering
+        $omit_types = apply_filters('presspermit_unfiltered_post_types', ['wp_block']); // todo: review wp_block filtering
 
         $object_types = array_diff_key($types, array_fill_keys($omit_types, true));
 

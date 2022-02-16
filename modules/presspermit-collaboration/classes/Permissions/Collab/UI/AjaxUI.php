@@ -57,11 +57,11 @@ class AjaxUI
 
         if ('post' == $for_item_source) {
             $op_obj = $pp->admin()->getOperationObject('edit', $for_item_type);
-            $ops['edit'] = $op_obj->label; //, 'delete' => __('Delete') );
+            $ops['edit'] = $op_obj->label;
 
             if (presspermit()->getOption('publish_exceptions')) {
                 $op_obj = $pp->admin()->getOperationObject('publish', $for_item_type);
-                $ops['publish'] = $op_obj->label; //, 'delete' => __('Delete') );
+                $ops['publish'] = $op_obj->label;
             }
 
             if (class_exists('Fork', false) && !defined('PP_DISABLE_FORKING_SUPPORT') && !in_array($for_item_type, ['forum'], true)) {

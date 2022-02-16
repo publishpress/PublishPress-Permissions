@@ -1045,14 +1045,14 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
         $rs_base_role = $rolename_arr[count($rolename_arr) - 1];
 
         if ('private' == $rolename_arr[0]) {
-            $data['for_item_type'] = implode('_', array_slice($rolename_arr, 1, count($rolename_arr) - 2));  // $arr[1];  - unknown number of elems because type name may have underscores
+            $data['for_item_type'] = implode('_', array_slice($rolename_arr, 1, count($rolename_arr) - 2));  // array index 1  - unknown number of elems because type name may have underscores
 
             if (('subscriber' == $rs_base_role) && ('term' != $scope))
                 $data['for_item_status'] = '';
             else
                 $data['for_item_status'] = 'post_status:private';
         } else {
-            $data['for_item_type'] = implode('_', array_slice($rolename_arr, 0, count($rolename_arr) - 1));  // $arr[0];
+            $data['for_item_type'] = implode('_', array_slice($rolename_arr, 0, count($rolename_arr) - 1));  // array index 0
             $data['for_item_status'] = '';
         }
 

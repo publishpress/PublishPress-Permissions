@@ -21,7 +21,7 @@ class NavMenus
 
     public function fltTermsSkipFiltering($skip, $taxonomies, $args)
     {
-        if (('nav_menu' != reset($taxonomies))) // && ! presspermit()->getOption( 'admin_nav_menu_filter_items' ) )
+        if (('nav_menu' != reset($taxonomies)))
             $skip = true;
 
         return $skip;
@@ -29,7 +29,7 @@ class NavMenus
 
     public function fltTermsArgs($args, $taxonomies)
     {
-        if (('nav_menu' != reset($taxonomies))) // && presspermit()->getOption( 'admin_nav_menu_filter_items' ) )
+        if (('nav_menu' != reset($taxonomies)))
             $args['hide_empty'] = true;
 
         return $args;

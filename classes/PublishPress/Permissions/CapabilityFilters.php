@@ -29,7 +29,7 @@ class CapabilityFilters
 
         $this->meta_caps = apply_filters('presspermit_meta_caps', ['read_post' => 'read', 'read_page' => 'read']);
 
-        $this->cap_data_sources = []; // $arr[$cap_name] = source_name (but default to 'post' data source if unspecified)
+        $this->cap_data_sources = []; // array : [$cap_name] = source_name (but default to 'post' data source if unspecified)
         $this->cap_data_sources = apply_filters('presspermit_cap_data_sources', $this->cap_data_sources);
 
         // Since PP activation implies that this plugin should take custody

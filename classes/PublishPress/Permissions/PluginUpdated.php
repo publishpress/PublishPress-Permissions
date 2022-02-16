@@ -22,15 +22,15 @@ class PluginUpdated
                 break;  // no need to run through version comparisons if no previous version
             }
 
-            // @todo: confirm this is only needed after Import from Role Scoper / Press Permit Beta
-            global $wpdb;
+            // todo: confirm this is only needed after Import from Role Scoper / Press Permit Beta
+			global $wpdb;
             $wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'buffer_metagroup_id_%'");
 
             if (version_compare($prev_version, '2.7-beta', '>=')
             && version_compare($prev_version, '2.7-beta3', '<')
             ) {
                 // Previous 2.7 betas added wrong capabilities
-                // (@todo: possibly migrate all capabilities, but not yet)
+                // (todo: possibly migrate all capabilities, but not yet)
                 if ($role = @get_role('administrator')) {
                     $role->remove_cap('presspermit_create_groups');
                     $role->remove_cap('presspermit_delete_groups');

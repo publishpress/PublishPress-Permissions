@@ -24,7 +24,7 @@ class Settings
         global $wp_scripts;
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
         wp_enqueue_script('presspermit-settings', PRESSPERMIT_URLPATH . "/common/js/settings{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
-        $wp_scripts->in_footer[] = 'presspermit-settings';  // otherwise it will not be printed in footer  @todo: review
+        $wp_scripts->in_footer[] = 'presspermit-settings';  // otherwise it will not be printed in footer  todo: review
 
         $vars = [
             'displayHints' => presspermit()->getOption('display_hints'), 
@@ -34,7 +34,7 @@ class Settings
 
         if (presspermit()->isPro()) {
             wp_enqueue_script('presspermit-pro-settings', plugins_url('', PRESSPERMIT_PRO_FILE) . "/includes-pro/settings-pro{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_PRO_VERSION, true);
-            $wp_scripts->in_footer[] = 'presspermit-pro-settings';  // otherwise it will not be printed in footer  @todo: review
+            $wp_scripts->in_footer[] = 'presspermit-pro-settings';  // otherwise it will not be printed in footer  todo: review
         }
 
         if (!current_user_can('pp_manage_settings'))
@@ -124,7 +124,7 @@ class Settings
 
             $default_tab = apply_filters('presspermit_options_default_tab', $default_tab);
 
-            // @todo: prevent line breaks in these links
+            // todo: prevent line breaks in these links
             echo "<ul class='pp-list_horiz' style='margin-bottom:-0.1em'>";
 
             foreach ($ui->tab_captions as $tab => $caption) {
