@@ -15,7 +15,7 @@ class ItemAjax
 
             case 'get_agent_exception_ui':
                 if (!is_user_logged_in()) {
-                    echo '<option>' . __('(login timed out)', 'press-permit-core') . '</option>';
+                    echo '<option>' . esc_html__('(login timed out)', 'press-permit-core') . '</option>';
                     exit;
                 }
 
@@ -30,7 +30,7 @@ class ItemAjax
                 $for_item_source = (taxonomy_exists($for_item_type)) ? 'term' : 'post';
                 $agent_ids = explode(',', PWP::sanitizeCSV($_GET['agent_ids']));
 
-                echo "<!--ppSfx-->$op|$for_item_type|$agent_type<--ppSfx-->"
+                echo "<!--ppSfx-->" . esc_html("$op|$for_item_type|$agent_type") . "<--ppSfx-->"
                     . "<!--ppResponse-->";
 
                 require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/ItemExceptionsData.php');

@@ -123,7 +123,7 @@ class PermissionsMeta
                 } elseif (isset($op_obj->abbrev))
                     $lbl = $op_obj->abbrev;
                 else
-                    $lbl = sprintf(__('%1$s %2$s', 'press-permit-core'), $op_obj->label, $type_label);
+                    $lbl = sprintf(esc_html__('%1$s %2$s', 'press-permit-core'), $op_obj->label, $type_label);
             } else {
                 $lbl = $type_label;
             }

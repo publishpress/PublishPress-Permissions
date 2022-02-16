@@ -265,12 +265,12 @@ class DashboardFilters
         $handler = [__CLASS__, 'actMenuHandler'];
 
         if ($do_groups) {
-            add_submenu_page($pp_cred_menu, __('Groups', 'press-permit-core'), __('Groups', 'press-permit-core'), 'read', 'presspermit-groups', $handler);
+            add_submenu_page($pp_cred_menu, esc_html__('Groups', 'press-permit-core'), esc_html__('Groups', 'press-permit-core'), 'read', 'presspermit-groups', $handler);
 
             if (current_user_can('pp_create_groups') && ('presspermit-group-new' == presspermitPluginPage())) {
                 add_submenu_page(
                     $pp_cred_menu,
-                    __('Add New Permission Group', 'press-permit-core'),
+                    esc_html__('Add New Permission Group', 'press-permit-core'),
                     '- ' . PWP::__wp('Add New'),
                     'read',
                     'presspermit-group-new',
@@ -283,7 +283,7 @@ class DashboardFilters
             do_action('presspermit_permissions_menu', $pp_options_menu, $handler);
 
             $settings_caption = ('presspermit-groups' == $pp_options_menu)
-                ? __('Settings', 'press-permit-core')
+                ? esc_html__('Settings', 'press-permit-core')
                 : $permissions_title;
 
             add_submenu_page($pp_options_menu, $settings_caption, $settings_caption, 'read', 'presspermit-settings', $handler);
@@ -293,7 +293,7 @@ class DashboardFilters
         $pp_plugin_page = presspermitPluginPage();
 
         if (in_array($pp_plugin_page, ['presspermit-edit-permissions'], true)) {
-            $titles = ['presspermit-edit-permissions' => __('Edit Permissions', 'press-permit-core')];
+            $titles = ['presspermit-edit-permissions' => esc_html__('Edit Permissions', 'press-permit-core')];
             add_submenu_page(pp_permissions_sanitize_key($permissions_title), $titles[$pp_plugin_page], '', 'read', $pp_plugin_page, $handler);
         }
 
