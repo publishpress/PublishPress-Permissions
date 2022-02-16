@@ -142,7 +142,7 @@ class SettingsTabImport
         <?php
         endif;
 
-        if (!$offer_rs && !$offer_pp && empty($_POST['pp_rs_import']) && empty($_POST['pp_pp_import'])) : ?>
+        if (empty($offer_rs) && empty($offer_pp) && presspermit_empty_POST('pp_rs_import') && empty(presspermit_empty_POST('pp_pp_import'))) : ?>
             <p>
                 <?php esc_html_e('Nothing to import!', 'press-permit-core'); ?>
             </p>
