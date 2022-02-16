@@ -22,7 +22,7 @@ class TermEditWorkarounds
             return;
         }
 
-        $stored_term = get_term_by('id', (int) $_POST['tag_ID'], $taxonomy);
+        $stored_term = get_term_by('id', $tag_id, $taxonomy);
 
         $selected_parent = presspermit_POST_int('parent');
 
