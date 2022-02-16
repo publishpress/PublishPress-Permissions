@@ -49,32 +49,32 @@ class UsersListing
         ?>
 
         <label class="screen-reader-text" for="pp-add-group"><?php esc_html_e('Permissions&hellip;', 'press-permit-core') ?></label>
-        <select name="pp-bulk-group<?php echo $sfx; ?>" id="pp-bulk-group<?php echo $sfx; ?>" class="pp-bulk-groups"
+        <select name="pp-bulk-group<?php echo esc_attr($sfx); ?>" id="pp-bulk-group<?php echo esc_attr($sfx); ?>" class="pp-bulk-groups"
                 style="display:inline-block; float:none;" autocomplete="off">
             <option value=''><?php esc_html_e('Permissions&hellip;', 'press-permit-core') ?></option>
             <?php
             foreach ($groups as $group_id => $group) : ?>
-                <option value="<?php echo $group_id; ?>"><?php echo $group->name; ?></option>
+                <option value="<?php echo esc_attr($group_id); ?>"><?php echo esc_html($group->name); ?></option>
             <?php endforeach; ?>
         </select>
 
         <?php
         submit_button(
-            __('Add', 'press-permit-core'),
+            esc_html__('Add', 'press-permit-core'),
             'secondary',
             'pp-add-group-members' . $sfx,
             false,
-            ['title' => __('Add selected users to Permission Group', 'press-permit-core')]
+            ['title' => esc_html__('Add selected users to Permission Group', 'press-permit-core')]
         );
         ?>
 
         <?php
         submit_button(
-            __('Remove', 'press-permit-core'),
+            esc_html__('Remove', 'press-permit-core'),
             'secondary',
             'pp-remove-group-members' . $sfx,
             false,
-            ['title' => __('Remove selected users from Permission Group', 'press-permit-core')]
+            ['title' => esc_html__('Remove selected users from Permission Group', 'press-permit-core')]
         );
 
         wp_nonce_field( 'pp-bulk-assign-groups', 'pp-bulk-groups-nonce' );
@@ -82,25 +82,25 @@ class UsersListing
 
     public static function fltUsersColumns($defaults)
     {
-        $title = __('Click to show only users who have no group', 'press-permit-core');
+        $title = esc_html__('Click to show only users who have no group', 'press-permit-core');
 
         $style = (!presspermit_empty_REQUEST('pp_no_group') && !presspermit_is_REQUEST('orderby', 'pp_group'))
             ? 'style="font-weight:bold; color:black"'
             : '';
 
         $defaults['pp_no_groups'] = sprintf(
-            __('%1$s(x)%2$s', 'press-permit-core'),
+            esc_html__('%1$s(x)%2$s', 'press-permit-core'),
             "<a href='?pp_no_group=1' title='$title' $style>",
             '</a>'
         );
 
-        $defaults['pp_groups'] = __('Groups', 'press-permit-core');
+        $defaults['pp_groups'] = esc_html__('Groups', 'press-permit-core');
 
-        $title = __('Click to show only users who have supplemental roles', 'press-permit-core');
+        $title = esc_html__('Click to show only users who have supplemental roles', 'press-permit-core');
         $style = (!presspermit_empty_REQUEST('pp_has_roles')) ? 'style="font-weight:bold; color:black"' : '';
 
         $defaults['pp_roles'] = sprintf(
-            __('Roles %1$s*%2$s', 'press-permit-core'),
+            esc_html__('Roles %1$s*%2$s', 'press-permit-core'),
             "<a href='?pp_has_roles=1' title='$title' $style>",
             '</a>'
         );
@@ -108,11 +108,11 @@ class UsersListing
         unset($defaults['role']);
         unset($defaults['bbp_user_role']);
 
-        $title = __('Click to show only users who have specific permissions', 'press-permit-core');
+        $title = esc_html__('Click to show only users who have specific permissions', 'press-permit-core');
         $style = (!presspermit_empty_REQUEST('pp_has_exceptions')) ? 'style="font-weight:bold; color:black"' : '';
 
         $defaults['pp_exceptions'] = sprintf(
-            __('Specific Permissions %1$s*%2$s', 'press-permit-core'),
+            esc_html__('Specific Permissions %1$s*%2$s', 'press-permit-core'),
             "<a href='?pp_has_exceptions=1' title='$title' $style>",
             '</a>'
         );
@@ -185,20 +185,25 @@ class UsersListing
                             uksort($group_names, "strnatcasecmp");
 
                             foreach ($group_names as $name => $_id) {
-                                if (defined('PP_USERS_UI_GROUP_FILTER_LINK')) {
-                                    $url = add_query_arg('pp_group', $_id, $_SERVER['REQUEST_URI']);
-                                    $all_group_names[] = "<a href='$url'>$name</a>";
-                                } else {
-                                    $all_group_names[] = "<a href='"
-                                        . "admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_type=$agent_type&amp;agent_id=$_id'>"
-                                        . "$name</a>";
+                                if (!empty($any_done)) {
+                                    echo ', ';
                                 }
+                                
+                                if (defined('PP_USERS_UI_GROUP_FILTER_LINK') && !empty($_SERVER['REQUEST_URI'])) {
+                                    $url = add_query_arg('pp_group', $_id, esc_url_raw($_SERVER['REQUEST_URI']));
+                                    echo "<a href='" . esc_url($url) . "'>" . esc_html($name) . "</a>";
+                                } else {
+                                    echo "<a href='"
+                                        . esc_url("admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_type=$agent_type&amp;agent_id=$_id'>")
+                                        . esc_html($name) . "</a>";
+                                }
+
+                                $any_done = true;
                             }
                         }
                     }
                 }
 
-                return implode(", ", $all_group_names);
                 break;
 
             case 'pp_no_groups':
@@ -279,7 +284,7 @@ class UsersListing
                 if (count($role_titles) > $display_limit) {
                     $excess = count($role_titles) - $display_limit;
                     $role_titles = array_slice($role_titles, 0, $display_limit);
-                    $role_titles[] = sprintf(__('%s&nbsp;more', 'press-permit-core'), $excess);
+                    $role_titles[] = sprintf(esc_html__('%s more', 'press-permit-core'), (int) $excess);
                 }
 
                 $role_str = '<span class="pp-group-site-roles">' . implode(', ', $role_titles) . '</span>';

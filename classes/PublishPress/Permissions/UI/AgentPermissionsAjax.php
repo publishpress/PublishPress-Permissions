@@ -88,7 +88,7 @@ class AgentPermissionsAjax
                     do_action('presspermit_edited_group', $agent_type, $agent_id, true);
                 }
 
-                echo '<!--ppResponse-->' . implode('|', $input_vals) . '<--ppResponse-->';
+                echo '<!--ppResponse-->' . esc_html(implode('|', $input_vals)) . '<--ppResponse-->';
                 break;
 
             case 'exceptions_remove':
@@ -140,7 +140,7 @@ class AgentPermissionsAjax
                     do_action('presspermit_edited_group', $agent_type, $agent_id, true);
                 }
 
-                echo '<!--ppResponse-->' . implode('|', $input_vals) . '<--ppResponse-->';
+                echo '<!--ppResponse-->' . esc_html(implode('|', $input_vals)) . '<--ppResponse-->';
                 break;
 
             case 'exceptions_propagate':
@@ -203,7 +203,7 @@ class AgentPermissionsAjax
                 do_action('presspermit_exception_items_updated', $all_eitem_ids, $agent_type, $agent_id);
                 do_action('presspermit_edited_group', $agent_type, $agent_id, true);
 
-                echo '<!--ppResponse-->' . $_GET['pp_ajax_agent_permissions'] . '~' . implode('|', $edited_input_ids) . '<--ppResponse-->';
+                echo '<!--ppResponse-->' . esc_html(presspermit_GET_key('pp_ajax_agent_permissions')) . '~' . esc_html(implode('|', $edited_input_ids)) . '<--ppResponse-->';
                 break;
 
             default:
@@ -260,7 +260,7 @@ class AgentPermissionsAjax
                     do_action('presspermit_exception_items_mirrored', $all_eitem_ids, $agent_type, $agent_id);
                     do_action('presspermit_edited_group', $agent_type, $agent_id, true);
                     
-                    echo '<!--ppResponse-->' . 'exceptions_mirror' . '~' . implode('|', $edited_input_ids) . '<--ppResponse-->';
+                    echo '<!--ppResponse-->' . 'exceptions_mirror' . '~' . esc_attr(implode('|', $edited_input_ids)) . '<--ppResponse-->';
                     break;
                 }
 

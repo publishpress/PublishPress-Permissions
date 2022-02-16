@@ -74,7 +74,7 @@ class PostsListing
             }
 
             if ($this->exceptions) {
-                $columns['pp_exceptions'] = __('Permissions', 'press-permit-core');
+                $columns['pp_exceptions'] = esc_html__('Permissions', 'press-permit-core');
             }
         }
 
@@ -96,7 +96,7 @@ class PostsListing
                 }
 
                 uasort($op_names, 'strnatcasecmp');
-                echo implode(", ", $op_names);
+                echo esc_html(implode(", ", $op_names));
             }
         }
     }

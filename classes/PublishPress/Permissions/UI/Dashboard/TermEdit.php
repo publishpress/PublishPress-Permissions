@@ -144,39 +144,39 @@ class TermEdit
                 if ('assign' == $op) {
                     $title = ($post_type)
                         ? sprintf(
-                            __('Permissions: Assign this %2$s to %3$s', 'press-permit-core'),
+                            esc_html__('Permissions: Assign this %2$s to %3$s', 'press-permit-core'),
                             $op_obj->label,
                             $tx->labels->singular_name,
                             $type_obj->labels->name
                         )
                         : sprintf(
-                            __('Permissions: Assign this %2$s', 'press-permit-core'),
+                            esc_html__('Permissions: Assign this %2$s', 'press-permit-core'),
                             $op_obj->label,
                             $tx->labels->singular_name
                         );
                 } elseif (in_array($op, ['read', 'edit'], true)) {
                     $title = ($post_type)
                         ? sprintf(
-                            __('Permissions: %1$s %2$s in this %3$s', 'press-permit-core'),
+                            esc_html__('Permissions: %1$s %2$s in this %3$s', 'press-permit-core'),
                             $op_obj->label,
                             $type_obj->labels->name,
                             $tx->labels->singular_name
                         )
                         : sprintf(
-                            __('Permissions: %1$s all content in this %2$s', 'press-permit-core'),
+                            esc_html__('Permissions: %1$s all content in this %2$s', 'press-permit-core'),
                             $op_obj->label,
                             $tx->labels->singular_name
                         );
                 } else {
                     $title = ($post_type)
                         ? sprintf(
-                            __('Permissions: %1$s %2$s in this %3$s', 'press-permit-core'),
+                            esc_html__('Permissions: %1$s %2$s in this %3$s', 'press-permit-core'),
                             $op_obj->label,
                             $type_obj->labels->name,
                             $tx->labels->singular_name
                         )
                         : sprintf(
-                            __('Permissions: %1$s this %2$s', 'press-permit-core'),
+                            esc_html__('Permissions: %1$s this %2$s', 'press-permit-core'),
                             $op_obj->label,
                             $tx->labels->singular_name
                         );
@@ -261,7 +261,7 @@ class TermEdit
         }
         ?>
         <div class="edit-tag-actions">
-            <input class="button button-primary" value="<?php _e('Update', 'press-permit-core'); ?>" type="submit">
+            <input class="button button-primary" value="<?php esc_attr_e('Update', 'press-permit-core'); ?>" type="submit">
         </div>
         <?php
 
@@ -311,7 +311,7 @@ class TermEdit
 
                     add_meta_box(
                         "pp_enable_taxonomy",
-                        __('Permissions Settings', 'press-permit-core'),
+                        esc_html__('Permissions Settings', 'press-permit-core'),
                         [$this, 'drawSettingsUI'],
                         $taxonomy,
                         'advanced',
@@ -335,7 +335,7 @@ class TermEdit
         if ($tx = get_taxonomy($term->taxonomy)) :
             ?>
             <label for="pp_enable_taxonomy"><input type="checkbox" name="pp_enable_taxonomy"/>
-                <?php printf(__('enable custom permissions for %s', 'press-permit-core'), $tx->labels->name); ?>
+                <?php printf(esc_html__('enable custom permissions for %s', 'press-permit-core'), esc_html($tx->labels->name)); ?>
             </label>
         <?php
         endif;
@@ -370,10 +370,10 @@ class TermEdit
                 );
 
                 printf(
-                    __('Displayed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
-                    $type_obj->labels->singular_name,
-                    "<a href='$url'>",
-                    $tx_obj->labels->singular_name,
+                    esc_html__('Displayed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
+                    esc_html($type_obj->labels->singular_name),
+                    "<a href='" . esc_url($url) . "'>",
+                    esc_html($tx_obj->labels->singular_name),
                     '</a>'
                 );
                 ?>

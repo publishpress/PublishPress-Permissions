@@ -381,23 +381,23 @@ class NavMenus
                     switch ($menu_operation) {
                         case 'move':
                             wp_die(sprintf(
-                                __('You do not have permission to move the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
-                                $stored_vals['title'],
-                                $link
+                                esc_html__('You do not have permission to move the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
+                                esc_html($stored_vals['title']),
+                                esc_url($link)
                             ));
                             break;
                         case 'delete':
                             wp_die(sprintf(
-                                __('You do not have permission to delete the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
-                                $stored_vals['title'], 
-                                $link
+                                esc_html__('You do not have permission to delete the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
+                                esc_html($stored_vals['title']), 
+                                esc_url($link)
                             ));
                             break;
                         default:
                             wp_die(sprintf(
-                                __('You do not have permission to edit the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
-                                $stored_vals['title'], 
-                                $link
+                                esc_html__('You do not have permission to edit the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
+                                esc_html($stored_vals['title']), 
+                                esc_url($link)
                             ));
                     } // end switch
                 }

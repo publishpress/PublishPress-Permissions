@@ -468,17 +468,15 @@ class CapabilityFiltersAdmin
                     );
                 }
             } else {
-                $edit_link = "<a href='" . admin_url('index.php') . "'>" . __('Dashboard') . '</a>';
+                $edit_link = "<a href='" . admin_url('index.php') . "'>" . esc_html__('Dashboard') . '</a>';
             }
 
-            if (empty($arr_msg)) {
-                $arr_msg = [
-                    __('The requested modification was processed, but you can no longer edit the post.', 'press-permit-core'), 
-                    sprintf(__('Go to %s', 'press-permit-core'), $edit_link)
-                ];
-            }
-            
-            wp_die('<p>' . implode('</p><p>', $arr_msg) . '</p>');
+            wp_die(
+                '<p>' 
+                . esc_html__('The requested modification was processed, but you can no longer edit the post.', 'press-permit-core')
+                . '</p><p>'
+                . "<a href='" . esc_url(admin_url('index.php')) . "'>" . esc_html__('Dashboard') . '</a></p>'
+            );
         }
 
         return $location;

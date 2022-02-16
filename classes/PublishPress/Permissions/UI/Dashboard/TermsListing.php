@@ -48,10 +48,10 @@ class TermsListing
                 <p>
                     <?php
                     printf(
-                        __('Listed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
-                        $type_obj->labels->singular_name,
-                        "<a href='$url'>",
-                        $tx_obj->labels->singular_name,
+                        esc_html__('Listed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
+                        esc_html($type_obj->labels->singular_name),
+                        "<a href='" . esc_url($url) . "'>",
+                        esc_html($tx_obj->labels->singular_name),
                         '</a>'
                     );
                     ?>
@@ -68,11 +68,11 @@ class TermsListing
         if (presspermit_empty_REQUEST('pp_universal')) {
             $taxonomy = presspermit_REQUEST_key('taxonomy');
             $type_obj = get_post_type_object($typenow);
-            $title = __('Click to list/edit universal permissions', 'press-permit-core');
+            $title = esc_html__('Click to list/edit universal permissions', 'press-permit-core');
             $lbl = ($type_obj && $type_obj->labels) ? $type_obj->labels->singular_name : '';
-            $caption = sprintf(__('%1$s Permissions %2$s*%3$s', 'press-permit-core'), $lbl, "<a href='edit-tags.php?taxonomy=$taxonomy&pp_universal=1' title='$title'>", '</a>');
+            $caption = sprintf(esc_html__('%1$s Permissions %2$s*%3$s', 'press-permit-core'), $lbl, "<a href='edit-tags.php?taxonomy=$taxonomy&pp_universal=1' title='$title'>", '</a>');
         } else {
-            $caption = __('Universal Permissions', 'press-permit-core');
+            $caption = esc_html__('Universal Permissions', 'press-permit-core');
         }
 
         if (defined('PRESSPERMIT_DEBUG')) {
@@ -87,7 +87,7 @@ class TermsListing
         if ('pp_ttid' == $column_name) {
             global $taxonomy;
             $ttid = PWP::termidToTtid($id, $taxonomy);
-            echo "$id ($ttid)";
+            echo esc_attr("$id ($ttid)");
         }
 
         if ('pp_exceptions' != $column_name) {
@@ -116,7 +116,7 @@ class TermsListing
             }
 
             uasort($op_names, 'strnatcasecmp');
-            echo implode(", ", $op_names);
+            echo esc_html(implode(", ", $op_names));
         }
     }
 
@@ -160,7 +160,7 @@ class TermsListing
             jQuery(document).ready(function ($) {
                 $('#the-list tr').each(function (i, e) {
                     $(e).find("a.row-title,span.edit a").each(function (ii, ee) {
-                        var u = $(ee).attr('href').replace('&post_type=<?php echo $post_type; ?>', '');
+                        var u = $(ee).attr('href').replace('&post_type=<?php echo esc_attr($post_type); ?>', '');
                         $(ee).attr('href', u + '&pp_universal=1');
                     });
                 });

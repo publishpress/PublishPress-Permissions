@@ -47,13 +47,12 @@ class RoleUsageListTable extends \WP_List_Table
 
         $this->set_pagination_args([
             'total_items' => $search->get_total(),
-            //'per_page' => $groups_per_page,
         ]);
     }
 
     function no_items()
     {
-        _e('No matching roles were found.', 'press-permit-core');
+        esc_html_e('No matching roles were found.', 'press-permit-core');
     }
 
     function get_views()
@@ -70,7 +69,7 @@ class RoleUsageListTable extends \WP_List_Table
     {
         $c = [
             'role_name' => PWP::__wp('Role'),
-            'usage' => __('Usage', 'press-permit-core'),
+            'usage' => esc_html__('Usage', 'press-permit-core'),
         ];
 
         return $c;
@@ -78,20 +77,15 @@ class RoleUsageListTable extends \WP_List_Table
 
     function get_sortable_columns()
     {
-        $c = [
-            //'usage' => 'usage',
-        ];
+        $c = [];
 
         return $c;
     }
 
     function display_rows()
     {
-        $style = '';
-
         foreach ($this->items as $role_object) {
-            $style = (' class="alternate"' == $style) ? '' : ' class="alternate"';
-            echo "\n\t", $this->single_row($role_object, $style);
+            $this->single_row($role_object);
         }
     }
 
@@ -108,7 +102,7 @@ class RoleUsageListTable extends \WP_List_Table
      * @param int $num_users Optional. User count to display for this group.
      * @return string
      */
-    function single_row($role_obj, $style = '')
+    function single_row($role_obj)
     {
         static $base_url;
 
@@ -119,61 +113,73 @@ class RoleUsageListTable extends \WP_List_Table
         $checkbox = '';
 
         static $can_manage;
-        if (!isset($can_manage))
+        if (!isset($can_manage)) {
             $can_manage = current_user_can('pp_manage_settings');
-
-        // Check if the group for this row is editable
-        if ($can_manage) {
-            $edit_link = $base_url . "?page=presspermit-role-usage-edit&amp;action=edit&amp;role={$role_name}";
-            $edit = "<strong><a href=\"$edit_link\">{$role_obj->labels->singular_name}</a></strong><br />";
-            $actions['edit'] = '<a href="' . $edit_link . '">' . PWP::__wp('Edit') . '</a>';
-        } else {
-            $edit = '<strong>' . $role_obj->labels->name . '</strong>';
         }
 
-        $actions[''] = '&nbsp;';  // temp workaround to prevent shrunken row
-
-        $actions = apply_filters('presspermit_role_usage_row_actions', $actions, $role_obj);
-        $edit .= $this->row_actions($actions);
-
-        $r = "<tr $style>";
+        echo "<tr>";
 
         list($columns, $hidden) = $this->get_column_info();
 
         foreach ($columns as $column_name => $column_display_name) {
-            $class = "class=\"$column_name column-$column_name\"";
+            $class = "$column_name column-$column_name";
 
-            $style = '';
-            if (in_array($column_name, $hidden, true))
-                $style = ' style="display:none;"';
-
-            $attributes = "$class$style";
+            $style = (in_array($column_name, $hidden, true)) ? 'display:none;' : '';
 
             switch ($column_name) {
                 case 'role_name':
-                    $r .= "<td $attributes>$edit</td>";
+                    echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
+
+        if ($can_manage) {
+            $edit_link = $base_url . "?page=presspermit-role-usage-edit&amp;action=edit&amp;role={$role_name}";
+                        echo "<strong><a href='" . esc_url($edit_link) . "'>" . esc_html($role_obj->labels->singular_name) . "</a></strong><br />";
+        } else {
+                        echo '<strong>' . esc_html($role_obj->labels->name) . '</strong>';
+        }
+
+                	$mode = get_user_setting( 'posts_list_mode', 'list' );
+                	$class = ('excerpt' === $mode) ? 'row-actions visible' : 'row-actions';
+
+                    echo '<div class="' . esc_attr($class) . '">';
+
+                    // Check if the group for this row is editable
+                    if ($can_manage) {
+                        echo "<span class='edit'><a href='" . esc_url($edit_link) . "'>" . PWP::__wp('Edit') . '</a></span>';
+                    } else {
+                        // temp workaround to prevent shrunken row
+                        echo "<span class=''>&nbsp;</span>";
+                    }
+
+                    echo '</div>';
+
+                    echo "</td>";
+
                     break;
                 case 'usage':
                     switch ($role_obj->usage) {
                         case 'direct':
-                            $caption = __('Direct Assignment', 'press-permit-core');
+                            $caption = esc_html__('Direct Assignment', 'press-permit-core');
                             break;
                             
                         default:
                             $caption = (empty($role_obj->usage)) 
-                            ? __('no supplemental assignment', 'press-permit-core') 
-                            : __('Pattern Role', 'press-permit-core');
+                            ? esc_html__('no supplemental assignment', 'press-permit-core') 
+                            : esc_html__('Pattern Role', 'press-permit-core');
                     }
-                    $r .= "<td $attributes>$caption</td>";
+                    echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
+                    echo esc_html($caption);
+                    echo "</td>";
                     break;
                 default:
-                    $r .= "<td $attributes>";
-                    $r .= apply_filters('presspermit_manage_role_usage_custom_column', '', $column_name, $role_obj);
-                    $r .= "</td>";
+                    echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
+                    do_action('presspermit_manage_role_usage_custom_column', '', $column_name, $role_obj);
+                    echo "</td>";
             }
+            }
+        echo '</tr>';
         }
-        $r .= '</tr>';
 
-        return $r;
+    function row_actions( $actions, $always_visible = false ) {
+
     }
 }

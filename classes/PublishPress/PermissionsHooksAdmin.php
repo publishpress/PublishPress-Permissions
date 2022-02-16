@@ -160,10 +160,10 @@ class PermissionsHooksAdmin
 
     public function fltPatternRoles($roles)
     {
-        $roles['subscriber']->labels = (object)['name' => __('Subscribers', 'press-permit-core'), 'singular_name' => __('Subscriber', 'press-permit-core')];
-        $roles['contributor']->labels = (object)['name' => __('Contributors', 'press-permit-core'), 'singular_name' => __('Contributor', 'press-permit-core')];
-        $roles['author']->labels = (object)['name' => __('Authors', 'press-permit-core'), 'singular_name' => __('Author', 'press-permit-core')];
-        $roles['editor']->labels = (object)['name' => __('Editors', 'press-permit-core'), 'singular_name' => __('Editor', 'press-permit-core')];
+        $roles['subscriber']->labels = (object)['name' => esc_html__('Subscribers', 'press-permit-core'), 'singular_name' => esc_html__('Subscriber', 'press-permit-core')];
+        $roles['contributor']->labels = (object)['name' => esc_html__('Contributors', 'press-permit-core'), 'singular_name' => esc_html__('Contributor', 'press-permit-core')];
+        $roles['author']->labels = (object)['name' => esc_html__('Authors', 'press-permit-core'), 'singular_name' => esc_html__('Author', 'press-permit-core')];
+        $roles['editor']->labels = (object)['name' => esc_html__('Editors', 'press-permit-core'), 'singular_name' => esc_html__('Editor', 'press-permit-core')];
 
         return $roles;
     }
@@ -179,11 +179,11 @@ class PermissionsHooksAdmin
 
                 $msg = current_user_can('pp_manage_settings')
                 ? sprintf(
-                    __('Please %senable the Collaborative Publishing module%s for PublishPress Revisions integration.', 'press-permit-core'),
+                    esc_html__('Please %senable the Collaborative Publishing module%s for PublishPress Revisions integration.', 'press-permit-core'),
                     '<a href="' . admin_url('admin.php?page=presspermit-settings') . '" style="text-decoration:underline">',
                     '</a>'
                 )
-                : __('PublishPress Revisions integration requires the Collaborative Publishing module. Please notify your Administrator.', 'press-permit-core');
+                : esc_html__('PublishPress Revisions integration requires the Collaborative Publishing module. Please notify your Administrator.', 'press-permit-core');
 
                 presspermit()->admin()->notice($msg);
             }

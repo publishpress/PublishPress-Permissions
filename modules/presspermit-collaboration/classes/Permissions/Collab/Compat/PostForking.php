@@ -64,7 +64,7 @@ class PostForking
         if (post_type_supports(get_post_type($post), 'fork')) {
             if ($status_obj = get_post_status_object($post->post_status)) {
                 if (!empty($status_obj->public) || !empty($status_obj->private)) {
-                    $label = ($fork->branches->can_branch($post)) ? __('Create branch', 'fork') : __('Fork', 'fork');
+                    $label = ($fork->branches->can_branch($post)) ? esc_html__('Create branch', 'fork') : esc_html__('Fork', 'fork');
                     $actions[] = '<a href="' . admin_url("?fork={$post->ID}") . '">' . $label . '</a>';
                 }
             }
@@ -72,7 +72,7 @@ class PostForking
 
         if (Fork::post_type == get_post_type($post)) {
             $parent = $fork->revisions->get_previous_revision($post);
-            $actions[] = '<a href="' . admin_url("revision.php?action=diff&left={$parent}&right={$post->ID}") . '">' . __('Compare', 'fork') . '</a>';
+            $actions[] = '<a href="' . admin_url("revision.php?action=diff&left={$parent}&right={$post->ID}") . '">' . esc_html__('Compare', 'fork') . '</a>';
         }
 
         return $actions;

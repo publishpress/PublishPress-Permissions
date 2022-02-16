@@ -216,11 +216,11 @@ class AgentsAjax
                 foreach ($results as $row) {
                     if (!in_array($row->ID, $omit_users)) {
                         if (defined('PP_USER_RESULTS_DISPLAY_NAME')) {
-                            $title = ($row->user_login != $row->display_name) ? " title='" . esc_attr($row->user_login) . "'" : '';
-                            echo "<option value='$row->ID' class='pp-new-selection'{$title}>$row->display_name</option>";
+                            $title = ($row->user_login != $row->display_name) ? $row->user_login : '';
+                            echo "<option value='" . esc_attr($row->ID) . "' class='pp-new-selection' title='" . esc_attr($title) . "'>" . esc_html($row->display_name) . "</option>";
                         } else {
-                            $title = ($row->user_login != $row->display_name) ? " title='" . esc_attr($row->display_name) . "'" : '';
-                            echo "<option value='$row->ID' class='pp-new-selection'{$title}>$row->user_login</option>";
+                            $title = ($row->user_login != $row->display_name) ? $row->display_name : '';
+                            echo "<option value='" . esc_attr($row->ID) . "' class='pp-new-selection title='" . esc_attr($title) . "'>" . esc_html($row->user_login) . "</option>";
                         }
                     }
                 }
@@ -241,7 +241,7 @@ class AgentsAjax
             )) {
                 foreach ($groups as $row) {
                     if ((empty($row->metagroup_id) || is_null($row->metagroup_id)) && !isset($omit_groups[$row->ID])) {
-                        echo "<option value='$row->ID'>$row->name</option>";
+                        echo "<option value='" . esc_attr($row->ID) . "'>". esc_html($row->name) . "</option>";
                     }
                 }
             }

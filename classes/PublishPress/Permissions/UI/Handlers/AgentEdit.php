@@ -17,6 +17,7 @@ class AgentEdit
 
         if (!$agent_type = presspermit_REQUEST_key('agent_type')) {
             return;
+        }
 
         $pp = presspermit();
 
@@ -28,7 +29,7 @@ class AgentEdit
                 check_admin_referer('pp-update-group_' . $agent_id);
 
                 if (!$pp->groups()->userCan('pp_edit_groups', $agent_id, $agent_type))
-                    wp_die(__('You are not permitted to do that.', 'press-permit-core'));
+                    wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
 
                 if ($pp->groups()->groupTypeEditable($agent_type)) {
                     $group = $pp->groups()->getGroup($agent_id, $agent_type);
@@ -108,7 +109,7 @@ class AgentEdit
 
             case 'creategroup':
                 if (!current_user_can('pp_create_groups'))
-                    wp_die(__('You are not permitted to do that.', 'press-permit-core'));
+                    wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
 
                 check_admin_referer('pp-create-group', '_wpnonce_pp-create-group');
 
@@ -299,12 +300,12 @@ class AgentEdit
 
             /* checking that username has been typed */
             if (!$group->group_name) {
-                $errors->add('group_name', __('<strong>ERROR</strong>: Please enter a group name.', 'press-permit-core'));
+                $errors->add('group_name', esc_html__('<strong>ERROR</strong>: Please enter a group name.', 'press-permit-core'));
 
             } elseif (!$update && !\PublishPress\Permissions\DB\GroupUpdate::groupNameAvailable($group->group_name, $agent_type)) {
                 $errors->add(
                     'user_login', 
-                    __('<strong>ERROR</strong>: This group name is already registered. Please choose another one.', 'press-permit-core')
+                    esc_html__('<strong>ERROR</strong>: This group name is already registered. Please choose another one.', 'press-permit-core')
                 );
             }
 
