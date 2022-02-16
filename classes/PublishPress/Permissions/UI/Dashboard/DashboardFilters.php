@@ -200,7 +200,7 @@ class DashboardFilters
             global $wp_scripts;
             $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
             wp_enqueue_script('presspermit-misc', PRESSPERMIT_URLPATH . "/common/js/presspermit{$suffix}.js", ['jquery'], PRESSPERMIT_VERSION, true);
-            $wp_scripts->in_footer[] = 'presspermit-misc'; // otherwise it will not be printed in footer @todo: review
+            $wp_scripts->in_footer[] = 'presspermit-misc'; // otherwise it will not be printed in footer todo: review
         }
 
         if (('user-edit.php' == $pagenow) && presspermit()->getOption('display_user_profile_groups')) {
