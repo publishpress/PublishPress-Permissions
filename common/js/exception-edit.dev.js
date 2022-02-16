@@ -237,8 +237,8 @@ jQuery(document).ready(function ($) {
                         } else
                             assign_mode_inputs = '';
 
-                        newrow = '<tr>'
-                            + '<td>' + for_type_caption + '</td>'
+                        newrow = 
+                            '<tr><td>' + for_type_caption + '</td>'
                             + '<td>' + op_caption + '</td>'
                             + '<td>' + mod_type_caption + '</td>'
                             + '<td>' + selected_caption + '</td>'
@@ -253,8 +253,7 @@ jQuery(document).ready(function ($) {
                             + '<input type="hidden" name="pp_add_exception[' + presspermitXid + '][attrib_cond]" value="' + $('#' + id).val() + '" />'
                             + '<input type="hidden" name="pp_add_exception[' + presspermitXid + '][item_id]" value="' + itemdata['menu-item-object-id'] + '" />'
                             + assign_mode_inputs
-                            + '</td>'
-                            + '</tr>';
+                            + '</td></tr>';
 
                         $('#pp_tbl_exception_selections tbody').append(newrow);
 
