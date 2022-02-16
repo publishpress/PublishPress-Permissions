@@ -160,11 +160,11 @@ class ItemExceptionsUI
                             echo '</div>';
                             echo '</div>';
 
-                            $colspan = 'colspan="2"';
+                            $colspan = '2';
                             ?>
                         </td>
                     <?php else :
-                        $colspan = '';  // for html5 compliance
+                        $colspan = '';
                     endif;
                     ?>
 
