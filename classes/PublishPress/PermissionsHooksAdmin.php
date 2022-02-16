@@ -80,7 +80,31 @@ class PermissionsHooksAdmin
             new Permissions\UI\Handlers\Settings();
         }
 
-        if (isset($_GET['pp_agent_search'])) {
+        if (!presspermit_empty_REQUEST('presspermit_refresh_updates') || !presspermit_empty_REQUEST('pp_renewal')) {
+            if (!current_user_can('pp_manage_settings')) {
+                wp_die(esc_html(PWP::__wp('Cheatin&#8217; uh?')));
+            }
+    
+            if (!presspermit_empty_REQUEST('presspermit_refresh_updates')) {
+                delete_site_transient('update_plugins');
+                delete_option('_site_transient_update_plugins');
+                wp_update_plugins();
+                wp_redirect(admin_url('admin.php?page=presspermit-settings&presspermit_refresh_done=1'));
+                exit;
+            }
+    
+            if (!presspermit_empty_REQUEST('pp_renewal')) {
+                if (presspermit()->isPro()) {
+                    include_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/pro-renewal-redirect.php');
+                } else {
+                    include_once(PRESSPERMIT_ABSPATH . '/includes/renewal-redirect.php');
+                }
+    
+                exit;
+            }
+        }
+
+        if (presspermit_is_GET('pp_agent_search')) {
             require_once(PRESSPERMIT_CLASSPATH . '/UI/AgentsAjax.php');
             new Permissions\UI\AgentsAjax();
             exit;
