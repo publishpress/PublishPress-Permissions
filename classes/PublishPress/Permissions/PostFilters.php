@@ -152,7 +152,7 @@ class PostFilters
         if ($pp->isUserUnfiltered() && 
             (
             !is_admin() || 
-            (($pagenow != 'nav-menus.php') && (!defined('DOING_AJAX') || !DOING_AJAX || empty($_REQUEST['action']) || !in_array($_REQUEST['action'], ['menu-get-metabox', 'menu-quick-search'])))
+            (($pagenow != 'nav-menus.php') && (!defined('DOING_AJAX') || !DOING_AJAX || !presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search'])))
             )
         ) { // need to make private items selectable for nav menus
             return $clauses;
