@@ -3,7 +3,7 @@ namespace PublishPress\Permissions\Import\UI;
 
 class SettingsTabImportNotes
 {
-    function displayNotes() {
+    static function displayNotes() {
         ?>
         <ul class="pp-notes">
             <li><?php esc_html_e('The import can be run multiple times if source values change.', 'press-permit-core-hints'); ?></li>
