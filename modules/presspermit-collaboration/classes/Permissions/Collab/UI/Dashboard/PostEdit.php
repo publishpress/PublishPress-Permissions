@@ -21,7 +21,6 @@ class PostEdit
 
         $post_type = PWP::findPostType();
         if ($post_type && presspermit()->getTypeOption('default_privacy', $post_type)) {
-            //if ((defined('PRESSPERMIT_STATUSES_VERSION') && version_compare(PRESSPERMIT_STATUSES_VERSION, '2.7-beta', '<')) 
             if (PWP::isBlockEditorActive($post_type)) {
                 // separate JS for Gutenberg
             } else {
