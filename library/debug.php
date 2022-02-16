@@ -27,8 +27,9 @@ function presspermit_editing_plugin()
     global $pagenow;
 
     if (is_admin() && isset($pagenow) && ('plugin-editor.php' == $pagenow)) {
-        if (empty($_REQUEST['action']) || !in_array($_REQUEST['action'], ['activate', 'deactivate']))
+        if (!presspermit_is_REQUEST('action', ['activate', 'deactivate'])) {
             return true;
+    	}
     }
 
     return false;

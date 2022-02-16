@@ -11,10 +11,10 @@ class GroupNew
 
         $url = apply_filters('presspermit_groups_base_url', 'admin.php');
 
-        if (isset($_REQUEST['wp_http_referer'])) {
-            $wp_http_referer = sanitize_url($_REQUEST['wp_http_referer']);
+        if ($wp_http_referer = presspermit_REQUEST_var('wp_http_referer')) {
+            $wp_http_referer = esc_url_raw($wp_http_referer);
 
-        } elseif (isset($_SERVER['HTTP_REFERER'])) {
+        } elseif ($http_referer = presspermit_SERVER_var('HTTP_REFERER')) {
             if (!strpos($_SERVER['HTTP_REFERER'], 'page=presspermit-group-new')) {
                 $wp_http_referer = sanitize_url($_SERVER['HTTP_REFERER']);
             } else {
@@ -34,11 +34,13 @@ class GroupNew
         $pp_admin = $pp->admin();
         $pp_groups = $pp->groups();
 
-        if (isset($_GET['update']) && empty($pp_admin->errors)) : ?>
+        if (!presspermit_empty_GET('update') && empty($pp_admin->errors)) : ?>
             <div id="message" class="updated">
                 <p><strong><?php _e('Group created.', 'press-permit-core') ?>&nbsp;</strong>
                     <?php
-                    $group_variant = ! empty($_REQUEST['group_variant']) ? pp_permissions_sanitize_key($_REQUEST['group_variant']) : 'pp_group';
+                    if (!$group_variant = presspermit_REQUEST_key('group_variant')) {
+                        $group_variant = 'pp_group';
+                    }
 
                     $groups_link = ($wp_http_referer && strpos($wp_http_referer, 'presspermit-groups')) 
                     ? $wp_http_referer
@@ -63,9 +65,11 @@ class GroupNew
                 PluginPage::icon();
                 ?>
                 <h1><?php
-                    $agent_type = (isset($_REQUEST['agent_type']) && $pp_groups->groupTypeEditable($_REQUEST['agent_type']))
-                        ? pp_permissions_sanitize_key($_REQUEST['agent_type'])
-                        : 'pp_group';
+                    $agent_type = presspermit_REQUEST_key('agent_type');
+
+                    if (!$pp_groups->groupTypeEditable($agent_type)) {
+                        $agent_type = 'pp_group';
+                    }
 
                     if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type))
                         _e('Create New Permission Group', 'press-permit-core');

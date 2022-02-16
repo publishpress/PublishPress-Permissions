@@ -120,13 +120,13 @@ class PostTermsSave
         }
 
         if ('category' == $taxonomy) {
-            if (!empty($_POST['post_category'])) {
+            if ($post_category = presspermit_POST_int('post_category')) {
 				return array_map('intval', self::fltPreObjectTerms((array)$_POST['post_category'], $taxonomy));
             }
         } else {
             $tx_obj = get_taxonomy($taxonomy);
             if ($tx_obj && !empty($tx_obj->object_terms_post_var)) {
-                if (isset($_POST[$tx_obj->object_terms_post_var])) {
+                if (presspermit_is_POST($tx_obj->object_terms_post_var)) {
                     return array_map('intval', $_POST[$tx_obj->object_terms_post_var]);
                 }
 
@@ -137,8 +137,8 @@ class PostTermsSave
                     $term_info = self::parseTermNames($_POST['tax_input'][$taxonomy], $taxonomy);
                     return array_map('intval', self::fltPreObjectTerms($term_info['terms'], $taxonomy));
                 }
-            } elseif ('post_tag' == $taxonomy && !empty($_POST['tags_input'])) {
-                $term_info = self::parseTermNames($_POST['tags_input'], $taxonomy);
+            } elseif ('post_tag' == $taxonomy && !presspermit_empty_POST('tags_input')) {
+                $term_info = self::parseTermNames(presspermit_POST_key('tags_input'), $taxonomy);
                 return array_map('intval', self::fltPreObjectTerms($term_info['terms'], $taxonomy));
             }
         }

@@ -27,7 +27,7 @@ class NavMenu
 
         add_filter('get_user_option_nav_menu_recently_edited', [$this, 'fltNavMenuRecent']);
 
-        if (!empty($_POST)) {
+        if (!presspermit_empty_POST()) {
             add_action('pre_post_update', [$this, 'act_police_menu_item_edit']);
             add_action('presspermit_delete_object', [$this, 'act_police_menu_item_deletion'], 10, 3);
             add_filter('wp_insert_post_parent', [$this, 'flt_police_menu_item_parent'], 10, 4);

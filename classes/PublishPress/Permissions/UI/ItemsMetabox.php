@@ -93,7 +93,9 @@ class ItemsMetabox extends \Walker_Nav_Menu
             $per_page = defined('PP_ITEM_MENU_PER_PAGE') ? PP_ITEM_MENU_PER_PAGE : 100;
         }
 
-        $pagenum = isset($_REQUEST[$post_type_name . '-tab']) && isset($_REQUEST['paged']) ? absint($_REQUEST['paged']) : 1;
+		$current_tab = presspermit_REQUEST_key($post_type_name . '-tab');
+
+        $pagenum = $current_tab && presspermit_isset_REQUEST('paged') ? absint(presspermit_REQUEST_var('paged')) : 1;
         $offset = 0 < $pagenum ? $per_page * ($pagenum - 1) : 0;
 
         $args = [
@@ -160,7 +162,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             $current_tab = pp_permissions_sanitize_key($_REQUEST[$post_type_name . '-tab']);
         }
 
-        if (!empty($_REQUEST['quick-search-posttype-' . $post_type_name])) {
+        if (!presspermit_empty_REQUEST('quick-search-posttype-' . $post_type_name)) {
             $current_tab = 'search';
         }
 
@@ -222,7 +224,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             ?>" id="tabs-panel-posttype-<?php echo $post_type_name; ?>-search">
 
                 <?php
-                if (isset($_REQUEST['quick-search-posttype-' . $post_type_name])) {
+                if ($search = presspermit_REQUEST_var('quick-search-posttype-' . $post_type_name)) {
                     if (function_exists('_filter_query_attachment_filenames')) {
                         add_filter('posts_clauses', '_filter_query_attachment_filenames');
                     }
@@ -309,7 +311,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
                     $checkbox_items = walk_nav_menu_tree(array_map([__CLASS__, 'setup_nav_menu_item'], $posts), 0, (object)$args);
 
-                    if ('all' == $current_tab && !empty($_REQUEST['selectall'])) {
+                    if ('all' == $current_tab && !presspermit_empty_REQUEST('selectall')) {
                         $checkbox_items = preg_replace('/(type=(.)checkbox(\2))/', '$1 checked=$2checked$2', $checkbox_items);
                     }
 
@@ -358,9 +360,11 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
         $post_type_name = $post_type['args']->name;
 
+        $current_tab = presspermit_REQUEST_key($post_type_name . '-tab');
+
         // paginate browsing for large numbers of post objects
         $per_page = (defined('PP_ITEM_MENU_PER_PAGE')) ? PP_ITEM_MENU_PER_PAGE : 50;
-        $pagenum = isset($_REQUEST[$post_type_name . '-tab']) && isset($_REQUEST['paged']) ? absint($_REQUEST['paged']) : 1;
+        $pagenum = $current_tab && presspermit_is_REQUEST('paged') ? absint(presspermit_is_REQUEST('paged')) : 1;
         $offset = 0 < $pagenum ? $per_page * ($pagenum - 1) : 0;
 
         $args = [
@@ -500,7 +504,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
                     $checkbox_items = walk_nav_menu_tree(array_map([__CLASS__, 'setup_nav_menu_item'], $posts), 0, (object)$args);
 
-                    if ('all' == $current_tab && !empty($_REQUEST['selectall'])) {
+                    if ('all' == $current_tab && !presspermit_empty_REQUEST('selectall')) {
                         $checkbox_items = preg_replace('/(type=(.)checkbox(\2))/', '$1 checked=$2checked$2', $checkbox_items);
                     }
 
@@ -552,9 +556,11 @@ class ItemsMetabox extends \Walker_Nav_Menu
         global $nav_menu_selected_id;
         $taxonomy_name = $taxonomy['args']->name;
 
+        $current_tab = presspermit_REQUEST_key($taxonomy_name . '-tab');
+
         // paginate browsing for large numbers of objects
         $per_page = 50;
-        $pagenum = isset($_REQUEST[$taxonomy_name . '-tab']) && isset($_REQUEST['paged']) ? absint($_REQUEST['paged']) : 1;
+        $pagenum = $current_tab && presspermit_is_REQUEST('paged') ? absint(presspermit_REQUEST_var('paged')) : 1;
         $offset = 0 < $pagenum ? $per_page * ($pagenum - 1) : 0;
 
         $args = [
@@ -618,12 +624,11 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
         $walker = new ItemsMetabox($db_fields);
 
-        $current_tab = 'most-used';
-        if (isset($_REQUEST[$taxonomy_name . '-tab']) && in_array($_REQUEST[$taxonomy_name . '-tab'], ['all', 'most-used', 'search'])) {
-            $current_tab = pp_permissions_sanitize_key($_REQUEST[$taxonomy_name . '-tab']);
+        if (!in_array($current_tab, ['all', 'most-used', 'search'])) {
+        	$current_tab = 'most-used';
         }
 
-        if (!empty($_REQUEST['quick-search-taxonomy-' . $taxonomy_name])) {
+        if (!presspermit_empty_REQUEST('quick-search-taxonomy-' . $taxonomy_name)) {
             $current_tab = 'search';
         }
 
@@ -735,7 +740,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             ?>" id="tabs-panel-search-taxonomy-<?php echo $taxonomy_name; ?>">
 
                 <?php
-                if (isset($_REQUEST['quick-search-taxonomy-' . $taxonomy_name])) {
+                if ($search = presspermit_REQUEST_var('quick-search-taxonomy-' . $taxonomy_name)) {
                     $searched = esc_attr($_REQUEST['quick-search-taxonomy-' . $taxonomy_name]);
                     $search_results = get_terms(
                         $taxonomy_name,
@@ -822,8 +827,8 @@ class ItemsMetabox extends \Walker_Nav_Menu
     public static function ajax_menu_quick_search()
     {
         $args = [];
-        $type = isset($_REQUEST['type']) ? pp_permissions_sanitize_key($_REQUEST['type']) : '';
-        $query = isset($_REQUEST['q']) ? sanitize_text_field($_REQUEST['q']) : '';
+        $type = presspermit_REQUEST_key('type');
+        $query = sanitize_text_field(presspermit_REQUEST_var('q'));
 
         $args['walker'] = new ItemsMetabox;
         $args['is_search_result'] = true;

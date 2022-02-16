@@ -28,11 +28,18 @@ class Settings
             exit;
         }
 
-        if (isset($_POST['presspermit_submit'])) {
-            $this->handleSubmission('update');
+        if (presspermit_is_POST('pp_submission_topic', 'options')) {
 
-        } elseif (isset($_POST['presspermit_defaults'])) {
-            $this->handleSubmission('default');
+            if (isset($_POST['presspermit_submit'])) {
+                $this->updateOptions($args);
+                do_action('presspermit_handle_submission', 'update', $args);
+            
+            } elseif (isset($_POST['presspermit_defaults'])) {
+                $this->defaultOptions($args);
+                do_action('presspermit_handle_submission', 'default', $args);
+            }
+
+            presspermit()->refreshOptions();
 
         } elseif (isset($_POST['pp_role_usage_defaults'])) {
             delete_option('presspermit_role_usage');
@@ -99,7 +106,7 @@ class Settings
         $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
 
         foreach (array_map('pp_permissions_sanitize_key', explode(',', $_POST['all_options'])) as $option_basename) {
-            $value = isset($_POST[$option_basename]) ? $_POST[$option_basename] : '';
+            $value = presspermit_POST_var($option_basename);
 
             if (!is_array($value))
                 $value = trim($value);
@@ -134,7 +141,7 @@ class Settings
             $pp->updateOption($default_prefix . $option_basename, $value, $args);
         }
 
-        if (!empty($_POST['post_blockage_priority'])) {  // once this is switched on manually, don't ever default-disable it again
+        if (!presspermit_empty_POST('post_blockage_priority')) {  // once this is switched on manually, don't ever default-disable it again
             if (get_option('presspermit_legacy_exception_handling')) {
                 delete_option('presspermit_legacy_exception_handling');
             }
@@ -148,20 +155,20 @@ class Settings
         $deactivated = $_deactivated;
 
         // add deactivations (unchecked from Active list)
-        if (!empty($_POST['presspermit_reviewed_modules'])) {
+        if ($reviewed_modules = presspermit_POST_var('presspermit_reviewed_modules')) {
             $reviewed_modules = array_fill_keys( array_map('pp_permissions_sanitize_key', explode(',', $_POST['presspermit_reviewed_modules'])), (object)[]);
 
             $deactivated = array_merge(
                 $deactivated,
                 array_diff_key(
                     $reviewed_modules,
-                    !empty($_POST['presspermit_active_modules']) ? array_filter($_POST['presspermit_active_modules']) : []
+                    !presspermit_empty_POST('presspermit_active_modules') ? array_filter((array) presspermit_POST_key('presspermit_active_modules')) : []
                 )
             );
         }
 
         // remove deactivations (checked in Inactive list)
-        if (! empty($_POST['presspermit_deactivated_modules'])) {
+        if ($deactivated_modules = presspermit_POST_var('presspermit_deactivated_modules')) {
             $deactivated = array_diff_key(
                 $deactivated, 
                 $_POST['presspermit_deactivated_modules']
@@ -180,7 +187,7 @@ class Settings
             }
 
             $pp->updateOption('deactivated_modules', $deactivated);
-            $tab = (!empty($_POST['pp_tab'])) ? "&pp_tab={" . pp_permissions_sanitize_key($_POST['pp_tab']) . "}" : '';
+            $tab = (!presspermit_empty_POST('pp_tab')) ? "&pp_tab={" . presspermit_POST_key('pp_tab') . "}" : '';
             wp_redirect(admin_url("admin.php?page=presspermit-settings$tab&presspermit_submit_redirect=1"));
         }
         // =====================================================

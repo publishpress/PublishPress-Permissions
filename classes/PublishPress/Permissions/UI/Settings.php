@@ -119,8 +119,11 @@ class Settings
         </header>
         
             <?php
-            $default_tab = (isset($_REQUEST['pp_tab']) && isset($ui->tab_captions[$_REQUEST['pp_tab']]))
-                ? pp_permissions_sanitize_key($_REQUEST['pp_tab']) : 'install';
+            $default_tab = presspermit_REQUEST_key('pp_tab');
+
+            if (!isset($ui->tab_captions[$default_tab])) {
+                $default_tab = 'install';
+            }
 
             $default_tab = apply_filters('presspermit_options_default_tab', $default_tab);
 
@@ -140,7 +143,7 @@ class Settings
             echo '<div class="pp-options-wrapper">';
             $table_class = 'form-table pp-form-table pp-options-table';
 
-            if (isset($_REQUEST['presspermit_submit']) || isset($_REQUEST['presspermit_submit_redirect'])) :
+            if (presspermit_is_REQUEST('presspermit_submit') || presspermit_is_REQUEST('presspermit_submit_redirect')) :
                 ?>
                 <div id="message" class="updated">
                     <p>
@@ -148,7 +151,7 @@ class Settings
                     </p>
                 </div>
             <?php
-            elseif (isset($_REQUEST['presspermit_defaults'])) :
+            elseif (presspermit_is_REQUEST('presspermit_defaults')) :
                 ?>
                 <div id="message" class="updated">
                     <p>
@@ -184,7 +187,7 @@ class Settings
             <p class="submit pp-submit" style="border:none;">
                 <input type="submit" name="presspermit_submit" class="button-primary" value="<?php _e('Save Changes', 'press-permit-core'); ?>"/>
                 <input type="hidden" name="pp_tab"
-                        value="<?php if (!empty($_REQUEST['pp_tab'])) echo esc_attr($_REQUEST['pp_tab']); ?>"/>
+                        value="<?php if ($pp_tab = presspermit_REQUEST_key('pp_tab')) echo esc_attr($pp_tab); ?>"/>
             </p>
 
             <?php

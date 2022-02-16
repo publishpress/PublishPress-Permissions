@@ -35,8 +35,8 @@ class RoleUsage
         $total_pages = $role_usage_table->get_pagination_arg('total_pages');
 
         $messages = [];
-        if (isset($_GET['update'])) :
-            switch ($_GET['update']) {
+        if ($update = presspermit_GET_key('update')) :
+            switch ($update) {
                 case 'edit':
                     $messages[] = '<div id="message" class="updated"><p>' . __('Role Usage edited.', 'press-permit-core') . '</p></div>';
                     break;

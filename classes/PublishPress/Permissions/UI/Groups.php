@@ -12,19 +12,21 @@ class Groups
         $pp_groups = $pp->groups();
 
         if (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2'])) {
-            $action = pp_permissions_sanitize_key($_REQUEST['action2']);
+            $action = presspermit_REQUEST_key('action2');
 
         } elseif (!empty($_REQUEST['action']) && !is_numeric($_REQUEST['action'])) {
-            $action = pp_permissions_sanitize_key($_REQUEST['action']);
+            $action = presspermit_REQUEST_key('action');
 
         } elseif (!empty($_REQUEST['pp_action'])) {
-            $action = pp_permissions_sanitize_key($_REQUEST['pp_action']);
+            $action = presspermit_REQUEST_key('pp_action');
         } else {
             $action = '';
         }
 
         if ( ! in_array($action, ['delete', 'bulkdelete'])) {
-            $agent_type = (!empty($_REQUEST['agent_type'])) ? pp_permissions_sanitize_key($_REQUEST['agent_type']) : 'pp_group';
+            if (!$agent_type = presspermit_REQUEST_key('agent_type')) {
+                $agent_type = 'pp_group';
+            }
         } else {
             $agent_type = '';
         }
@@ -50,10 +52,12 @@ class Groups
 
             case 'delete':
             case 'bulkdelete':
-                if (empty($_REQUEST['groups']))
-                    $groupids = [intval($_REQUEST['group'])];
-                else
-                    $groupids = (array)$_REQUEST['groups'];
+                if ($groups = presspermit_REQUEST_var('groups')) {
+                    $groupids = array_map('intval', (array) $groups);
+                } else {
+                    $groupids = (presspermit_is_REQUEST('group')) ? [presspermit_REQUEST_int('group')] : [];
+                }
+                
                 ?>
                 <form action="" method="post" name="updategroups" id="updategroups">
                     <?php wp_nonce_field('pp-bulk-groups');?>
@@ -103,11 +107,11 @@ class Groups
                 $total_pages = $groups_list_table->get_pagination_arg('total_pages');
 
                 $messages = [];
-                if (isset($_GET['update'])) :
+                if ($update = presspermit_GET_key('update')) :
                     switch ($_GET['update']) {
                         case 'del':
                         case 'del_many':
-                            $delete_count = isset($_GET['delete_count']) ? (int)$_GET['delete_count'] : 0;
+                            $delete_count = presspermit_GET_int('delete_count');
 
                             $messages[] = '<div id="message" class="updated"><p>'
                                 . sprintf(_n('%s group deleted', '%s groups deleted', $delete_count, 'press-permit-core'), $delete_count)

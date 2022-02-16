@@ -72,11 +72,11 @@ class GroupsListTable extends GroupsListTableBase
 
         $args['search'] = '*' . $args['search'] . '*';
 
-        if (isset($_REQUEST['orderby'])) {
+        if ($orderby = presspermit_REQUEST_var('orderby')) {
             $args['orderby'] = PWP::sanitizeWord($_REQUEST['orderby']);
         }
 
-        if (isset($_REQUEST['order'])) {
+        if ($order = presspermit_REQUEST_var('order')) {
             $args['order'] = PWP::sanitizeWord($_REQUEST['order']);
         }
 
@@ -147,7 +147,7 @@ class GroupsListTable extends GroupsListTableBase
 
         if (
             current_user_can('pp_delete_groups')
-            && (empty($_REQUEST['group_variant']) || 'wp_role' != $_REQUEST['group_variant'] || $this->deleted_roles_listed())
+            && !presspermit_is_REQUEST('group_variant', $this->deleted_roles_listed())
         ) {
             $actions['delete'] = __('Delete', 'press-permit-core');
         }
@@ -157,7 +157,7 @@ class GroupsListTable extends GroupsListTableBase
 
     public function get_columns()
     {
-        $bulk_check_all = (empty($_REQUEST['group_variant']) || 'wp_role' != $_REQUEST['group_variant'] || $this->deleted_roles_listed()) 
+        $bulk_check_all = !presspermit_is_REQUEST('group_variant', 'wp_role') || $this->deleted_roles_listed()
         ? '<input type="checkbox" />' 
         : '';
 
@@ -396,7 +396,7 @@ class GroupsListTable extends GroupsListTableBase
      */
     public function search_box($text, $input_id, $type = '', $tabindex = '', $other_attributes = '')
     {
-        if (empty($_REQUEST['s']) && !$this->has_items()) {
+        if (presspermit_empty_REQUEST('s') && !$this->has_items()) {
             return;
         }
 
@@ -433,15 +433,15 @@ class GroupsListTable extends GroupsListTableBase
             echo '<input type="hidden" name="orderby" value="' . esc_attr($_REQUEST['orderby']) . '" />';
         }
 
-        if (!empty($_REQUEST['order'])) {
+        if ($order = presspermit_REQUEST_key('order')) {
             echo '<input type="hidden" name="order" value="' . esc_attr($_REQUEST['order']) . '" />';
         }
 
-        if (!empty($_REQUEST['post_mime_type'])) {
+        if ($post_mime_type = presspermit_REQUEST_key('post_mime_type')) {
             echo '<input type="hidden" name="post_mime_type" value="' . esc_attr($_REQUEST['post_mime_type']) . '" />';
         }
 
-        if (!empty($_REQUEST['detached'])) {
+        if ($detached = presspermit_REQUEST_int('detached')) {
             echo '<input type="hidden" name="detached" value="' . esc_attr($_REQUEST['detached']) . '" />';
         }
         ?>

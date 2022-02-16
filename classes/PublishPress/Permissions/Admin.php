@@ -19,7 +19,7 @@ class Admin
     {
         if (!presspermit()->getOption('offer_rs_migration') 
         || !presspermit()->isAdministrator() 
-        || (apply_filters('presspermit_import_count', 0, 'rs') && empty($_REQUEST['rs-not-imported']))
+        || (apply_filters('presspermit_import_count', 0, 'rs') && presspermit_empty_REQUEST('rs-not-imported'))
         ) {
             return;
         }
@@ -239,8 +239,9 @@ class Admin
     {
 		$dismissals = (array) pp_get_option('dismissals');
 
-		if ($msg_id && isset($dismissals[$msg_id]) && (empty($_REQUEST['pp_ignore_dismissal']) || ($msg_id != $_REQUEST['pp_ignore_dismissal'])))
+		if ($msg_id && isset($dismissals[$msg_id]) && !presspermit_is_REQUEST('pp_ignore_dismissal', $msg_id)) {
 			return;
+        }
 		
         require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');
         $err = new \PublishPress\Permissions\ErrorNotice();

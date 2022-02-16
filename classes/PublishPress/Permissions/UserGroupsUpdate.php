@@ -14,10 +14,12 @@ class UserGroupsUpdate
             if (('pp_group' == $agent_type) && in_array('pp_net_group', $group_types, true) && (1 == get_current_blog_id()))
                 continue;
 
-            if (empty($_POST[$agent_type]))
+            if (presspermit_empty_POST($agent_type)) {
                 continue;
+			}
 
-            $status = (isset($_POST['pp_membership_status'])) ? pp_permissions_sanitize_key($_POST['pp_membership_status']) : 'active';
+            $status = (presspermit_is_POST('pp_membership_status')) ? presspermit_POST_key('pp_membership_status') : 'active';
+
 
             if ($user_id == $pp->getUser()->ID)
                 $stored_groups = (array)$pp->getUser()->groups[$agent_type];
@@ -29,7 +31,7 @@ class UserGroupsUpdate
             // by retrieving filtered groups here, user will only modify membership for groups they can administer
             $is_administrator = $pp->isUserAdministrator();
 
-            $posted_groups = (isset($_POST[$agent_type])) ? array_map('intval', $_POST[$agent_type]) : [];
+            $posted_groups = (presspermit_is_POST($agent_type)) ? array_map('intval', presspermit_is_POST($agent_type)) : [];
 
             if ($omit_group_ids)
                 $posted_groups = array_diff($posted_groups, $omit_group_ids);
@@ -61,7 +63,7 @@ class UserGroupsUpdate
             if (('pp_group' == $agent_type) && in_array('pp_net_group', $group_types, true) && (1 == get_current_blog_id()))
                 continue;
 
-            $posted_groups = (isset($_POST[$agent_type])) ? array_map('intval', $_POST[$agent_type]) : [];
+            $posted_groups = (presspermit_is_POST($agent_type)) ? array_map('intval', presspermit_POST_var($agent_type)) : [];
 
             $stored_groups = array_keys($pp->groups()->getGroupsForUser($user_id, $agent_type, ['cols' => 'id']));
 

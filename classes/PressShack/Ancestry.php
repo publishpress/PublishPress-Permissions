@@ -73,7 +73,7 @@ class Ancestry
     {
         static $ancestors;
 
-        if (!isset($ancestors) || !empty($_POST))
+        if (!isset($ancestors) || !presspermit_empty_POST())
             $ancestors = false;
 
         if (is_array($ancestors) && !$object_id)
@@ -204,7 +204,7 @@ class Ancestry
     {
         static $ancestors;
 
-        if (!isset($ancestors) || !empty($_POST))
+        if (!isset($ancestors) || !presspermit_empty_POST())
             $ancestors = false;
 
         if (is_array($ancestors) && !$term_id)

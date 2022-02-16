@@ -34,7 +34,7 @@ class SettingsTabImport
 
     function actOptionsPreUI()
     {
-        if (!empty($_POST['pp_rs_import']) && did_action('presspermit_importing')) {
+        if (!presspermit_empty_POST('pp_rs_import') && did_action('presspermit_importing')) {
             $rs_import = Import\DB\RoleScoper::instance();
 
             ?>
@@ -84,7 +84,7 @@ class SettingsTabImport
             <?php
         }
 
-        if (!empty($_POST['pp_undo_imports'])) {
+        if (!presspermit_empty_POST('pp_undo_imports')) {
             ?>
             <table class="form-table pp-form-table pp-options-table">
                 <tr>

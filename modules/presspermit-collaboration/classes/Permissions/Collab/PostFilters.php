@@ -26,7 +26,7 @@ class PostFilters
         if (('edit' == $required_operation) && ('include' == $args['mod']) && is_admin()) {
             global $pagenow, $current_user;
 
-            if (in_array($pagenow, ['post-new.php', 'post.php']) && !empty($_POST) && in_array($_REQUEST['action'], ['edit', 'editpost'])) {
+            if (in_array($pagenow, ['post-new.php', 'post.php']) && !presspermit_empty_POST() && presspermit_is_REQUEST('action', ['edit', 'editpost'])) {
                 if ($post_id = PWP::getPostID()) {
                     $_post = get_post($post_id);
 

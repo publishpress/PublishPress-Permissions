@@ -5,8 +5,9 @@ namespace PublishPress\Permissions\UI\Dashboard;
 class ItemAjax
 {
     public function __construct() {
-        if (empty($_GET['via_item_source']))
+        if (!$via_item_source = presspermit_GET_key('via_item_source')) {
             exit;
+		}
 
         $html = '';
 
@@ -50,9 +51,9 @@ class ItemAjax
 
                 $echo = false;
                 $reqd_caps = false;
-                $hierarchical = ('term' == $_GET['via_item_source'])
-                    ? is_taxonomy_hierarchical($_GET['via_item_type'])
-                    : is_post_type_hierarchical($_GET['via_item_type']);
+                $hierarchical = (presspermit_is_GET('via_item_source', 'term'))
+                    ? is_taxonomy_hierarchical($via_item_type)
+                    : is_post_type_hierarchical($via_item_type);
 
                 $hierarchical = apply_filters('presspermit_do_assign_for_children_ui', $hierarchical, $_GET['via_item_type'], $args);
                 $default_select = true;

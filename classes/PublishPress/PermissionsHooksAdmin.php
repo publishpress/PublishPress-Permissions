@@ -23,7 +23,7 @@ class PermissionsHooksAdmin
         // make sure empty terms are included in quick search results in "Set Specific Permissions" term selection metaboxes
         if (PWP::isAjax('pp-menu-quick-search')) {
             require_once(PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
-            add_action('wp_ajax_' . pp_permissions_sanitize_key($_REQUEST['action']), ['\PublishPress\Permissions\UI\ItemsMetabox', 'ajax_menu_quick_search'], 1);
+            add_action('wp_ajax_' . presspermit_REQUEST_key('action'), ['\PublishPress\Permissions\UI\ItemsMetabox', 'ajax_menu_quick_search'], 1);
         }
 
         // thanks to GravityForms for the nifty dismissal script
@@ -67,17 +67,14 @@ class PermissionsHooksAdmin
             Permissions\UI\PluginPage::instance();
         }
 
-        if (!empty($_POST) || !empty($_REQUEST['action']) || !empty($_REQUEST['action2']) || !empty($_REQUEST['pp_action'])) {
+        if (!presspermit_empty_POST() || !presspermit_empty_REQUEST('action') || !presspermit_empty_REQUEST('action2') || !presspermit_empty_REQUEST('pp_action')) {
             require_once(PRESSPERMIT_CLASSPATH . '/UI/Handlers/Admin.php');
             Permissions\UI\Handlers\Admin::handleRequest();
         }
 
         add_action('wp_loaded', [$this,'actLoadAjaxHandler'], 20);
 
-        if (
-            !empty($_POST['presspermit_submit']) || !empty($_POST['presspermit_defaults']) || !empty($_POST['pp_role_usage_defaults'])
-            || !empty($_REQUEST['presspermit_refresh_updates']) || !empty($_REQUEST['pp_renewal'])
-        ) {
+        if (!presspermit_empty_POST('presspermit_submit') || !presspermit_empty_POST('presspermit_defaults') || !presspermit_empty_POST('pp_role_usage_defaults')) {
             // For 'settings' admin panels, handle updated options right after current_user load (and before pp_init).
             // By then, check_admin_referer is available, but PP config and WP admin menu has not been loaded yet.
             require_once(PRESSPERMIT_CLASSPATH . '/UI/Handlers/Settings.php');
@@ -176,7 +173,7 @@ class PermissionsHooksAdmin
 
         if (defined("PUBLISHPRESS_REVISIONS_VERSION") || defined('REVISIONARY_VERSION')) {
             if (!defined('PRESSPERMIT_COLLAB_VERSION')) {
-                if (!presspermitPluginPage() && (empty($_REQUEST['page']) || !in_array($_REQUEST['page'], ['revisionary-q', 'revisionary-settings'])) && ('edit.php' !== $pagenow)) {
+                if (!presspermitPluginPage() && presspermit_is_REQUEST('page', ['revisionary-q', 'revisionary-settings']) && ('edit.php' !== $pagenow)) {
                     return;
                 }
 
@@ -265,7 +262,7 @@ class PermissionsHooksAdmin
         || presspermit()->isAdministrator() 
         || !function_exists('get_multiple_authors') 
         || !function_exists('is_multiple_author_for_post')
-        || !isset($_POST['authors'])
+        || !presspermit_is_POST('authors')
         || !apply_filters('presspermit_maybe_override_authors_change', true, $post)
         ) {
             return;
@@ -282,7 +279,9 @@ class PermissionsHooksAdmin
                         return;
                     }
 
-                    if (!in_array($current_author->term_id, $_POST['authors'])) {
+                    $authors = presspermit_POST_var('authors');
+
+                    if (!in_array($current_author->term_id, $authors)) {
                         if (apply_filters('presspermit_override_authors_change', true, $post)) {
                             $_POST['authors'] = array_merge([strval($current_author->term_id)], $_POST['authors']);
                         }

@@ -25,10 +25,10 @@ class RoleUsageEdit {
 
         $url = apply_filters('presspermit_role_usage_base_url', 'admin.php');
 
-        if (isset($_REQUEST['wp_http_referer'])) {
+        if ($wp_http_referer = presspermit_REQUEST_key('wp_http_referer')) {
             $wp_http_referer = sanitize_url($_REQUEST['wp_http_referer']);
 
-        } elseif (isset($_SERVER['HTTP_REFERER'])) {
+        } elseif ($http_referer = presspermit_SERVER_var('HTTP_REFERER')) {
             $wp_http_referer = remove_query_arg(['update', 'edit', 'delete_count'], sanitize_url($_SERVER['HTTP_REFERER']));
         } else {
             $wp_http_referer = '';
@@ -37,8 +37,9 @@ class RoleUsageEdit {
         if (!current_user_can('pp_manage_settings'))
             wp_die(__('You are not permitted to do that.', 'press-permit-core'));
 
-        if (!isset($_REQUEST['role']))
+        if (!$role = presspermit_REQUEST_key('role')) {
             wp_die('No role specified.');
+		}
 
         $role_name = pp_permissions_sanitize_entry($_REQUEST['role']);
 
@@ -52,10 +53,10 @@ class RoleUsageEdit {
         } else
             wp_die('Role does not exist.');
 
-        if (!empty($_POST))
+        if (!presspermit_empty_POST())
             $_GET['update'] = 1; // temp workaround
 
-        if (isset($_GET['update']) && empty($pp->admin()->errors)) : ?>
+        if (presspermit_is_GET('update') && empty($pp->admin()->errors)) : ?>
             <div id="message" class="updated">
                 <p><strong><?php _e('Role Usage updated.', 'press-permit-core') ?>&nbsp;</strong>
                 </p>

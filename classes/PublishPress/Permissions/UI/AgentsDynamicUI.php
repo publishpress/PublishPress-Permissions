@@ -106,7 +106,7 @@ class AgentsDynamicUI
                         for ($i = 0; $i < $ilim; $i++) :
                             ?>
                             <div class="pp-user-meta-search" <?php
-                            if ($i > 0 && empty($_GET["pp_search_user_meta_key_{$i}_{$id_suffix}"])) {
+                            if ($i > 0 && presspermit_empty_GET("pp_search_user_meta_key_{$i}_{$id_suffix}")) {
                                 echo ' style="display:none;"';
                             }
                             ?>>
@@ -120,14 +120,14 @@ class AgentsDynamicUI
 
                                 <input id="pp_search_user_meta_val_<?php echo $i; ?>_<?php echo $id_suffix; ?>" class="pp-user-meta-field" 
                                        type="text" <?php
-                                if (empty($_GET["pp_search_user_meta_key_{$i}_{$id_suffix}"])) {
+                                if (presspermit_empty_GET("pp_search_user_meta_key_{$i}_{$id_suffix}")) {
                                     echo 'style="display:none"';
                                 }
                                 ?> title="<?php echo $title; ?>" size="8"/>
 
                                 <?php if ($i < $ilim - 1) : ?>
                                     &nbsp;<span class="pp-usermeta-field-more" <?php
-                                    if (empty($_GET["pp_search_user_meta_key_{$i}_{$id_suffix}"])) {
+                                    if (presspermit_empty_GET("pp_search_user_meta_key_{$i}_{$id_suffix}")) {
                                         echo 'style="display:none"';
                                     }
                                     ?>>+</span>

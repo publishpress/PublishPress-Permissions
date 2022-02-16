@@ -158,7 +158,7 @@ class PostFilters
             return $clauses;
         }
 
-        $action = (isset($_REQUEST['action'])) ? pp_permissions_sanitize_key($_REQUEST['action']) : '';
+        $action = presspermit_REQUEST_key('action');
 
         if (
             defined('PP_MEDIA_LIB_UNFILTERED') && (('upload.php' == $pagenow)
@@ -210,7 +210,7 @@ class PostFilters
             );
 
             foreach (array_keys($ajax_post_types) as $arg) {
-                if (!empty($_REQUEST[$arg]) || ($arg == $action)) {
+                if (!presspermit_empty_REQUEST($arg) || ($arg == $action)) {
                     $_wp_query->post_type = $ajax_post_types[$arg];
                     break;
                 }
@@ -321,13 +321,13 @@ class PostFilters
         $post_types = ($post_types) ? (array)$post_types : presspermit()->getEnabledPostTypes();
 
         if (!$required_operation) {
-            if (!empty($_REQUEST['preview'])) {
+            if (!presspermit_empty_REQUEST('preview')) {
                 $required_opertion = 'edit';
             } else {
                 if (!$required_operation = apply_filters('presspermit_get_posts_operation', '', $args)) {
                     if (defined('REST_REQUEST') && REST_REQUEST) {
-                        if (isset($_REQUEST['context']) && ('edit' == $_REQUEST['context'])) {
-                            $required_operation = (!empty($_REQUEST['parent_exclude'])) ? 'associate' : 'edit'; // @todo: better criteria
+                        if (presspermit_is_REQUEST('context', 'edit')) {
+                            $required_operation = (!presspermit_empty_REQUEST('parent_exclude')) ? 'associate' : 'edit'; // todo: better criteria
                         } else {
                             $required_operation = 'read';
                         }
@@ -394,7 +394,7 @@ class PostFilters
         // (But not if user is anon and hidden content teaser is enabled.  In that case, we need to replace the default "status=publish" clause)
         $matches = [];
         if ($num_matches = preg_match_all("/{$src_table}.post_status\s*=\s*'([^']+)'/", $where, $matches)) {
-            if (PWP::isFront() || (defined('REST_REQUEST') && REST_REQUEST) || (defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) && in_array($_REQUEST['action'], ['menu-get-metabox', 'menu-quick-search']))) {
+            if (PWP::isFront() || (defined('REST_REQUEST') && REST_REQUEST) || (defined('DOING_AJAX') && DOING_AJAX && presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))) {
                 if (PWP::isFront() || 'read' == $required_operation) {
                     $valid_stati = array_merge(
                         PWP::getPostStatuses(['public' => true, 'post_type' => $post_types]),
@@ -425,7 +425,7 @@ class PostFilters
         if (1 == $num_matches) {
             // Eliminate a primary plugin incompatibility by skipping this preservation of existing single status requirements if we're on the front end and the requirement is 'publish'.  
             // (i.e. include private posts that this user has access to via PP roles or exceptions).  
-            if ((!PWP::isFront() && (!defined('REST_REQUEST') || !REST_REQUEST) && (!defined('DOING_AJAX') || !DOING_AJAX || !in_array($_REQUEST['action'], ['menu-get-metabox', 'menu-quick-search'])))
+            if ((!PWP::isFront() && (!defined('REST_REQUEST') || !REST_REQUEST) && (!defined('DOING_AJAX') || !DOING_AJAX || !presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search'])))
                 || ('publish' != $matches[1][0]) || $retain_status || defined('PP_RETAIN_PUBLISH_FILTER')
             ) {
                 $limit_statuses = [];
@@ -573,8 +573,8 @@ class PostFilters
 
         if (!$required_operation) {
             if (defined('REST_REQUEST') && REST_REQUEST) {
-                if (isset($_REQUEST['context']) && ('edit' == $_REQUEST['context'])) {
-                    $required_operation = (!empty($_REQUEST['parent_exclude'])) ? 'associate' : 'edit'; // @todo: better criteria
+                if (presspermit_is_REQUEST('context', 'edit')) {
+                    $required_operation = (!presspermit_empty_REQUEST('parent_exclude')) ? 'associate' : 'edit'; // todo: better criteria
                 } else {
                     $required_operation = (presspermit_is_preview()) ? 'edit' : 'read';
                 }
@@ -660,7 +660,7 @@ class PostFilters
         }
 
         if (!is_bool($include_trash)) {
-            if (!empty($_REQUEST['post_status']) && ('trash' == $_REQUEST['post_status'])) {
+            if (presspermit_is_REQUEST('post_status', 'trash')) {
                 $include_trash = true;
             }
         }

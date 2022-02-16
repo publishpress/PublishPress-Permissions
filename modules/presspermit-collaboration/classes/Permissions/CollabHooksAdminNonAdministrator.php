@@ -64,7 +64,7 @@ class CollabHooksAdminNonAdministrator
                 return ('edit' == $rest->operation) ? 'manage' : $rest->operation;
             }
         } elseif (in_array($pagenow, ['edit-tags.php', 'nav-menus.php'])) {
-            $required_operation = (empty($_REQUEST['tag_ID']) && (empty($args['name']) || ('parent' != $args['name']))) 
+            $required_operation = (!presspermit_empty_REQUEST('tag_ID') && (empty($args['name']) || ('parent' != $args['name']))) 
             ? 'manage' 
             : 'associate';
         }
@@ -114,7 +114,7 @@ class CollabHooksAdminNonAdministrator
                 //---------------------------------------------------------
 
                 // Don't filter get_terms() call in edit_post(), which invalidates entry term selection if existing term is detected
-                if (!empty($args['name']) && !empty($_POST))
+                if (!empty($args['name']) && !presspermit_empty_POST())
                     return $clauses;
 
                 if ($tt_ids = Collab::getObjectTerms($object_id, $taxonomies[0], ['fields' => 'tt_ids', 'pp_no_filter' => true])) {

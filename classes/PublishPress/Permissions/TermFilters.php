@@ -170,7 +170,7 @@ class TermFilters
         // Kriesi Enfold theme conflict on "More Posts" query
         if (
             defined('DOING_AJAX') && DOING_AJAX
-            && in_array($_REQUEST['action'], apply_filters('presspermit_unfiltered_ajax_termcount', ['avia_ajax_masonry_more']), true)
+            && presspermit_is_REQUEST('action', apply_filters('presspermit_unfiltered_ajax_termcount', ['avia_ajax_masonry_more']))
         ) {
             return true;
         }

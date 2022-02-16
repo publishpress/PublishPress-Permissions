@@ -161,7 +161,7 @@ class PermissionsUpdate
         $for_item_status = (isset($args['for_item_status'])) ? PWP::sanitizeCSV($for_item_status) : '';
 
         // temp workaround for Revisionary (otherwise lose page-assigned roles on revision approval)
-        if (!empty($_REQUEST['page']) && ('rvy-revisions' == $_REQUEST['page'])) {
+        if (presspermit_is_REQUEST('page', 'rvy-revisions')) {
             return;
         }
 

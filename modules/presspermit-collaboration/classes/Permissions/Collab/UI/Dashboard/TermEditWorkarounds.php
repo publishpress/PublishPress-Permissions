@@ -6,10 +6,13 @@ class TermEditWorkarounds
     public static function term_edit_attempt()
     {
         // filter category parent selection for Category editing
-        if (!isset($_POST['tag_ID']))
+        if (!$tag_id = presspermit_POST_int('tag_ID')) {
             return;
+        }
 
-        $taxonomy = pp_permissions_sanitize_key($_POST['taxonomy']);
+        if (!$taxonomy = presspermit_POST_key('taxonomy')) {
+            return;
+        }
 
         if (!$tx = get_taxonomy($taxonomy))
             return;
@@ -19,7 +22,7 @@ class TermEditWorkarounds
 
         $stored_term = get_term_by('id', (int) $_POST['tag_ID'], $taxonomy);
 
-        $selected_parent = (int)$_POST['parent'];
+        $selected_parent = presspermit_POST_int('parent');
 
         if (-1 == $selected_parent)
             $selected_parent = 0;

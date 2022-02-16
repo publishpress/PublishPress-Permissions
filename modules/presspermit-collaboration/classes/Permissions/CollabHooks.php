@@ -13,15 +13,15 @@ class CollabHooks
         if (strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') 
         && isset($_REQUEST['action'])
         && in_array(
-            $_REQUEST['action'], 
+            presspermit_REQUEST_key('action'), 
             apply_filters('presspermit_unfiltered_ajax_actions',
-            ['et_fb_ajax_drop_autosave',
-            'et_builder_resolve_post_content',
-            'et_fb_get_shortcode_from_fb_object',
-            'et_builder_library_get_layout',
-            'et_builder_library_get_layouts_data',
-            'et_fb_update_builder_assets',
-            ]
+	            ['et_fb_ajax_drop_autosave',
+	            'et_builder_resolve_post_content',
+	            'et_fb_get_shortcode_from_fb_object',
+	            'et_builder_library_get_layout',
+	            'et_builder_library_get_layouts_data',
+	            'et_fb_update_builder_assets',
+	            ]
             )
         )
         ) {
@@ -245,7 +245,7 @@ class CollabHooks
     function actPreventTrashSuffixing($wp_query)
     {
         if (strpos($_SERVER['REQUEST_URI'], 'wp-admin/nav-menus.php') 
-        && !empty($_POST) && !empty($_POST['action']) && ('update' == $_POST['action'])
+        && presspermit_is_POST('action', 'update')
         ) {
             $bt = debug_backtrace();
 
@@ -263,7 +263,7 @@ class CollabHooks
         global $current_user;
 
         // Work around Divi Page Builder requiring off-type capabilities, which prevents Specific Permissions from satisfying edit_published_pages capability requirement
-        if ((is_admin() || empty($_REQUEST['et_fb'])) && (!strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') || !did_action('wp_ajax_et_fb_ajax_save'))) {
+        if ((is_admin() || presspermit_empty_REQUEST('et_fb')) && (empty($_SERVER['REQUEST_URI']) || !strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'admin-ajax.php') || !did_action('wp_ajax_et_fb_ajax_save'))) {
             return $wp_sitecaps;
         }
 
@@ -308,11 +308,13 @@ class CollabHooks
     {
         // Divi Page Builder
 		if (defined('ET_BUILDER_THEME')) {
-			if (!empty($_REQUEST['action']) && ('edit' == $_REQUEST['action']) && !empty($_REQUEST['post'])) {
-				if ($_post = get_post((int) $_REQUEST['post'])) {
-					global $current_user;
-					if (in_array($_post->post_status, ['draft', 'auto-draft']) && ($_post->post_author == $current_user->ID) && !$_post->post_name) {
-						return $meta_caps;
+			if (presspermit_is_REQUEST('action', 'edit')) {
+                if ($post_id = presspermit_REQUEST_int('post')) {
+                    if ($_post = get_post($post_id)) {
+						global $current_user;
+						if (in_array($_post->post_status, ['draft', 'auto-draft']) && ($_post->post_author == $current_user->ID) && !$_post->post_name) {
+							return $meta_caps;
+						}
 					}
 				}
 			}
