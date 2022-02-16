@@ -197,7 +197,7 @@ class CollabHooksAdmin
             }
 
             if (Collab::isLimitedEditor() && !current_user_can('pp_force_quick_edit'))
-                wp_die(__('access denied', 'press-permit-core'));
+                wp_die(esc_html__('access denied', 'press-permit-core'));
         }
     }
 
