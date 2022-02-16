@@ -41,8 +41,9 @@ class AdminWorkarounds
             $nomess_uris = array_merge($nomess_uris, ['admin-ajax.php']);
         }
 
-        if (!in_array($pagenow, $nomess_uris, true) && !in_array(presspermitPluginPage(), $nomess_uris, true))
+        if (!in_array($pagenow, $nomess_uris, true) && !in_array(presspermitPluginPage(), $nomess_uris, true)) {
             add_filter('query', [$this, 'flt_last_resort_query'], 5);  // early execution for Revisionary compat
+    	}
     }
 
     public function flt_intercept_post_insert($disallow, $post_arr)
