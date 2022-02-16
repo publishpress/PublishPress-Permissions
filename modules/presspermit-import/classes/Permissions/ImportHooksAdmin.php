@@ -32,7 +32,7 @@ class ImportHooksAdmin
     {
         if (!presspermit_empty_POST('pp_rs_import') || !presspermit_empty_POST('pp_pp_import') || !presspermit_empty_POST('pp_undo_imports')) {
             require_once(PRESSPERMIT_IMPORT_CLASSPATH . '/Importer.php');
-            Import\Importer::handleSubmission();
+            Import\Importer::handleSubmission(); // action-specific nonce checks
         }
     }
 
