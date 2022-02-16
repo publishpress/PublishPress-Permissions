@@ -282,7 +282,7 @@ class PermissionsHooksAdmin
 
                     if (!in_array($current_author->term_id, $authors)) {
                         if (apply_filters('presspermit_override_authors_change', true, $post)) {
-                            $_POST['authors'] = array_merge([strval($current_author->term_id)], $_POST['authors']);
+                            $_POST['authors'] = array_merge([strval($current_author->term_id)], array_map('sanitize_key', $authors));
                         }
                     }
                 }
