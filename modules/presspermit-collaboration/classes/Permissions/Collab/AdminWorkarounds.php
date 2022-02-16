@@ -562,7 +562,6 @@ class AdminWorkarounds
 	                            " WHERE tt.term_id IN ('" . implode("','", $ok_tags) . "') AND tt.taxonomy = '$taxonomy'", 
 	                            $query
 	                        );
-	
 	                    }
 	            	}
                 }
