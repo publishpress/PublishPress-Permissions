@@ -23,7 +23,7 @@ class PermissionsHooksAdmin
         // make sure empty terms are included in quick search results in "Set Specific Permissions" term selection metaboxes
         if (PWP::isAjax('pp-menu-quick-search')) {
             require_once(PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
-            add_action('wp_ajax_' . sanitize_key($_REQUEST['action']), ['\PublishPress\Permissions\UI\ItemsMetabox', 'ajax_menu_quick_search'], 1);
+            add_action('wp_ajax_' . pp_permissions_sanitize_key($_REQUEST['action']), ['\PublishPress\Permissions\UI\ItemsMetabox', 'ajax_menu_quick_search'], 1);
         }
 
         // thanks to GravityForms for the nifty dismissal script
@@ -232,7 +232,7 @@ class PermissionsHooksAdmin
             $dismissals = [];
         }
 
-        $msg_id = (isset($_REQUEST['msg_id'])) ? $_REQUEST['msg_id'] : 'post_blockage_priority';
+        $msg_id = (isset($_REQUEST['msg_id'])) ? pp_permissions_sanitize_key($_REQUEST['msg_id']) : 'post_blockage_priority';
         $dismissals[$msg_id] = true;
         update_option('presspermit_dismissals', $dismissals);
     }

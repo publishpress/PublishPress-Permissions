@@ -508,3 +508,15 @@ text-decoration: underline;
 .wp-core-ui .pp-agents input {
   vertical-align: text-bottom;
 }
+
+
+#pp-permissions-wrapper ul.subsubsub {
+float: none;
+}
+
+/* Edit User screen */
+div#profile-page.wrap div.pp-group-box h3:first-of-type,
+#pp_current_user_exceptions_ui
+{
+margin-top:5px !important;
+}

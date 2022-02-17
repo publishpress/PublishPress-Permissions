@@ -40,14 +40,6 @@ jQuery(document).ready(function ($) {
         $(this).siblings(".hide-if-js").show();
     });
 
-    $(document).on('mouseenter', '#userprofile_groupsdiv_pp ul.pp-agents-list li label', function () {
-        var func = function (lbl) {
-            //if ( $(lbl).is(':hover') )
-            $(lbl).closest('li').find('a').show();
-        }
-        window.setTimeout(func, 300, $(this));
-    });
-
     $('span.pp-alert').each(function () {
         var msg = $(this).html();
         if (msg) {

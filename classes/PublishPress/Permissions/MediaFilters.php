@@ -16,7 +16,7 @@ class MediaFilters
     public function fltMapMediaMetaCap($caps, $cap, $user_id, $args)
     {
         if (!empty($args[0])) {
-            $post = (is_object($args[0])) ? $args[0] : get_post($args[0]);
+            $post = (is_object($args[0])) ? $args[0] : get_post((int) $args[0]);
 
             if ($post && ('attachment' == $post->post_type)) {
                 if (!empty($post->post_parent))

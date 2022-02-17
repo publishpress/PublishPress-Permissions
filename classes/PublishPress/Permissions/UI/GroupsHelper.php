@@ -15,7 +15,7 @@ class GroupsHelper
         } else {
             $redirect = "$url?page=presspermit-groups";
             if (! empty($_REQUEST['group_variant'])) {
-                $redirect = add_query_arg('group_variant', $_REQUEST['group_variant']);
+                $redirect = add_query_arg('group_variant', pp_permissions_sanitize_key($_REQUEST['group_variant']));
             }
             $referer = '';
         }

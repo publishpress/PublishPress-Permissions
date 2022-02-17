@@ -29,7 +29,7 @@
             }
         });
 
-        $('div.pp-search-box-with-icon-wrapper .dashicons-search').on('click', function(e) {
+        $('#' + args.search_id).next('i.dashicons-search').on('click', function(e) {
             ajax_request($('#' + args.search_id).val());
         });
 

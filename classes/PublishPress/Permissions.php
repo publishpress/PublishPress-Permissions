@@ -119,10 +119,11 @@ class Permissions
     public function checkInitInterrupt() {
         if (defined('ISCVERSION') || defined('PRESSPERMIT_LIMIT_ASYNC_UPLOAD_FILTERING')) {
             if ( is_admin() && strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php') && ! empty($_POST['attachment_id']) && ! empty($_POST['fetch']) && ( 3 == $_POST['fetch']) ) {
-                if ( $att = get_post( $_POST['attachment_id'] ) ) {
+                if ( $att = get_post((int) $_POST['attachment_id'] ) ) {
                     global $current_user;
-                    if ( $att->post_author == $current_user->ID && ! defined( 'PP_UPLOADS_FORCE_FILTERING' ) )
+                    if ( $att->post_author == $current_user->ID && ! defined( 'PP_UPLOADS_FORCE_FILTERING' ) ) {
                         return true;
+                    }
                 }
             }
         }
@@ -982,7 +983,7 @@ class Permissions
             $$var = (isset($args[$var])) ? $args[$var] : $defaults[$var];
         }
 
-        $slug = sanitize_key($slug);
+        $slug = pp_permissions_sanitize_key($slug);
 
         // avoid lockout in case of editing plugin via wp-admin
         if (constant('PRESSPERMIT_DEBUG') && is_admin() && presspermit_editing_plugin()) {

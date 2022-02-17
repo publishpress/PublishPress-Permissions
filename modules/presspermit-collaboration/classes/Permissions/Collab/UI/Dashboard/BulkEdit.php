@@ -3,8 +3,12 @@ namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class BulkEdit
 {
-    public static function add_author_pages($data)
+    public static function add_author_pages($data = [])
     {
+        if (!$data) {
+            $data = $_REQUEST; // sanitize below in this function, per-element
+        }
+
         $location = 'users.php';
 
         if ($referer = wp_get_referer()) {
@@ -12,7 +16,7 @@ class BulkEdit
                 $location = $referer;
         }
 
-        $post_type = (isset($data['member_page_type'])) ? sanitize_key($data['member_page_type']) : '';
+        $post_type = (isset($data['member_page_type'])) ? pp_permissions_sanitize_key($data['member_page_type']) : '';
         $type_obj = get_post_type_object($post_type);
 
         if (empty($data['users'])) {
@@ -28,10 +32,10 @@ class BulkEdit
                 $meta_keys = array_merge($meta_keys, explode(",", PP_AUTHOR_POST_META));
             }
 
-            $pattern_id = (isset($data["member_page_pattern_{$post_type}"])) ? trim($data["member_page_pattern_{$post_type}"]) : '';
+            $pattern_id = (isset($data["member_page_pattern_{$post_type}"])) ? (int) trim($data["member_page_pattern_{$post_type}"]) : '';
             if ($pattern_id) {
                 if (!is_numeric($pattern_id)) {
-                    $slug = sanitize_key($pattern_id);
+                    $slug = pp_permissions_sanitize_key($pattern_id);
                     $pattern_post = $wpdb->get_row($wpdb->prepare(
                         "SELECT ID, post_content, post_parent FROM $wpdb->posts WHERE post_name = %s AND post_type = %s LIMIT 1", 
                         $slug, 
@@ -74,7 +78,7 @@ class BulkEdit
 
             $post_meta['_pp_auto_inserted'] = "{$pattern_post_id}:{$post_parent}";
 
-            $title_pattern = isset($data["member_page_title"]) ? $data["member_page_title"] : '';
+            $title_pattern = isset($data["member_page_title"]) ? sanitize_text_field($data["member_page_title"]) : '';
             if (false === strpos($title_pattern, '[username]') && false === strpos($title_pattern, '[userid]')) {
                 $title_pattern .= ' [userid]';
             }
@@ -87,7 +91,7 @@ class BulkEdit
                 )
             );
             
-            $data['users'] = array_diff($data['users'], $users_done);
+            $data['users'] = array_diff(array_map('intval', $data['users']), $users_done);
 
             if (!count($data['users'])) {
                 $location = add_query_arg('ppmessage', 3, $location);

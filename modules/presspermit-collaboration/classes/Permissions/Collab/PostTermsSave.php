@@ -116,11 +116,13 @@ class PostTermsSave
         } else {
             $tx_obj = get_taxonomy($taxonomy);
             if ($tx_obj && !empty($tx_obj->object_terms_post_var)) {
-                if (isset($_POST[$tx_obj->object_terms_post_var]))
-                    return $_POST[$tx_obj->object_terms_post_var];
+                if (isset($_POST[$tx_obj->object_terms_post_var])) {
+                    return array_map('intval', $_POST[$tx_obj->object_terms_post_var]);
+                }
+
             } elseif (!empty($_POST['tax_input'][$taxonomy])) {
                 if (is_taxonomy_hierarchical($taxonomy) && is_array($_POST['tax_input'][$taxonomy])) {
-                    return $_POST['tax_input'][$taxonomy];
+                    return array_map('intval', $_POST['tax_input'][$taxonomy]);
                 } else {
                     $term_info = self::parseTermNames($_POST['tax_input'][$taxonomy], $taxonomy);
                     return array_map('intval', self::fltPreObjectTerms($term_info['terms'], $taxonomy));

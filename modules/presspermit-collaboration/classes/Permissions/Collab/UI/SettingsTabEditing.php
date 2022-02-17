@@ -52,7 +52,7 @@ class SettingsTabEditing
             'admin_others_attached_files' => __('List other users&apos; uploads if attached to an editable post', 'press-permit-core'),
             'admin_others_attached_to_readable' => __('List other users&apos; uploads if attached to a readable post', 'press-permit-core'),
             'admin_others_unattached_files' => __('Other users&apos; unattached uploads listed by default', 'press-permit-core'),
-            'edit_others_attached_files' => __('Edit other user&apos; uploads if attached to an editable post', 'press-permit-core'),
+            'edit_others_attached_files' => __('Edit other users&apos; uploads if attached to an editable post', 'press-permit-core'),
             'own_attachments_always_editable' => __('Users can always edit their own attachments', 'press-permit-core'),
             'admin_nav_menu_filter_items' => __('List only user-editable content as available items', 'press-permit-core'),
             'admin_nav_menu_partial_editing' => __('Allow Renaming of Uneditable Items', 'press-permit-core'),

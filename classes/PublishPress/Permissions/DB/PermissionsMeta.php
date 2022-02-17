@@ -33,7 +33,7 @@ class PermissionsMeta
         ? "COUNT(i.item_id)" 
         : "COUNT(DISTINCT i.exception_id, i.item_id)";
 
-        $agent_type = sanitize_key($agent_type);
+        $agent_type = pp_permissions_sanitize_key($agent_type);
 
         if (('user' == $agent_type) && $join_groups) {
             $results = [];

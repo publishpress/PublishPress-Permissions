@@ -35,6 +35,8 @@ class PostEdit
             return;
         }
 
+        $args['disableRecaption'] = is_plugin_active('gutenberg/gutenberg.php');
+
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
         wp_enqueue_script('presspermit-object-edit', PRESSPERMIT_COLLAB_URLPATH . "/common/js/post-block-edit{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_COLLAB_VERSION, true);
         wp_localize_script('presspermit-object-edit', 'ppCollabEdit', $args);

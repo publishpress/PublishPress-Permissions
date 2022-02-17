@@ -9,7 +9,7 @@ class TermEditWorkarounds
         if (!isset($_POST['tag_ID']))
             return;
 
-        $taxonomy = sanitize_key($_POST['taxonomy']);
+        $taxonomy = pp_permissions_sanitize_key($_POST['taxonomy']);
 
         if (!$tx = get_taxonomy($taxonomy))
             return;
@@ -17,7 +17,7 @@ class TermEditWorkarounds
         if (!$tx->hierarchical)
             return;
 
-        $stored_term = get_term_by('id', $_POST['tag_ID'], $taxonomy);
+        $stored_term = get_term_by('id', (int) $_POST['tag_ID'], $taxonomy);
 
         $selected_parent = (int)$_POST['parent'];
 

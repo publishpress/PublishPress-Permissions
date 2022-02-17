@@ -25,12 +25,14 @@ class RoleUsageEdit {
 
         $url = apply_filters('presspermit_role_usage_base_url', 'admin.php');
 
-        if (isset($_REQUEST['wp_http_referer']))
-            $wp_http_referer = $_REQUEST['wp_http_referer'];
-        elseif (isset($_SERVER['HTTP_REFERER']))
-            $wp_http_referer = remove_query_arg(['update', 'edit', 'delete_count'], stripslashes($_SERVER['HTTP_REFERER']));
-        else
+        if (isset($_REQUEST['wp_http_referer'])) {
+            $wp_http_referer = sanitize_url($_REQUEST['wp_http_referer']);
+
+        } elseif (isset($_SERVER['HTTP_REFERER'])) {
+            $wp_http_referer = remove_query_arg(['update', 'edit', 'delete_count'], sanitize_url($_SERVER['HTTP_REFERER']));
+        } else {
             $wp_http_referer = '';
+        }
 
         if (!current_user_can('pp_manage_settings'))
             wp_die(__('You are not permitted to do that.', 'press-permit-core'));
@@ -38,7 +40,7 @@ class RoleUsageEdit {
         if (!isset($_REQUEST['role']))
             wp_die('No role specified.');
 
-        $role_name = sanitize_text_field($_REQUEST['role']);
+        $role_name = pp_permissions_sanitize_entry($_REQUEST['role']);
 
         $cap_caster = $pp->capCaster();
         $cap_caster->definePatternCaps();
