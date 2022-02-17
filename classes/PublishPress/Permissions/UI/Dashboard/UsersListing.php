@@ -183,16 +183,16 @@ class UsersListing
 
                             foreach ($group_names as $name => $_id) {
                                 if (!empty($any_done)) {
-                                    echo ', ';
+                                    $content .= ', ';
                                 }
                                 
                                 if (defined('PP_USERS_UI_GROUP_FILTER_LINK') && !empty($_SERVER['REQUEST_URI'])) {
                                     $url = add_query_arg('pp_group', $_id, esc_url_raw($_SERVER['REQUEST_URI']));
-                                    echo "<a href='" . esc_url($url) . "'>" . esc_html($name) . "</a>";
+                                    $content .= "<a href='" . esc_url($url) . "'>" . esc_html($name) . "</a>";
                                 } else {
-                                    echo "<a href='"
-                                        . esc_url("admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_type=$agent_type&amp;agent_id=$_id'>")
-                                        . esc_html($name) . "</a>";
+                                    $content .= "<a href='"
+                                        . esc_url("admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_type=$agent_type&amp;agent_id=$_id")
+                                        . "'>" . esc_html($name) . "</a>";
                                 }
 
                                 $any_done = true;
@@ -286,19 +286,19 @@ class UsersListing
 
                 if ($do_edit_link = current_user_can('pp_assign_roles') && (is_multisite() || current_user_can('edit_user', $id))) {
                     $edit_link = "admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_id=$id&amp;agent_type=user";
-                    echo "<a href='" . esc_url($edit_link) . "'>";
+                    $content .= "<a href='" . esc_url($edit_link) . "'>";
                 }
 
-                echo '<span class="pp-group-site-roles">' . esc_html(implode(', ', $role_titles)) . '</span>';
+                $content .= '<span class="pp-group-site-roles">' . esc_html(implode(', ', $role_titles)) . '</span>';
 
                 if ($do_edit_link) {
-                    echo '</a>';	
+                    $content .= '</a>';	
                 }
 				
                 break;
 
             case 'pp_exceptions':
-                DashboardFilters::listAgentExceptions('user', $id, ['query_agent_ids' => array_keys($wp_list_table->items)]);
+                $content .= DashboardFilters::listAgentExceptions('user', $id, ['query_agent_ids' => array_keys($wp_list_table->items)]);
                 break;
         }
 

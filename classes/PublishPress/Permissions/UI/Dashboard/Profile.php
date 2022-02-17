@@ -42,7 +42,7 @@ class Profile
         self::abbreviatedExceptionsList(
             'user',
             $user->ID,
-            compact('edit_url', 'caption', 'new_permissions_link', 'maybe_display_note', 'display_limit')
+            compact('edit_url', 'caption', 'new_permissions_link', 'maybe_display_note', 'display_limit', 'echo')
         );
     }
 
@@ -249,7 +249,7 @@ class Profile
     {
         static $exception_info;
 
-        $defaults = ['query_agent_ids' => [], 'show_link' => true, 'join_groups' => true, 'force_refresh' => false, 'display_limit' => 3];
+        $defaults = ['query_agent_ids' => [], 'show_link' => true, 'join_groups' => true, 'force_refresh' => false, 'display_limit' => 3, 'echo' => false];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -277,20 +277,39 @@ class Profile
                     }
                 }
 
-                $exc_str = '<span class="pp-group-site-roles">' . implode(',&nbsp; ', $exc_titles) . '</span>';
+                $titles_list = implode(', ', $exc_titles);
 
                 if (count($exception_info[$id]['exceptions']) > $display_limit) {
-                    $exc_str = sprintf(__('%s, more...', 'press-permit-core'), $exc_str);
+                    $titles_list = sprintf(__('%s, more...', 'press-permit-core'), $titles_list);
                 }
+
+                if ($echo) {
+                    echo '<span class="pp-group-site-roles">';
+
+                    if ($show_link && current_user_can('pp_assign_roles') && (is_multisite() || current_user_can('edit_user', $id))) {
+                        $edit_link = "admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_id=$id&amp;agent_type=user";
+                        echo "<a href='" . esc_url($edit_link) . "'>" . esc_html($titles_list) . "</a><br />";
+                    } else {
+                        echo esc_html($titles_list);
+                    }
+
+                    echo '</span>';
+                } else {
+                    $exc_str = '<span class="pp-group-site-roles">';
 
                 if ($show_link && current_user_can('pp_assign_roles') && (is_multisite() || current_user_can('edit_user', $id))) {
                     $edit_link = "admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_id=$id&amp;agent_type=user";
-                    $exc_str = "<a href=\"$edit_link\">$exc_str</a><br />";
+                        $exc_str .= "<a href='" . esc_url($edit_link) . "'>" . esc_html($titles_list) . "</a><br />";
+                    } else {
+                        $exc_str .= esc_html($titles_list);
+                    }
+
+                    $exc_str .= '</span>';
                 }
             }
         }
 
-        return !empty($any_exceptions);
+        return ($echo) ? !empty($any_exceptions) : $exc_str;
     }
 
     private static function abbreviatedExceptionsList($agent_type, $agent_id, $args = [])
@@ -313,6 +332,7 @@ class Profile
 
         $args['show_link'] = false;
         $args['force_refresh'] = true;
+        $args['echo'] = true;
 
         $new_permissions_link = $maybe_display_note && $pp->isUserAdministrator()
             && $pp->admin()->bulkRolesEnabled() && current_user_can('list_users');
