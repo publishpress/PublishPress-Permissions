@@ -83,7 +83,7 @@ class DashboardFiltersNonAdministrator
         global $pagenow;
 
         if (in_array($pagenow, ['edit.php', 'post.php', 'post-new.php', 'upload.php'])) {
-            $_post_type = (!empty($_REQUEST['post_type'])) ? sanitize_key($_REQUEST['post_type']) : 'post';
+            $_post_type = (!empty($_REQUEST['post_type'])) ? pp_permissions_sanitize_key($_REQUEST['post_type']) : 'post';
 
             if (!in_array($_post_type, presspermit()->getEnabledPostTypes(), true))
                 return;

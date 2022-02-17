@@ -157,7 +157,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
         $current_tab = 'most-recent';
         if (isset($_REQUEST[$post_type_name . '-tab']) && in_array($_REQUEST[$post_type_name . '-tab'], ['all', 'search'])) {
-            $current_tab = sanitize_key($_REQUEST[$post_type_name . '-tab']);
+            $current_tab = pp_permissions_sanitize_key($_REQUEST[$post_type_name . '-tab']);
         }
 
         if (!empty($_REQUEST['quick-search-posttype-' . $post_type_name])) {
@@ -412,7 +412,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
         $current_tab = 'most-recent';
         if (isset($_REQUEST[$post_type_name . '-tab']) && in_array($_REQUEST[$post_type_name . '-tab'], ['all', 'search'])) {
-            $current_tab = sanitize_key($_REQUEST[$post_type_name . '-tab']);
+            $current_tab = pp_permissions_sanitize_key($_REQUEST[$post_type_name . '-tab']);
         }
 
         $removed_args = [
@@ -620,7 +620,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
         $current_tab = 'most-used';
         if (isset($_REQUEST[$taxonomy_name . '-tab']) && in_array($_REQUEST[$taxonomy_name . '-tab'], ['all', 'most-used', 'search'])) {
-            $current_tab = sanitize_key($_REQUEST[$taxonomy_name . '-tab']);
+            $current_tab = pp_permissions_sanitize_key($_REQUEST[$taxonomy_name . '-tab']);
         }
 
         if (!empty($_REQUEST['quick-search-taxonomy-' . $taxonomy_name])) {
@@ -821,11 +821,9 @@ class ItemsMetabox extends \Walker_Nav_Menu
      */
     public static function ajax_menu_quick_search()
     {
-        $request = $_REQUEST;
-
         $args = [];
-        $type = isset($request['type']) ? $request['type'] : '';
-        $query = isset($request['q']) ? $request['q'] : '';
+        $type = isset($_REQUEST['type']) ? pp_permissions_sanitize_key($_REQUEST['type']) : '';
+        $query = isset($_REQUEST['q']) ? sanitize_text_field($_REQUEST['q']) : '';
 
         $args['walker'] = new ItemsMetabox;
         $args['is_search_result'] = true;

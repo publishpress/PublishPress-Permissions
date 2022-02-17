@@ -158,7 +158,7 @@ class PostFilters
             return $clauses;
         }
 
-        $action = (isset($_REQUEST['action'])) ? $_REQUEST['action'] : '';
+        $action = (isset($_REQUEST['action'])) ? pp_permissions_sanitize_key($_REQUEST['action']) : '';
 
         if (
             defined('PP_MEDIA_LIB_UNFILTERED') && (('upload.php' == $pagenow)
@@ -1025,6 +1025,14 @@ class PostFilters
 
                     $replace_caps[$list_others_cap] = $require_cap;
                 }
+            }
+
+            $copy_others_cap = str_replace('edit_', 'copy_', $type_obj->cap->edit_others_posts);
+
+            if (function_exists('rvy_get_option') && rvy_get_option('copy_posts_capability')) {
+                $replace_caps[$copy_others_cap] = str_replace('edit_', 'copy_', $type_obj->cap->edit_posts);
+            } else {
+                $replace_caps[$copy_others_cap] = 'read';
             }
 
             foreach ($replace_caps as $cap_name => $base_cap) {

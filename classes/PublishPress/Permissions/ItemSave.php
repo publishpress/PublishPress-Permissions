@@ -55,9 +55,12 @@ class ItemSave
 
         if ($posted_exceptions && !$disallow_manual_entry && $can_assign_roles) {
             foreach (array_keys($posted_exceptions) as $for_item_type) {
+                $for_item_type = pp_permissions_sanitize_key($for_item_type);
+                
                 $_for_type = ('(all)' == $for_item_type) ? '' : $for_item_type;
 
                 foreach (array_keys($posted_exceptions[$for_item_type]) as $op) {
+                    $op = pp_permissions_sanitize_key($op);
                     $_for_item_source = $for_item_source;
                     
                     if (('term' == $for_item_source) || (('term' == $via_item_source) && in_array($op, ['manage', 'associate'] ) ) ) {
@@ -70,11 +73,16 @@ class ItemSave
                         continue;
                     }
 
-                    if (!$pp_admin->canSetExceptions($op, $for_item_type, compact('via_item_source', 'via_item_type', 'item_id', '_for_item_source'))) {
+                    $_args = compact('via_item_source', 'via_item_type', 'item_id');
+                    $_args['for_item_source'] = $_for_item_source;
+
+                    if (!$pp_admin->canSetExceptions($op, $for_item_type, $_args)) {
                         continue;
                     }
 
                     foreach (array_keys($posted_exceptions[$for_item_type][$op]) as $agent_type) {
+                        $agent_type = pp_permissions_sanitize_key($agent_type);
+
                         $args['for_item_type'] = $_for_type;
                         $args['for_item_source'] = $_for_item_source;
                         $args['operation'] = $op;

@@ -246,13 +246,13 @@ class Capabilities
         if ($type_obj && ! empty($type_obj->rest_base) && ($type_obj->rest_base != $slug) && ($type_obj->rest_base != "{$slug}s")) {
             // Use plural form from rest_base
             if ($pos = strpos($type_obj->rest_base, '/')) {
-                return sanitize_key(substr($type_obj->rest_base, 0, $pos + 1));
+                return pp_permissions_sanitize_key(substr($type_obj->rest_base, 0, $pos + 1));
             } else {
-                return sanitize_key($type_obj->rest_base);
+                return pp_permissions_sanitize_key($type_obj->rest_base);
             }
         } else {
             require_once (PRESSPERMIT_CLASSPATH_COMMON . '/Inflect.php');
-            return sanitize_key(\PressShack\Inflect::pluralize($slug));	
+            return pp_permissions_sanitize_key(\PressShack\Inflect::pluralize($slug));	
         }
     }
 }

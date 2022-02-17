@@ -20,8 +20,8 @@ class AgentRolesAjax
             exit;
         }
 
-        $for_item_source = sanitize_key($_GET['pp_source_name']);
-        $for_item_type = sanitize_key($_GET['pp_object_type']);
+        $for_item_source = pp_permissions_sanitize_key($_GET['pp_source_name']);
+        $for_item_type = pp_permissions_sanitize_key($_GET['pp_object_type']);
         $role_name = (isset($_GET['pp_role_name'])) ? PWP::sanitizeCSV($_GET['pp_role_name']) : '';
 
         $filterable_vars = ['for_item_source', 'for_item_type', 'role_name'];

@@ -26,9 +26,10 @@ class RoleUsage
         $url = $referer = $redirect = $update = '';
         RoleUsageHelper::getUrlProperties($url, $referer, $redirect);
 
-        $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
-        if (!$action)
-            $action = isset($_REQUEST['pp_action']) ? $_REQUEST['pp_action'] : '';
+        $action = isset($_REQUEST['action']) ? pp_permissions_sanitize_key($_REQUEST['action']) : '';
+        if (!$action) {
+            $action = isset($_REQUEST['pp_action']) ? pp_permissions_sanitize_key($_REQUEST['pp_action']) : '';
+        }
 
         $role_usage_table->prepare_items();
         $total_pages = $role_usage_table->get_pagination_arg('total_pages');

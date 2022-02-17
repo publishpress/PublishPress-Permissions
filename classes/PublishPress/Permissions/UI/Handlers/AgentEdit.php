@@ -10,7 +10,7 @@ class AgentEdit
     public function __construct() {
         require_once(PRESSPERMIT_CLASSPATH . '/DB/GroupUpdate.php');
 
-        $action = (isset($_REQUEST['action'])) ? $_REQUEST['action'] : '';
+        $action = (isset($_REQUEST['action'])) ? pp_permissions_sanitize_key($_REQUEST['action']) : '';
 
         $url = apply_filters('presspermit_groups_base_url', 'admin.php');
         $redirect = $err = false;
@@ -20,7 +20,7 @@ class AgentEdit
 
         $pp = presspermit();
 
-        $agent_type = sanitize_key($_REQUEST['agent_type']);
+        $agent_type = pp_permissions_sanitize_key($_REQUEST['agent_type']);
 
         switch ($action) {
             case 'update':
@@ -52,7 +52,7 @@ class AgentEdit
                     \PublishPress\Permissions\DB\Cloner::clonePermissions(
                         'pp_group', 
                         $agent_id, 
-                        sanitize_key($_REQUEST['pp_select_role'])
+                        pp_permissions_sanitize_key($_REQUEST['pp_select_role'])
                     );
                     
                     $redirect = "$url?page=presspermit-edit-permissions&agent_id=$agent_id&agent_type=$agent_type&updated=1&pp_cloned=1";
@@ -112,7 +112,7 @@ class AgentEdit
 
                 check_admin_referer('pp-create-group', '_wpnonce_pp-create-group');
 
-                $agent_type = (isset($_REQUEST['agent_type'])) ? sanitize_key($_REQUEST['agent_type']) : '';
+                $agent_type = (isset($_REQUEST['agent_type'])) ? pp_permissions_sanitize_key($_REQUEST['agent_type']) : '';
                 if (!$agent_type = apply_filters('presspermit_query_group_type', $agent_type))
                     $agent_type = 'pp_group';
 
@@ -134,10 +134,10 @@ class AgentEdit
             if (!empty($_REQUEST['wp_http_referer'])) {
                 $arr = explode('/', $_REQUEST['wp_http_referer']);
                 if ($arr && !defined('PP_LEGACY_HTTP_REDIRECT')) {
-                    $wp_http_referer = array_pop($arr);
+                    $wp_http_referer = sanitize_url(array_pop($arr));
                     $redirect = add_query_arg('wp_http_referer', urlencode($wp_http_referer), $redirect);
                 } else {
-                    $redirect = add_query_arg('wp_http_referer', urlencode($_REQUEST['wp_http_referer']), $redirect);
+                    $redirect = add_query_arg('wp_http_referer', urlencode(sanitize_url($_REQUEST['wp_http_referer'])), $redirect);
                 }
             }
 
@@ -174,14 +174,14 @@ class AgentEdit
 
             // also support bulk-assignment of user roles
             $agent_ids = (('user' == $agent_type) && !$agent_id && isset($_REQUEST['member_csv']))
-                ? explode(',', $_REQUEST['member_csv'])
+                ? array_map('intval', explode(',', $_REQUEST['member_csv']))
                 : [$agent_id];
 
             foreach ($agent_ids as $_agent_id) {
                 if ($_agent_id) {
                     foreach ($_POST['pp_add_role'] as $add_role) {
-                        $attrib_cond = (!empty($add_role['attrib_cond'])) ? ':' . $add_role['attrib_cond'] : '';
-                        $role = (isset($add_role['role'])) ? $add_role['role'] : '';
+                        $attrib_cond = (!empty($add_role['attrib_cond'])) ? ':' . pp_permissions_sanitize_entry($add_role['attrib_cond']) : '';
+                        $role = (isset($add_role['role'])) ? pp_permissions_sanitize_entry($add_role['role']) : '';
 
                         presspermit()->assignRoles(["{$role}{$attrib_cond}" => [$_agent_id => true]], $agent_type);
                     }
@@ -207,8 +207,10 @@ class AgentEdit
                 $exc = apply_filters('presspermit_add_exception', $exc);
 
                 foreach (['mod_type', 'item_id', 'operation', 'attrib_cond', 'via_type', 'for_type', 'for_item', 'for_children'] as $var) {
-                    $$var = (isset($exc[$var])) ? $exc[$var] : '';
+                    $$var = (isset($exc[$var])) ? pp_permissions_sanitize_key($exc[$var]) : '';
                 }
+
+                $item_id = (isset($exc['item_id'])) ? (int) $exc['item_id'] : 0;
 
                 $args = compact('mod_type', 'item_id', 'operation');
                 $args['for_item_status'] = $attrib_cond;
@@ -241,7 +243,7 @@ class AgentEdit
 
                 // also support bulk-assignment of user exceptions
                 $agent_ids = (('user' == $agent_type) && !$agent_id && isset($_REQUEST['member_csv']))
-                    ? explode(',', $_REQUEST['member_csv'])
+                    ? array_map('intval', explode(',', $_REQUEST['member_csv']))
                     : [$agent_id];
 
                 foreach ($agent_ids as $_agent_id) {

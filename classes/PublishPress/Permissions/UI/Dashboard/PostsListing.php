@@ -7,7 +7,7 @@ class PostsListing
 
     public function __construct()
     {
-        $post_type = (isset($_REQUEST['post_type'])) ? $_REQUEST['post_type'] : 'post';
+        $post_type = (isset($_REQUEST['post_type'])) ? pp_permissions_sanitize_key($_REQUEST['post_type']) : 'post';
 
         wp_enqueue_style('presspermit-post-listing', PRESSPERMIT_URLPATH . '/common/css/post-listing.css', [], PRESSPERMIT_VERSION);
 

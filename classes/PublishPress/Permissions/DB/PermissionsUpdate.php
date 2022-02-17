@@ -147,11 +147,11 @@ class PermissionsUpdate
 
         $args = array_merge($defaults, (array)$args);
         foreach (array_keys($defaults) as $var) {
-            $$var = (is_string($args[$var])) ? sanitize_key($args[$var]) : $args[$var];
+            $$var = (is_string($args[$var])) ? pp_permissions_sanitize_key($args[$var]) : $args[$var];
         }
 
         $item_id = (int)$args['item_id'];
-        $agent_type = sanitize_key($agent_type);
+        $agent_type = pp_permissions_sanitize_key($agent_type);
         $for_item_status = (isset($args['for_item_status'])) ? PWP::sanitizeCSV($for_item_status) : '';
 
         // temp workaround for Revisionary (otherwise lose page-assigned roles on revision approval)
@@ -175,6 +175,8 @@ class PermissionsUpdate
         foreach (array_keys($agents) as $_assign_for) {
             $agent_ids = array_merge($agent_ids, array_keys($agents[$_assign_for]));
         }
+
+        $agent_ids = array_map('intval', $agent_ids);
 
         $where = "e.agent_type = '$agent_type' AND e.agent_id IN ('" . implode("','", $agent_ids) . "') AND e.operation = '$operation'"
             . " AND e.via_item_source = '$via_item_source' AND e.via_item_type = '$via_item_type'"
@@ -306,7 +308,7 @@ class PermissionsUpdate
 
         foreach ($delete_eids_from_eitem as $assign_for => $delete_exception_ids) {
             if ($delete_exception_ids) {
-                $assign_for = sanitize_key($assign_for);
+                $assign_for = pp_permissions_sanitize_key($assign_for);
                 if ($delete_eitem_ids = $wpdb->get_col(
                     "SELECT eitem_id FROM $wpdb->ppc_exception_items WHERE assign_for = '$assign_for'"
                     . " AND item_id = '$item_id' AND exception_id IN ('" . implode("','", $delete_exception_ids) . "')"
@@ -329,7 +331,7 @@ class PermissionsUpdate
                 }
 
                 if ($exception_ids) {
-                    $assign_for = sanitize_key($assign_for);
+                    $assign_for = pp_permissions_sanitize_key($assign_for);
                     if ($delete_eitem_ids = $wpdb->get_col(
                         "SELECT eitem_id FROM $wpdb->ppc_exception_items WHERE assign_for = '$assign_for'"
                         . " AND item_id = '$item_id' AND exception_id IN ('" . implode("','", $exception_ids) . "')"
@@ -450,16 +452,16 @@ class PermissionsUpdate
 
         $assigner_id = $current_user->ID;
 
-        $operation = sanitize_key($operation);
-        $via_item_source = sanitize_key($via_item_source);
-        $for_item_source = sanitize_key($for_item_source);
-        $for_item_type = sanitize_key($for_item_type);
+        $operation = pp_permissions_sanitize_key($operation);
+        $via_item_source = pp_permissions_sanitize_key($via_item_source);
+        $for_item_source = pp_permissions_sanitize_key($for_item_source);
+        $for_item_type = pp_permissions_sanitize_key($for_item_type);
         $item_id = (int)$item_id;
-        $agent_type = sanitize_key($agent_type);
-        $mod_type = sanitize_key($mod_type);
-        $via_item_type = sanitize_key($via_item_type);
+        $agent_type = pp_permissions_sanitize_key($agent_type);
+        $mod_type = pp_permissions_sanitize_key($mod_type);
+        $via_item_type = pp_permissions_sanitize_key($via_item_type);
         $for_item_status = PWP::sanitizeCSV($for_item_status);
-        $assign_for = sanitize_key($assign_for);
+        $assign_for = pp_permissions_sanitize_key($assign_for);
 
         if ('children' == $assign_for) {
             if ('term' == $via_item_source) {

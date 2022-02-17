@@ -147,14 +147,14 @@ class REST
                     $this->referer = reset($this->referer);
                 }
 
-                $this->operation = (isset($this->params['context'])) ? sanitize_key($this->params['context']) : '';
+                $this->operation = (isset($this->params['context'])) ? pp_permissions_sanitize_key($this->params['context']) : '';
                 if ('view' == $this->operation) {
                     $this->operation = 'read';
                 }
 
 			  // voluntary filtering of get_items (for WYSIWY can edit, etc.)
                 if ($this->is_view_method && ('read' == $this->operation) && !empty($_REQUEST['operation'])) {
-                    $this->operation = $_REQUEST['operation'];
+                    $this->operation = pp_permissions_sanitize_key($_REQUEST['operation']);
                 }
 			
                 // NOTE: setting or default may be adapted downstream
@@ -231,7 +231,9 @@ class REST
                                 $check_cap = false;
                             }
 
-                            if ($check_cap && ! current_user_can($check_cap, $this->post_id)) {
+                            if ($check_cap && ! current_user_can($check_cap, $this->post_id) 
+                            && (('edit' != $this->operation) || ('trash' != get_post_field('post_status', $this->post_id)))
+                            ) { // Avoid conflicts with WP trashing. WP will still prevent editing of trashed posts
                                 return self::rest_denied();
                             }
                         }

@@ -16,7 +16,7 @@ class AgentPermissionsAjax
 
         $html = '';
 
-        $agent_type = (!empty($_GET['agent_type'])) ? sanitize_key($_GET['agent_type']) : '';
+        $agent_type = (!empty($_GET['agent_type'])) ? pp_permissions_sanitize_key($_GET['agent_type']) : '';
         $agent_id = (!empty($_GET['agent_id'])) ? (int)$_GET['agent_id'] : 0;
 
         // safeguard prevents accidental modification of roles for other groups / users
@@ -26,7 +26,7 @@ class AgentPermissionsAjax
             $agent_clause = '';
         }
 
-        $action = $_GET['pp_ajax_agent_permissions'];
+        $action = pp_permissions_sanitize_key($_GET['pp_ajax_agent_permissions']);
 
         switch ($action) {
             case 'roles_remove':
@@ -60,6 +60,9 @@ class AgentPermissionsAjax
                             \PublishPress\Permissions\DB\PermissionsUpdate::removeRolesById($_ass_ids);
                         }
                     }
+
+                    do_action('presspermit_supplemental_roles_deleted', $deleted_ass_ids, $agent_type, $agent_id);
+                    do_action('presspermit_edited_group', $agent_type, $agent_id, true);
                 }
 
                 echo '<!--ppResponse-->' . implode('|', $input_vals) . '<--ppResponse-->';
@@ -103,6 +106,9 @@ class AgentPermissionsAjax
                             \PublishPress\Permissions\DB\PermissionsUpdate::removeExceptionItemsById($_eitem_ids);
                         }
                     }
+
+                    do_action('presspermit_exception_items_deleted', $deleted_eitem_ids, $agent_type, $agent_id);
+                    do_action('presspermit_edited_group', $agent_type, $agent_id, true);
                 }
 
                 echo '<!--ppResponse-->' . implode('|', $input_vals) . '<--ppResponse-->';
@@ -120,6 +126,7 @@ class AgentPermissionsAjax
                 }
 
                 $edited_input_ids = [];
+                $all_eitem_ids = [];
 
                 $input_vals = explode('|', PWP::sanitizeCSV($_GET['pp_eitem_ids']));
 
@@ -158,7 +165,12 @@ class AgentPermissionsAjax
 
                         $edited_input_ids[] = $id_csv;
                     }
+
+                    $all_eitem_ids = array_merge($all_eitem_ids, $eitem_ids);
                 }
+
+                do_action('presspermit_exception_items_updated', $all_eitem_ids, $agent_type, $agent_id);
+                do_action('presspermit_edited_group', $agent_type, $agent_id, true);
 
                 echo '<!--ppResponse-->' . $_GET['pp_ajax_agent_permissions'] . '~' . implode('|', $edited_input_ids) . '<--ppResponse-->';
                 break;
@@ -183,6 +195,7 @@ class AgentPermissionsAjax
                     }
 
                     $edited_input_ids = [];
+                    $all_eitem_ids = [];
 
                     $input_vals = explode('|', PWP::sanitizeCSV($_GET['pp_eitem_ids']));
 
@@ -207,8 +220,13 @@ class AgentPermissionsAjax
 
                             $edited_input_ids[] = $id_csv;
                         }
+
+                        $all_eitem_ids = [];
                     }
 
+                    do_action('presspermit_exception_items_mirrored', $all_eitem_ids, $agent_type, $agent_id);
+                    do_action('presspermit_edited_group', $agent_type, $agent_id, true);
+                    
                     echo '<!--ppResponse-->' . 'exceptions_mirror' . '~' . implode('|', $edited_input_ids) . '<--ppResponse-->';
                     break;
                 }

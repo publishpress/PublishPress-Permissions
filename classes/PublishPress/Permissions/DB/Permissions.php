@@ -16,7 +16,7 @@ class Permissions
 
         $roles = [];
 
-        $agent_type = sanitize_key($agent_type);
+        $agent_type = pp_permissions_sanitize_key($agent_type);
 
         if ($query_agent_ids) {
             static $agent_roles;
@@ -419,11 +419,11 @@ class Permissions
                 )
             ) {
                 if (empty($args['has_cap_check'])) {
-                if (!empty($user->except['revise_post']['term'][$taxonomy]['additional'][$post_type][''])) {
-                    if (!empty($revisionary) && empty($revisionary->skip_revision_allowance)) {
-                        $revise_ttids[$revise_status_key] = array_merge($revise_ttids[$revise_status_key], $user->except['revise_post']['term'][$taxonomy]['additional'][$post_type]['']);
-                	}
-            	}
+                    if (!empty($user->except['revise_post']['term'][$taxonomy]['additional'][$post_type][''])) {
+                        if (!empty($revisionary) && empty($revisionary->skip_revision_allowance)) {
+                            $revise_ttids[$revise_status_key] = array_merge($revise_ttids[$revise_status_key], $user->except['revise_post']['term'][$taxonomy]['additional'][$post_type]['']);
+                        }
+                    }
                     
                     if (!empty($user->except['copy_post']['term'][$taxonomy]['additional'][$post_type][''])) {
                         if (!empty($revisionary) && empty($revisionary->skip_revision_allowance)) {

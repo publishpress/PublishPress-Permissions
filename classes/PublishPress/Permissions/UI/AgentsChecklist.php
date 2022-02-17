@@ -23,7 +23,7 @@ class AgentsChecklist
             $$var = $args[$var];
         }
 
-        $caption_length_limit = (defined('PP_AGENTS_CAPTION_LIMIT')) ? PP_AGENTS_CAPTION_LIMIT : 20;
+        $caption_length_limit = (defined('PP_AGENTS_CAPTION_LIMIT')) ? PP_AGENTS_CAPTION_LIMIT : 100;
         $emsize_threshold = (defined('PP_AGENTS_EMSIZE_THRESHOLD')) ? PP_AGENTS_EMSIZE_THRESHOLD : 4;
 
         static $exec_count = 0;
@@ -149,7 +149,7 @@ class AgentsChecklist
             echo '</label>';
 
             if ($edit_link_base && presspermit()->groups()->userCan('pp_edit_groups', $id, $agent_type))
-                echo ' <a href=" ' . $edit_link_base . $id . '" style="display:none" target="_blank" title="' . $edit_title_text . '">'
+                echo ' <a href=" ' . $edit_link_base . $id . '" target="_blank" title="' . $edit_title_text . '">'
                     . $edit_caption . '</a>';
 
             echo '</li>';
