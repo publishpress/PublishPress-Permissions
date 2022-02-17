@@ -16,73 +16,90 @@ class PermissionsMeta
 
         $pp = presspermit();
 
+        $count = [];
+
         $item_types = array_merge(
             $pp->getEnabledPostTypes(),
             $pp->getEnabledTaxonomies(),
-            $pp->groups()->getGroupTypes(['editable' => true])
+            $pp->groups()->getGroupTypes(['editable' => true]),
+            ['']
         );
 
-        $type_clause = "AND e.for_item_type IN ('','" . implode("','", $item_types) . "')";
-        $type_clause .= " AND e.via_item_type IN ('','" . implode("','", $item_types) . "')";
-        $ops_clause = "AND operation IN ('" . implode("','", $pp->getOperations()) . "')";
+        $types_csv = implode("','", array_map('sanitize_key', $item_types));
 
-        $count = [];
+        $ops_csv = implode("','", array_map('sanitize_key', $pp->getOperations()));
 
         // Project Nami compat
         $count_clause = ($wpdb && method_exists($wpdb, 'db_edition') && empty($wpdb->use_mysqli))
         ? "COUNT(i.item_id)" 
         : "COUNT(DISTINCT i.exception_id, i.item_id)";
 
-        $agent_type = sanitize_key($agent_type);
-
         if (('user' == $agent_type) && $join_groups) {
             $results = [];
 
             foreach ($pp->groups()->getGroupTypes([], 'object') as $group_type => $gtype_obj) {
-                global $wpdb;
                 if (!empty($gtype_obj->schema['members'])) {
-                    $sm = $gtype_obj->schema['members'];
-                    $members_table = $sm['members_table'];
-                    $col_member_group = $sm['col_member_group'];
-                    $col_member_user = $sm['col_member_user'];
+                    $sm = pp_permissions_sanitize_entry($gtype_obj->schema['members']);
+                    $wpdb->members_table = pp_permissions_sanitize_entry($sm['members_table']);
+                    $col_member_group = pp_permissions_sanitize_entry($sm['col_member_group']);
+                    $col_member_user = pp_permissions_sanitize_entry($sm['col_member_user']);
                 } else {
-                    $members_table = $wpdb->pp_group_members;
+                    $wpdb->members_table = pp_permissions_sanitize_entry($wpdb->pp_group_members);
                     $col_member_group = 'group_id';
                     $col_member_user = 'user_id';
                 }
 
-                $agent_clause = ($query_agent_ids) ? "AND gm.$col_member_user IN ('" . implode("','", (array)$query_agent_ids) . "')" : '';
+                if ($query_agent_ids) {
+                    $agent_id_csv = implode("','", array_map('intval', (array) $query_agent_ids));
+                    $agent_clause = "AND gm.$col_member_user IN ('$agent_id_csv')";
+                } else {
+                    $agent_clause = '';
+                }
 
                 if (('groups_only' === $join_groups) || ('pp_group' != $group_type)) {
-                    $agent_type_clause = "( e.agent_type = '$group_type' AND gm.$col_member_group = e.agent_id )";  // NOTE: every site user has at least one record in pp_group_members (for primary WP site role)
+                    $agent_type_clause = $wpdb->prepare(
+                        "( e.agent_type = %s AND gm.$col_member_group = e.agent_id )",
+                        $group_type
+                    );  // NOTE: every site user has at least one record in pp_group_members (for primary WP site role)
                 } else {
                     $agent_type_clause = "( e.agent_type = 'user' AND gm.user_id = e.agent_id )"
                         . " OR ( e.agent_type = 'pp_group' AND gm.group_id = e.agent_id )";
                 }
 
-                $_results = $wpdb->get_results(
-                    "SELECT gm.$col_member_user as qry_agent_id, e.exception_id, e.for_item_source, e.for_item_type,"
-                    . " e.via_item_type, e.operation, $count_clause AS exc_count"
-                    . " FROM $wpdb->ppc_exception_items AS i"
-                    . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
-                    . " INNER JOIN $members_table AS gm ON ( $agent_type_clause )"
-                    . " WHERE i.inherited_from = '0' $ops_clause $type_clause $agent_clause"
-                    . " GROUP BY gm.$col_member_user, e.for_item_source, e.for_item_type, e.operation"
-                );
+                $query = "SELECT gm.$col_member_user as qry_agent_id, e.exception_id, e.for_item_source, e.for_item_type,"
+                . " e.via_item_type, e.operation, $count_clause AS exc_count"
+                . " FROM $wpdb->ppc_exception_items AS i"
+                . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
+                . " INNER JOIN $wpdb->members_table AS gm ON ( $agent_type_clause )"
+                . " WHERE i.inherited_from = '0' AND operation IN ('$ops_csv')"
+                . " AND e.for_item_type IN ('$types_csv') AND e.via_item_type IN ('$types_csv') $agent_clause"
+                . " GROUP BY gm.$col_member_user, e.for_item_source, e.for_item_type, e.operation";
+
+                $_results = $wpdb->get_results($query);
 
                 $results = array_merge($results, $_results);
             }
         } else {
-            $agent_clause = ($query_agent_ids) ? "AND e.agent_id IN ('" . implode("','", (array)$query_agent_ids) . "')" : '';
+            if ($query_agent_ids) {
+                $agent_id_csv = implode("','", array_map('intval', (array) $query_agent_ids));
+                $agent_clause = "AND e.agent_id IN ('$agent_id_csv')";
+            } else {
+                $agent_clause = '';
+            }
 
-            $results = $wpdb->get_results(
+            $query = $wpdb->prepare(
                 "SELECT e.agent_id AS qry_agent_id, e.exception_id, e.for_item_source, e.for_item_type, e.operation,"
                 . " e.via_item_type, $count_clause AS exc_count"
                 . " FROM $wpdb->ppc_exception_items AS i"
                 . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
-                . " WHERE i.inherited_from = '0' AND e.agent_type = '$agent_type' $ops_clause $type_clause $agent_clause"
-                . " GROUP BY e.agent_id, e.for_item_source, e.for_item_type, e.operation"
+                . " WHERE i.inherited_from = '0' AND e.agent_type = %s AND operation IN ('$ops_csv')"
+                . " AND e.for_item_type IN ('$types_csv') AND e.via_item_type IN ('$types_csv') $agent_clause"
+                . " GROUP BY e.agent_id, e.for_item_source, e.for_item_type, e.operation",
+
+                $agent_type
             );
+
+            $results = $wpdb->get_results($query);
         }
 
         foreach ($results as $row) {
@@ -102,11 +119,10 @@ class PermissionsMeta
                     else
                         $lbl = $op_obj->label;
 
-                    //$lbl = sprintf( __('%2$s: %1$s', 'press-permit-core'), $op_lbl, $type_label );
                 } elseif (isset($op_obj->abbrev))
                     $lbl = $op_obj->abbrev;
                 else
-                    $lbl = sprintf(__('%1$s %2$s', 'press-permit-core'), $op_obj->label, $type_label);
+                    $lbl = sprintf(esc_html__('%1$s %2$s', 'press-permit-core'), $op_obj->label, $type_label);
             } else {
                 $lbl = $type_label;
             }
@@ -140,9 +156,12 @@ class PermissionsMeta
         $count = [];
 
         if (('user' == $agent_type) && $join_groups) {
-            $agent_clause = ($query_agent_ids)
-                ? "AND gm.user_id IN ('" . implode("','", array_map('intval', (array)$query_agent_ids)) . "')"
-                : '';
+            if ($query_agent_ids) {
+                $agent_id_csv = implode("','", array_map('intval', (array)$query_agent_ids));
+                $agent_clause = "AND gm.user_id IN ('$agent_id_csv')";
+            } else {
+                $agent_clause = '';
+            }
 
             $results = $wpdb->get_results(
                 "SELECT u.ID AS agent_id, r.role_name, COUNT(*) AS rolecount FROM $wpdb->users AS u"
@@ -152,26 +171,34 @@ class PermissionsMeta
                 . " GROUP BY u.ID, r.role_name"
             );
         } else {
-            $agent_clause = ($query_agent_ids)
-                ? "AND agent_id IN ('" . implode("','", array_map('intval', (array)$query_agent_ids)) . "')"
-                : '';
+            if ($query_agent_ids) {
+                $agent_id_csv = implode("','", array_map('intval', (array)$query_agent_ids));
 
-            $results = $wpdb->get_results(
-                $wpdb->prepare(
-                    "SELECT agent_id, role_name, COUNT(*) AS rolecount FROM $wpdb->ppc_roles WHERE agent_type = %s $agent_clause"
-                    . " GROUP BY agent_id, role_name",
-                    $agent_type
-                )
-            );
+                $results = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT agent_id, role_name, COUNT(*) AS rolecount FROM $wpdb->ppc_roles WHERE agent_type = %s AND agent_id IN ('$agent_id_csv')"
+                        . " GROUP BY agent_id, role_name",
+    
+                        $agent_type
+                    )
+                );
+
+            } else {
+                $results = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT agent_id, role_name, COUNT(*) AS rolecount FROM $wpdb->ppc_roles WHERE agent_type = %s"
+                        . " GROUP BY agent_id, role_name",
+    
+                        $agent_type
+                    )
+                );
+            }
         }
 
         $item_types = array_merge($pp->getEnabledPostTypes(), $pp->getEnabledTaxonomies());
 
         foreach ($results as $row) {
             $arr_role = explode(':', $row->role_name);
-            //$base_role_name = $arr_role[0];
-            //$source_name = $arr_role[1];
-            //$item_type = $arr_role[2];
 
             $no_ext = !$pp->moduleActive('collaboration') && !$pp->moduleActive('status-control');
             $no_custom_stati = !$pp->moduleActive('status-control');

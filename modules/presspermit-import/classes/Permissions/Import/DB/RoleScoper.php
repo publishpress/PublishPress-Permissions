@@ -22,7 +22,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
     public function __construct() // some PHP versions do not allow subclass constructor to be private
     {
         parent::__construct();
-        $this->import_types = ['sites' => __('Sites', 'press-permit-core'), 'groups' => __('Groups', 'press-permit-core'), 'group_members' => __('Group Members', 'press-permit-core'), 'site_roles' => __('General Roles', 'press-permit-core'), 'item_roles' => __('Term / Object Roles', 'press-permit-core'), 'restrictions' => __('Restrictions', 'press-permit-core'), 'options' => __('Options', 'press-permit-core')];
+        $this->import_types = ['sites' => esc_html__('Sites', 'press-permit-core'), 'groups' => esc_html__('Groups', 'press-permit-core'), 'group_members' => esc_html__('Group Members', 'press-permit-core'), 'site_roles' => esc_html__('General Roles', 'press-permit-core'), 'item_roles' => esc_html__('Term / Object Roles', 'press-permit-core'), 'restrictions' => esc_html__('Restrictions', 'press-permit-core'), 'options' => esc_html__('Options', 'press-permit-core')];
     }
 
     function doImport($import_type = 'rs')
@@ -157,10 +157,22 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
             if (!empty($data['metagroup_type']) && ($data['metagroup_type'] == 'wp_role')) {    // RS stores WP role group membership alongside RS role assignments, but PP activation has already inserted equivalent records in pp_group_members
                 $rs_group_members = [];
             } else {
-                $rs_group_members = $wpdb->get_results("SELECT $wpdb->user2group_uid_col as user_id, $wpdb->user2group_status_col AS status FROM $wpdb->user2group_rs WHERE $wpdb->user2group_gid_col = '$rs_group->rs_group_id'", OBJECT_K);
+                $rs_group_members = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT $wpdb->user2group_uid_col as user_id, $wpdb->user2group_status_col AS status FROM $wpdb->user2group_rs WHERE $wpdb->user2group_gid_col = %d",
+                        $rs_group->rs_group_id
+                    ),
+                    OBJECT_K
+                );
             }
 
-            $existing_pp_members = $wpdb->get_results("SELECT user_id, status FROM $wpdb->pp_group_members WHERE group_id = '$pp_group_id'", OBJECT_K);
+            $existing_pp_members = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT user_id, status FROM $wpdb->pp_group_members WHERE group_id = %d",
+                    $pp_group_id
+                )
+                , OBJECT_K
+            );
 
             $do_group_members = array_diff_key($rs_group_members, $imported_members, $existing_pp_members);
 
@@ -185,15 +197,15 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
         $blog_id = get_current_blog_id();
 
         /*--------- group config and mapping setup ---------*/
-        $rs_groups_table = (is_multisite() && get_site_option('scoper_mu_sitewide_groups')) ? $wpdb->base_prefix . 'groups_rs' : $wpdb->groups_rs;
-        $pp_groups_table = (is_multisite() && get_site_option('presspermit_netwide_groups')) ? $wpdb->base_prefix . 'pp_groups' : $wpdb->pp_groups;
+        $wpdb->rs_groups_table = (is_multisite() && get_site_option('scoper_mu_sitewide_groups')) ? $wpdb->base_prefix . 'groups_rs' : $wpdb->groups_rs;
+        $wpdb->pp_groups_table = (is_multisite() && get_site_option('presspermit_netwide_groups')) ? $wpdb->base_prefix . 'pp_groups' : $wpdb->pp_groups;
         $group_agent_type = (is_multisite() && get_site_option('presspermit_netwide_groups')) ? 'pp_net_group' : 'pp_group';
 
-        $imported_pp_groups = $wpdb->get_results($wpdb->prepare("SELECT source_id, import_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d AND import_tbl = %d", $this->getTableCode($rs_groups_table), $this->getTableCode($pp_groups_table)), OBJECT_K);
-        $role_metagroups_rs = $wpdb->get_results("SELECT ID, group_meta_id FROM $rs_groups_table WHERE group_meta_id LIKE 'wp_role_%' OR group_meta_id = 'wp_anon'", OBJECT_K);
+        $imported_pp_groups = $wpdb->get_results($wpdb->prepare("SELECT source_id, import_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d AND import_tbl = %d", $this->getTableCode($wpdb->rs_groups_table), $this->getTableCode($wpdb->pp_groups_table)), OBJECT_K);
+        $role_metagroups_rs = $wpdb->get_results("SELECT ID, group_meta_id FROM $wpdb->rs_groups_table WHERE group_meta_id LIKE 'wp_role_%' OR group_meta_id = 'wp_anon'", OBJECT_K);
         $role_metagroups_pp = $wpdb->get_results("SELECT metagroup_id, ID FROM $wpdb->pp_groups WHERE metagroup_type = 'wp_role'", OBJECT_K);
-        $stored_pp_groups = $wpdb->get_results("SELECT group_name, ID FROM $pp_groups_table WHERE metagroup_type != 'wp_role'", OBJECT_K);
-        $rs_group_names = $wpdb->get_results("SELECT ID, group_name FROM $rs_groups_table WHERE group_meta_id NOT LIKE 'wp_role_%'", OBJECT_K);
+        $stored_pp_groups = $wpdb->get_results("SELECT group_name, ID FROM $wpdb->pp_groups_table WHERE metagroup_type != 'wp_role'", OBJECT_K);
+        $rs_group_names = $wpdb->get_results("SELECT ID, group_name FROM $wpdb->rs_groups_table WHERE group_meta_id NOT LIKE 'wp_role_%'", OBJECT_K);
         /*----------- end group mapping setup -------------*/
 
         // TODO: assigner_id for exceptions / exception_items ?
@@ -223,8 +235,6 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                 unset($arr[0]);
                 $role_name = implode('_', $arr);
             }
-
-            //pp_dump($item_type);
 
             if (post_type_exists($item_type)) {
                 $item_source = 'post';
@@ -273,9 +283,22 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
 
             $wpdb->insert_id = 0;        // Thanks to Sumon and Warren: https://stackoverflow.com/a/14168822
-            $sql = "INSERT INTO $wpdb->ppc_roles (agent_type, agent_id, role_name, assigner_id) SELECT * FROM ( SELECT '$agent_type' AS a, '$agent_id' AS b, '$pp_role_name' AS c, '$row->assigner_id' AS d ) AS tmp WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_roles WHERE agent_type = '$agent_type' AND agent_id = '$agent_id' AND role_name = '$pp_role_name') LIMIT 1";
 
-            $wpdb->query($sql);
+            $wpdb->query(
+                $wpdb->prepare(
+                    "INSERT INTO $wpdb->ppc_roles (agent_type, agent_id, role_name, assigner_id) SELECT * FROM ( SELECT %s AS a, %d AS b, %s AS c, %d AS d ) AS tmp"
+                    . " WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_roles WHERE agent_type = %s AND agent_id = %d AND role_name = %s) LIMIT 1",
+
+                    $agent_type,
+                    $agent_id,
+                    $pp_role_name,
+                    $row->assigner_id,
+                    $agent_type,
+                    $agent_id,
+                    $pp_role_name
+                )
+            );
+
             if ($wpdb->insert_id) {
                 $assignment_id = (int)$wpdb->insert_id;
 
@@ -299,9 +322,6 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
         $rs_inherited_from = [];    // 
 
         $imported_restrictions = $wpdb->get_results($wpdb->prepare("SELECT source_id, import_tbl, import_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d", $this->getTableCode($wpdb->role_scope_rs)), OBJECT_K);
-        
-        //echo 'imported: ';
-        //var_dump($imported_restrictions);
 
         $pp_agent_id = [];
         $results = $wpdb->get_results("SELECT metagroup_id, ID FROM $wpdb->pp_groups WHERE metagroup_type = 'wp_role'");
@@ -458,11 +478,22 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                         $exception_id = $this->get_exception_id($stored_exceptions, $data, $row->source_id);
 
                         $wpdb->insert_id = 0;
-                        $sql = "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, item_id, inherited_from) SELECT * FROM ( SELECT '$assign_for' AS a, '$exception_id' AS b, '$row->item_id' AS c, '$inherited_from' AS d ) AS tmp WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = '$assign_for' AND exception_id = '$exception_id' AND item_id = '$row->item_id') LIMIT 1";
-                        
-                        //var_dump($sql);
-                        
-                        $wpdb->query($sql);
+
+                        $wpdb->query(
+                            $wpdb->prepare(
+                                "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, item_id, inherited_from) SELECT * FROM ( SELECT %s AS a, %s AS b, %s AS c, %s AS d ) AS tmp"
+                                . " WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = %s AND exception_id = %s AND item_id = %s) LIMIT 1",
+
+                                $assign_for,
+                                $exception_id,
+                                $row->item_id,
+                                $inherited_from,
+                                $assign_for,
+                                $exception_id,
+                                $row->item_id
+                            )
+                        );
+
                         if ($wpdb->insert_id) {
                             $eitem_id = (int)$wpdb->insert_id;
 
@@ -529,8 +560,17 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                     if (!isset($log_populated_exceptions[$exception_id])) {
                         // if any default restrictions did not have a corresponding unrestriction imported, create an exception and "none" exception_item
                         $wpdb->insert_id = 0;
-                        $sql = "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, item_id) SELECT * FROM ( SELECT 'item' AS a, '$exception_id' AS b, '0' AS c ) AS tmp WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = 'item' AND exception_id = '$exception_id' AND item_id = '0') LIMIT 1";
-                        $wpdb->query($sql);
+
+                        $wpdb->query(
+                            $wpdb->prepare(
+                                "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, item_id) SELECT * FROM ( SELECT 'item' AS a, %s AS b, '0' AS c ) AS tmp"
+                                . " WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = 'item' AND exception_id = %d AND item_id = '0') LIMIT 1",
+
+                                $exception_id,
+                                $exception_id
+                            )
+                        );
+                        
                         if ($wpdb->insert_id) {
                             $eitem_id = (int)$wpdb->insert_id;
 
@@ -569,15 +609,15 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
         $log_eitem_ids = [];
 
         /*--------- group config and mapping setup ---------*/
-        $rs_groups_table = (is_multisite() && get_site_option('scoper_mu_sitewide_groups')) ? $wpdb->base_prefix . 'groups_rs' : $wpdb->groups_rs;
-        $pp_groups_table = (is_multisite() && get_site_option('presspermit_netwide_groups')) ? $wpdb->base_prefix . 'pp_groups' : $wpdb->pp_groups;
+        $wpdb->rs_groups_table = (is_multisite() && get_site_option('scoper_mu_sitewide_groups')) ? $wpdb->base_prefix . 'groups_rs' : $wpdb->groups_rs;
+        $wpdb->pp_groups_table = (is_multisite() && get_site_option('presspermit_netwide_groups')) ? $wpdb->base_prefix . 'pp_groups' : $wpdb->pp_groups;
         $group_agent_type = (is_multisite() && get_site_option('presspermit_netwide_groups')) ? 'pp_net_group' : 'pp_group';
-        $imported_pp_groups = $wpdb->get_results($wpdb->prepare("SELECT source_id, import_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d AND import_tbl = %d", $this->getTableCode($rs_groups_table), $this->getTableCode($pp_groups_table)), OBJECT_K);
-        $role_metagroups_rs = $wpdb->get_results("SELECT ID, group_meta_id FROM $rs_groups_table WHERE group_meta_id LIKE 'wp_role_%' OR group_meta_id = 'wp_anon'", OBJECT_K);  // TODO: review role metagroup storage with netwide groups
+        $imported_pp_groups = $wpdb->get_results($wpdb->prepare("SELECT source_id, import_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d AND import_tbl = %d", $this->getTableCode($wpdb->rs_groups_table), $this->getTableCode($wpdb->pp_groups_table)), OBJECT_K);
+        $role_metagroups_rs = $wpdb->get_results("SELECT ID, group_meta_id FROM $wpdb->rs_groups_table WHERE group_meta_id LIKE 'wp_role_%' OR group_meta_id = 'wp_anon'", OBJECT_K);  // TODO: review role metagroup storage with netwide groups
         $role_metagroups_pp = $wpdb->get_results("SELECT metagroup_id, ID FROM $wpdb->pp_groups WHERE metagroup_type = 'wp_role'", OBJECT_K);
 
-        $stored_pp_groups = $wpdb->get_results("SELECT group_name, ID FROM $pp_groups_table WHERE metagroup_type != 'wp_role'", OBJECT_K);
-        $rs_group_names = $wpdb->get_results("SELECT ID, group_name FROM $rs_groups_table WHERE ( group_meta_id IS NULL OR group_meta_id NOT LIKE 'wp_role_%' )", OBJECT_K);
+        $stored_pp_groups = $wpdb->get_results("SELECT group_name, ID FROM $wpdb->pp_groups_table WHERE metagroup_type != 'wp_role'", OBJECT_K);
+        $rs_group_names = $wpdb->get_results("SELECT ID, group_name FROM $wpdb->rs_groups_table WHERE ( group_meta_id IS NULL OR group_meta_id NOT LIKE 'wp_role_%' )", OBJECT_K);
         /*----------- end group mapping setup -------------*/
 
         $results = $wpdb->get_results("SELECT assignment_id AS source_id, role_name, obj_or_term_id AS item_id, assign_for, inherited_from, scope, src_or_tx_name, user_id, group_id, assigner_id FROM $wpdb->user2role2object_rs WHERE role_type = 'rs' AND scope IN ( 'term', 'object' ) AND date_limited = '0' AND content_date_limited = '0'", OBJECT_K);
@@ -645,12 +685,23 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
                 $has_caps = false;
 
-                $agent_clause = "( agent_type = '" . $data['agent_type'] . "' AND agent_id = '" . $data['agent_id'] . "' )";
+                $agent_clause = $wpdb->prepare(
+                    "( agent_type = %s AND agent_id = %d )",
+                    $data['agent_type'],
+                    $data['agent_id']
+                );
 
                 if ('user' == $data['agent_type']) {
                     // consider caps in user's roles
                     $meta_key = $wpdb->prefix . 'capabilities';
-                    if ($_user_roles = (array)maybe_unserialize($wpdb->get_row("SELECT meta_value FROM $wpdb->usermeta WHERE meta_key = '$meta_key' LIMIT 1"))) {
+                    if ($_user_roles = (array)maybe_unserialize(
+                        $wpdb->get_row(
+                            $wpdb->prepare(
+                                "SELECT meta_value FROM $wpdb->usermeta WHERE meta_key = %s LIMIT 1",
+                                $meta_key       
+                            )
+                        )
+                    )) {
                         $_user_roles = array_intersect_key($wp_roles->role_objects, array_flip($_user_roles));
                         foreach (array_keys($_user_roles) as $role_name) {
                             if (!array_diff($need_caps, array_keys(array_filter($wp_roles->role_objects[$role_name]->capabilities)))) {
@@ -663,7 +714,10 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                     // consider caps in PP site roles (for user or group)
                     if (!$has_caps) {
                         if ($_user_groups = presspermit()->groups()->getGroupsForUser($data['agent_id'], $group_agent_type, ['cols' => 'ids'])) {
-                            $agent_clause .= " OR ( agent_type = '$group_agent_type' AND agent_id IN ('" . implode("','", array_keys($_user_groups)) . "') )";
+                            $agent_clause .= $wpdb->prepare(
+                                " OR ( agent_type = %s AND agent_id IN ('" . implode("','", array_keys($_user_groups)) . "') )",
+                                $group_agent_type
+                            );
                         }
                     }
                 } elseif ('pp_group' == $data['agent_type']) {
@@ -711,8 +765,23 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                 $inherited_from = ($row->inherited_from && isset($log_eitem_ids[$row->inherited_from])) ? $log_eitem_ids[$row->inherited_from] : 0;
 
                 $wpdb->insert_id = 0;
-                $sql = "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, assigner_id, item_id, inherited_from) SELECT * FROM ( SELECT '$assign_for' AS a, '$exception_id' AS b, '$row->assigner_id' AS c, '$row->item_id' AS d, '$inherited_from' AS e ) AS tmp WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = '$assign_for' AND exception_id = '$exception_id' AND item_id = '$row->item_id') LIMIT 1";
-                $wpdb->query($sql);
+
+                $wpdb->query(
+                    $wpdb->prepare(
+                        "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, assigner_id, item_id, inherited_from) SELECT * FROM ( SELECT %d AS a, %d AS b, %d AS c, %d AS d, %d AS e ) AS tmp"
+                        . " WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = %s AND exception_id = %d AND item_id = %d) LIMIT 1",
+
+                        $assign_for,
+                        $exception_id,
+                        $row->assigner_id,
+                        $row->item_id,
+                        $inherited_from,
+                        $assign_for,
+                        $exception_id,
+                        $row->item_id
+                    )
+                );
+                
                 if ($wpdb->insert_id) {
                     $eitem_id = (int)$wpdb->insert_id;
 
@@ -911,7 +980,12 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
         $blog_id = get_current_blog_id();
 
-        if ($row = $wpdb->get_row("SELECT option_id, option_value FROM $wpdb->options WHERE option_name = '$source_opt_name' LIMIT 1")) {
+        if ($row = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT option_id, option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1",
+                $source_opt_name
+            )
+        )) {
             $source_id = $row->option_id;
 
             if (isset($imported_options[$source_id]))
@@ -919,7 +993,12 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
         } else
             $source_id = 0;
 
-        if ($row = $wpdb->get_row("SELECT option_id, option_value FROM $wpdb->options WHERE option_name = '$opt_name' LIMIT 1")) {
+        if ($row = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT option_id, option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1",
+                $opt_name
+            )
+        )) {
             if ($opt_value !== maybe_unserialize($row->option_value)) {
                 $do_update = true;
                 $import_id = $row->option_id;
@@ -934,8 +1013,14 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
             update_option($opt_name, $opt_value);
 
             if (!$import_id) {
-                if ($row = $wpdb->get_row("SELECT option_id, option_value FROM $wpdb->options WHERE option_name = '$opt_name' LIMIT 1"))
+                if ($row = $wpdb->get_row(
+                    $wpdb->prepare(
+                        "SELECT option_id, option_value FROM $wpdb->options WHERE option_name = %s LIMIT 1",
+                        $opt_name
+                    )
+                )) {
                     $import_id = $row->option_id;
+                }
             }
 
             $log_data = ['run_id' => $this->run_id, 'source_tbl' => $this->getTableCode($wpdb->options), 'source_id' => $source_id, 'import_tbl' => $this->getTableCode($wpdb->options), 'import_id' => $import_id, 'site' => $blog_id];
@@ -960,14 +1045,14 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
         $rs_base_role = $rolename_arr[count($rolename_arr) - 1];
 
         if ('private' == $rolename_arr[0]) {
-            $data['for_item_type'] = implode('_', array_slice($rolename_arr, 1, count($rolename_arr) - 2));  // $arr[1];  - unknown number of elems because type name may have underscores
+            $data['for_item_type'] = implode('_', array_slice($rolename_arr, 1, count($rolename_arr) - 2));  // array index 1  - unknown number of elems because type name may have underscores
 
             if (('subscriber' == $rs_base_role) && ('term' != $scope))
                 $data['for_item_status'] = '';
             else
                 $data['for_item_status'] = 'post_status:private';
         } else {
-            $data['for_item_type'] = implode('_', array_slice($rolename_arr, 0, count($rolename_arr) - 1));  // $arr[0];
+            $data['for_item_type'] = implode('_', array_slice($rolename_arr, 0, count($rolename_arr) - 1));  // array index 0
             $data['for_item_status'] = '';
         }
 
@@ -1160,8 +1245,6 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                 break;
             }
 
-            //pp_errlog("edit exception_id $edit_exception_id, publish exception_id $publish_exception_id");
-
             // If a corresponding publish exception row is not stored, insert one
             if (!$publish_exception_id) {
                 $data = (array) $exc;
@@ -1211,7 +1294,6 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                     }
 
                     $query = rtrim($query, ',');
-                    //pp_errlog($query);
 
                     $wpdb->query($query);
                 }

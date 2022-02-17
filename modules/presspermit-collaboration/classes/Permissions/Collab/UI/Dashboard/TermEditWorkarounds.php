@@ -6,23 +6,29 @@ class TermEditWorkarounds
     public static function term_edit_attempt()
     {
         // filter category parent selection for Category editing
-        if (!isset($_POST['tag_ID']))
+        if (!$tag_id = presspermit_POST_int('tag_ID')) {
             return;
+        }
 
-        $taxonomy = sanitize_key($_POST['taxonomy']);
-
-        if (!$tx = get_taxonomy($taxonomy))
+        if (!$taxonomy = presspermit_POST_key('taxonomy')) {
             return;
+        }
 
-        if (!$tx->hierarchical)
+        if (!$tx = get_taxonomy($taxonomy)) {
             return;
+        }
 
-        $stored_term = get_term_by('id', $_POST['tag_ID'], $taxonomy);
+        if (!$tx->hierarchical) {
+            return;
+        }
 
-        $selected_parent = (int)$_POST['parent'];
+        $stored_term = get_term_by('id', $tag_id, $taxonomy);
 
-        if (-1 == $selected_parent)
+        $selected_parent = presspermit_POST_int('parent');
+
+        if (-1 == $selected_parent) {
             $selected_parent = 0;
+        }
 
         if ($stored_term->parent != $selected_parent) {
             if ($tx_obj = get_taxonomy($taxonomy)) {
@@ -75,7 +81,7 @@ class TermEditWorkarounds
             }
 
             if (empty($permit)) {
-                wp_die(__('You do not have permission to select that Parent', 'press-permit-core'));
+                wp_die(esc_html__('You do not have permission to select that Parent', 'press-permit-core'));
             }
         }
     }

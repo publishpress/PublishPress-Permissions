@@ -99,12 +99,8 @@ class GroupQuery
         $this->query_from = "FROM $groups_table";
         $this->query_where = "WHERE 1=1";
 
-        $require_meta_types = [];
         if ('wp_role' == $this->group_variant) {
-            $require_meta_types[] = 'wp_role';
-        }
-        if ($require_meta_types) {
-            $this->query_where .= " AND $groups_table.metagroup_type IN ('" . implode("','", $require_meta_types) . "')";
+            $this->query_where .= " AND $groups_table.metagroup_type IN ('wp_role')";
         }
 
         $skip_meta_types = [];
@@ -126,13 +122,13 @@ class GroupQuery
                 $pp_only_roles = array_merge($pp_only_roles, ['wp_anon', 'wp_all']);
             }
 
-            $pp_only_roles = implode("','", $pp_only_roles);
+            $pp_only_roles = implode("','", array_map('sanitize_key', $pp_only_roles));
 
             $this->query_where .= " AND ( ( $groups_table.metagroup_type != 'wp_role' ) OR ( $groups_table.metagroup_id NOT IN ( '$pp_only_roles' ) ) )";
         }
 
         if ($skip_meta_types) {
-            $this->query_where .= " AND $groups_table.metagroup_type NOT IN ('" . implode("','", $skip_meta_types) . "')";
+            $this->query_where .= " AND $groups_table.metagroup_type NOT IN ('" . implode("','", array_map('sanitize_key', $skip_meta_types)) . "')";
         }
 
         global $wp_roles;
@@ -158,7 +154,7 @@ class GroupQuery
             $skip_meta_ids = array_merge($skip_meta_ids, ['rv_pending_rev_notice_ed_nr_', 'rv_scheduled_rev_notice_ed_nr_']);
         }
         if ($skip_meta_ids) {
-            $this->query_where .= " AND $groups_table.metagroup_id NOT IN ('" . implode("','", $skip_meta_ids) . "')";
+            $this->query_where .= " AND $groups_table.metagroup_id NOT IN ('" . implode("','", array_map('sanitize_key', $skip_meta_ids)) . "')";
         }
 
         // sorting
@@ -222,8 +218,6 @@ class GroupQuery
             $reqd_caps = apply_filters('presspermit_edit_groups_reqd_caps', 'pp_manage_members', 'edit-group');
 
             if (!current_user_can($reqd_caps)) {
-                global $wpdb;
-
                 $exc_agent_type = (in_array($this->agent_type, ['pp_group', 'pp_net_group'], true)) ? 'pp_group' : $this->agent_type;
 
                 $user = presspermit()->getUser();
@@ -232,18 +226,19 @@ class GroupQuery
                     ? $user->except['manage_' . $exc_agent_type][$exc_agent_type]['']['additional'][$exc_agent_type]['']
                     : [];
 
-                $this->query_where .= " AND $groups_table.ID IN ('" . implode("','", $group_ids) . "')";
+                $this->query_where .= " AND $groups_table.ID IN ('" . implode("','", array_map('intval', $group_ids)) . "')";
             }
         }
 
         $blog_id = absint($qv['blog_id']);
 
         if (!empty($qv['include'])) {
-            $ids = implode(',', wp_parse_id_list($qv['include']));
-            $this->query_where .= " AND $groups_table.ID IN ($ids)";
+            $ids = implode("','", wp_parse_id_list($qv['include']));
+            $this->query_where .= " AND $groups_table.ID IN ('$ids')";
+            
         } elseif (!empty($qv['exclude'])) {
-            $ids = implode(',', wp_parse_id_list($qv['exclude']));
-            $this->query_where .= " AND $groups_table.ID NOT IN ($ids)";
+            $ids = implode("','", wp_parse_id_list($qv['exclude']));
+            $this->query_where .= " AND $groups_table.ID NOT IN ('$ids')";
         }
     }
 
@@ -257,13 +252,11 @@ class GroupQuery
         global $wpdb;
 
         if (is_array($this->query_vars['fields']) || 'all' == $this->query_vars['fields']) {
-            $this->results = $wpdb->get_results(
-                "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit"
-            );
+            $query = "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit";
+            $this->results = $wpdb->get_results($query);
         } else {
-            $this->results = $wpdb->get_col(
-                "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit"
-            );
+            $query = "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit";
+            $this->results = $wpdb->get_col($query);
         }
 
         foreach($this->results as $k => $row) {
@@ -273,7 +266,8 @@ class GroupQuery
         }
 
         if ($this->query_vars['count_total']) {
-            $this->total_groups = $wpdb->get_var("SELECT COUNT(*) $this->query_from $this->query_join $this->query_where");
+            $query = "SELECT COUNT(*) $this->query_from $this->query_join $this->query_where";
+            $this->total_groups = $wpdb->get_var($query);
         }
 
         return $this->results;

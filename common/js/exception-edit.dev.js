@@ -237,8 +237,8 @@ jQuery(document).ready(function ($) {
                         } else
                             assign_mode_inputs = '';
 
-                        newrow = '<tr>'
-                            + '<td>' + for_type_caption + '</td>'
+                        newrow = 
+                            '<tr><td>' + for_type_caption + '</td>'
                             + '<td>' + op_caption + '</td>'
                             + '<td>' + mod_type_caption + '</td>'
                             + '<td>' + selected_caption + '</td>'
@@ -253,8 +253,7 @@ jQuery(document).ready(function ($) {
                             + '<input type="hidden" name="pp_add_exception[' + presspermitXid + '][attrib_cond]" value="' + $('#' + id).val() + '" />'
                             + '<input type="hidden" name="pp_add_exception[' + presspermitXid + '][item_id]" value="' + itemdata['menu-item-object-id'] + '" />'
                             + assign_mode_inputs
-                            + '</td>'
-                            + '</tr>';
+                            + '</td></tr>';
 
                         $('#pp_tbl_exception_selections tbody').append(newrow);
 
@@ -281,7 +280,7 @@ jQuery(document).ready(function ($) {
 
     var presspermitReloadOperation = function () {
         if ($('select[name="pp_select_x_for_type"]').val()) {
-            $('select[name="pp_select_x_for_type"] option.pp-opt-none').remove();  // @todo: review this
+            $('select[name="pp_select_x_for_type"] option.pp-opt-none').remove();  // todo: review this
             presspermitXajaxUI('get_operation_options', presspermitDrawOperations);
         } else
             $('.pp-select-x-operation').hide();
@@ -377,7 +376,7 @@ jQuery(document).ready(function ($) {
     $('select[name="pp_select_x_via_type"]').on('change', presspermitReloadAssignFor);
 
     $('select[name="pp_select_x_via_type"]').on('change', function () {
-        $('#pp_add_exception .postbox').hide();	// @todo: review this
+        $('#pp_add_exception .postbox').hide();	// todo: review this
 
         if ($(this).find('option').length) {
             var pp_via_type = $(this).val();

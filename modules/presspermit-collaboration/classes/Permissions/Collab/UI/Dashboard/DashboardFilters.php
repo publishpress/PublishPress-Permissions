@@ -1,9 +1,6 @@
 <?php
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
-//use \PublishPress\Permissions\Collab as Collab;
-//use \PublishPress\Permissions\Collab\UI as UI;
-
 class DashboardFilters
 {
     function __construct()
@@ -13,7 +10,7 @@ class DashboardFilters
         define('PRESSPERMIT_COLLAB_URLPATH', plugins_url('', PRESSPERMIT_COLLAB_FILE));
 
         if (('nav-menus.php' == $pagenow) 
-        || (defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) && in_array($_REQUEST['action'], ['menu-get-metabox', 'menu-quick-search']))
+        || (defined('DOING_AJAX') && DOING_AJAX && presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
         ) {  // Administrators also need this, to add private posts to available items list
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/NavMenuQuery.php');
             new NavMenuQuery();
@@ -94,8 +91,8 @@ class DashboardFilters
         if ('presspermit-role-usage' == presspermitPluginPage()) {
             add_submenu_page(
                 $pp_options_menu, 
-                __('Role Usage', 'press-permit-core'), 
-                __('Role Usage', 'press-permit-core'), 
+                esc_html__('Role Usage', 'press-permit-core'), 
+                esc_html__('Role Usage', 'press-permit-core'), 
                 'read', 
                 'presspermit-role-usage', 
                 $handler
@@ -105,8 +102,8 @@ class DashboardFilters
         if ('presspermit-role-usage-edit' == presspermitPluginPage()) {
             add_submenu_page(
                 $pp_options_menu, 
-                __('Edit Role Usage', 'press-permit-core'), 
-                __('Edit Role Usage', 'press-permit-core'), 
+                esc_html__('Edit Role Usage', 'press-permit-core'), 
+                esc_html__('Edit Role Usage', 'press-permit-core'), 
                 'read', 
                 'presspermit-role-usage-edit', 
                 $handler
@@ -116,7 +113,7 @@ class DashboardFilters
 
     function actAdminHead()
     {
-        if (!empty($_REQUEST['page']) && ('presspermit-role-usage' == $_REQUEST['page'])) {
+        if (presspermit_is_REQUEST('page', 'presspermit-role-usage')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/RoleUsageListTable.php');
             \PublishPress\Permissions\Collab\UI\RoleUsageListTable::instance();
         }
@@ -124,29 +121,23 @@ class DashboardFilters
 
     function quickpress_workaround()
     {  // need this for multiple qp entries by limited user
-        if (!presspermit()->isUserUnfiltered()) :
-            ?>
-            <?php
-            preg_match('/MSIE (.*?);/', $_SERVER['HTTP_USER_AGENT'], $matches);
-            $ie_version = (count($matches)) ? $matches[1] : 0;
-            if (!$ie_version || ($ie_version >= 9)) :
-                ?>
-                <script type="text/javascript">
-                    /* <![CDATA[ */
-                    if (typeof wp == 'undefined') {
-                        var wp = new Object();
-                        wp.media = new Object();
-                        wp.media.view = new Object();
-                        wp.media.view.settings = new Object();
-                        wp.media.view.settings.post = new Object();
+        if (!presspermit()->isUserUnfiltered() && isset($_SERVER['HTTP_USER_AGENT'])) :
+        ?>
+            <script type="text/javascript">
+                /* <![CDATA[ */
+                if (typeof wp == 'undefined') {
+                    var wp = new Object();
+                    wp.media = new Object();
+                    wp.media.view = new Object();
+                    wp.media.view.settings = new Object();
+                    wp.media.view.settings.post = new Object();
 
-                        wp.media.editor = new Object();
-                        wp.media.editor.remove = new Function();
-                        wp.media.editor.add = new Function();
-                    }
-                    /* ]]> */
-                </script>
-            <?php endif; ?>
+                    wp.media.editor = new Object();
+                    wp.media.editor.remove = new Function();
+                    wp.media.editor.add = new Function();
+                }
+                /* ]]> */
+            </script>
         <?php
         endif;
     }
@@ -193,7 +184,7 @@ class DashboardFilters
                 [(object)[
                     'attrib_type' => 'moderation', 
                     'url' => "admin.php?page=presspermit-statuses&attrib_type=moderation", 
-                    'label' => __('Workflow', 'press-permit-core')
+                    'label' => esc_html__('Workflow', 'press-permit-core')
                     ]
                 ],
                 $links

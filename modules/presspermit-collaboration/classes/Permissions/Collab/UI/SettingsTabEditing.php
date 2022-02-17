@@ -21,20 +21,20 @@ class SettingsTabEditing
 
     function optionTabs($tabs)
     {
-        $tabs['editing'] = __('Editing', 'press-permit-core');
+        $tabs['editing'] = esc_html__('Editing', 'press-permit-core');
         return $tabs;
     }
 
     function sectionCaptions($sections)
     {
         $new = [
-            'content_management' => __('Content Management', 'press-permit-core'),
-            'page_structure' => __('Page Structure', 'press-permit-core'),
-            'limited_editing_elements' => __('Limited Editing Elements', 'press-permit-core'),
-            'media_library' => __('Media Library', 'press-permit-core'),
-            'nav_menu_management' => __('Nav Menu Management', 'press-permit-core'),
-            'user_management' => __('User Management', 'press-permit-core'),
-            'post_forking' => __('Post Forking', 'press-permit-core'),
+            'content_management' => esc_html__('Content Management', 'press-permit-core'),
+            'page_structure' => esc_html__('Page Structure', 'press-permit-core'),
+            'limited_editing_elements' => esc_html__('Limited Editing Elements', 'press-permit-core'),
+            'media_library' => esc_html__('Media Library', 'press-permit-core'),
+            'nav_menu_management' => esc_html__('Nav Menu Management', 'press-permit-core'),
+            'user_management' => esc_html__('User Management', 'press-permit-core'),
+            'post_forking' => esc_html__('Post Forking', 'press-permit-core'),
         ];
 
 
@@ -46,27 +46,27 @@ class SettingsTabEditing
     function optionCaptions($captions)
     {
         $opt = [
-            'lock_top_pages' => __('Pages can be set or removed from Top Level by:', 'press-permit-core'),
-            'editor_hide_html_ids' => __('Limited Editing Elements', 'press-permit-core'),
-            'editor_ids_sitewide_requirement' => __('Specified element IDs also require the following site-wide Role:', 'press-permit-core'),
-            'admin_others_attached_files' => __('List other users&apos; uploads if attached to an editable post', 'press-permit-core'),
-            'admin_others_attached_to_readable' => __('List other users&apos; uploads if attached to a readable post', 'press-permit-core'),
-            'admin_others_unattached_files' => __('Other users&apos; unattached uploads listed by default', 'press-permit-core'),
-            'edit_others_attached_files' => __('Edit other user&apos; uploads if attached to an editable post', 'press-permit-core'),
-            'own_attachments_always_editable' => __('Users can always edit their own attachments', 'press-permit-core'),
-            'admin_nav_menu_filter_items' => __('List only user-editable content as available items', 'press-permit-core'),
-            'admin_nav_menu_partial_editing' => __('Allow Renaming of Uneditable Items', 'press-permit-core'),
-            'admin_nav_menu_lock_custom' => __('Lock custom menu items', 'press-permit-core'),
-            'limit_user_edit_by_level' => __('Limit User Edit by Level', 'press-permit-core'),
-            'default_privacy' => __('Default visibility for new posts:', 'press-permit-core'),
-            'page_parent_order' => __('Order Page Parent dropdown by Title', 'press-permit-core'),
-            'add_author_pages' => __('Bulk-Add Author Pages (on Users screen)', 'press-permit-core'),
-            'publish_author_pages' => __('Publish Author Pages at bulk creation', 'press-permit-core'),
-            'fork_published_only' => __('Fork published posts only', 'press-permit-core'),
-            'fork_require_edit_others' => __('Forking enforces edit_others_posts capability', 'press-permit-core'),
-            'force_taxonomy_cols' => __('Add taxonomy columns to Edit Posts screen', 'press-permit-core'),
-            'non_admins_set_edit_exceptions' => __('Non-Administrators can set Editing Permissions for their editable posts', 'press-permit-core'),
-            'publish_exceptions' => __('Assign Publish Permissions separate from Edit Permissions', 'press-permit-core'),
+            'lock_top_pages' => esc_html__('Pages can be set or removed from Top Level by:', 'press-permit-core'),
+            'editor_hide_html_ids' => esc_html__('Limited Editing Elements', 'press-permit-core'),
+            'editor_ids_sitewide_requirement' => esc_html__('Specified element IDs also require the following site-wide Role:', 'press-permit-core'),
+            'admin_others_attached_files' => esc_html__("List other users' uploads if attached to an editable post", 'press-permit-core'),
+            'admin_others_attached_to_readable' => esc_html__("List other users' uploads if attached to a readable post", 'press-permit-core'),
+            'admin_others_unattached_files' => esc_html__("Other users' unattached uploads listed by default", 'press-permit-core'),
+            'edit_others_attached_files' => esc_html__("Edit other users' uploads if attached to an editable post", 'press-permit-core'),
+            'own_attachments_always_editable' => esc_html__('Users can always edit their own attachments', 'press-permit-core'),
+            'admin_nav_menu_filter_items' => esc_html__('List only user-editable content as available items', 'press-permit-core'),
+            'admin_nav_menu_partial_editing' => esc_html__('Allow Renaming of Uneditable Items', 'press-permit-core'),
+            'admin_nav_menu_lock_custom' => esc_html__('Lock custom menu items', 'press-permit-core'),
+            'limit_user_edit_by_level' => esc_html__('Limit User Edit by Level', 'press-permit-core'),
+            'default_privacy' => esc_html__('Default visibility for new posts:', 'press-permit-core'),
+            'page_parent_order' => esc_html__('Order Page Parent dropdown by Title', 'press-permit-core'),
+            'add_author_pages' => esc_html__('Bulk-Add Author Pages (on Users screen)', 'press-permit-core'),
+            'publish_author_pages' => esc_html__('Publish Author Pages at bulk creation', 'press-permit-core'),
+            'fork_published_only' => esc_html__('Fork published posts only', 'press-permit-core'),
+            'fork_require_edit_others' => esc_html__('Forking enforces edit_others_posts capability', 'press-permit-core'),
+            'force_taxonomy_cols' => esc_html__('Add taxonomy columns to Edit Posts screen', 'press-permit-core'),
+            'non_admins_set_edit_exceptions' => esc_html__('Non-Administrators can set Editing Permissions for their editable posts', 'press-permit-core'),
+            'publish_exceptions' => esc_html__('Assign Publish Permissions separate from Edit Permissions', 'press-permit-core'),
         ];
 
         return array_merge($captions, $opt);
@@ -110,7 +110,7 @@ class SettingsTabEditing
             ?>
             <div class="pp-optionhint">
                 <?php
-                echo SettingsAdmin::getStr('collaborative-publishing');
+                SettingsAdmin::echoStr('collaborative-publishing');
                 ?>
             </div>
         <?php
@@ -128,10 +128,10 @@ class SettingsTabEditing
         if (!empty($ui->form_options[$tab][$section])) :
             ?>
             <tr>
-                <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
 
-                    <span><?php echo $ui->option_captions['default_privacy']; ?></span>
+                    <span><?php echo esc_html($ui->option_captions['default_privacy']); ?></span>
                     <br/>
 
                     <div class="agp-vspaced_input default_privacy" style="margin-left: 2em;">
@@ -143,7 +143,7 @@ class SettingsTabEditing
                         $opt_values = array_intersect_key($opt_values, array_fill_keys($pp->getEnabledPostTypes(), 0));  // skip stored types that are not enabled
                         $opt_values = array_diff_key($opt_values, array_fill_keys(apply_filters('presspermit_disabled_default_privacy_types', ['forum', 'topic', 'reply']), true));
 
-                        // @todo: force default status in Gutenberg
+                        // todo: force default status in Gutenberg
                         if (defined('PRESSPERMIT_STATUSES_VERSION')) {
                             $do_force_option = true;
                             $ui->all_otype_options[] = 'force_default_privacy';
@@ -157,40 +157,36 @@ class SettingsTabEditing
                             foreach ($opt_values as $object_type => $setting) :
                                 if ('attachment' == $object_type) continue;
 
-                                //if (function_exists('use_block_editor_for_post_type') && use_block_editor_for_post_type(str_replace('post:', '', $object_type))) continue;
-
                                 $id = $option_name . '-' . $object_type;
                                 $name = "{$option_name}[$object_type]";
                                 ?>
                                 <tr>
                                     <td class="rlabel">
-                                        <input name='<?php echo $name; ?>' type='hidden' value=''/>
-                                        <label for='<?php echo $id; ?>'><?php echo ($type_obj = get_post_type_object($object_type)) ? $type_obj->labels->name : $object_type; ?></label>
+                                        <input name='<?php echo esc_attr($name); ?>' type='hidden' value=''/>
+                                        <label for='<?php echo esc_attr($id); ?>'><?php if ($type_obj = get_post_type_object($object_type)) echo esc_html($type_obj->labels->name); else echo esc_html($object_type); ?></label>
                                     </td>
 
-                                    <td><select name='<?php echo $name; ?>' id='<?php echo $id; ?>' autocomplete='off'>
-                                            <option value=''><?php _e('Public'); ?></option>
+                                    <td><select name='<?php echo esc_attr($name); ?>' id='<?php echo esc_attr($id); ?>' autocomplete='off'>
+                                            <option value=''><?php esc_html_e('Public'); ?></option>
                                             <?php foreach (get_post_stati(['private' => true], 'object') as $status_obj) :
-                                                $selected = ($setting === $status_obj->name) ? ' selected="selected"' : '';
+                                                $selected = ($setting === $status_obj->name) ? ' selected ' : '';
                                                 ?>
-                                                <option value='<?php echo $status_obj->name; ?>' <?php echo $selected; ?>><?php echo $status_obj->label; ?></option>
+                                                <option value='<?php echo esc_attr($status_obj->name); ?>' <?php echo esc_attr($selected); ?>><?php echo esc_html($status_obj->label); ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                         <?php
-                                        if ($do_force_option /*&& !PWP::is-BlockEditorActive($object_type)*/) :
-                                            ?>
-                                            <?php
+                                        if ($do_force_option) :
                                             $id = 'force_default_privacy-' . $object_type;
                                             $name = "force_default_privacy[$object_type]";
-                                            $style = ($setting) ? '' : ' style="display:none"';
-                                            $checked = (!empty($force_values[$object_type]) || PWP::isBlockEditorActive($object_type)) ? 'checked="checked" ' : '';
-                                            $disabled = (PWP::isBlockEditorActive($object_type)) ? " disabled=disabled " : '';
+                                            $style = ($setting) ? '' : 'display:none';
+                                            $checked = (!empty($force_values[$object_type]) || PWP::isBlockEditorActive($object_type)) ? ' checked ' : '';
+                                            $disabled = (PWP::isBlockEditorActive($object_type)) ? " disabled " : '';
                                             ?>
-                                            <input name='<?php echo $name; ?>' type='hidden' value='0'/>
-                                            &nbsp;<label<?php echo $style; ?> for="<?php echo $id; ?>"><input
-                                                    type="checkbox" <?php echo $checked; ?><?php echo $disabled; ?>id="<?php echo $id; ?>"
-                                                    name="<?php echo $name; ?>"
-                                                    value="1"/><?php if ($do_force_option) : ?>&nbsp;<?php _e('lock', 'press-permit-core'); ?><?php endif; ?>
+                                            <input name='<?php echo esc_attr($name); ?>' type='hidden' value='0'/>
+                                            &nbsp;<label style='<?php echo esc_attr($style);?>' for="<?php echo esc_attr($id);?>"><input
+                                                    type="checkbox" <?php echo esc_attr($checked);?><?php echo esc_attr($disabled);?>id="<?php echo esc_attr($id);?>"
+                                                    name="<?php echo esc_attr($name); ?>"
+                                                    value="1"/><?php if ($do_force_option) : ?>&nbsp;<?php esc_html_e('lock', 'press-permit-core'); ?><?php endif; ?>
                                         </label>
                                         <?php endif; ?>
 
@@ -224,7 +220,7 @@ class SettingsTabEditing
 
                     $ui->optionCheckbox('add_author_pages', $tab, $section, true, '');
 
-                    $div_style = ($pp->getOption('add_author_pages')) ? '' : 'style="display:none"';
+                    $div_style = ($pp->getOption('add_author_pages')) ? '' : 'display:none';
                     $ui->optionCheckbox('publish_author_pages', $tab, $section, '', '', compact('div_style'));
                     ?>
                 </td>
@@ -235,30 +231,30 @@ class SettingsTabEditing
         $section = 'page_structure';                                    // --- PAGE STRUCTURE SECTION ---
         if (!empty($ui->form_options[$tab][$section])) : ?>
             <tr>
-                <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
                     <?php
                     $id = 'lock_top_pages';
                     $ui->all_options[] = $id;
                     $current_setting = strval($ui->getOption($id));  // force setting and corresponding keys to string, to avoid quirks with integer keys
 
-                    echo $ui->option_captions['lock_top_pages'];
+                    echo esc_html($ui->option_captions['lock_top_pages']);
 
-                    $captions = ['no_parent_filter' => __('no Page Parent filter', 'press-permit-core'), 'author' => __('Page Authors, Editors and Administrators', 'press-permit-core'), '' => __('Page Editors and Administrators', 'press-permit-core'), '1' => __('Administrators', 'press-permit-core')];
+                    $captions = ['no_parent_filter' => esc_html__('no Page Parent filter', 'press-permit-core'), 'author' => esc_html__('Page Authors, Editors and Administrators', 'press-permit-core'), '' => esc_html__('Page Editors and Administrators', 'press-permit-core'), '1' => esc_html__('Administrators', 'press-permit-core')];
 
                     foreach ($captions as $key => $value) {
                         $key = strval($key);
-                        echo "<div style='margin: 0 0 0.5em 2em;'><label for='{$id}_{$key}'>";
-                        $checked = ($current_setting === $key) ? "checked='checked'" : '';
+                        echo "<div style='margin: 0 0 0.5em 2em;'><label for='" . esc_attr("{$id}_{$key}") . "'>";
+                        $checked = ($current_setting === $key) ? ' checked ' : '';
 
-                        echo "<input name='$id' type='radio' id='{$id}_{$key}' value='$key' $checked /> ";
-                        echo $value;
+                        echo "<input name='" . esc_attr($id) . "' type='radio' id='" . esc_attr("{$id}_{$key}") . "' value='" . esc_attr($key) . "' " . esc_attr($checked) . " /> ";
+                        echo esc_html($value);
                         echo '</label></div>';
                     }
 
                     echo '<span class="pp-subtext">';
                     if ($ui->display_hints) {
-                        echo SettingsAdmin::getStr('lock_top_pages');
+                        SettingsAdmin::echoStr('lock_top_pages');
                     }
 
                     echo '</span>';
@@ -272,7 +268,7 @@ class SettingsTabEditing
             $section = 'limited_editing_elements';                            // --- LIMITED EDITING ELEMENTS SECTION ---
             if (!empty($ui->form_options[$tab][$section])) : ?>
                 <tr>
-                    <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                    <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                     <td>
                         <?php if (in_array('editor_hide_html_ids', $ui->form_options[$tab][$section], true)) : ?>
                             <?php
@@ -282,30 +278,34 @@ class SettingsTabEditing
                             $opt_val = $ui->getOption($option_name);
 
                             // note: 'post:post' otype option is used for all non-page types
-                            $sample_ids = '<span id="pp_sample_ids" class="pp-gray" style="display:none">' 
-                            . 'password-span, slugdiv, edit-slug-box, authordiv, commentstatusdiv, trackbacksdiv, postcustom, revisionsdiv, pageparentdiv' 
-                            . '</span>';
 
-                            echo('<div class="agp-vspaced_input">');
-                            echo('<span class="pp-vtight">');
-                            _e('Edit Form HTML IDs:', 'press-permit-core');
+                            echo '<div class="agp-vspaced_input">';
+                            echo '<span class="pp-vtight">';
+                            esc_html_e('Edit Form HTML IDs:', 'press-permit-core');
                             ?>
-                            <label for="<?php echo($option_name); ?>">
-                                <input name="<?php echo($option_name); ?>" type="text" size="45" style="width: 95%"
-                                       id="<?php echo($option_name); ?>" value="<?php echo($opt_val); ?>"/>
+                            <label for="<?php echo esc_attr($option_name); ?>">
+                                <input name="<?php echo esc_attr($option_name); ?>" type="text" size="45" style="width: 95%"
+                                       id="<?php echo esc_attr($option_name); ?>" value="<?php echo esc_attr($opt_val); ?>"/>
                             </label>
                             </span>
                             <br/>
                             <?php
-                            $js_call = "jQuery(document).ready(function($){ $('#pp_sample_ids').show(); });";
-                            printf(__('%1$s sample IDs:%2$s %3$s', 'press-permit-core'), "<a href='javascript:void(0)' onclick=\"$js_call\">", '</a>', $sample_ids);
+                            printf(
+                                esc_html__('%1$s sample IDs:%2$s %3$s', 'press-permit-core'), 
+                                "<a href='javascript:void(0)' onclick='jQuery(document).ready(function($){ $('#pp_sample_ids').show(); });'>", 
+                                '</a>', 
+                            
+                                '<span id="pp_sample_ids" class="pp-gray" style="display:none">' 
+                                . 'password-span, slugdiv, edit-slug-box, authordiv, commentstatusdiv, trackbacksdiv, postcustom, revisionsdiv, pageparentdiv' 
+                                . '</span>'
+                            );
                             ?>
                             </div>
                             
                             <?php
                             if ($ui->display_hints) {
-                                echo('<div class="pp-subtext">');
-                                echo SettingsAdmin::getStr('limited_editing_elements');
+                                echo '<div class="pp-subtext">';
+                                SettingsAdmin::echoStr('limited_editing_elements');
                                 echo '</div>';
                             }
                             ?>
@@ -322,27 +322,27 @@ class SettingsTabEditing
                             ?>
                             <div>
                                 <?php
-                                _e('Specified element IDs also require the following site-wide Role:', 'press-permit-core');
+                                esc_html_e('Specified element IDs also require the following site-wide Role:', 'press-permit-core');
 
-                                $admin_caption = (!empty($custom_content_admin_cap)) ? __('Content Administrator', 'press-permit-core') : PWP::__wp('Administrator');
+                                $admin_caption = (!empty($custom_content_admin_cap)) ? esc_html__('Content Administrator', 'press-permit-core') : PWP::__wp('Administrator');
 
                                 $captions = [
-                                    '0' => __('no requirement', 'press-permit-core'), 
-                                    '1' => __('Contributor / Author / Editor', 'press-permit-core'), 
-                                    'author' => __('Author / Editor', 'press-permit-core'), 
+                                    '0' => esc_html__('no requirement', 'press-permit-core'), 
+                                    '1' => esc_html__('Contributor / Author / Editor', 'press-permit-core'), 
+                                    'author' => esc_html__('Author / Editor', 'press-permit-core'), 
                                     'editor' => PWP::__wp('Editor'), 
-                                    'admin_content' => __('Content Administrator', 'press-permit-core'), 
-                                    'admin_user' => __('User Administrator', 'press-permit-core'), 
-                                    'admin_option' => __('Option Administrator', 'press-permit-core')
+                                    'admin_content' => esc_html__('Content Administrator', 'press-permit-core'), 
+                                    'admin_user' => esc_html__('User Administrator', 'press-permit-core'), 
+                                    'admin_option' => esc_html__('Option Administrator', 'press-permit-core')
                                 ];
 
                                 foreach ($captions as $key => $value) {
                                     $key = strval($key);
-                                    echo "<div style='margin: 0 0 0.5em 2em;'><label for='{$id}_{$key}'>";
-                                    $checked = ($current_setting === $key) ? "checked='checked'" : '';
+                                    echo "<div style='margin: 0 0 0.5em 2em;'><label for='" . esc_attr("{$id}_{$key}") . "'>";
+                                    $checked = ($current_setting === $key) ? ' checked ' : '';
 
-                                    echo "<input name='$id' type='radio' id='{$id}_{$key}' value='$key' $checked /> ";
-                                    echo $value;
+                                    echo "<input name='" . esc_attr($id) . "' type='radio' id='" . esc_attr("{$id}_{$key}") . "' value='" . esc_attr($key) . "' " . esc_attr($checked) . " /> ";
+                                    echo esc_html($value);
                                     echo '</label></div>';
                                 }
                                 ?>
@@ -358,18 +358,18 @@ class SettingsTabEditing
         if (!empty($ui->form_options[$tab][$section])) :
             ?>
             <tr>
-                <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
                     <?php
 
                     if (defined('PP_MEDIA_LIB_UNFILTERED')) :
                         ?>
                         <div><span class="pp-important">
-                            <?php echo SettingsAdmin::getStr('media_lib_unfiltered'); ?>
+                            <?php SettingsAdmin::echoStr('media_lib_unfiltered'); ?>
                         </span></div><br />
                     <?php else : ?>
                         <div><span style="font-weight:bold">
-                            <?php _e('The following settings apply to users who have the upload_files or edit_files capability:', 'press-permit-core'); ?>
+                            <?php esc_html_e('The following settings apply to users who have the upload_files or edit_files capability:', 'press-permit-core'); ?>
                         </span></div><br />
                     <?php endif;
 
@@ -391,7 +391,7 @@ class SettingsTabEditing
         $section = 'nav_menu_management';                                // --- NAV MENU MANAGEMENT SECTION ---
         if (!empty($ui->form_options[$tab][$section])) : ?>
             <tr>
-                <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
                     <?php
                     $ui->optionCheckbox('admin_nav_menu_filter_items', $tab, $section, '', '', ['val' => true, 'disabled' => true]);
@@ -408,7 +408,7 @@ class SettingsTabEditing
         $section = 'user_management';                                    // --- USER MANAGEMENT SECTION ---
         if (!empty($ui->form_options[$tab][$section])) : ?>
             <tr>
-                <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
                     <?php
                     $option_name = 'limit_user_edit_by_level';
@@ -417,20 +417,20 @@ class SettingsTabEditing
                         $option_val = '0';
                     }
 
-                    echo(__('User editing capabilities apply for', 'press-permit-core'));
-                    echo "&nbsp;<select name='$option_name' id='$option_name' autocomplete='off'>";
+                    esc_html_e('User editing capabilities apply for', 'press-permit-core');
+                    echo "&nbsp;<select name='" . esc_attr($option_name) . "' id='" . esc_attr($option_name) . "' autocomplete='off'>";
 
-                    $captions = ['0' => __("any user", 'press-permit-core'), '1' => __("equal or lower role levels", 'press-permit-core'), 'lower_levels' => __("lower role levels", 'press-permit-core')];
+                    $captions = ['0' => esc_html__("any user", 'press-permit-core'), '1' => esc_html__("equal or lower role levels", 'press-permit-core'), 'lower_levels' => esc_html__("lower role levels", 'press-permit-core')];
                     foreach ($captions as $key => $value) {
-                        $selected = ($option_val == $key) ? 'selected="selected"' : '';
-                        echo "\n\t<option value='$key' " . $selected . ">$captions[$key]</option>";
+                        $selected = ($option_val == $key) ? 'selected="' : '';
+                        echo "\n\t<option value='" . esc_attr($key) . "' " . esc_attr($selected) . ">" . esc_html($captions[$key]) . "</option>";
                     }
                     ?>
                     </select>&nbsp;
 
                     <p><span class='pp-subtext'>
                     <?php
-                    echo SettingsAdmin::getStr('limit_user_edit_by_level');
+                    SettingsAdmin::echoStr('limit_user_edit_by_level');
                     ?>
                     </span>
                     </p>
@@ -443,7 +443,7 @@ class SettingsTabEditing
             $section = 'post_forking';                                        // --- POST FORKING SECTION ---
             if (!empty($ui->form_options[$tab][$section])) : ?>
                 <tr>
-                    <th scope="row"><?php echo $ui->section_captions[$tab][$section]; ?></th>
+                    <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                     <td>
                         <?php
                         $ui->optionCheckbox('fork_published_only', $tab, $section, true, '');
@@ -454,7 +454,7 @@ class SettingsTabEditing
                 </tr>
             <?php endif; // any options accessable in this section
         }
-    } // end function optionsUI()
+    }
 
     function advanced_tab_permissions_options_ui($tab, $section)
     {

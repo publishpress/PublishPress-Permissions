@@ -31,17 +31,21 @@ class Importer
 
     public static function handleSubmission()
     {
-        if (!empty($_POST['pp_rs_import'])) {
+        if (!presspermit_empty_POST('pp_rs_import')) {
+            check_admin_referer('pp-rs-import', '_pp_import_nonce');
+
             if (!current_user_can('pp_manage_settings'))
-                wp_die(__('You are not allowed to manage Permissions settings', 'press-permit-core'));
+                wp_die(esc_html__('You are not allowed to manage Permissions settings', 'press-permit-core'));
 
             require_once(PRESSPERMIT_IMPORT_CLASSPATH . '/DB/RoleScoper.php');
             DB\RoleScoper::instance()->doImport();
         }
 
-        if (!empty($_POST['pp_undo_imports'])) {
+        if (!presspermit_empty_POST('pp_undo_imports')) {
+            check_admin_referer('pp-rs-import', '_pp_import_nonce');
+            
             if (!current_user_can('pp_manage_settings'))
-                wp_die(__('You are not allowed to manage Permissions settings', 'press-permit-core'));
+                wp_die(esc_html__('You are not allowed to manage Permissions settings', 'press-permit-core'));
 
             $importer = new Importer();
 
@@ -64,7 +68,14 @@ class Importer
         do_action('presspermit_importing', $import_type);
 
         $import_date = current_time('mysql', 1);
-        $wpdb->query("INSERT INTO $wpdb->ppi_runs (import_type,import_date) VALUES('$import_type','$import_date')");
+        $wpdb->query(
+            $wpdb->prepare(
+                "INSERT INTO $wpdb->ppi_runs (import_type,import_date) VALUES(%s,%s)",
+                $import_type,
+                $import_date
+            )
+        );
+        
         $this->run_id = (int)$wpdb->insert_id;
 
         $this->num_imported = array_fill_keys(array_keys($this->import_types), 0);
@@ -153,27 +164,66 @@ class Importer
                 switch_to_blog($id);
             }
 
-            $site_clause = (is_multisite()) ? "AND site = '$id'" : '';
+            $site_clause = (is_multisite()) ? $wpdb->prepare("AND site = %d", $id) : '';
 
-            if ($import_tables = $wpdb->get_col("SELECT DISTINCT import_tbl FROM $wpdb->ppi_imported WHERE run_id = '$run_id' $site_clause")) {
+            if ($import_tables = $wpdb->get_col(
+                    $wpdb->prepare(
+                        "SELECT DISTINCT import_tbl FROM $wpdb->ppi_imported WHERE run_id = %d $site_clause",
+                        $run_id
+                    )
+                )
+            ) {
+
                 foreach ($import_tables as $import_tbl) {
                     $table_name = $this->getTable($import_tbl);
 
                     if ($id_col = $this->getIdColumn($table_name)) {
-                        $wpdb->query("DELETE FROM `$table_name` WHERE $id_col IN ( SELECT import_id FROM $wpdb->ppi_imported WHERE run_id = '$run_id' AND import_tbl = '$import_tbl' $site_clause )");
+                        $wpdb->query(
+                            $wpdb->prepare(
+                                "DELETE FROM `$table_name` WHERE $id_col IN ( SELECT import_id FROM $wpdb->ppi_imported WHERE run_id = %d AND import_tbl = %s $site_clause )",
+                                $run_id,
+                                $import_tbl
+                            )
+                        );
                     }
-                    $wpdb->query("UPDATE $wpdb->ppi_imported SET run_id = -{$run_id} WHERE run_id = '$run_id' AND import_tbl = '$import_tbl' $site_clause");
+
+                    $wpdb->query(
+                        $wpdb->prepare(
+                            "UPDATE $wpdb->ppi_imported SET run_id = -{$run_id} WHERE run_id = %d AND import_tbl = %s $site_clause",
+                            $run_id,
+                            $import_tbl
+                        )
+                    );
                 }
             }
 
             // legacy db schema
             if ($wpdb->get_results("SHOW COLUMNS FROM $wpdb->ppi_imported LIKE 'import_table'")) {
-                $import_tables = $wpdb->get_col("SELECT DISTINCT import_table FROM $wpdb->ppi_imported WHERE run_id = '$run_id' $site_clause");
+                $import_tables = $wpdb->get_col(
+                    $wpdb->prepare(
+                        "SELECT DISTINCT import_table FROM $wpdb->ppi_imported WHERE run_id = %d $site_clause",
+                        $run_id
+                    )
+                );
+
                 foreach ($import_tables as $table_name) {
                     if ($id_col = $this->getIdColumn($table_name)) {
-                        $wpdb->query("DELETE FROM `$table_name` WHERE $id_col IN ( SELECT import_id FROM $wpdb->ppi_imported WHERE run_id = '$run_id' AND import_table = '$table_name' $site_clause )");
+                        $wpdb->query(
+                            $wpdb->prepare(
+                                "DELETE FROM `$table_name` WHERE $id_col IN ( SELECT import_id FROM $wpdb->ppi_imported WHERE run_id = %d AND import_table = %s $site_clause )",
+                                $run_id,
+                                $table_name
+                            )
+                        );
                     }
-                    $wpdb->query("UPDATE $wpdb->ppi_imported SET run_id = -{$run_id} WHERE run_id = '$run_id' AND import_table = '$import_table' $site_clause");
+
+                    $wpdb->query(
+                        $wpdb->prepare(
+                            "UPDATE $wpdb->ppi_imported SET run_id = -{$run_id} WHERE run_id = %d AND import_table = %s $site_clause",
+                            $run_id,
+                            $import_table
+                        )
+                    );
                 }
             }
         }

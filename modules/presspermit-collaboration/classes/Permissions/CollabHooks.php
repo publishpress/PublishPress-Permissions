@@ -4,28 +4,31 @@ namespace PublishPress\Permissions;
 class CollabHooks
 {
     function __construct() {
+        global $pagenow;
+
         // Divi Page Builder
-        if (!empty($_REQUEST['action']) && ('editpost' == $_REQUEST['action']) && !empty($_REQUEST['et_pb_use_builder']) && !empty($_REQUEST['auto_draft'])) {
+        if (presspermit_is_REQUEST('action', 'editpost') && !presspermit_empty_REQUEST('et_pb_use_builder') && !presspermit_empty_REQUEST('auto_draft')) {
             return;
         }
 
-        // Divi Page Builder  @todo: test whether these can be implemented with 'presspermit_unfiltered_ajax' filter in PostFilters::fltPostsClauses instead
-        if (strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') 
-        && isset($_REQUEST['action'])
-        && in_array(
-            $_REQUEST['action'], 
-            apply_filters('presspermit_unfiltered_ajax_actions',
-            ['et_fb_ajax_drop_autosave',
-            'et_builder_resolve_post_content',
-            'et_fb_get_shortcode_from_fb_object',
-            'et_builder_library_get_layout',
-            'et_builder_library_get_layouts_data',
-            'et_fb_update_builder_assets',
-            ]
-            )
-        )
-        ) {
-            return;
+        add_filter('presspermit_item_edit_exception_ops', [$this, 'fltItemEditExceptionOps'], 10, 4);
+
+        // Divi Page Builder  todo: test whether these can be implemented with 'presspermit_unfiltered_ajax' filter in PostFilters::fltPostsClauses instead
+        if (presspermit_SERVER_var('REQUEST_URI') && strpos(esc_url_raw(presspermit_SERVER_var('REQUEST_URI')), 'admin-ajax.php')) {
+            if (in_array(
+                presspermit_REQUEST_key('action'), 
+                apply_filters('presspermit_unfiltered_ajax_actions',
+                    ['et_fb_ajax_drop_autosave',
+                    'et_builder_resolve_post_content',
+                    'et_fb_get_shortcode_from_fb_object',
+                    'et_builder_library_get_layout',
+                    'et_builder_library_get_layouts_data',
+                    'et_fb_update_builder_assets',
+                    ]
+                )
+            )) {
+                return;
+            }
         }
 
         // Divi Page Builder
@@ -54,8 +57,6 @@ class CollabHooks
         if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
             add_action('presspermit_init_rvy_interface', [$this, 'init_rvy_interface']);
     
-            global $pagenow;
-
             // also needed for Admin Bar filtering
             if ((!defined('DOING_AJAX') || !DOING_AJAX) && ('async-upload.php' != $pagenow)) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisions/Admin.php");
@@ -82,8 +83,6 @@ class CollabHooks
             add_action('presspermit_init_rvy_interface', [$this, 'init_rvy_interface']);
     
             $legacy_suffix = version_compare(REVISIONARY_VERSION, '1.5-alpha', '<') ? 'Legacy' : '';
-            
-            global $pagenow;
 
             // also needed for Admin Bar filtering
             if ((!defined('DOING_AJAX') || !DOING_AJAX) && ('async-upload.php' != $pagenow)) {
@@ -142,8 +141,6 @@ class CollabHooks
         add_action('presspermit_cap_filters', [$this, 'actLoadCapFilters']);
         add_action('presspermit_page_filters', [$this, 'actLoadWorkaroundFilters']);
 
-        //add_filter('presspermit_get_terms_is_term_admin', [$this, 'flt_get_terms_is_term_admin'], 10, 2);  // @todo: should this be applied?
-
         // if PPS is active, hook into its visibility forcing mechanism and UI (applied by PPS for specific pages)
         add_filter('presspermit_getItemCondition', [$this, 'fltForceDefaultVisibility'], 10, 4);
         add_filter('presspermit_read_own_attachments', [$this, 'fltReadOwnAttachments'], 10, 2);
@@ -171,7 +168,6 @@ class CollabHooks
             'publish_author_pages' => 0,
             'editor_hide_html_ids' => '',
             'editor_ids_sitewide_requirement' => 0,
-            /*'prevent_default_forking_caps' => 0,*/
             'fork_published_only' => 0,
             'fork_require_edit_others' => 0,
             'force_taxonomy_cols' => 0,
@@ -194,6 +190,33 @@ class CollabHooks
         return array_merge($def, $new);
     }
 
+    function fltItemEditExceptionOps($operations, $for_item_source, $for_item_type, $via_item_type = '')
+    {
+        if ('post' == $for_item_source) {
+            foreach (['edit', 'fork', 'copy', 'revise', 'associate'] as $op) {
+                if (presspermit()->admin()->canSetExceptions($op, $for_item_type, ['for_item_source' => $for_item_source])) {
+                    $operations[$op] = true;
+                }
+
+                if (presspermit()->getOption('publish_exceptions') && !empty($operations['edit'])) {
+                    $operations['publish'] = true;
+                }
+            }
+        } elseif ('term' == $for_item_source) {
+            foreach (['edit', 'fork', 'copy', 'revise', 'assign'] as $op) {
+                if ($pp->admin()->canSetExceptions(
+                    $op, 
+                    $for_item_type, 
+                    ['via_item_source' => 'term', 'via_type_name' => $via_item_type, 'for_item_source' => $for_item_source]
+                )) {
+                    $operations[$op] = true;
+                }
+            }
+        }
+
+        return $operations;
+    }
+
     function actNonAdministratorEditingFilters()
     {
         if (!presspermit()->isUserUnfiltered()) {
@@ -207,15 +230,15 @@ class CollabHooks
 
     public function init_rvy_interface()
     {
+        global $revisionary;
+
         if (class_exists('RevisionsContentRoles')) {
-            global $revisionary;
             if (!empty($revisionary) && method_exists($revisionary, 'set_content_roles')) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisions/ContentRoles.php');
                 $revisionary->set_content_roles(new Collab\Revisions\ContentRoles());
             }
 
         } elseif (class_exists('RevisionaryContentRoles')) {
-            global $revisionary;
             if (!empty($revisionary) && method_exists($revisionary, 'set_content_roles')) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisionary/ContentRoles.php');
                 $revisionary->set_content_roles(new Collab\Revisionary\ContentRoles());
@@ -244,8 +267,8 @@ class CollabHooks
 
     function actPreventTrashSuffixing($wp_query)
     {
-        if (strpos($_SERVER['REQUEST_URI'], 'wp-admin/nav-menus.php') 
-        && !empty($_POST) && !empty($_POST['action']) && ('update' == $_POST['action'])
+        if (!empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'wp-admin/nav-menus.php') 
+        && presspermit_is_POST('action', 'update')
         ) {
             $bt = debug_backtrace();
 
@@ -263,7 +286,7 @@ class CollabHooks
         global $current_user;
 
         // Work around Divi Page Builder requiring off-type capabilities, which prevents Specific Permissions from satisfying edit_published_pages capability requirement
-        if ((is_admin() || empty($_REQUEST['et_fb'])) && (!strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') || !did_action('wp_ajax_et_fb_ajax_save'))) {
+        if ((is_admin() || presspermit_empty_REQUEST('et_fb')) && (empty($_SERVER['REQUEST_URI']) || !strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'admin-ajax.php') || !did_action('wp_ajax_et_fb_ajax_save'))) {
             return $wp_sitecaps;
         }
 
@@ -286,7 +309,7 @@ class CollabHooks
             return $wp_sitecaps;
         }
 
-        $orig_cap = (isset($args[0])) ? $args[0] : reset($orig_reqd_caps);
+        $orig_cap = (isset($args[0])) ? sanitize_key($args[0]) : reset($orig_reqd_caps);
 
         // If user can edit the current post, credit edit_published_posts, edit_published_pages, publish_posts capabilities
         if (in_array($orig_cap, ['edit_published_posts', 'edit_published_pages', 'publish_posts'])) {
@@ -308,13 +331,15 @@ class CollabHooks
     {
         // Divi Page Builder
 		if (defined('ET_BUILDER_THEME')) {
-			if (!empty($_REQUEST['action']) && ('edit' == $_REQUEST['action']) && !empty($_REQUEST['post'])) {
-				if ($_post = get_post($_REQUEST['post'])) {
-					global $current_user;
-					if (in_array($_post->post_status, ['draft', 'auto-draft']) && ($_post->post_author == $current_user->ID) && !$_post->post_name) {
-						return $meta_caps;
-					}
-				}
+			if (presspermit_is_REQUEST('action', 'edit')) {
+                if ($post_id = presspermit_REQUEST_int('post')) {
+                    if ($_post = get_post($post_id)) {
+                        global $current_user;
+                        if (in_array($_post->post_status, ['draft', 'auto-draft']) && ($_post->post_author == $current_user->ID) && !$_post->post_name) {
+                            return $meta_caps;
+                        }
+                    }
+                }
 			}
 		}
 
@@ -356,15 +381,6 @@ class CollabHooks
         if (('post' == $source_name) && ('force_visibility' == $attribute) && !$item_condition && isset($args['post_type'])) {
             if (empty($args['assign_for']) || ('item' == $args['assign_for'])) {
                 if ($default_privacy = presspermit()->getTypeOption('default_privacy', $args['post_type'])) {
-
-                    /*
-                    // @todo: Force default privacy with Gutenberg
-                    if ((defined('PRESSPERMIT_STATUSES_VERSION') && version_compare(PRESSPERMIT_STATUSES_VERSION, '2.7-beta', '<')) 
-                    && PWP::is-BlockEditorActive($args['post_type'])) {
-                        return $item_condition;
-                    }
-                    */
-
                     if ($force = presspermit()->getTypeOption('force_default_privacy', $args['post_type']) || PWP::isBlockEditorActive($args['post_type'])) {
                         // only apply if status is currently registered and PP-enabled for the post type
                         if (PWP::getPostStatuses(['name' => $default_privacy, 'post_type' => $args['post_type']])) {
@@ -407,7 +423,11 @@ class CollabHooks
             new Collab\XmlRpc();
         }
 
-        if (false !== strpos($_SERVER['REQUEST_URI'], '/wp-json/wp/v2')) {
+        if (empty($_SERVER['REQUEST_URI'])) {
+            return;
+        }
+
+        if (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/wp-json/wp/v2')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/REST_Workarounds.php');
             new Collab\REST_Workarounds();
         }
@@ -504,19 +524,6 @@ class CollabHooks
         return $caps;
     }
 
-    /*
-    function flt_get_terms_is_term_admin($is_term_admin, $taxonomy)
-    {
-        global $pagenow;
-
-        return $is_term_admin
-            || in_array($pagenow, ['edit-tags.php', 'term.php'])
-            || ('nav_menu' == $taxonomy && ('nav-menus.php' == $pagenow)
-                || (('admin-ajax.php' == $pagenow) && (!empty($_REQUEST['action']) 
-                && in_array($_REQUEST['action'], ['add-menu-item', 'menu-locations-save']))));
-    }
-    */
-
     function actLoadWorkaroundFilters()
     { 
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PageFilters.php');
@@ -595,11 +602,4 @@ class CollabHooks
 
         return $terms;
     }
-
-    /* // this is now handled by fltPreObjectTerms instead
-    function flt_default_term( $default_term_id, $taxonomy = 'category' ) {
-        require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
-        return PostTermsSave::flt_default_term( $default_term_id, $taxonomy );
-    }
-    */
 }

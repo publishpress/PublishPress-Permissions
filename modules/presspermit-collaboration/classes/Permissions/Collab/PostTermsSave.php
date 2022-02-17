@@ -28,9 +28,6 @@ class PostTermsSave
 
         $fields = $args['fields'];
 
-        $object_id_array = $object_ids;
-        $object_ids = implode(', ', $object_ids);
-
         $select_this = '';
         if ('all' == $fields) {
             $select_this = 't.*, tt.*';
@@ -40,19 +37,20 @@ class PostTermsSave
             $select_this = 't.name';
         }
 
-        $where = [
-            "tt.taxonomy = '$taxonomy'",
-            "tr.object_id IN ($object_ids)",
-        ];
-
-        $where = implode(' AND ', $where);
-
-        $query = "SELECT $select_this FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id"
-        . " INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE $where";
+        $object_id_array = $object_ids;
+        $object_id_csv = implode("','", array_map('intval', $object_ids));
 
         $objects = false;
         if ('all' == $fields) {
-            $_terms = $wpdb->get_results($query);
+            $_terms = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT $select_this FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id"
+                    . " INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy = %s AND tr.object_id IN ('$object_id_csv')",
+                    
+                    $taxonomy
+                )
+            );
+
             $object_id_index = [];
             foreach ($_terms as $key => $term) {
                 $term = sanitize_term($term, $taxonomy, 'raw');
@@ -67,7 +65,15 @@ class PostTermsSave
             $objects = true;
 
         } elseif ('ids' == $fields || 'names' == $fields || 'slugs' == $fields) {
-            $_terms = $wpdb->get_col($query);
+            $_terms = $wpdb->get_col(
+                $wpdb->prepare(
+                    "SELECT $select_this FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id"
+                    . " INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy = %s AND tr.object_id IN ('$object_id_csv')",
+                    
+                    $taxonomy
+                )
+            );
+
             $_field = ('ids' == $fields) ? 'term_id' : 'name';
             foreach ($_terms as $key => $term) {
                 $_terms[$key] = sanitize_term_field($_field, $term, $term, $taxonomy, 'raw');
@@ -75,9 +81,13 @@ class PostTermsSave
             $terms = array_merge($terms, $_terms);
         } elseif ('tt_ids' == $fields) {
             $terms = $wpdb->get_col(
-                "SELECT tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
-                . " INNER JOIN $wpdb->term_taxonomy AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id"
-                . " WHERE tr.object_id IN ($object_ids) AND tt.taxonomy = '$taxonomy'"
+                $wpdb->prepare(
+                    "SELECT tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
+                    . " INNER JOIN $wpdb->term_taxonomy AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id"
+                    . " WHERE tr.object_id IN ('$object_id_csv') AND tt.taxonomy = %s",
+
+                    $taxonomy
+                )
             );
         }
 
@@ -110,23 +120,25 @@ class PostTermsSave
         }
 
         if ('category' == $taxonomy) {
-            if (!empty($_POST['post_category'])) {
-				return array_map('intval', self::fltPreObjectTerms((array)$_POST['post_category'], $taxonomy));
+            if ($post_category = presspermit_POST_int('post_category')) {
+				return array_map('intval', self::fltPreObjectTerms((array) array_map('intval', $post_category), $taxonomy));
             }
         } else {
             $tx_obj = get_taxonomy($taxonomy);
             if ($tx_obj && !empty($tx_obj->object_terms_post_var)) {
-                if (isset($_POST[$tx_obj->object_terms_post_var]))
-                    return $_POST[$tx_obj->object_terms_post_var];
+                if (presspermit_is_POST($tx_obj->object_terms_post_var)) {
+                    return array_map('intval', presspermit_POST_var($tx_obj->object_terms_post_var));
+                }
+
             } elseif (!empty($_POST['tax_input'][$taxonomy])) {
                 if (is_taxonomy_hierarchical($taxonomy) && is_array($_POST['tax_input'][$taxonomy])) {
-                    return $_POST['tax_input'][$taxonomy];
+                    return array_map('intval', $_POST['tax_input'][$taxonomy]);
                 } else {
-                    $term_info = self::parseTermNames($_POST['tax_input'][$taxonomy], $taxonomy);
+                    $term_info = self::parseTermNames(array_map('sanitize_key', $_POST['tax_input'][$taxonomy]), $taxonomy);
                     return array_map('intval', self::fltPreObjectTerms($term_info['terms'], $taxonomy));
                 }
-            } elseif ('post_tag' == $taxonomy && !empty($_POST['tags_input'])) {
-                $term_info = self::parseTermNames($_POST['tags_input'], $taxonomy);
+            } elseif ('post_tag' == $taxonomy && !presspermit_empty_POST('tags_input')) {
+                $term_info = self::parseTermNames(presspermit_POST_key('tags_input'), $taxonomy);
                 return array_map('intval', self::fltPreObjectTerms($term_info['terms'], $taxonomy));
             }
         }
@@ -307,13 +319,13 @@ class PostTermsSave
             if (!$tx_obj = get_taxonomy($taxonomy))
                 return $selected_terms;
 
-            // For now, always check the DB for default terms.  @todo: only if the default_term_option property is set
+            // For now, always check the DB for default terms.  todo: only if the default_term_option property is set
             if (isset($tx_obj->default_term_option))
                 $default_term_option = $tx_obj->default_term_option;
             else
                 $default_term_option = "default_{$taxonomy}";
 
-            // avoid recursive filtering.  @todo: use remove_filter so we can call get_option, support filtering by other plugins 
+            // avoid recursive filtering.  todo: use remove_filter so we can call get_option, support filtering by other plugins 
             global $wpdb;
             $default_terms = (array)maybe_unserialize($wpdb->get_var(
                 $wpdb->prepare(

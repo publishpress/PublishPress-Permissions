@@ -83,14 +83,6 @@ class CapabilityFiltersAdmin
     {
         global $current_user;
 
-        // parent clause already applied by Media::count_attachments_query()
-        // $force = ( empty($args['has_cap_check']) || presspermit()->getOption( 'edit_others_attached_files') ) && ( empty($args['pp_context']) || 'count_attachments' != $args['pp_context'] );
-
-        //return ! empty($args['has_cap_check']);
-
-        // TODO: review, test this further
-        //return ( empty($args['pp_context']) || 'count_attachments' != $args['pp_context'] || in_array( 'attachment', presspermit()->getEnabledPostTypes(), true ) );
-        
         return (empty($args['pp_context']) || 'count_attachments' != $args['pp_context']);
     }
 
@@ -118,19 +110,18 @@ class CapabilityFiltersAdmin
         if (('nav-menus.php' == $pagenow)
             || (('edit_theme_options' == reset($reqd_caps)) && ('edit_theme_options' == $orig_cap) && (PWP::doingAdminMenus() || (defined('DOING_AJAX') && DOING_AJAX)))
         ) {
-            //if ( ( 'nav-menus.php' == $pagenow ) || empty( $current_user->allcaps['edit_theme_options'] ) ) {
             if (empty($current_user->allcaps['edit_theme_options'])) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenuCapabilities.php');
                 $reqd_caps = NavMenuCapabilities::adjustCapRequirement($reqd_caps);
             }
         } else {
         	// Work around Divi Page Builder requiring excessive or off-type capabilities
-	        if (defined('ET_BUILDER_PLUGIN_VERSION') && strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php')) {
+	        if (defined('ET_BUILDER_PLUGIN_VERSION') && !empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'admin-ajax.php')) {
 	            $alt_caps = ['edit_posts' => ['edit_pages']];
 	            
 	            if (did_action('wp_ajax_et_fb_ajax_save') 
-	            || (!empty($_REQUEST['action']) && ('heartbeat' == $_REQUEST['action']) && !empty($_REQUEST['et_fb_autosave']))
-                || (!empty($_REQUEST['action']) && ('et_pb_get_backbone_template' == $_REQUEST['action']))
+	            || (presspermit_is_REQUEST('action', 'heartbeat') && !presspermit_empty_REQUEST('et_fb_autosave'))
+                || (presspermit_is_REQUEST('action', 'et_pb_get_backbone_template'))
 	            ) {
 	                $alt_caps = array_merge($alt_caps, ['publish_posts' => ['edit_published_posts', 'edit_published_pages'], 'publish_pages' => ['edit_published_pages'], 'edit_published_posts' => ['edit_published_pages']]);
 	            }
@@ -147,7 +138,7 @@ class CapabilityFiltersAdmin
 	            }
 	        }
 
-            // Work around WP's occasional use of literal 'cap_name' instead of $post_type_object->cap->$cap_name  @todo: review
+            // Work around WP's occasional use of literal 'cap_name' instead of $post_type_object->cap->$cap_name  todo: review
             // note: cap names for "post" type may be customized too
             //
             if (in_array($pagenow, ['edit.php', 'post.php', 'post-new.php', 'press-this.php', 'admin-ajax.php', 'upload.php', 'media.php']) 
@@ -166,7 +157,7 @@ class CapabilityFiltersAdmin
 
                 if (array_intersect($reqd_caps, $replace_post_caps)) {
                     if (!empty($args[0]))
-                        $item_id = (is_object($args[0])) ? $args[0]->ID : $args[0];
+                        $item_id = (is_object($args[0])) ? $args[0]->ID : (int) $args[0];
                     else
                         $item_id = 0;
 
@@ -185,7 +176,7 @@ class CapabilityFiltersAdmin
             $key = array_search('upload_files', $reqd_caps);
 
             if (false !== $key && (PWP::doingAdminMenus() || in_array($pagenow, ['upload.php', 'post.php', 'post-new.php']) 
-            || (defined('DOING_AJAX') && DOING_AJAX && in_array($_REQUEST['action'], ['query-attachments', 'mla-query-attachments'])))
+            || (defined('DOING_AJAX') && DOING_AJAX && presspermit_is_REQUEST('action', ['query-attachments', 'mla-query-attachments'])))
             ) {
                 if (empty($current_user->allcaps['upload_files']) && !empty($current_user->allcaps['edit_files']))
                     $reqd_caps[$key] = 'edit_files';
@@ -244,7 +235,7 @@ class CapabilityFiltersAdmin
 
     function fltUserHasCapParams($params, $orig_reqd_caps, $args)
     {
-        // @todo: how can this ever execute prior to class inclusion in CollabHooks.php? (error with CAS integration)
+        // todo: how can this ever execute prior to class inclusion in CollabHooks.php? (error with CAS integration)
         if (!class_exists('\PublishPress\Permissions\Collab\Capabilities')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Capabilities.php');
         }
@@ -252,8 +243,6 @@ class CapabilityFiltersAdmin
         $caps = Capabilities::instance();
 
         // taxonomy caps
-        //$_all_taxonomy_caps = (isset( $caps->all_taxonomy_caps )) ? $caps->all_taxonomy_caps : [];
-        //if ( $type_caps = array_intersect( $orig_reqd_caps, array_keys( $_all_taxonomy_caps ) ) ) {
         if ($type_caps = array_intersect($orig_reqd_caps, array_keys($caps->all_taxonomy_caps))) {
 
 
@@ -281,7 +270,7 @@ class CapabilityFiltersAdmin
                         global $post_type;
 
                         $op = 'assign';
-                        $taxonomy = $term_obj->taxonomy;
+                        $return_taxonomy = $term_obj->taxonomy;
                         if (!empty($post_type))
                             $item_type = $post_type;
                     }
@@ -296,7 +285,7 @@ class CapabilityFiltersAdmin
                 }
 
                 $tx_obj = get_taxonomy($item_type);
-                $taxonomy = $item_type;
+                $return_taxonomy = $item_type;
 
                 $base_cap = reset($type_caps);
 
@@ -304,26 +293,23 @@ class CapabilityFiltersAdmin
                     case $tx_obj->cap->manage_terms:
                         $op = 'manage';
                         break;
-                    /*
-                case $tx_obj->cap->edit_terms :
-                    $op = 'edit';
-                    break;
-                case $tx_obj->cap->delete_terms :
-                    $op = 'delete';
-                    break;
-                */
+
                     default:
                         $op = false;
                 }
             }
 
             $return = compact('type_caps', 'item_type', 'is_term_cap', 'op', 'taxonomy');
+            
+            if (!empty($return_taxonomy)) {
+                $return['taxonomy'] = $return_taxonomy;
+            }
 
             if (empty($params['item_id'])) {
                 $qvar = ('nav_menu' == $item_type) ? 'menu' : 'tag_ID';
 
-                if (!empty($_REQUEST[$qvar])) {
-                    $return['item_id'] = PWP::termidToTtid((int)$_REQUEST[$qvar], $item_type);
+                if ($id = presspermit_REQUEST_int($qvar)) {
+                    $return['item_id'] = PWP::termidToTtid($id, $item_type);
                 }
             }
 
@@ -413,15 +399,18 @@ class CapabilityFiltersAdmin
     {
         global $pagenow;
 
-        if (is_admin() && in_array($pagenow, ['edit-tags.php', 'term.php']) && !empty($_REQUEST['tag_ID'])
-        && (empty($_REQUEST['action']) || ('editedtag' != $_REQUEST['action']))
-        ) {
-            $tx_obj = get_taxonomy(reset($taxonomies));
-            if ($tx_obj->hierarchical) {
-                global $wpdb;
-                // don't filter current parent category out of selection UI even if current user can't manage it
-                $clauses['where'] .= " OR t.term_id = (SELECT parent FROM $wpdb->term_taxonomy"
-                . " WHERE taxonomy = '$tx_obj->name' AND term_id = '" . intval($_REQUEST['tag_ID']) . "') ";
+        if (is_admin() && in_array($pagenow, ['edit-tags.php', 'term.php']) && !presspermit_is_REQUEST('action', 'editedtag')) {
+            if ($tag_id = presspermit_REQUEST_int('tag_ID')) {
+                $tx_obj = get_taxonomy(reset($taxonomies));
+                if ($tx_obj->hierarchical) {
+                    global $wpdb;
+                    // don't filter current parent category out of selection UI even if current user can't manage it
+                    $clauses['where'] .= $wpdb->prepare(
+                        " OR t.term_id = (SELECT parent FROM $wpdb->term_taxonomy WHERE taxonomy = %s AND term_id = %d) ",
+                        $tx_obj->name,
+                        $tag_id
+                    );
+                }
             }
         }
 
@@ -431,7 +420,7 @@ class CapabilityFiltersAdmin
     function fltConstructPostsRequestArgs($args)
     {
         foreach (['action', 'action2'] as $var) {
-            if (!empty($_REQUEST[$var]) && in_array($_REQUEST[$var], ['trash', 'untrash', 'delete'])) {
+            if (!presspermit_empty_REQUEST($var) && in_array(presspermit_REQUEST_key($var), ['trash', 'untrash', 'delete'])) {
                 $args['include_trash'] = true;
             }
         }
@@ -451,31 +440,29 @@ class CapabilityFiltersAdmin
     {
         if (!current_user_can('edit_post', $post_id)) {
             if ($type_obj = get_post_type_object(get_post_field('post_type', $post_id))) {
-                $edit_link = "<a href='" . admin_url("edit.php?post_type=$type_obj->name") . "'>" 
-                . sprintf(__('Go to %s', 'press-permit-core'), $type_obj->labels->name) 
-                . '</a>';
-
-                if (isset($_POST['save']) || isset($_POST['publish'])) {
-                    $arr_msg = [
-                        sprintf(
-                            __('The %s was saved, but you can no longer edit it.', 'press-permit-core'), 
-                            strtolower($type_obj->labels->singular_name)
-                        ), 
-                        $edit_link
-                    ];
+                if (presspermit_isset_POST('save') || presspermit_isset_POST('publish')) {
+                    wp_die(
+                        '<p>' 
+                        . sprintf(
+                            esc_html__('The %s was saved, but you can no longer edit it.', 'press-permit-core'), 
+                            esc_html(strtolower($type_obj->labels->singular_name))
+                        )
+                        . '</p><p>'
+                        . "<a href='" . esc_url(admin_url("edit.php?post_type=$type_obj->name")) . "'>" 
+                        . sprintf(esc_html__('Go to %s', 'press-permit-core'), esc_html($type_obj->labels->name)) 
+                        . '</a></p>'
+                    );
                 }
             } else {
-                $edit_link = "<a href='" . admin_url('index.php') . "'>" . __('Dashboard') . '</a>';
+                $edit_link = "<a href='" . admin_url('index.php') . "'>" . esc_html__('Dashboard') . '</a>';
             }
 
-            if (empty($arr_msg)) {
-                $arr_msg = [
-                    __('The requested modification was processed, but you can no longer edit the post.', 'press-permit-core'), 
-                    sprintf(__('Go to %s', 'press-permit-core'), $edit_link)
-                ];
-            }
-            
-            wp_die('<p>' . implode('</p><p>', $arr_msg) . '</p>');
+            wp_die(
+                '<p>' 
+                . esc_html__('The requested modification was processed, but you can no longer edit the post.', 'press-permit-core')
+                . '</p><p>'
+                . "<a href='" . esc_url(admin_url('index.php')) . "'>" . esc_html__('Dashboard') . '</a></p>'
+            );
         }
 
         return $location;

@@ -71,7 +71,6 @@ class CapabilityFilters
 
         if (('read' != $op) && (!$item_status || (!$status_obj->public && !$status_obj->private))) {
             $stati['post_status:{unpublished}'] = true;
-            //$stati['{unpublished}'] = true;
         }
 
         return $stati;
@@ -159,8 +158,8 @@ class CapabilityFilters
 
         } else { // post_id is not a revision
             if (('read' == $required_operation) && (
-                strpos($_SERVER['SCRIPT_NAME'], 'wp-admin/revision.php') || (defined('DOING_AJAX') && DOING_AJAX 
-                && isset($_REQUEST['action']) && ('get-revision-diffs' == $_REQUEST['action'])))
+                (isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'wp-admin/revision.php')) || (defined('DOING_AJAX') && DOING_AJAX 
+                && presspermit_is_REQUEST('action', 'get-revision-diffs')))
             ) {
                 $return['required_operation'] = 'edit';
             }
@@ -199,7 +198,7 @@ class CapabilityFilters
     {
         // Workaround to deal with WP core's checking of publish cap prior to storing categories:
         // Store terms to DB in advance of any cap-checking query which may use those terms to qualify an operation.
-        if (('post' != $source_name) || empty($_REQUEST['action']) || !in_array($_REQUEST['action'], ['editpost', 'autosave'])) {
+        if (('post' != $source_name) || presspermit_empty_REQUEST('action') || !in_array(presspermit_REQUEST_int('action'), ['editpost', 'autosave'])) {
             return;
         }
 
@@ -209,7 +208,7 @@ class CapabilityFilters
         // assign propagating exceptions in case they are needed for a cap check at post creation
         if (
             is_post_type_hierarchical($object_type) && array_intersect($pp_reqd_caps, ['edit_post', 'edit_page'])
-            && (empty($_REQUEST['page']) || ('rvy-revisions' != $_REQUEST['page']))
+            && !presspermit_is_REQUEST('page', 'rvy-revisions')
             && (!defined('DOING_AUTOSAVE') || !DOING_AUTOSAVE)
         ) {
             // PressPermit Core classes

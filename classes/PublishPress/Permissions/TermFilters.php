@@ -73,7 +73,7 @@ class TermFilters
         if (!empty($busy)) {
             return $terms;
         }
-        $busy = true;  // @todo: necessary?
+        $busy = true;  // todo: necessary?
 
         $user = presspermit()->getUser();
 
@@ -98,7 +98,7 @@ class TermFilters
             if (presspermit()->doing_rest) {
                 $operation = REST::instance()->operation;
 
-            } elseif (!empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')) {
+            } elseif (!empty($_SERVER['HTTP_REFERER']) && strpos(esc_url_raw($_SERVER['HTTP_REFERER']), 'wp-admin/post')) {
                 $operation = 'edit';
             }
 
@@ -170,7 +170,7 @@ class TermFilters
         // Kriesi Enfold theme conflict on "More Posts" query
         if (
             defined('DOING_AJAX') && DOING_AJAX
-            && in_array($_REQUEST['action'], apply_filters('presspermit_unfiltered_ajax_termcount', ['avia_ajax_masonry_more']), true)
+            && presspermit_is_REQUEST('action', apply_filters('presspermit_unfiltered_ajax_termcount', ['avia_ajax_masonry_more']))
         ) {
             return true;
         }
@@ -210,7 +210,7 @@ class TermFilters
             
             if ($rest->is_posts_request) {
                 if (empty($args['required_operation']) || ('assign' != $args['required_operation'])) {
-                    if (!empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')) {
+                    if (!empty($_SERVER['HTTP_REFERER']) && strpos(esc_url_raw($_SERVER['HTTP_REFERER']), 'wp-admin/post')) {
                         $args['required_operation'] = 'edit';
                     } else {
                         $args['required_operation'] = $rest->operation;
@@ -273,9 +273,9 @@ class TermFilters
                 $universal = apply_filters('presspermit_get_terms_universal_exceptions', $universal, $required_operation, $taxonomy, $args);
 
                 if (defined('REST_REQUEST') && REST_REQUEST && ('assign' == $args['required_operation']) && !isset($args['object_type'])) {
-                    // @todo: WP Trac ticket for post_id or post_type argument in terms query a better solution
+                    // todo: WP Trac ticket for post_id or post_type argument in terms query a better solution
                     if (!empty($_SERVER['HTTP_REFERER'])) {
-                        $referer = $_SERVER['HTTP_REFERER'];
+                        $referer = esc_url_raw($_SERVER['HTTP_REFERER']);
 
                         $matches = [];
                         preg_match("/wp-admin\/post\.php\?post=([0-9]+)/", $referer, $matches);

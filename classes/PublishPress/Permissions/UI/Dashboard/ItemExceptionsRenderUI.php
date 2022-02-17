@@ -12,17 +12,17 @@ class ItemExceptionsRenderUI
     public function __construct()
     {
         $this->opt_labels = [
-            'default' => __('(default access)', 'press-permit-core'),
-            'default_yes' => __('(default: Yes)', 'press-permit-core'),
-            'default_no' => __('(default: No)', 'press-permit-core'),
-            'no_setting' => __('(no setting)', 'press-permit-core'),
-            'enabled' => __('Enabled', 'press-permit-core'),
-            'blocked' => __('Blocked', 'press-permit-core'),
-            'default_blocked' => __('(Blocked)', 'press-permit-core'),
-            'unblocked' => __('Unblocked', 'press-permit-core'),
+            'default' => esc_html__('(default access)', 'press-permit-core'),
+            'default_yes' => esc_html__('(default: Yes)', 'press-permit-core'),
+            'default_no' => esc_html__('(default: No)', 'press-permit-core'),
+            'no_setting' => esc_html__('(no setting)', 'press-permit-core'),
+            'enabled' => esc_html__('Enabled', 'press-permit-core'),
+            'blocked' => esc_html__('Blocked', 'press-permit-core'),
+            'default_blocked' => esc_html__('(Blocked)', 'press-permit-core'),
+            'unblocked' => esc_html__('Unblocked', 'press-permit-core'),
         ];
 
-        $this->opt_class = ['' => " class='pp-def' ", 0 => " class='pp-no2' ", 1 => " class='pp-yes' ", 2 => " class='pp-yes2' "];
+        $this->opt_class = ['' => "pp-def", 0 => "pp-no2", 1 => "pp-yes", 2 => "pp-yes2"];
     }
 
     public function setOptions($agent_type)
@@ -125,10 +125,10 @@ class ItemExceptionsRenderUI
 
             if ($reqd_caps) {
                 if (!array_diff($reqd_caps, array_keys($role_caps)) || $is_unfiltered) {
-                    $this->opt_class[''] = " class='pp-yes' ";
+                    $this->opt_class[''] = "pp-yes";
                     $this->options['standard'][''] = $this->opt_labels['default_yes'];
                 } else {
-                    $this->opt_class[''] = " class='pp-no' ";
+                    $this->opt_class[''] = "pp-no";
                     $this->options['standard'][''] = $this->opt_labels['default_no'];
                 }
             }
@@ -150,15 +150,15 @@ class ItemExceptionsRenderUI
                 $_name = \PublishPress\Permissions\DB\Groups::getMetagroupName('wp_role', $agent_info->metagroup_id, $_name);
             }
         } elseif (('user' == $agent_type) && !empty($agent_info->display_name) && ($agent_info->display_name != $agent_info->name)) {
-            $title = " title='$agent_info->display_name'";
+            $title = $agent_info->display_name;
         } else {
             $title = '';
         }
         ?>
         <tr>
-            <td class='pp-exc-agent'><input type='hidden' value='<?php echo $agent_id; ?>'/>
-                <a href='<?php echo "{$this->base_url} $agent_id"; ?>' <?php echo $title; ?>
-                   target='_blank'><?php echo $_name; ?></a></td>
+            <td class='pp-exc-agent'><input type='hidden' value='<?php echo esc_attr($agent_id); ?>'/>
+                <a href='<?php echo esc_url("{$this->base_url}$agent_id"); ?>' title='<?php echo esc_attr($title); ?>'
+                   target='_blank'><?php echo esc_html($_name); ?></a></td>
             <?php
             foreach ($assignment_modes as $assign_for) {
                 if (!empty($agent_exceptions[$assign_for]['additional'])) {
@@ -175,17 +175,17 @@ class ItemExceptionsRenderUI
 
                 if ($_inclusions_active) {
                     $option_set = 'includes';
-                    $this->opt_class[''] = " class='pp-no' ";
+                    $this->opt_class[''] = "pp-no";
                 } else {
                     $option_set = 'standard';
 
                     if (!$this->opt_class['']) {
-                        $this->opt_class[''] = " class='pp-def' ";
+                        $this->opt_class[''] = "pp-def";
                     }
                 }
 
                 if (!empty($is_unfiltered) && ($current_val === '')) {  // Disable UI for unfiltered users unless an (ineffective) exception is already stored
-                    $disabled = ' disabled="disabled"';
+                    $disabled = ' disabled ';
                 } else {
                     $disabled = (('children' == $assign_for)
                         && apply_filters(
@@ -194,14 +194,14 @@ class ItemExceptionsRenderUI
                             $for_item_type,
                             ['operation' => $op]
                         ))
-                        ? ' disabled="disabled" ' : '';
+                        ? ' disabled ' : '';
                 }
 
                 $for_type = ($for_item_type) ? $for_item_type : '(all)';
                 ?>
                 <td class="<?php echo ('children' == $assign_for) ? 'pp-exc-children' : 'pp-exc-item'; ?>">
-                    <select name='pp_exceptions<?php echo "[$for_type][$op][$agent_type][$assign_for][$agent_id]'{$this->opt_class[$current_val]}"; ?><?php echo $disabled; ?> autocomplete="off">
-                                        <?php
+                    <select name='pp_exceptions<?php echo esc_attr("[$for_type][$op][$agent_type][$assign_for][$agent_id]") . "' class='" . esc_attr($this->opt_class[$current_val]) . "'"; ?><?php echo esc_attr($disabled); ?> autocomplete="off">
+                    <?php
                     foreach ($this->options[$option_set] as $val => $lbl) :
                     if (('wp_role' == $agent_type) 
                         && in_array($agent_info->metagroup_id, ['wp_anon', 'wp_all'], true)
@@ -212,14 +212,16 @@ class ItemExceptionsRenderUI
                         continue;
                     }
                     ?>
-                                                            <option value='<?php echo "$val'{$this->opt_class[$val]}";
-                    selected($val, $current_val); ?>><?php echo $lbl; ?></option>
+                    <option value='<?php echo esc_attr("$val") . "' class='" . esc_attr($this->opt_class[$val]) . "' ";
+                    selected($val, $current_val); ?>>
+                    <?php echo esc_html($lbl); ?>
+                    </option>
                         <?php endforeach; ?>
                     </select>
                     <?php if ($disabled) : ?>
                         <input type="hidden"
-                               name='pp_exceptions<?php echo "[$for_type][$op][$agent_type][$assign_for][$agent_id]"; ?>'
-                               value="<?php echo $current_val; ?>"/>
+                               name='pp_exceptions<?php echo esc_attr("[$for_type][$op][$agent_type][$assign_for][$agent_id]"); ?>'
+                               value="<?php echo esc_attr($current_val); ?>"/>
                     <?php endif; ?>
 
                 </td>

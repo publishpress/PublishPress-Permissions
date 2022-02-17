@@ -11,9 +11,7 @@ class PostEdit
         add_action('admin_print_footer_scripts', [$this, 'suppress_upload_ui']);
         add_action('admin_print_footer_scripts', [$this, 'suppress_add_category_ui']);
 
-        add_filter('presspermit_item_edit_exception_ops', [$this, 'flt_item_edit_exception_ops'], 10, 3);
-
-        if (!empty($_REQUEST['message']) && (6 == $_REQUEST['message'])) {
+        if (presspermit_is_REQUEST('message', 6)) {
             add_filter('post_updated_messages', [$this, 'flt_post_updated_messages']);
         }
 
@@ -21,7 +19,6 @@ class PostEdit
 
         $post_type = PWP::findPostType();
         if ($post_type && presspermit()->getTypeOption('default_privacy', $post_type)) {
-            //if ((defined('PRESSPERMIT_STATUSES_VERSION') && version_compare(PRESSPERMIT_STATUSES_VERSION, '2.7-beta', '<')) 
             if (PWP::isBlockEditorActive($post_type)) {
                 // separate JS for Gutenberg
             } else {
@@ -70,32 +67,18 @@ class PostEdit
         return $clauses;
     }
 
-    function flt_item_edit_exception_ops($operations, $for_source_name, $for_item_type)
-    {
-        foreach (['edit', 'fork', 'copy', 'revise', 'associate'] as $op) {
-            if (presspermit()->admin()->canSetExceptions($op, $for_item_type, ['for_source_name' => $for_source_name])) {
-                $operations[$op] = true;
-            }
-
-            if (presspermit()->getOption('publish_exceptions') && !empty($operations['edit'])) {
-                $operations['publish'] = true;
-            }
-        }
-
-        return $operations;
-    }
-
     function flt_post_updated_messages($messages)
     {
         if (!presspermit()->isUserUnfiltered()) {
             if ($type_obj = presspermit()->getTypeObject('post', PWP::findPostType())) {
                 if (!current_user_can($type_obj->cap->publish_posts)) {
-                    $messages['post'][6] = __('Post Approved', 'press-permit-core');
-                    $messages['page'][6] = __('Page Approved', 'press-permit-core');
+                    $messages['post'][6] = esc_html__('Post Approved', 'press-permit-core');
+                    $messages['page'][6] = esc_html__('Page Approved', 'press-permit-core');
                 }
             }
-            return $messages;
         }
+
+        return $messages;
     }
 
     function ui_hide_admin_divs()
@@ -156,14 +139,14 @@ class PostEdit
         <script type="text/javascript">
             /* <![CDATA[ */
             jQuery(document).ready(function ($) {
-                $('#visibility-radio-<?php echo $set_visibility; ?>').click();
+                $('#visibility-radio-<?php echo esc_attr($set_visibility); ?>').click();
 
                 if (typeof(postL10n) != 'undefined') {
 					var vis = $('#post-visibility-select input:radio:checked').val();
                     var str = '';
 
                     if ('public' == vis) {
-                        str = '<?php _e('Public');?>';
+                        str = '<?php esc_html_e('Public'); ?>';
                     } else {
                         str = postL10n[$('#post-visibility-select input:radio:checked').val()];
                     }
@@ -175,7 +158,7 @@ class PostEdit
                     }
                 } else {
                     $('#post-visibility-display').html(
-                        $('#visibility-radio-<?php echo $set_visibility; ?>').next('label').html()
+                        $('#visibility-radio-<?php echo esc_attr($set_visibility); ?>').next('label').html()
                     );
                 }
             });
@@ -271,7 +254,7 @@ class PostEdit
             if ($disallow_add_term) :
                 ?>
                 <style type="text/css">
-                    #<?php echo $taxonomy;?>-adder {
+                    #<?php echo esc_attr($taxonomy);?>-adder {
                         display: none;
                     }
                 </style>
@@ -294,7 +277,7 @@ class PostEdit
         $type_obj = get_post_type_object($post->post_type);
 
         if (current_user_can($type_obj->cap->edit_others_posts)) :
-            $title = __('Author Search / Select', 'press-permit-core');
+            $title = esc_html__('Author Search / Select', 'press-permit-core');
 
             $args = [
                 'suppress_extra_prefix' => true,
@@ -312,8 +295,7 @@ class PostEdit
             <div id="pp_author_search_ui_base" style="display:none">
                 <div class="pp-agent-select pp-agents-selection"><?php $agents->agentsUI('user', [], 'select-author', [], $args); ?></div>
             </div>
-            <?
-            ?>
+
             <script type="text/javascript">
                 /* <![CDATA[ */
                 jQuery(document).ready(function ($) {
@@ -321,8 +303,8 @@ class PostEdit
                         '<div id="pp_author_search" class="pp-select-author" style="display:none">' 
                         + $('#pp_author_search_ui_base').attr('id', 'pp_author_search_ui').html() 
                         + '</div>&nbsp;'
-                        + '<a href="#" class="pp-add-author" style="margin-left:8px" title="<?php echo $title; ?>"><?php _e('select other', 'press-permit-core'); ?></a>'
-                        + '<a class="pp-close-add-author" href="#" style="display:none;"><?php _e('close', 'press-permit-core'); ?></a>'
+                        + '<a href="#" class="pp-add-author" style="margin-left:8px" title="<?php echo esc_attr($title); ?>"><?php esc_html_e('select other', 'press-permit-core'); ?></a>'
+                        + '<a class="pp-close-add-author" href="#" style="display:none;"><?php esc_html_e('close', 'press-permit-core'); ?></a>'
                         );
                 });
                 /* ]]> */

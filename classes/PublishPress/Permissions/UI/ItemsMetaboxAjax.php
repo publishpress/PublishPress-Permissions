@@ -11,36 +11,42 @@ class ItemsMetaboxAjax
 
         require_once( PRESSPERMIT_CLASSPATH . '/UI/ItemsMetabox.php' );
 
-        if ( isset( $_POST['item-type'] ) && 'post_type' == $_POST['item-type'] ) {
+        if (presspermit_is_POST('item-type', 'post_type')) {
             $type = 'posttype';
             $callback = ['\PublishPress\Permissions\UI\ItemsMetabox', 'post_type_meta_box'];
             $items = (array) presspermit()->getEnabledPostTypes([], 'object');
-        } elseif ( isset( $_POST['item-type'] ) && 'taxonomy' == $_POST['item-type'] ) {
+
+        } elseif (presspermit_is_POST('item-type', 'taxonomy')) {
             $type = 'taxonomy';
             $callback = ['\PublishPress\Permissions\UI\ItemsMetabox', 'taxonomy_meta_box'];
             $items = (array) get_taxonomies( [ 'show_ui' => true ], 'object' );
         }
 
-        if ( ! empty( $_POST['item-object'] ) && isset( $items[$_POST['item-object']] ) ) {
-            $item = $items[ $_POST['item-object'] ];
+        if ( ! empty( $_POST['item-object'] ) ) {
+            $item_type = sanitize_key($_POST['item-object']);
 
-            ob_start();
-            call_user_func_array($callback, [
-                null,
-                [
-                    'id' => 'add-' . $item->name,
-                    'title' => $item->labels->name,
-                    'callback' => $callback,
-                    'args' => $item,
-                ]
-            ]);
+            if (!empty($items[$item_type])) {
+                $item = $items[$item_type];
 
-            $markup = ob_get_clean();
+                ob_start();
 
-            echo json_encode([
-                'replace-id' => $type . '-' . $item->name,
-                'markup' => $markup,
-            ]);
+                call_user_func_array($callback, [
+                    null,
+                    [
+                        'id' => 'add-' . $item->name,
+                        'title' => $item->labels->name,
+                        'callback' => $callback,
+                        'args' => $item,
+                    ]
+                ]);
+
+                $markup = ob_get_clean();
+                
+                echo json_encode([
+                    'replace-id' => $type . '-' . $item->name,
+                    'markup' => $markup,
+                ]);
+            }
         }
 
         exit;

@@ -171,9 +171,6 @@ class Capabilities
 				continue;
 			}
 
-			// Default plural slug
-			//$plural_type = "{$cap_base}s";
-			
 			$plural_type = self::getPlural($post_type, $wp_post_types[$post_type]);
 			
 			if ("{$cap_base}s" != $plural_type) {
@@ -223,8 +220,6 @@ class Capabilities
 			$type_caps = array_diff_key((array)$wp_post_types[$post_type]->cap, $core_meta_caps);
 
 			$wp_post_types[$post_type]->cap = (object) array_merge((array) $wp_post_types[$post_type]->cap, $type_caps);
-			
-			//$this->all_type_caps = array_merge($this->all_type_caps, array_fill_keys($type_caps, true));
 			
 			foreach(array_unique((array)$wp_post_types[$post_type]->cap) as $cap_name) {
 				if (!isset($this->all_type_caps[$cap_name])) {

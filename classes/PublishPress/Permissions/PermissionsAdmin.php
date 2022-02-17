@@ -67,7 +67,7 @@ class PermissionsAdmin
     {
         global $wp_roles;
 
-        $defaults = ['plural' => false, 'slug_fallback' => true, 'include_warnings' => false];
+        $defaults = ['plural' => false, 'slug_fallback' => true, 'include_warnings' => false, 'echo' => false];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -90,8 +90,8 @@ class PermissionsAdmin
                         && !$cap_caster->isValidPatternRole($arr_name[0])
                     ) {
                         $warning = '<span class="pp-red"> ' . sprintf(
-                                __('(using default capabilities due to invalid %s definition)', 'press-permit-core'),
-                                $wp_roles->role_names[$arr_name[0]]
+                                esc_html__('(using default capabilities due to invalid %s definition)', 'press-permit-core'),
+                                esc_html($wp_roles->role_names[$arr_name[0]])
                             ) . '</span>';
                     }
                 } elseif ($slug_fallback) {
@@ -119,24 +119,65 @@ class PermissionsAdmin
                 }
 
                 if ($cond_caption) {
-                    return trim(
-                        sprintf(
-                            __('%1$s&nbsp;%2$s&nbsp;<span class="pp_nolink">-&nbsp;%3$s</span>%4$s', 'press-permit-core'),
-                            $type_caption,
-                            str_replace(' ', '&nbsp;', $role_caption),
-                            str_replace(' ', '&nbsp;', $cond_caption),
-                            $warning
-                        )
-                    );
+                    if (!empty($args['echo'])) {
+                        printf(
+                            esc_html__('%1$s&nbsp;%2$s&nbsp;%3$s-&nbsp;%4$s%5$s%6$s', 'press-permit-core'),
+                            esc_html($type_caption),
+                            str_replace(' ', '&nbsp;', esc_html($role_caption)),
+                            '<span class="pp_nolink">',
+                            str_replace(' ', '&nbsp;', esc_html($cond_caption)),
+                            '</span>',
+                            ''
+                        );
+
+                        if (!empty($warning)) {
+                            echo '<span class="pp-red"> ';
+                            printf(
+                                esc_html__('(using default capabilities due to invalid %s definition)', 'press-permit-core'),
+                                esc_html($wp_roles->role_names[$arr_name[0]])
+                            );
+                            echo '</span>';
+                        }
+                    } else {
+                        return trim(
+                            sprintf(
+                                esc_html__('%1$s&nbsp;%2$s&nbsp;%3$s-&nbsp;%4$s%5$s%6$s', 'press-permit-core'),
+                                esc_html($type_caption),
+                                str_replace(' ', '&nbsp;', esc_html($role_caption)),
+                                '<span class="pp_nolink">',
+                                str_replace(' ', '&nbsp;', esc_html($cond_caption)),
+                                '</span>',
+                                $warning // previously escaped in this function
+                            )
+                        );
+                    }
                 } else {
-                    return trim(
-                        sprintf(
-                            __('%1$s&nbsp;%2$s&nbsp;%3$s', 'press-permit-core'),
-                            $type_caption,
-                            $role_caption,
-                            $warning
-                        )
-                    );
+                    if (!empty($args['echo'])) {
+                        printf(
+                            esc_html__('%1$s&nbsp;%2$s&nbsp;%3$s', 'press-permit-core'),
+                            esc_html($type_caption),
+                            esc_html($role_caption),
+                            ''
+                        );
+
+                        if (!empty($warning)) {
+                            echo '<span class="pp-red"> ';
+                            printf(
+                                esc_html__('(using default capabilities due to invalid %s definition)', 'press-permit-core'),
+                                esc_html($wp_roles->role_names[$arr_name[0]])
+                            ); 
+                            echo '</span>';
+                        }
+                    } else {
+                        return trim(
+                            sprintf(
+                                esc_html__('%1$s&nbsp;%2$s&nbsp;%3$s', 'press-permit-core'),
+                                esc_html($type_caption),
+                                esc_html($role_caption),
+                                $warning // previously escaped in this function
+                            )
+                        );
+                    }
                 }
             }
         } elseif (isset($wp_roles->role_names[$role_name])) {

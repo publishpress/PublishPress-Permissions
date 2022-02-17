@@ -3,7 +3,6 @@ namespace PublishPress\Permissions;
 
 class REST
 {
-    //var $request;
     var $is_view_method = false;
     var $endpoint_class = '';
     var $taxonomy = '';
@@ -136,8 +135,6 @@ class REST
                     continue;
                 }
 				
-                //$this->request = $request;
-
                 $this->is_view_method = in_array($method, [\WP_REST_Server::READABLE, 'GET']);
                 $this->params = $request->get_params();
                 
@@ -153,8 +150,8 @@ class REST
                 }
 
 			  // voluntary filtering of get_items (for WYSIWY can edit, etc.)
-                if ($this->is_view_method && ('read' == $this->operation) && !empty($_REQUEST['operation'])) {
-                    $this->operation = $_REQUEST['operation'];
+                if ($this->is_view_method && ('read' == $this->operation) && !presspermit_empty_REQUEST('operation')) {
+                    $this->operation = presspermit_REQUEST_key('operation');
                 }
 			
                 // NOTE: setting or default may be adapted downstream
@@ -189,7 +186,7 @@ class REST
 
                         if (!empty($params['exclude']) || !empty($params['parent_exclude'])) {
                             // Prevent Gutenberg from triggering needless post_name retrieval (for permalink generation) for each item in Page Parent dropdown
-                            if (!empty($_SERVER) && !empty($_SERVER['HTTP_REFERER']) && false !== strpos($_SERVER['HTTP_REFERER'], admin_url())) {
+                            if (!empty($_SERVER) && !empty($_SERVER['HTTP_REFERER']) && false !== strpos(esc_url_raw($_SERVER['HTTP_REFERER']), admin_url())) {
                                 global $wp_post_types;
 
                                 if (!$this->post_type) {
@@ -231,7 +228,9 @@ class REST
                                 $check_cap = false;
                             }
 
-                            if ($check_cap && ! current_user_can($check_cap, $this->post_id)) {
+                            if ($check_cap && ! current_user_can($check_cap, $this->post_id) 
+                            && (('edit' != $this->operation) || ('trash' != get_post_field('post_status', $this->post_id)))
+                            ) { // Avoid conflicts with WP trashing. WP will still prevent editing of trashed posts
                                 return self::rest_denied();
                             }
                         }
@@ -283,7 +282,7 @@ class REST
     private function rest_denied()
     {
         // leave a diagnostic clue that the 403 was triggered by PublishPress Permissions
-        $msg = (in_array(get_locale(), ['en_EN', 'en_US'])) ? "Sorry, you are not permitted to do that." : __("Sorry, you are not allowed to do that.");
+        $msg = (in_array(get_locale(), ['en_EN', 'en_US'])) ? "Sorry, you are not permitted to do that." : esc_html__("Sorry, you are not allowed to do that.");
         return new \WP_Error('rest_forbidden', $msg, ['status' => 403]);
     }
 

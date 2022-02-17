@@ -5,13 +5,13 @@
  * Description: Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
  * Author: PublishPress
  * Author URI:  https://publishpress.com/
- * Version:     3.6.5
+ * Version:     3.7
  * Text Domain: press-permit-core
  * Domain Path: /languages/
  * Min WP Version: 4.9.7
  * Requires PHP: 5.6.20
  *
- * Copyright (c) 2021 PublishPress
+ * Copyright (c) 2022 PublishPress
  *
  * GNU General Public License, Free Software Foundation <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -31,7 +31,7 @@
  * @package     PressPermit
  * @category    Core
  * @author      PublishPress
- * @copyright   Copyright (c) 2021 PublishPress. All rights reserved.
+ * @copyright   Copyright (c) 2022 PublishPress. All rights reserved.
  *
  **/
 
@@ -106,7 +106,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	        return;
 	    }
 	
-	    define('PRESSPERMIT_VERSION', '3.6.5');
+	    define('PRESSPERMIT_VERSION', '3.7');
 		
 	    if (!$presspermit_loaded_by_pro) {
 	        require_once(__DIR__ . '/includes/Core.php');
@@ -168,16 +168,20 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 } elseif (defined('PRESSPERMIT_FILE') && !defined('PRESSPERMIT_PRO_FILE')) {
     if (is_admin()) {
         global $pagenow;
-        if (('plugins.php' == $pagenow) && !strpos(urldecode($_SERVER['REQUEST_URI']), 'deactivate')) {
+        if (('plugins.php' == $pagenow) && isset($_SERVER['REQUEST_URI']) && !strpos(urldecode(esc_url_raw($_SERVER['REQUEST_URI'])), 'deactivate')) {
             add_action('all_admin_notices', function()
             {
-                $msg = sprintf(
+                ?>
+                <div id='message' class='error fade' style='color:black'>
+                <?php
+                printf(
                     '<strong>Error:</strong> Multiple copies of %1$s activated. Only the copy in folder "%2$s" is functional.',
-                    'PressPermit',
-                    dirname(plugin_basename(PRESSPERMIT_FILE))
+                    'PublishPress Permissions',
+                    esc_html(dirname(plugin_basename(PRESSPERMIT_FILE)))
                 );
-
-                echo "<div id='message' class='error fade' style='color:black'>" . $msg . '</div>';
+                ?>
+                </div>
+                <?php
             }, 5);
         }
     }

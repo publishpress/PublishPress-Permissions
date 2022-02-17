@@ -73,7 +73,7 @@ class Ancestry
     {
         static $ancestors;
 
-        if (!isset($ancestors) || !empty($_POST))
+        if (!isset($ancestors) || !presspermit_empty_POST())
             $ancestors = false;
 
         if (is_array($ancestors) && !$object_id)
@@ -86,9 +86,12 @@ class Ancestry
 
             $post_types = ($post_type) ? (array)$post_type : get_post_types(['hierarchical' => true]);
             $post_types = array_intersect($post_types, get_post_types(['public' => true, 'show_ui' => true], 'names', 'or'));
-            $where = "WHERE post_type IN ('" . implode("','", $post_types) . "') AND post_status != 'auto-draft'";
 
-            if ($pages = $wpdb->get_results("SELECT ID, post_parent FROM $wpdb->posts $where")) {
+            $types_csv = implode("','", array_map('sanitize_key', $post_types));
+
+            if ($pages = $wpdb->get_results(
+                "SELECT ID, post_parent FROM $wpdb->posts WHERE post_type IN ('$types_csv') AND post_status != 'auto-draft'"
+            )) {
                 $parents = [];
                 foreach ($pages as $page)
                     if ($page->post_parent)
@@ -146,8 +149,8 @@ class Ancestry
 
         if (!$pages) {
             $post_types = ($post_type) ? (array)$post_type : get_post_types(['hierarchical' => true]);
-            $where = "WHERE post_type IN ('" . implode("','", $post_types) . "') AND post_status != 'auto-draft'";
-            $pages = $wpdb->get_results("SELECT ID, post_parent FROM $wpdb->posts $where");
+            $types_csv = implode("','", array_map('sanitize_key', $post_types));
+            $pages = $wpdb->get_results("SELECT ID, post_parent FROM $wpdb->posts WHERE post_type IN ('$types_csv') AND post_status != 'auto-draft'");
         }
 
         if ($pages) {
@@ -179,8 +182,8 @@ class Ancestry
 
         if (!$terms) {
             $taxonomies = ($taxonomy) ? (array)$taxonomy : get_taxonomies(['hierarchical' => true]);
-            $where = "WHERE taxonomy IN ('" . implode("','", $taxonomies) . "')";
-            $terms = $wpdb->get_results("SELECT term_id, parent FROM $wpdb->term_taxonomy $where");
+            $taxonomies_csv = implode("','", array_map('sanitize_key', $taxonomies));
+            $terms = $wpdb->get_results("SELECT term_id, parent FROM $wpdb->term_taxonomy WHERE taxonomy IN ('$taxonomies_csv')");
         }
 
         if ($terms) {
@@ -201,7 +204,7 @@ class Ancestry
     {
         static $ancestors;
 
-        if (!isset($ancestors) || !empty($_POST))
+        if (!isset($ancestors) || !presspermit_empty_POST())
             $ancestors = false;
 
         if (is_array($ancestors) && !$term_id)

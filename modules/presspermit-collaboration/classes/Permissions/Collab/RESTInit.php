@@ -22,7 +22,7 @@ class RESTInit
     function post_collection_params($params, $post_type_obj)
     {
         if (!presspermit()->isContentAdministrator()) {
-            if (isset($_REQUEST['context']) && ('edit' == $_REQUEST['context'])) {
+            if (presspermit_is_REQUEST('context', 'edit')) {
                 $params['status']['default'] = '';
             }
         }

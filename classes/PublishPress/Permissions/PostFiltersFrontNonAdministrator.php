@@ -106,9 +106,9 @@ class PostFiltersFrontNonAdministrator
         $clauses = array_fill_keys(['distinct', 'join', 'groupby', 'orderby', 'limits'], '');
         $clauses['fields'] = 'ID';
 
-        $clauses['where'] = "AND post_type IN ( '" . implode("','", $post_types) . "' )"
-            . " AND ID IN ( '" . implode("','", $post_ids) . "')"
-            . " AND post_status IN ('" . implode("','", $stati) . "')";
+        $clauses['where'] = "AND post_type IN ( '" . implode("','", array_map('sanitize_key', $post_types)) . "' )"
+            . " AND ID IN ( '" . implode("','", array_map('intval', $post_ids)) . "')"
+            . " AND post_status IN ('" . implode("','", array_map('sanitize_key', $stati)) . "')";
 
         $clauses = apply_filters(
             'presspermit_posts_clauses',
@@ -116,9 +116,9 @@ class PostFiltersFrontNonAdministrator
             ['post_types' => $post_types, 'skip_teaser' => true, 'required_operation' => 'read', 'force_types' => true]
         );
 
-        $okay_ids = $wpdb->get_col(
-            "SELECT {$clauses['distinct']} ID FROM $wpdb->posts {$clauses['join']} WHERE 1=1 {$clauses['where']}"
-        );
+        $query = "SELECT {$clauses['distinct']} ID FROM $wpdb->posts {$clauses['join']} WHERE 1=1 {$clauses['where']}";
+
+        $okay_ids = $wpdb->get_col($query);
 
         foreach ($post_types as $_post_type) {
             $remove_ids = array_diff($item_types['post_type'][$_post_type], $okay_ids);

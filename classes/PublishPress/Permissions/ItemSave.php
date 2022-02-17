@@ -51,13 +51,57 @@ class ItemSave
             $disallow_manual_entry = defined('XMLRPC_REQUEST');
         }
 
-        $posted_exceptions = (isset($_POST['pp_exceptions'])) ? $_POST['pp_exceptions'] : [];
+        if (!empty($_POST['pp_exceptions']) && !$disallow_manual_entry && $can_assign_roles) {
 
-        if ($posted_exceptions && !$disallow_manual_entry && $can_assign_roles) {
+            // validate posted exceptions array
+            $pe = (array) $_POST['pp_exceptions']; // explicitly validated below
+
+            foreach(array_keys($pe) as $item_type) {
+                if (!is_array($pe[$item_type]) || ($item_type != sanitize_key($item_type))) {
+                    unset($pe[$item_type]);
+                    continue;
+                }
+
+                foreach(array_keys($pe[$item_type]) as $operation) {
+                    if (!is_array($pe[$item_type][$operation]) || ($operation != sanitize_key($operation))) {
+                        unset($pe[$item_type][$operation]);
+                        continue;
+                    }
+
+                    foreach(array_keys($pe[$item_type][$operation]) as $agent_type) {
+                        if (!is_array($pe[$item_type][$operation][$agent_type]) || ($agent_type != sanitize_key($agent_type))) {
+                            unset($pe[$item_type][$operation][$agent_type]);
+                            continue;
+                        }
+
+                        foreach(array_keys($pe[$item_type][$operation][$agent_type]) as $assign_for) {
+                            if (!is_array($pe[$item_type][$operation][$agent_type][$assign_for]) || ($assign_for != sanitize_key($assign_for))) {
+                                unset($pe[$item_type][$operation][$agent_type][$assign_for]);
+                                continue;
+                            }
+
+                            foreach(array_keys($pe[$item_type][$operation][$agent_type][$assign_for]) as $agent_id) {
+                                if ($agent_id != (int) $agent_id) {
+                                    unset($pe[$item_type][$operation][$agent_type][$assign_for][$agent_id]);
+                                    continue;
+                                }
+
+                                $pe[$item_type][$operation][$agent_type][$assign_for][$agent_id] = sanitize_key($pe[$item_type][$operation][$agent_type][$assign_for][$agent_id]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $posted_exceptions = $pe;
+
             foreach (array_keys($posted_exceptions) as $for_item_type) {
+                $for_item_type = sanitize_key($for_item_type);
+                
                 $_for_type = ('(all)' == $for_item_type) ? '' : $for_item_type;
 
                 foreach (array_keys($posted_exceptions[$for_item_type]) as $op) {
+                    $op = sanitize_key($op);
                     $_for_item_source = $for_item_source;
                     
                     if (('term' == $for_item_source) || (('term' == $via_item_source) && in_array($op, ['manage', 'associate'] ) ) ) {
@@ -70,17 +114,22 @@ class ItemSave
                         continue;
                     }
 
-                    if (!$pp_admin->canSetExceptions($op, $for_item_type, compact('via_item_source', 'via_item_type', 'item_id', '_for_item_source'))) {
+                    $_args = compact('via_item_source', 'via_item_type', 'item_id');
+                    $_args['for_item_source'] = $_for_item_source;
+
+                    if (!$pp_admin->canSetExceptions($op, $for_item_type, $_args)) {
                         continue;
                     }
 
                     foreach (array_keys($posted_exceptions[$for_item_type][$op]) as $agent_type) {
+                        $agent_type = sanitize_key($agent_type);
+
                         $args['for_item_type'] = $_for_type;
                         $args['for_item_source'] = $_for_item_source;
                         $args['operation'] = $op;
                         $args['agent_type'] = $agent_type;
 
-                        // assignments[assign_for][agent_id] = has_access 
+                        // posted_exceptions [for_item_type] [op] [agent_type] [assign_for] [agent_id] = has_access 
                         $pp->assignExceptions($posted_exceptions[$for_item_type][$op][$agent_type], $agent_type, $args);
                     }
                 }
@@ -108,7 +157,7 @@ class ItemSave
             $$var = $args[$var];
         }
 
-        $is_new_term = ('term' != $via_item_source) ? false : !empty($_REQUEST['action']) && ('add-tag' == $_REQUEST['action']);
+        $is_new_term = ('term' != $via_item_source) ? false : presspermit_is_REQUEST('action', 'add-tag');
 
         // don't execute this action handler more than one per post save (may be called directly on pre-save cap check)
         static $did_items;
@@ -146,13 +195,13 @@ class ItemSave
 
             // assign propagating exceptions from new parent
             if ($set_parent) {
-                $id_clause = "AND i.item_id IN ('" . implode("','", array_merge($descendant_ids, (array)$item_id)) . "')";
+                $descendent_id_csv = implode("','", array_map('intval', array_merge($descendant_ids, (array) $item_id)));
 
                 $retain_exceptions = $wpdb->get_results(
                     $wpdb->prepare(
                         "SELECT * FROM $wpdb->ppc_exception_items AS i"
                         . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
-                        . " WHERE i.assign_for = 'item' AND i.inherited_from = '0' AND e.via_item_source = %s $id_clause",
+                        . " WHERE i.assign_for = 'item' AND i.inherited_from = '0' AND e.via_item_source = %s AND i.item_id IN ('$descendent_id_csv')",
                         $via_item_source
                     )
                 );
@@ -165,7 +214,7 @@ class ItemSave
                 // propagate exception from new parent to this item and its branch of sub-items
                 require_once(PRESSPERMIT_CLASSPATH.'/DB/PermissionsUpdate.php');
                 
-                $force_for_item_type = (isset($args['force_for_item_type'])) ? $args['force_for_item_type'] : false; // @todo: why is this variable not already set?
+                $force_for_item_type = (isset($args['force_for_item_type'])) ? $args['force_for_item_type'] : false; // todo: why is this variable not already set?
                 $_args = compact('retain_exceptions', 'force_for_item_type');
 
                 $_args['parent_exceptions'] = DB\PermissionsUpdate::getParentExceptions(
@@ -191,7 +240,7 @@ class ItemSave
                     );
                 }
             }
-        } // endif new parent selection (or new item)
+        }
 
         return !empty($any_inserts);
     }

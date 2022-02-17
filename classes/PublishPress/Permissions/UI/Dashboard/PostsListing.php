@@ -7,7 +7,9 @@ class PostsListing
 
     public function __construct()
     {
-        $post_type = (isset($_REQUEST['post_type'])) ? $_REQUEST['post_type'] : 'post';
+        if (!$post_type = presspermit_REQUEST_key('post_type')) {
+            $post_type = 'post';
+        }
 
         wp_enqueue_style('presspermit-post-listing', PRESSPERMIT_URLPATH . '/common/css/post-listing.css', [], PRESSPERMIT_VERSION);
 
@@ -53,9 +55,9 @@ class PostsListing
                 $this->exceptions = [];
 
                 if (!empty($pp->listed_ids[$typenow])) {
-                    $agent_type_csv = implode("','", array_merge(['user'], $pp->groups()->getGroupTypes()));
+                    $agent_type_csv = implode("','", array_map('sanitize_key', array_merge(['user'], $pp->groups()->getGroupTypes())));
 
-                    $id_csv = implode("','", array_keys($pp->listed_ids[$typenow]));
+                    $id_csv = implode("','", array_map('intval', array_keys($pp->listed_ids[$typenow])));
                     $results = $wpdb->get_results(
                         "SELECT DISTINCT i.item_id, e.operation FROM $wpdb->ppc_exceptions AS e"
                         . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
@@ -74,7 +76,7 @@ class PostsListing
             }
 
             if ($this->exceptions) {
-                $columns['pp_exceptions'] = __('Permissions', 'press-permit-core');
+                $columns['pp_exceptions'] = esc_html__('Permissions', 'press-permit-core');
             }
         }
 
@@ -96,7 +98,7 @@ class PostsListing
                 }
 
                 uasort($op_names, 'strnatcasecmp');
-                echo implode(", ", $op_names);
+                echo esc_html(implode(", ", $op_names));
             }
         }
     }

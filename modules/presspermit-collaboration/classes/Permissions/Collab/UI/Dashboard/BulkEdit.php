@@ -3,7 +3,7 @@ namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class BulkEdit
 {
-    public static function add_author_pages($data)
+    public static function add_author_pages()
     {
         $location = 'users.php';
 
@@ -12,10 +12,12 @@ class BulkEdit
                 $location = $referer;
         }
 
-        $post_type = (isset($data['member_page_type'])) ? sanitize_key($data['member_page_type']) : '';
+        $post_type = presspermit_REQUEST_key('member_page_type');
         $type_obj = get_post_type_object($post_type);
 
-        if (empty($data['users'])) {
+        $users = array_map('intval', presspermit_REQUEST_var('users'));
+
+        if (empty($users)) {
             $location = add_query_arg('ppmessage', 2, $location);
         } elseif (post_type_exists($post_type) && current_user_can($type_obj->cap->edit_others_posts) && current_user_can('edit_users')) {
             global $wpdb;
@@ -28,7 +30,7 @@ class BulkEdit
                 $meta_keys = array_merge($meta_keys, explode(",", PP_AUTHOR_POST_META));
             }
 
-            $pattern_id = (isset($data["member_page_pattern_{$post_type}"])) ? trim($data["member_page_pattern_{$post_type}"]) : '';
+            $pattern_id = presspermit_REQUEST_int("member_page_pattern_{$post_type}");
             if ($pattern_id) {
                 if (!is_numeric($pattern_id)) {
                     $slug = sanitize_key($pattern_id);
@@ -74,7 +76,7 @@ class BulkEdit
 
             $post_meta['_pp_auto_inserted'] = "{$pattern_post_id}:{$post_parent}";
 
-            $title_pattern = isset($data["member_page_title"]) ? $data["member_page_title"] : '';
+            $title_pattern = sanitize_text_field(presspermit_REQUEST_var("member_page_title"));
             if (false === strpos($title_pattern, '[username]') && false === strpos($title_pattern, '[userid]')) {
                 $title_pattern .= ' [userid]';
             }
@@ -87,15 +89,15 @@ class BulkEdit
                 )
             );
             
-            $data['users'] = array_diff($data['users'], $users_done);
+            $users = array_diff($users, $users_done);
 
-            if (!count($data['users'])) {
+            if (!count($users)) {
                 $location = add_query_arg('ppmessage', 3, $location);
             } else {
                 $pp = presspermit();
 
                 $added = 0;
-                foreach ($data['users'] as $user_id) {
+                foreach ($users as $user_id) {
                     if (!$user = new \WP_User($user_id))
                         continue;
 

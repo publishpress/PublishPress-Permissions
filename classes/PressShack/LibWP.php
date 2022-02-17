@@ -21,7 +21,7 @@ class LibWP
      */
     public static function isBlockEditorActive($post_type = '', $args = [])
     {
-        global $current_user;
+        global $current_user, $wp_version;
 
         $defaults = ['suppress_filter' => false, 'force_refresh' => false];
         $args = array_merge($defaults, $args);
@@ -54,9 +54,9 @@ class LibWP
         }
 
         if (class_exists('Classic_Editor')) {
-			if (isset($_REQUEST['classic-editor__forget']) && (isset($_REQUEST['classic']) || isset($_REQUEST['classic-editor']))) {
+			if (presspermit_is_REQUEST('classic-editor__forget') && (presspermit_is_REQUEST('classic') || presspermit_is_REQUEST('classic-editor'))) {
 				return false;
-			} elseif (isset($_REQUEST['classic-editor__forget']) && !isset($_REQUEST['classic']) && !isset($_REQUEST['classic-editor'])) {
+			} elseif (presspermit_is_REQUEST('classic-editor__forget') && !presspermit_is_REQUEST('classic') && !presspermit_is_REQUEST('classic-editor')) {
 				return true;
 			} elseif (get_option('classic-editor-allow-users') === 'allow') {
 				if ($post_id = self::getPostID()) {
@@ -69,14 +69,31 @@ class LibWP
 					}
 				} else {
                     $use_block = ('block' == get_user_meta($current_user->ID, 'wp_classic-editor-settings'));
-                    return $use_block && apply_filters('use_block_editor_for_post_type', $use_block, $post_type, PHP_INT_MAX);
+
+                    if (version_compare($wp_version, '5.9-beta', '>=')) {
+                    	if ($has_nav_action = has_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
+                    		remove_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
+                    	}
+                    	
+                    	if ($has_nav_filter = has_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
+                    		remove_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
+                    	}
+                    }
+
+                    $use_block = $use_block && apply_filters('use_block_editor_for_post_type', $use_block, $post_type, PHP_INT_MAX);
+
+                    if (version_compare($wp_version, '5.9-beta', '>=') && !empty($has_nav_filter)) {
+                        add_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type', 10, 2 );
+                    }
+
+                    return $use_block;
 				}
 			}
 		}
 
 		$pluginsState = array(
-			'classic-editor' => class_exists( 'Classic_Editor' ), // is_plugin_active('classic-editor/classic-editor.php'),
-			'gutenberg'      => function_exists( 'the_gutenberg_project' ), //is_plugin_active('gutenberg/gutenberg.php'),
+			'classic-editor' => class_exists( 'Classic_Editor' ),
+			'gutenberg'      => function_exists( 'the_gutenberg_project' ),
 			'gutenberg-ramp' => class_exists('Gutenberg_Ramp'),
 		);
 		
@@ -90,6 +107,17 @@ class LibWP
 		 * Classic editor either disabled or enabled (either via an option or with GET argument).
 		 * It's a hairy conditional :(
 		 */
+
+        if (version_compare($wp_version, '5.9-beta', '>=')) {
+            if ($has_nav_action = has_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
+        		remove_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
+        	}
+        	
+        	if ($has_nav_filter = has_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
+        		remove_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
+        	}
+        }
+
 		// phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.Security.NonceVerification.NoNonceVerification
         $conditions[] = (self::isWp5() || $pluginsState['gutenberg'])
 						&& ! $pluginsState['classic-editor']
@@ -99,15 +127,19 @@ class LibWP
 		$conditions[] = self::isWp5()
                         && $pluginsState['classic-editor']
                         && (get_option('classic-editor-replace') === 'block'
-                            && ! isset($_GET['classic-editor__forget']));
+                            && ! presspermit_is_GET('classic-editor__forget'));
 
         $conditions[] = self::isWp5()
                         && $pluginsState['classic-editor']
                         && (get_option('classic-editor-replace') === 'classic'
-                            && isset($_GET['classic-editor__forget']));
+                            && presspermit_is_GET('classic-editor__forget'));
 
         $conditions[] = $pluginsState['gutenberg-ramp'] 
                         && apply_filters('use_block_editor_for_post', true, get_post(self::getPostID()), PHP_INT_MAX);
+
+        if (version_compare($wp_version, '5.9-beta', '>=') && !empty($has_nav_filter)) {
+            add_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type', 10, 2 );
+        }
 
 		// Returns true if at least one condition is true.
 		$result = count(
@@ -190,11 +222,13 @@ class LibWP
             }
         }
 
-        if (!$post_id && !empty($typenow))
+        if (!$post_id && !empty($typenow)) {
             return $typenow;
+        }
 
-        if (is_object($post_id))
+        if (is_object($post_id)) {
             $post_id = $post_id->ID;
+        }
 
         if ($post_id && !empty($post) && ($post->ID == $post_id)) {
             return $post->post_type;
@@ -202,9 +236,11 @@ class LibWP
 
         if (defined('DOING_AJAX') && DOING_AJAX) { // todo: separate static function to eliminate redundancy with PostFilters::fltPostsClauses()
             $ajax_post_types = apply_filters('pp_ajax_post_types', ['ai1ec_doing_ajax' => 'ai1ec_event']);
+
             foreach (array_keys($ajax_post_types) as $arg) {
-                if (!empty($_REQUEST[$arg]) || (!empty($_REQUEST['action']) && ($arg == $_REQUEST['action'])))
+                if (!presspermit_empty_REQUEST($arg) || presspermit_is_REQUEST('action', $arg)) {
                     return $ajax_post_types[$arg];
+                }
             }
         }
 
@@ -213,37 +249,46 @@ class LibWP
                 $_type = $_post->post_type;
             }
 
-            if (!empty($_type))
+            if (!empty($_type)) {
                 return $_type;
+            }
         }
 
         // no post id was passed in, or we couldn't retrieve it for some reason, so check $_REQUEST args
         global $pagenow, $wp_query;
 
         if (!empty($wp_query->queried_object)) {
-            if (isset($wp_query->queried_object->post_type))
+            if (isset($wp_query->queried_object->post_type)) {
                 $object_type = $wp_query->queried_object->post_type;
-            elseif (isset($wp_query->queried_object->name)) {
-                if (post_type_exists($wp_query->queried_object->name))  // bbPress forums list
+
+            } elseif (isset($wp_query->queried_object->name)) {
+                if (post_type_exists($wp_query->queried_object->name)) {  // bbPress forums list
                     $object_type = $wp_query->queried_object->name;
+                }
             }
         } elseif (in_array($pagenow, ['post-new.php', 'edit.php'])) {
-            $object_type = !empty($_GET['post_type']) ? sanitize_key($_GET['post_type']) : 'post';
+            $object_type = presspermit_is_GET('post_type') ? presspermit_GET_key('post_type') : 'post';
+
         } elseif (in_array($pagenow, ['edit-tags.php'])) {
-            $object_type = !empty($_REQUEST['taxonomy']) ? sanitize_key($_REQUEST['taxonomy']) : 'category';
-        } elseif (in_array($pagenow, ['admin-ajax.php']) && !empty($_REQUEST['taxonomy'])) {
-            $object_type = sanitize_key($_REQUEST['taxonomy']);
-        } elseif (!empty($_POST['post_ID'])) {
-            if ($_post = get_post($_POST['post_ID']))
+            $object_type = !presspermit_empty_REQUEST('taxonomy') ? presspermit_REQUEST_key('taxonomy') : 'category';
+
+        } elseif (in_array($pagenow, ['admin-ajax.php']) && !presspermit_empty_REQUEST('taxonomy')) {
+            $object_type = presspermit_REQUEST_key('taxonomy');
+
+        } elseif ($_post_id = presspermit_POST_int('post_ID')) {
+            if ($_post = get_post($_post_id)) {
                 $object_type = $_post->post_type;
-        } elseif (!empty($_GET['post'])) {  // post.php
-            if ($_post = get_post($_GET['post']))
+            }
+        } elseif ($id = presspermit_GET_int('post')) {  // post.php
+            if ($_post = get_post($id)) {
                 $object_type = $_post->post_type;
+            }
         }
 
         if (empty($object_type)) {
-            if ($return_default) // default to post type
+            if ($return_default) { // default to post type
                 return 'post';
+            }
         } elseif ('any' != $object_type) {
             return $object_type;
         }
@@ -267,7 +312,7 @@ class LibWP
         } elseif (!is_admin() && !empty($wp_query) && is_singular()) {
             if (!empty($wp_query)) {
                 if (!empty($wp_query->query_vars) && !empty($wp_query->query_vars['p'])) {
-                    return $wp_query->query_vars['p'];
+                    return (int) $wp_query->query_vars['p'];
                 } elseif (!empty($wp_query->query['post_type']) && !empty($wp_query->query['name'])) {
                     global $wpdb;
                     return $wpdb->get_var(
@@ -279,14 +324,17 @@ class LibWP
                     );
                 }
             }
-        } elseif (isset($_REQUEST['post'])) {
-            return (int)$_REQUEST['post'];
-        } elseif (isset($_REQUEST['post_ID'])) {
-            return (int)$_REQUEST['post_ID'];
-        } elseif (isset($_REQUEST['post_id'])) {
-            return (int)$_REQUEST['post_id'];
-        } elseif (defined('WOOCOMMERCE_VERSION') && !empty($_REQUEST['product_id'])) {
-            return (int)$_REQUEST['product_id'];
+        } elseif (presspermit_is_REQUEST('post')) {
+            return presspermit_REQUEST_int('post');
+
+        } elseif (presspermit_is_REQUEST('post_ID')) {
+            return presspermit_REQUEST_int('post_ID');
+
+        } elseif (presspermit_is_REQUEST('post_id')) {
+            return presspermit_REQUEST_int('post_id');
+
+        } elseif (defined('WOOCOMMERCE_VERSION') && !presspermit_empty_REQUEST('product_id')) {
+            return presspermit_REQUEST_int('product_id');
         }
     }
 
@@ -448,7 +496,7 @@ class LibWP
 
     public static function isMuPlugin($plugin_path = '')
     {
-        if ( ! $plugin_path && defined(PRESSPERMIT_FILE) ) {
+        if ( ! $plugin_path && defined('PRESSPERMIT_FILE') ) {
             $plugin_path = PRESSPERMIT_FILE;
         }
         return (defined('WPMU_PLUGIN_DIR') && (false !== strpos($plugin_path, WPMU_PLUGIN_DIR)));
@@ -464,7 +512,7 @@ class LibWP
 
     public static function isAjax($action)
     {
-        return defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) && in_array($_REQUEST['action'], (array)$action);
+        return defined('DOING_AJAX') && DOING_AJAX && $action && in_array(presspermit_REQUEST_var('action'), (array)$action);
     }
 
     public static function doingAdminMenus()

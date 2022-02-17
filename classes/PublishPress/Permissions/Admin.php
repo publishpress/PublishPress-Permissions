@@ -19,7 +19,7 @@ class Admin
     {
         if (!presspermit()->getOption('offer_rs_migration') 
         || !presspermit()->isAdministrator() 
-        || (apply_filters('presspermit_import_count', 0, 'rs') && empty($_REQUEST['rs-not-imported']))
+        || (apply_filters('presspermit_import_count', 0, 'rs') && presspermit_empty_REQUEST('rs-not-imported'))
         ) {
             return;
         }
@@ -28,8 +28,8 @@ class Admin
         
         $this->notice(
             sprintf(
-                __('Role Scoper installation detected. To migrate your groups, roles, restrictions and options to PublishPress Permissions, run the %sImport tool%s.', 'press-permit-core'),
-                '<a href="' . $url . '">',
+                esc_html__('Role Scoper installation detected. To migrate your groups, roles, restrictions and options to PublishPress Permissions, run the %sImport tool%s.', 'press-permit-core'),
+                '<a href="' . esc_url($url) . '">',
                 '</a>'
             ), 'rs-migration'
         );
@@ -117,7 +117,7 @@ class Admin
         if (!isset($operations)) {
             $op_captions = apply_filters(
                 'presspermit_operation_captions',
-                ['read' => (object)['label' => __('Read'), 'noun_label' => __('Reading', 'press-permit-core')]]
+                ['read' => (object)['label' => esc_html__('Read'), 'noun_label' => esc_html__('Reading', 'press-permit-core')]]
             );
 
             $operations = Arr::subset($op_captions, presspermit()->getOperations());
@@ -200,7 +200,7 @@ class Admin
             'compatibility' => 'Integration with bbPress, BuddyPress, Relevanssi, WPML and other plugins; enhanced Multisite support.',
             'teaser' => 'On the site front end, replace non-readable content with placeholder text.',
             'status-control' => 'Custom post statuses: Control permissions for multi-step Workflow or custom Privacy.',
-            'file-access' => 'Filters direct file access, based on user&apos;s access to post(s) which the file is attached to.',
+            'file-access' => "Filters direct file access, based on user's access to post(s) which the file is attached to.",
             'import' => 'Import Role Scoper groups, roles, restrictions and settings.',
             'membership' => 'Allows Permission Group membership to be date-limited (delayed and/or scheduled for expiration).',
             'sync' => 'Create or synchronize posts to match users. Designed for Team / Staff plugins, but with broad usage potential.',
@@ -213,7 +213,7 @@ class Admin
             'compatibility' => 'Adds compatibility or integration with bbPress, Relevanssi, Co-Authors Plus, CMS Tree Page View, Custom Post Type UI, Subscribe2, WPML, various other plugins. BuddyPress Permissions Groups. For multisite, provides network-wide permission groups.',
             'teaser' => 'On the site front end, replace non-readable content with placeholder text. Can be enabled for any post type. Custom filters are provided but no programming is required for basic usage.',
             'status-control' => 'Custom post statuses: Workflow statuses (also requires Collaborative Publishing module) allow unlimited orderable steps between pending and published, each with distinct capability requirements and role assignments.  Both privacy and workflow statuses can be type-specific.',
-            'file-access' => 'Filters direct file access, based on user&apos;s access to post(s) which the file is attached to. No additional configuration required. Creates/modifies .htaccess file in uploads folder (and in main folder for multisite).',
+            'file-access' => "Filters direct file access, based on user's access to post(s) which the file is attached to. No additional configuration required. Creates/modifies .htaccess file in uploads folder (and in main folder for multisite).",
             'import' => 'Import Role Scoper groups, roles, restrictions and settings.',
             'membership' => 'Allows Permission Group membership to be date-limited (delayed and/or scheduled for expiration). Simple date picker UI alongside member selection.',
             'sync' => 'Create or synchronize posts to match users. Designed for Team / Staff plugins, but with broad usage potential.',
@@ -225,8 +225,8 @@ class Admin
 
     public function isPluginAction()
     {
-        return false !== strpos( $_SERVER['REQUEST_URI'], 'plugin-install.php' ) 
-        || (! empty($_REQUEST['action']) && in_array( $_REQUEST['action'], ['activate', 'deactivate']));
+        return (!empty($_SERVER['REQUEST_URI']) && (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'plugin-install.php' )))
+        || presspermit_is_REQUEST('action', ['activate', 'deactivate']);
     }
 
     public function errorNotice($err_slug, $args)
@@ -239,8 +239,9 @@ class Admin
     {
 		$dismissals = (array) pp_get_option('dismissals');
 
-		if ($msg_id && isset($dismissals[$msg_id]) && (empty($_REQUEST['pp_ignore_dismissal']) || ($msg_id != $_REQUEST['pp_ignore_dismissal'])))
+		if ($msg_id && isset($dismissals[$msg_id]) && !presspermit_is_REQUEST('pp_ignore_dismissal', $msg_id)) {
 			return;
+        }
 		
         require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');
         $err = new \PublishPress\Permissions\ErrorNotice();
@@ -257,7 +258,7 @@ class Admin
         <div class="pp-rating">
         <a href="https://wordpress.org/support/plugin/press-permit-core/reviews/#new-post" target="_blank" rel="noopener noreferrer">
         <?php printf( 
-            __('If you like %s, please leave us a %s rating. Thank you!', 'press-permit-core'),
+            esc_html__('If you like %s, please leave us a %s rating. Thank you!', 'press-permit-core'),
             '<strong>PublishPress Permissions</strong>',
             '<span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>'
             );
@@ -268,11 +269,11 @@ class Admin
         <hr>
         <nav>
         <ul>
-        <li><a href="https://publishpress.com/permissions" target="_blank" rel="noopener noreferrer" title="<?php _e('About PublishPress Permissions', 'press-permit-core');?>"><?php _e('About', 'press-permit-core');?>
+        <li><a href="https://publishpress.com/permissions" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e('About PublishPress Permissions', 'press-permit-core');?>"><?php esc_html_e('About', 'press-permit-core');?>
         </a></li>
-        <li><a href="https://publishpress.com/documentation/permissions-start/" target="_blank" rel="noopener noreferrer" title="<?php _e('Permissions Documentation', 'press-permit-core');?>"><?php _e('Documentation', 'press-permit-core');?>
+        <li><a href="https://publishpress.com/documentation/permissions-start/" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e('Permissions Documentation', 'press-permit-core');?>"><?php esc_html_e('Documentation', 'press-permit-core');?>
         </a></li>
-        <li><a href="https://publishpress.com/contact" target="_blank" rel="noopener noreferrer" title="<?php _e('Contact the PublishPress team', 'press-permit-core');?>"><?php _e('Contact', 'press-permit-core');?>
+        <li><a href="https://publishpress.com/contact" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e('Contact the PublishPress team', 'press-permit-core');?>"><?php esc_html_e('Contact', 'press-permit-core');?>
         </a></li>
         <li><a href="https://twitter.com/publishpresscom" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-twitter"></span>
         </a></li>
@@ -283,7 +284,7 @@ class Admin
 
         <div class="pp-pressshack-logo">
         <a href="//publishpress.com" target="_blank" rel="noopener noreferrer">
-        <img src="<?php echo plugins_url('', PRESSPERMIT_FILE) . '/common/img/publishpress-logo.png';?>" />
+        <img src="<?php echo esc_url(plugins_url('', PRESSPERMIT_FILE)) . '/common/img/publishpress-logo.png';?>" />
         </a>
         </div>
 

@@ -50,15 +50,8 @@ class PostFilters
 
         add_filter('presspermit_force_post_metacap_check', [$this, 'fltForcePostMetacapCheck'], 10, 2);
 
-        //add_filter( 'posts_request', [$this, 'flt_debug_query'], 999 );
-
         do_action('presspermit_post_filters');
     }
-
-    //function flt_debug_query( $query ) {
-    // pp_debug_echo( $query . '<br /><br />' );
-    // return $query;
-    //}
 
     public function fltLogAnonResults($results)
     {
@@ -152,13 +145,13 @@ class PostFilters
         if ($pp->isUserUnfiltered() && 
             (
             !is_admin() || 
-            (($pagenow != 'nav-menus.php') && (!defined('DOING_AJAX') || !DOING_AJAX || empty($_REQUEST['action']) || !in_array($_REQUEST['action'], ['menu-get-metabox', 'menu-quick-search'])))
+            (($pagenow != 'nav-menus.php') && (!defined('DOING_AJAX') || !DOING_AJAX || !presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search'])))
             )
         ) { // need to make private items selectable for nav menus
             return $clauses;
         }
 
-        $action = (isset($_REQUEST['action'])) ? $_REQUEST['action'] : '';
+        $action = presspermit_REQUEST_key('action');
 
         if (
             defined('PP_MEDIA_LIB_UNFILTERED') && (('upload.php' == $pagenow)
@@ -190,7 +183,7 @@ class PostFilters
             }
         }
 
-        if (defined('DOING_AJAX') && DOING_AJAX) { // @todo: separate function to eliminate redundancy with Find::findPostType()
+        if (defined('DOING_AJAX') && DOING_AJAX) { // todo: separate function to eliminate redundancy with Find::findPostType()
             if (in_array($action, (array)apply_filters('presspermit_unfiltered_ajax', ['woocommerce_load_variations', 'woocommerce_add_variation', 'woocommerce_remove_variations', 'woocommerce_save_variations']), true)) {
                 return $clauses;
             }
@@ -210,7 +203,7 @@ class PostFilters
             );
 
             foreach (array_keys($ajax_post_types) as $arg) {
-                if (!empty($_REQUEST[$arg]) || ($arg == $action)) {
+                if (!presspermit_empty_REQUEST($arg) || ($arg == $action)) {
                     $_wp_query->post_type = $ajax_post_types[$arg];
                     break;
                 }
@@ -225,7 +218,6 @@ class PostFilters
             if (in_array($action, $edit_actions, true)) {
                 $_wp_query->query_vars['required_operation'] = 'edit';
             } elseif (!empty($_wp_query->post_type) && is_scalar($_wp_query->post_type)) {
-                //$ajax_required_operation = apply_filters( 'presspermit_ajax_required_operation', ['ai1ec_event' => 'read'] );
                 $ajax_required_operation = apply_filters('presspermit_ajax_required_operation', []);
 
                 foreach (array_keys($ajax_required_operation) as $arg) {
@@ -321,13 +313,13 @@ class PostFilters
         $post_types = ($post_types) ? (array)$post_types : presspermit()->getEnabledPostTypes();
 
         if (!$required_operation) {
-            if (!empty($_REQUEST['preview'])) {
+            if (!presspermit_empty_REQUEST('preview')) {
                 $required_opertion = 'edit';
             } else {
                 if (!$required_operation = apply_filters('presspermit_get_posts_operation', '', $args)) {
                     if (defined('REST_REQUEST') && REST_REQUEST) {
-                        if (isset($_REQUEST['context']) && ('edit' == $_REQUEST['context'])) {
-                            $required_operation = (!empty($_REQUEST['parent_exclude'])) ? 'associate' : 'edit'; // @todo: better criteria
+                        if (presspermit_is_REQUEST('context', 'edit')) {
+                            $required_operation = (!presspermit_empty_REQUEST('parent_exclude')) ? 'associate' : 'edit'; // todo: better criteria
                         } else {
                             $required_operation = 'read';
                         }
@@ -394,7 +386,7 @@ class PostFilters
         // (But not if user is anon and hidden content teaser is enabled.  In that case, we need to replace the default "status=publish" clause)
         $matches = [];
         if ($num_matches = preg_match_all("/{$src_table}.post_status\s*=\s*'([^']+)'/", $where, $matches)) {
-            if (PWP::isFront() || (defined('REST_REQUEST') && REST_REQUEST) || (defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) && in_array($_REQUEST['action'], ['menu-get-metabox', 'menu-quick-search']))) {
+            if (PWP::isFront() || (defined('REST_REQUEST') && REST_REQUEST) || (defined('DOING_AJAX') && DOING_AJAX && presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))) {
                 if (PWP::isFront() || 'read' == $required_operation) {
                     $valid_stati = array_merge(
                         PWP::getPostStatuses(['public' => true, 'post_type' => $post_types]),
@@ -425,7 +417,7 @@ class PostFilters
         if (1 == $num_matches) {
             // Eliminate a primary plugin incompatibility by skipping this preservation of existing single status requirements if we're on the front end and the requirement is 'publish'.  
             // (i.e. include private posts that this user has access to via PP roles or exceptions).  
-            if ((!PWP::isFront() && (!defined('REST_REQUEST') || !REST_REQUEST) && (!defined('DOING_AJAX') || !DOING_AJAX || !in_array($_REQUEST['action'], ['menu-get-metabox', 'menu-quick-search'])))
+            if ((!PWP::isFront() && (!defined('REST_REQUEST') || !REST_REQUEST) && (!defined('DOING_AJAX') || !DOING_AJAX || !presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search'])))
                 || ('publish' != $matches[1][0]) || $retain_status || defined('PP_RETAIN_PUBLISH_FILTER')
             ) {
                 $limit_statuses = [];
@@ -464,7 +456,6 @@ class PostFilters
 
         // Prepend so we don't disturb any orderby/groupby/limit clauses which are along for the ride
         if ($where_prepend) {
-            //$where = apply_filters('presspermit_objects_where', " $where_prepend $where", 'post');
             $where = " $where_prepend $where";
         }
 
@@ -518,7 +509,6 @@ class PostFilters
 
         if (!$src_table) {
             $src_table = ($source_alias) ? $source_alias : $wpdb->posts;
-            //$args['src_table'] = $src_table;
         }
 
         $ppma_join = 
@@ -573,8 +563,8 @@ class PostFilters
 
         if (!$required_operation) {
             if (defined('REST_REQUEST') && REST_REQUEST) {
-                if (isset($_REQUEST['context']) && ('edit' == $_REQUEST['context'])) {
-                    $required_operation = (!empty($_REQUEST['parent_exclude'])) ? 'associate' : 'edit'; // @todo: better criteria
+                if (presspermit_is_REQUEST('context', 'edit')) {
+                    $required_operation = (!presspermit_empty_REQUEST('parent_exclude')) ? 'associate' : 'edit'; // todo: better criteria
                 } else {
                     $required_operation = (presspermit_is_preview()) ? 'edit' : 'read';
                 }
@@ -660,7 +650,7 @@ class PostFilters
         }
 
         if (!is_bool($include_trash)) {
-            if (!empty($_REQUEST['post_status']) && ('trash' == $_REQUEST['post_status'])) {
+            if (presspermit_is_REQUEST('post_status', 'trash')) {
                 $include_trash = true;
             }
         }
@@ -737,7 +727,7 @@ class PostFilters
                                         if (!empty($user->allcaps[$list_cap])) {
                                             $reqd_caps[$key] = $list_cap;
                                         } else {
-                                            // @todo: API?
+                                            // todo: API?
                                             if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
                                                 $revise_cap = str_replace('edit_', 'revise_', $cap);
 
@@ -1014,7 +1004,7 @@ class PostFilters
                 } else {
                     $require_cap = str_replace('edit_', 'list_', $type_obj->cap->edit_posts);
 
-                    // @todo: API?
+                    // todo: API?
                     if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
                         $revise_cap = str_replace('edit_', 'revise_', $type_obj->cap->edit_posts);
                         
@@ -1025,6 +1015,14 @@ class PostFilters
 
                     $replace_caps[$list_others_cap] = $require_cap;
                 }
+            }
+
+            $copy_others_cap = str_replace('edit_', 'copy_', $type_obj->cap->edit_others_posts);
+
+            if (function_exists('rvy_get_option') && rvy_get_option('copy_posts_capability')) {
+                $replace_caps[$copy_others_cap] = str_replace('edit_', 'copy_', $type_obj->cap->edit_posts);
+            } else {
+                $replace_caps[$copy_others_cap] = 'read';
             }
 
             foreach ($replace_caps as $cap_name => $base_cap) {

@@ -79,14 +79,18 @@ class Permissions
     public function doingEmbed() {
         static $arr_url;
 
+        if (!isset($_SERVER['REQUEST_URI'])) {
+            return false;
+        }
+
         if (!isset($arr_url)) {
-            $arr_url = parse_url(get_option('siteurl'));
+            $arr_url = wp_parse_url(get_option('siteurl'));
         }
 
         if ($arr_url) {
             $path = isset($arr_url['path']) ? $arr_url['path'] : '';
 
-            if (0 === strpos($_SERVER['REQUEST_URI'], $path . '/wp-json/oembed/')) {
+            if (0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), $path . '/wp-json/oembed/')) {
                 return true;
             }
         }
@@ -97,18 +101,22 @@ class Permissions
     public function isRESTurl() {
         static $arr_url;
 
+        if (!isset($_SERVER['REQUEST_URI'])) {
+            return false;
+        }
+
         if (!isset($arr_url)) {
-            $arr_url = parse_url(get_option('siteurl'));
+            $arr_url = wp_parse_url(get_option('siteurl'));
         }
 
         if ($arr_url) {
             $path = isset($arr_url['path']) ? $arr_url['path'] : '';
 
-			if (0 === strpos($_SERVER['REQUEST_URI'], $path . '/wp-json/oembed/')) {
+			if (0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), $path . '/wp-json/oembed/')) {
 				return false;	
 			}
 
-            if (0 === strpos($_SERVER['REQUEST_URI'], $path . '/wp-json/')) {
+            if (0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), $path . '/wp-json/')) {
                 return true;
             }
         }
@@ -118,23 +126,28 @@ class Permissions
 
     public function checkInitInterrupt() {
         if (defined('ISCVERSION') || defined('PRESSPERMIT_LIMIT_ASYNC_UPLOAD_FILTERING')) {
-            if ( is_admin() && strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php') && ! empty($_POST['attachment_id']) && ! empty($_POST['fetch']) && ( 3 == $_POST['fetch']) ) {
-                if ( $att = get_post( $_POST['attachment_id'] ) ) {
+            if ( is_admin() && isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'async-upload.php') && !presspermit_empty_POST('attachment_id') && presspermit_is_POST('fetch', 3)) {
+                if ($att = get_post(presspermit_POST_int('attachment_id'))) {
                     global $current_user;
-                    if ( $att->post_author == $current_user->ID && ! defined( 'PP_UPLOADS_FORCE_FILTERING' ) )
+                    if ( $att->post_author == $current_user->ID && ! defined( 'PP_UPLOADS_FORCE_FILTERING' ) ) {
                         return true;
+                    }
                 }
             }
         }
 
+        if (!isset($_SERVER['REQUEST_URI'])) {
+            return;
+        }
+
         // Divi Page Builder editor init
-		if (!defined('PRESSPERMIT_DISABLE_DIVI_CLEARANCE') && !empty($_REQUEST['et_fb']) && !empty($_REQUEST['et_bfb']) 
-		&& 0 === strpos($_SERVER['REQUEST_URI'], '/?page_id') 
-		&& !is_admin() && !defined('DOING_AJAX') && empty($_REQUEST['action']) 
-        && empty($_REQUEST['post']) && empty($_REQUEST['post_id']) && empty($_REQUEST['post_ID']) && empty($_REQUEST['p'])
-		) {
-			return true;
-		}
+        if (!defined('PRESSPERMIT_DISABLE_DIVI_CLEARANCE') && !presspermit_empty_REQUEST('et_fb') && !presspermit_empty_REQUEST('et_bfb') 
+		&& 0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/?page_id') 
+        && !is_admin() && !defined('DOING_AJAX') && presspermit_empty_REQUEST('action') 
+            && presspermit_empty_REQUEST('post') && presspermit_empty_REQUEST('post_id') && presspermit_empty_REQUEST('post_ID') && presspermit_empty_REQUEST('p')
+        ) {
+          return true;
+        }
     }
 
     private function load($args = [])
@@ -158,7 +171,7 @@ class Permissions
             'display_user_profile_groups' => 0,
             'display_user_profile_roles' => 0,
             'new_user_groups_ui' => 1,
-            'beta_updates' => false,        // @todo: EDD integration, or eliminate
+            'beta_updates' => false,        // todo: EDD integration, or eliminate
             'admin_hide_uneditable_posts' => 1,
             'post_blockage_priority' => 1,
             'media_search_results' => 1,
@@ -254,7 +267,7 @@ class Permissions
             new Permissions\DB\DatabaseSetup($db_ver);
         }
 
-        if (!empty($check_for_rs_migration) || !empty($_REQUEST['rs-migration-check'])) { // support http arg for test / troubleshooting
+        if (!empty($check_for_rs_migration) || !presspermit_empty_REQUEST('rs-migration-check')) { // support http arg for test / troubleshooting
             // This is a first-time activation. If Role Scoper was previously installed, enable Import module by default
             if (get_option('scoper_version')) {
                 update_option('presspermit_offer_rs_migration', true);
@@ -294,8 +307,6 @@ class Permissions
 
         $dir = PRESSPERMIT_ABSPATH . '/modules/';
 
-        // @todo: dir()
-
         $available_modules = $this->getAvailableModules();
 
         foreach($available_modules as $module) {
@@ -309,7 +320,6 @@ class Permissions
 
     public function getAvailableModules($args = [])
     {
-        // @todo: dir()
         $modules = [
             'presspermit-circles',
             'presspermit-collaboration',
@@ -431,7 +441,7 @@ class Permissions
     {
         global $current_user;
 
-        // @todo: review (Add New Media)
+        // todo: review (Add New Media)
         if (empty($current_user) || ! isset($this->cap_defs)) {
             return;
         }
@@ -534,10 +544,11 @@ class Permissions
         }
     }
 
-    // $args['labels']['name'] = translationed caption
-    // $args['labels']['name'] = translated caption
-    // $args['default_caps'] = [cap_name => true, another_cap_name => true] defines caps for pattern roles which do not have a corresponding WP role 
-    //
+    /*
+     * USAGE: args['labels']['name'] = translationed caption
+     * USAGE: args['labels']['name'] = translated caption
+     * USAGE: args['default_caps'] = [cap_name => true, another_cap_name => true] defines caps for pattern roles which do not have a corresponding WP role 
+     */
     public function registerPatternRole($role_name, $args = [])
     {
         $role_obj = (object)$args;
@@ -604,21 +615,29 @@ class Permissions
                 }
 
                 if (isset($this->net_options["presspermit_$option_basename"])) {
-                    return maybe_unserialize($this->net_options["presspermit_$option_basename"]);
+                    $val = maybe_unserialize($this->net_options["presspermit_$option_basename"]);
+                    if (is_string($val)) {$val = stripslashes($val);}
+                    return $val;
                 }
 
                 if (isset($this->default_options[$option_basename])) {
-                    return maybe_unserialize($this->default_options[$option_basename]);
+                    $val = maybe_unserialize($this->default_options[$option_basename]);
+                    if (is_string($val)) {$val = stripslashes($val);}
+                    return $val;
                 }
             }
         }
 
         if (isset($this->site_options["presspermit_$option_basename"])) {
-            return maybe_unserialize($this->site_options["presspermit_$option_basename"]);
+            $val = maybe_unserialize($this->site_options["presspermit_$option_basename"]);
+            if (is_string($val)) {$val = stripslashes($val);}
+            return $val;
         }
 
         if (isset($this->default_options[$option_basename])) {
-            return maybe_unserialize($this->default_options[$option_basename]);
+            $val = maybe_unserialize($this->default_options[$option_basename]);
+            if (is_string($val)) {$val = stripslashes($val);}
+            return $val;
         }
 
         // return null if option not set in db or defaults
@@ -651,7 +670,6 @@ class Permissions
         update_option("presspermit_$option_basename", $option_val);
 
         do_action('presspermit_update_option', $option_basename, $option_val, $args);
-        //do_action( 'pp_update_option', $option_basename, $option_val, $args );  // old action was never hooked by any extension
     }
 
     public function deleteOption($option_basename, $args = [])
@@ -666,7 +684,7 @@ class Permissions
         delete_option("presspermit_{$option_basename}");
     }
 
-    // Change the active value for a site option, but don't update database // @todo: review
+    // Change the active value for a site option, but don't update database // todo: review
     public function setSiteOption($option_basename, $value)
     {
         $this->site_options[$option_basename] = $value;
@@ -684,7 +702,7 @@ class Permissions
 
     public function fltPluginCompatUnfilteredContent($unfiltered) {
         // Public Post Preview: Preserve compat by dropping all Permissions filtering, unless integration is enabled through Pro plugin
-        if (!empty($_REQUEST['_ppp']) && !is_admin() && empty($_POST) && class_exists('DS_Public_Post_Preview') && !defined('PRESSPERMIT_DISABLE_PPP_PASSTHROUGH')
+        if (!presspermit_empty_REQUEST('_ppp') && !is_admin() && presspermit_empty_POST() && class_exists('DS_Public_Post_Preview') && !defined('PRESSPERMIT_DISABLE_PPP_PASSTHROUGH')
         && (!defined('PRESSPERMIT_PRO_VERSION') || !presspermit()->moduleActive('compatibility'))
         ) {
             $unfiltered = true;
@@ -695,9 +713,9 @@ class Permissions
 
     public function isUserUnfiltered($user_id = false, $args = [])
     {
-        // @todo: any other Gutenberg Administrator requests to filter?
+        // todo: any other Gutenberg Administrator requests to filter?
         $is_unfiltered = $this->isAdministrator($user_id, 'unfiltered', $args) 
-        && (!defined('REST_REQUEST') || ! REST_REQUEST || (empty($_REQUEST['parent_exclude']) || did_action('presspermit_refresh_administrator_check'))); // page parent dropdown
+        && (!defined('REST_REQUEST') || ! REST_REQUEST || (presspermit_empty_REQUEST('parent_exclude') || did_action('presspermit_refresh_administrator_check'))); // page parent dropdown
 
         return apply_filters('presspermit_unfiltered', $is_unfiltered, $args);
     }
@@ -769,7 +787,7 @@ class Permissions
 
         $types = get_post_types(array_merge($args, ['public' => true, 'show_ui' => true]), 'names', 'or');
 
-        $omit_types = apply_filters('presspermit_unfiltered_post_types', ['wp_block']); // @todo: review wp_block filtering
+        $omit_types = apply_filters('presspermit_unfiltered_post_types', ['wp_block']); // todo: review wp_block filtering
 
         $object_types = array_diff_key($types, array_fill_keys($omit_types, true));
 

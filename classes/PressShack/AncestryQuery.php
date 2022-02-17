@@ -6,70 +6,76 @@ class AncestryQuery
 {
     public static function queryDescendantIDs($source_name, $parent_id, $args = [])
     {
-        global $wpdb;
+        if (!$parent_id) {
+            return [];
+        }
 
-        $defaults = ['include_revisions' => false, 'include_attachments' => true, 'post_status' => false, 'append_clause' => '', 'post_types' => []];
+        $args['source_name'] = $source_name;
+
+        return self::doQueryDescendantIDs($parent_id, $args);
+    }
+
+    // recursive function
+    private static function doQueryDescendantIDs($parent_id, $args)
+    {
+        $defaults = ['source_name' => '', 'include_revisions' => false, 'include_attachments' => true, 'post_status' => false, 'post_types' => []];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
         }
 
-        $descendant_ids = [];
-        $clauses = $append_clause;
+        global $wpdb;
 
-        if (!$parent_id) {
-            return [];
-        }
+        $descendant_ids = [];
 
         switch ($source_name) {
             case 'post':
+                $type_clause = '';
+
                 if ($post_types) {
-                    $clauses .= " AND post_type IN ('" . implode("','", (array)$post_types) . "')";
+                    $type_clause .= " AND post_type IN ('" . implode("','", array_map('sanitize_key', (array)$post_types)) . "')";
                 }
 
-                $skip_types = [];
+                if (!$include_revisions) {
+                    $type_clause .= $wpdb->prepare(" AND post_type != %s", 'revision');
+                }
 
-                if (!$include_revisions)
-                    $skip_types[] = 'revision';
+                if (!$include_attachments) {
+                    $type_clause .= $wpdb->prepare(" AND post_type != %s", 'attachment');
+                }
 
-                if (!$include_attachments)
-                    $skip_types[] = 'attachment';
+                if (is_array($post_status)) {
+                    $type_clause .= " AND post_status IN ('" . implode("','", array_map('sanitize_key', $post_status)) . "')";
+                }
 
-                $clauses .= ($skip_types) ? " AND post_type NOT IN ('" . implode("','", $skip_types) . "')" : '';
+                $results = $wpdb->get_col(
+                    $wpdb->prepare(
+                        "SELECT ID FROM $wpdb->posts WHERE post_parent = %d $type_clause",
+                        (int) $parent_id
+                    )
+                );
 
-                $clauses .= (is_array($post_status)) ? " AND post_status IN ('" . implode("','", $post_status) . "')" : '';
-
-                $table = $wpdb->posts;
-                $col_id = 'ID';
-                $col_parent = 'post_parent';
                 break;
 
             case 'term':
-                $table = $wpdb->term_taxonomy;
-                $col_id = 'term_id';
-                $col_parent = 'parent';
+                $results = $wpdb->get_col(
+                    $wpdb->prepare(
+                        "SELECT term_id FROM $wpdb->term_taxonomy WHERE parent = %d",
+                        (int) $parent_id
+                    )
+                );
+
                 break;
 
             default:
                 return [];
         }
 
-        return self::doQueryDescendantIDs($table, $col_id, $col_parent, $parent_id, $clauses, $descendant_ids);
-    }
-
-    // recursive function
-    private static function doQueryDescendantIDs($table_name, $col_id, $col_parent, $parent_id, $type_clause, $descendant_ids = [])
-    {
-        global $wpdb;
-
-        $descendant_ids = [];
-
-        $parent_id = (int)$parent_id;
-        if ($results = $wpdb->get_col("SELECT $col_id FROM $table_name WHERE $col_parent = '$parent_id' $type_clause")) {
+        if ($results) {
             foreach ($results as $id) {
                 if (!in_array($id, $descendant_ids)) {
                     $descendant_ids[] = $id;
-                    $next_generation = self::doQueryDescendantIDs($table_name, $col_id, $col_parent, $id, $type_clause, $descendant_ids);
+                    $next_generation = self::doQueryDescendantIDs($id, $args);
                     $descendant_ids = array_unique(array_merge($descendant_ids, $next_generation));
                 }
             }

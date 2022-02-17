@@ -2,9 +2,6 @@
 
 namespace PublishPress\Permissions\UI\Dashboard;
 
-//use \PressShack\LibWP as PWP;
-//use \PressShack\LibArray as Arr;
-
 require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/ItemEdit.php');
 
 class TermEdit
@@ -23,9 +20,7 @@ class TermEdit
 
 	        add_action('admin_menu', [$this, 'actAddMetaBoxes']);
 	
-	        if (!empty($_REQUEST['taxonomy'])) {
-	            $taxonomy = sanitize_key($_REQUEST['taxonomy']);
-	        	
+	        if ($taxonomy = presspermit_REQUEST_key('taxonomy')) {
 	            if (presspermit()->isTaxonomyEnabled($taxonomy)) {
 	                add_action('admin_head', [$this, 'actScriptsWP']);
 	
@@ -34,7 +29,7 @@ class TermEdit
 	                add_action("{$taxonomy}_edit_form", [$this, 'actTaxonomyEnableUI']);
 	            }
 	
-	            if (!empty($_REQUEST['pp_universal'])) {
+	            if (!presspermit_empty_REQUEST('pp_universal')) {
 	                add_action("{$taxonomy}_edit_form", [$this, 'actUniversalExceptionsUIsupport']);
 	            }
 	        }
@@ -96,15 +91,19 @@ class TermEdit
 
         $pp = presspermit();
 
-        $taxonomy = (isset($_REQUEST['taxonomy'])) ? sanitize_key($_REQUEST['taxonomy']) : '';
+        $taxonomy = presspermit_REQUEST_key('taxonomy');
 
         if (!in_array($taxonomy, $pp->getEnabledTaxonomies(), true)) {
             return;
         }
 
-        $tt_id = (!empty($_REQUEST['tag_ID'])) ? PWP::termidToTtid((int)$_REQUEST['tag_ID'], $taxonomy) : 0;
+        if ($tag_id = presspermit_REQUEST_int('tag_ID')) {
+            $tt_id = PWP::termidToTtid($tag_id, $taxonomy);
+        } else {
+            $tt_id = 0;
+        }
 
-        $post_type = (!empty($_REQUEST['pp_universal'])) ? '' : $typenow;
+        $post_type = (!presspermit_empty_REQUEST('pp_universal')) ? '' : $typenow;
 
         $hidden_types = apply_filters('presspermit_hidden_post_types', []);
         $hidden_taxonomies = apply_filters('presspermit_hidden_taxonomies', []);
@@ -142,39 +141,39 @@ class TermEdit
                 if ('assign' == $op) {
                     $title = ($post_type)
                         ? sprintf(
-                            __('Permissions: Assign this %2$s to %3$s', 'press-permit-core'),
+                            esc_html__('Permissions: Assign this %2$s to %3$s', 'press-permit-core'),
                             $op_obj->label,
                             $tx->labels->singular_name,
                             $type_obj->labels->name
                         )
                         : sprintf(
-                            __('Permissions: Assign this %2$s', 'press-permit-core'),
+                            esc_html__('Permissions: Assign this %2$s', 'press-permit-core'),
                             $op_obj->label,
                             $tx->labels->singular_name
                         );
                 } elseif (in_array($op, ['read', 'edit'], true)) {
                     $title = ($post_type)
                         ? sprintf(
-                            __('Permissions: %1$s %2$s in this %3$s', 'press-permit-core'),
+                            esc_html__('Permissions: %1$s %2$s in this %3$s', 'press-permit-core'),
                             $op_obj->label,
                             $type_obj->labels->name,
                             $tx->labels->singular_name
                         )
                         : sprintf(
-                            __('Permissions: %1$s all content in this %2$s', 'press-permit-core'),
+                            esc_html__('Permissions: %1$s all content in this %2$s', 'press-permit-core'),
                             $op_obj->label,
                             $tx->labels->singular_name
                         );
                 } else {
                     $title = ($post_type)
                         ? sprintf(
-                            __('Permissions: %1$s %2$s in this %3$s', 'press-permit-core'),
+                            esc_html__('Permissions: %1$s %2$s in this %3$s', 'press-permit-core'),
                             $op_obj->label,
                             $type_obj->labels->name,
                             $tx->labels->singular_name
                         )
                         : sprintf(
-                            __('Permissions: %1$s this %2$s', 'press-permit-core'),
+                            esc_html__('Permissions: %1$s this %2$s', 'press-permit-core'),
                             $op_obj->label,
                             $tx->labels->singular_name
                         );
@@ -219,8 +218,8 @@ class TermEdit
 
         global $typenow;
 
-        $post_type = (!empty($_REQUEST['pp_universal'])) ? '' : $typenow;
-        $taxonomy = (isset($_REQUEST['taxonomy'])) ? sanitize_key($_REQUEST['taxonomy']) : '';
+        $post_type = (!presspermit_empty_REQUEST('pp_universal')) ? '' : $typenow;
+        $taxonomy = presspermit_REQUEST_key('taxonomy');
 
         if (current_user_can('pp_assign_roles')) {
             $this->initItemExceptionsUI();
@@ -249,7 +248,7 @@ class TermEdit
             return;
         }
 
-        $post_type = (!empty($_REQUEST['pp_universal'])) ? '' : $typenow;
+        $post_type = (!presspermit_empty_REQUEST('pp_universal')) ? '' : $typenow;
 
         if (
             !current_user_can('pp_assign_roles')
@@ -259,11 +258,12 @@ class TermEdit
         }
         ?>
         <div class="edit-tag-actions">
-            <input class="button button-primary" value="<?php _e('Update', 'press-permit-core'); ?>" type="submit">
+            <input class="button button-primary" value="<?php esc_attr_e('Update', 'press-permit-core'); ?>" type="submit">
         </div>
         <?php
 
         if ($post_type) {
+            echo '<br />';
             self::universalExceptionsNote($tag, $taxonomy, $post_type);
         }
         ?>
@@ -309,7 +309,7 @@ class TermEdit
 
                     add_meta_box(
                         "pp_enable_taxonomy",
-                        __('Permissions Settings', 'press-permit-core'),
+                        esc_html__('Permissions Settings', 'press-permit-core'),
                         [$this, 'drawSettingsUI'],
                         $taxonomy,
                         'advanced',
@@ -333,7 +333,7 @@ class TermEdit
         if ($tx = get_taxonomy($term->taxonomy)) :
             ?>
             <label for="pp_enable_taxonomy"><input type="checkbox" name="pp_enable_taxonomy"/>
-                <?php printf(__('enable custom permissions for %s', 'press-permit-core'), $tx->labels->name); ?>
+                <?php printf(esc_html__('enable custom permissions for %s', 'press-permit-core'), esc_html($tx->labels->name)); ?>
             </label>
         <?php
         endif;
@@ -368,10 +368,10 @@ class TermEdit
                 );
 
                 printf(
-                    __('Displayed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
-                    $type_obj->labels->singular_name,
-                    "<a href='$url'>",
-                    $tx_obj->labels->singular_name,
+                    esc_html__('Displayed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
+                    esc_html($type_obj->labels->singular_name),
+                    "<a href='" . esc_url($url) . "'>",
+                    esc_html($tx_obj->labels->singular_name),
                     '</a>'
                 );
                 ?>
@@ -400,6 +400,7 @@ class TermEdit
         add_thickbox();
         wp_enqueue_script('media-upload');
 
-        ItemEdit::scriptItemEdit($_REQUEST['taxonomy']);
+        $taxonomy = presspermit_REQUEST_key('taxonomy');
+        ItemEdit::scriptItemEdit($taxonomy);
     }
 }

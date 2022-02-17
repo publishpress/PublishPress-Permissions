@@ -29,7 +29,7 @@
             }
         });
 
-        $('div.pp-search-box-with-icon-wrapper .dashicons-search').on('click', function(e) {
+        $('#' + args.search_id).next('i.dashicons-search').on('click', function(e) {
             ajax_request($('#' + args.search_id).val());
         });
 
@@ -80,7 +80,7 @@
 
         var got_ajax_listbox = function (data, txtStatus) {
             //Set listbox contents to Ajax response
-            $('#' + args.results_id).html(data);
+            $('#' + args.results_id).html(data).show();
 
             if (typeof document.all == 'undefined') // triggers removal of agents who already have a dropdown (but IE chokes on trigger call)
                 $('#' + args.results_id).trigger('jchange');

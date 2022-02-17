@@ -1,9 +1,6 @@
 <?php
 namespace PublishPress\Permissions;
 
-//use \PressShack\LibWP as PWP;
-//use \PressShack\LibArray as Arr;
-
 class CollabHooksAdminNonAdministrator
 {
     function __construct()
@@ -59,12 +56,12 @@ class CollabHooksAdminNonAdministrator
         if (defined('REST_REQUEST') && presspermit()->doingREST()) {
             $rest = \PublishPress\Permissions\REST::instance();
 
-            // (Terms listing)
+            // Terms listing
             if ('WP_REST_Terms_Controller' == $rest->endpoint_class) {
                 return ('edit' == $rest->operation) ? 'manage' : $rest->operation;
             }
         } elseif (in_array($pagenow, ['edit-tags.php', 'nav-menus.php'])) {
-            $required_operation = (empty($_REQUEST['tag_ID']) && (empty($args['name']) || ('parent' != $args['name']))) 
+            $required_operation = (!presspermit_empty_REQUEST('tag_ID') && (empty($args['name']) || ('parent' != $args['name']))) 
             ? 'manage' 
             : 'associate';
         }
@@ -84,7 +81,7 @@ class CollabHooksAdminNonAdministrator
 
             // Force term retrieval for Gutenberg UI construction to be filtered by 'assign' exceptions, not 'read' exceptions
             if ((empty($args['required_operation']) || ($args['required_operation'] == 'read'))) {
-                if (!empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'wp-admin/post')) {
+                if (!empty($_SERVER['HTTP_REFERER']) && strpos(esc_url_raw($_SERVER['HTTP_REFERER']), 'wp-admin/post')) {
                     $args['required_operation'] = 'assign';
                 }
             }
@@ -114,7 +111,7 @@ class CollabHooksAdminNonAdministrator
                 //---------------------------------------------------------
 
                 // Don't filter get_terms() call in edit_post(), which invalidates entry term selection if existing term is detected
-                if (!empty($args['name']) && !empty($_POST))
+                if (!empty($args['name']) && !presspermit_empty_POST())
                     return $clauses;
 
                 if ($tt_ids = Collab::getObjectTerms($object_id, $taxonomies[0], ['fields' => 'tt_ids', 'pp_no_filter' => true])) {

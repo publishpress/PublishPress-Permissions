@@ -20,7 +20,7 @@ class REST_Workarounds
         global $wp_taxonomies;
 
 		// Prevent WP_REST_Posts_Controller::handle_terms from making a redundant, unfilterable wp_set_object_terms() call
-		// @todo: WP Trac ticket
+		// todo: WP Trac ticket
 
         if ($type_obj = get_post_type_object($post->post_type)) {
             $this->buffer_taxonomies = $wp_taxonomies;
@@ -38,10 +38,14 @@ class REST_Workarounds
 
     function actHandleRestTermAssignment()
     {
-        if (false === strpos($_SERVER['REQUEST_URI'], '/wp-json/wp/v2'))
+        if (empty($_SERVER['REQUEST_URI'])) {
+            return;
+        }
+
+        if (false === strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/wp-json/wp/v2'))
             return;
 
-        $request_uri = $_SERVER['REQUEST_URI'];
+        $request_uri = esc_url_raw($_SERVER['REQUEST_URI']);
 
         $pp = presspermit();
 
@@ -75,7 +79,7 @@ class REST_Workarounds
                     $_POST['post_type'] = $type_rest_base;
                     break;
 
-                } elseif (!empty($_REQUEST[$rest_base])) { // legacy Gutenberg versions
+                } elseif ($terms = presspermit_REQUEST_var($rest_base)) { // legacy Gutenberg versions
                     $taxonomy = $tx_obj->name;
 
                     $user_terms = get_terms(
@@ -83,7 +87,7 @@ class REST_Workarounds
                         ['required_operation' => 'assign', 'hide_empty' => 0, 'fields' => 'ids', 'post_type' => $type_obj->name]
                     );
                     
-                    $selected_terms = array_intersect($_REQUEST[$rest_base], $user_terms);
+                    $selected_terms = array_intersect(array_map('intval', $terms), $user_terms);
 
                     $stored_terms = Collab::getObjectTerms($post_id, $taxonomy, ['fields' => 'ids']);
 

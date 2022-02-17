@@ -31,7 +31,7 @@ class PostFilters
         global $current_user;
 
         if (!empty($args['has_cap_check']) && in_array($args['has_cap_check'], ['read_post', 'edit_post']) && !empty($args['limit_ids']) && !presspermit_is_preview()) {
-            $post_id = reset($args['limit_ids']);
+            $post_id = (int) reset($args['limit_ids']);
         } elseif ('edit' == $args['required_operation']) {
             $post_id = PWP::getPostID();
         }
@@ -54,9 +54,24 @@ class PostFilters
     }
 
     function fltBaseCapReplacements($replace_caps, $reqd_caps, $post_type) {
+        global $current_user;
+        
         if ($type_obj = get_post_type_object($post_type)) {
             if (!empty($type_obj->cap->edit_posts)) {
                 $replace_caps['list_others_revisions'] = $type_obj->cap->edit_posts;
+                $replace_caps['edit_others_drafts'] = $type_obj->cap->edit_posts;
+
+                if (!empty($type_obj->cap->edit_others_posts)) {
+                    $copy_others_cap = str_replace('edit_', 'copy_', $type_obj->cap->edit_others_posts);
+
+                    $replace_caps[$copy_others_cap] = str_replace('edit_', 'copy_', $type_obj->cap->edit_posts);
+                }
+
+                // Don't block Contributors from editing their own drafts (copy_others requirement initially applied to map_meta_cap filter via Posts filtering)
+                if (!empty($current_user->allcaps[$type_obj->cap->edit_posts])) {
+                    $copy_cap = str_replace('edit_', 'copy_', $type_obj->cap->edit_posts);
+                    $replace_caps[$copy_cap] = $type_obj->cap->edit_posts;
+                }
             }
         }
 
@@ -79,11 +94,11 @@ class PostFilters
 
         if ($wp_query->is_preview && defined('PUBLISHPRESS_REVISIONS_VERSION')) {
             if (!empty($wp_query->query['p'])) {
-                $post_id = $wp_query->query['p'];
+                $post_id = (int) $wp_query->query['p'];
             } elseif(!empty($wp_query->query['page_id'])) {
-                $post_id = $wp_query->query['page_id'];
+                $post_id = (int) $wp_query->query['page_id'];
             } else {
-                return;
+                return $object_types;
             }
 
             if ($_post = get_post($post_id)) {
@@ -114,8 +129,8 @@ class PostFilters
     function fltPostsWhere($where, $args)
     {
         // for past revisions
-        if (defined('PUBLISHPRESS_REVISIONS_VERSION') && !is_admin() && !empty($_REQUEST['post_type']) && ('revision' == $_REQUEST['post_type']) 
-        && (!empty($_REQUEST['preview']) || !empty($_REQUEST['preview_id']))) {
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION') && !is_admin() && presspermit_is_REQUEST('post_type', 'revision') 
+        && (!presspermit_empty_REQUEST('preview') || !presspermit_empty_REQUEST('preview_id'))) {
             $matches = [];
             if (preg_match("/post_type = '([0-9a-zA-Z_\-]+)'/", $where, $matches)) {
                 if ($matches[1]) {
@@ -141,9 +156,9 @@ class PostFilters
     }
 
     function flt_meta_cap($meta_cap) {
-        if (defined('PUBLISHPRESS_REVISIONS_VERSION') && ('read_post' == $meta_cap) && !is_admin() && !empty($_REQUEST['post_type']) 
-        && ('revision' == $_REQUEST['post_type']) && (!empty($_REQUEST['preview']) || !empty($_REQUEST['preview_id']))) {
-
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION') && ('read_post' == $meta_cap) && !is_admin() && presspermit_is_REQUEST('post_type', 'revision') 
+        && (!presspermit_empty_REQUEST('preview') || !presspermit_empty_REQUEST('preview_id'))
+        ) {
             $meta_cap = 'edit_post';
         }
 

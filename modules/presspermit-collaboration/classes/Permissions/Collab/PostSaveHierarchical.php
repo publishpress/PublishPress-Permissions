@@ -8,10 +8,16 @@ class PostSaveHierarchical
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
             return $parent_id;
 
-        if (function_exists('bbp_get_version') && !empty($_REQUEST['action']) 
-        && in_array($_REQUEST['action'], ['bbp-new-topic', 'bbp-new-reply'])
-        ) {
+        if (function_exists('bbp_get_version') && presspermit_is_REQUEST('action', ['bbp-new-topic', 'bbp-new-reply'])) {
             return $parent_id;
+        }
+
+        if (presspermit()->doing_rest) {
+            $rest = \PublishPress\Permissions\REST::instance();
+            
+            if (!empty($rest) && 'WP_REST_Attachments_Controller' == $rest->endpoint_class) {
+                return $parent_id;
+            }
         }
 
         $selected_parent_id = $parent_id;
@@ -22,7 +28,7 @@ class PostSaveHierarchical
         }
 
         // this filter is not intended to regulate attachment parent
-        if (strpos($_SERVER['REQUEST_URI'], 'async-upload.php') && !empty($_REQUEST['action']) && ('upload-attachment' == $_REQUEST['action'])) {
+        if (isset($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'async-upload.php') && presspermit_is_REQUEST('action', 'upload-attachment')) {
             return $parent_id;
         }
 
@@ -151,11 +157,14 @@ class PostSaveHierarchical
         $valid_statuses = get_post_stati(['public' => true, 'private' => true], 'names', 'OR');
         $workflow_statuses = get_post_stati(['protected' => true, 'internal' => false]);
         $valid_statuses = array_merge($valid_statuses, $workflow_statuses, ['draft', 'pending']);
-        $statuses_csv = "'" . implode("','", $valid_statuses) . "'";
+        $statuses_csv = implode("','", array_map('sanitize_key', $valid_statuses));
 
         global $wpdb;
         $valid_parents = $wpdb->get_col(
-            "SELECT ID FROM $wpdb->posts WHERE post_type = '" . sanitize_key($post_type) . "' AND post_status IN ($statuses_csv) AND ID > 0 ORDER BY post_parent, ID ASC"
+            $wpdb->prepare(
+                "SELECT ID FROM $wpdb->posts WHERE post_type = %s AND post_status IN ('$statuses_csv') AND ID > 0 ORDER BY post_parent, ID ASC",
+                $post_type
+            )
         );
 
         $valid_parents = array_diff($valid_parents, $descendants, (array)$post_id);
@@ -204,19 +213,11 @@ class PostSaveHierarchical
     //    revert page to previously stored parent if possible. Otherwise set status to "unpublished".
     public static function enforceTopPagesLock($status)
     {
-        /*
-        // overcome any denials of publishing rights which were not filterable by user_has_cap  @todo: confirm this is no longer necessary
-        if ( ('pending' == $status) && ( ('publish' == $_POST['post_status']) || ('Publish' == $_POST['original_publish'] ) ) )
-            if ( ! empty( $current_user->allcaps['publish_pages'] ) )
-                $status = 'publish';
-        */
-
         global $post;
 
         // user can't associate / un-associate a page with Main page unless they have edit_pages site-wide
-        if (!empty($_POST['post_ID'])) {
-            $post_id = (int)$_POST['post_ID'];
-            $selected_parent_id = isset($_POST['parent_id']) ? (int)$_POST['parent_id'] : 0;
+        if ($post_id = presspermit_POST_int('post_ID')) {
+            $selected_parent_id = presspermit_POST_int('parent_id');
         } elseif (!empty($post)) {
             $post_id = $post->ID;
             $selected_parent_id = $post->post_parent;
@@ -241,11 +242,12 @@ class PostSaveHierarchical
             return $status;
         }
 
-        if (empty($_POST['parent_id'])) {
+        if (presspermit_empty_POST('parent_id')) {
             if (!$already_published) {  // This should only ever happen if the POST data is manually fudged
                 if ($post_status_object = get_post_status_object($status)) {
-                    if ($post_status_object->public || $post_status_object->private)
+                    if ($post_status_object->public || $post_status_object->private) {
                         $status = 'draft';
+                    }
                 }
             }
         }

@@ -35,19 +35,23 @@ class Groups
             $$var = $args[$var];
         }
 
-        $groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, $agent_type);
+        $wpdb->groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, $agent_type);
 
-        if ($ids)
+        if ($ids) {
             $where .= "AND ID IN ('" . implode("','", array_map('intval', (array)$ids)) . "')";
+        }
 
-        if ($omit_ids)
+        if ($omit_ids) {
             $where .= "AND ID NOT IN ('" . implode("','", array_map('intval', (array)$omit_ids)) . "')";
+        }
 
-        if ($skip_meta_types)
-            $where .= " AND metagroup_type NOT IN ('" . implode("','", (array)$skip_meta_types) . "')";
+        if ($skip_meta_types) {
+            $where .= " AND metagroup_type NOT IN ('" . implode("','", array_map('pp_permissions_sanitize_entry', (array)$skip_meta_types)) . "')";
+        }
 
-        if ($require_meta_types)
-            $where .= " AND metagroup_type IN ('" . implode("','", (array)$require_meta_types) . "')";
+        if ($require_meta_types) {
+            $where .= " AND metagroup_type IN ('" . implode("','", array_map('pp_permissions_sanitize_entry', (array)$require_meta_types)) . "')";
+        }
 
         if ($search) {
             $searches = [];
@@ -56,7 +60,7 @@ class Groups
             $where .= 'AND ( ' . implode(' OR ', $searches) . ' )';
         }
 
-        $query = "SELECT $cols FROM $groups_table $join WHERE 1=1 $where ORDER BY $order_by";
+        $query = "SELECT $cols FROM $wpdb->groups_table $join WHERE 1=1 $where ORDER BY $order_by";
         $results = $wpdb->get_results($query, OBJECT_K);
 
         foreach (array_keys($results) as $key) {
@@ -65,7 +69,7 @@ class Groups
             if (isset($results[$key]->group_description))
                 $results[$key]->group_description = stripslashes($results[$key]->group_description);
 
-            // strip out Revisionary metagroups if we're not using them (@todo: API)
+            // strip out Revisionary metagroups if we're not using them (todo: API)
             if ($results[$key]->metagroup_type) {
                 if (!defined('PUBLISHPRESS_REVISIONS_VERSION') && !defined('REVISIONARY_VERSION') && ('rvy_notice' == $results[$key]->metagroup_type)) {
                     unset($results[$key]);
@@ -86,7 +90,7 @@ class Groups
             $$var = $args[$var];
         }
 
-        // If $group_id is an array of group objects, extract IDs into a separate array (@todo: review calling code)
+        // If $group_id is an array of group objects, extract IDs into a separate array (todo: review calling code)
         if (is_array($group_id)) {
             $first = current($group_id);
 
@@ -103,46 +107,75 @@ class Groups
         if ('any' == $status)
             $status = '';
 
-        $group_in = "'" . implode("', '", array_map('intval', (array)$group_id)) . "'";
+        $groups_csv = implode("', '", array_map('intval', (array)$group_id));
 
-        $members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
+        $wpdb->members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
 
         $status_clause = ($status) ? $wpdb->prepare("AND status = %s", $status) : '';
-        $mtype_clause = $wpdb->prepare("AND member_type = %s", $member_type);
 
         if ('id' == $cols) {
-            $query = "SELECT u2g.user_id 
-                  FROM $members_table AS u2g
-                  WHERE u2g.group_id IN ($group_in) AND u2g.group_id > 0 $mtype_clause $status_clause";
+            if (!$results = $wpdb->get_col(
+                $wpdb->prepare(
+                    "SELECT u2g.user_id FROM $wpdb->members_table AS u2g"
+                    . " WHERE u2g.group_id IN ('$groups_csv') AND u2g.group_id > 0 AND member_type = %s $status_clause",
 
-            if (!$results = $wpdb->get_col($query))
+                    $member_type
+                )
+            )) {
                 $results = [];
+            }
         } elseif ('count' == $cols) {
-            $query = "SELECT COUNT(u2g.user_id)
-                  FROM $members_table AS u2g
-                  WHERE u2g.group_id IN ($group_in) AND u2g.group_id > 0 $mtype_clause $status_clause";
+            $results = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT COUNT(u2g.user_id) FROM $wpdb->members_table AS u2g"
+                    . " WHERE u2g.group_id IN ('$groups_csv') AND u2g.group_id > 0 AND member_type = %s $status_clause",
 
-            $results = $wpdb->get_var($query);
+                    $member_type
+                )
+            );
         } else {
             switch ($cols) {
                 case 'id_displayname':
-                    $qcols = "u.ID, u.display_name AS display_name";
-                    $orderby = "ORDER BY u.display_name";
+                    $results = $wpdb->get_results(
+                        $wpdb->prepare(
+                            "SELECT u.ID, u.display_name AS display_name FROM $wpdb->users AS u"
+                            . " INNER JOIN $wpdb->members_table AS u2g ON u2g.user_id = u.ID AND member_type = %s $status_clause"
+                            . " AND u2g.group_id IN ('$groups_csv') ORDER BY u.display_name",
+        
+                            $member_type
+                        ),
+                        OBJECT_K
+                    );
+
                     break;
                 case 'id_name':
-                    $qcols = "u.ID, u.user_login AS name"; // calling code assumes display_name property for user or group object
-                    $orderby = "ORDER BY u.user_login";
+                    // calling code assumes display_name property for user or group object
+                    $results = $wpdb->get_results(
+                        $wpdb->prepare(
+                            "SELECT u.ID, u.user_login AS name FROM $wpdb->users AS u"
+                            . " INNER JOIN $wpdb->members_table AS u2g ON u2g.user_id = u.ID AND member_type = %s $status_clause"
+                            . " AND u2g.group_id IN ('$groups_csv') ORDER BY u.user_login",
+        
+                            $member_type
+                        ),
+                        OBJECT_K
+                    );
+
                     break;
                 default:
-                    $orderby = apply_filters('presspermit_group_members_orderby', "ORDER BY u.user_login");
-                    $qcols = "u.*, u2g.*";
+                    $orderby_clause = apply_filters('presspermit_group_members_orderby', "ORDER BY u.user_login");
+
+                    $results = $wpdb->get_results(
+                        $wpdb->prepare(
+                            "SELECT u.*, u2g.* FROM $wpdb->users AS u"
+                            . " INNER JOIN $wpdb->members_table AS u2g ON u2g.user_id = u.ID AND member_type = %s $status_clause"
+                            . " AND u2g.group_id IN ('$groups_csv') $orderby_clause",
+
+                            $member_type
+                        ),
+                        OBJECT_K
+                    );
             }
-
-            $query = "SELECT $qcols FROM $wpdb->users AS u"
-                . " INNER JOIN $members_table AS u2g ON u2g.user_id = u.ID $mtype_clause $status_clause"
-                . " AND u2g.group_id IN ($group_in) $orderby";
-
-            $results = $wpdb->get_results($query, OBJECT_K);
         }
 
         return $results;
@@ -177,16 +210,16 @@ class Groups
         $pp_groups = $pp->groups();
 
         $groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, $agent_type);
-        $members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
+        $wpdb->members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
 
-        if (empty($members_table)) {
+        if (empty($wpdb->members_table)) {
             return [];
         }
 
         if (($cols == 'all') || !empty($metagroup_type))
             $join = apply_filters(
                 'presspermit_get_groups_for_user_join',
-                "INNER JOIN $groups_table AS g ON $members_table.group_id = g.ID",
+                "INNER JOIN $groups_table AS g ON $wpdb->members_table.group_id = g.ID",
                 $user_id,
                 $args
             );
@@ -199,8 +232,6 @@ class Groups
         $status_clause = ($status) ? $wpdb->prepare("AND status = %s", $status) : '';
         $metagroup_clause = (!empty($metagroup_type)) ? $wpdb->prepare("AND g.metagroup_type = %s", $metagroup_type) : '';
         $user_id = (int)$user_id;
-
-        $user_groups = [];
 
         if ('pp_group' == $agent_type) {
             static $all_group;
@@ -216,10 +247,17 @@ class Groups
         }
 
         if ('all' == $cols) {
-            $query = "SELECT * FROM $members_table $join WHERE user_id = '$user_id'"
-                . " AND member_type = '$member_type' $status_clause $metagroup_clause ORDER BY $members_table.group_id";
+            $user_groups = [];
 
-            $results = $wpdb->get_results($query);
+            $results = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM $wpdb->members_table $join WHERE user_id = %d"
+                    . " AND member_type = %s $status_clause $metagroup_clause ORDER BY $wpdb->members_table.group_id",
+
+                    $user_id,
+                    $member_type
+                )
+            );
 
             foreach ($results as $row)
                 $user_groups[$row->group_id] = (object)(array)$row;  // force storage by value
@@ -272,11 +310,17 @@ class Groups
             }
 
             if (!isset($user_groups[$agent_type][$user_id]) || $force_refresh) {
-                $query = "SELECT user_id, group_id, add_date_gmt FROM $members_table $join"
-                    . " WHERE user_id IN ('" . implode("','", (array)$query_user_ids) . "') AND member_type = '$member_type'"
-                    . " $status_clause $metagroup_clause ORDER BY group_id";
+                $user_id_csv = implode("','", array_map('intval', (array)$query_user_ids));
 
-                $results = $wpdb->get_results($query);
+                $results = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT user_id, group_id, add_date_gmt FROM $wpdb->members_table $join"
+                        . " WHERE user_id IN ('$user_id_csv') AND member_type = %s"
+                        . " $status_clause $metagroup_clause ORDER BY group_id",
+
+                        $member_type
+                    )
+                );
 
                 foreach ($results as $row) {
                     $user_groups[$agent_type][$row->user_id][$row->group_id] = $row->add_date_gmt;
@@ -306,34 +350,34 @@ class Groups
         global $wp_roles;
 
         if ('wp_auth' == $meta_id) {
-            return __('Logged In', 'press-permit-core');
+            return esc_html__('Logged In', 'press-permit-core');
         } elseif ('wp_anon' == $meta_id) {
-            return __('Not Logged In', 'press-permit-core');
+            return esc_html__('Not Logged In', 'press-permit-core');
         } elseif ('wp_all' == $meta_id) {
-            return __('Everyone', 'press-permit-core');
+            return esc_html__('Everyone', 'press-permit-core');
         } elseif ('wp_role' == $metagroup_type) {
             switch ($meta_id) {
                 case 'rvy_pending_rev_notice':
-                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? __('Change Request Notifications', 'press-permit-core') : __('Pending Revision Monitors', 'press-permit-core');
+                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? esc_html__('Change Request Notifications', 'press-permit-core') : esc_html__('Pending Revision Monitors', 'press-permit-core');
                     break;
 
                 case 'rvy_scheduled_rev_notice':
-                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? __('Scheduled Change Notifications', 'press-permit-core') : __('Scheduled Revision Monitors', 'press-permit-core');
+                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? esc_html__('Scheduled Change Notifications', 'press-permit-core') : esc_html__('Scheduled Revision Monitors', 'press-permit-core');
                     break;
 
                 default:
-            		$role_display_name = isset($wp_roles->role_names[$meta_id]) ? __($wp_roles->role_names[$meta_id]) : $meta_id;
+            		$role_display_name = isset($wp_roles->role_names[$meta_id]) ? esc_html__($wp_roles->role_names[$meta_id]) : $meta_id;
             }
 
             return $role_display_name;
         } else {
             switch ($meta_id) {
                 case 'rvy_pending_rev_notice':
-                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? __('Change Request Notifications', 'press-permit-core') : __('Pending Revision Monitors', 'press-permit-core');
+                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? esc_html__('Change Request Notifications', 'press-permit-core') : esc_html__('Pending Revision Monitors', 'press-permit-core');
                     break;
 
                 case 'rvy_scheduled_rev_notice':
-                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? __('Scheduled Change Notifications', 'press-permit-core') : __('Scheduled Revision Monitors', 'press-permit-core');
+                    return (defined('PUBLISHPRESS_REVISIONS_VERSION')) ? esc_html__('Scheduled Change Notifications', 'press-permit-core') : esc_html__('Scheduled Revision Monitors', 'press-permit-core');
                     break;
 
                 default:
@@ -346,16 +390,16 @@ class Groups
     public static function getMetagroupDescript($metagroup_type, $meta_id, $default_descript = '')
     {
         if ('wp_auth' == $meta_id) {
-            return __('Authenticated site users (logged in)', 'press-permit-core');
+            return esc_html__('Authenticated site users (logged in)', 'press-permit-core');
         } elseif ('wp_anon' == $meta_id) {
-            return __('Anonymous users (not logged in)', 'press-permit-core');
+            return esc_html__('Anonymous users (not logged in)', 'press-permit-core');
         } elseif ('wp_all' == $meta_id) {
-            return __('All users (including anonymous)', 'press-permit-core');
+            return esc_html__('All users (including anonymous)', 'press-permit-core');
         } elseif ('wp_role' == $metagroup_type) {
             $role_display_name = self::getMetagroupName($metagroup_type, $meta_id);
             $role_display_name = str_replace('[WP ', '', $role_display_name);
             $role_display_name = str_replace(']', '', $role_display_name);
-            return sprintf(__('All users with the WordPress role of %s', 'press-permit-core'), $role_display_name);
+            return sprintf(esc_html__('All users with the WordPress role of %s', 'press-permit-core'), $role_display_name);
         } else {
             return $default_descript;
         }

@@ -155,7 +155,7 @@ class PageFilters
             return $results;
         }
 
-        // =========== PressPermit @todo: review
+        // =========== PressPermit todo: review
         if (is_admin() && ('any' === $post_status)) {
             $post_status = '';
         }
@@ -212,7 +212,7 @@ class PageFilters
             $hierarchical = false;
             $incpages = wp_parse_id_list($include);
             if (!empty($incpages)) {
-                foreach ($incpages as $incpage) {  // @todo: change to IN clause after confirming no issues with PP query parsing
+                foreach ($incpages as $incpage) {  // todo: change to IN clause after confirming no issues with PP query parsing
                     if ($incpage) {
                         if (empty($inclusions))
                             $inclusions = ' AND ( ID = ' . intval($incpage) . ' ';
@@ -230,7 +230,7 @@ class PageFilters
         if (!empty($exclude)) {
             $expages = wp_parse_id_list($exclude);
             if (!empty($expages)) {
-                foreach ($expages as $expage) { // @todo: change to IN clause after confirming no issues with PP query parsing
+                foreach ($expages as $expage) { // todo: change to IN clause after confirming no issues with PP query parsing
                     if (empty($exclusions))
                         $exclusions = ' AND ( ID <> ' . intval($expage) . ' ';
                     else
@@ -275,7 +275,7 @@ class PageFilters
         $join = '';
         $where = "$exclusions $inclusions ";
 
-        if ('' !== $meta_key || '' !== $meta_value) {                                           // @todo: review
+        if ('' !== $meta_key || '' !== $meta_value) {                                           // todo: review
             $join = " INNER JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id";   // PressPermit modification: was LEFT JOIN in WP core
 
             // meta_key and meta_value might be slashed
@@ -295,7 +295,12 @@ class PageFilters
                 $where .= " AND post_parent IN ($post_parent__in)";
             }
         } elseif ($parent >= 0) {  // ========= PressPermit filter
-            $where .= $wpdb->prepare(' AND ' . apply_filters('presspermit_get_pages_parent', 'post_parent = %d ', $args), $parent);
+            $where .= ' AND ' 
+            . apply_filters(
+                'presspermit_get_pages_parent',
+                $wpdb->prepare('post_parent = %d ', $parent),
+                $args
+            );
         }
 
         $orderby_array = [];
@@ -358,8 +363,6 @@ class PageFilters
         $where_post_type = $wpdb->prepare("post_type = %s", $post_type);
         $where_status = '';
 
-        global $current_user;
-
         $is_front = PWP::isFront();
         if ($is_front && !empty($current_user->ID))
             $frontend_list_private = !defined('PP_SUPPRESS_PRIVATE_PAGES'); // currently using Page option for all hierarchical types
@@ -380,18 +383,18 @@ class PageFilters
 
         // WP core does not include private pages in query.  Include private statuses in anticipation of user-specific filtering
         if (is_array($post_status))
-            $where_status = "AND post_status IN ('" . implode("','", $post_status) . "')";
+            $where_status = "AND post_status IN ('" . implode("','", array_map('sanitize_key', $post_status)) . "')";
         elseif ($post_status && (('publish' != $post_status) || ($is_front && !$frontend_list_private)))
             $where_status = $wpdb->prepare("AND post_status = %s", $post_status);
         elseif ($is_front)
-            $where_status = "AND post_status IN ('" . implode("','", $safeguard_statuses) . "')";
+            $where_status = "AND post_status IN ('" . implode("','", array_map('sanitize_key', $safeguard_statuses)) . "')";
         else {
-            // @TODO: Revisionary 2.0 : query replacement workaround due to previous clause here: AND post_status NOT IN [internal=true]
-            $where_status = "AND post_status IN ('" . implode("','", get_post_stati(['internal' => false])) . "')";
+            // todo: Revisionary 2.0 : query replacement workaround due to previous clause here: AND post_status NOT IN [internal=true]
+            $where_status = "AND post_status IN ('" . implode("','", array_map('sanitize_key', get_post_stati(['internal' => false]))) . "')";
         }
 
         $where_id = '';
-        global $pagenow;
+
         if (is_admin() && in_array($pagenow, ['post.php', 'post-new.php'])) {
             global $post;
             if ($post)
@@ -407,7 +410,7 @@ class PageFilters
             // We are in the front end and the teaser is enabled for pages
 
             // TODO: move to Teaser
-            $query = str_replace("post_status = 'publish'", " post_status IN ('" . implode("','", $safeguard_statuses) . "')", $query);
+            $query = str_replace("post_status = 'publish'", " post_status IN ('" . implode("','", array_map('sanitize_key', $safeguard_statuses)) . "')", $query);
 
             $pages = $wpdb->get_results($query);  // execute unfiltered query
 
@@ -422,7 +425,6 @@ class PageFilters
 
             $groupby = $distinct = '';
 
-            global $pagenow;
             if (in_array($pagenow, ['post.php', 'post-new.php']) || (defined('REST_REQUEST') && REST_REQUEST)) {
                 $clauses = apply_filters(
                     'presspermit_get_pages_clauses',
@@ -464,10 +466,10 @@ class PageFilters
             }
 
             // Execute the filtered query
-            $pages = $wpdb->get_results(
-                "SELECT {$distinct} $_fields FROM $wpdb->posts {$clauses['join']}"
-                . " WHERE 1=1 {$clauses['where']} {$clauses['orderby']} {$clauses['limits']}"
-            );
+
+            $query = "SELECT {$distinct} $_fields FROM $wpdb->posts {$clauses['join']} WHERE 1=1 {$clauses['where']} {$clauses['orderby']} {$clauses['limits']}";
+
+            $pages = $wpdb->get_results($query);
         }
 
         if (empty($pages)) {
@@ -475,7 +477,7 @@ class PageFilters
             return apply_filters('presspermit_get_pages', [], $r);
         }
 
-        if ($child_of) {  // @todo: review (WP core is $child_of || $hierarchical)
+        if ($child_of) {  // todo: review (WP core is $child_of || $hierarchical)
             $pages = get_page_children($child_of, $pages);
         }
 

@@ -21,7 +21,7 @@ class NavMenus
 
     public function fltTermsSkipFiltering($skip, $taxonomies, $args)
     {
-        if (('nav_menu' != reset($taxonomies))) // && ! presspermit()->getOption( 'admin_nav_menu_filter_items' ) )
+        if (('nav_menu' != reset($taxonomies)))
             $skip = true;
 
         return $skip;
@@ -29,7 +29,7 @@ class NavMenus
 
     public function fltTermsArgs($args, $taxonomies)
     {
-        if (('nav_menu' != reset($taxonomies))) // && presspermit()->getOption( 'admin_nav_menu_filter_items' ) )
+        if (('nav_menu' != reset($taxonomies)))
             $args['hide_empty'] = true;
 
         return $args;
@@ -182,10 +182,8 @@ class NavMenus
 
     public static function flt_police_menu_item_parent($post_parent, $object_id, $post_arr_keys, $post_arr)
     {
-        //if ( empty( $post_arr['post_date_gmt'] ) ) {
         $menu = self::determine_selected_menu();
         $post_parent = self::flt_menu_item_parent($post_parent, $object_id, $menu);
-        //}
 
         return $post_parent;
     }
@@ -225,7 +223,7 @@ class NavMenus
         $menu_item = get_post($object_id);
 
         // if this menu item is already stored to top level, don't move it
-        if (!$stored_parent && (false !== $stored_parent) && (empty($_REQUEST['action']) || 'add-menu-item' != $_REQUEST['action'])) {
+        if (!$stored_parent && (false !== $stored_parent) && !presspermit_is_REQUEST('action', 'add-menu-item')) {
             return $post_parent;
         }
 
@@ -254,7 +252,7 @@ class NavMenus
         //
         // If parent is being set to zero but this menu item is already stored as a sub-item, revert it.
         if (count($editable_items) < 2) {
-            if (!$post_parent && $stored_parent && (empty($_REQUEST['action']) || 'add-menu-item' != $_REQUEST['action'])) {
+            if (!$post_parent && $stored_parent && !presspermit_is_REQUEST('action', 'add-menu-item')) {
                 return $stored_parent;
             }
         }
@@ -290,7 +288,6 @@ class NavMenus
     {
         if ($menu_item = get_post($menu_item_id)) {
             if ('nav_menu_item' == $menu_item->post_type) {
-                //$item_type = get_post_meta( $menu_item_id, '_menu_item_type', true );
                 $object_type = get_post_meta($menu_item_id, '_menu_item_object', true);
                 $object_id = get_post_meta($menu_item_id, '_menu_item_object_id', true);
 
@@ -313,7 +310,7 @@ class NavMenus
                         ] as $property => $col
                     ) {
                         if (isset($_POST[$col][$menu_item_id]))
-                            $posted_vals[$property] = $_POST[$col][$menu_item_id];
+                            $posted_vals[$property] = sanitize_text_field($_POST[$col][$menu_item_id]);
                     }
 
                     if (isset($posted_vals['classes']))
@@ -381,23 +378,23 @@ class NavMenus
                     switch ($menu_operation) {
                         case 'move':
                             wp_die(sprintf(
-                                __('You do not have permission to move the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
-                                $stored_vals['title'],
-                                $link
+                                esc_html__('You do not have permission to move the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
+                                esc_html($stored_vals['title']),
+                                esc_url($link)
                             ));
                             break;
                         case 'delete':
                             wp_die(sprintf(
-                                __('You do not have permission to delete the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
-                                $stored_vals['title'], 
-                                $link
+                                esc_html__('You do not have permission to delete the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
+                                esc_html($stored_vals['title']), 
+                                esc_url($link)
                             ));
                             break;
                         default:
                             wp_die(sprintf(
-                                __('You do not have permission to edit the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
-                                $stored_vals['title'], 
-                                $link
+                                esc_html__('You do not have permission to edit the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
+                                esc_html($stored_vals['title']), 
+                                esc_url($link)
                             ));
                     } // end switch
                 }
@@ -416,9 +413,9 @@ class NavMenus
         $menu_count = count($nav_menus);
 
         // Are we on the add new screen?
-        $add_new_screen = (isset($_GET['menu']) && 0 == $_GET['menu']) ? true : false;
+        $add_new_screen = presspermit_is_GET('menu', 0) ? true : false;
 
-        $locations_screen = (isset($_GET['action']) && 'locations' == $_GET['action']) ? true : false;
+        $locations_screen = presspermit_is_GET('action', 'locations') ? true : false;
 
         // If we have one theme location, and zero menus, we take them right into editing their first menu
         $page_count = wp_count_posts('page');
@@ -427,18 +424,20 @@ class NavMenus
         ? true 
         : false;
 
-        $nav_menu_selected_id = isset($_REQUEST['menu']) ? (int)$_REQUEST['menu'] : 0;
+        $nav_menu_selected_id = presspermit_REQUEST_int('menu');
 
         if (empty($recently_edited) && is_nav_menu($nav_menu_selected_id))
             $recently_edited = $nav_menu_selected_id;
 
         // Use $recently_edited if none are selected
-        if (empty($nav_menu_selected_id) && !isset($_GET['menu']) && is_nav_menu($recently_edited))
+        if (empty($nav_menu_selected_id) && presspermit_empty_GET('menu') && is_nav_menu($recently_edited)) {
             $nav_menu_selected_id = $recently_edited;
+        }
 
         // On deletion of menu, if another menu exists, show it
-        if (!$add_new_screen && 0 < $menu_count && isset($_GET['action']) && 'delete' == $_GET['action'])
+        if (!$add_new_screen && 0 < $menu_count && presspermit_is_GET('action', 'delete')) {
             $nav_menu_selected_id = $nav_menus[0]->term_id;
+        }
 
         // Set $nav_menu_selected_id to 0 if no menus
         if ($one_theme_location_no_menus) {
@@ -471,7 +470,7 @@ class NavMenus
             /*
             $menu_id = self::determine_selected_menu();
             if ( ! $menu_id && isset( $_REQUEST['menu'] ) )
-                $menu_id = $_REQUEST['menu'];
+                $menu_id = pp_permissions_sanitize_entry($_REQUEST['menu']);
             
             if ( ! $menu_id )
                 return $new_option_value;

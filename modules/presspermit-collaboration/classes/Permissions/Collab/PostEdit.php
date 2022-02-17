@@ -5,20 +5,21 @@ class PostEdit
 {
     public static function defaultPrivacyWorkaround()
     {
-        if (empty($_POST['publish']) && isset($_POST['visibility']) && isset($_POST['post_type']) 
-        && presspermit()->getTypeOption('default_privacy', $_POST['post_type'])
+        if (presspermit_empty_POST('publish') && presspermit_is_POST('visibility') && presspermit_is_POST('post_type') 
+        && presspermit()->getTypeOption('default_privacy', presspermit_POST_key('post_type'))
         ) {
             $stati = get_post_stati(['moderation' => true], 'names');
-            if (in_array($_POST['post_status'], $stati, true))
+            if (!presspermit_empty_POST('post_status') && in_array(presspermit_POST_key('post_status'), $stati, true)) {
                 return;
+            }
 
             $stati = get_post_stati(['public' => true, 'private' => true], 'names', 'or');
 
-            if (!in_array($_POST['visibility'], ['public', 'password'], true) 
-            && !in_array($_POST['hidden_post_status'], $stati, true)
+            if (!in_array(presspermit_POST_key('visibility'), ['public', 'password'], true) 
+            && (!presspermit_is_POST('hidden_post_status') || !in_array(presspermit_POST_key('hidden_post_status'), $stati, true))
             ) {
-                $_POST['post_status'] = $_POST['hidden_post_status'];
-                $_REQUEST['post_status'] = $_REQUEST['hidden_post_status'];
+                $_POST['post_status'] = presspermit_POST_key('hidden_post_status');
+                $_REQUEST['post_status'] = presspermit_POST_key('hidden_post_status');
 
                 $_POST['visibility'] = 'public';
                 $_REQUEST['visibility'] = 'public';

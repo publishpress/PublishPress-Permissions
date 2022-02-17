@@ -10,7 +10,7 @@ class CollabHooksCompat
         add_action('presspermit_roles_defined', [$this, 'actAdjustDefaultPatternRoles']);
 
         add_filter('presspermit_operations', [$this, 'fltOperations']);
-        add_filter('presspermit_define_pattern_caps', [$this, 'fltDefinePatternCaps']);
+        add_action('presspermit_define_pattern_caps', [$this, 'actDefinePatternCaps']);
         add_filter('presspermit_apply_arbitrary_caps', [$this, 'fltApplyArbitraryCaps'], 10, 3);
     }
 
@@ -39,7 +39,7 @@ class CollabHooksCompat
         return $ops;
     }
 
-    function fltDefinePatternCaps($pattern_role_caps)
+    function actDefinePatternCaps($pattern_role_caps)
     {
         $type_obj = get_taxonomy('category');
         $type_caps['category'] = array_intersect_key(get_object_vars($type_obj->cap), array_fill_keys(['manage_terms'], true));
@@ -104,7 +104,7 @@ class CollabHooksCompat
             // custom moderation stati
             register_post_status('approved', [
                 'label' => _x('Approved', 'post'),
-                'labels' => (object)['publish' => __('Approve', 'press-permit-core')],
+                'labels' => (object)['publish' => esc_html__('Approve', 'press-permit-core')],
                 'moderation' => true,
                 'protected' => true,
                 'internal' => false,
@@ -139,7 +139,10 @@ class CollabHooksCompat
 
             $skip_metacaps = !empty($user->allcaps['pp_moderate_any']) 
             && (!is_admin() || ('presspermit-statuses' != presspermitPluginPage()))       // Capabilities screen needs all status capabilities loaded for administration
-            && ((false == strpos($_SERVER['SCRIPT_NAME'], 'admin.php') || empty($_REQUEST['page'] || ('capsman' != $_REQUEST['page']))) || (!presspermit()->isAdministrator() && !current_user_can('manage_capabilities')));
+            && ((isset($_SERVER['SCRIPT_NAME']) && false == strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'admin.php')) 
+                || !presspermit_is_REQUEST('page', 'capsman')) 
+                || (!presspermit()->isAdministrator() && !current_user_can('manage_capabilities')
+            );
 
             // register each custom post status as an attribute condition with mapped caps
             foreach (get_post_stati([], 'object') as $status => $status_obj) {
@@ -181,15 +184,13 @@ class CollabHooksCompat
 
     function actAdjustDefaultPatternRoles()
     {
-        //presspermit()->registerPatternRole( 'reviewer', ['labels' => (object)['name' => __('Reviewers', 'press-permit-core'), 'singular_name' => __('Reviewer', 'press-permit-core')]]);
-
         if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) {
             presspermit()->registerPatternRole(
                 'revisor', 
                 [
                     'labels' => (object)[
-                        'name' => __('Revisors', 'press-permit-core'), 
-                        'singular_name' => __('Revisor', 'press-permit-core')
+                        'name' => esc_html__('Revisors', 'press-permit-core'), 
+                        'singular_name' => esc_html__('Revisor', 'press-permit-core')
                     ]
                 ]
             );

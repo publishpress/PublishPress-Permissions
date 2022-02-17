@@ -37,11 +37,13 @@ class AdminWorkarounds
         );
 
         // need to filter Find Posts query in Media Library
-        if (empty($_POST['ps']) && (empty($_REQUEST['action']) || ('ajax-tag-search' != $_REQUEST['action'])))
+        if (presspermit_empty_POST('ps') && !presspermit_is_REQUEST('action', 'ajax-tag-search')) {
             $nomess_uris = array_merge($nomess_uris, ['admin-ajax.php']);
+        }
 
-        if (!in_array($pagenow, $nomess_uris, true) && !in_array(presspermitPluginPage(), $nomess_uris, true))
+        if (!in_array($pagenow, $nomess_uris, true) && !in_array(presspermitPluginPage(), $nomess_uris, true)) {
             add_filter('query', [$this, 'flt_last_resort_query'], 5);  // early execution for Revisionary compat
+        }
     }
 
     public function flt_intercept_post_insert($disallow, $post_arr)
@@ -50,14 +52,14 @@ class AdminWorkarounds
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');
             new NavMenus();
 
-            $action = (isset($_REQUEST['action'])) ? $_REQUEST['action'] : '';
+            $action = presspermit_REQUEST_key('action');
 
             if ('add-menu-item' == $action) {
-                if (isset($_REQUEST['menu-item'])) {
-                    foreach ($_REQUEST['menu-item'] as $menu_item) {  // normally just one element in array
+                if ($menu_items = presspermit_REQUEST_var('menu-item')) {
+                    foreach (array_map('sanitize_key', $menu_items) as $menu_item) {  // normally just one element in array
                         $menu_item_type = (isset($menu_item['menu-item-type'])) ? $menu_item['menu-item-type'] : '';
                         $object_type = (isset($menu_item['menu-item-object'])) ? $menu_item['menu-item-object'] : '';
-                        $object_id = (isset($menu_item['menu-item-object-id'])) ? $menu_item['menu-item-object-id'] : '';
+                        $object_id = (isset($menu_item['menu-item-object-id'])) ? (int) $menu_item['menu-item-object-id'] : '';
 
                         if (!NavMenus::can_edit_menu_item(0, compact(['menu_item_type', 'object_type', 'object_id']))) {
                             if (defined('DOING_AJAX') && DOING_AJAX)
@@ -92,7 +94,9 @@ class AdminWorkarounds
             if ($none_text == $text) {
                 $user = presspermit()->getUser();
 
-                $taxonomy = (isset($_REQUEST['taxonomy'])) ? $_REQUEST['taxonomy'] : 'category';
+                if (!$taxonomy = presspermit_REQUEST_key('taxonomy')) {
+                    $taxonomy = 'category';
+                }
 
                 $additional_tt_ids = $user->getExceptionTerms('associate', 'additional', $taxonomy, $taxonomy, ['merge_universals' => true]);
 
@@ -141,7 +145,7 @@ class AdminWorkarounds
                 if (('themes.php' == $menu[$key][2]) 
                 && empty($current_user->allcaps['edit_theme_options']) && ('edit_theme_options' == $menu[$key][1])) 
                 {
-                    $menu[$key][0] = __('Menus');
+                    $menu[$key][0] = esc_html__('Menus');
                     $menu[$key][1] = 'manage_nav_menus';
                     $menu[$key][2] = 'nav-menus.php';
                 }
@@ -154,17 +158,19 @@ class AdminWorkarounds
     {
         $pp = presspermit();
 
-        if (!empty($_POST['tag_ID']) && ('update-tag_' . $_POST['tag_ID'] == $referer_name)) {
+        if (!presspermit_empty_POST('tag_ID') && ('update-tag_' . presspermit_POST_int('tag_ID') == $referer_name)) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/TermEditWorkarounds.php');
             UI\Dashboard\TermEditWorkarounds::term_edit_attempt();
 
         } elseif ('update-nav_menu' == $referer_name) {
             global $current_user;
 
+            $menu_id = presspermit_REQUEST_int('menu');
+
             if (!$pp->isUserUnfiltered() 
             && empty($current_user->allcaps['edit_theme_options']) && empty($current_user->allcaps['edit_menus'])) 
             {
-                if ($menu = get_term($_REQUEST['menu'], 'nav_menu')) {
+                if ($menu = get_term($menu_id, 'nav_menu')) {
                     $_REQUEST['menu-name'] = $menu->name;
                     $_POST['menu-name'] = $menu->name;
                 }
@@ -181,18 +187,19 @@ class AdminWorkarounds
             $use_term_roles = ['nav_menu' => true];
 
             if (empty ($current_user->allcaps['edit_theme_options']) || !empty($use_term_roles['nav_menu'])) {
-                if (!current_user_can($tx->cap->manage_terms, $_REQUEST['menu'])) {
-                    if ($_REQUEST['menu'])
-                        wp_die(__('You do not have permission to update that Navigation Menu', 'press-permit-core'));
-                    else
-                        wp_die(__('You do not have permission to create new Navigation Menus', 'press-permit-core'));
+                if (!current_user_can($tx->cap->manage_terms, $menu_id)) {
+                    if ($menu_id) {
+                        wp_die(esc_html__('You do not have permission to update that Navigation Menu', 'press-permit-core'));
+                    } else {
+                        wp_die(esc_html__('You do not have permission to create new Navigation Menus', 'press-permit-core'));
+                    }
                 }
             }
         } elseif (false !== strpos($referer_name, 'delete-nav_menu-')) {
             if (!$pp->isUserUnfiltered() 
             && empty($current_user->allcaps['edit_theme_options']) && empty($current_user->allcaps['delete_menus'])) 
             {
-                wp_die(__('You do not have permission to delete that Navigation Menu.', 'press-permit-core'));
+                wp_die(esc_html__('You do not have permission to delete that Navigation Menu.', 'press-permit-core'));
             }
         } elseif (false !== strpos($referer_name, 'delete-menu_item_')) {
             if ($pp->getOption('admin_nav_menu_filter_items')) {
@@ -205,10 +212,12 @@ class AdminWorkarounds
             }
         } elseif ($referer_name == 'move-menu_item') {
             if ($pp->getOption('admin_nav_menu_filter_items')) {
-                require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');
-                new NavMenus();
+                if ($menu_item = presspermit_REQUEST_int('menu-item')) {
+                    require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');
+                    new NavMenus();
 
-                NavMenus::modify_nav_menu_item($_REQUEST['menu-item'], 'move');
+                    NavMenus::modify_nav_menu_item((int) $menu_item, 'move');
+                }
             }
         }
     }
@@ -221,7 +230,9 @@ class AdminWorkarounds
             case 'add-category':
                 $user = presspermit()->getUser();
 
-                $taxonomy = (isset($_REQUEST['taxonomy'])) ? $_REQUEST['taxonomy'] : 'category';
+                if (!$taxonomy = presspermit_REQUEST_key('taxonomy')) {
+                    $taxonomy = 'category';
+                }
 
                 if ($tx_obj = get_taxonomy($taxonomy))
                     $cap_name = $tx_obj->cap->manage_terms;
@@ -232,7 +243,7 @@ class AdminWorkarounds
                 $post_type = PWP::findPostType();
 
                 // WP add category JS for Edit Post form does not tolerate absence of some categories from "All Categories" tab
-                $term_parent = (!empty($_REQUEST['parent']) && ($_REQUEST['parent'] > 0)) ? (int)$_REQUEST['parent'] : 0;
+                $term_parent = (!presspermit_empty_REQUEST('parent') && (presspermit_REQUEST_int('parent') > 0)) ? presspermit_REQUEST_int('parent') : 0;
 
                 $ug_clause = $user->getUsergroupsClause('e');
                 $new_term_exceptions = presspermit()->getExceptions(
@@ -286,8 +297,8 @@ class AdminWorkarounds
 
             case 'add-menu_item':
                 if (presspermit()->getOption('admin_nav_menu_filter_items')) {
-                    $object_id = (isset($_REQUEST['menu-item-object-id'])) ? (int)$_REQUEST['menu-item-object-id'] : 0;
-                    $menu = isset($_REQUEST['menu']) ? $_REQUEST['menu'] : 0;
+                    $object_id = presspermit_REQUEST_int('menu-item-object-id');
+                    $menu = presspermit_is_REQUEST('menu') ? pp_permissions_sanitize_entry(presspermit_REQUEST_var('menu')) : 0;
 
                     if (defined('PPCE_RESTRICT_MENU_TOP_LEVEL') && empty($_REQUEST['menu_item']['menu-item-parent-id'])) {
                         // prevent new menu items from going to top level
@@ -375,7 +386,7 @@ class AdminWorkarounds
         $pos_from = strpos($query, "FROM $posts");
 		$pos_where = strpos($query, "WHERE ");
         
-        // @todo: use 'wp_count_posts' filter instead?
+        // todo: use 'wp_count_posts' filter instead?
 
         if ((strpos($query, "ELECT post_status, COUNT( * ) AS num_posts ") || (strpos($query, "ELECT COUNT( 1 )") && $pos_from && (!$pos_where || ($pos_from < $pos_where)))) 
         && preg_match("/FROM\s*{$posts}\s*WHERE post_type\s*=\s*'([^ ]+)'/", $query, $matches)
@@ -426,7 +437,7 @@ class AdminWorkarounds
                             );
                         }
                     } else {
-                        // Additional queries triggered by posts_request filter breaks all subsequent filters which would have operated on this query (@todo: review)
+                        // Additional queries triggered by posts_request filter breaks all subsequent filters which would have operated on this query (todo: review)
                         if (defined('REVISIONARY_VERSION') && version_compare(REVISIONARY_VERSION, '1.5-alpha', '<')) {
                             if (class_exists('RevisionaryAdminHardway_Ltd'))
                                 $query = \RevisionaryAdminHardway_Ltd::flt_last_resort_query($query);
@@ -440,8 +451,13 @@ class AdminWorkarounds
                                 $query = str_replace(
                                     " post_type = '{$matches[1]}'", 
 
-                                    "( post_type = '{$matches[1]}' OR ( post_type = 'revision' AND post_status IN ('pending','future')"
-                                    . " AND post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )", 
+                                    $wpdb->prepare(
+                                        "( post_type = %s OR ( post_type = 'revision' AND post_status IN ('pending','future')"
+                                        . " AND post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s ) ) )",
+
+                                        $matches[1],
+                                        $matches[1]
+                                    ), 
                                     
                                     $query
                                 );
@@ -449,9 +465,13 @@ class AdminWorkarounds
                                 $query = str_replace(
                                     " post_type = '{$matches[1]}'", 
 
-                                    "( post_type = '{$matches[1]}' OR ( post_status IN ('pending-revision','future-revision')"
-                                    . " AND comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )", 
-                                    
+                                    $wpdb->prepare(
+                                        "( post_type = %s OR ( post_status IN ('pending-revision','future-revision')"
+                                        . " AND comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s ) ) )", 
+                                        
+                                        $matches[1],
+                                        $matches[1]
+                                    ),
                                     $query
                                 );
 
@@ -485,8 +505,9 @@ class AdminWorkarounds
         // admin-ajax.php 'find_posts' :
         // SELECT ID, post_title, post_status, post_date FROM $wpdb->posts WHERE post_type = '$what' AND post_status IN ('draft', 'publish') AND ($search) ORDER BY post_date_gmt DESC LIMIT 50
         if (strpos($query, "ELECT ID, post_title, post_status, post_date FROM")) {
-            if (!empty($_POST['post_type']))
-                $query = apply_filters('presspermit_posts_request', $query, ['post_types' => sanitize_key($_POST['post_type'])]);
+            if ($_post_type = presspermit_POST_key('post_type')) {
+                $query = apply_filters('presspermit_posts_request', $query, ['post_types' => $_post_type]);
+            }
         }
 
         // parent_dropdown() - in case a plugin or theme calls it :
@@ -500,18 +521,16 @@ class AdminWorkarounds
                 if (!$page_temp || $page_temp->post_parent) {
                     $selected = ($page_temp && !empty($page_temp->post_parent)) ? $page_temp->post_parent : '';
 
-                    if ($output = wp_dropdown_pages(
+                    wp_dropdown_pages(
                         ['post_type' => 'page', 
-                        'exclude_tree' => $object_id, 
-                        'selected' => $selected, 
+                        'exclude_tree' => esc_attr($object_id), 
+                        'selected' => esc_attr($selected), 
                         'name' => 'parent_id', 
-                        'show_option_none' => __('(no parent)'), 
+                        'show_option_none' => esc_html__('(no parent)'), 
                         'sort_column' => 'menu_order, post_title', 
-                        'echo' => 0
-                        ])
-                    ) { 
-                        echo $output;
-                    }
+                        'echo' => 1
+                        ]
+                    );
                 }
                 $query = "SELECT ID, post_parent FROM $posts WHERE 1=2";
 
@@ -520,29 +539,30 @@ class AdminWorkarounds
         }
 
         if (defined('DOING_AJAX')) {
-            if (strpos($query, "ELECT t.name FROM") && !empty($_REQUEST['tax']) && !empty($_SERVER['HTTP_REFERER'])) {
-                $parsed = parse_url($_SERVER['HTTP_REFERER']);
-                if (!empty($parsed['query'])) {
-                    $qry_vars = [];
-                    wp_parse_str($parsed['query'], $qry_vars);
+            if (strpos($query, "ELECT t.name FROM") && !empty($_SERVER['HTTP_REFERER'])) {
+                if ($taxonomy = presspermit_REQUEST_key('tax')) {
+                    $parsed = wp_parse_url(esc_url_raw($_SERVER['HTTP_REFERER']));
+                    if (!empty($parsed['query'])) {
+                        $qry_vars = [];
+                        wp_parse_str($parsed['query'], $qry_vars);
 
-                    if (!empty($qry_vars['post'])) {
-                        $pp = presspermit();
-                        $taxonomy = sanitize_key($_REQUEST['tax']);
-                        
-                        $ok_tags = get_terms(
-                            ['taxonomy' => $taxonomy, 
-                            'fields' => 'ids', 
-                            'required_operation' => 'edit', 
-                            'object_id' => $qry_vars['post'], 
-                            'use_object_roles' => true
-                            ]);
-                        
-                        $query = str_replace(
-                            " WHERE tt.taxonomy = '$taxonomy'", 
-                            " WHERE tt.term_id IN ('" . implode("','", $ok_tags) . "') AND tt.taxonomy = '$taxonomy'", 
-                            $query
-                        );
+                        if (!empty($qry_vars['post'])) {
+                            $pp = presspermit();
+                            
+                            $ok_tags = get_terms(
+                                ['taxonomy' => $taxonomy, 
+                                'fields' => 'ids', 
+                                'required_operation' => 'edit', 
+                                'object_id' => $qry_vars['post'], 
+                                'use_object_roles' => true
+                                ]);
+                            
+                            $query = str_replace(
+                                " WHERE tt.taxonomy = '$taxonomy'", 
+                                " WHERE tt.term_id IN ('" . implode("','", $ok_tags) . "') AND tt.taxonomy = '$taxonomy'", 
+                                $query
+                            );
+                        }
                     }
                 }
             }

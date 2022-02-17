@@ -10,7 +10,11 @@ class UserAjax
             return;
         }
 
-        switch ($_GET['pp_ajax_user']) {
+        if (!$pp_ajax_user = presspermit_GET_key('pp_ajax_user')) {
+            return;
+        }
+
+        switch ($pp_ajax_user) {
             case 'new_user_groups_ui':
                 require_once( PRESSPERMIT_CLASSPATH . '/UI/Dashboard/Profile.php' );
                 Profile::displayUserGroups(false);

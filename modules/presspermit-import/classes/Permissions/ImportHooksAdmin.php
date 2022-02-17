@@ -30,15 +30,17 @@ class ImportHooksAdmin
 
     function actAdminInit()
     {
-        if (!empty($_POST['pp_rs_import']) || !empty($_POST['pp_pp_import']) || !empty($_POST['pp_undo_imports'])) {
+        if (!presspermit_empty_POST('pp_rs_import') || !presspermit_empty_POST('pp_pp_import') || !presspermit_empty_POST('pp_undo_imports')) {
+            check_admin_referer('pp-rs-import', '_pp_import_nonce');
+
             require_once(PRESSPERMIT_IMPORT_CLASSPATH . '/Importer.php');
-            Import\Importer::handleSubmission();
+            Import\Importer::handleSubmission(); // action-specific nonce checks
         }
     }
 
     function fltDefaultTab($default_tab)
     {
-        if (isset($_POST['pp_rs_import']) || isset($_POST['pp_pp_import']) || isset($_POST['pp_undo_imports'])) {
+        if (presspermit_is_POST('pp_rs_import') || presspermit_is_POST('pp_pp_import') || presspermit_is_POST('pp_undo_imports')) {
             $default_tab = 'import';
         }
 

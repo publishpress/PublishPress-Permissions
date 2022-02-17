@@ -83,9 +83,7 @@ class CommentFiltersAdmin
 			$where = 'WHERE ' . $where;
 		}
 
-		$request = "SELECT comment_approved, COUNT( * ) AS num_comments FROM $wpdb->comments $join $where GROUP BY comment_approved";
-
-        $count = $wpdb->get_results($request);
+        $count = $wpdb->get_results("SELECT comment_approved, COUNT( * ) AS num_comments FROM $wpdb->comments $join $where GROUP BY comment_approved");
 
         // remainder of this function ported from WP function wp_count_comments()
 

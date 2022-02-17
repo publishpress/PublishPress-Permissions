@@ -12,28 +12,25 @@ class Users
             $$var = $args[$var];
         }
 
+        global $wpdb;
+
         switch ($cols) {
             case 'id':
-                $qcols = 'ID';
+                return $wpdb->get_col("SELECT ID FROM $wpdb->users $orderby");
                 break;
             case 'id_name':
-                $qcols = "ID, user_login AS display_name";  // calling code assumes display_name property for user or group object
+                // calling code assumes display_name property for user or group object
+                return $wpdb->get_results("SELECT ID, user_login AS display_name FROM $wpdb->users ORDER BY display_name");
                 break;
             case 'id_displayname':
-                $qcols = "ID, display_name";
+                return $wpdb->get_results("SELECT ID, display_name FROM $wpdb->users ORDER BY display_name");
                 break;
             case 'all':
-                $qcols = "*";
+                return $wpdb->get_results("SELECT * FROM $wpdb->users ORDER BY display_name");
                 break;
             default:
                 $qcols = $cols;
+                return $wpdb->get_results("SELECT $qcols FROM $wpdb->users ORDER BY display_name");
         }
-
-        global $wpdb;
-
-        $orderby = ($cols == 'id') ? '' : 'ORDER BY display_name';
-        $qry = "SELECT $qcols FROM $wpdb->users $orderby";
-
-        return ('id' == $cols) ? $wpdb->get_col($qry) : $wpdb->get_results($qry);
     }
 }

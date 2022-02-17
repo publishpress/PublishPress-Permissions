@@ -2,8 +2,6 @@
 
 namespace PublishPress\Permissions\DB;
 
-//use \PressShack\LibArray as Arr;
-
 class Permissions
 {
     public static function getRoles($agent_id, $agent_type = 'pp_group', $args = [])
@@ -46,9 +44,15 @@ class Permissions
             foreach ($query_agent_ids as $_id)
                 $agent_roles[$_id] = [];
 
+            $agent_id_csv = implode("','", array_map('intval', $query_agent_ids));
+
             $results = $wpdb->get_results(
-                "SELECT assignment_id, role_name, agent_id FROM $wpdb->ppc_roles WHERE agent_type = '$agent_type'"
-                . " AND agent_id IN ('" . implode("','", array_map('intval', $query_agent_ids)) . "') ORDER BY role_name"
+                $wpdb->prepare(
+                    "SELECT assignment_id, role_name, agent_id FROM $wpdb->ppc_roles WHERE agent_type = %s"
+                    . " AND agent_id IN ('$agent_id_csv') ORDER BY role_name",
+
+                    $agent_type
+                )
             );
 
             $no_ext = !$pp->moduleActive('collaboration') && !$pp->moduleActive('status-control');
@@ -156,7 +160,6 @@ class Permissions
             ],
         ];
 
-        // valid return array is arr[for_item_source] = arr[via_item_src][via_item_type] = ['include', 'exclude']
         if ($add_source_types = apply_filters('presspermit_add_exception_source_types', [])) {
             $valid_src_types = array_merge($valid_src_types, $add_source_types);
         }
@@ -197,9 +200,14 @@ class Permissions
                 }
 
                 if (false === $for_types) {
-                    $for_item_clauses[] = "e.for_item_source = '$for_source_name'";
+                    $for_item_clauses[] = $wpdb->prepare("e.for_item_source = %s", $for_source_name);
                 } else {
-                    $for_item_clauses[] = "e.for_item_source = '$for_source_name' AND e.for_item_type IN ('', '" . implode("','", array_unique($for_types)) . "')";
+                    $type_csv = implode("','", array_map('sanitize_key', array_unique($for_types)));
+
+                    $for_item_clauses[] = $wpdb->prepare(
+                        "e.for_item_source = %s AND e.for_item_type IN ('', '$type_csv')",
+                        $for_source_name
+                    );
                 }
             }
         }
@@ -213,10 +221,11 @@ class Permissions
         }
 
         if ($agent_type && !$ug_clause) {
-            $ug_clause = $wpdb->prepare(" AND e.agent_type = %s AND e.agent_id IN ('" . implode("','", array_map('intval', (array)$agent_id)) . "')", $agent_type);
+            $agent_id_csv = implode("','", array_map('intval', (array)$agent_id));
+            $ug_clause = $wpdb->prepare(" AND e.agent_type = %s AND e.agent_id IN ('$agent_id_csv')", $agent_type);
         }
 
-        $operation_clause = "AND e.operation IN ('" . implode("','", $operations) . "')";
+        $operations_csv = implode("','", array_map('sanitize_key', $operations));
 
         $mod_clause = (defined('PP_NO_ADDITIONAL_ACCESS')) ? "AND e.mod_type != 'additional'" : '';
 
@@ -244,15 +253,15 @@ class Permissions
             $cols = "e.operation, e.for_item_source, e.for_item_type, e.mod_type, e.via_item_source, e.via_item_type, e.for_item_status, i.item_id, i.assign_for";
         }
 
-        $extra_cols_clause = ($extra_cols) ? ', ' . implode(",", $extra_cols) : '';
+        $extra_cols_clause = ($extra_cols) ? ', ' . implode(",", array_map('pp_permissions_sanitize_entry', $extra_cols)) : '';
 
         $id_clause = (false !== $item_id) ? $wpdb->prepare("AND i.item_id = %d", $item_id) : '';
 
-        $results = $wpdb->get_results(
-            "SELECT $cols{$extra_cols_clause} FROM $wpdb->ppc_exceptions AS e"
-            . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
-            . " WHERE ( 1=1 $operation_clause $assign_for_clause $inherited_from_clause $mod_clause $type_clause $status_clause $id_clause ) $ug_clause"
-        );
+        $query = "SELECT $cols{$extra_cols_clause} FROM $wpdb->ppc_exceptions AS e"
+        . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
+        . " WHERE ( 1=1 AND e.operation IN ('$operations_csv') $assign_for_clause $inherited_from_clause $mod_clause $type_clause $status_clause $id_clause ) $ug_clause";
+
+        $results = $wpdb->get_results($query);
 
         if ($return_raw_results) {
             return $results;
@@ -289,7 +298,7 @@ class Permissions
             if ($additional_ids)
                 $include_ids = array_unique(array_merge($include_ids, $additional_ids));
 
-            // @todo: how can this ever have array elements (PHP error log from one user)
+            // todo: how can this ever have array elements (PHP error log from one user)
             $include_ids = array_filter($include_ids, 'is_scalar');
 
             $where = " AND $col_id IN ('" . implode("','", array_unique($include_ids)) . "')";
@@ -400,30 +409,28 @@ class Permissions
         $revise_status_key = (defined('PRESSPERMIT_REVISE_TERMS_FOR_UNPUBLISHED') && function_exists('rvy_get_option') && rvy_get_option('pending_revision_unpublished')) ? '' : '{published}';
         $revise_ttids = [$revise_status_key => []];
 
-        global $revisionary, $pagenow;  // @todo: API
+        global $revisionary, $pagenow;  // todo: API
 
 
-        // @todo: remove revise_post merging with Revisions 3
+        // todo: remove revise_post merging with Revisions 3
 
         
         foreach (presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
             $tt_ids = $user->getExceptionTerms($required_operation, 'additional', $post_type, $taxonomy, ['status' => true, 'merge_universals' => true]);
 
-            global $pagenow;
-
             $type_obj = get_post_type_object($post_type);
 
             if (('edit' == $required_operation) 
             && ((!$type_obj || empty($type_obj->cap->edit_published_posts) || empty($user->allcaps[$type_obj->cap->edit_published_posts]))                                         // prevent Revise exceptions from allowing Authors to restore revisions
-                || ('revision.php' != $pagenow) && (!defined('DOING_AJAX') || ! DOING_AJAX || empty($_REQUEST['action']) || ('get-revision-diffs' != $_REQUEST['action']))
+                || ('revision.php' != $pagenow) && (!defined('DOING_AJAX') || ! DOING_AJAX || !presspermit_is_REQUEST('action', 'get-revision-diffs'))
                 )
             ) {
                 if (empty($args['has_cap_check'])) {
-                if (!empty($user->except['revise_post']['term'][$taxonomy]['additional'][$post_type][''])) {
-                    if (!empty($revisionary) && empty($revisionary->skip_revision_allowance)) {
-                        $revise_ttids[$revise_status_key] = array_merge($revise_ttids[$revise_status_key], $user->except['revise_post']['term'][$taxonomy]['additional'][$post_type]['']);
-                	}
-            	}
+                    if (!empty($user->except['revise_post']['term'][$taxonomy]['additional'][$post_type][''])) {
+                        if (!empty($revisionary) && empty($revisionary->skip_revision_allowance)) {
+                            $revise_ttids[$revise_status_key] = array_merge($revise_ttids[$revise_status_key], $user->except['revise_post']['term'][$taxonomy]['additional'][$post_type]['']);
+                        }
+                    }
                     
                     if (!empty($user->except['copy_post']['term'][$taxonomy]['additional'][$post_type][''])) {
                         if (!empty($revisionary) && empty($revisionary->skip_revision_allowance)) {
@@ -444,7 +451,8 @@ class Permissions
         }
 
         if (('edit' == $required_operation) && !empty($revise_ttids[$revise_status_key])) {
-            $in_clause = "IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $revise_ttids[$revise_status_key]) . "') )";
+            $ttid_csv = implode("','", array_map('intval', $revise_ttids[$revise_status_key]));
+            $in_clause = "IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('$ttid_csv') )";
 
             $key = (!empty($post_blockage_clause) && !defined('PP_LEGACY_POST_BLOCKAGE')) ? 'term' : 'post'; // perf enhancement (cosolidate query clauses that don't need to be separated)
             $additions[$key][$revise_status_key][] = apply_filters(
@@ -471,7 +479,8 @@ class Permissions
                         continue;
                 }
 
-                $in_clause = "IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $_ttids) . "') )";
+                $ttid_csv = implode("','", array_map('intval', $_ttids));
+                $in_clause = "IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('$ttid_csv') )";
 
                 $key = (!empty($post_blockage_clause) && !defined('PP_LEGACY_POST_BLOCKAGE')) ? 'term' : 'post'; // perf enhancement (cosolidate query clauses that don't need to be separated)
                 $additions[$key][$_status][] = apply_filters(
@@ -611,7 +620,8 @@ class Permissions
         //
         // Type-specific term restrictions are offset by additions applied by Permissions::addExceptionClauses()
         if ($additional_ttids) {
-            $in_clause = "IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $additional_ttids) . "') )";
+            $id_csv = implode("','", array_map('intval', $additional_ttids));
+            $in_clause = "IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('$id_csv') )";
             $term_additions_clause = apply_filters(
                 'presspermit_additions_clause',
                 "$src_table.ID $in_clause",
@@ -657,12 +667,15 @@ class Permissions
             foreach ($mod_types as $mod) {
                 if ($tt_ids = $user->getExceptionTerms($required_operation, $mod, $post_type, $taxonomy, array_merge($args, ['merge_universals' => true]))) {
                     if ('include' == $mod) {
-                        if ($tx_additional_ids)
+                        if ($tx_additional_ids) {
                             $tt_ids = array_merge($tt_ids, $tx_additional_ids);
+                        }
+
+                        $ttid_csv = implode("','", array_map('intval', $tt_ids));
 
                         $term_include_clause = apply_filters(
                             'presspermit_term_include_clause',
-                            "$src_table.ID IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $tt_ids) . "') )",
+                            "$src_table.ID IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('$ttid_csv') )",
                             compact('tt_ids', 'src_table')
                         );
 
@@ -680,9 +693,13 @@ class Permissions
         }
 
         if ($excluded_ttids) {
-            $where .= " AND ( ( $src_table.ID NOT IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('"
-                . implode("','", $excluded_ttids)
-                . "') ) $type_exemption_clause ) $term_additions_clause $post_additions_clause )";
+            $ttid_csv = implode("','", array_map('intval', $tt_ids));
+
+            $where .= " AND ( "
+                        . "( $src_table.ID NOT IN ( "
+                            . " SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('$ttid_csv') "
+                        . ") $type_exemption_clause ) "
+                    . "$term_additions_clause $post_additions_clause )";
         }
 
         $args = compact(
@@ -718,7 +735,8 @@ class Permissions
         global $wpdb;
 
         if ($eitem_ids = self::get_orphaned_exception_items()) {
-            $wpdb->query("UPDATE $wpdb->ppc_exception_items SET inherited_from = 0 WHERE eitem_id IN ('" . implode("','", $eitem_ids) . "')");
+            $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
+            $wpdb->query("UPDATE $wpdb->ppc_exception_items SET inherited_from = 0 WHERE eitem_id IN ('$eitem_id_csv')");
 
             // keep a log in case questions arise
             if (!$arr = get_option('ppc_exposed_eitem_orphans'))

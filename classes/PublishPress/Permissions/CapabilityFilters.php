@@ -29,7 +29,7 @@ class CapabilityFilters
 
         $this->meta_caps = apply_filters('presspermit_meta_caps', ['read_post' => 'read', 'read_page' => 'read']);
 
-        $this->cap_data_sources = []; // $arr[$cap_name] = source_name (but default to 'post' data source if unspecified)
+        $this->cap_data_sources = []; // array : [$cap_name] = source_name (but default to 'post' data source if unspecified)
         $this->cap_data_sources = apply_filters('presspermit_cap_data_sources', $this->cap_data_sources);
 
         // Since PP activation implies that this plugin should take custody
@@ -50,13 +50,6 @@ class CapabilityFilters
         if (defined('PP_DISABLE_CAP_CACHE')) {
             add_action('presspermit_has_post_cap_pre', [$this, 'disableCapCache'], 10, 4);
         }
-
-        /*
-        // As of 4.8, need to impose current_user_can('read_post') on REST view request for a single public post, because WP_REST_Posts_Controller does not
-        if ( ! $pp->isContentAdministrator() && ! $pp->moduleActive('collaboration') ) {
-            add_filter( 'rest_request_after_callbacks', [$this, 'fltConfirmRestReadable'], 20, 3 );
-        }
-        */
 
         do_action('presspermit_cap_filters');
     }
@@ -109,7 +102,7 @@ class CapabilityFilters
         }
 
         $args = (array)$args;
-        $orig_cap = (isset($args[0])) ? $args[0] : '';
+        $orig_cap = (isset($args[0])) ? sanitize_key($args[0]) : '';
 
         if (isset($args[2])) {
             if (is_object($args[2]))
@@ -117,7 +110,7 @@ class CapabilityFilters
         } else
             $item_id = 0;
 
-        $item_id = (isset($args[2])) ? $args[2] : 0;
+        $item_id = (isset($args[2])) ? (int) $args[2] : 0;
 
         if ('read_document' == $orig_cap)  // todo: api
             $orig_cap = 'read_post';
@@ -250,7 +243,7 @@ class CapabilityFilters
 
                                 $exc_post_type = apply_filters('presspermit_exception_post_type', $item_type, $op, $_args);
 
-                                if ($additional_ids = $user->getExceptionPosts($op, 'additional', $exc_post_type, ['status' => true])) {
+                                if ($additional_ids = $user->getExceptionPosts($op, 'additional', $exc_post_type, ['status' => true, 'merge_related_operations' => true])) {
                                     $additional_ids = Arr::flatten(array_intersect_key($additional_ids, $valid_stati));
 
                                     if (defined('PP_RESTRICTION_PRIORITY') && PP_RESTRICTION_PRIORITY) {
@@ -283,13 +276,19 @@ class CapabilityFilters
                                     if ($enabled_taxonomies = $pp->getEnabledTaxonomies(['object_type' => $item_type])) {
                                         global $wpdb;
 
-                                        if ($item_id) {
-                                            $query = "SELECT tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
-                                                . " INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_taxonomy_id = tr.term_taxonomy_id"
-                                                . " WHERE tt.taxonomy IN ('" . implode("','", $enabled_taxonomies) . "') AND tr.object_id = '$item_id'";
-                                        }
+                                        $taxonomies_csv = implode("','", array_map('sanitize_key', $enabled_taxonomies));
 
-                                        if (!$item_id || $post_ttids = $wpdb->get_col($query)) {
+                                        if (!$item_id 
+                                        || $post_ttids = $wpdb->get_col(
+                                                $wpdb->prepare(
+                                                    "SELECT tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
+                                                    . " INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_taxonomy_id = tr.term_taxonomy_id"
+                                                    . " WHERE tt.taxonomy IN ('$taxonomies_csv') AND tr.object_id = %d",
+
+                                                    $item_id
+                                                )
+                                            )
+                                        ) {
                                             foreach ($pp->getEnabledTaxonomies(['object_type' => $item_type]) as $taxonomy) {
                                                 if ($additional_tt_ids = $user->getExceptionTerms($op, 'additional', $item_type, $taxonomy, ['status' => true])) {
                                                     $additional_tt_ids = Arr::flatten(array_intersect_key($additional_tt_ids, $valid_stati));
@@ -409,11 +408,11 @@ class CapabilityFilters
         // =================================================== (end early exit checks) ======================================================
 
         // ========================================== ARGUMENT TRANSLATION AND STATUS DETECTION =============================================
-        $post_id = (isset($args[2])) ? $args[2] : PWP::getPostID();
+        $post_id = (isset($args[2])) ? (int) $args[2] : PWP::getPostID();
 
         $post_type = PWP::findPostType($post_id); // will be pulled from object
 
-        $pp_reqd_caps = (array)$args[0]; // already cast to array
+        $pp_reqd_caps = array_map('sanitize_key', (array)$args[0]); // already cast to array
 
         //=== Allow PP modules or other plugins to modify some variables
         //
@@ -422,7 +421,7 @@ class CapabilityFilters
         $post_cap_args = [
             'post_type' => $post_type,
             'post_id' => $post_id,
-            'user_id' => $args[1],
+            'user_id' => (int) $args[1],
             'required_operation' => $pp_args['required_operation']
         ];
 
@@ -452,9 +451,8 @@ class CapabilityFilters
         // skip the memcache under certain circumstances
         if (!$memcache_disabled) {
 			if ( 
-            ( ! empty( $_POST ) && ( 'post.php' == $pagenow ) && PWP::getTypeCap( $post_type, 'edit_post' ) == reset($pp_reqd_caps) )  				   // edit_post cap check on wp-admin/post.php submission   			
-            || ( ! empty($_GET['doaction']) && in_array( reset($pp_reqd_caps), ['delete_post', PWP::getTypeCap( $post_type, 'delete_post' )], true ) )  // bulk post/page deletion is broken by hascap buffering
-            /* || 'async-upload.php' == $pagenow */
+            (!presspermit_empty_POST() && ( 'post.php' == $pagenow ) && PWP::getTypeCap( $post_type, 'edit_post' ) == reset($pp_reqd_caps) )  				   // edit_post cap check on wp-admin/post.php submission   			
+            || (!presspermit_empty_GET('doaction') && in_array( reset($pp_reqd_caps), ['delete_post', PWP::getTypeCap( $post_type, 'delete_post' )], true ) )  // bulk post/page deletion is broken by hascap buffering
             ) { 
                 $this->memcache = [];
                 $memcache_disabled = true;
@@ -465,7 +463,7 @@ class CapabilityFilters
         $query_args = ['required_operation' => $required_operation, 'post_types' => $post_type, 'skip_teaser' => true];
 
         // generate a string key for this set of required caps, for use below in checking, caching the filtered results
-        $cap_arg = ( 'edit_page' == $args[0] ) ? 'edit_post' : $args[0]; // minor perf boost on uploads.php, TODO: move to PPCE
+        $cap_arg = ( 'edit_page' == $args[0] ) ? 'edit_post' : sanitize_key($args[0]); // minor perf boost on uploads.php, TODO: move to PPCE
         $capreqs_key = ($memcache_disabled) ? false : $cap_arg . $pp->flags['cache_key_suffix'] . md5(serialize($query_args));
 
         // Check whether this object id was already tested for the same reqd_caps in a previous execution of this function within the same http request
@@ -473,6 +471,24 @@ class CapabilityFilters
             global $wpdb;
 
             $pp = presspermit();
+
+            // Don't filter the 'edit_post' request that Gutenberg applies right after trashing a post. WP will still block editing.
+            if (('edit' == $required_operation) && $pp->doingREST()) {
+                $_post = get_post($post_id);
+
+                if (is_a($_post, 'WP_Post') && ('trash' == $_post->post_status)) {
+                    return $wp_sitecaps;
+                }
+            }
+
+            // Gutenberg editor: allow the Trash button to be displayed right after initial post save, before the status has been refreshed
+            if (('delete' == $required_operation) && $pp->doingREST()) {
+                $_post = get_post($post_id);
+
+                if (is_a($_post, 'WP_Post') && ('auto-draft' == $_post->post_status) && ($_post->post_author == $pp->getUser()->ID)) {
+                    return $wp_sitecaps;
+                }
+            }
 
             // If this cap inquiry is for a single item but multiple items are being listed, we will query for the original metacap on all items (mapping it for each applicable status) and buffer the results
             //
@@ -493,11 +509,12 @@ class CapabilityFilters
             }
 
             $query_args['limit_ids'] = $listed_ids;
-            $query_args['has_cap_check'] = $args[0];
+            $query_args['has_cap_check'] = sanitize_key($args[0]);
             $request = PostFilters::constructPostsRequest(['fields' => "$wpdb->posts.ID"], $query_args);
 
             // run the query
-            $request .= " AND $wpdb->posts.ID IN ('" . implode("', '", $listed_ids) . "')";
+            $id_csv = implode("', '", array_map('intval', $listed_ids));
+            $request .= " AND $wpdb->posts.ID IN ('$id_csv')";
             $qkey = md5($request);
 
             // a different has_cap inquiry may have generated the same query, so check cache before executing the query
@@ -525,17 +542,8 @@ class CapabilityFilters
         }
 
         if ($this_id_okay) {
-            //pp_debug_echo( "PASSED for {$orig_reqd_caps[0]}<br />" );
             return array_merge($wp_sitecaps, array_fill_keys($orig_reqd_caps, true));
         } else {
-            // ================= TEMPORARY DEBUG CODE ===================
-            //pp_dump($args);
-            //pp_dump($orig_reqd_caps);
-            //pp_dump($pp_reqd_caps);
-            //pp_debug_echo( "user_has_cap FAILED ($post_id) !!!!!!!" );
-            //pp_debug_echo( '<br />' );
-            // ============== (end temporary debug code ==================
-
             return array_diff_key($wp_sitecaps, array_fill_keys($orig_reqd_caps, true));  // return user's sitewide caps, minus the caps we were checking for
         }
     }

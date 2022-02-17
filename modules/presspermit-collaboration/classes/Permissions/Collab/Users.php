@@ -30,13 +30,13 @@ class Users
     public static function hasEditUserCap($wp_sitecaps, $orig_reqd_caps, $args, $editing_limitation)
     {
         // prevent anyone from editing a user whose level is higher than their own
-        $levels = self::getUserLevel([$args[1], $args[2]]);
+        $levels = self::getUserLevel([(int) $args[1], (int) $args[2]]);
 
         // finally, compare would-be editor's level with target user's
         if (
         (('lower_levels' == $editing_limitation) && ($levels[$args[2]] >= $levels[$args[1]]))
         || ($levels[$args[2]] > $levels[$args[1]])
-        || apply_filters('presspermit_block_user_edit', false, $args[2])
+        || apply_filters('presspermit_block_user_edit', false, (int) $args[2])
         ) {
             $wp_sitecaps = array_diff_key(
                 $wp_sitecaps, 
@@ -87,11 +87,13 @@ class Users
                     $query_users = $user_ids;
 				}
 
+                $user_id_csv = implode("','", array_map('intval', $query_users));
+
                 // get the WP roles for user
                 $results = $wpdb->get_results(
                     "SELECT m.user_id, g.metagroup_id AS role_name FROM $wpdb->pp_groups AS g"
                     . " INNER JOIN $wpdb->pp_group_members AS m ON m.group_id = g.ID"
-                    . " WHERE g.metagroup_type = 'wp_role' AND m.user_id IN ('" . implode("','", $query_users) . "')"
+                    . " WHERE g.metagroup_type = 'wp_role' AND m.user_id IN ('$user_id_csv')"
                 );
 
 	            // credit each user for the highest role level they have

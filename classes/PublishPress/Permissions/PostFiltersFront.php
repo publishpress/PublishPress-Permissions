@@ -22,7 +22,7 @@ class PostFiltersFront
 
         add_filter('shortcode_atts_gallery', [$this, 'fltAttsGallery'], 10, 3);
 
-        if (!empty($_REQUEST['preview'])) {
+        if (!presspermit_empty_REQUEST('preview')) {
             add_filter('wp_link_pages_link', [$this, 'fltPagesLink']);
         }
 
@@ -78,7 +78,7 @@ class PostFiltersFront
     {
         global $current_user, $wpdb;
 
-        // possible @todo: implement in any other PP filters?
+        // possible todo: implement in any other PP filters?
         require_once(PRESSPERMIT_CLASSPATH_COMMON . '/SqlTokenizer.php');
         $parser = new \PressShack\SqlTokenizer();
         $post_type = $parser->ParseArg($where, 'post_type');
@@ -127,9 +127,9 @@ class PostFiltersFront
             $clauses['where'] = "AND ID IN ('" . implode("','", $post_ids) . "')";
             $clauses = apply_filters('presspermit_posts_clauses', $clauses);
 
-            $post_ids = $wpdb->get_col(
-                "SELECT {$clauses['distinct']} ID FROM $wpdb->posts {$clauses['join']} WHERE 1=1 {$clauses['where']}"
-            );
+            $query = "SELECT {$clauses['distinct']} ID FROM $wpdb->posts {$clauses['join']} WHERE 1=1 {$clauses['where']}";
+
+            $post_ids = $wpdb->get_col($query);
         }
 
         return $post_ids;

@@ -6,9 +6,19 @@ class AgentsAjax
 {
     public function __construct() 
     {
+        global $wpdb, $current_blog;
+
         require_once(ABSPATH . '/wp-admin/includes/user.php');
 
-        if (!isset($_GET['pp_agent_search'])) {
+        if (!presspermit_is_GET('pp_agent_search')) {
+            return;
+        }
+
+        if (!$agent_type = pp_permissions_sanitize_entry(presspermit_GET_key('pp_agent_type'))) {
+            return;
+        }
+
+        if (!$topic = pp_permissions_sanitize_entry(presspermit_GET_key('pp_topic'))) {
             return;
         }
 
@@ -16,14 +26,16 @@ class AgentsAjax
         $pp_admin = $pp->admin();
         $pp_groups = $pp->groups();
 
-        $orig_search_str = $_GET['pp_agent_search'];
-        $search_str = sanitize_text_field($_GET['pp_agent_search']);
-        $agent_type = sanitize_key($_GET['pp_agent_type']);
-        $agent_id = (int)$_GET['pp_agent_id'];
-        $topic = sanitize_text_field(str_replace('\\:', ',', $_GET['pp_topic']));
-        $omit_admins = (bool)$_GET['pp_omit_admins'];
-        $context = (isset($_GET['pp_context'])) ? sanitize_key($_GET['pp_context']) : '';
+        $authors_clause = '';
 
+        $orig_search_str = presspermit_GET_var('pp_agent_search');
+        $search_str = sanitize_text_field($orig_search_str);
+        $agent_id = presspermit_GET_int('pp_agent_id');
+        $topic = str_replace(':', ',', $topic);
+
+        $omit_admins = !presspermit_empty_GET('pp_omit_admins');
+        $context = presspermit_GET_key('pp_context');
+        
         if (strpos($topic, ',')) {
             $arr_topic = explode(',', $topic);
             if (isset($arr_topic[1])) {
@@ -50,7 +62,7 @@ class AgentsAjax
 
                     $operations = apply_filters('presspermit_item_edit_exception_ops', $ops, 'post', $arr_topic[1]);
 
-                    if (!in_array($arr_topic[0], $operations, true)) {
+                    if (empty($operations[$arr_topic[0]])) {
                         die(-1);
                     }
                 }
@@ -81,9 +93,6 @@ class AgentsAjax
         }
 
         if ('user' == $agent_type) {
-            global $wpdb;
-
-            global $current_blog;
             if (isset($current_blog) && is_object($current_blog) && isset($current_blog->blog_id)) {
                 $blog_prefix = $wpdb->get_blog_prefix($current_blog->blog_id);
             } else {
@@ -101,13 +110,13 @@ class AgentsAjax
 
             $orderby = (0 === strpos($orig_search_str, ' ')) ? 'user_login' : 'user_registered DESC';
 
-            $um_keys = (!empty($_GET['pp_usermeta_key'])) ? $_GET['pp_usermeta_key'] : [];
-            $um_vals = (!empty($_GET['pp_usermeta_val'])) ? $_GET['pp_usermeta_val'] : [];
+            $um_keys = (!presspermit_empty_GET('pp_usermeta_key')) ? array_map('pp_permissions_sanitize_entry', presspermit_GET_var('pp_usermeta_key')) : [];
+            $um_vals = (!presspermit_empty_GET('pp_usermeta_val')) ? array_map('sanitize_text_field', presspermit_GET_var('pp_usermeta_val')) : [];
 
             if (defined('PP_USER_LASTNAME_SEARCH') && !defined('PP_USER_SEARCH_FIELD')) {
                 $default_search_field = 'last_name';
             } elseif (defined('PP_USER_SEARCH_FIELD')) {
-                $default_search_field = PP_USER_SEARCH_FIELD;
+                $default_search_field = pp_permissions_sanitize_entry(constant('PP_USER_SEARCH_FIELD'));
             } else {
                 $default_search_field = '';
             }
@@ -138,12 +147,13 @@ class AgentsAjax
                 $where = "WHERE 1=1";
             }
 
-            if ($role_filter = sanitize_text_field($_GET['pp_role_search'])) {
-                global $current_blog;
-                $blog_prefix = $wpdb->get_blog_prefix($current_blog->blog_id);
+            if ($pp_role_search = presspermit_GET_var('pp_role_search')) {
+                if ($role_filter = sanitize_text_field($pp_role_search)) {
+                    $blog_prefix = $wpdb->get_blog_prefix($current_blog->blog_id);
 
-                $um_keys[] = "{$blog_prefix}capabilities";
-                $um_vals[] = $role_filter;
+                    $um_keys[] = "{$blog_prefix}capabilities";
+                    $um_vals[] = $role_filter;
+                }
             }
 
             // append where clause for meta value criteria
@@ -183,19 +193,9 @@ class AgentsAjax
                 $limit_clause = (defined('PP_USER_SEARCH_UNLIMITED')) ? '' : 'LIMIT 10000';
             }
 
-            $results = $wpdb->get_results(
-                "SELECT ID, user_login, display_name FROM $wpdb->users $join $where $authors_clause ORDER BY $orderby $limit_clause"
-            );
+            $query = "SELECT ID, user_login, display_name FROM $wpdb->users $join $where $authors_clause ORDER BY $orderby $limit_clause";
 
-            if (defined('PRESSPERMIT_DEBUG_USER_QUERY') && empty($agent_id)) {
-                error_log('PublishPress Permissions User Query:');
-                error_log(serialize($_GET));
-                error_log("SELECT ID, user_login, display_name FROM $wpdb->users $join $where $authors_clause ORDER BY $orderby $limit_clause");
-                error_log($wpdb->last_query);
-                $num = count($results);
-                error_log("$num results");
-                error_log($wpdb->last_error);
-            }
+            $results = $wpdb->get_results($query);
 
             if ($results) {
                 $omit_users = [];
@@ -207,8 +207,8 @@ class AgentsAjax
                     $omit_users = $pp_groups->getGroupMembers($agent_id, $group_type, 'id', ['member_type' => $topic, 'status' => 'any']);
                 } elseif ($omit_admins) {
                     if ($admin_roles = $pp_admin->getAdministratorRoles()) {  // Administrators can't be excluded; no need to include or enable them
-                        global $wpdb;
-                        $role_csv = implode("','", array_keys($admin_roles));
+
+                        $role_csv = implode("','", array_map('sanitize_key', array_keys($admin_roles)));
                         $omit_users = $wpdb->get_col(
                             "SELECT u.ID FROM $wpdb->users AS u INNER JOIN $wpdb->pp_group_members AS gm ON u.ID = gm.user_id"
                             . " INNER JOIN $wpdb->pp_groups AS g ON gm.group_id = g.ID"
@@ -220,11 +220,11 @@ class AgentsAjax
                 foreach ($results as $row) {
                     if (!in_array($row->ID, $omit_users)) {
                         if (defined('PP_USER_RESULTS_DISPLAY_NAME')) {
-                            $title = ($row->user_login != $row->display_name) ? " title='" . esc_attr($row->user_login) . "'" : '';
-                            echo "<option value='$row->ID' class='pp-new-selection'{$title}>$row->display_name</option>";
+                            $title = ($row->user_login != $row->display_name) ? $row->user_login : '';
+                            echo "<option value='" . esc_attr($row->ID) . "' class='pp-new-selection' title='" . esc_attr($title) . "'>" . esc_html($row->display_name) . "</option>";
                         } else {
-                            $title = ($row->user_login != $row->display_name) ? " title='" . esc_attr($row->display_name) . "'" : '';
-                            echo "<option value='$row->ID' class='pp-new-selection'{$title}>$row->user_login</option>";
+                            $title = ($row->user_login != $row->display_name) ? $row->display_name : '';
+                            echo "<option value='" . esc_attr($row->ID) . "' class='pp-new-selection title='" . esc_attr($title) . "'>" . esc_html($row->user_login) . "</option>";
                         }
                     }
                 }
@@ -245,7 +245,7 @@ class AgentsAjax
             )) {
                 foreach ($groups as $row) {
                     if ((empty($row->metagroup_id) || is_null($row->metagroup_id)) && !isset($omit_groups[$row->ID])) {
-                        echo "<option value='$row->ID'>$row->name</option>";
+                        echo "<option value='" . esc_attr($row->ID) . "'>". esc_html($row->name) . "</option>";
                     }
                 }
             }

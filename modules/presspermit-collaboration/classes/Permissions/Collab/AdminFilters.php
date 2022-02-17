@@ -32,7 +32,7 @@ class AdminFilters
         // called by ajax-exceptions-ui
         add_filter('presspermit_exception_operations', [$this, 'fltExceptionOperations'], 2, 3);
         add_filter('presspermit_exception_via_types', [$this, 'fltExceptionViaTypes'], 10, 5);
-        add_filter('presspermit_exceptions_status_ui', [$this, 'fltExceptionsStatusUi'], 4, 3);
+        add_action('presspermit_exceptions_status_ui', [$this, 'actExceptionsStatusUi'], 4, 2);
 
         add_filter('presspermit_ajax_role_ui_vars', [$this, 'actAjaxRoleVars'], 10, 2);
         add_filter('presspermit_get_type_roles', [$this, 'fltGetTypeRoles'], 10, 3);
@@ -45,8 +45,8 @@ class AdminFilters
         add_action('save_post', [$this, 'actSavePost'], 10, 3);
         add_filter('wp_insert_post_empty_content', [$this, 'fltLogInsertPost'], 10, 2);
 
-        add_filter('save_post', [$this, 'fltUnloadCurrentUserExceptions']);
-        add_filter('created_term', [$this, 'fltUnloadCurrentUserExceptions']);
+        add_action('save_post', [$this, 'actUnloadCurrentUserExceptions']);
+        add_action('created_term', [$this, 'actUnloadCurrentUserExceptions']);
 
         add_filter('editable_roles', [$this, 'fltEditableRoles'], 99);
 
@@ -64,7 +64,7 @@ class AdminFilters
 
     // If Pages metabox results are paged, prevent custom Front Page and Privacy Policy from being forced to the top of every page
     public function fltEditNavMenusIgnoreImportantPages($option_val) {
-        if (did_action('wp_ajax_menu-get-metabox') && !empty($_REQUEST['paged']) && (intval($_REQUEST['paged']) > 1)) {
+        if (did_action('wp_ajax_menu-get-metabox') && (presspermit_REQUEST_int('paged') > 1)) {
             $option_val = 0;
         }
 
@@ -96,7 +96,7 @@ class AdminFilters
         }
     }
 
-    function fltUnloadCurrentUserExceptions($item_id)
+    function actUnloadCurrentUserExceptions($item_id)
     {
         if (!empty(presspermit()->flags['ignore_save_post'])) {
             return;
@@ -144,8 +144,8 @@ class AdminFilters
         $types['pp_group'] = (object)[
             'name' => 'pp_group', 
             'labels' => (object)[
-                'singular_name' => __('Permission Group', 'press-permit-core'), 
-                'name' => __('Permission Groups', 'press-permit-core')
+                'singular_name' => esc_html__('Permission Group', 'press-permit-core'), 
+                'name' => esc_html__('Permission Groups', 'press-permit-core')
                 ]
             ];
         
@@ -157,7 +157,7 @@ class AdminFilters
         if (empty($args['agent']) || empty($args['agent']->metagroup_id) 
         || !in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all'], true)) 
         {
-            echo "<option value='_term_'>" . __('term (manage)', 'press-permit-core') . '</option>';
+            echo "<option value='_term_'>" . esc_html__('term (manage)', 'press-permit-core') . '</option>';
         }
     }
 
@@ -179,10 +179,10 @@ class AdminFilters
         return UI\AjaxUI::fltExceptionViaTypes($types, $for_source_name, $for_type, $operation, $mod_type);
     }
 
-    function fltExceptionsStatusUi($html, $for_type, $args = [])
+    function actExceptionsStatusUi($for_type, $args = [])
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/AjaxUI.php');
-        return UI\AjaxUI::fltExceptionsStatusUi($html, $for_type, $args);
+        UI\AjaxUI::actExceptionsStatusUi($for_type, $args);
     }
 
     function fltGetRoleTitle($role_title, $args)
@@ -193,7 +193,7 @@ class AdminFilters
         if (!empty($matches[1])) {
             $taxonomy = $matches[1];
             if ($tx_obj = get_taxonomy($taxonomy))
-                $role_title = sprintf(__('%s Manager', 'press-permit-core'), $tx_obj->labels->singular_name);
+                $role_title = sprintf(esc_html__('%s Manager', 'press-permit-core'), $tx_obj->labels->singular_name);
         }
 
         return $role_title;
@@ -252,14 +252,14 @@ class AdminFilters
             return $parent_id;
 
         // Avoid preview failure with ACF active
-        if (!empty($_REQUEST['wp-preview']) && ('dopreview' == $_REQUEST['wp-preview']) 
-        && !empty($_REQUEST['action']) && ('editpost' == $_REQUEST['action'])
-        && !empty($_REQUEST['post_ID']) && ($parent_id == $_REQUEST['post_ID'])
+        if (presspermit_is_REQUEST('wp-preview', 'dopreview') 
+        && presspermit_is_REQUEST('action', 'editpost')
+        && presspermit_is_REQUEST('post_ID', $parent_id)
         ) {
             return $parent_id;
         }
 
-        if (defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) && (false !== strpos($_REQUEST['action'], 'woocommerce_'))) {
+        if (defined('DOING_AJAX') && DOING_AJAX && !presspermit_empty_REQUEST('action') && (false !== strpos(presspermit_REQUEST_key('action'), 'woocommerce_'))) {
 			return $parent_id;
 		}
 
@@ -270,9 +270,9 @@ class AdminFilters
         // Don't allow media attachment page to be cleared if user has editing capability (conflict with Image Source Control plugin)
         if (!$parent_id && $orig_parent_id 
         && (
-            false !== strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php')
+            (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'async-upload.php'))
             || ('attachment' == PWP::findPostType())
-            || (false !== strpos($_SERVER['SCRIPT_NAME'], 'admin-ajax.php') && in_array($_REQUEST['action'], ['save-attachment', 'save-attachment-compat']))
+            || (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'admin-ajax.php') && presspermit_is_REQUEST('action', ['save-attachment', 'save-attachment-compat']))
             )
         ) {
             if (current_user_can('edit_post', $orig_parent_id)) {
@@ -300,8 +300,9 @@ class AdminFilters
 
     function fltPostStatus($status)
     {
-        if (presspermit()->isUserUnfiltered() || ('auto-draft' == $status) || strpos($_SERVER['REQUEST_URI'], 'nav-menus.php'))
+        if (presspermit()->isUserUnfiltered() || ('auto-draft' == $status) || (!empty($_SERVER['REQUEST_URI']) && strpos(sanitize_text_field($_SERVER['REQUEST_URI']), 'nav-menus.php'))) {
             return $status;
+        }
 
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostEdit.php');
         return PostEdit::fltPostStatus($status);

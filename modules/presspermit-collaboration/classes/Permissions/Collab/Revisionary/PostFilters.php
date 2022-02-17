@@ -75,11 +75,11 @@ class PostFilters
 
         if ($wp_query->is_preview && defined('REVISIONARY_VERSION')) {
             if (!empty($wp_query->query['p'])) {
-                $post_id = $wp_query->query['p'];
+                $post_id = (int) $wp_query->query['p'];
             } elseif(!empty($wp_query->query['page_id'])) {
-                $post_id = $wp_query->query['page_id'];
+                $post_id = (int) $wp_query->query['page_id'];
             } else {
-                return;
+                return $object_types;
             }
 
             if ($_post = get_post($post_id)) {
@@ -110,8 +110,8 @@ class PostFilters
     function fltPostsWhere($where, $args)
     {
         // for past revisions
-        if (defined('REVISIONARY_VERSION') && !is_admin() && !empty($_REQUEST['post_type']) && ('revision' == $_REQUEST['post_type']) 
-        && (!empty($_REQUEST['preview']) || !empty($_REQUEST['preview_id']))) {
+        if (defined('REVISIONARY_VERSION') && !is_admin() && presspermit_is_REQUEST('post_type', 'revision') 
+        && (!presspermit_empty_REQUEST('preview') || !presspermit_empty_REQUEST('preview_id'))) {
             $matches = [];
             if (preg_match("/post_type = '([0-9a-zA-Z_\-]+)'/", $where, $matches)) {
                 if ($matches[1]) {
@@ -124,9 +124,6 @@ class PostFilters
                         . " AND $wpdb->posts.post_status IN ('inherit')"
                         . " AND $wpdb->posts.post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) ) ",
 
-                       // . " OR ( $wpdb->posts.post_status IN ('pending-revision', 'future-revision') "
-                       // . " AND $wpdb->posts.comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )", 
-                        
                         $where
                     );
                 }
@@ -138,9 +135,10 @@ class PostFilters
 
     function flt_meta_cap($meta_cap)
     {
-        // for past revisions @todo: pending, future revisions?
-        if (defined('REVISIONARY_VERSION') && ('read_post' == $meta_cap) && !is_admin() && !empty($_REQUEST['post_type']) 
-        && ('revision' == $_REQUEST['post_type']) && (!empty($_REQUEST['preview']) || !empty($_REQUEST['preview_id']))) {
+        // for past revisions todo: pending, future revisions?
+        if (defined('REVISIONARY_VERSION') && ('read_post' == $meta_cap) && !is_admin() && presspermit_is_REQUEST('post_type', 'revision') 
+        && (!presspermit_empty_REQUEST('preview') || !presspermit_empty_REQUEST('preview_id'))
+        ) {
             $meta_cap = 'edit_post';
         }
         return $meta_cap;
