@@ -6,19 +6,17 @@ class AncestryQuery
 {
     public static function queryDescendantIDs($source_name, $parent_id, $args = [])
     {
-        $clauses = '';
-
         if (!$parent_id) {
             return [];
         }
 
         $args['source_name'] = $source_name;
 
-        return self::doQueryDescendantIDs($table, $col_id, $col_parent, $parent_id, $clauses);
+        return self::doQueryDescendantIDs($parent_id, $args);
     }
 
     // recursive function
-    private static function doQueryDescendantIDs($table_name, $col_id, $col_parent, $parent_id, $args)
+    private static function doQueryDescendantIDs($parent_id, $args)
     {
         $defaults = ['source_name' => '', 'include_revisions' => false, 'include_attachments' => true, 'post_status' => false, 'post_types' => []];
         $args = array_merge($defaults, $args);
@@ -77,7 +75,7 @@ class AncestryQuery
             foreach ($results as $id) {
                 if (!in_array($id, $descendant_ids)) {
                     $descendant_ids[] = $id;
-                    $next_generation = self::doQueryDescendantIDs($table_name, $col_id, $col_parent, $id, $type_clause, $descendant_ids);
+                    $next_generation = self::doQueryDescendantIDs($id, $args);
                     $descendant_ids = array_unique(array_merge($descendant_ids, $next_generation));
                 }
             }
