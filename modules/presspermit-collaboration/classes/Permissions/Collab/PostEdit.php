@@ -6,7 +6,7 @@ class PostEdit
     public static function defaultPrivacyWorkaround()
     {
         if (empty($_POST['publish']) && isset($_POST['visibility']) && isset($_POST['post_type']) 
-        && presspermit()->getTypeOption('default_privacy', $_POST['post_type'])
+        && presspermit()->getTypeOption('default_privacy', pp_permissions_sanitize_key($_POST['post_type']))
         ) {
             $stati = get_post_stati(['moderation' => true], 'names');
             if (in_array($_POST['post_status'], $stati, true))
@@ -17,8 +17,8 @@ class PostEdit
             if (!in_array($_POST['visibility'], ['public', 'password'], true) 
             && !in_array($_POST['hidden_post_status'], $stati, true)
             ) {
-                $_POST['post_status'] = $_POST['hidden_post_status'];
-                $_REQUEST['post_status'] = $_REQUEST['hidden_post_status'];
+                $_POST['post_status'] = pp_permissions_sanitize_key($_POST['hidden_post_status']);
+                $_REQUEST['post_status'] = pp_permissions_sanitize_key($_REQUEST['hidden_post_status']);
 
                 $_POST['visibility'] = 'public';
                 $_REQUEST['visibility'] = 'public';

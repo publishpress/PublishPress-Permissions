@@ -24,7 +24,7 @@ class TermEdit
 	        add_action('admin_menu', [$this, 'actAddMetaBoxes']);
 	
 	        if (!empty($_REQUEST['taxonomy'])) {
-	            $taxonomy = sanitize_key($_REQUEST['taxonomy']);
+	            $taxonomy = pp_permissions_sanitize_key($_REQUEST['taxonomy']);
 	        	
 	            if (presspermit()->isTaxonomyEnabled($taxonomy)) {
 	                add_action('admin_head', [$this, 'actScriptsWP']);
@@ -96,7 +96,7 @@ class TermEdit
 
         $pp = presspermit();
 
-        $taxonomy = (isset($_REQUEST['taxonomy'])) ? sanitize_key($_REQUEST['taxonomy']) : '';
+        $taxonomy = (isset($_REQUEST['taxonomy'])) ? pp_permissions_sanitize_key($_REQUEST['taxonomy']) : '';
 
         if (!in_array($taxonomy, $pp->getEnabledTaxonomies(), true)) {
             return;
@@ -220,7 +220,7 @@ class TermEdit
         global $typenow;
 
         $post_type = (!empty($_REQUEST['pp_universal'])) ? '' : $typenow;
-        $taxonomy = (isset($_REQUEST['taxonomy'])) ? sanitize_key($_REQUEST['taxonomy']) : '';
+        $taxonomy = (isset($_REQUEST['taxonomy'])) ? pp_permissions_sanitize_key($_REQUEST['taxonomy']) : '';
 
         if (current_user_can('pp_assign_roles')) {
             $this->initItemExceptionsUI();
@@ -400,6 +400,6 @@ class TermEdit
         add_thickbox();
         wp_enqueue_script('media-upload');
 
-        ItemEdit::scriptItemEdit($_REQUEST['taxonomy']);
+        ItemEdit::scriptItemEdit(pp_permissions_sanitize_key($_REQUEST['taxonomy']));
     }
 }

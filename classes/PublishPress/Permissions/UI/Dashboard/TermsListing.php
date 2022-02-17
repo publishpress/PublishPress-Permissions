@@ -15,7 +15,7 @@ class TermsListing
         }
 
         if (empty($_REQUEST['tag_ID'])) {
-            $taxonomy = sanitize_key($_REQUEST['taxonomy']);
+            $taxonomy = pp_permissions_sanitize_key($_REQUEST['taxonomy']);
             add_filter("manage_edit-{$taxonomy}_columns", [$this, 'fltDefineColumns']);
             add_filter("manage_{$taxonomy}_columns", [$this, 'fltDefineColumns']);
             add_filter("manage_{$taxonomy}_custom_column", [$this, 'fltCustomColumn'], 10, 3);
@@ -39,7 +39,7 @@ class TermsListing
         global $typenow;
 
         if (empty($_REQUEST['pp_universal'])) {
-            $taxonomy = sanitize_key($_REQUEST['taxonomy']);
+            $taxonomy = pp_permissions_sanitize_key($_REQUEST['taxonomy']);
             $tx_obj = get_taxonomy($taxonomy);
             $type_obj = get_post_type_object($typenow);
             $url = "edit-tags.php?taxonomy=$taxonomy&pp_universal=1";
@@ -66,7 +66,7 @@ class TermsListing
         global $typenow;
 
         if (empty($_REQUEST['pp_universal'])) {
-            $taxonomy = sanitize_key($_REQUEST['taxonomy']);
+            $taxonomy = pp_permissions_sanitize_key($_REQUEST['taxonomy']);
             $type_obj = get_post_type_object($typenow);
             $title = __('Click to list/edit universal permissions', 'press-permit-core');
             $lbl = ($type_obj && $type_obj->labels) ? $type_obj->labels->singular_name : '';
@@ -178,7 +178,7 @@ class TermsListing
         }
 
         if (!empty($_REQUEST['taxonomy'])) {  // using this with edit-link-categories
-            if ($tx_obj = get_taxonomy($_REQUEST['taxonomy'])) {
+            if ($tx_obj = get_taxonomy(pp_permissions_sanitize_key($_REQUEST['taxonomy']))) {
                 $cap_name = $tx_obj->cap->manage_terms;
             }
         }
@@ -189,7 +189,7 @@ class TermsListing
 
         if (!empty(presspermit()->getUser()->allcaps[$cap_name])
         ) {
-            if (!presspermit()->getUser()->getExceptionTerms('manage', 'include', $_REQUEST['taxonomy'], $_REQUEST['taxonomy'], ['merge_universals' => true])) {
+            if (!presspermit()->getUser()->getExceptionTerms('manage', 'include', pp_permissions_sanitize_key($_REQUEST['taxonomy']), pp_permissions_sanitize_key($_REQUEST['taxonomy']), ['merge_universals' => true])) {
             	return;
             }
         }
@@ -208,7 +208,7 @@ class TermsListing
     {
         global $wp_object_cache, $wpdb, $typenow;
 
-        $taxonomy = sanitize_key($_REQUEST['taxonomy']);
+        $taxonomy = pp_permissions_sanitize_key($_REQUEST['taxonomy']);
 
         if (!empty($wp_object_cache) && (isset($wp_object_cache->cache[$taxonomy]) || isset($wp_object_cache->cache['terms']))) {
             $cache = (isset($wp_object_cache->cache[$taxonomy])) ? $wp_object_cache->cache[$taxonomy] : $wp_object_cache->cache['terms'];
@@ -243,7 +243,7 @@ class TermsListing
         if (!empty($_REQUEST['pp_universal'])) {
             $typenow = '';
         } elseif (empty($typenow)) {
-            $typenow = (isset($_REQUEST['post_type'])) ? sanitize_key($_REQUEST['post_type']) : '';
+            $typenow = (isset($_REQUEST['post_type'])) ? pp_permissions_sanitize_key($_REQUEST['post_type']) : '';
         }
 
         $this->exceptions = [];

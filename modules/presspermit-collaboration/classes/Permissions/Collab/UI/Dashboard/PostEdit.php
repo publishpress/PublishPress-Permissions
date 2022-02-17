@@ -11,8 +11,6 @@ class PostEdit
         add_action('admin_print_footer_scripts', [$this, 'suppress_upload_ui']);
         add_action('admin_print_footer_scripts', [$this, 'suppress_add_category_ui']);
 
-        add_filter('presspermit_item_edit_exception_ops', [$this, 'flt_item_edit_exception_ops'], 10, 3);
-
         if (!empty($_REQUEST['message']) && (6 == $_REQUEST['message'])) {
             add_filter('post_updated_messages', [$this, 'flt_post_updated_messages']);
         }
@@ -68,21 +66,6 @@ class PostEdit
         }
 
         return $clauses;
-    }
-
-    function flt_item_edit_exception_ops($operations, $for_source_name, $for_item_type)
-    {
-        foreach (['edit', 'fork', 'copy', 'revise', 'associate'] as $op) {
-            if (presspermit()->admin()->canSetExceptions($op, $for_item_type, ['for_source_name' => $for_source_name])) {
-                $operations[$op] = true;
-            }
-
-            if (presspermit()->getOption('publish_exceptions') && !empty($operations['edit'])) {
-                $operations['publish'] = true;
-            }
-        }
-
-        return $operations;
     }
 
     function flt_post_updated_messages($messages)

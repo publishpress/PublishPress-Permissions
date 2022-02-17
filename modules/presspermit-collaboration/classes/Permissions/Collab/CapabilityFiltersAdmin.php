@@ -166,7 +166,7 @@ class CapabilityFiltersAdmin
 
                 if (array_intersect($reqd_caps, $replace_post_caps)) {
                     if (!empty($args[0]))
-                        $item_id = (is_object($args[0])) ? $args[0]->ID : $args[0];
+                        $item_id = (is_object($args[0])) ? $args[0]->ID : (int) $args[0];
                     else
                         $item_id = 0;
 
@@ -255,8 +255,6 @@ class CapabilityFiltersAdmin
         //$_all_taxonomy_caps = (isset( $caps->all_taxonomy_caps )) ? $caps->all_taxonomy_caps : [];
         //if ( $type_caps = array_intersect( $orig_reqd_caps, array_keys( $_all_taxonomy_caps ) ) ) {
         if ($type_caps = array_intersect($orig_reqd_caps, array_keys($caps->all_taxonomy_caps))) {
-
-
             global $tag_ID, $taxonomy;
 
             if ($taxonomy) {

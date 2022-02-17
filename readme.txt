@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.8
 Requires PHP: 5.6.20
-Stable tag: 3.6.5
+Stable tag: 3.6.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -119,7 +119,7 @@ Join PublishPress and you'll get access to these Pro plugins:
 * [PublishPress Blocks Pro](https://publishpress.com/blocks) has everything you need to build professional websites with the WordPress block editor.
 * [PublishPress Capabilities Pro](https://publishpress.com/capabilities) is the plugin to manage your WordPress user roles, permissions, and capabilities.
 * [PublishPress Checklists Pro](https://publishpress.com/checklists) enables you to define tasks that must be completed before content is published.
-* [PublishPress Permissions Pro](https://publishpress.com/permissions)  is the plugin for advanced WordPress permissions.
+* [PublishPress Permissions Pro](https://publishpress.com/permissions) is the plugin for advanced WordPress permissions.
 * [PublishPress Pro](https://publishpress.com/publishpress) is the plugin for managing and scheduling WordPress content.
 * [PublishPress Revisions Pro](https://publishpress.com/revisions) allows you to update your published pages with teamwork and precision.
 * [PublishPress Series Pro](https://publishpress.com/series) enables you to group content together into a series 
@@ -237,6 +237,23 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 3.6.8 - 20 Jan 2022 =
+* Fixed : Specific Permissions could not be added or removed using metaboxes in the post editor
+
+= 3.6.7 - 5 Jan 2022 =
+* Fixed : Fatal error on sites not running PublishPress Revisions
+
+= 3.6.6 - 5 Jan 2022 =
+* Compat : PublishPress Revisions - Contributors couldn't edit own draft posts if "Prevent Revisors from editing other user's drafts" setting enabled
+* Compat : PublishPress Revisions - "Revise" permissions assigned under previous Revisions versions did not enable revision creation
+* Compat : PublishPress Revisions - Restrictive permissions for revision creation were not applied
+* Compat : PublishPress Revisions - limited revisors could not edit newly created revision under some Permissions configurations
+* Fixed : Error message after trashing a post in Gutenberg editor (although trashing was successful)
+* Fixed : Trash button not initally displayed after creating a post (requires page reload)
+* Fixed : Permissions table header styling was broken if custom styling is applied to certain standard WP classes
+* Fixed : Edit User screen - Permissions box styling was broken if custom styling is applied to certain standard WP classes
+* Fixed : Input sanitization consistency
 
 = 3.6.5 - 24 Nov 2021 =
 * Fixed : PHP Notice "Undefined index: list_published_posts"

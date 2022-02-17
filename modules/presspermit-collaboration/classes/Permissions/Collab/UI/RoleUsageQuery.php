@@ -93,20 +93,10 @@ class RoleUsageQuery
             return false;
     }
 
-    /*
-     * Used internally to generate an SQL string for searching across multiple columns
-     *
-     * @access protected
-     * @since 3.1.0
-     *
-     * @param string $string
-     * @param array $cols
-     * @param bool $wild Whether to allow wildcard searches. Default is false for Network Admin, true for
-     *  single site. Single site allows leading and trailing wildcards, Network Admin only trailing.
-     * @return string
-     */
+    // obsolete
     function get_search_sql($string, $cols, $wild = false)
     {
+        return '';
     }
 
     /**

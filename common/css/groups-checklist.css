@@ -33,7 +33,7 @@
 }
 
 .pp-agents_emsized ul {
-    margin: 0 0 1em 0;
+    margin: 0;
     padding: 0;
     clear: both;
     float: left;
@@ -43,11 +43,10 @@
 .pp-agents_emsized ul li {
     margin: 0.3em 0 0.3em 0;
     list-style: none;
-    float: left;
 }
 
 .pp-agents_emsized ul input {
-    margin: 0;
+    margin: 0 5px 0 0;
     font-size: auto;
     padding: 0;
 }

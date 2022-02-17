@@ -17,13 +17,13 @@ class AgentExceptionsAjax
             exit;
         }
 
-        $agent_type = sanitize_key($_GET['pp_agent_type']);
+        $agent_type = pp_permissions_sanitize_key($_GET['pp_agent_type']);
         $agent_id = (int)$_GET['pp_agent_id'];
 
         $for_type = PWP::sanitizeCSV($_GET['pp_for_type']);
-        $operation = (isset($_GET['pp_operation'])) ? sanitize_key($_GET['pp_operation']) : '';
-        $via_type = (isset($_GET['pp_via_type'])) ? sanitize_key($_GET['pp_via_type']) : '';
-        $mod_type = (isset($_GET['pp_mod_type'])) ? sanitize_key($_GET['pp_mod_type']) : '';
+        $operation = (isset($_GET['pp_operation'])) ? pp_permissions_sanitize_key($_GET['pp_operation']) : '';
+        $via_type = (isset($_GET['pp_via_type'])) ? pp_permissions_sanitize_key($_GET['pp_via_type']) : '';
+        $mod_type = (isset($_GET['pp_mod_type'])) ? pp_permissions_sanitize_key($_GET['pp_mod_type']) : '';
         $item_id = (isset($_GET['pp_item_id'])) ? (int)$_GET['pp_item_id'] : 0;
 
         if ('(all)' == $for_type) {

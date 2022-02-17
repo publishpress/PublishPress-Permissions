@@ -88,7 +88,7 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
                 }
 
                 if (!empty($_REQUEST['action']) && ('edit' == $_REQUEST['action']) && !empty($_REQUEST['post'])) {
-                    if ($_post = get_post($_REQUEST['post'])) {
+                    if ($_post = get_post((int) $_REQUEST['post'])) {
                         if ('auto-draft' == $_REQUEST['post']) {
                             return;
                         }
