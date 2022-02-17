@@ -13,7 +13,7 @@ class ItemDelete
         // delete role assignments for deleted term
         if ($eitem_ids = $wpdb->get_col(
             $wpdb->prepare(
-            "SELECT eitem_id FROM $wpdb->ppc_exception_items AS i"
+                "SELECT eitem_id FROM $wpdb->ppc_exception_items AS i"
                 . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id WHERE e.via_item_source = %s"
                 . " AND i.item_id = %d",
 

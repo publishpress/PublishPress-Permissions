@@ -194,8 +194,8 @@ class ItemExceptionsData
         foreach ($_assignment_modes as $_assign_for) {
             $results = $wpdb->get_results(
                 $wpdb->prepare(
-                "SELECT DISTINCT e.agent_type, e.agent_id, e.operation, e.for_item_type FROM $wpdb->ppc_exceptions AS e"
-                . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
+                    "SELECT DISTINCT e.agent_type, e.agent_id, e.operation, e.for_item_type FROM $wpdb->ppc_exceptions AS e"
+                    . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
                     . " WHERE $agents_clause AND i.assign_for = %s AND e.mod_type = 'include' $where",
 
                     $_assign_for

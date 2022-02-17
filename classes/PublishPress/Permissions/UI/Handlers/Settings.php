@@ -6,8 +6,8 @@ class Settings
 {
     public function __construct()
     {
-    	check_admin_referer('pp-update-options');
-    	
+        check_admin_referer('pp-update-options');
+
         if (!current_user_can('pp_manage_settings')) {
             wp_die(esc_html(PWP::__wp('Cheatin&#8217; uh?')));
         }
@@ -103,24 +103,24 @@ class Settings
 
         if ($all_otype_options = presspermit_POST_var('all_otype_options')) {
             foreach (array_map('pp_permissions_sanitize_entry', explode(',', sanitize_text_field($all_otype_options))) as $option_basename) {
-            // support stored default values (to apply to any post type which does not have an explicit setting)
-            if (isset($_POST[$option_basename][0])) {
+                // support stored default values (to apply to any post type which does not have an explicit setting)
+                if (isset($_POST[$option_basename][0])) {
                     $_POST[$option_basename][''] = pp_permissions_sanitize_entry(sanitize_text_field($_POST[$option_basename][0]));
-                unset($_POST[$option_basename][0]);
-            }
+                    unset($_POST[$option_basename][0]);
+                }
 
-            $value = (isset($pp->default_options[$option_basename])) ? $pp->default_options[$option_basename] : [];
+                $value = (isset($pp->default_options[$option_basename])) ? $pp->default_options[$option_basename] : [];
 
-            // retain setting for any types which were previously enabled for filtering but are currently not registered
-            $current = $pp->getOption($option_basename);
+                // retain setting for any types which were previously enabled for filtering but are currently not registered
+                $current = $pp->getOption($option_basename);
 
-            if ($current = $pp->getOption($option_basename)) {
-                $value = array_merge($value, $current);
-            }
+                if ($current = $pp->getOption($option_basename)) {
+                    $value = array_merge($value, $current);
+                }
 
                 if ($option_val = presspermit_POST_var($option_basename)) {
                     $value = array_merge($value, array_map('pp_permissions_sanitize_entry', $option_val));
-            }
+                }
 
                 $pp->updateOption($default_prefix . $option_basename, $value, $args);
             }

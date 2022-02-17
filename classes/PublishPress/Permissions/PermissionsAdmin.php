@@ -139,8 +139,8 @@ class PermissionsAdmin
                             echo '</span>';
                         }
                     } else {
-                    return trim(
-                        sprintf(
+                        return trim(
+                            sprintf(
                                 esc_html__('%1$s&nbsp;%2$s&nbsp;%3$s-&nbsp;%4$s%5$s%6$s', 'press-permit-core'),
                                 esc_html($type_caption),
                                 str_replace(' ', '&nbsp;', esc_html($role_caption)),
@@ -148,8 +148,8 @@ class PermissionsAdmin
                                 str_replace(' ', '&nbsp;', esc_html($cond_caption)),
                                 '</span>',
                                 $warning // previously escaped in this function
-                        )
-                    );
+                            )
+                        );
                     }
                 } else {
                     if (!empty($args['echo'])) {
@@ -168,15 +168,15 @@ class PermissionsAdmin
                             ); 
                             echo '</span>';
                         }
-                } else {
-                    return trim(
-                        sprintf(
+                    } else {
+                        return trim(
+                            sprintf(
                                 esc_html__('%1$s&nbsp;%2$s&nbsp;%3$s', 'press-permit-core'),
                                 esc_html($type_caption),
                                 esc_html($role_caption),
                                 $warning // previously escaped in this function
-                        )
-                    );
+                            )
+                        );
                     }
                 }
             }

@@ -129,14 +129,14 @@ class RoleUsageListTable extends \WP_List_Table
             switch ($column_name) {
                 case 'role_name':
                     echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
-
-        if ($can_manage) {
-            $edit_link = $base_url . "?page=presspermit-role-usage-edit&amp;action=edit&amp;role={$role_name}";
+                    
+                    if ($can_manage) {
+                        $edit_link = $base_url . "?page=presspermit-role-usage-edit&amp;action=edit&amp;role={$role_name}";
                         echo "<strong><a href='" . esc_url($edit_link) . "'>" . esc_html($role_obj->labels->singular_name) . "</a></strong><br />";
-        } else {
+                    } else {
                         echo '<strong>' . esc_html($role_obj->labels->name) . '</strong>';
-        }
-
+                    }
+                
                 	$mode = get_user_setting( 'posts_list_mode', 'list' );
                 	$class = ('excerpt' === $mode) ? 'row-actions visible' : 'row-actions';
 
@@ -151,7 +151,7 @@ class RoleUsageListTable extends \WP_List_Table
                     }
 
                     echo '</div>';
-
+                    
                     echo "</td>";
 
                     break;
@@ -175,11 +175,11 @@ class RoleUsageListTable extends \WP_List_Table
                     do_action('presspermit_manage_role_usage_custom_column', '', $column_name, $role_obj);
                     echo "</td>";
             }
-            }
-        echo '</tr>';
         }
+        echo '</tr>';
+    }
 
     function row_actions( $actions, $always_visible = false ) {
 
-    }
+	}
 }

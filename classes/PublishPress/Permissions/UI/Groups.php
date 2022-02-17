@@ -253,7 +253,7 @@ class Groups
                                 '</a>'
                             );
                         }
-
+                        
                         echo "</div>";
                     }
                     ?>

@@ -354,7 +354,7 @@ class Admin
 
             $revision_uris = apply_filters('presspermit_revision_uris', ['edit.php', 'upload.php', 'widgets.php', 'revision.php', 'admin-ajax.php', 'rvy-revisions', 'revisionary-q']);
 
-                $revision_uris [] = 'index.php';
+            $revision_uris [] = 'index.php';
 
             if (presspermit_is_preview() || in_array($pagenow, $revision_uris, true) || in_array(presspermitPluginPage(), $revision_uris, true) || in_array($plugin_page, $revision_uris, true)) {
                 $strip_capreqs = [];

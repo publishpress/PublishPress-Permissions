@@ -322,7 +322,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
         $rs_inherited_from = [];    // 
 
         $imported_restrictions = $wpdb->get_results($wpdb->prepare("SELECT source_id, import_tbl, import_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d", $this->getTableCode($wpdb->role_scope_rs)), OBJECT_K);
-        
+
         $pp_agent_id = [];
         $results = $wpdb->get_results("SELECT metagroup_id, ID FROM $wpdb->pp_groups WHERE metagroup_type = 'wp_role'");
         foreach ($results as $row) {
@@ -478,7 +478,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                         $exception_id = $this->get_exception_id($stored_exceptions, $data, $row->source_id);
 
                         $wpdb->insert_id = 0;
-                        
+
                         $wpdb->query(
                             $wpdb->prepare(
                                 "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, item_id, inherited_from) SELECT * FROM ( SELECT %s AS a, %s AS b, %s AS c, %s AS d ) AS tmp"
@@ -493,7 +493,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                                 $row->item_id
                             )
                         );
-                        
+
                         if ($wpdb->insert_id) {
                             $eitem_id = (int)$wpdb->insert_id;
 
@@ -1020,7 +1020,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                     )
                 )) {
                     $import_id = $row->option_id;
-            }
+                }
             }
 
             $log_data = ['run_id' => $this->run_id, 'source_tbl' => $this->getTableCode($wpdb->options), 'source_id' => $source_id, 'import_tbl' => $this->getTableCode($wpdb->options), 'import_id' => $import_id, 'site' => $blog_id];

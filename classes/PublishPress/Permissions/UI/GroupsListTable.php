@@ -279,26 +279,26 @@ class GroupsListTable extends GroupsListTableBase
             switch ($column_name) {
                 case 'cb':
                     echo "<th scope='row' class='check-column'>";
-
-        // Set up the checkbox ( because the group or group members are editable, otherwise it's empty )
+                    
+                    // Set up the checkbox ( because the group or group members are editable, otherwise it's empty )
                     if ($actions && (!$group->metagroup_id || (('wp_role' == $group->metagroup_type)
                     && \PublishPress\Permissions\DB\Groups::isDeletedRole($group->metagroup_id)))
-        ) {
+                    ) {
                         echo "<input type='checkbox' name='groups[]' id='group_" . (int) $group_id . "' value='" . (int) $group_id . "' />";
-        }
+                    }
 
                     echo '</th>';
                     break;
 
                 case 'group_name':
                     echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
-
+                    
                     // Check if the group for this row is editable
                     if ($can_manage_group) {
                         echo "<strong><a href='" . esc_url($edit_link) . "'>" . esc_html($group->group_name) . "</a></strong><br />";
                     } else {
                         echo '<strong>' . esc_html($group->group_name) . '</strong>';
-            }
+                    }
 
                     $this->row_actions($actions);
 

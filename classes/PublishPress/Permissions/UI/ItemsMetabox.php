@@ -99,7 +99,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             $per_page = defined('PP_ITEM_MENU_PER_PAGE') ? PP_ITEM_MENU_PER_PAGE : 100;
         }
 
-		$current_tab = presspermit_REQUEST_key($post_type_name . '-tab');
+        $current_tab = presspermit_REQUEST_key($post_type_name . '-tab');
 
         $pagenum = $current_tab && presspermit_isset_REQUEST('paged') ? absint(presspermit_REQUEST_var('paged')) : 1;
         $offset = 0 < $pagenum ? $per_page * ($pagenum - 1) : 0;
@@ -164,7 +164,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
         $walker = new ItemsMetabox($db_fields);
 
         if (!in_array($current_tab, ['all', 'search'])) {
-        $current_tab = 'most-recent';
+            $current_tab = 'most-recent';
         }
 
         if (!presspermit_empty_REQUEST('quick-search-posttype-' . $post_type_name)) {
@@ -420,7 +420,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
         $walker = new ItemsMetabox($db_fields);
 
         if (!in_array($current_tab, ['all', 'search'])) {
-        $current_tab = 'most-recent';
+            $current_tab = 'most-recent';
         }
 
         $removed_args = [
@@ -629,7 +629,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
         $walker = new ItemsMetabox($db_fields);
 
         if (!in_array($current_tab, ['all', 'most-used', 'search'])) {
-        	$current_tab = 'most-used';
+            $current_tab = 'most-used';
         }
 
         if (!presspermit_empty_REQUEST('quick-search-taxonomy-' . $taxonomy_name)) {

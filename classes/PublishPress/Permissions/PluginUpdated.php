@@ -348,9 +348,9 @@ class PluginUpdated
             if ($user_ids) {
                 $user_id_csv = implode("','", array_map('intval', $user_ids));
 
-            $results = $wpdb->get_results(
+                $results = $wpdb->get_results(
                     "SELECT group_id, user_id FROM $wpdb->members_table WHERE group_id IN ('$group_id_csv') AND user_id IN ('$user_id_csv')"
-            );
+                );
             } else {
                 $results = $wpdb->get_results(
                     "SELECT group_id, user_id FROM $wpdb->members_table WHERE group_id IN ('$group_id_csv')"
@@ -365,7 +365,7 @@ class PluginUpdated
             if ($user_ids) {
                 $user_id_csv = implode("','", array_map('intval', $user_ids));
 
-            $usermeta = $wpdb->get_results(
+                $usermeta = $wpdb->get_results(
                     $wpdb->prepare(
                         "SELECT user_id, meta_value FROM $wpdb->usermeta WHERE meta_key = %s AND user_id IN ('$user_id_csv')",
                         "{$wpdb->prefix}capabilities"
@@ -377,7 +377,7 @@ class PluginUpdated
                         "SELECT user_id, meta_value FROM $wpdb->usermeta WHERE meta_key = %s",
                         "{$wpdb->prefix}capabilities"
                     )
-            );
+                );
             }
 
             foreach (array_keys($usermeta) as $key) {

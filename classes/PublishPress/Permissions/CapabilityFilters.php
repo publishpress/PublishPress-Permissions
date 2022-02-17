@@ -282,7 +282,7 @@ class CapabilityFilters
                                         || $post_ttids = $wpdb->get_col(
                                                 $wpdb->prepare(
                                                     "SELECT tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
-                                                . " INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_taxonomy_id = tr.term_taxonomy_id"
+                                                    . " INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_taxonomy_id = tr.term_taxonomy_id"
                                                     . " WHERE tt.taxonomy IN ('$taxonomies_csv') AND tr.object_id = %d",
 
                                                     $item_id

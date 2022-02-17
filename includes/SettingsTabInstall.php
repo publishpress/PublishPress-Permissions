@@ -144,25 +144,25 @@ class SettingsTabInstall
                             <?php if (($expired && $expire_days < 365) || get_option('presspermitpro_version') || $activated):?>
                             <li>
                             <?php
-        if ($expired) {
-            if ($expire_days < 365) {
+                            if ($expired) {
+                                if ($expire_days < 365) {
                                     printf( 
                                         esc_html__('Your presspermit.com key has expired, but a <a href="%s">PublishPress renewal</a> discount may be available.', 'press-permit-core'),
-                    'admin.php?page=presspermit-settings&amp;pp_renewal=1'
-                );
-            }
-
-        } elseif ($modern_pro_version = get_option('presspermitpro_version')) {
+                                        'admin.php?page=presspermit-settings&amp;pp_renewal=1'
+                                    );
+                                }
+                    
+                            } elseif ($modern_pro_version = get_option('presspermitpro_version')) {
                                 echo esc_html__('Permissions Pro was previously active. You are now running the free version, with fewer features.', 'press-permit-core');
-
-        } elseif ($activated) {
-            $url = "https://publishpress.com/contact/?pp_topic=presspermit-migration&presspermit_account=$key_string";
-            
+                    
+                            } elseif ($activated) {
+                                $url = "https://publishpress.com/contact/?pp_topic=presspermit-migration&presspermit_account=$key_string";
+                                
                                 printf(
                                     esc_html__('A presspermit.com key appears to be active. <a href="%s" target="_blank">Contact us</a> for assistance in migrating your account to publishpress.com.', 'press-permit-core'),
                                     esc_url($url)
-            );
-        }
+                                );
+                            }
                             ?>
                             </li>
                             <?php endif;?>

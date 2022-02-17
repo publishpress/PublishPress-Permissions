@@ -145,8 +145,8 @@ class Migration
             if ($results = $wpdb->get_results(
                     $wpdb->prepare(
                         "SELECT eitem_id, item_id FROM $wpdb->ppc_exception_items AS i"
-                . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
-                . " WHERE i.inherited_from > 0 AND e.for_item_source = 'post' AND e.for_item_type = 'attachment'"
+                        . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
+                        . " WHERE i.inherited_from > 0 AND e.for_item_source = 'post' AND e.for_item_type = 'attachment'"
                         . " AND e.operation = %s $mod_type_clause",
 
                         $operation

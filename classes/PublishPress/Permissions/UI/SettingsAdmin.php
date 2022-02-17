@@ -362,8 +362,8 @@ class SettingsAdmin
                 . "</label>";
 
             if ($hint_text && $this->display_hints) {
-                    $hint_class = 'pp-subtext';
-                    $hint_class .= (!empty($args['hint_class'])) ? ' ' . $args['hint_class'] : '';
+                $hint_class = 'pp-subtext';
+                $hint_class .= (!empty($args['hint_class'])) ? ' ' . $args['hint_class'] : '';
 
                 if (true === $hint_text) :?>
                     <?php if (self::getStr($option_name)):?>

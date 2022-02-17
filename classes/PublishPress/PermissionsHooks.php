@@ -209,7 +209,7 @@ class PermissionsHooks
                 require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
                 Permissions\PluginUpdated::syncWordPressRoles();
             }
-            }
+        }
         // --- end version check ---
 
         // already loaded these early, so apply filter again for modules

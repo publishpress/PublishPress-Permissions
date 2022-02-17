@@ -258,7 +258,7 @@ class Permissions
         $id_clause = (false !== $item_id) ? $wpdb->prepare("AND i.item_id = %d", $item_id) : '';
 
         $query = "SELECT $cols{$extra_cols_clause} FROM $wpdb->ppc_exceptions AS e"
-            . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
+        . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
         . " WHERE ( 1=1 AND e.operation IN ('$operations_csv') $assign_for_clause $inherited_from_clause $mod_clause $type_clause $status_clause $id_clause ) $ug_clause";
 
         $results = $wpdb->get_results($query);

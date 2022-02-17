@@ -43,7 +43,7 @@ class AdminWorkarounds
 
         if (!in_array($pagenow, $nomess_uris, true) && !in_array(presspermitPluginPage(), $nomess_uris, true)) {
             add_filter('query', [$this, 'flt_last_resort_query'], 5);  // early execution for Revisionary compat
-    	}
+        }
     }
 
     public function flt_intercept_post_insert($disallow, $post_arr)
@@ -213,8 +213,8 @@ class AdminWorkarounds
         } elseif ($referer_name == 'move-menu_item') {
             if ($pp->getOption('admin_nav_menu_filter_items')) {
                 if ($menu_item = presspermit_REQUEST_int('menu-item')) {
-                	require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');
-                	new NavMenus();
+                    require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');
+                    new NavMenus();
 
                     NavMenus::modify_nav_menu_item((int) $menu_item, 'move');
                 }
@@ -468,7 +468,7 @@ class AdminWorkarounds
                                     $wpdb->prepare(
                                         "( post_type = %s OR ( post_status IN ('pending-revision','future-revision')"
                                         . " AND comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s ) ) )", 
-                                    
+                                        
                                         $matches[1],
                                         $matches[1]
                                     ),
@@ -507,7 +507,7 @@ class AdminWorkarounds
         if (strpos($query, "ELECT ID, post_title, post_status, post_date FROM")) {
             if ($_post_type = presspermit_POST_key('post_type')) {
                 $query = apply_filters('presspermit_posts_request', $query, ['post_types' => $_post_type]);
-			}
+            }
         }
 
         // parent_dropdown() - in case a plugin or theme calls it :
@@ -542,28 +542,28 @@ class AdminWorkarounds
             if (strpos($query, "ELECT t.name FROM") && !empty($_SERVER['HTTP_REFERER'])) {
                 if ($taxonomy = presspermit_REQUEST_key('tax')) {
                     $parsed = wp_parse_url(esc_url_raw($_SERVER['HTTP_REFERER']));
-	                if (!empty($parsed['query'])) {
-	                    $qry_vars = [];
-	                    wp_parse_str($parsed['query'], $qry_vars);
-	
-	                    if (!empty($qry_vars['post'])) {
-	                        $pp = presspermit();
-	                        
-	                        $ok_tags = get_terms(
-	                            ['taxonomy' => $taxonomy, 
-	                            'fields' => 'ids', 
-	                            'required_operation' => 'edit', 
-	                            'object_id' => $qry_vars['post'], 
-	                            'use_object_roles' => true
-	                            ]);
-	                        
-	                        $query = str_replace(
-	                            " WHERE tt.taxonomy = '$taxonomy'", 
-	                            " WHERE tt.term_id IN ('" . implode("','", $ok_tags) . "') AND tt.taxonomy = '$taxonomy'", 
-	                            $query
-	                        );
-	                    }
-	            	}
+                    if (!empty($parsed['query'])) {
+                        $qry_vars = [];
+                        wp_parse_str($parsed['query'], $qry_vars);
+
+                        if (!empty($qry_vars['post'])) {
+                            $pp = presspermit();
+                            
+                            $ok_tags = get_terms(
+                                ['taxonomy' => $taxonomy, 
+                                'fields' => 'ids', 
+                                'required_operation' => 'edit', 
+                                'object_id' => $qry_vars['post'], 
+                                'use_object_roles' => true
+                                ]);
+                            
+                            $query = str_replace(
+                                " WHERE tt.taxonomy = '$taxonomy'", 
+                                " WHERE tt.term_id IN ('" . implode("','", $ok_tags) . "') AND tt.taxonomy = '$taxonomy'", 
+                                $query
+                            );
+                        }
+                    }
                 }
             }
         }

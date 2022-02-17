@@ -686,10 +686,10 @@ class PermissionsUpdate
                             OBJECT_K
                         );
                     } else {
-                    $descendant_types = $wpdb->get_results(
+                        $descendant_types = $wpdb->get_results(
                             "SELECT ID, post_type AS for_item_type FROM $wpdb->posts WHERE ID IN ('$descendant_id_csv')",
-                        OBJECT_K
-                    );
+                            OBJECT_K
+                        );
                     }
                 } else {
                     $descendant_types = [];

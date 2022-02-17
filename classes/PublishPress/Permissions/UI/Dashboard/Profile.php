@@ -297,8 +297,8 @@ class Profile
                 } else {
                     $exc_str = '<span class="pp-group-site-roles">';
 
-                if ($show_link && current_user_can('pp_assign_roles') && (is_multisite() || current_user_can('edit_user', $id))) {
-                    $edit_link = "admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_id=$id&amp;agent_type=user";
+                    if ($show_link && current_user_can('pp_assign_roles') && (is_multisite() || current_user_can('edit_user', $id))) {
+                        $edit_link = "admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_id=$id&amp;agent_type=user";
                         $exc_str .= "<a href='" . esc_url($edit_link) . "'>" . esc_html($titles_list) . "</a><br />";
                     } else {
                         $exc_str .= esc_html($titles_list);

@@ -302,7 +302,7 @@ class UsersListing
                 break;
         }
 
-                return $content;
+        return $content;
     }
 
     public static function fltUserQuery($query)
@@ -318,7 +318,7 @@ class UsersListing
 
     public static function fltUserQueryExceptions($query_obj)
     {
-            global $wpdb;
+        global $wpdb;
 
         if (presspermit_is_REQUEST('orderby', 'orderby')) {
             $query_obj->query_where = " INNER JOIN $wpdb->pp_group_members AS gm ON gm.user_id = $wpdb->users.ID"

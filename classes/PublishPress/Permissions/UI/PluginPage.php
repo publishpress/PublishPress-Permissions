@@ -106,12 +106,12 @@ class PluginPage
     public static function getGroupVariant() {
         if (presspermit_empty_REQUEST('group_variant') && !presspermit_empty_REQUEST('s')) {
             if ($wp_http_referer = presspermit_REQUEST_var('_wp_http_referer')) {
-            $matches = [];
+                $matches = [];
                 if (preg_match("/group_variant=([0-9a-zA-Z_\-]+)/", urldecode(esc_url_raw($wp_http_referer)), $matches)) {
-                if ($matches[1]) {
+                    if ($matches[1]) {
                         $group_variant = sanitize_key($matches[1]);
+                    }
                 }
-            }
             }
         } elseif (presspermit_empty_REQUEST('group_variant') && !current_user_can('edit_users')) {
             $group_variant = 'pp_group';

@@ -300,7 +300,7 @@ class CapabilityFiltersAdmin
             }
 
             $return = compact('type_caps', 'item_type', 'is_term_cap', 'op', 'taxonomy');
-
+            
             if (!empty($return_taxonomy)) {
                 $return['taxonomy'] = $return_taxonomy;
             }
@@ -401,10 +401,10 @@ class CapabilityFiltersAdmin
 
         if (is_admin() && in_array($pagenow, ['edit-tags.php', 'term.php']) && !presspermit_is_REQUEST('action', 'editedtag')) {
             if ($tag_id = presspermit_REQUEST_int('tag_ID')) {
-            $tx_obj = get_taxonomy(reset($taxonomies));
-            if ($tx_obj->hierarchical) {
-                global $wpdb;
-                // don't filter current parent category out of selection UI even if current user can't manage it
+                $tx_obj = get_taxonomy(reset($taxonomies));
+                if ($tx_obj->hierarchical) {
+                    global $wpdb;
+                    // don't filter current parent category out of selection UI even if current user can't manage it
                     $clauses['where'] .= $wpdb->prepare(
                         " OR t.term_id = (SELECT parent FROM $wpdb->term_taxonomy WHERE taxonomy = %s AND term_id = %d) ",
                         $tx_obj->name,

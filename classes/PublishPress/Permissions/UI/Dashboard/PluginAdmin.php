@@ -38,31 +38,31 @@ class PluginAdmin
             echo '<tr class="plugin-update-tr"><td colspan="' . esc_attr($wp_list_table->get_column_count())
                 . '" class="plugin-update"><div class="update-message">';
                 
-                $url = admin_url('admin.php?page=presspermit-settings');
+            $url = admin_url('admin.php?page=presspermit-settings');
 
             printf(
                 esc_html__('PublishPress Permissions needs directions. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered.', 'press-permit-core'),
                 '<a href="' . esc_url($url) . '">',
-                    '</a>'
-                );
+                '</a>'
+            );
 
-        if (presspermit()->isPro() && (is_network_admin() || !is_multisite())) {
-            $key = presspermit()->getOption('edd_key');
-            $keyStatus = isset($key['license_status']) ? $key['license_status'] : 'invalid';
-
-            if (in_array($keyStatus, ['invalid', 'expired'])) {
-                require_once PRESSPERMIT_CLASSPATH . '/PluginStatus.php';
-                
+            if (presspermit()->isPro() && (is_network_admin() || !is_multisite())) {
+                $key = presspermit()->getOption('edd_key');
+                $keyStatus = isset($key['license_status']) ? $key['license_status'] : 'invalid';
+    
+                if (in_array($keyStatus, ['invalid', 'expired'])) {
+                    require_once PRESSPERMIT_CLASSPATH . '/PluginStatus.php';
+                    
                     echo '<br /><br />';
                     
                     if ('expired' == $keyStatus) {
                         \PublishPress\Permissions\PluginStatus::renewalMsg();
                     } else {
                         \PublishPress\Permissions\PluginStatus::buyMsg();
+                    }
                 }
             }
-        }
-
+            
             echo '</div></td></tr>';
         }
     }

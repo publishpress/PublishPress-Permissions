@@ -67,9 +67,9 @@ class PermissionsMeta
                 }
 
                 $query = "SELECT gm.$col_member_user as qry_agent_id, e.exception_id, e.for_item_source, e.for_item_type,"
-                    . " e.via_item_type, e.operation, $count_clause AS exc_count"
-                    . " FROM $wpdb->ppc_exception_items AS i"
-                    . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
+                . " e.via_item_type, e.operation, $count_clause AS exc_count"
+                . " FROM $wpdb->ppc_exception_items AS i"
+                . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
                 . " INNER JOIN $wpdb->members_table AS gm ON ( $agent_type_clause )"
                 . " WHERE i.inherited_from = '0' AND operation IN ('$ops_csv')"
                 . " AND e.for_item_type IN ('$types_csv') AND e.via_item_type IN ('$types_csv') $agent_clause"
@@ -178,21 +178,21 @@ class PermissionsMeta
                     $wpdb->prepare(
                         "SELECT agent_id, role_name, COUNT(*) AS rolecount FROM $wpdb->ppc_roles WHERE agent_type = %s AND agent_id IN ('$agent_id_csv')"
                         . " GROUP BY agent_id, role_name",
-
+    
                         $agent_type
                     )
                 );
 
             } else {
-            $results = $wpdb->get_results(
-                $wpdb->prepare(
+                $results = $wpdb->get_results(
+                    $wpdb->prepare(
                         "SELECT agent_id, role_name, COUNT(*) AS rolecount FROM $wpdb->ppc_roles WHERE agent_type = %s"
-                    . " GROUP BY agent_id, role_name",
+                        . " GROUP BY agent_id, role_name",
     
-                    $agent_type
-                )
-            );
-        }
+                        $agent_type
+                    )
+                );
+            }
         }
 
         $item_types = array_merge($pp->getEnabledPostTypes(), $pp->getEnabledTaxonomies());

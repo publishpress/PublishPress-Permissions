@@ -46,7 +46,7 @@ class PostTermsSave
                 $wpdb->prepare(
                     "SELECT $select_this FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id"
                     . " INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy = %s AND tr.object_id IN ('$object_id_csv')",
-
+                    
                     $taxonomy
                 )
             );
@@ -82,8 +82,8 @@ class PostTermsSave
         } elseif ('tt_ids' == $fields) {
             $terms = $wpdb->get_col(
                 $wpdb->prepare(
-                "SELECT tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
-                . " INNER JOIN $wpdb->term_taxonomy AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id"
+                    "SELECT tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
+                    . " INNER JOIN $wpdb->term_taxonomy AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id"
                     . " WHERE tr.object_id IN ('$object_id_csv') AND tt.taxonomy = %s",
 
                     $taxonomy

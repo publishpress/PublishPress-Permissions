@@ -16,19 +16,19 @@ class CollabHooks
         // Divi Page Builder  todo: test whether these can be implemented with 'presspermit_unfiltered_ajax' filter in PostFilters::fltPostsClauses instead
         if (presspermit_SERVER_var('REQUEST_URI') && strpos(esc_url_raw(presspermit_SERVER_var('REQUEST_URI')), 'admin-ajax.php')) {
             if (in_array(
-            presspermit_REQUEST_key('action'), 
-            apply_filters('presspermit_unfiltered_ajax_actions',
-	            ['et_fb_ajax_drop_autosave',
-	            'et_builder_resolve_post_content',
-	            'et_fb_get_shortcode_from_fb_object',
-	            'et_builder_library_get_layout',
-	            'et_builder_library_get_layouts_data',
-	            'et_fb_update_builder_assets',
-	            ]
-            )
+                presspermit_REQUEST_key('action'), 
+                apply_filters('presspermit_unfiltered_ajax_actions',
+                    ['et_fb_ajax_drop_autosave',
+                    'et_builder_resolve_post_content',
+                    'et_fb_get_shortcode_from_fb_object',
+                    'et_builder_library_get_layout',
+                    'et_builder_library_get_layouts_data',
+                    'et_fb_update_builder_assets',
+                    ]
+                )
             )) {
-            return;
-        }
+                return;
+            }
         }
 
         // Divi Page Builder
@@ -83,7 +83,7 @@ class CollabHooks
             add_action('presspermit_init_rvy_interface', [$this, 'init_rvy_interface']);
     
             $legacy_suffix = version_compare(REVISIONARY_VERSION, '1.5-alpha', '<') ? 'Legacy' : '';
-            
+
             // also needed for Admin Bar filtering
             if ((!defined('DOING_AJAX') || !DOING_AJAX) && ('async-upload.php' != $pagenow)) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/Admin{$legacy_suffix}.php");
@@ -334,12 +334,12 @@ class CollabHooks
 			if (presspermit_is_REQUEST('action', 'edit')) {
                 if ($post_id = presspermit_REQUEST_int('post')) {
                     if ($_post = get_post($post_id)) {
-						global $current_user;
-						if (in_array($_post->post_status, ['draft', 'auto-draft']) && ($_post->post_author == $current_user->ID) && !$_post->post_name) {
-							return $meta_caps;
-						}
-					}
-				}
+                        global $current_user;
+                        if (in_array($_post->post_status, ['draft', 'auto-draft']) && ($_post->post_author == $current_user->ID) && !$_post->post_name) {
+                            return $meta_caps;
+                        }
+                    }
+                }
 			}
 		}
 

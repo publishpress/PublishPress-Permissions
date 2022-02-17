@@ -258,7 +258,7 @@ class AgentPermissionsAjax
                     }
 
                     do_action('presspermit_exception_items_mirrored', $all_eitem_ids, $agent_type, $agent_id);
-                    
+
                     echo '<!--ppResponse-->' . 'exceptions_mirror' . '~' . esc_attr(implode('|', $edited_input_ids)) . '<--ppResponse-->';
                     break;
                 }

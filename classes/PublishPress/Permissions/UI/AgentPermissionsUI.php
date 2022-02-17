@@ -10,7 +10,7 @@ class AgentPermissionsUI
             $agent_type = 'pp_group';
         }
 
-		$agent_id = presspermit_REQUEST_int('agent_id');
+        $agent_id = presspermit_REQUEST_int('agent_id');
 
         $vars = [
             'addRoles' => esc_html__('Add Roles', 'press-permit-core'),
@@ -54,7 +54,7 @@ class AgentPermissionsUI
         }
 
         $vars['agentID'] = presspermit_REQUEST_int('agent_id');
-
+        
         // Simulate Nav Menu setup
         require_once( PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
 
@@ -206,7 +206,7 @@ class AgentPermissionsUI
             <div>
             <?php
             esc_html_e('To assign page-specific Permissions for editing, parent selection or term assignment, enable the Collaborative Publishing module.', 'press-permit-core');
-        ?>
+            ?>
             </div>
         <?php endif;
 
@@ -224,7 +224,7 @@ class AgentPermissionsUI
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
-        ?>
+            ?>
             </div>
         <?php endif; ?>
     </div><?php
@@ -289,12 +289,12 @@ class AgentPermissionsUI
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
-        }
-        ?>
+            }
+            ?>
             </div>
 
             <div>
-        <?php
+            <?php
             if (function_exists('bbp_get_version') && !$pp->moduleActive('compatibility') && $pp->getOption('display_extension_hints')) {
                 if (presspermit()->isPro()) {
                     esc_html_e('To assign roles for bbPress forums, activate the Compatibility Pack module.', 'press-permit-core');
@@ -305,8 +305,8 @@ class AgentPermissionsUI
                         '</a>'
                     );
                 }
-        }
-        ?>
+            }
+            ?>
             </div>
         <?php endif;
 
@@ -809,7 +809,7 @@ class AgentPermissionsUI
             echo "<a href='" . esc_url($link) . "'>" . $caption . "</a>";
         else
             echo $caption;
-
+        
         echo '</h3>';
         echo '<div>';
 
@@ -1166,7 +1166,7 @@ class AgentPermissionsUI
                     endif;
 
                     if ((presspermit_empty_REQUEST('show_propagated') || !empty($fix_child_exceptions_link)) && !empty($_SERVER['REQUEST_URI'])) {
-                    	$show_all_url = add_query_arg('show_propagated', '1', esc_url_raw($_SERVER['REQUEST_URI']));
+                        $show_all_url = add_query_arg('show_propagated', '1', esc_url_raw($_SERVER['REQUEST_URI']));
 
                         if ('term' == $via_src) {
                             echo '<div class="pp-current-roles-note">'

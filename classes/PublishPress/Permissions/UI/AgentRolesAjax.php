@@ -26,7 +26,7 @@ class AgentRolesAjax
         }
 
         $role_name = PWP::sanitizeCSV(presspermit_GET_var('pp_role_name'));
-        
+
         $filterable_vars = ['for_item_source', 'for_item_type', 'role_name'];
         if ($force_vars = apply_filters('presspermit_ajax_role_ui_vars', [], compact($filterable_vars))) {
             $_vars = Arr::subset($force_vars, $filterable_vars);
@@ -89,8 +89,8 @@ class AgentRolesAjax
                             if (in_array($arr_role_name[0], ['contributor', 'author', 'editor', 'revisor'], true)) {
                                 $do_standard_statuses_ui = true;
                             }
-                            }
                         }
+                    }
 
                     if (!empty($do_standard_statuses_ui)) {
                         echo '<p class="pp-checkbox">'
