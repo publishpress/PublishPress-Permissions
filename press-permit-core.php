@@ -168,7 +168,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 } elseif (defined('PRESSPERMIT_FILE') && !defined('PRESSPERMIT_PRO_FILE')) {
     if (is_admin()) {
         global $pagenow;
-        if (('plugins.php' == $pagenow) && !strpos(urldecode($_SERVER['REQUEST_URI']), 'deactivate')) {
+        if (('plugins.php' == $pagenow) && isset($_SERVER['REQUEST_URI']) && !strpos(urldecode(esc_url_raw($_SERVER['REQUEST_URI'])), 'deactivate')) {
             add_action('all_admin_notices', function()
             {
                 ?>
