@@ -31,7 +31,7 @@ class UserGroupsUpdate
             // by retrieving filtered groups here, user will only modify membership for groups they can administer
             $is_administrator = $pp->isUserAdministrator();
 
-            $posted_groups = (presspermit_is_POST($agent_type)) ? array_map('intval', presspermit_is_POST($agent_type)) : [];
+            $posted_groups = (presspermit_is_POST($agent_type)) ? array_map('intval', presspermit_POST_var($agent_type)) : [];
 
             if ($omit_group_ids)
                 $posted_groups = array_diff($posted_groups, $omit_group_ids);
