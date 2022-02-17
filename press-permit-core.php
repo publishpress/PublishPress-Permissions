@@ -11,7 +11,7 @@
  * Min WP Version: 4.9.7
  * Requires PHP: 5.6.20
  *
- * Copyright (c) 2021 PublishPress
+ * Copyright (c) 2022 PublishPress
  *
  * GNU General Public License, Free Software Foundation <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -31,7 +31,7 @@
  * @package     PressPermit
  * @category    Core
  * @author      PublishPress
- * @copyright   Copyright (c) 2021 PublishPress. All rights reserved.
+ * @copyright   Copyright (c) 2022 PublishPress. All rights reserved.
  *
  **/
 
