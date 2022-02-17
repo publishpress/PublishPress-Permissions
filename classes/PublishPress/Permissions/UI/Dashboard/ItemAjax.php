@@ -5,8 +5,9 @@ namespace PublishPress\Permissions\UI\Dashboard;
 class ItemAjax
 {
     public function __construct() {
-        if (empty($_GET['via_item_source']))
+        if (empty($_GET['via_item_source']) || empty($_GET['item_id']) || empty($_GET['pp_ajax_item'])) {
             exit;
+    	}
 
         $html = '';
 
@@ -18,6 +19,10 @@ class ItemAjax
                     exit;
                 }
 
+				if (!current_user_can('pp_assign_roles')) {
+					exit;	
+				}
+
                 if (!$arr_sfx = explode(':', PWP::sanitizeCSV($_GET['id_sfx']))) {
                     return '';
                 }
@@ -27,7 +32,36 @@ class ItemAjax
                 $agent_type = $arr_sfx[2];
                 $item_id = (int) $_GET['item_id'];
                 $for_item_source = (taxonomy_exists($for_item_type)) ? 'term' : 'post';
+
+                $via_item_source = pp_permissions_sanitize_key($_GET['via_item_source']);
+                $via_item_type = (isset($_GET['via_item_type'])) ? pp_permissions_sanitize_key($_GET['via_item_type']) : '';
+                
                 $agent_ids = explode(',', PWP::sanitizeCSV($_GET['agent_ids']));
+
+
+                if (('post' == $for_item_source) && !current_user_can('edit_post', $item_id)) {
+                    exit;
+                }
+
+                if (('term' == $for_item_source) && !current_user_can('edit_term', $item_id)) {
+                    exit;
+                }
+                
+                if ('term' == $for_item_source) {
+                    $ops = presspermit()->admin()->canSetExceptions('read', $for_item_type, compact('via_item_source', 'for_item_source', 'via_item_type'))
+                    ? ['read' => true] : [];
+
+                    $operations = apply_filters('presspermit_item_edit_exception_ops', $ops, 'term', $for_item_type);
+                } else {
+                    $ops = presspermit()->admin()->canSetExceptions('read', $for_item_type, compact('via_item_source', 'for_item_source'))
+                    ? ['read' => true] : [];
+
+                    $operations = apply_filters('presspermit_item_edit_exception_ops', $ops, 'post', $for_item_type);
+                }
+
+                if (empty($operations[$op])) {
+                    exit;
+                }
 
                 echo "<!--ppSfx-->$op|$for_item_type|$agent_type<--ppSfx-->"
                     . "<!--ppResponse-->";

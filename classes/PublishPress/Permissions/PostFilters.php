@@ -1029,7 +1029,7 @@ class PostFilters
 
             $copy_others_cap = str_replace('edit_', 'copy_', $type_obj->cap->edit_others_posts);
 
-            if (rvy_get_option('copy_posts_capability')) {
+            if (function_exists('rvy_get_option') && rvy_get_option('copy_posts_capability')) {
                 $replace_caps[$copy_others_cap] = str_replace('edit_', 'copy_', $type_obj->cap->edit_posts);
             } else {
                 $replace_caps[$copy_others_cap] = 'read';

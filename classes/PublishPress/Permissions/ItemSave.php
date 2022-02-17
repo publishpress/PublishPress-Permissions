@@ -73,7 +73,10 @@ class ItemSave
                         continue;
                     }
 
-                    if (!$pp_admin->canSetExceptions($op, $for_item_type, compact('via_item_source', 'via_item_type', 'item_id', '_for_item_source'))) {
+                    $_args = compact('via_item_source', 'via_item_type', 'item_id');
+                    $_args['for_item_source'] = $_for_item_source;
+
+                    if (!$pp_admin->canSetExceptions($op, $for_item_type, $_args)) {
                         continue;
                     }
 

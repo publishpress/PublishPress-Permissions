@@ -9,6 +9,8 @@ class CollabHooks
             return;
         }
 
+        add_filter('presspermit_item_edit_exception_ops', [$this, 'fltItemEditExceptionOps'], 10, 4);
+
         // Divi Page Builder  @todo: test whether these can be implemented with 'presspermit_unfiltered_ajax' filter in PostFilters::fltPostsClauses instead
         if (strpos($_SERVER['REQUEST_URI'], 'admin-ajax.php') 
         && isset($_REQUEST['action'])
@@ -192,6 +194,33 @@ class CollabHooks
         ];
 
         return array_merge($def, $new);
+    }
+
+    function fltItemEditExceptionOps($operations, $for_item_source, $for_item_type, $via_item_type = '')
+    {
+        if ('post' == $for_item_source) {
+            foreach (['edit', 'fork', 'copy', 'revise', 'associate'] as $op) {
+                if (presspermit()->admin()->canSetExceptions($op, $for_item_type, ['for_item_source' => $for_item_source])) {
+                    $operations[$op] = true;
+                }
+
+                if (presspermit()->getOption('publish_exceptions') && !empty($operations['edit'])) {
+                    $operations['publish'] = true;
+                }
+            }
+        } elseif ('term' == $for_item_source) {
+            foreach (['edit', 'fork', 'copy', 'revise', 'assign'] as $op) {
+                if ($pp->admin()->canSetExceptions(
+                    $op, 
+                    $for_item_type, 
+                    ['via_item_source' => 'term', 'via_type_name' => $via_item_type, 'for_item_source' => $for_item_source]
+                )) {
+                    $operations[$op] = true;
+                }
+            }
+        }
+
+        return $operations;
     }
 
     function actNonAdministratorEditingFilters()
