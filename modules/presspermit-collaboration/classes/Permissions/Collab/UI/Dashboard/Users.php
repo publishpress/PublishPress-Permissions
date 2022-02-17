@@ -88,7 +88,7 @@ class Users
                             'show_option_none' => esc_html__('patterned on...', 'press-permit-core'),
                             'sort_column' => 'menu_order, post_title',
                             'echo' => 0,
-                            'exclude' => esc_attr($exclude),
+                            'exclude' => array_map('intval', $exclude),
                         ];
                         $pages = str_replace("'", '"', wp_dropdown_pages($dropdown_args));
                         $pages = str_replace("\n", '', $pages);
