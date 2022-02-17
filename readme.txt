@@ -3,7 +3,7 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.9.7
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.6.20
 Stable tag: 3.6.4
 License: GPLv3
@@ -237,6 +237,20 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 3.7 - 17 Feb 2022 =
+* Fixed : Numerous instances of missing / non-standard output variable escaping
+* Fixed : Numerous instances of missing / non-standard database query sanitization
+* Fixed : Specific Permissions could not be added using editor metaboxes until after post is saved
+
+= 3.6.9 - 26 Jan 2022 =
+* Compat : WordPress 5.9 - fatal error adding / editing posts (work around WP hooking late-defined function _disable_block_editor_for_navigation_post_type)
+
+= 3.6.8 - 20 Jan 2022 =
+* Fixed : Specific Permissions could not be added or removed using metaboxes in the post editor
+
+= 3.6.7 - 5 Jan 2022 =
+* Fixed : Fatal error on sites not running PublishPress Revisions
 
 = 3.6.6 - 5 Jan 2022 =
 * Compat : PublishPress Revisions - Contributors couldn't edit own draft posts if "Prevent Revisors from editing other user's drafts" setting enabled

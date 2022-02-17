@@ -8,24 +8,9 @@ class Settings
     {
     	check_admin_referer('pp-update-options');
     	
-        if (!current_user_can('pp_manage_settings'))
+        if (!current_user_can('pp_manage_settings')) {
             wp_die(esc_html(PWP::__wp('Cheatin&#8217; uh?')));
-
-        if (!empty($_REQUEST['presspermit_refresh_updates'])) {
-            delete_site_transient('update_plugins');
-            delete_option('_site_transient_update_plugins');
-            //presspermit()->admin()->getVersionInfo(['force_refresh'=>true]);
-            wp_update_plugins();
-            wp_redirect(admin_url('admin.php?page=presspermit-settings&presspermit_refresh_done=1'));
-            exit;
         }
-
-        if (!empty($_REQUEST['pp_renewal'])) {
-            if (presspermit()->isPro()) {
-                include_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/pro-renewal-redirect.php');
-            } else {
-                include_once(PRESSPERMIT_ABSPATH . '/includes/renewal-redirect.php');
-            }
 
         $args = apply_filters('presspermit_handle_submission_args', []); // todo: is this used?
 

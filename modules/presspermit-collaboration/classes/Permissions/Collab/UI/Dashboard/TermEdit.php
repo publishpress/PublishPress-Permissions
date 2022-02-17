@@ -5,27 +5,8 @@ class TermEdit
 {
     function __construct()
     {
-        add_filter('presspermit_item_edit_exception_ops', [$this, 'flt_item_edit_exception_ops'], 10, 4);
-
         add_filter('presspermit_term_exceptions_metaboxes', [$this, 'term_exceptions_metaboxes'], 10, 3);
         add_action('presspermit_prep_metaboxes', [$this, 'pp_prep_metaboxes'], 10, 3);
-    }
-
-    function flt_item_edit_exception_ops($operations, $for_item_source, $taxonomy, $for_item_type)
-    {
-        $pp = presspermit();
-
-        foreach (['edit', 'fork', 'copy', 'revise', 'assign'] as $op) {
-            if ($pp->admin()->canSetExceptions(
-                $op, 
-                $for_item_type, 
-                ['via_item_source' => 'term', 'via_type_name' => $taxonomy, 'for_item_source' => $for_item_source]
-            )) {
-                $operations[$op] = true;
-            }
-        }
-
-        return $operations;
     }
 
     function update_item_exceptions($via_item_source, $item_id, $args)
@@ -47,15 +28,14 @@ class TermEdit
         }
     }
 
-    function term_exceptions_metaboxes($boxes, $taxonomy, $typenow)
+    function term_exceptions_metaboxes($boxes, $taxonomy, $use_post_type)
     {
-        global $typenow;
-        if (!$typenow) {  // term management / association exceptions UI only displed when editing "Universal Exceptions" (empty post type)
+        if (!$use_post_type) {  // term management / association exceptions UI only displed when editing "Universal Exceptions" (empty post type)
             $tx = get_taxonomy($taxonomy);
             $add_boxes = [];
 
             foreach (['manage', 'associate'] as $op) {
-                if ($op_obj = presspermit()->admin()->getOperationObject($op, $typenow)) {
+                if ($op_obj = presspermit()->admin()->getOperationObject($op, $use_post_type)) {
 
                     $caption = ('associate' == $op) 
                     ? sprintf(

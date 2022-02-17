@@ -3,12 +3,8 @@ namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class BulkEdit
 {
-    public static function add_author_pages($data = [])
+    public static function add_author_pages()
     {
-        if (!$data) {
-            $data = $_REQUEST; // sanitize below in this function, per-element
-        }
-
         $location = 'users.php';
 
         if ($referer = wp_get_referer()) {
@@ -93,15 +89,15 @@ class BulkEdit
                 )
             );
             
-            $data['users'] = array_diff(array_map('intval', $data['users']), $users_done);
+            $users = array_diff($users, $users_done);
 
-            if (!count($data['users'])) {
+            if (!count($users)) {
                 $location = add_query_arg('ppmessage', 3, $location);
             } else {
                 $pp = presspermit();
 
                 $added = 0;
-                foreach ($data['users'] as $user_id) {
+                foreach ($users as $user_id) {
                     if (!$user = new \WP_User($user_id))
                         continue;
 

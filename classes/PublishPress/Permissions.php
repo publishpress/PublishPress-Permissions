@@ -79,8 +79,12 @@ class Permissions
     public function doingEmbed() {
         static $arr_url;
 
+        if (!isset($_SERVER['REQUEST_URI'])) {
+            return false;
+        }
+
         if (!isset($arr_url)) {
-            $arr_url = parse_url(get_option('siteurl'));
+            $arr_url = wp_parse_url(get_option('siteurl'));
         }
 
         if ($arr_url) {
@@ -97,8 +101,12 @@ class Permissions
     public function isRESTurl() {
         static $arr_url;
 
+        if (!isset($_SERVER['REQUEST_URI'])) {
+            return false;
+        }
+
         if (!isset($arr_url)) {
-            $arr_url = parse_url(get_option('siteurl'));
+            $arr_url = wp_parse_url(get_option('siteurl'));
         }
 
         if ($arr_url) {
@@ -128,9 +136,13 @@ class Permissions
             }
         }
 
+        if (!isset($_SERVER['REQUEST_URI'])) {
+            return;
+        }
+
         // Divi Page Builder editor init
         if (!defined('PRESSPERMIT_DISABLE_DIVI_CLEARANCE') && !presspermit_empty_REQUEST('et_fb') && !presspermit_empty_REQUEST('et_bfb') 
-        && 0 === strpos($_SERVER['REQUEST_URI'], '/?page_id') 
+		&& 0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/?page_id') 
         && !is_admin() && !defined('DOING_AJAX') && presspermit_empty_REQUEST('action') 
             && presspermit_empty_REQUEST('post') && presspermit_empty_REQUEST('post_id') && presspermit_empty_REQUEST('post_ID') && presspermit_empty_REQUEST('p')
         ) {
@@ -159,7 +171,7 @@ class Permissions
             'display_user_profile_groups' => 0,
             'display_user_profile_roles' => 0,
             'new_user_groups_ui' => 1,
-            'beta_updates' => false,        // @todo: EDD integration, or eliminate
+            'beta_updates' => false,        // todo: EDD integration, or eliminate
             'admin_hide_uneditable_posts' => 1,
             'post_blockage_priority' => 1,
             'media_search_results' => 1,
@@ -603,21 +615,29 @@ class Permissions
                 }
 
                 if (isset($this->net_options["presspermit_$option_basename"])) {
-                    return maybe_unserialize($this->net_options["presspermit_$option_basename"]);
+                    $val = maybe_unserialize($this->net_options["presspermit_$option_basename"]);
+                    if (is_string($val)) {$val = stripslashes($val);}
+                    return $val;
                 }
 
                 if (isset($this->default_options[$option_basename])) {
-                    return maybe_unserialize($this->default_options[$option_basename]);
+                    $val = maybe_unserialize($this->default_options[$option_basename]);
+                    if (is_string($val)) {$val = stripslashes($val);}
+                    return $val;
                 }
             }
         }
 
         if (isset($this->site_options["presspermit_$option_basename"])) {
-            return maybe_unserialize($this->site_options["presspermit_$option_basename"]);
+            $val = maybe_unserialize($this->site_options["presspermit_$option_basename"]);
+            if (is_string($val)) {$val = stripslashes($val);}
+            return $val;
         }
 
         if (isset($this->default_options[$option_basename])) {
-            return maybe_unserialize($this->default_options[$option_basename]);
+            $val = maybe_unserialize($this->default_options[$option_basename]);
+            if (is_string($val)) {$val = stripslashes($val);}
+            return $val;
         }
 
         // return null if option not set in db or defaults

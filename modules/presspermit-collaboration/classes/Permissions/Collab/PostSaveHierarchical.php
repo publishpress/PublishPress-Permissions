@@ -12,6 +12,14 @@ class PostSaveHierarchical
             return $parent_id;
         }
 
+        if (presspermit()->doing_rest) {
+            $rest = \PublishPress\Permissions\REST::instance();
+            
+            if (!empty($rest) && 'WP_REST_Attachments_Controller' == $rest->endpoint_class) {
+                return $parent_id;
+            }
+        }
+
         $selected_parent_id = $parent_id;
         $post_id = PWP::getPostID();
 
@@ -237,8 +245,9 @@ class PostSaveHierarchical
         if (presspermit_empty_POST('parent_id')) {
             if (!$already_published) {  // This should only ever happen if the POST data is manually fudged
                 if ($post_status_object = get_post_status_object($status)) {
-                    if ($post_status_object->public || $post_status_object->private)
+                    if ($post_status_object->public || $post_status_object->private) {
                         $status = 'draft';
+                    }
                 }
             }
         }

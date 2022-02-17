@@ -4,6 +4,8 @@ namespace PublishPress\Permissions;
 class CollabHooks
 {
     function __construct() {
+        global $pagenow;
+
         // Divi Page Builder
         if (presspermit_is_REQUEST('action', 'editpost') && !presspermit_empty_REQUEST('et_pb_use_builder') && !presspermit_empty_REQUEST('auto_draft')) {
             return;
@@ -186,6 +188,33 @@ class CollabHooks
         ];
 
         return array_merge($def, $new);
+    }
+
+    function fltItemEditExceptionOps($operations, $for_item_source, $for_item_type, $via_item_type = '')
+    {
+        if ('post' == $for_item_source) {
+            foreach (['edit', 'fork', 'copy', 'revise', 'associate'] as $op) {
+                if (presspermit()->admin()->canSetExceptions($op, $for_item_type, ['for_item_source' => $for_item_source])) {
+                    $operations[$op] = true;
+                }
+
+                if (presspermit()->getOption('publish_exceptions') && !empty($operations['edit'])) {
+                    $operations['publish'] = true;
+                }
+            }
+        } elseif ('term' == $for_item_source) {
+            foreach (['edit', 'fork', 'copy', 'revise', 'assign'] as $op) {
+                if ($pp->admin()->canSetExceptions(
+                    $op, 
+                    $for_item_type, 
+                    ['via_item_source' => 'term', 'via_type_name' => $via_item_type, 'for_item_source' => $for_item_source]
+                )) {
+                    $operations[$op] = true;
+                }
+            }
+        }
+
+        return $operations;
     }
 
     function actNonAdministratorEditingFilters()

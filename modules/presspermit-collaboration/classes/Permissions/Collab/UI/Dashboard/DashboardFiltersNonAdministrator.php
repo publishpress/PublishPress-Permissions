@@ -72,8 +72,9 @@ class DashboardFiltersNonAdministrator
     function flt_posts_request_bypass($bypass, $request, $args)
     {
         // if Media Library filtering is disabled, don't filter listing for TinyMCE popup either
-        if (defined('PP_MEDIA_LIB_UNFILTERED') && strpos($_SERVER['SCRIPT_NAME'], 'wp-admin/media-upload.php'))
+        if (defined('PP_MEDIA_LIB_UNFILTERED') && (isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'wp-admin/media-upload.php'))) {
             return true;
+        }
 
         return $bypass;
     }
@@ -87,8 +88,9 @@ class DashboardFiltersNonAdministrator
                 $_post_type = 'post';
             }
 
-            if (!in_array($_post_type, presspermit()->getEnabledPostTypes(), true))
+            if (!in_array($_post_type, presspermit()->getEnabledPostTypes(), true)) {
                 return;
+            }
 
             if ($wp_type = get_post_type_object($_post_type)) {
                 $cap_check = (isset($wp_type->cap->create_posts)) ? $wp_type->cap->create_posts : $wp_type->cap->edit_posts;

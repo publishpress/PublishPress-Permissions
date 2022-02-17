@@ -83,8 +83,8 @@ jQuery(document).ready(function ($) {
                 presspermitEID++;
                 presspermitAllRoleData[presspermitEID] = trackdata;
 
-                newrow = '<tr>'
-                    + '<td>' + $('select[name="pp_select_type"] option:selected').html() + '</td>'
+                newrow = 
+                    '<tr><td>' + $('select[name="pp_select_type"] option:selected').html() + '</td>'
                     + '<td>' + $('select[name="pp_select_role"] option:selected').html() + '</td>'
                     + '<td>' + lbl.html() + '</td>'
                     + '<td><div class="pp_clear"><a href="javascript:void(0)" class="pp_clear">' + ppCred.clearRole + '</a></div>'
@@ -92,8 +92,7 @@ jQuery(document).ready(function ($) {
                     + '<input type="hidden" name="pp_add_role[' + presspermitEID + '][type]" value="' + $('select[name="pp_select_type"]').val() + '" />'
                     + '<input type="hidden" name="pp_add_role[' + presspermitEID + '][role]" value="' + $('select[name="pp_select_role"]').val() + '" />'
                     + '<input type="hidden" name="pp_add_role[' + presspermitEID + '][attrib_cond]" value="' + $('#' + id).val() + '" />';
-                +'</td>'
-                + '</tr>';
+                + '</td></tr>';
 
                 $('#pp_tbl_role_selections tbody').append(newrow);
 

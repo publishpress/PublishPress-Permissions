@@ -245,7 +245,7 @@ class GroupUpdate
         $groupdata = array_merge($defaults, (array)$groupdata);
         $groupdata = array_intersect_key($groupdata, $defaults);
 
-        $groupdata['group_description'] = strip_tags($groupdata['group_description']);
+        $groupdata['group_description'] = wp_strip_all_tags($groupdata['group_description']);
 
         $wpdb->groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, $agent_type);
 

@@ -30,11 +30,9 @@ class AgentPermissions
             $agent_id = 0;
             $agent = (object)['metagroup_type' => ''];
 
-            if ('user' != $agent_type)
+            if ('user' != $agent_type) {
                 wp_die(esc_html__('No user/group specified.', 'press-permit-core'));
-        } else {
-            $agent_id = (int)$_REQUEST['agent_id'];
-            $agent = $pp_groups->getAgent($agent_id, $agent_type);
+            }
         }
 
         $metagroup_type = (!empty($agent->metagroup_type)) ? $agent->metagroup_type : '';
@@ -188,7 +186,7 @@ class AgentPermissions
                         <?php
                         $disabled = (!$pp_groups->groupTypeEditable($agent_type) || $agent->metagroup_id) ? ' disabled ' : '';
 
-                        // @todo: better html / css for update button pos
+                        // todo: better html / css for update button pos
                         ?>
                         <table class="pp-agent-profile">
                             <tr>

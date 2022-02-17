@@ -21,7 +21,7 @@ class LibWP
      */
     public static function isBlockEditorActive($post_type = '', $args = [])
     {
-        global $current_user;
+        global $current_user, $wp_version;
 
         $defaults = ['suppress_filter' => false, 'force_refresh' => false];
         $args = array_merge($defaults, $args);
@@ -69,14 +69,31 @@ class LibWP
 					}
 				} else {
                     $use_block = ('block' == get_user_meta($current_user->ID, 'wp_classic-editor-settings'));
-                    return $use_block && apply_filters('use_block_editor_for_post_type', $use_block, $post_type, PHP_INT_MAX);
+
+                    if (version_compare($wp_version, '5.9-beta', '>=')) {
+                    	if ($has_nav_action = has_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
+                    		remove_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
+                    	}
+                    	
+                    	if ($has_nav_filter = has_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
+                    		remove_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
+                    	}
+                    }
+
+                    $use_block = $use_block && apply_filters('use_block_editor_for_post_type', $use_block, $post_type, PHP_INT_MAX);
+
+                    if (version_compare($wp_version, '5.9-beta', '>=') && !empty($has_nav_filter)) {
+                        add_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type', 10, 2 );
+                    }
+
+                    return $use_block;
 				}
 			}
 		}
 
 		$pluginsState = array(
-			'classic-editor' => class_exists( 'Classic_Editor' ), // is_plugin_active('classic-editor/classic-editor.php'),
-			'gutenberg'      => function_exists( 'the_gutenberg_project' ), //is_plugin_active('gutenberg/gutenberg.php'),
+			'classic-editor' => class_exists( 'Classic_Editor' ),
+			'gutenberg'      => function_exists( 'the_gutenberg_project' ),
 			'gutenberg-ramp' => class_exists('Gutenberg_Ramp'),
 		);
 		
@@ -90,6 +107,17 @@ class LibWP
 		 * Classic editor either disabled or enabled (either via an option or with GET argument).
 		 * It's a hairy conditional :(
 		 */
+
+        if (version_compare($wp_version, '5.9-beta', '>=')) {
+            if ($has_nav_action = has_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
+        		remove_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
+        	}
+        	
+        	if ($has_nav_filter = has_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
+        		remove_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
+        	}
+        }
+
 		// phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.Security.NonceVerification.NoNonceVerification
         $conditions[] = (self::isWp5() || $pluginsState['gutenberg'])
 						&& ! $pluginsState['classic-editor']
@@ -108,6 +136,10 @@ class LibWP
 
         $conditions[] = $pluginsState['gutenberg-ramp'] 
                         && apply_filters('use_block_editor_for_post', true, get_post(self::getPostID()), PHP_INT_MAX);
+
+        if (version_compare($wp_version, '5.9-beta', '>=') && !empty($has_nav_filter)) {
+            add_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type', 10, 2 );
+        }
 
 		// Returns true if at least one condition is true.
 		$result = count(
@@ -464,7 +496,7 @@ class LibWP
 
     public static function isMuPlugin($plugin_path = '')
     {
-        if ( ! $plugin_path && defined(PRESSPERMIT_FILE) ) {
+        if ( ! $plugin_path && defined('PRESSPERMIT_FILE') ) {
             $plugin_path = PRESSPERMIT_FILE;
         }
         return (defined('WPMU_PLUGIN_DIR') && (false !== strpos($plugin_path, WPMU_PLUGIN_DIR)));

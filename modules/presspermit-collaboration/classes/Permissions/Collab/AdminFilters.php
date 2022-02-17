@@ -45,8 +45,8 @@ class AdminFilters
         add_action('save_post', [$this, 'actSavePost'], 10, 3);
         add_filter('wp_insert_post_empty_content', [$this, 'fltLogInsertPost'], 10, 2);
 
-        add_filter('save_post', [$this, 'fltUnloadCurrentUserExceptions']);
-        add_filter('created_term', [$this, 'fltUnloadCurrentUserExceptions']);
+        add_action('save_post', [$this, 'actUnloadCurrentUserExceptions']);
+        add_action('created_term', [$this, 'actUnloadCurrentUserExceptions']);
 
         add_filter('editable_roles', [$this, 'fltEditableRoles'], 99);
 
@@ -96,7 +96,7 @@ class AdminFilters
         }
     }
 
-    function fltUnloadCurrentUserExceptions($item_id)
+    function actUnloadCurrentUserExceptions($item_id)
     {
         if (!empty(presspermit()->flags['ignore_save_post'])) {
             return;
@@ -270,7 +270,7 @@ class AdminFilters
         // Don't allow media attachment page to be cleared if user has editing capability (conflict with Image Source Control plugin)
         if (!$parent_id && $orig_parent_id 
         && (
-            false !== strpos($_SERVER['SCRIPT_NAME'], 'async-upload.php')
+            (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'async-upload.php'))
             || ('attachment' == PWP::findPostType())
             || (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'admin-ajax.php') && presspermit_is_REQUEST('action', ['save-attachment', 'save-attachment-compat']))
             )
@@ -300,8 +300,9 @@ class AdminFilters
 
     function fltPostStatus($status)
     {
-        if (presspermit()->isUserUnfiltered() || ('auto-draft' == $status) || strpos($_SERVER['REQUEST_URI'], 'nav-menus.php'))
+        if (presspermit()->isUserUnfiltered() || ('auto-draft' == $status) || (!empty($_SERVER['REQUEST_URI']) && strpos(sanitize_text_field($_SERVER['REQUEST_URI']), 'nav-menus.php'))) {
             return $status;
+        }
 
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostEdit.php');
         return PostEdit::fltPostStatus($status);

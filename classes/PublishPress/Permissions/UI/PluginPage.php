@@ -24,7 +24,7 @@ class PluginPage
     public static function handleScreenOptions()
     {
         if (presspermit_is_REQUEST('wp_screen_options')) {
-            if (isset($_REQUEST['wp_screen_options']['option']) && ('groups_per_page' == $_REQUEST['wp_screen_options']['option'])) {
+            if (isset($_REQUEST['wp_screen_options']['option']) && ('groups_per_page' == $_REQUEST['wp_screen_options']['option']) && isset($_REQUEST['wp_screen_options']['value'])) {
                 global $current_user;
                 update_user_option($current_user->ID, sanitize_key($_REQUEST['wp_screen_options']['option']), (int) $_REQUEST['wp_screen_options']['value']);
             }

@@ -14,18 +14,21 @@ class TermEditWorkarounds
             return;
         }
 
-        if (!$tx = get_taxonomy($taxonomy))
+        if (!$tx = get_taxonomy($taxonomy)) {
             return;
+        }
 
-        if (!$tx->hierarchical)
+        if (!$tx->hierarchical) {
             return;
+        }
 
-        $stored_term = get_term_by('id', (int) $_POST['tag_ID'], $taxonomy);
+        $stored_term = get_term_by('id', $tag_id, $taxonomy);
 
         $selected_parent = presspermit_POST_int('parent');
 
-        if (-1 == $selected_parent)
+        if (-1 == $selected_parent) {
             $selected_parent = 0;
+        }
 
         if ($stored_term->parent != $selected_parent) {
             if ($tx_obj = get_taxonomy($taxonomy)) {

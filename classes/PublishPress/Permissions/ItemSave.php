@@ -51,9 +51,50 @@ class ItemSave
             $disallow_manual_entry = defined('XMLRPC_REQUEST');
         }
 
-        $posted_exceptions = (isset($_POST['pp_exceptions'])) ? $_POST['pp_exceptions'] : [];
+        if (!empty($_POST['pp_exceptions']) && !$disallow_manual_entry && $can_assign_roles) {
 
-        if ($posted_exceptions && !$disallow_manual_entry && $can_assign_roles) {
+            // validate posted exceptions array
+            $pe = (array) $_POST['pp_exceptions']; // explicitly validated below
+
+            foreach(array_keys($pe) as $item_type) {
+                if (!is_array($pe[$item_type]) || ($item_type != sanitize_key($item_type))) {
+                    unset($pe[$item_type]);
+                    continue;
+                }
+
+                foreach(array_keys($pe[$item_type]) as $operation) {
+                    if (!is_array($pe[$item_type][$operation]) || ($operation != sanitize_key($operation))) {
+                        unset($pe[$item_type][$operation]);
+                        continue;
+                    }
+
+                    foreach(array_keys($pe[$item_type][$operation]) as $agent_type) {
+                        if (!is_array($pe[$item_type][$operation][$agent_type]) || ($agent_type != sanitize_key($agent_type))) {
+                            unset($pe[$item_type][$operation][$agent_type]);
+                            continue;
+                        }
+
+                        foreach(array_keys($pe[$item_type][$operation][$agent_type]) as $assign_for) {
+                            if (!is_array($pe[$item_type][$operation][$agent_type][$assign_for]) || ($assign_for != sanitize_key($assign_for))) {
+                                unset($pe[$item_type][$operation][$agent_type][$assign_for]);
+                                continue;
+                            }
+
+                            foreach(array_keys($pe[$item_type][$operation][$agent_type][$assign_for]) as $agent_id) {
+                                if ($agent_id != (int) $agent_id) {
+                                    unset($pe[$item_type][$operation][$agent_type][$assign_for][$agent_id]);
+                                    continue;
+                                }
+
+                                $pe[$item_type][$operation][$agent_type][$assign_for][$agent_id] = sanitize_key($pe[$item_type][$operation][$agent_type][$assign_for][$agent_id]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $posted_exceptions = $pe;
+
             foreach (array_keys($posted_exceptions) as $for_item_type) {
                 $for_item_type = sanitize_key($for_item_type);
                 
@@ -73,7 +114,10 @@ class ItemSave
                         continue;
                     }
 
-                    if (!$pp_admin->canSetExceptions($op, $for_item_type, compact('via_item_source', 'via_item_type', 'item_id', '_for_item_source'))) {
+                    $_args = compact('via_item_source', 'via_item_type', 'item_id');
+                    $_args['for_item_source'] = $_for_item_source;
+
+                    if (!$pp_admin->canSetExceptions($op, $for_item_type, $_args)) {
                         continue;
                     }
 

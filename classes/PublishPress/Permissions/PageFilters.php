@@ -275,7 +275,7 @@ class PageFilters
         $join = '';
         $where = "$exclusions $inclusions ";
 
-        if ('' !== $meta_key || '' !== $meta_value) {                                           // @todo: review
+        if ('' !== $meta_key || '' !== $meta_value) {                                           // todo: review
             $join = " INNER JOIN $wpdb->postmeta ON $wpdb->posts.ID = $wpdb->postmeta.post_id";   // PressPermit modification: was LEFT JOIN in WP core
 
             // meta_key and meta_value might be slashed
@@ -295,7 +295,12 @@ class PageFilters
                 $where .= " AND post_parent IN ($post_parent__in)";
             }
         } elseif ($parent >= 0) {  // ========= PressPermit filter
-            $where .= $wpdb->prepare(' AND ' . apply_filters('presspermit_get_pages_parent', 'post_parent = %d ', $args), $parent);
+            $where .= ' AND ' 
+            . apply_filters(
+                'presspermit_get_pages_parent',
+                $wpdb->prepare('post_parent = %d ', $parent),
+                $args
+            );
         }
 
         $orderby_array = [];

@@ -41,8 +41,9 @@ class AdminWorkarounds
             $nomess_uris = array_merge($nomess_uris, ['admin-ajax.php']);
         }
 
-        if (!in_array($pagenow, $nomess_uris, true) && !in_array(presspermitPluginPage(), $nomess_uris, true))
+        if (!in_array($pagenow, $nomess_uris, true) && !in_array(presspermitPluginPage(), $nomess_uris, true)) {
             add_filter('query', [$this, 'flt_last_resort_query'], 5);  // early execution for Revisionary compat
+    	}
     }
 
     public function flt_intercept_post_insert($disallow, $post_arr)
@@ -505,7 +506,7 @@ class AdminWorkarounds
         // SELECT ID, post_title, post_status, post_date FROM $wpdb->posts WHERE post_type = '$what' AND post_status IN ('draft', 'publish') AND ($search) ORDER BY post_date_gmt DESC LIMIT 50
         if (strpos($query, "ELECT ID, post_title, post_status, post_date FROM")) {
             if ($_post_type = presspermit_POST_key('post_type')) {
-                $query = apply_filters('presspermit_posts_request', $query, ['post_types' => pp_permissions_sanitize_key($_POST['post_type'])]);
+                $query = apply_filters('presspermit_posts_request', $query, ['post_types' => $_post_type]);
 			}
         }
 
@@ -538,7 +539,7 @@ class AdminWorkarounds
         }
 
         if (defined('DOING_AJAX')) {
-            if (strpos($query, "ELECT t.name FROM") && !empty($_REQUEST['tax']) && !empty($_SERVER['HTTP_REFERER'])) {
+            if (strpos($query, "ELECT t.name FROM") && !empty($_SERVER['HTTP_REFERER'])) {
                 if ($taxonomy = presspermit_REQUEST_key('tax')) {
                     $parsed = wp_parse_url(esc_url_raw($_SERVER['HTTP_REFERER']));
 	                if (!empty($parsed['query'])) {
@@ -561,7 +562,6 @@ class AdminWorkarounds
 	                            " WHERE tt.term_id IN ('" . implode("','", $ok_tags) . "') AND tt.taxonomy = '$taxonomy'", 
 	                            $query
 	                        );
-	
 	                    }
 	            	}
                 }

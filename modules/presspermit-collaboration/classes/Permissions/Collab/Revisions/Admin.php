@@ -220,6 +220,8 @@ class Admin
                             $tt_ids = array_merge($tt_ids, $tx_additional_ids);
                         }
 
+                        $tt_ids = array_map('intval', $tt_ids);
+
                         $term_include_clause = apply_filters(
                             'presspermit_term_include_clause',
                             "( $src_table.post_status NOT IN ('$published_stati_csv') OR $src_table.ID IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $tt_ids) . "') ) )",
@@ -257,6 +259,8 @@ class Admin
                         if ($tx_additional_ids) {
                             $tt_ids = array_merge($tt_ids, $tx_additional_ids);
                         }
+
+                        $tt_ids = array_map('intval', $tt_ids);
 
                         $term_include_clause = apply_filters(
                             'presspermit_term_include_clause',

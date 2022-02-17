@@ -20,13 +20,13 @@ class PermissionsHooksAdmin
         }
 
         // make sure empty terms are included in quick search results in "Set Specific Permissions" term selection metaboxes
-        if (PWP::isAjax('pp-menu-quick-search')) {
+        if (PWP::isAjax('pp-menu-quick-search') && !empty($_REQUEST['action'])) {
             require_once(PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
             add_action('wp_ajax_' . presspermit_REQUEST_key('action'), ['\PublishPress\Permissions\UI\ItemsMetabox', 'ajax_menu_quick_search'], 1);
         }
 
         // thanks to GravityForms for the nifty dismissal script
-        if (in_array(basename($_SERVER['PHP_SELF']), ['admin.php', 'admin-ajax.php'])) {
+        if (!empty($_SERVER['PHP_SELF']) && in_array(basename($_SERVER['PHP_SELF']), ['admin.php', 'admin-ajax.php'])) {
             add_action('wp_ajax_pp_dismiss_msg', [$this, 'dashboardDismissMsg']);
         }
 
@@ -80,7 +80,31 @@ class PermissionsHooksAdmin
             new Permissions\UI\Handlers\Settings();
         }
 
-        if (isset($_GET['pp_agent_search'])) {
+        if (!presspermit_empty_REQUEST('presspermit_refresh_updates') || !presspermit_empty_REQUEST('pp_renewal')) {
+            if (!current_user_can('pp_manage_settings')) {
+                wp_die(esc_html(PWP::__wp('Cheatin&#8217; uh?')));
+            }
+    
+            if (!presspermit_empty_REQUEST('presspermit_refresh_updates')) {
+                delete_site_transient('update_plugins');
+                delete_option('_site_transient_update_plugins');
+                wp_update_plugins();
+                wp_redirect(admin_url('admin.php?page=presspermit-settings&presspermit_refresh_done=1'));
+                exit;
+            }
+    
+            if (!presspermit_empty_REQUEST('pp_renewal')) {
+                if (presspermit()->isPro()) {
+                    include_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/pro-renewal-redirect.php');
+                } else {
+                    include_once(PRESSPERMIT_ABSPATH . '/includes/renewal-redirect.php');
+                }
+    
+                exit;
+            }
+        }
+
+        if (presspermit_is_GET('pp_agent_search')) {
             require_once(PRESSPERMIT_CLASSPATH . '/UI/AgentsAjax.php');
             new Permissions\UI\AgentsAjax();
             exit;
@@ -192,6 +216,10 @@ class PermissionsHooksAdmin
     // For old extensions linking to page=pp-settings.php, redirect to page=presspermit-settings, preserving other request args
     public function actSettingsPageMaybeRedirect()
     {
+        if (!isset($_SERVER['REQUEST_URI'])) {
+            return;
+        }
+
         foreach ([
                      'pp-settings' => 'presspermit-settings',
                      'pp-groups' => 'presspermit-groups',
@@ -282,7 +310,7 @@ class PermissionsHooksAdmin
 
                     if (!in_array($current_author->term_id, $authors)) {
                         if (apply_filters('presspermit_override_authors_change', true, $post)) {
-                            $_POST['authors'] = array_merge([strval($current_author->term_id)], $_POST['authors']);
+                            $_POST['authors'] = array_merge([strval($current_author->term_id)], array_map('sanitize_key', $authors));
                         }
                     }
                 }
