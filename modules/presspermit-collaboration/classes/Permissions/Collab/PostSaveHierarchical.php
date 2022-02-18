@@ -175,7 +175,7 @@ class PostSaveHierarchical
             $parent_id = 0;
         } else {
             if ($include_ids) {
-                $allowed_parents = array_intersect($allowed_parents, $include_ids);
+                $allowed_parents = array_intersect($allowed_parents, (array) $include_ids);
             } elseif ($exclude_ids) {
                 $allowed_parents = array_diff($allowed_parents, $exclude_ids);
             }
