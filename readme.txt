@@ -239,6 +239,8 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 == Changelog ==
 
 = 3.7.1 - 18 Feb 2022 =
+* Fixed : Category / Term blockages were not applied
+* Fixed : Error redirecting following post save if the save operation sets a status which blocks the user from further editing
 * Fixed : PHP 8 - Warning on Edit Permission Group screen
 
 = 3.7 - 17 Feb 2022 =
