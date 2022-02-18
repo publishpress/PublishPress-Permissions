@@ -238,6 +238,9 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.7.1 - 18 Feb 2022 =
+* Fixed : PHP 8 - Warning on Edit Permission Group screen
+
 = 3.7 - 17 Feb 2022 =
 * Fixed : Numerous instances of missing / non-standard output variable escaping
 * Fixed : Numerous instances of missing / non-standard database query sanitization
