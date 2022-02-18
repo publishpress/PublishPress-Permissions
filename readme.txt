@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 5.9
 Requires PHP: 5.6.20
-Stable tag: 3.7
+Stable tag: 3.7.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -237,6 +237,11 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 3.7.1 - 18 Feb 2022 =
+* Fixed : Category / Term blockages were not applied
+* Fixed : Error redirecting following post save if the save operation sets a status which blocks the user from further editing
+* Fixed : PHP 8 - Warning on Edit Permission Group screen
 
 = 3.7 - 17 Feb 2022 =
 * Fixed : Numerous instances of missing / non-standard output variable escaping

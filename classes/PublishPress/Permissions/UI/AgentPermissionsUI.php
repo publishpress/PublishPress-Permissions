@@ -1219,7 +1219,7 @@ class AgentPermissionsUI
 
     // Called once each for members checklist, managers checklist in admin UI.
     // In either case, current (checked) members are at the top of the list.
-    private static function userSelectionUI($group_id = 0, $agent_type, $user_class = 'member', $all_users = '')
+    private static function userSelectionUI($group_id, $agent_type, $user_class = 'member', $all_users = '')
     {
         // This is only needed for checkbox selection
         if (!$all_users)
