@@ -693,7 +693,7 @@ class Permissions
         }
 
         if ($excluded_ttids) {
-            $ttid_csv = implode("','", array_map('intval', $tt_ids));
+            $ttid_csv = implode("','", array_map('intval', $excluded_ttids));
 
             $where .= " AND ( "
                         . "( $src_table.ID NOT IN ( "
