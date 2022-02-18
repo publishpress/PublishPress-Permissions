@@ -123,7 +123,7 @@ class UsersListing
         return $columns;
     }
 
-    public static function fltUsersCustomColumn($content = '', $column_name, $id)
+    public static function fltUsersCustomColumn($content, $column_name, $id)
     {
         $pp_groups = presspermit()->groups();
 
