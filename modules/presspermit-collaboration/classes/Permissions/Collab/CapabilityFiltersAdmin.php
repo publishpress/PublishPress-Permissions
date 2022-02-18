@@ -440,7 +440,7 @@ class CapabilityFiltersAdmin
     {
         if (!current_user_can('edit_post', $post_id)) {
             if ($type_obj = get_post_type_object(get_post_field('post_type', $post_id))) {
-                if (presspermit_isset_POST('save') || presspermit_isset_POST('publish')) {
+                if (presspermit_is_POST('save') || presspermit_is_POST('publish')) {
                     wp_die(
                         '<p>' 
                         . sprintf(
