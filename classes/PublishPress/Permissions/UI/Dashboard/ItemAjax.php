@@ -8,14 +8,12 @@ class ItemAjax
         if (!$via_item_source = presspermit_GET_key('via_item_source')) {
             exit;
 		}
-
-        if (!$item_id = presspermit_GET_int('item_id')) {
-            exit;
-        }
         
         if (!$pp_ajax_item = presspermit_GET_key('pp_ajax_item')) {
             exit;
-    	}
+        }
+        
+        $item_id = presspermit_GET_int('item_id');
 
         $html = '';
 
