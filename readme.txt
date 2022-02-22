@@ -238,6 +238,9 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.7.2 - 2-22-22 =
+* Fixed : Specific Permissions could not be added using editor metaboxes
+
 = 3.7.1 - 18 Feb 2022 =
 * Fixed : Category / Term blockages were not applied
 * Fixed : Error redirecting following post save if the save operation sets a status which blocks the user from further editing
