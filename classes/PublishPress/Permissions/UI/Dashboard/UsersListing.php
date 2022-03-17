@@ -289,7 +289,7 @@ class UsersListing
                     $content .= "<a href='" . esc_url($edit_link) . "'>";
                 }
 
-                $content .= '<span class="pp-group-site-roles">' . esc_html(implode(', ', $role_titles)) . '</span>';
+                $content .= '<span class="pp-group-site-roles">' . implode(', ', $role_titles) . '</span>';
 
                 if ($do_edit_link) {
                     $content .= '</a>';	
