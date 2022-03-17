@@ -264,6 +264,8 @@ class Profile
             $exception_info = \PublishPress\Permissions\DB\PermissionsMeta::countExceptions($agent_type, $args);
         }
 
+        $exc_str = '';
+
         if (isset($exception_info[$id])) {
             if (isset($exception_info[$id]['exceptions'])) {
                 $any_exceptions = true;
