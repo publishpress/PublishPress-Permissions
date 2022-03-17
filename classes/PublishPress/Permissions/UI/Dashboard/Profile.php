@@ -38,6 +38,7 @@ class Profile
         $new_permissions_link = true;
         $maybe_display_note = !$has_user_roles;
         $display_limit = 12;
+        $echo = true;
 
         self::abbreviatedExceptionsList(
             'user',
