@@ -145,8 +145,18 @@ class AdminWorkarounds
                 if (('themes.php' == $menu[$key][2]) 
                 && empty($current_user->allcaps['edit_theme_options']) && ('edit_theme_options' == $menu[$key][1])) 
                 {
+                    if ($tx = get_taxonomy('nav_menu')) {
+                        if (!empty($tx->cap->manage_terms)) {
+                            $manage_cap = $tx->cap->manage_terms;
+                        }
+                    }
+                    
+                    if (empty($manage_cap)) {
+                        $manage_cap = 'manage_nav_menus';
+                    }
+
                     $menu[$key][0] = esc_html__('Menus');
-                    $menu[$key][1] = 'manage_nav_menus';
+                    $menu[$key][1] = $manage_cap;
                     $menu[$key][2] = 'nav-menus.php';
                 }
             }
