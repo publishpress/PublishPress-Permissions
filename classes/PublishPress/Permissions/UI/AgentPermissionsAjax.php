@@ -36,7 +36,9 @@ class AgentPermissionsAjax
 
         switch ($action) {
             case 'roles_remove':
-                if ($pp_ass_ids = presspermit_GET_var('pp_ass_ids')) {
+                global $current_user;
+
+                if (!$pp_ass_ids = presspermit_GET_var('pp_ass_ids')) {
                     exit;
                 }
 
