@@ -265,7 +265,7 @@ class GroupUpdate
             }
         }
 
-        $wpdb->update($groups_table, $groupdata, ['ID' => $group_id]);
+        $wpdb->update($wpdb->groups_table, $groupdata, ['ID' => $group_id]);
 
         return true;
     }

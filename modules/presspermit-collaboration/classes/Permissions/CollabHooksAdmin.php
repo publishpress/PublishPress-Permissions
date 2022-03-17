@@ -131,10 +131,20 @@ class CollabHooksAdmin
     {
         global $current_user;
 
-        if (empty($current_user->allcaps['manage_nav_menus']) && (!defined('PP_STRICT_MENU_CAPS') 
-        && (!empty($current_user->allcaps['switch_themes']) || !empty($current_user->allcaps['edit_theme_options'])))
-        ) {
-            $current_user->allcaps['manage_nav_menus'] = true;
+        if (!empty($current_user->allcaps['switch_themes']) || !empty($current_user->allcaps['edit_theme_options']) && !defined('PP_STRICT_MENU_CAPS')) {
+            if ($tx = get_taxonomy('nav_menu')) {
+                if (!empty($tx->cap->manage_terms)) {
+                    $manage_cap = $tx->cap->manage_terms;
+                }
+            }
+            
+            if (empty($manage_cap)) {
+                $manage_cap = 'manage_nav_menus';
+            }
+
+            if (empty($current_user->allcaps[$manage_cap])) {
+                $current_user->allcaps[$manage_cap] = true;
+            }
         }
     }
 

@@ -38,6 +38,7 @@ class Profile
         $new_permissions_link = true;
         $maybe_display_note = !$has_user_roles;
         $display_limit = 12;
+        $echo = true;
 
         self::abbreviatedExceptionsList(
             'user',
@@ -262,6 +263,8 @@ class Profile
         if (!isset($exception_info) || $force_refresh) {
             $exception_info = \PublishPress\Permissions\DB\PermissionsMeta::countExceptions($agent_type, $args);
         }
+
+        $exc_str = '';
 
         if (isset($exception_info[$id])) {
             if (isset($exception_info[$id]['exceptions'])) {
