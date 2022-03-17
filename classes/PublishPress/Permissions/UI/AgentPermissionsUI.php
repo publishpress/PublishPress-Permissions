@@ -604,9 +604,9 @@ class AgentPermissionsUI
             . '<h3>';
 
         if ($link)
-            echo "<a href='" . esc_url($link) . "'>" . esc_html($caption) . "</a>";
+            echo "<a href='" . esc_url($link) . "'>" . $caption . "</a>";
         else
-            echo esc_html($caption);
+            echo $caption;
 
         echo '</h3>';
         echo '<div>';
