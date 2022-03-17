@@ -82,7 +82,17 @@ class NavMenus
 
         global $current_user;
 
-        return !empty($current_user->allcaps['manage_nav_menus']) || (
+        if ($tx = get_taxonomy('nav_menu')) {
+            if (!empty($tx->cap->manage_terms)) {
+                $manage_cap = $tx->cap->manage_terms;
+            }
+        }
+        
+        if (empty($manage_cap)) {
+            $manage_cap = 'manage_nav_menus';
+        }
+
+        return !empty($current_user->allcaps[$manage_cap]) || (
             !defined('PP_STRICT_MENU_CAPS') && (!empty($current_user->allcaps['switch_themes']) || !empty($current_user->allcaps['edit_theme_options']))
         );
     }
