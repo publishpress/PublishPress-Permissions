@@ -213,7 +213,7 @@ class PostFilters
                 $_wp_query->query_vars['required_operation'] = 'read';  // default to requiring read access for all ajax queries
             }
 
-            $edit_actions = apply_filters('presspermit_ajax_edit_actions', []);
+            $edit_actions = apply_filters('presspermit_ajax_edit_actions', ['publishpress_calendar_get_data']);
 
             if (in_array($action, $edit_actions, true)) {
                 $_wp_query->query_vars['required_operation'] = 'edit';
