@@ -88,7 +88,7 @@ class DashboardFilters
     function permissions_menu($pp_options_menu, $handler)
     {
     	// Register a submenu item for these screens, but only if they are accessed
-        if ('presspermit-role-usage' == presspermitPluginPage()) {
+        if ('presspermit-role-usage' == presspermitPluginPage() || defined('PRESSPERMIT_ROLE_USAGE_COMPAT')) {
             add_submenu_page(
                 $pp_options_menu, 
                 esc_html__('Role Usage', 'press-permit-core'), 
