@@ -106,6 +106,12 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	        return;
 	    }
 	
+		global $pagenow;
+
+        if (is_admin() && isset($pagenow) && ('customize.php' == $pagenow)) {
+            return;
+        }
+	
 	    define('PRESSPERMIT_VERSION', '3.7.3');
 		
 	    if (!$presspermit_loaded_by_pro) {
@@ -145,8 +151,8 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    require_once(PRESSPERMIT_CLASSPATH . '/API.php');
 	    
 	    require_once(__DIR__ . '/db-config.php');
+        require_once(__DIR__ . '/functions.php');
 	    require_once(__DIR__ . '/classes/PublishPress/Permissions.php');
-	    require_once(__DIR__ . '/functions.php');
     
 	    presspermit();
 	}
