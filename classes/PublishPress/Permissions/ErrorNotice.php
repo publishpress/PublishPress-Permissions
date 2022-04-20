@@ -66,7 +66,7 @@ class ErrorNotice
             case 'rs_active':
                 define('PRESSPERMIT_DISABLE_QUERYFILTERS', true);
             
-                $args = (presspermit_isset_REQUEST('page') && (0 === strpos(presspermit_REQUEST_key('page'), 'presspermit-')))
+                $args = (presspermit_is_REQUEST('page') && (0 === strpos(presspermit_REQUEST_key('page'), 'presspermit-')))
                     ? ['style' => 'color:black']
                     : [];
 
