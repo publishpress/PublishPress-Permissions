@@ -101,7 +101,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
         $current_tab = presspermit_REQUEST_key($post_type_name . '-tab');
 
-        $pagenum = $current_tab && presspermit_isset_REQUEST('paged') ? absint(presspermit_REQUEST_var('paged')) : 1;
+        $pagenum = $current_tab && presspermit_is_REQUEST('paged') ? absint(presspermit_REQUEST_var('paged')) : 1;
         $offset = 0 < $pagenum ? $per_page * ($pagenum - 1) : 0;
 
         $args = [
