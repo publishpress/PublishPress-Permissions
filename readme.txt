@@ -238,6 +238,16 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.7.4 - 20 Apr 2022 =
+* Lang : Spanish translation
+* Lang : French translation
+* Lang : Italian translation
+* Fixed : Fatal error on post edit if category / term permissions are stored
+* Fixed : PHP Warning on post update by non-Administrator
+* Fixed : Customizer did not load under some configurations
+* Fixed : Role Usage menu items not displayed under some configurations
+* Fixed : Coding Standards - some output variables were not late-escaped
+
 = 3.7.3 - 3 Mar 2022 =
 * Compat : PublishPress - Non-Administators could not see unpublished posts on calendar
 * Fixed : Edit Group / User Permissions - roles could not be removed
