@@ -40,9 +40,9 @@ class GroupsListTableBase extends \WP_List_Table
                         echo '<span class="pp-group-site-roles">';
 
                         if (count($this->role_info[$group_id]['roles']) > $display_limit) {
-                            printf(esc_html__('%s, more...', 'press-permit-core'), implode(', ', $role_titles));
+                            printf(esc_html__('%s, more...', 'press-permit-core'), esc_html(implode(', ', $role_titles)));
                         } else {
-                            echo implode(', ', $role_titles);
+                            echo esc_html(implode(', ', $role_titles));
                         }
 
                         echo '</span>';
@@ -130,6 +130,6 @@ class GroupsListTableBase extends \WP_List_Table
 
 		echo '</div>';
 
-		echo '<button type="button" class="toggle-row"><span class="screen-reader-text">' . __( 'Show more details' ) . '</span></button>';
+		echo '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__( 'Show more details' ) . '</span></button>';
     }
 } // end class

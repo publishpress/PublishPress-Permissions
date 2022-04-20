@@ -144,7 +144,7 @@ class RoleUsageListTable extends \WP_List_Table
 
                     // Check if the group for this row is editable
                     if ($can_manage) {
-                        echo "<span class='edit'><a href='" . esc_url($edit_link) . "'>" . PWP::__wp('Edit') . '</a></span>';
+                        echo "<span class='edit'><a href='" . esc_url($edit_link) . "'>" . esc_html(PWP::__wp('Edit')) . '</a></span>';
                     } else {
                         // temp workaround to prevent shrunken row
                         echo "<span class=''>&nbsp;</span>";

@@ -480,7 +480,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
             </div><!-- /.tabs-panel -->
 
-            <div id="<?php echo $post_type_name; ?>-all" class="tabs-panel tabs-panel-view-all<?php
+            <div id="<?php echo esc_attr($post_type_name); ?>-all" class="tabs-panel tabs-panel-view-all<?php
             echo('all' == $current_tab ? ' tabs-panel-active' : ' tabs-panel-inactive');
             ?>">
 
