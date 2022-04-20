@@ -270,6 +270,32 @@ class DashboardFilters
             }
         }
 
+        if (presspermit()->moduleActive('collaboration') && (defined('PRESSPERMIT_ROLE_USAGE_COMPAT') || !empty($_REQUEST['pp_role_usage']))) {
+            do_action('pp_added_role_usage_submenu');
+
+            add_submenu_page(
+                $pp_options_menu, 
+                esc_html__('Role Usage', 'press-permit-core'), 
+                esc_html__('Role Usage', 'press-permit-core'), 
+                'read', 
+                'presspermit-role-usage', 
+                $handler
+            );
+
+            if ('presspermit-role-usage-edit' == presspermitPluginPage()) {
+                do_action('pp_added_edit_role_usage_submenu');
+
+                add_submenu_page(
+                    $pp_options_menu, 
+                    esc_html__('Edit Role Usage', 'press-permit-core'), 
+                    esc_html__('Edit Role Usage', 'press-permit-core'), 
+                    'read', 
+                    'presspermit-role-usage-edit', 
+                    $handler
+                );
+            }
+        }
+
         if ($do_settings) {
             do_action('presspermit_permissions_menu', $pp_options_menu, $handler);
 
