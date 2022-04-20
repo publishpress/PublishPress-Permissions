@@ -87,27 +87,29 @@ class DashboardFilters
 
     function permissions_menu($pp_options_menu, $handler)
     {
-    	// Register a submenu item for these screens, but only if they are accessed
-        if ('presspermit-role-usage' == presspermitPluginPage() || defined('PRESSPERMIT_ROLE_USAGE_COMPAT')) {
-            add_submenu_page(
-                $pp_options_menu, 
-                esc_html__('Role Usage', 'press-permit-core'), 
-                esc_html__('Role Usage', 'press-permit-core'), 
-                'read', 
-                'presspermit-role-usage', 
-                $handler
-            );
-        }
+        if (presspermit()->moduleActive('collaboration')) {
+	    	// Register a submenu item for these screens, but only if they are accessed
+	            if ('presspermit-role-usage' == presspermitPluginPage() && !did_action('pp_added_role_usage_submenu')) {
+	            add_submenu_page(
+	                $pp_options_menu, 
+	                esc_html__('Role Usage', 'press-permit-core'), 
+	                esc_html__('Role Usage', 'press-permit-core'), 
+	                'read', 
+	                'presspermit-role-usage', 
+	                $handler
+	            );
+	        }
 
-        if ('presspermit-role-usage-edit' == presspermitPluginPage()) {
-            add_submenu_page(
-                $pp_options_menu, 
-                esc_html__('Edit Role Usage', 'press-permit-core'), 
-                esc_html__('Edit Role Usage', 'press-permit-core'), 
-                'read', 
-                'presspermit-role-usage-edit', 
-                $handler
-            );
+            if ('presspermit-role-usage-edit' == presspermitPluginPage() && !did_action('pp_added_edit_role_usage_submenu')) {
+	            add_submenu_page(
+	                $pp_options_menu, 
+	                esc_html__('Edit Role Usage', 'press-permit-core'), 
+	                esc_html__('Edit Role Usage', 'press-permit-core'), 
+	                'read', 
+	                'presspermit-role-usage-edit', 
+	                $handler
+	            );
+            }
         }
     }
 
