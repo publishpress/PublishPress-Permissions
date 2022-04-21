@@ -252,7 +252,7 @@ class SettingsTabAdvanced
             <?php endif; // any options accessable in this section
 
             $section = 'role_integration'; // --- ROLE INTEGRATION SECTION ---
-            if (!empty($ui->form_options[$tab][$section])) : ?>
+            if (!empty($ui->form_options[$tab][$section]) && presspermit()->moduleActive('collaboration')) : ?>
                 <tr>
                     <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                     <td>

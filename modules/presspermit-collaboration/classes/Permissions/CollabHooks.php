@@ -204,7 +204,7 @@ class CollabHooks
             }
         } elseif ('term' == $for_item_source) {
             foreach (['edit', 'fork', 'copy', 'revise', 'assign'] as $op) {
-                if ($pp->admin()->canSetExceptions(
+                if (presspermit()->admin()->canSetExceptions(
                     $op, 
                     $for_item_type, 
                     ['via_item_source' => 'term', 'via_type_name' => $via_item_type, 'for_item_source' => $for_item_source]

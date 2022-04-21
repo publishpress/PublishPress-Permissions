@@ -120,7 +120,7 @@ class PostTermsSave
         }
 
         if ('category' == $taxonomy) {
-            if ($post_category = presspermit_POST_int('post_category')) {
+            if ($post_category = presspermit_POST_var('post_category')) {
 				return array_map('intval', self::fltPreObjectTerms((array) array_map('intval', $post_category), $taxonomy));
             }
         } else {

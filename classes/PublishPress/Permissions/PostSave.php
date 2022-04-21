@@ -6,7 +6,7 @@ class PostSave
 {
     public static function actSaveItem($item_source, $post_id, $post)
     {
-        if (presspermit_is_REQUEST('action', 'untrash')) {
+        if (!function_exists('presspermit_is_REQUEST') || presspermit_is_REQUEST('action', 'untrash')) {
             return;
         }
 
