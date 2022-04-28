@@ -56,6 +56,10 @@ class ItemSave
             // validate posted exceptions array
             $pe = (array) $_POST['pp_exceptions']; // explicitly validated below
 
+            if (isset($pe['(all)'])) {
+                $pe[''] = $pe['(all)'];
+            }
+
             foreach(array_keys($pe) as $item_type) {
                 if (!is_array($pe[$item_type]) || ($item_type != sanitize_key($item_type))) {
                     unset($pe[$item_type]);
@@ -96,9 +100,7 @@ class ItemSave
             $posted_exceptions = $pe;
 
             foreach (array_keys($posted_exceptions) as $for_item_type) {
-                $for_item_type = sanitize_key($for_item_type);
-                
-                $_for_type = ('(all)' == $for_item_type) ? '' : $for_item_type;
+                $_for_type = sanitize_key($for_item_type);
 
                 foreach (array_keys($posted_exceptions[$for_item_type]) as $op) {
                     $op = sanitize_key($op);

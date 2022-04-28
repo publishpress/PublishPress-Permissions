@@ -192,6 +192,9 @@ class Permissions
                                 $for_types = array_merge($for_types, array_keys($valid_src_types[$for_source_name][$via_source_name][$via_type][$mod_type]));
                             }
                         }
+
+                        $for_types = array_unique($for_types);
+
                     } elseif ('term' == $via_source_name) {
                         $for_types = ('term' == $for_source_name) ? $taxonomies : $post_types;
                     } else {
