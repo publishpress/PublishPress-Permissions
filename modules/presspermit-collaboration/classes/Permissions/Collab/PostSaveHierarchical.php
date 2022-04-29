@@ -5,9 +5,6 @@ class PostSaveHierarchical
 {
     public static function fltPageParent($parent_id, $post_type = '')
     {
-        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
-            return $parent_id;
-
         if (function_exists('bbp_get_version') && presspermit_is_REQUEST('action', ['bbp-new-topic', 'bbp-new-reply'])) {
             return $parent_id;
         }
@@ -21,15 +18,22 @@ class PostSaveHierarchical
         }
 
         $selected_parent_id = $parent_id;
-        $post_id = PWP::getPostID();
-
-        if (!$post_id && !$post_type && presspermit()->doingREST() && \PublishPress\Permissions\REST::getPostType()) {
-            $post_type = \PublishPress\Permissions\REST::getPostType();
-        }
 
         // this filter is not intended to regulate attachment parent
         if (isset($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'async-upload.php') && presspermit_is_REQUEST('action', 'upload-attachment')) {
             return $parent_id;
+        }
+
+        $post_id = PWP::getPostID();
+
+        if (!$post_type && presspermit()->doingREST() && \PublishPress\Permissions\REST::getPostType()) {
+            if ($post_id) {
+                if ($_post = get_post($post_id)) {
+                    $post_type = $_post->post_type;
+                }
+            } else {
+            	$post_type = \PublishPress\Permissions\REST::getPostType();
+        	}
         }
 
         if (!$post_id && !$post_type)  // allow post type to be passed in for pre-filtering of new page creation
