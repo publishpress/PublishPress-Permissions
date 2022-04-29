@@ -94,6 +94,8 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    $min_php_version = '5.6.20';
 	
 	    $php_version = phpversion();
+
+	    require_once(__DIR__ . '/functions.php');
 	
 	    // Critical errors that prevent initialization
 	    if ((version_compare($min_php_version, $php_version, '>') && presspermit_err('old_php', ['min_version' => $min_php_version, 'version' => $php_version]))
@@ -151,7 +153,6 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    require_once(PRESSPERMIT_CLASSPATH . '/API.php');
 	    
 	    require_once(__DIR__ . '/db-config.php');
-        require_once(__DIR__ . '/functions.php');
 	    require_once(__DIR__ . '/classes/PublishPress/Permissions.php');
     
 	    presspermit();
