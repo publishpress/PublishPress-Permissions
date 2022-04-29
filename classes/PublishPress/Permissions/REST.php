@@ -3,6 +3,7 @@ namespace PublishPress\Permissions;
 
 class REST
 {
+    var $route = '';
     var $is_view_method = false;
     var $endpoint_class = '';
     var $taxonomy = '';
@@ -100,6 +101,7 @@ class REST
         }
 
         $post_endpoints[]= 'WP_REST_Posts_Controller';
+        $post_endpoints[]= 'WP_REST_Autosaves_Controller';
         $term_endpoints[]= 'WP_REST_Terms_Controller';
 		
 		foreach ( $routes as $route => $handlers ) {
@@ -135,6 +137,8 @@ class REST
                     continue;
                 }
 				
+                $this->route = $route;
+
                 $this->is_view_method = in_array($method, [\WP_REST_Server::READABLE, 'GET']);
                 $this->params = $request->get_params();
                 
