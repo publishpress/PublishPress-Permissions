@@ -466,7 +466,7 @@ class NavMenus
 
         $page_type_obj = get_post_type_object('page');
 
-        return presspermit()->isUserUnfiltered() || defined('PP_LEGACY_MENU_SETTINGS_ACCESS') 
+        return presspermit()->isUserUnfiltered($current_user->ID, ['post_type' => 'page']) || defined('PP_LEGACY_MENU_SETTINGS_ACCESS') 
         || !empty($current_user->allcaps['manage_menu_settings']) 
         || (!empty($current_user->allcaps[$page_type_obj->cap->edit_others_posts]) && !empty($current_user->allcaps[$page_type_obj->cap->publish_posts]));
     }

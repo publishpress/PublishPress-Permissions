@@ -11,7 +11,9 @@ class PostFiltersExtra
     //
     public static function fltPostsRequest($request, $args = [])
     {
-        if (presspermit()->isUserUnfiltered()) {
+        global $current_user;
+
+        if (presspermit()->isUserUnfiltered($current_user->ID, $args)) {
             return $request;
         }
 

@@ -717,6 +717,8 @@ class Permissions
         $is_unfiltered = $this->isAdministrator($user_id, 'unfiltered', $args) 
         && (!defined('REST_REQUEST') || ! REST_REQUEST || (presspermit_empty_REQUEST('parent_exclude') || did_action('presspermit_refresh_administrator_check'))); // page parent dropdown
 
+        $args['user_id'] = $user_id;
+
         return apply_filters('presspermit_unfiltered', $is_unfiltered, $args);
     }
 

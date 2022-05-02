@@ -46,7 +46,9 @@ class Collab {
 
     public static function userCanAssociateMain($post_type)
     {
-        if (presspermit()->isUserUnfiltered())
+        global $current_user;
+
+        if (presspermit()->isUserUnfiltered($current_user->ID, compact('post_type')))
             return true;
 
         if (!$post_type_obj = get_post_type_object($post_type))
