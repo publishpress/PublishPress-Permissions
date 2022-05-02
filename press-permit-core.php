@@ -95,7 +95,9 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	
 	    $php_version = phpversion();
 
-	    require_once(__DIR__ . '/functions.php');
+        if (!function_exists('presspermit')) {
+	    	require_once(__DIR__ . '/functions.php');
+        }
 	
 	    // Critical errors that prevent initialization
 	    if ((version_compare($min_php_version, $php_version, '>') && presspermit_err('old_php', ['min_version' => $min_php_version, 'version' => $php_version]))
