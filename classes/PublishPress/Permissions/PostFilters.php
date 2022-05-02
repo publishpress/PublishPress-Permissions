@@ -138,11 +138,11 @@ class PostFilters
 
     public function fltPostsClauses($clauses, $_wp_query = false, $args = [])
     {
-        global $pagenow;
+        global $pagenow, $current_user;
 
         $pp = presspermit();
 
-        if ($pp->isUserUnfiltered() && 
+        if ($pp->isUserUnfiltered($current_user->ID, $args) && 
             (
             !is_admin() || 
             (($pagenow != 'nav-menus.php') && (!defined('DOING_AJAX') || !DOING_AJAX || !presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search'])))
@@ -273,7 +273,9 @@ class PostFilters
 
     public function fltDoPostsRequest($request, $args = [])
     {
-        if (presspermit()->isUserUnfiltered()) {
+        global $current_user;
+
+        if (presspermit()->isUserUnfiltered($current_user->ID, $args)) {
             return $request;
         }
 
