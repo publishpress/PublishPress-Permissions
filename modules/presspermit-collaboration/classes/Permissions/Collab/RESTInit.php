@@ -3,10 +3,15 @@ namespace PublishPress\Permissions\Collab;
 
 class RESTInit
 {
+    var $post_terms = [];
+    var $post_updated = [];
+
     function __construct() {
         add_action('init', [$this, 'add_post_type_filters'], 99);
 
         add_filter("rest_post_collection_params", [$this, 'post_collection_params'], 1, 2);
+
+        add_action('post_updated', [$this, 'actLogPostUpdated']);
     }
 
     function add_post_type_filters() {
@@ -16,7 +21,14 @@ class RESTInit
             if (is_post_type_hierarchical($post_type)) {
                 add_filter("rest_{$post_type}_query", [$this, 'page_parent_query_args'], 10, 2);
             }
+
+            add_action("rest_insert_{$post_type}", [$this, 'actLogPostTerms'], 10, 2);
+            add_action("rest_after_insert_{$post_type}", [$this, 'actFilterPostTerms'], 10, 2);
         }
+    }
+
+    function actLogPostUpdated($post_id) {
+        $this->post_updated[$post_id] = true;
     }
 
     function post_collection_params($params, $post_type_obj)
@@ -28,6 +40,39 @@ class RESTInit
         }
 
         return $params;
+    }
+
+    // log post terms already stored prior to REST action
+    function actLogPostTerms($post, $request) {
+        if (!isset($this->post_terms[$post->ID])) {
+            $this->post_terms[$post->ID] = [];
+        }
+
+        foreach(get_object_taxonomies($post->post_type, 'objects') as $tx) {
+            $this->post_terms[$tx->rest_base] = wp_get_object_terms($post->ID, $tx->name, ['fields' => 'ids']);
+        }
+    }
+
+    // prevent unauthorized term assignment or removal
+    function actFilterPostTerms($post, $request) {
+        foreach(get_object_taxonomies($post->post_type, 'objects') as $tx) {
+            if (!isset($request[$tx->rest_base])) {
+                continue;
+            }
+
+            if (!empty($this->post_updated[$post->ID])) {
+                $stored_terms = (isset($this->post_terms[$post->ID]) && isset($this->post_terms[$post->ID][$tx->rest_base])) ? $this->post_terms[$post->ID][$tx->rest_base] : [];
+                $filter_args = compact('stored_terms');
+            } else {
+                $filter_args = [];
+            }
+
+            $filtered_terms = apply_filters('presspermit_pre_object_terms', $request[$tx->rest_base], $tx->name, $filter_args);
+
+            if (array_diff($filtered_terms, $request[$tx->rest_base]) || array_diff($request[$tx->rest_base], $filtered_terms)) {
+                wp_set_object_terms($post->ID, $filtered_terms, $tx->name);
+            }
+        }
     }
 
     function page_parent_query_args($args, $request) {

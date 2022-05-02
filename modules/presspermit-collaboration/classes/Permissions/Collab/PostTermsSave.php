@@ -255,7 +255,9 @@ class PostTermsSave
                 return $selected_terms;
         }
 
-        $stored_terms = [];
+        if (!empty($args['stored_terms'])) {
+            $stored_terms = $args['stored_terms'];
+        }
 
         // don't filter selected terms for content administrator, but still need to apply default term as needed when none were selected
         if ($pp->isUserUnfiltered()) {
@@ -302,7 +304,9 @@ class PostTermsSave
             $selected_terms = array_intersect($selected_terms, $user_terms);
 
             if ($object_id = PWP::getPostID()) {
-                $stored_terms = Collab::getObjectTerms($object_id, $taxonomy, ['fields' => 'ids', 'pp_no_filter' => true]);
+                if (!isset($stored_terms)) {
+                	$stored_terms = Collab::getObjectTerms($object_id, $taxonomy, ['fields' => 'ids', 'pp_no_filter' => true]);
+                }
 
                 if (!defined('PPCE_DISABLE_' . strtoupper($taxonomy) . '_RETENTION')) {
                     if ($deselected_terms = array_diff($stored_terms, $selected_terms)) {
@@ -362,7 +366,7 @@ class PostTermsSave
                 }
 
                 $selected_terms = $default_terms;
-            } elseif ($stored_terms) {
+            } elseif (!empty($stored_terms)) {
                 $selected_terms = $stored_terms; // fallback is to currently stored terms
             }
         }

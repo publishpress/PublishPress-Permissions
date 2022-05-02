@@ -125,7 +125,7 @@ class CollabHooks
 
         add_filter('pre_post_tax_input', [$this, 'fltTaxInput'], 50, 1);
         add_filter('pre_post_category', [$this, 'fltPrePostTerms'], 50, 1);
-        add_filter('presspermit_pre_object_terms', [$this, 'fltPrePostTerms'], 50, 2);
+        add_filter('presspermit_pre_object_terms', [$this, 'fltPrePostTerms'], 50, 3);
     }
 
     function init()
@@ -575,10 +575,10 @@ class CollabHooks
         return Collab\PostTermsSave::fltTaxInput($tax_input);
     }
 
-    function fltPrePostTerms($terms, $taxonomy = 'category')
+    function fltPrePostTerms($terms, $taxonomy = 'category', $args = [])
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
-        return Collab\PostTermsSave::fltPreObjectTerms($terms, $taxonomy);
+        return Collab\PostTermsSave::fltPreObjectTerms($terms, $taxonomy, $args);
     }
 
     function fltOriginalRestPostTerms($terms, $taxonomy = 'category')
