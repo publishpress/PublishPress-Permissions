@@ -217,7 +217,7 @@ class TermFilters
                     }
                 }
             } else {
-                $args['required_operation'] = ($rest->is_view_method) ? 'assign' : 'manage';
+                $args['required_operation'] = ('WP_REST_Posts_Controller' == $rest->endpoint_class) ? 'assign' : 'manage';
             }
         }
 
