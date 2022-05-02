@@ -99,6 +99,8 @@ class PostFiltersFrontNonAdministrator
             $post_types = $post_ids = [];
         }
 
+		$post_types = array_diff($post_types, apply_filters('presspermit_nav_menu_ignore_post_types', []));
+
         $pub_stati = PWP::getPostStatuses(['public' => true, 'post_type' => $post_types]);
         $pvt_stati = PWP::getPostStatuses(['private' => true, 'post_type' => $post_types]);
         $stati = array_merge($pub_stati, $pvt_stati);
