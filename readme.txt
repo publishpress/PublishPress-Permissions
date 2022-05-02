@@ -238,6 +238,12 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.7.5 - 2 May 2022 =
+* Fixed : Category Permissions set for all post types were not stored properly
+* Fixed : Category / Term restrictions were not applied to post creation / edit by REST API
+* Fixed : On new page creation, author could be locked out of editing if restrictive editing permissions are assigned and autosave occurs before manual save 
+* Fixed : Non-administrators can access Appearance menu, theme settings in WordPress 5.9
+
 = 3.7.4 - 20 Apr 2022 =
 * Lang : Spanish translation
 * Lang : French translation
