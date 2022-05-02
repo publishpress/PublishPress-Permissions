@@ -87,7 +87,7 @@ class REST_Workarounds
                         ['required_operation' => 'assign', 'hide_empty' => 0, 'fields' => 'ids', 'post_type' => $type_obj->name]
                     );
                     
-                    $selected_terms = array_intersect(array_map('intval', $terms), $user_terms);
+                    $selected_terms = array_intersect(array_map('intval', (array) $terms), $user_terms);
 
                     $stored_terms = Collab::getObjectTerms($post_id, $taxonomy, ['fields' => 'ids']);
 
