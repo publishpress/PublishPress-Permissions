@@ -27,6 +27,8 @@ function presspermit_editing_plugin()
     global $pagenow;
 
     if (is_admin() && isset($pagenow) && ('plugin-editor.php' == $pagenow)) {
+        require_once(PRESSPERMIT_ABSPATH . '/functions.php');
+
         if (!presspermit_is_REQUEST('action', ['activate', 'deactivate'])) {
             return true;
     	}
