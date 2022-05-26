@@ -509,9 +509,8 @@ class Permissions
 						(is_multisite() && !is_user_member_of_blog()) 
 						|| (!is_admin() && !defined('PRESSPERMIT_STRICT_READ_CAP'))
 					)
-					&& empty($this->allcaps)
 				) {
-                    $user->allcaps['read'] = true;
+                    $user->allcaps[PRESSPERMIT_READ_PUBLIC_CAP] = true;
                 }
             }   
 

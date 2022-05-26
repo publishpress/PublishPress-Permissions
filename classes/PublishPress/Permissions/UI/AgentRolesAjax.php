@@ -100,7 +100,7 @@ class AgentRolesAjax
                     }
 
                     // edit_private, delete_private caps are normally cast from pattern role
-                    if (isset($type_caps['read']) && (empty($type_caps['edit_posts']) || $direct_assignment)) {
+                    if ((isset($type_caps['read']) || isset($type_caps[PRESSPERMIT_READ_PUBLIC_CAP])) && (empty($type_caps['edit_posts']) || $direct_assignment)) {
                         $pvt_obj = get_post_status_object('private');
 
                         echo '<p class="pp-checkbox pp_select_private_status">'
