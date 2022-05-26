@@ -132,6 +132,10 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	        define('PRESSPERMIT_LEGACY_HOOKS', false);
 	    }
 	
+        if (!defined('PRESSPERMIT_READ_PUBLIC_CAP')) {
+            define('PRESSPERMIT_READ_PUBLIC_CAP', 'read_public');
+        }
+
 	    // Non-critical intialization errors (may prevent integration with module or external plugin, but continue with initialization)
 	    if (defined('RVY_VERSION') && !defined('REVISIONARY_VERSION')) {
 	        presspermit_err('old_extension', ['module_title' => 'Revisionary', 'min_version' => '1.3.5']);

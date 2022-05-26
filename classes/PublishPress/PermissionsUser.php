@@ -28,8 +28,8 @@ class PermissionsUser extends \WP_User
         parent::__construct($id, $name);
 
         // without this, logged in users have no read access to sites they're not registered for
-        if (is_multisite() && $id && !is_admin() && empty($this->allcaps)) {
-            $this->caps['read'] = true;
+        if (is_multisite() && $id && !is_admin()) {
+            $this->caps[PRESSPERMIT_READ_PUBLIC_CAP] = true;
         }
 
         $agent_type = 'pp_group';

@@ -370,7 +370,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                 if (array_intersect_key($role_caps, array_fill_keys($exemption_caps, true)))
                     continue;
 
-                if (!empty($role_caps['read']) && empty($role_caps[$cap->read_private_posts]) && empty($role_caps[$cap->edit_posts])) {
+                if ((!empty($role_caps['read']) || !empty($role_caps[PRESSPERMIT_READ_PUBLIC_CAP])) && empty($role_caps[$cap->read_private_posts]) && empty($role_caps[$cap->edit_posts])) {
                     $wp_role_restrictions["{$post_type}_reader"][] = $role_name;
                 }
 
