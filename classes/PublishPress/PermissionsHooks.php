@@ -76,6 +76,23 @@ class PermissionsHooks
         add_action('init', [$this, 'actInit'], 50);
         add_action('wp_loaded', [presspermit(), 'refreshUserAllcaps'], 18);   // account for any type / condition caps adding by late registration
 
+        if (!class_exists('\PressShack\LibArray')) {
+            require_once(PRESSPERMIT_CLASSPATH_COMMON . '/LibArray.php');
+            class_alias('\PressShack\LibArray', '\PublishPress\Arr');
+            class_alias('\PressShack\LibArray', '\PublishPress\Permissions\Arr');
+            class_alias('\PressShack\LibArray', '\PublishPress\Permissions\DB\Arr');
+            class_alias('\PressShack\LibArray', '\PublishPress\Permissions\UI\Arr');
+            class_alias('\PressShack\LibArray', '\PublishPress\Permissions\UI\Dashboard\Arr');
+        
+            require_once(PRESSPERMIT_CLASSPATH_COMMON . '/LibWP.php');
+            class_alias('\PressShack\LibWP', '\PublishPress\PWP');
+            class_alias('\PressShack\LibWP', '\PublishPress\Permissions\PWP');
+            class_alias('\PressShack\LibWP', '\PublishPress\Permissions\DB\PWP');
+            class_alias('\PressShack\LibWP', '\PublishPress\Permissions\UI\PWP');
+            class_alias('\PressShack\LibWP', '\PublishPress\Permissions\UI\Dashboard\PWP');
+            class_alias('\PressShack\LibWP', '\PublishPress\Permissions\UI\Handlers\PWP');
+        }
+
         if (is_admin()) {
             require_once(PRESSPERMIT_ABSPATH . '/classes/PublishPress/PermissionsHooksAdmin.php');
             $this->admin_hooks = new PermissionsHooksAdmin();
