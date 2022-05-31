@@ -142,6 +142,8 @@ class PostFilters
 
         $pp = presspermit();
 
+        $args['query_obj'] = $_wp_query;
+
         if ($pp->isUserUnfiltered($current_user->ID, $args) && 
             (
             !is_admin() || 
