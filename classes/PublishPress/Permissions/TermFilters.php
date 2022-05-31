@@ -217,7 +217,11 @@ class TermFilters
                     }
                 }
             } else {
-                $args['required_operation'] = ('WP_REST_Posts_Controller' == $rest->endpoint_class) ? 'assign' : 'manage';
+                if (!empty($rest->operation)) {
+                    $args['required_operation'] = $rest->operation;
+                } else {
+                	$args['required_operation'] = ('WP_REST_Posts_Controller' == $rest->endpoint_class) ? 'assign' : 'manage';
+                }
             }
         }
 
