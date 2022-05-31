@@ -193,7 +193,7 @@ class CollabHooks
     function fltItemEditExceptionOps($operations, $for_item_source, $for_item_type, $via_item_type = '')
     {
         if ('post' == $for_item_source) {
-            foreach (['edit', 'fork', 'copy', 'revise', 'associate'] as $op) {
+            foreach (['edit', 'fork', 'copy', 'revise', 'associate', 'assign'] as $op) {
                 if (presspermit()->admin()->canSetExceptions($op, $for_item_type, ['for_item_source' => $for_item_source])) {
                     $operations[$op] = true;
                 }
