@@ -241,13 +241,20 @@ class REST
                     }
 
                 } elseif (in_array($this->endpoint_class, $term_endpoints)) { 
+                    if (!empty($this->referer) && strpos($this->referer, 'post-new.php') && !empty($this->endpoint_class) && ('WP_REST_Terms_Controller' == $this->endpoint_class)) {
+                        $this->operation = 'assign';
+                        $this->is_view_method = false;
+
+                        $required_operation = 'assign';
+                    } else {
+                    $required_operation = ('read' == $this->operation) ? 'read' : 'manage';
+                    }
+                    
+                    $this->is_terms_request = true;
+
                     if (empty($args['taxonomy'])) break;
 
                     $this->taxonomy = $args['taxonomy'];
-
-                    $required_operation = ('read' == $this->operation) ? 'read' : 'manage';
-                    
-                    $this->is_terms_request = true;
 
                     if (!presspermit()->isContentAdministrator()) {
                         if (!empty($args['post'])) {
