@@ -17,7 +17,7 @@ class UserAjax
         switch ($pp_ajax_user) {
             case 'new_user_groups_ui':
                 require_once( PRESSPERMIT_CLASSPATH . '/UI/Dashboard/Profile.php' );
-                Profile::displayUserGroups(false);
+                Profile::displayUserGroups();
                 break;
         }
     }

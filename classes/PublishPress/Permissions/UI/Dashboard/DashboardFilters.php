@@ -317,11 +317,21 @@ class DashboardFilters
         do_action('presspermit_admin_menu');
     }
 
-    public function actUserUi()
+    public function actUserUi($user = false)
     {
+        if (empty($user)) {
         global $profileuser;
-        $user = presspermit()->getUser();
-        $pp_profile_user = ($profileuser->ID == $user->ID) ? $user : new \PublishPress\PermissionsUser($profileuser->ID);
+
+            if (!empty($profileuser)) {
+                $user = $profileuser;
+            }
+        } elseif (is_scalar($user)) {
+            $user = new \PublishPress\PermissionsUser($user);
+        }
+
+        $logged_user = presspermit()->getUser();
+
+        $pp_profile_user = ($user->ID == $logged_user->ID) ? $logged_user : new \PublishPress\PermissionsUser($user->ID);
 
         $pp = presspermit();
 
@@ -340,7 +350,7 @@ class DashboardFilters
         }
 
         if ($is_administrator || $pp->getOption('display_user_profile_groups')) {
-            Profile::displayUserGroups();
+            Profile::displayUserGroups($pp_profile_user->ID);
         }
 
         if ($is_administrator || $pp->getOption('display_user_profile_roles')) {
