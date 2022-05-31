@@ -117,8 +117,7 @@ class TermFilters
                     }
                 } elseif ($restrict_ids = $user->getExceptionTerms(
                     $operation,
-                    '
-                    exclude',
+                    'exclude',
                     $_post->post_type,
                     $taxonomy,
                     ['merge_universals' => true, 'return_term_ids' => true]
