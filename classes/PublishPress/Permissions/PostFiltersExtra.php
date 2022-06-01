@@ -96,7 +96,15 @@ class PostFiltersExtra
     private static function parseAfterWhere_1_1($request, &$pos_where, &$pos_suffix)
     {
         $request_u = strtoupper($request);
-        $pos_where = strpos($request_u, ' WHERE 1=1');
+        
+        if (!$pos_where = strpos($request_u, ' WHERE 1=1')) {
+            $matches = [];
+            $return = preg_match('/(\n[\s]+)(WHERE 1=1).*/', $request_u, $matches);
+
+            if ($return && !empty($matches[1]) && !empty($matches[2])) {
+                $pos_where = strpos($request_u, $matches[1] . $matches[2]) + strlen($matches[1]);
+            }
+        }
 
         if (!$pos_where) {
             if ($pos_suffix = self::getSuffixPos($request)) {
