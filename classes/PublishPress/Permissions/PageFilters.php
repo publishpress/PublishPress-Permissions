@@ -514,7 +514,7 @@ class PageFilters
         // ==================================== Begin PressPermit Modification ===================================
         //
         // Support a disjointed pages tree with some parents hidden
-        if ($child_of || empty($tease_all)) {  // if we're including all pages with teaser, no need to continue thru tree remapping
+        if ($child_of || empty($tease_all) && (empty($depth) || ($depth > 1))) {  // if we're including all pages with teaser, no need to continue thru tree remapping
             require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Ancestry.php');
            
             $ancestors = \PressShack\Ancestry::getPageAncestors(0, $post_type); // array of all ancestor IDs for keyed page_id, with direct parent first

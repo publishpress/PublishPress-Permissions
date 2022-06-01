@@ -329,10 +329,10 @@ class AgentPermissions
 
                                 require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/Profile.php');
                                 Dashboard\Profile::displayUserGroups(
-                                    false,
+                                    $agent_id,
                                     [
                                         'initial_hide' => true, 'selected_only' => true, 'force_display' => true, 'edit_membership_link' => true,
-                                        'hide_checkboxes' => true, 'user_id' => $agent_id
+                                        'hide_checkboxes' => true,
                                     ]
                                 );
 

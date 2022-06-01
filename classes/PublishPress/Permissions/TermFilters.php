@@ -117,8 +117,7 @@ class TermFilters
                     }
                 } elseif ($restrict_ids = $user->getExceptionTerms(
                     $operation,
-                    '
-                    exclude',
+                    'exclude',
                     $_post->post_type,
                     $taxonomy,
                     ['merge_universals' => true, 'return_term_ids' => true]
@@ -217,7 +216,11 @@ class TermFilters
                     }
                 }
             } else {
-                $args['required_operation'] = ('WP_REST_Posts_Controller' == $rest->endpoint_class) ? 'assign' : 'manage';
+                if (!empty($rest->operation)) {
+                    $args['required_operation'] = $rest->operation;
+                } else {
+                	$args['required_operation'] = ('WP_REST_Posts_Controller' == $rest->endpoint_class) ? 'assign' : 'manage';
+                }
             }
         }
 

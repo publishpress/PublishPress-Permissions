@@ -3,9 +3,9 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.9.7
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.6.20
-Stable tag: 3.7.5
+Stable tag: 3.7.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -238,8 +238,17 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.7.6 - 1 Jun 2022 =
+* Compat : WP 6.0 - Fatal error loading Customizer with PublishPress Permissions active, possibly in other areas
+* Fixed : WP 6.0 - Edit User / Profile screen did not display group assignments
+* Fixed : Implicit assignment of read capability forced all roles to have dashboard access
+* Fixed : Edit Category screen did not have metabox for Assign Category permissions assignment
+* Fixed : Category / Term assignment restrictions were not applied in Gutenberg editor
+* Fixed : Category / Term permissions - exclusions were not applied to terms list for post template display
+* Compat : The Events Calendar - post queries filtered incorrectly if event venue is involved
+
 = 3.7.5 - 2 May 2022 =
-* Fixed : Category Permissions set for all post types were not stored properly
+* Fixed : Category Permissions set for "(all)" post types were not stored properly
 * Fixed : Category / Term restrictions were not applied to post creation / edit by REST API
 * Fixed : On new page creation, author could be locked out of editing if restrictive editing permissions are assigned and autosave occurs before manual save 
 * Fixed : Non-administrators can access Appearance menu, theme settings in WordPress 5.9

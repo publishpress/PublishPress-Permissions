@@ -27,7 +27,7 @@ class CapabilityFilters
         $pp = presspermit();
         $pp->flags = array_merge($pp->flags, $this->flag_defaults);
 
-        $this->meta_caps = apply_filters('presspermit_meta_caps', ['read_post' => 'read', 'read_page' => 'read']);
+        $this->meta_caps = apply_filters('presspermit_meta_caps', ['read_post' => PRESSPERMIT_READ_PUBLIC_CAP, 'read_page' => PRESSPERMIT_READ_PUBLIC_CAP]);
 
         $this->cap_data_sources = []; // array : [$cap_name] = source_name (but default to 'post' data source if unspecified)
         $this->cap_data_sources = apply_filters('presspermit_cap_data_sources', $this->cap_data_sources);
@@ -119,7 +119,7 @@ class CapabilityFilters
             $orig_cap = apply_filters('presspermit_rest_post_cap_requirement', $orig_cap, $item_id);
         }
 
-        if (('read_post' == $orig_cap) && (count($orig_reqd_caps) > 1 || ('read' != reset($orig_reqd_caps)))) {
+        if (('read_post' == $orig_cap) && (count($orig_reqd_caps) > 1 || (PRESSPERMIT_READ_PUBLIC_CAP != reset($orig_reqd_caps)))) {
             if (!$pp->isDirectFileAccess()) {
                 // deal with map_meta_cap() changing 'read_post' requirement to 'edit_post'
                 $types = get_post_types(['public' => true, 'show_ui' => true], 'object', 'or');
@@ -224,7 +224,7 @@ class CapabilityFilters
                         if (count($base_caps) == 1) {
                             $base_cap = reset($base_caps);
                             switch ($base_cap) {
-                                case 'read':
+                                case PRESSPERMIT_READ_PUBLIC_CAP:
                                     $op = 'read';
                                     break;
                                 default:

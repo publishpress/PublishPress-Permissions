@@ -129,6 +129,10 @@ class CapabilityCaster
         if (!$type_obj = $pp->getTypeObject($source_name, $object_type))
             return [];
 
+        if (!empty($type_obj->cap->read) && ('read' == $type_obj->cap->read)) {
+            $type_obj->cap->read = PRESSPERMIT_READ_PUBLIC_CAP;
+        } 
+
         // disregard stored Supplemental Roles for Media when Media is no longer enabled for PP filtering (otherwise Post editing caps are granted)
         if (('attachment' == $object_type)) {
             static $media_filtering_enabled;
@@ -152,7 +156,7 @@ class CapabilityCaster
         }
 
         if (!$pp->moduleActive('status-control') && strpos($role_name, 'post_status:private')
-            && isset($pattern_role_caps[$base_role_name]['read'])
+        && (isset($pattern_role_caps[$base_role_name]['read']) || isset($pattern_role_caps[$base_role_name][PRESSPERMIT_READ_PUBLIC_CAP]))
         ) {
             $pattern_role_caps[$base_role_name]['read_private_posts'] = true;
         }

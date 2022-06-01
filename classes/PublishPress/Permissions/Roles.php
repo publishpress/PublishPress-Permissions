@@ -18,7 +18,7 @@ class Roles
 
     public function defineRoles()
     {
-        $this->anon_user_caps = apply_filters('presspermit_anon_user_caps', ['read']);
+        $this->anon_user_caps = apply_filters('presspermit_anon_user_caps', [PRESSPERMIT_READ_PUBLIC_CAP]);
 
         if ($direct_roles = apply_filters('presspermit_default_direct_roles', [])) {
             global $wp_roles;

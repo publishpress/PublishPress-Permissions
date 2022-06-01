@@ -94,7 +94,7 @@ class Profile
         );
     }
 
-    public static function displayUserGroups($include_role_metagroups = false, $args = [])
+    public static function displayUserGroups($user_id = 0, $args = [])
     {
         global $pagenow;
 
@@ -104,7 +104,7 @@ class Profile
             'hide_checkboxes' => false,
             'force_display' => false,
             'edit_membership_link' => false,
-            'user_id' => false
+            'include_role_metagroups' => false,
         ];
 
         $args = array_merge($defaults, $args);
@@ -115,9 +115,8 @@ class Profile
         $pp = presspermit();
         $pp_groups = $pp->groups();
 
-        if (!is_numeric($user_id)) {
-            global $profileuser;
-            $user_id = (!empty($profileuser)) ? $profileuser->ID : 0;
+        if (is_object($user_id)) {
+            $user_id = $user_id->ID; 
         }
 
         $group_types = $pp_groups->getGroupTypes(['editable' => true]);
