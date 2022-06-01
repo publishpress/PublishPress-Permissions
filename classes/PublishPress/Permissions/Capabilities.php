@@ -34,7 +34,7 @@ class Capabilities
             'delete_others_posts' => 'delete_posts',
             'delete_published_posts' => 'delete_posts',
             'delete_private_posts' => 'delete_posts',
-            'read' => 'read'
+            'read' => PRESSPERMIT_READ_PUBLIC_CAP,
         ];
 
         if ($pp->getOption('define_create_posts_cap')) {

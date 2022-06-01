@@ -46,7 +46,7 @@ class RoleAdmin
                 } elseif ($type_obj = $pp->getTypeObject($for_item_source, $for_item_type)) {
                     $type_caps = (array)$type_obj->cap;
 
-                    $check_type_caps = array_diff_key(array_fill_keys($type_caps, true), ['read' => true]);
+                    $check_type_caps = array_diff_key(array_fill_keys($type_caps, true), [PRESSPERMIT_READ_PUBLIC_CAP => true]);
 
                     $cap_caster = $pp->capCaster();
                     $cap_caster->definePatternCaps();
