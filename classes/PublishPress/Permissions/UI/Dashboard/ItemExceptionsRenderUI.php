@@ -115,7 +115,7 @@ class ItemExceptionsRenderUI
 
             $role_caps = isset($wp_roles->role_objects[$agent_info->metagroup_id])
                 ? array_intersect($role_obj_caps, [true, 1, '1'])
-                : ['read' => true, 'spectate' => true];
+                : [PRESSPERMIT_READ_PUBLIC_CAP => true, 'spectate' => true];
 
             if (isset($metagroup_caps[$agent_info->metagroup_id])) {
                 $role_caps = array_merge($role_caps, $metagroup_caps[$agent_info->metagroup_id]);
