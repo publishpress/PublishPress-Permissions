@@ -27,7 +27,7 @@ class CapabilityFilters
         $pp = presspermit();
         $pp->flags = array_merge($pp->flags, $this->flag_defaults);
 
-        $this->meta_caps = apply_filters('presspermit_meta_caps', ['read_post' => PRESSPERMIT_READ_PUBLIC_CAP, 'read_page' => PRESSPERMIT_READ_PUBLIC_CAP]);
+        $this->meta_caps = apply_filters('presspermit_meta_caps', ['read_post' => 'read', 'read_page' => 'read']);
 
         $this->cap_data_sources = []; // array : [$cap_name] = source_name (but default to 'post' data source if unspecified)
         $this->cap_data_sources = apply_filters('presspermit_cap_data_sources', $this->cap_data_sources);
