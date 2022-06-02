@@ -118,7 +118,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	
 	    define('PRESSPERMIT_VERSION', '3.7.6');
 		if (!defined('PRESSPERMIT_READ_PUBLIC_CAP')) {
-            define('PRESSPERMIT_READ_PUBLIC_CAP', 'read_public');
+            define('PRESSPERMIT_READ_PUBLIC_CAP', 'read');
         }
 		
 	    if (!$presspermit_loaded_by_pro) {
