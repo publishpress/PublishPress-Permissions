@@ -86,7 +86,7 @@ class Capabilities
             // append missing capability definitions
             foreach ($append_caps as $prop => $default) {
                 if (!isset($wp_post_types[$post_type]->cap->$prop)) {
-                    $wp_post_types[$post_type]->cap->$prop = ('read' == $prop) ? 'read' : $wp_post_types[$post_type]->cap->$default;
+                    $wp_post_types[$post_type]->cap->$prop = ('read' == $prop) ? PRESSPERMIT_READ_PUBLIC_CAP : $wp_post_types[$post_type]->cap->$default;
                 }
             }
 

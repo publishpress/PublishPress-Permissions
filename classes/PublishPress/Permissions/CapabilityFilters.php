@@ -225,6 +225,7 @@ class CapabilityFilters
                             $base_cap = reset($base_caps);
                             switch ($base_cap) {
                                 case PRESSPERMIT_READ_PUBLIC_CAP:
+                                case 'read':
                                     $op = 'read';
                                     break;
                                 default:
