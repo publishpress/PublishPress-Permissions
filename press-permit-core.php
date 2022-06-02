@@ -5,7 +5,7 @@
  * Description: Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
  * Author: PublishPress
  * Author URI:  https://publishpress.com/
- * Version:     3.7.6
+ * Version:     3.7.8
  * Text Domain: press-permit-core
  * Domain Path: /languages/
  * Min WP Version: 4.9.7
@@ -94,11 +94,11 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    $min_php_version = '5.6.20';
 	
 	    $php_version = phpversion();
-
+    
         if (!function_exists('presspermit')) {
-	    	require_once(__DIR__ . '/functions.php');
+	        require_once(__DIR__ . '/functions.php');
         }
-	
+        
 	    // Critical errors that prevent initialization
 	    if ((version_compare($min_php_version, $php_version, '>') && presspermit_err('old_php', ['min_version' => $min_php_version, 'version' => $php_version]))
 	        || (version_compare($wp_version, $min_wp_version, '<') && presspermit_err('old_wp', ['min_version' => $min_wp_version, 'version' => $wp_version]))
@@ -109,18 +109,19 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    ) {
 	        return;
 	    }
-	
-		global $pagenow;
+    
+        global $pagenow;
 
         if (is_admin() && isset($pagenow) && ('customize.php' == $pagenow)) {
             return;
         }
-	
-	    define('PRESSPERMIT_VERSION', '3.7.6');
-		if (!defined('PRESSPERMIT_READ_PUBLIC_CAP')) {
+
+	    define('PRESSPERMIT_VERSION', '3.7.8');
+        
+        if (!defined('PRESSPERMIT_READ_PUBLIC_CAP')) {
             define('PRESSPERMIT_READ_PUBLIC_CAP', 'read');
         }
-		
+
 	    if (!$presspermit_loaded_by_pro) {
 	        require_once(__DIR__ . '/includes/Core.php');
 	        new \PublishPress\Permissions\Core();
@@ -157,7 +158,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	
 	    require_once(PRESSPERMIT_CLASSPATH . '/API.php');
 	    
-	    require_once(__DIR__ . '/db-config.php');
+        require_once(__DIR__ . '/db-config.php');
 	    require_once(__DIR__ . '/classes/PublishPress/Permissions.php');
     
 	    presspermit();
