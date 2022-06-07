@@ -215,7 +215,7 @@ class TermFilters
                         $args['required_operation'] = $rest->operation;
                     }
                 }
-            } else {
+            } elseif (empty($args['required_operation'])) {
                 if (!empty($rest->operation)) {
                     $args['required_operation'] = $rest->operation;
                 } else {
