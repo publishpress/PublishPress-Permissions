@@ -40,9 +40,9 @@ class GroupsListTableBase extends \WP_List_Table
                         echo '<span class="pp-group-site-roles">';
 
                         if (count($this->role_info[$group_id]['roles']) > $display_limit) {
-                            printf(esc_html__('%s, more...', 'press-permit-core'), esc_html(implode(', ', $role_titles)));
+                            printf(esc_html__('%s, more...', 'press-permit-core'), implode(', ', $role_titles));
                         } else {
-                            echo esc_html(implode(', ', $role_titles));
+                            echo implode(', ', $role_titles);
                         }
 
                         echo '</span>';
