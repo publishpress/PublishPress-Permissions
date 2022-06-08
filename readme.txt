@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 6.0
 Requires PHP: 5.6.20
-Stable tag: 3.7.6
+Stable tag: 3.7.9
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -238,8 +238,18 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.7.9 - 8 Jun 2022 =
+* Fixed : REST post creation - category Assign restrictions were not applied unless accompanied with Edit restrictions; caused new category to be created
+* Fixed : Permission Groups screen - Roles column displays unrendered html tags under some configurations
+
+= 3.7.8 - 2 Jun 2022 =
+* Fixed : Access failures under some configurations
+
+= 3.7.7 - 2 Jun 2022 =
+* Fixed : Authors could not create new posts; possibility of other access failures
+
 = 3.7.6 - 1 Jun 2022 =
-* Compat : WP 6.0 - Fatal error loading Customizer with PublishPress Permissions active, possibly in other areas
+* Compat : WP 6.0 - Fatal error loading Customizer with PublishPress Revisions active, possibly in other areas
 * Fixed : WP 6.0 - Edit User / Profile screen did not display group assignments
 * Fixed : Implicit assignment of read capability forced all roles to have dashboard access
 * Fixed : Edit Category screen did not have metabox for Assign Category permissions assignment
