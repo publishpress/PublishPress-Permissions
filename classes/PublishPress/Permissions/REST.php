@@ -160,7 +160,11 @@ class REST
 			
                 // NOTE: setting or default may be adapted downstream
                 if (!in_array($this->operation, ['edit', 'assign', 'manage', 'delete'], true)) {
-                    $this->operation = ($this->is_view_method) ? 'read' : 'edit';
+                    if ($this->is_view_method) {
+                        $this->operation = ('WP_REST_Terms_Controller' == $this->endpoint_class) ? apply_filters('presspermit_rest_view_terms_operation', 'assign', $this) : 'read';
+                    } else {
+                        $this->operation = 'edit';
+                    }
                 }
 
                 if (in_array($this->endpoint_class, $post_endpoints)) {

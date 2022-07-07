@@ -236,7 +236,7 @@ class PermissionsHooks
 
         $pp->site_options = apply_filters('presspermit_options', $pp->site_options);
 
-        if (is_multisite()) {
+        if (is_multisite() && PWP::isNetworkActivated()) {
             $opts = ['edd_key', 'beta_updates'];
             $pp->netwide_options = apply_filters('presspermit_netwide_options', $opts);
         }

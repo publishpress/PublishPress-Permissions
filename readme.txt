@@ -238,6 +238,10 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.7.10 - 7 Jul 2022 =
+* Fixed : Filter 'use_block_editor_for_post' was not recognized in detecting block editor disable
+* Fixed : Category Permissions - Assign Category restrictions did not prevent checkbox display in Gutenberg post editor
+
 = 3.7.9 - 8 Jun 2022 =
 * Fixed : REST post creation - category Assign restrictions were not applied unless accompanied with Edit restrictions; caused new category to be created
 * Fixed : Permission Groups screen - Roles column displays unrendered html tags under some configurations
