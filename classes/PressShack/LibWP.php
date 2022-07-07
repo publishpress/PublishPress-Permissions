@@ -122,7 +122,8 @@ class LibWP
         $conditions[] = (self::isWp5() || $pluginsState['gutenberg'])
 						&& ! $pluginsState['classic-editor']
 						&& ! $pluginsState['gutenberg-ramp']
-						&& apply_filters('use_block_editor_for_post_type', true, $post_type, PHP_INT_MAX);
+                        && apply_filters('use_block_editor_for_post_type', true, $post_type, PHP_INT_MAX)
+                        && apply_filters('use_block_editor_for_post', true, get_post(self::getPostID()), PHP_INT_MAX);
 
 		$conditions[] = self::isWp5()
                         && $pluginsState['classic-editor']
