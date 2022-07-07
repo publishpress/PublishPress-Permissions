@@ -388,7 +388,7 @@ class SettingsAdmin
     private function hideNetworkOption($option_name)
     {
         if (is_multisite()) {
-            return (in_array($option_name, presspermit()->netwide_options, true)
+            return (in_array($option_name, presspermit()->netwide_options, true) && PWP::isNetworkActivated()
                 && !is_network_admin() && (1 != get_current_blog_id()));
         } else
             return false;
