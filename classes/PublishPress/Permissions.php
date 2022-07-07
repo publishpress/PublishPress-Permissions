@@ -213,7 +213,7 @@ class Permissions
         $this->refreshOptions();  // retrieve stored options
         $this->default_options = apply_filters('presspermit_default_options', $this->default_options);
 
-        if (is_multisite()) {
+        if (is_multisite() && PWP::isNetworkActivated()) {
             $this->netwide_options = apply_filters('presspermit_netwide_options', ['edd_key', 'beta_updates']);
         }
 
