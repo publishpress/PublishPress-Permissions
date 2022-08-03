@@ -238,12 +238,17 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.7.11 =
+* Fixed : PHP 8 - If a non-Administrator updated a top-level page, any Specific Permissions propagated to its subpages were cleared
+* Fixed : Category / Term restrictions set for Everyone / Logged In were applied to Administrators
+* Feature : Support PRESSPERMIT_AUTOSET_AUTHOR constant to set Author to current user if autoset_post_author / autoset_page_author capability is assigned
+
 = 3.7.10 - 7 Jul 2022 =
 * Fixed : Filter 'use_block_editor_for_post' was not recognized in detecting block editor disable
 * Fixed : Category Permissions - Assign Category restrictions did not prevent checkbox display in Gutenberg post editor
 
 = 3.7.9 - 8 Jun 2022 =
-* Fixed : REST post creation - category Assign restrictions were not applied unless accompanied with Edit restrictions; caused new category to be created
+* Fixed : REST post creation - Category Assign restrictions were not applied unless accompanied with Edit restrictions; caused new category to be created
 * Fixed : Permission Groups screen - Roles column displays unrendered html tags under some configurations
 
 = 3.7.8 - 2 Jun 2022 =
