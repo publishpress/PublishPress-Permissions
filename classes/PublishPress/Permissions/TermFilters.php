@@ -255,6 +255,10 @@ class TermFilters
             );
         }
 
+        if (presspermit()->isUserUnfiltered() && !defined('PRESSPERMIT_ALLOW_ADMIN_TERMS_FILTER')) {
+            return $clauses;
+        }
+
         // must consider all related post types when filtering terms list
         // NOTE: If hide_empty is true, additional filtering will be applied to the results based on a full posts query.  
         // Posts may have direct restrictions which make them inaccessable regardless of term restrictions.
