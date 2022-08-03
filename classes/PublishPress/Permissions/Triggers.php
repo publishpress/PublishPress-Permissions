@@ -72,6 +72,22 @@ class Triggers
         if (!empty($wp_roles)) {
             add_filter("update_option_{$wp_roles->role_key}", [$this, 'fltUpdateWpRoles']);
         }
+
+        if (defined('PRESSPERMIT_AUTOSET_AUTHOR')) {
+            add_filter('wp_insert_post_data', [$this, 'fltPostData'], 50, 2);
+        }
+    }
+
+    function fltPostData($data, $postarr) {
+        global $current_user;
+
+        $cap_name = 'autoset_' . $postarr['post_type'] . '_author';
+
+        if (current_user_can($cap_name)) {
+            $data['post_author'] = $current_user->ID;
+        }
+
+        return $data;
     }
 
     public function fltHideRoles($roles)
