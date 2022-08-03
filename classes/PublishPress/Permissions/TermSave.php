@@ -50,7 +50,7 @@ class TermSave
         if (isset($last_parents[$tt_id]))
             $last_parent = $last_parents[$tt_id];
 
-        if (($set_parent != $last_parent) && ($set_parent || $last_parent)) {
+        if ((intval($set_parent) != intval($last_parent)) && ($set_parent || $last_parent)) {
             $last_parents[$tt_id] = $set_parent;
             update_option("pp_last_{$taxonomy}_parents", $last_parents);
         }
