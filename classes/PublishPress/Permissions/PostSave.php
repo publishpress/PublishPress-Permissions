@@ -107,7 +107,7 @@ class PostSave
         $last_parent = ($post_id > 0) ? get_post_meta($post_id, '_pp_last_parent', true) : 0;
 
         if ($update_meta) {
-            if (isset($set_parent) && ($set_parent != $last_parent) && ($set_parent || $last_parent)) {
+            if (isset($set_parent) && (intval($set_parent) != intval($last_parent)) && ($set_parent || $last_parent)) {
                 update_post_meta($post_id, '_pp_last_parent', (int)$set_parent);
             }
         }
