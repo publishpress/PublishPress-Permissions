@@ -143,6 +143,14 @@ class PluginUpdated
             $new_deactivations = array_diff($new_deactivations, $args['activate']);
         }
 
+        if (!is_array($deactivated)) {
+            $deactivated = [];
+        }
+
+        if (!is_array($new_deactivations)) {
+            $new_deactivations = [];
+        }
+
         $deactivated = array_merge(
             $deactivated, 
             array_fill_keys($new_deactivations, (object)[])
