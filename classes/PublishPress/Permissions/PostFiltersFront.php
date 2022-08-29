@@ -129,7 +129,7 @@ class PostFiltersFront
 
             $query = "SELECT {$clauses['distinct']} ID FROM $wpdb->posts {$clauses['join']} WHERE 1=1 {$clauses['where']}";
 
-            $post_ids = $wpdb->get_col($query);
+            $post_ids = array_map('intval', $wpdb->get_col($query));
         }
 
         return $post_ids;
