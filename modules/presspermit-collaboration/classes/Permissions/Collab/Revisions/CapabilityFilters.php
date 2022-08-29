@@ -128,15 +128,11 @@ class CapabilityFilters
             // check for term-assigned exceptions
             if ($can_do = !in_array($post_id, $items)) {
                 foreach (presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
-                    if ($term_ids = $user->getExceptionTerms($operation, 'exclude', $post_type, $taxonomy, ['status' => true, 'merge_universals' => true, 'return_term_ids' => true])) {
+                    if ($term_ids = $user->getExceptionTerms($operation, 'exclude', $post_type, $taxonomy, ['merge_universals' => true, 'return_term_ids' => true])) {
                         if (!isset($post_terms[$taxonomy])) {
                             $post_terms[$taxonomy] = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids']);
                         }
                         
-                        if (!empty($term_ids[''])) { //  todo: prevent this return structure
-                            $term_ids = $term_ids[''];
-                        }
-
                         if (array_intersect($term_ids, $post_terms[$taxonomy])) {
                             $can_do = false;
                             break;
@@ -155,13 +151,9 @@ class CapabilityFilters
             // check for term-assigned exceptions
             if ($can_do = empty($items) || in_array($post_id, $items)) {
                 foreach (presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
-                    if ($term_ids = $user->getExceptionTerms($operation, 'include', $post_type, $taxonomy, ['status' => true, 'merge_universals' => true, 'return_term_ids' => true])) {
+                    if ($term_ids = $user->getExceptionTerms($operation, 'include', $post_type, $taxonomy, ['merge_universals' => true, 'return_term_ids' => true])) {
                         if (!isset($post_terms[$taxonomy])) {
                             $post_terms[$taxonomy] = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids']);
-                        }
-
-                        if (!empty($term_ids[''])) { //  todo: prevent this return structure
-                            $term_ids = $term_ids[''];
                         }
 
                         if (!empty($term_ids) && !array_intersect($term_ids, $post_terms[$taxonomy])) {
@@ -182,13 +174,9 @@ class CapabilityFilters
             // check for term-assigned exceptions
             if (!$can_do = in_array($post_id, $items)) {
                 foreach (presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
-                    if ($term_ids = $user->getExceptionTerms($operation, 'additional', $post_type, $taxonomy, ['status' => true, 'merge_universals' => true, 'return_term_ids' => true])) {
+                    if ($term_ids = $user->getExceptionTerms($operation, 'additional', $post_type, $taxonomy, ['merge_universals' => true, 'return_term_ids' => true])) {
                         if (!isset($post_terms[$taxonomy])) {
                             $post_terms[$taxonomy] = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids']);
-                        }
-                        
-                        if (!empty($term_ids[''])) { //  todo: prevent this return structure
-                            $term_ids = $term_ids[''];
                         }
 
                         if (array_intersect($term_ids, $post_terms[$taxonomy])) {
