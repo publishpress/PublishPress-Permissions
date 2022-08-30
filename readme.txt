@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 6.0
 Requires PHP: 5.6.20
-Stable tag: 3.7.11
+Stable tag: 3.7.12
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -238,12 +238,16 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.7.11 =
+= 3.7.12 - 30 Aug 2022 =
+* Fixed : Sticky Posts were displayed redundantly in Query Loop block
+* Compat : PublishPress Revisions - Category permissions for revision creation or submission failed if term_id differed from term_taxonomy_id
+
+= 3.7.11 - 16 Aug 2022 =
 * Fixed : PHP 8 - If a non-Administrator updated a top-level page, any Specific Permissions propagated to its subpages were cleared
 * Fixed : Category / Term restrictions set for Everyone / Logged In were applied to Administrators
 * Fixed : Fatal error on activation of certain other plugins
+* Fixed : Fatal error if option "presspermit_deactivated_modules" has invalid value stored
 * Workaround : Support PRESSPERMIT_AUTOSET_AUTHOR constant to set Author to current user if autoset_post_author / autoset_page_author capability is assigned
-* API : New filter presspermit_limit_editor_post_statuses for classic editor
 
 = 3.7.10 - 7 Jul 2022 =
 * Fixed : Filter 'use_block_editor_for_post' was not recognized in detecting block editor disable
