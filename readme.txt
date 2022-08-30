@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 6.0
 Requires PHP: 5.6.20
-Stable tag: 3.7.9
+Stable tag: 3.7.12
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -238,8 +238,9 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.7.12-beta =
+= 3.7.12 - 30 Aug 2022 =
 * Fixed : Sticky Posts were displayed redundantly in Query Loop block
+* Compat : PublishPress Revisions - Category permissions for revision creation or submission failed if term_id differed from term_taxonomy_id
 
 = 3.7.11 - 16 Aug 2022 =
 * Fixed : PHP 8 - If a non-Administrator updated a top-level page, any Specific Permissions propagated to its subpages were cleared
