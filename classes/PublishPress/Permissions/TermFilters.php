@@ -229,6 +229,8 @@ class TermFilters
 
     public function fltTermsClauses($clauses, $taxonomies, $args)
     {
+        global $pagenow;
+
         if ($this->skipFiltering($taxonomies, $args))
             return $clauses;
 
@@ -246,13 +248,17 @@ class TermFilters
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             $args['required_operation'] = 'assign';
             
-        } elseif (empty($args['required_operation'])) {
-            $args['required_operation'] = apply_filters(
-                'presspermit_get_terms_operation',
-                PWP::isFront() ? 'read' : 'assign',
-                $taxonomies,
-                $args
-            );
+        } elseif (empty($args['required_operation']) && !defined('PP_ADMIN_TERMS_READONLY_LISTABLE') && (!defined('PP_ADMIN_READONLY_LISTABLE') || presspermit()->getOption('admin_hide_uneditable_posts'))) {
+            if ('edit-tags.php' == $pagenow) {
+                $args['required_operation'] = 'manage';
+            } else {
+	            $args['required_operation'] = apply_filters(
+	                'presspermit_get_terms_operation',
+	                PWP::isFront() ? 'read' : 'assign',
+	                $taxonomies,
+	                $args
+	            );
+            }
         }
 
         if (presspermit()->isUserUnfiltered() && !defined('PRESSPERMIT_ALLOW_ADMIN_TERMS_FILTER')) {
