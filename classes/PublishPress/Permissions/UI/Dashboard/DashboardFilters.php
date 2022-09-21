@@ -319,6 +319,10 @@ class DashboardFilters
 
     public function actUserUi($user = false)
     {
+        if (is_network_admin()) {
+            return;
+        }
+
         if (empty($user)) {
         global $profileuser;
 
