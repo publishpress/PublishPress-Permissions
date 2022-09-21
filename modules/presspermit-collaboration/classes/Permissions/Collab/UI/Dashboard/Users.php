@@ -4,7 +4,9 @@ namespace PublishPress\Permissions\Collab\UI\Dashboard;
 class Users
 {
     function __construct() {
-        add_action('admin_print_footer_scripts', [$this, 'act_add_member_page_js']);
+        if (!is_network_admin()) {
+            add_action('admin_print_footer_scripts', [$this, 'act_add_member_page_js']);
+        }
     }
 
     // todo: move to js
