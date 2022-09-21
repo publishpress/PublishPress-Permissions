@@ -238,6 +238,10 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.7.13-beta =
+* Fixed : Category / Term Management restrictions did not exclude unmanagable terms from list
+* Change : Use instance protection library to deal with duplicate / obsolete plugin activations
+
 = 3.7.12 - 30 Aug 2022 =
 * Fixed : Sticky Posts were displayed redundantly in Query Loop block
 * Compat : PublishPress Revisions - Category permissions for revision creation or submission failed if term_id differed from term_taxonomy_id
