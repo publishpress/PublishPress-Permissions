@@ -70,7 +70,7 @@ class Migration
 
             if (!$any_activated) {
                 $deactivate_modules = array_fill_keys(
-                    ['presspermit-circles', 'presspermit-file-access', 'presspermit-import', 'presspermit-membership', 'presspermit-teaser'], 
+                    ['presspermit-circles', 'presspermit-file-access', 'presspermit-import', 'presspermit-membership'], 
                     (object)[]
                 );
             }

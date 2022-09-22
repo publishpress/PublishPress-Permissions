@@ -134,8 +134,7 @@ class PluginUpdated
                 'presspermit-circles', 
                 'presspermit-file-access', 
                 'presspermit-import', 
-                'presspermit-membership', 
-                'presspermit-teaser'
+                'presspermit-membership'
             ];
         }
 
