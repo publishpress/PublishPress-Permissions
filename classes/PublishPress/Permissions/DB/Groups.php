@@ -246,6 +246,12 @@ class Groups
             }
         }
 
+        if (!empty($auth_group)) {
+            if (!apply_filters('presspermit_is_authenticated_user', true, $user_id)) {
+                $auth_group = false;
+            }
+        }
+
         if ('all' == $cols) {
             $user_groups = [];
 
