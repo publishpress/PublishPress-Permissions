@@ -69,6 +69,13 @@ class Settings
         foreach ($reviewed_options as $option_name) {
             $pp->deleteOption($default_prefix . $option_name, $args);
         }
+
+        require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
+        \PublishPress\Permissions\PluginUpdated::deactivateModules(['current_deactivations' => []]);
+
+        $tab = (!presspermit_empty_POST('pp_tab')) ? "&pp_tab={" . presspermit_POST_key('pp_tab') . "}" : '';
+        wp_redirect(admin_url("admin.php?page=presspermit-settings$tab&presspermit_submit_redirect=1"));
+        exit;
     }
 
     private function updatePageOptions($args)
