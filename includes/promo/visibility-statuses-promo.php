@@ -2,7 +2,7 @@
     <header>
     <div class="pp-icon"><?php echo '<img src="' . esc_url(PRESSPERMIT_URLPATH . '/common/img/publishpress-logo-icon.png') . '" alt="" />';?></div>
     <h1>
-    <?php esc_html_e('Post Statuses for Editorial Workflow', 'press-permit-core');?>
+    <?php esc_html_e('Post Visibility Statuses', 'press-permit-core');?>
     </h1>
     </header>
 
@@ -12,11 +12,11 @@
                 <div id="pp-permissions-menu-wrapper" class="postbox" style="box-shadow: none; background: none;">
                     <div class="pp-permissions-menus-promo">
                         <div class="pp-permissions-menus-promo-inner">
-                            <img src="<?php echo esc_url(PRESSPERMIT_URLPATH . '/includes/promo/permissions-statuses-desktop.jpg');?>" class="pp-permissions-desktop" />
-                            <img src="<?php echo esc_url(PRESSPERMIT_URLPATH . '/includes/promo/permissions-statuses-mobile.jpg');?>" class="pp-permissions-mobile" />
+                            <img src="<?php echo esc_url(PRESSPERMIT_URLPATH . '/includes/promo/permissions-visibility-statuses-desktop.jpg');?>" class="pp-permissions-desktop" />
+                            <img src="<?php echo esc_url(PRESSPERMIT_URLPATH . '/includes/promo/permissions-visibility-statuses-mobile.jpg');?>" class="pp-permissions-mobile" />
                             <div class="pp-permissions-menus-promo-content">
                                 <p>
-                                    <?php esc_html_e('Control access to custom post statuses. This workflow feature is available in PublishPress Permissions Pro.', 'press-permit-core'); ?>
+                                    <?php esc_html_e('Control access to post visibility statuses. This workflow feature is available in PublishPress Permissions Pro.', 'press-permit-core'); ?>
                                 </p>
                                 <p>
                                     <a href="https://publishpress.com/links/permissions-statuses-screen" target="_blank">
