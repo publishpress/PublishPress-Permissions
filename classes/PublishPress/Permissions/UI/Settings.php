@@ -92,7 +92,7 @@ class Settings
                 echo esc_html($subheading);
             }
 
-            $color_class = apply_filters('presspermit_options_form_color_class', 'pp-backtan');
+            $color_class = apply_filters('presspermit_options_form_color_class', '');
 
             $class_selected = "agp-selected_agent agp-agent $color_class";
             $class_unselected = "agp-unselected_agent agp-agent";
