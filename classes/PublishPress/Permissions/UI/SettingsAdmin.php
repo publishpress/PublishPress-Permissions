@@ -25,7 +25,7 @@ class SettingsAdmin
 
     private function __construct()
     {
-        
+
     }
 
     public static function echoStr($string_id) {
@@ -42,13 +42,13 @@ class SettingsAdmin
         // Core
         case 'post_blockage_priority':
         return __('If disabled, manually "blocked" posts can be unblocked by specific Category / Term Permissions.', 'press-permit-core-hints');
-        
+
         case 'define_media_post_caps_pro' :
         return __("For most installations, leave this disabled. If enabled, corresponding edit and delete capabilities must be added to existing roles.", 'press-permit-core-hints');
-        
+
         case 'define_media_post_caps' :
         return __("For most installations, leave this disabled. See Editing tab for specialized Media Library permissions.", 'press-permit-core-hints');
-        
+
         case 'define_media_post_caps_collab_prompt' :
         return  __("For most installations, leave this disabled. For specialized Media Library permissions, install the Collaborative Publishing module.", 'press-permit-core-hints');
 
@@ -76,7 +76,7 @@ class SettingsAdmin
         case 'display_user_profile_roles' :
         return __('Note: Groups and Roles are always displayed in "Edit User"', 'press-permit-core-hints');
 
-        
+
         // Advanced
         case 'advanced_options_enabled' :
         return __("Note: if you disable these settings, the stored values (including Role Usage adjustments) are retained but ignored.", 'press-permit-core-hints');
@@ -89,10 +89,10 @@ class SettingsAdmin
 
         case 'suppress_administrator_metagroups' :
         return __('If checked, pages blocked from the "All" or "Logged In" groups will still be listed to Administrators.', 'press-permit-core-hints');
-    
+
         case 'suppress_administrator_metagroups' :
         return __('If enabled, users with the pp_set_read_exceptions capability in the WP role can set reading permissions for their editable posts.', 'press-permit-core-hints');
-    
+
         case 'user_search_by_role' :
         return __('Display a role dropdown alongside the user search input box to narrow results.', 'press-permit-core-hints');
 
@@ -101,10 +101,10 @@ class SettingsAdmin
 
         case 'display_extension_hints' :
         return  __('Display descriptive captions for additional functionality provided by missing or deactivated modules (Permissions Pro package).', 'press-permit-core-hints');
-    
+
         case 'dynamic_wp_roles' :
         return __('Detect user roles which are appended dynamically but not stored to the WP database. May be useful for sites that sync with Active Directory or other external user registration systems.', 'press-permit-core-hints');
-    
+
         case 'pp_capabilities' :
         return  __('You can also %1$s add Permissions administration capabilities to a WordPress role%2$s:', 'press-permit-core-hints');
 
@@ -115,13 +115,13 @@ class SettingsAdmin
         // Editing
         case 'collaborative-publishing' :
         return sprintf(__('Settings related to content editing permissions, provided by the %s module.', 'press-permit-core-hints'), __('Collaborative Publishing', 'press-permit-core-hints'));
-    
+
         case 'force_taxonomy_cols' :
         return __('Display a custom column on Edit Posts screen for all related taxonomies which are enabled for Permissions filtering.', 'press-permit-core-hints');
-    
+
         case 'add_author_pages' :
         return __('Allows creation of a new post (of any type) for each selected user, using an existing post as the pattern.', 'press-permit-core-hints');
-    
+
         case 'lock_top_pages' :
         return __('Users who do not meet this site-wide role requirement will not be able to publish new top-level pages (Parent = "Main Page").  They will also be unable to move a currently published page from "Main Page" to a different Page Parent.', 'press-permit-core-hints');
 
@@ -130,31 +130,31 @@ class SettingsAdmin
 
         case 'media_lib_unfiltered' :
         return __('The following settings are currently overridden by the constant PP_MEDIA_LIB_UNFILTERED (defined in wp-config.php or some other file you maintain). Media Library access will not be altered by Permissions.', 'press-permit-core-hints');
-    
+
         case 'admin_others_attached_to_readable' :
         return __("For non-Administrators, determines visibility of files uploaded by another user and now attached to a post which the logged user can edit. To force a user to view all media regardless of this setting, add the pp_list_all_files capability to their role.", 'press-permit-core-hints');
-    
+
         case 'admin_others_attached_files' :
         return __("For non-Administrators, determines editing access to files uploaded by another user and now attached to a post which the logged user can edit.", 'press-permit-core-hints');
 
         case 'edit_others_attached_files' :
         return __("If enabled, all users who have Media Library access will be implicitly granted the list_others_unattached_files capability. Media Editors can view and edit regardless of this setting.", 'press-permit-core-hints');
-        
+
         case 'admin_others_unattached_files' :
         return __("For non-Administrators, determines editing access to files uploaded by another user and now attached to a post which the logged user can edit.", 'press-permit-core-hints');
 
         case 'own_attachments_always_editable' :
         return __("Ensures users can always edit attachments they have uploaded, even if they are later attached to a post which the user cannot edit. If disabled, you can grant individual users the edit_own_attachments capability or assign Media editing Permissions for individual files.", 'press-permit-core-hints');
-                
+
         case 'admin_nav_menu_partial_editing' :
         return __('Allow non-Administrators to rename menu items they cannot fully edit. Menu items will be locked into current positions.', 'press-permit-core-hints');
-    
+
         case 'admin_nav_menu_lock_custom' :
         return __('Prevent creation or editing of custom items for non-Administrators who lack edit_theme_options capability.', 'press-permit-core-hints');
 
         case 'limit_user_edit_by_level' :
         return __('Prevent non-Administrators with user editing permissions from editing a higher-level user or assigning a role higher than their own.', 'press-permit-core-hints');
-    
+
         case 'fork_published_only' :
         return __('Fork published posts only.', 'press-permit-core-hints');
 
@@ -163,12 +163,12 @@ class SettingsAdmin
 
         case 'non_admins_set_edit_exceptions' :
         return __('If enabled, presence of the pp_set_edit_exceptions, pp_set_associate_exceptions, etc. capabilities in the WP role will be honored. See list of capabilities below.', 'press-permit-core-hints');
-    
+
 
         // Import
         case 'pp-import-disable' :
         return sprintf(__('Once your import task is complete, you can eliminate this tab by disabling the %s module.', 'press-permit-core-hints'), __('Import', 'press-permit-core-hints'));
-    
+
         default:
         }
 
@@ -230,7 +230,7 @@ class SettingsAdmin
         case 'PP_NO_MODERATION' :
 		return esc_html__("Don't define an 'Approved' status, even if Status Control module is active", 'press-permit-core-hints');
 
-    
+
         // 'nav-menu-manage'
         case 'PP_SUPPRESS_APPEARANCE_LINK' :
 		return esc_html__("If user has Nav Menu management capabilities but can't 'edit_theme_options', strip link out of wp-admin Appearance Menu instead of linking it to nav-menus", 'press-permit-core-hints');
@@ -279,7 +279,7 @@ class SettingsAdmin
         $pp_caps['pp_manage_members'] = esc_html__('If group editing is allowed, can also modify group membership', 'press-permit-core-hints');
         $pp_caps['pp_assign_roles'] = esc_html__('Assign Supplemental Roles or Specific Permissions. Other capabilities may also be required.', 'press-permit-core-hints');
         $pp_caps['pp_set_read_exceptions'] = esc_html__('Set Read Permissions for specific posts on Edit Post/Term screen (for non-Administrators lacking edit_users capability; may be disabled by Permissions Settings)', 'press-permit-core-hints');
-        
+
         if (class_exists('Fork', false)) {
             $pp_caps['pp_set_fork_exceptions'] = esc_html__('Set Forking Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
         }
@@ -336,9 +336,9 @@ class SettingsAdmin
         return $val;
     }
 
-    public function optionCheckbox($option_name, $tab_name, $section_name, $hint_text = '', $trailing_break = '', $args = [])
+    public function optionCheckbox($option_name, $tab_name, $section_name, $hint_text = '', $trailing_break = '', $args = [], $display_label = true)
     {
-        $return = ['display_label' => true, 'in_scope' => false, 'no_storage' => false, 'disabled' => false, 'title' => '', 'style' => '', 'div_style' => ''];
+        $return = ['in_scope' => false, 'no_storage' => false, 'disabled' => false, 'title' => '', 'style' => '', 'div_style' => ''];
 
         if (in_array($option_name, $this->form_options[$tab_name][$section_name], true)) {
             if (empty($args['no_storage']))
@@ -358,8 +358,7 @@ class SettingsAdmin
             echo "<div class='agp-opt-checkbox " . esc_attr($option_name) . "' style='" . esc_attr($div_style) . "'>"
                 . "<label for='" . esc_attr($option_name) . "' title='" . esc_attr($title) . "'>"
                 . "<input name='" . esc_attr($option_name) . "' type='checkbox' " . esc_attr($disabled) . " style='" . esc_attr($style) . "' id='" . esc_attr($option_name) . "' value='1' " . esc_attr(checked('1', $return['val'], false)) . " /> "
-                . ( !empty($args['display_label']) ? esc_html( $this->option_captions[$option_name] ) : '' )
-
+                . ( $display_label ? esc_html( $this->option_captions[$option_name] ) : '' )
                 . "</label>";
 
             if ($hint_text && $this->display_hints) {

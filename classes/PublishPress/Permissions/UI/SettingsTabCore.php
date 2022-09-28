@@ -78,12 +78,14 @@ class SettingsTabCore
 
     public function optionsPreUI()
     {
+        /*
         if (SettingsAdmin::instance()->getOption('display_hints')) {
             echo '<div class="pp-optionhint">';
             esc_html_e("Basic settings for content filtering, management and presentation.", 'press-permit-core');
             do_action('presspermit_options_form_hint');
             echo '</div>';
         }
+        */
     }
 
     public function optionsUI()
