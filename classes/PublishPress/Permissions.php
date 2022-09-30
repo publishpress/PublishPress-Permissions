@@ -177,6 +177,7 @@ class Permissions
             'media_search_results' => 1,
             'term_counts_unfiltered' => 0,
             'advanced_options' => 0,
+            'delete_settings_on_uninstall' => 0,
             'edd_key' => false,
             'supplemental_role_defs' => [], // stored by Capability Manager Enhanced
             'customized_roles' => [],       // stored by Capability Manager Enhanced
