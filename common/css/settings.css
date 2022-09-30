@@ -108,6 +108,10 @@ table.pp-options-table .pp-optionhint {
     display: none;
 }
 
+#pp_settings_form .pp-subtext-show {
+    display: block;
+}
+
 #pp_settings_form .pp-no-hide {
     display: revert;
     margin-top: 5px;

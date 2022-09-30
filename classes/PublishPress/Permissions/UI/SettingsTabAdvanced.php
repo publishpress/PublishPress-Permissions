@@ -29,7 +29,7 @@ class SettingsTabAdvanced
     public function sectionCaptions($sections)
     {
         $new = [
-            'enable' => esc_html__('Enable Advanced', 'press-permit-core'),
+            'enable' => esc_html__('Advanced Settings', 'press-permit-core'),
             'file_filtering' => esc_html__('File Filtering', 'press-permit-core'),
             'network' => esc_html__('Network-Wide Settings', 'press-permit-core'),
         ];
@@ -53,7 +53,10 @@ class SettingsTabAdvanced
 
     public function optionCaptions($captions)
     {
-        $opt = ['advanced_options' => esc_html__('Enable advanced settings', 'press-permit-core')];
+        $opt = [
+            'advanced_options' => esc_html__('Enable advanced settings', 'press-permit-core'),
+            'delete_settings_on_uninstall' => esc_html__('Delete settings on plugin deletion', 'press-permit-core'),
+        ];
 
         if ($this->enabled) {
             $opt = array_merge($opt, [
@@ -73,7 +76,7 @@ class SettingsTabAdvanced
 
     public function optionSections($sections)
     {
-        $new = ['enable' => ['advanced_options']];
+        $new = ['enable' => ['advanced_options', 'delete_settings_on_uninstall']];
 
         if ($this->enabled) {
             $new = array_merge($new, [
@@ -121,7 +124,14 @@ class SettingsTabAdvanced
                     <?php
                     $hint = '';
                     $ui->optionCheckbox('advanced_options', $tab, $section, $hint);
+
                     ?>
+                    <div>
+                    <?php
+                    $hint = esc_html__('note: Plugin settings and configuration data will be deleted, but only after the last copy of Permissions / Permissions Pro is deleted.', 'press-permit-core');
+                    $ui->optionCheckbox('delete_settings_on_uninstall', $tab, $section, $hint, '', ['hint_class' => 'pp-subtext-show']);
+                    ?>
+                    </div>
                 </td>
             </tr>
         <?php endif; // any options accessable in this section
