@@ -338,9 +338,11 @@ class SettingsAdmin
 
     public function optionCheckbox($option_name, $tab_name, $section_name, $hint_text = '', $trailing_break = '', $args = [])
     {
-        $return = ['display_label' => true, 'in_scope' => false, 'no_storage' => false, 'disabled' => false, 'title' => '', 'style' => '', 'div_style' => ''];
+        $return = ['in_scope' => false, 'no_storage' => false, 'disabled' => false, 'title' => '', 'style' => '', 'div_style' => ''];
 
         if (in_array($option_name, $this->form_options[$tab_name][$section_name], true)) {
+            $display_label = (!isset($args['display_label'])) ? true : $args['display_label'];
+            
             if (empty($args['no_storage']))
                 $this->all_options[] = $option_name;
 
@@ -358,7 +360,7 @@ class SettingsAdmin
             echo "<div class='agp-opt-checkbox " . esc_attr($option_name) . "' style='" . esc_attr($div_style) . "'>"
                 . "<label for='" . esc_attr($option_name) . "' title='" . esc_attr($title) . "'>"
                 . "<input name='" . esc_attr($option_name) . "' type='checkbox' " . esc_attr($disabled) . " style='" . esc_attr($style) . "' id='" . esc_attr($option_name) . "' value='1' " . esc_attr(checked('1', $return['val'], false)) . " /> "
-                . ( !empty($args['display_label']) ? esc_html( $this->option_captions[$option_name] ) : '' )
+                . ( $display_label ? esc_html( $this->option_captions[$option_name] ) : '' )
 
                 . "</label>";
 
