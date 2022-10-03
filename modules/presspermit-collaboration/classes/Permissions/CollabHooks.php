@@ -164,7 +164,7 @@ class CollabHooks
             'admin_nav_menu_partial_editing' => 0,
             'admin_nav_menu_lock_custom' => 1,
             'limit_user_edit_by_level' => 1,
-            'add_author_pages' => 1,
+            'add_author_pages' => 0,
             'publish_author_pages' => 0,
             'editor_hide_html_ids' => '',
             'editor_ids_sitewide_requirement' => 0,
