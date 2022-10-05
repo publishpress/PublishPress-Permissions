@@ -334,21 +334,25 @@ class SettingsTabCore
                 <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
                     <?php
-                    $ui->optionCheckbox('display_branding', $tab, $section, '', '<br />');
+                    $ui->optionCheckbox('display_branding', $tab, $section);
                     
                     if (defined('PP_ADMIN_READONLY_LISTABLE') && (!$pp->getOption('admin_hide_uneditable_posts') || defined('PP_ADMIN_POSTS_NO_FILTER'))) {
                         $hint = SettingsAdmin::getStr('posts_listing_unmodified');
                     } else {
                         $hint = ($pp->moduleActive('collaboration'))
-                            ? SettingsAdmin::getStr('posts_listing_editable_only')
+                            ? ''
                             : SettingsAdmin::getStr('posts_listing_editable_only_collab_prompt');
                     }
                     ?>
-                    <div class="pp-hint">
+                    
+                    <?php if ($hint):?>
+                    <br />
+                    <div class="pp-subtext pp-subtext-show">
                     <?php
                     printf(esc_html__('%sPosts / Pages Listing:%s %s', 'press-permit-core'), '<b>', '</b>', esc_html($hint));
                     ?>
-                    </p>
+                    </div>
+                    <?php endif;?>
                 </td>
             </tr>
         <?php

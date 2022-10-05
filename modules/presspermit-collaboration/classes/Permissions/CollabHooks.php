@@ -44,6 +44,8 @@ class CollabHooks
         add_filter('presspermit_default_options', [$this, 'fltDefaultOptions']);
         add_filter('presspermit_default_advanced_options', [$this, 'fltDefaultAdvancedOptions']);
 
+        add_action('presspermit_version_updated', [$this, 'actPluginUpdated']);
+
         if ( is_admin() ) {
             add_action('presspermit_init', [$this, 'actNonAdministratorEditingFilters']);  // fires after user load
         } else {
@@ -149,11 +151,14 @@ class CollabHooks
         add_action('attachment_updated', [$this, 'actAttachmentEnsureParentStorage'], 10, 3);
 
         add_action('pre_get_posts', [$this, 'actPreventTrashSuffixing']);
+
+        add_action('wp_loaded', [$this, 'supplementUserAllcaps'], 18);
     }
 
     function fltDefaultOptions($def)
     {
         $new = [
+            'list_others_uneditable_posts' => 1,
             'lock_top_pages' => 0,
             'admin_others_attached_files' => 0,
             'admin_others_attached_to_readable' => 0,
@@ -188,6 +193,22 @@ class CollabHooks
         ];
 
         return array_merge($def, $new);
+    }
+
+    function supplementUserAllcaps() {
+        $pp = presspermit();
+
+        if ($pp->getOption('list_others_uneditable_posts')) {
+            foreach ($pp->getEnabledPostTypes() as $post_type) {
+                if ($type_obj = get_post_type_object($post_type)) {
+                    if (isset($type_obj->cap->edit_posts) && !empty($user->allcaps[$type_obj->cap->edit_posts])
+                    && isset($type_obj->cap->edit_others_posts) && empty($user->allcaps[$type_obj->cap->edit_others_posts])) {
+                        $list_others_cap = str_replace('edit_', 'list_', $type_obj->cap->edit_others_posts);
+                        $user->allcaps[$list_others_cap] = true;
+                    }
+                }
+            }
+        }
     }
 
     function fltItemEditExceptionOps($operations, $for_item_source, $for_item_type, $via_item_type = '')
@@ -407,8 +428,6 @@ class CollabHooks
         if ($ver && !empty($ver['version'])) {
             // These maintenance operations only apply when a previous version of PP was installed 
             if (version_compare(PRESSPERMIT_COLLAB_VERSION, $ver['version'], '!=')) {
-                require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Updated.php');
-                new Collab\Updated($ver['version']);
                 update_option('ppce_version', ['version' => PRESSPERMIT_COLLAB_VERSION, 'db_version' => 0]);
             }
         } elseif (!$ver) {
@@ -431,6 +450,11 @@ class CollabHooks
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/REST_Workarounds.php');
             new Collab\REST_Workarounds();
         }
+    }
+
+    function actPluginUpdated($prev_pp_version) {
+        require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Updated.php');
+        new Collab\Updated($prev_pp_version);
     }
 
     function actAdjustOptions($options)
