@@ -67,9 +67,6 @@ class SettingsAdmin
         case 'posts_listing_unmodified' :
         return __('Unmodified from WordPress default behavior. To enable filtering, remove constant definition PP_ADMIN_READONLY_LISTABLE.', 'press-permit-core-hints');
 
-        case 'posts_listing_editable_only' :
-        return __('Uneditable posts are hidden from wp-admin listings. To expose them, use a role editor to add desired capabilities: list_posts, list_other_pages etc.', 'press-permit-core-hints');
-
         case 'posts_listing_editable_only_collab_prompt' :
         return __('To customize editing permissions, enable the Collaborative Publishing module.', 'press-permit-core-hints');
 
@@ -115,6 +112,9 @@ class SettingsAdmin
         // Editing
         case 'collaborative-publishing' :
         return sprintf(__('Settings related to content editing permissions, provided by the %s module.', 'press-permit-core-hints'), __('Collaborative Publishing', 'press-permit-core-hints'));
+
+        case 'list_others_uneditable_posts' :
+        return __('If this setting is disabled, enable a specific role by adding capabilities: list_others_posts, list_others_pages, etc.', 'press-permit-core-hints');
 
         case 'force_taxonomy_cols' :
         return __('Display a custom column on Edit Posts screen for all related taxonomies which are enabled for Permissions filtering.', 'press-permit-core-hints');
@@ -359,7 +359,7 @@ class SettingsAdmin
 
             echo "<div class='agp-opt-checkbox " . esc_attr($option_name) . "' style='" . esc_attr($div_style) . "'>"
                 . "<label for='" . esc_attr($option_name) . "' title='" . esc_attr($title) . "'>"
-                . "<input name='" . esc_attr($option_name) . "' type='checkbox' " . esc_attr($disabled) . " style='" . esc_attr($style) . "' id='" . esc_attr($option_name) . "' value='1' " . esc_attr(checked('1', $return['val'], false)) . " /> "
+                . "<input name='" . esc_attr($option_name) . "' type='checkbox' " . esc_attr($disabled) . " style='" . esc_attr($style) . "' id='" . esc_attr($option_name) . "' value='1' " . esc_attr(checked('1', $return['val'], false)) . " autocomplete='off' /> "
                 . ( $display_label ? esc_html( $this->option_captions[$option_name] ) : '' )
 
                 . "</label>";
