@@ -114,7 +114,7 @@ class SettingsAdmin
         return sprintf(__('Settings related to content editing permissions, provided by the %s module.', 'press-permit-core-hints'), __('Collaborative Publishing', 'press-permit-core-hints'));
 
         case 'list_others_uneditable_posts' :
-        return __('If this setting is disabled, enable a specific role by adding capabilities: list_others_posts, list_others_pages, etc.', 'press-permit-core-hints');
+        return __('If this setting is disabled, a specific role can be given capabilities: list_others_posts, list_others_pages, etc.', 'press-permit-core-hints');
 
         case 'force_taxonomy_cols' :
         return __('Display a custom column on Edit Posts screen for all related taxonomies which are enabled for Permissions filtering.', 'press-permit-core-hints');
@@ -132,19 +132,19 @@ class SettingsAdmin
         return __('The following settings are currently overridden by the constant PP_MEDIA_LIB_UNFILTERED (defined in wp-config.php or some other file you maintain). Media Library access will not be altered by Permissions.', 'press-permit-core-hints');
 
         case 'admin_others_attached_to_readable' :
-        return __("For non-Administrators, determines visibility of files uploaded by another user and now attached to a post which the logged user can edit. To force a user to view all media regardless of this setting, add the pp_list_all_files capability to their role.", 'press-permit-core-hints');
+        return __("To allow a role to view all media regardless of this setting, give it the pp_list_all_files capability.", 'press-permit-core-hints');
 
         case 'admin_others_attached_files' :
-        return __("For non-Administrators, determines editing access to files uploaded by another user and now attached to a post which the logged user can edit.", 'press-permit-core-hints');
+        return '';
 
         case 'edit_others_attached_files' :
-        return __("If enabled, all users who have Media Library access will be implicitly granted the list_others_unattached_files capability. Media Editors can view and edit regardless of this setting.", 'press-permit-core-hints');
+        return __("To enable a specific role instead, give it the list_others_unattached_files capability. Note that Media Editors can always view and edit these files.", 'press-permit-core-hints');
 
         case 'admin_others_unattached_files' :
-        return __("For non-Administrators, determines editing access to files uploaded by another user and now attached to a post which the logged user can edit.", 'press-permit-core-hints');
+        return '';
 
         case 'own_attachments_always_editable' :
-        return __("Ensures users can always edit attachments they have uploaded, even if they are later attached to a post which the user cannot edit. If disabled, you can grant individual users the edit_own_attachments capability or assign Media editing Permissions for individual files.", 'press-permit-core-hints');
+        return __("If disabled, access may be blocked based on the attachment page. In that case, a role can be given the edit_own_attachments capability, or Permissions for a specific file.", 'press-permit-core-hints');
 
         case 'admin_nav_menu_partial_editing' :
         return __('Allow non-Administrators to rename menu items they cannot fully edit. Menu items will be locked into current positions.', 'press-permit-core-hints');
@@ -162,7 +162,7 @@ class SettingsAdmin
         return __("If a user lacks the edit_others_posts capability for the post type, they cannot fork other's posts either.", 'press-permit-core-hints');
 
         case 'non_admins_set_edit_exceptions' :
-        return __('If enabled, presence of the pp_set_edit_exceptions, pp_set_associate_exceptions, etc. capabilities in the WP role will be honored. See list of capabilities below.', 'press-permit-core-hints');
+        return __('If enabled, the capabilities pp_set_edit_exceptions, pp_set_associate_exceptions, etc. will be honored. See list of capabilities below.', 'press-permit-core-hints');
 
 
         // Import
