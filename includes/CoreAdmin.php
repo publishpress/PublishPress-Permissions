@@ -41,6 +41,25 @@ class CoreAdmin {
 
             return $settings;
         });
+
+        add_action('presspermit_modules_ui', 'actProModulesUI', 10, 2);
+
+        add_filter("presspermit_unavailable_modules", 
+            function($modules){
+                return array_merge(
+                    $modules, 
+                    [
+                        'presspermit-circles', 
+                        'presspermit-compatibility', 
+                        'presspermit-file-access', 
+                        'presspermit-membership', 
+                        'presspermit-sync', 
+                        'presspermit-status-control', 
+                        'presspermit-teaser'
+                    ]
+                );
+            }
+        );
     }
 
     function actAdminMenuPromos($pp_options_menu, $handler) {
@@ -115,5 +134,53 @@ class CoreAdmin {
             });
         </script>
 		<?php
+    }
+
+    function actProModulesUI($active_module_plugin_slugs, $inactive) {
+        $pro_modules = array_diff(
+            presspermit()->getAvailableModules(['suppress_filters' => true]), 
+            $active_module_plugin_slugs, 
+            array_keys($inactive)
+        );
+
+        sort($pro_modules);
+        if ($pro_modules) :
+            ?>
+            <h4><?php esc_html_e('Pro Modules:', 'press-permit-core'); ?></h4>
+            <table class="pp-extensions">
+                <?php foreach ($pro_modules as $plugin_slug) :
+                    $slug = str_replace('presspermit-', '', $plugin_slug);
+                    ?>
+                    <tr>
+                        <th>
+                        
+                        <?php $id = "module_deactivated_{$slug}";?>
+
+                        <label for="<?php echo esc_attr($id); ?>">
+                            <input type="checkbox" id="<?php echo esc_attr($id); ?>" disabled 
+                                    name="presspermit_deactivated_modules[<?php echo esc_attr($plugin_slug);?>]"
+                                    value="1" />
+
+                            <?php echo esc_html($this->prettySlug($slug));?></th>
+                        </label>
+
+                        <?php if (!empty($ext_info)) : ?>
+                            <td>
+                                <?php if (isset($ext_info->blurb[$slug])) : ?>
+                                    <span class="pp-ext-info"
+                                        title="<?php if (isset($ext_info->descript[$slug])) {
+                                            echo esc_attr($ext_info->descript[$slug]);
+                                        }
+                                        ?>">
+                                    <?php echo esc_html($ext_info->blurb[$slug]); ?>
+                                </span>
+                                <?php endif; ?>
+                            </td>
+                        <?php endif; ?>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        <?php
+        endif;
     }
 }
