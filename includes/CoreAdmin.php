@@ -65,8 +65,8 @@ class CoreAdmin {
     function actAdminMenuPromos($pp_options_menu, $handler) {
         add_submenu_page(
             $pp_options_menu, 
-            esc_html__('Post Statuses', 'press-permit-core'), 
-            esc_html__('Post Statuses', 'press-permit-core'), 
+            esc_html__('Workflow Statuses', 'press-permit-core'), 
+            esc_html__('Workflow Statuses', 'press-permit-core'), 
             'read', 
             'presspermit-statuses', 
             $handler
