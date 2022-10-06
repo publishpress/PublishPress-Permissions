@@ -10,13 +10,6 @@ class PluginAdmin
 
         add_action('after_plugin_row_' . plugin_basename(PRESSPERMIT_FILE), [$this, 'actCorePluginStatus'], 10, 3);
 
-        if (!presspermit_empty_REQUEST('activate') || !presspermit_empty_REQUEST('activate-multi')) {
-            if (get_option('presspermit_activation')) {
-                delete_option('presspermit_activation');
-                $this->activationNotice();
-            }
-        }
-
         if (defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') && !version_compare(PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION, '3.8.0', '>=')) {
             self::authorsVersionNotice();
         }
@@ -87,23 +80,6 @@ class PluginAdmin
         }
 
         return is_array($types_vals) || is_array($txs_val);
-    }
-
-    private function activationNotice()
-    {
-        if (!$this->typeUsageStored() && !is_network_admin()) {
-            $url = admin_url('admin.php?page=presspermit-settings');
-			$plugin_title = (presspermit()->isPro()) ? 'PublishPress Permissions Pro' : 'PublishPress Permissions';            
-
-            presspermit()->admin()->notice(
-                sprintf(
-                    esc_html__('Thanks for activating %1$s. Please go to %2$sPermissions > Settings%3$s to enable Post Types and Taxonomies for custom permissions.', 'press-permit-core'),
-                    $plugin_title,
-					'<a href="' . $url . '">',
-                    '</a>'
-                ), 'initial-activation'
-            );
-        }
     }
 
     public static function authorsVersionNotice($args = [])
