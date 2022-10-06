@@ -10,35 +10,18 @@ class SettingsTabInstall
 
     public function __construct()
     {
-        add_filter('presspermit_option_tabs', [$this, 'optionTabs'], 0);
+        add_filter('presspermit_option_tabs', [$this, 'optionTabs'], 90);
         add_filter('presspermit_section_captions', [$this, 'sectionCaptions']);
         add_filter('presspermit_option_captions', [$this, 'optionCaptions']);
         add_filter('presspermit_option_sections', [$this, 'optionSections']);
 
         add_action('presspermit_install_options_pre_ui', [$this, 'optionsPreUI']);
         add_action('presspermit_install_options_ui', [$this, 'optionsUI']);
-
-        add_filter("presspermit_unavailable_modules", 
-            function($modules){
-                return array_merge(
-                    $modules, 
-                    [
-                        'presspermit-circles', 
-                        'presspermit-compatibility', 
-                        'presspermit-file-access', 
-                        'presspermit-membership', 
-                        'presspermit-sync', 
-                        'presspermit-status-control', 
-                        'presspermit-teaser'
-                    ]
-                );
-            }
-        );
     }
 
     public function optionTabs($tabs)
     {
-        $tabs['install'] = esc_html__('Installation', 'press-permit-core');
+        $tabs['install'] = esc_html__('License', 'press-permit-core');
         return $tabs;
     }
 
@@ -47,7 +30,6 @@ class SettingsTabInstall
         $new = [
             'key' => esc_html__('Account', 'press-permit-core'),
             'version' => esc_html__('Version', 'press-permit-core'),
-            'modules' => esc_html__('Modules', 'press-permit-core'),
             'help' => PWP::__wp('Help'),
         ];
 
@@ -200,7 +182,6 @@ class SettingsTabInstall
 
             ?>
             <tr>
-                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
 
                     <?php
@@ -379,61 +360,11 @@ class SettingsTabInstall
                     <?php
                     endif;
 
-                    $pro_modules = array_diff(
-                        presspermit()->getAvailableModules(['suppress_filters' => true]), 
-                        $active_module_plugin_slugs, 
-                        array_keys($inactive)
-                    );
 
-                    sort($pro_modules);
-                    if ($pro_modules) :
-                        ?>
-                        <h4><?php esc_html_e('Pro Modules:', 'press-permit-core'); ?></h4>
-                        <table class="pp-extensions">
-                            <?php foreach ($pro_modules as $plugin_slug) :
-                                $slug = str_replace('presspermit-', '', $plugin_slug);
-                                ?>
-                                <tr>
-                                    <th>
-                                    
-                                    <?php $id = "module_deactivated_{$slug}";?>
-
-                                    <label for="<?php echo esc_attr($id); ?>">
-                                        <input type="checkbox" id="<?php echo esc_attr($id); ?>" disabled 
-                                                name="presspermit_deactivated_modules[<?php echo esc_attr($plugin_slug);?>]"
-                                                value="1" />
-
-                                        <?php echo esc_html($this->prettySlug($slug));?></th>
-                                    </label>
-
-                                    <?php if (!empty($ext_info)) : ?>
-                                        <td>
-                                            <?php if (isset($ext_info->blurb[$slug])) : ?>
-                                                <span class="pp-ext-info"
-                                                    title="<?php if (isset($ext_info->descript[$slug])) {
-                                                        echo esc_attr($ext_info->descript[$slug]);
-                                                    }
-                                                    ?>">
-                                                <?php echo esc_html($ext_info->blurb[$slug]); ?>
-                                            </span>
-                                            <?php endif; ?>
-                                        </td>
-                                    <?php endif; ?>
-                                </tr>
-                            <?php endforeach; ?>
-                        </table>
-                        <p style="padding-left:15px;">
-                            <?php
-
-                            ?>
-                        </p>
-                    <?php
-                    endif;
                     ?>
-                </td>
-            </tr>
+            	</td>
+        	</tr>
         <?php
-
         endif; // any options accessable in this section
     }
 

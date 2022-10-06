@@ -11,14 +11,17 @@ class Settings
 
         require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsAdmin.php');
 
-        require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabInstall.php');
-        new SettingsTabInstall();
+        require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabModules.php');
+        new SettingsTabModules();
 
         require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabCore.php');
         new SettingsTabCore();
 
         require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabAdvanced.php');
         new SettingsTabAdvanced();
+
+        require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabInstall.php');
+        new SettingsTabInstall();
 
         // enqueue JS for footer
         global $wp_scripts;
@@ -99,7 +102,7 @@ class Settings
             $default_tab = presspermit_REQUEST_key('pp_tab');
 
             if (!isset($ui->tab_captions[$default_tab])) {
-                $default_tab = 'install';
+                $default_tab = 'modules';
             }
 
             $default_tab = apply_filters('presspermit_options_default_tab', $default_tab);
