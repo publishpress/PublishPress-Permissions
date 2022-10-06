@@ -234,11 +234,15 @@ table.pp-options-table .pp-optionhint {
     padding-left: 5px;
     background-color: #fff;
     padding: 8px;
-    min-width: 220px;
+    min-width: 200px;
 }
 
 #pp-modules span.pp-ext-info {
     color: #777;
+}
+
+#pp-modules table.pp-extensions tr td:nth-child(2) {
+    min-width: 640px !important;
 }
 
 #pp_config_upload_caption {
