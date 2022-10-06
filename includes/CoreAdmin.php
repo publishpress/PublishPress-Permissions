@@ -13,7 +13,7 @@ class CoreAdmin {
                 wp_enqueue_style('presspermit-settings-free', plugins_url('', PRESSPERMIT_FILE) . '/includes/css/settings.css', [], PRESSPERMIT_VERSION);
             }
 
-            if (in_array(presspermitPluginPage(), ['presspermit-statuses', 'presspermit-sync', 'presspermit-teaser'])) {
+            if (in_array(presspermitPluginPage(), ['presspermit-statuses', 'presspermit-visibility-statuses', 'presspermit-sync', 'presspermit-teaser'])) {
                 wp_enqueue_style('presspermit-admin-promo', plugins_url('', PRESSPERMIT_FILE) . '/includes/promo/admin-core.css', [], PRESSPERMIT_VERSION, 'all');
             }
         });
@@ -46,10 +46,19 @@ class CoreAdmin {
     function actAdminMenuPromos($pp_options_menu, $handler) {
         add_submenu_page(
             $pp_options_menu, 
-            esc_html__('Post Statuses', 'press-permit-core'), 
-            esc_html__('Post Statuses', 'press-permit-core'), 
+            esc_html__('Workflow Statuses', 'press-permit-core'), 
+            esc_html__('Workflow Statuses', 'press-permit-core'), 
             'read', 
             'presspermit-statuses', 
+            $handler
+        );
+
+        add_submenu_page(
+            $pp_options_menu, 
+            esc_html__('Visibility Statuses', 'press-permit-core'), 
+            esc_html__('Visibility Statuses', 'press-permit-core'), 
+            'read', 
+            'presspermit-visibility-statuses', 
             $handler
         );
 
@@ -74,7 +83,7 @@ class CoreAdmin {
 
     function menuHandler($pp_page)
     {
-        if (in_array($pp_page, ['presspermit-statuses', 'presspermit-sync', 'presspermit-teaser'], true)) {
+        if (in_array($pp_page, ['presspermit-statuses', 'presspermit-visibility-statuses', 'presspermit-sync', 'presspermit-teaser'], true)) {
             $slug = str_replace('presspermit-', '', $pp_page);
             require_once(PRESSPERMIT_ABSPATH . "/includes/promo/{$slug}-promo.php");
         }
