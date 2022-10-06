@@ -30,7 +30,7 @@ class SettingsTabCore
             'permissions' => esc_html__('Permissions', 'press-permit-core'),
             'front_end' => esc_html__('Front End', 'press-permit-core'),
             'admin' => esc_html__('Admin Back End', 'press-permit-core'),
-            'user_profile' => esc_html__('User Management / Profile', 'press-permit-core'),
+            'user_profile' => esc_html__('User Management', 'press-permit-core'),
             'db_maint' => esc_html__('Database Maintenance', 'press-permit-core'),
         ];
 

@@ -312,10 +312,6 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
     text-shadow: none !important;
 }
 
-#wpbody-content .pressshack-admin-wrapper p.pp-submit {
-    float:right;
-}
-
 #wpbody-content .pressshack-admin-wrapper > footer > div.pp-rating {
     margin-top:5px;
 }

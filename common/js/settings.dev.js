@@ -1,13 +1,14 @@
 jQuery(document).ready(function ($) {
-    $('#pp_settings_form li.agp-agent a').on('click', function () {
-        var str = $(this).attr('class');
-        str = str.replace('pp-', '');
-        str = str.replace('presspermit-', '');
-        $('input[name="pp_tab"]').val(str);
-    });
+    // Tabs
+    var $tabsWrapper = $('#pp_settings_form ul.nav-tab-wrapper');
+    $tabsWrapper.find('li').click(function (e) {
+        e.preventDefault();
+        $tabsWrapper.children('li').filter('.nav-tab-active').removeClass('nav-tab-active');
+        $(this).addClass('nav-tab-active');
 
-    $('a.pp-options-core-tab').on('click', function () {
-        $('#pp_settings_form ul li a.pp-core').trigger('click');
+        $('.pp-options-wrapper > div').hide();
+        var panel = $(this).find('a').first().attr('href');
+        $(panel).show();
     });
 
     // todo: pass img url variable, title

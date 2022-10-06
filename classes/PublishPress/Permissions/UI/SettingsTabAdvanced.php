@@ -507,5 +507,19 @@ class SettingsTabAdvanced
             </tr>
             <?php
         }
+
+        ?>
+        <tr><th></th><td>
+
+        <?php
+        $msg = esc_html__("All settings in this form (including those on undisplayed tabs) will be reset to DEFAULTS.  Are you sure?", 'press-permit-core');
+        ?>
+        <p class="submit pp-submit-alternate" style="border:none;float:right">
+            <input type="submit" name="presspermit_defaults" value="<?php esc_attr_e('Revert to Defaults', 'press-permit-core') ?>"
+                    onclick="<?php echo "javascript:if (confirm('" . esc_attr($msg) . "')) {return true;} else {return false;}"; ?>"/>
+        </p>
+
+        </td></tr>
+        <?php
     }
 }
