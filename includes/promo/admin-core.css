@@ -40,7 +40,7 @@ table#akmin {
 
 #pp-permissions-menu-wrapper div.pp-permissions-menus-promo .pp-permissions-menus-promo-inner img
 {
-  filter: blur(2px);
+  filter: blur(1px);
 }
 
 #pp-permissions-menu-wrapper {
