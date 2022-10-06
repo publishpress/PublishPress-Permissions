@@ -17,8 +17,10 @@
 
 /* --- Settings table layout --- */
 
-#pp_settings_form .form-table th {
-    padding-right:25px;
+#pp_settings_form .pp-form-table th {
+    width: 185px !important;
+    width: initial;
+    padding-right: 10px;
 }
 
 .pp-options {
@@ -58,6 +60,10 @@
     padding-right: 10px;
 }
 
+.pp-form-table tr:last-of-type th, .pp-form-table tr:last-of-type td {
+    border-bottom: 4px solid #f4f4f4;
+}
+
 .pp-vtight input {
     margin-top: 0.15em;
 }
@@ -79,6 +85,10 @@ table.pp-options-table .pp-optionhint {
 #wpbody-content li.agp-selected_agent a {
     font-weight: bold;
     color: white;
+}
+
+#pp_settings_form li.nav-tab{
+    margin-bottom: -1px;
 }
 
 #pp_settings_form .activating, #pp_settings_form .activating, #pp-install .activating, #tab-panel-pp .activating {

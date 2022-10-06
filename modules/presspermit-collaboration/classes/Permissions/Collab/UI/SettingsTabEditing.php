@@ -33,7 +33,7 @@ class SettingsTabEditing
             'page_structure' => esc_html__('Page Structure', 'press-permit-core'),
             'limited_editing_elements' => esc_html__('Limited Editing Elements', 'press-permit-core'),
             'media_library' => esc_html__('Media Library', 'press-permit-core'),
-            'nav_menu_management' => esc_html__('Nav Menu Management', 'press-permit-core'),
+            'nav_menu_management' => esc_html__('Nav Menu Editing', 'press-permit-core'),
             'user_management' => esc_html__('User Management', 'press-permit-core'),
             'post_forking' => esc_html__('Post Forking', 'press-permit-core'),
         ];

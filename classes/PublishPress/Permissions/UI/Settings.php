@@ -76,10 +76,6 @@ class Settings
             ?>
         <header>
             <?php PluginPage::icon(); ?>
-
-            <div class="submit pp-submit" style="border:none;position:absolute;right:20px;top:0;">
-                <input type="submit" name="presspermit_submit" class="button-primary" value="<?php esc_attr_e('Save Changes', 'press-permit-core'); ?>"/>
-            </div>
             <h1>
                 <?php
                 echo esc_html(apply_filters('presspermit_options_form_title', __('Permissions Settings', 'press-permit-core')));
@@ -92,26 +88,10 @@ class Settings
                 echo esc_html($subheading);
             }
 
-            $color_class = apply_filters('presspermit_options_form_color_class', '');
-
-            $class_selected = "agp-selected_agent agp-agent $color_class";
-            $class_unselected = "agp-unselected_agent agp-agent";
-
+            $class_selected = "nav-tab nav-tab-active";
+            $class_unselected = "nav-tab";
             ?>
-            <script type="text/javascript">
-                /* <![CDATA[ */
-                jQuery(document).ready(function ($) {
-                    $('li.agp-agent a').on('click', function()
-                    {
-                        $('li.agp-agent').removeClass('agp-selected_agent <?php echo esc_attr($color_class); ?>');
-                        $('li.agp-agent').addClass('agp-unselected_agent');
-                        $(this).parent().addClass('agp-selected_agent <?php echo esc_attr($color_class); ?>');
-                        $('.pp-options-wrapper > div').hide();
-                        presspermitShowElement($(this).attr('class'), $);
-                    });
-                });
-                /* ]]> */
-            </script>
+
 
         </header>
         
@@ -125,13 +105,13 @@ class Settings
             $default_tab = apply_filters('presspermit_options_default_tab', $default_tab);
 
             // todo: prevent line breaks in these links
-            echo "<ul class='pp-list_horiz' style='margin-bottom:-0.1em'>";
+            echo "<ul class='nav-tab-wrapper' style='margin-bottom:-0.1em'>";
 
             foreach ($ui->tab_captions as $tab => $caption) {
                 if (!empty($ui->form_options[$tab])) {
                     $class = ($default_tab == $tab) ? $class_selected : $class_unselected;  // todo: return to last tab
 
-                    echo "<li class='" . esc_attr($class) . "'><a class='pp-" . esc_attr($tab) . "' href='javascript:void(0)'>"
+                    echo "<li class='" . esc_attr($class) . "'><a href='#pp-" . esc_attr($tab) . "'>"
                         . esc_html($ui->tab_captions[$tab]) . '</a></li>';
                 }
             }
@@ -181,19 +161,11 @@ class Settings
             echo "<input type='hidden' name='pp_submission_topic' value='options' />";
             ?>
 
-            <p class="submit pp-submit" style="border:none;">
+            <div class="submit pp-submit" style="border:none;">
                 <input type="submit" name="presspermit_submit" class="button-primary" value="<?php esc_attr_e('Save Changes', 'press-permit-core'); ?>"/>
                 <input type="hidden" name="pp_tab"
                         value="<?php if ($pp_tab = presspermit_REQUEST_key('pp_tab')) echo esc_attr($pp_tab); ?>"/>
-            </p>
-
-            <?php
-            $msg = esc_html__("All settings in this form (including those on undisplayed tabs) will be reset to DEFAULTS.  Are you sure?", 'press-permit-core');
-            ?>
-            <p class="submit pp-submit-alternate" style="border:none;float:left">
-                <input type="submit" name="presspermit_defaults" value="<?php esc_attr_e('Revert to Defaults', 'press-permit-core') ?>"
-                        onclick="<?php echo "javascript:if (confirm('" . esc_attr($msg) . "')) {return true;} else {return false;}"; ?>"/>
-            </p>
+            </div>
             </form>
             <p style='clear:both'></p>
 
