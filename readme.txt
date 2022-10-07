@@ -238,8 +238,20 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.7.13-beta =
+= 3.8 =
 * Fixed : Category / Term Management restrictions did not exclude unmanagable terms from list
+* Fixed : Clearance of category_children field caused issues for some third party plugins
+* Fixed : Query Loop block - Sticky Posts displayed redundantly
+* Fixed : Multisite - Invalid UI on some plugin screens for network installations
+* Fixed : Users screen - PHP Notice for required parameter $column_name, $id
+* Fixed : Edit Permission Group screen - PHP Notice for required parameter $agent_type
+* Fixed : Edit Permission Group screen - PHP Notice for deprecated function
+* Fixed : Archive widget - PHP Warning
+* Fixed : HTML Forms plugin - PHP Notices
+* Feature : Option to delete all plugin data and settings on plugin deletion
+* Feature : New setting "List other user's uneditable posts", default disable on new installations
+* Change : Disable "Add Author Page" dropdown on new installations
+* Change : Settings screen caption, styling improvements
 * Change : Use instance protection library to deal with duplicate / obsolete plugin activations
 * Change : Plugin review request
 
