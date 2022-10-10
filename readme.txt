@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 6.0
 Requires PHP: 5.6.20
-Stable tag: 3.7.12
+Stable tag: 3.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -238,7 +238,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.8 =
+= 3.8 - 10 Oct 2022 =
 * Fixed : Category / Term Management restrictions did not exclude unmanagable terms from list
 * Fixed : Clearance of category_children field caused issues for some third party plugins
 * Fixed : Query Loop block - Sticky Posts displayed redundantly
