@@ -95,8 +95,8 @@ class Settings
         foreach (array_map('pp_permissions_sanitize_entry', explode(',', sanitize_text_field($all_options))) as $option_basename) {
             $value = presspermit_POST_var($option_basename);
 
-            if (in_array($option_basename, ['teaser_redirect_slug', 'teaser_redirect_anon_slug'])) {
-                $compare_option = ('teaser_redirect_anon_slug' == $option_basename) ? 'teaser_redirect_anon' : 'teaser_redirect';
+            if (in_array($option_basename, ['teaser_redirect_page', 'teaser_redirect_anon_page'])) {
+                $compare_option = ('teaser_redirect_anon_page' == $option_basename) ? 'teaser_redirect_anon' : 'teaser_redirect';
                 
                 if (('[login]' == presspermit_POST_var($compare_option))) {
                     $value = '[login]';
