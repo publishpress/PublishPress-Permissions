@@ -42,28 +42,6 @@ class PermissionsHooks
         foreach (presspermit()->getEnabledTaxonomies(['object_type' => false]) as $taxonomy) {
             add_filter("pre_option_{$taxonomy}_children", [$this, 'fltTermChildren'], 10, 3);
         }
-
-        add_action('init', function() { // late execution avoids clash with autoloaders in other plugins
-            if (presspermitPluginPage()
-            || (defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) && (false !== strpos(sanitize_key($_REQUEST['action']), 'press-permit-core')))
-			) {
-                if (!class_exists('\PublishPress\WordPressReviews\ReviewsController')) {
-                    include_once PRESSPERMIT_ABSPATH . '/vendor/publishpress/wordpress-reviews/ReviewsController.php';
-                }
-        
-                if (class_exists('\PublishPress\WordPressReviews\ReviewsController')) {
-                    $reviews = new \PublishPress\WordPressReviews\ReviewsController(
-                        'press-permit-core',
-                        'PublishPress Permissions',
-                        plugin_dir_url(PRESSPERMIT_FILE) . 'common/img/permissions-wp-logo.jpg'
-                    );
-        
-                    add_filter('publishpress_wp_reviews_display_banner_press-permit-core', [$this, 'shouldDisplayBanner']);
-
-                    $reviews->init();
-                }
-            }
-        });
     }
 
     public function shouldDisplayBanner() {
