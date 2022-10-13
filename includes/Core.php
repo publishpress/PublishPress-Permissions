@@ -28,6 +28,10 @@ class Core {
         });
     }
 
+    public function shouldDisplayBanner() {
+        return presspermitPluginPage();
+    }
+
     function fltPressPermitOptions($options) {
         $options['presspermit_display_extension_hints'] = true;
         return $options;
