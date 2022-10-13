@@ -238,7 +238,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.8 - 10 Oct 2022 =
+= 3.8 - 13 Oct 2022 =
 * Fixed : Category / Term Management restrictions did not exclude unmanagable terms from list
 * Fixed : Clearance of category_children field caused issues for some third party plugins
 * Fixed : Query Loop block - Sticky Posts displayed redundantly
