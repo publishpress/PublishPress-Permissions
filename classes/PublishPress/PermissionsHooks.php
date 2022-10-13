@@ -44,10 +44,6 @@ class PermissionsHooks
         }
     }
 
-    public function shouldDisplayBanner() {
-        return presspermitPluginPage();
-    }
-
 	public function loadUpdater() {
         return presspermit()->load_updater();
     }

@@ -13,7 +13,7 @@ class CoreAdmin {
                 wp_enqueue_style('presspermit-settings-free', plugins_url('', PRESSPERMIT_FILE) . '/includes/css/settings.css', [], PRESSPERMIT_VERSION);
             }
 
-            if (in_array(presspermitPluginPage(), ['presspermit-statuses', 'presspermit-visibility-statuses', 'presspermit-sync', 'presspermit-teaser'])) {
+            if (in_array(presspermitPluginPage(), ['presspermit-statuses', 'presspermit-visibility-statuses', 'presspermit-sync', 'presspermit-posts-teaser'])) {
                 wp_enqueue_style('presspermit-admin-promo', plugins_url('', PRESSPERMIT_FILE) . '/includes/promo/admin-core.css', [], PRESSPERMIT_VERSION, 'all');
             }
         });
@@ -95,14 +95,14 @@ class CoreAdmin {
             esc_html__('Teaser', 'press-permit-core'), 
             esc_html__('Teaser', 'press-permit-core'), 
             'read', 
-            'presspermit-teaser', 
+            'presspermit-posts-teaser', 
             $handler
         );
     }
 
     function menuHandler($pp_page)
     {
-        if (in_array($pp_page, ['presspermit-statuses', 'presspermit-visibility-statuses', 'presspermit-sync', 'presspermit-teaser'], true)) {
+        if (in_array($pp_page, ['presspermit-statuses', 'presspermit-visibility-statuses', 'presspermit-sync', 'presspermit-posts-teaser'], true)) {
             $slug = str_replace('presspermit-', '', $pp_page);
             require_once(PRESSPERMIT_ABSPATH . "/includes/promo/{$slug}-promo.php");
         }
