@@ -15,7 +15,7 @@ class Updated
                 if (null === get_option('presspermit_list_others_uneditable_posts', null)) {
                     // If a previous version was installed, default to requiring list_others_posts capability
                     update_option('presspermit_list_others_uneditable_posts', 0);
-            }
+                }
             } else break;
 
         } while (0); // end single-pass version check loop

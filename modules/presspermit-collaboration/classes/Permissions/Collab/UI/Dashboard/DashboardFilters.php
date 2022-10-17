@@ -91,22 +91,22 @@ class DashboardFilters
 	    	// Register a submenu item for these screens, but only if they are accessed
 	            if ('presspermit-role-usage' == presspermitPluginPage() && !did_action('pp_added_role_usage_submenu')) {
 	            add_submenu_page(
-	                $pp_options_menu, 
-	                esc_html__('Role Usage', 'press-permit-core'), 
-	                esc_html__('Role Usage', 'press-permit-core'), 
-	                'read', 
-	                'presspermit-role-usage', 
+	                $pp_options_menu,
+	                esc_html__('Role Usage', 'press-permit-core'),
+	                esc_html__('Role Usage', 'press-permit-core'),
+	                'read',
+	                'presspermit-role-usage',
 	                $handler
 	            );
 	        }
 
             if ('presspermit-role-usage-edit' == presspermitPluginPage() && !did_action('pp_added_edit_role_usage_submenu')) {
 	            add_submenu_page(
-	                $pp_options_menu, 
-	                esc_html__('Edit Role Usage', 'press-permit-core'), 
-	                esc_html__('Edit Role Usage', 'press-permit-core'), 
-	                'read', 
-	                'presspermit-role-usage-edit', 
+	                $pp_options_menu,
+	                esc_html__('Edit Role Usage', 'press-permit-core'),
+	                esc_html__('Edit Role Usage', 'press-permit-core'),
+	                'read',
+	                'presspermit-role-usage-edit',
 	                $handler
 	            );
             }

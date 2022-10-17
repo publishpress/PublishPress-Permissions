@@ -251,7 +251,7 @@ class REST
 
                         $required_operation = 'assign';
                     } else {
-                    $required_operation = ('read' == $this->operation) ? 'read' : 'manage';
+                        $required_operation = ('read' == $this->operation) ? 'read' : 'manage';
                     }
                     
                     $this->is_terms_request = true;

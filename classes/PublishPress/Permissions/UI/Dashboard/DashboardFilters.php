@@ -324,7 +324,7 @@ class DashboardFilters
         }
 
         if (empty($user)) {
-        global $profileuser;
+            global $profileuser;
 
             if (!empty($profileuser)) {
                 $user = $profileuser;

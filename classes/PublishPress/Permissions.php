@@ -525,7 +525,7 @@ class Permissions
                         }
                     }
                 }
-            }   
+            }
 
             // merge in caps from typecast WP role assignments (and also clear false-valued allcaps entries)
             $this->capCaster();
