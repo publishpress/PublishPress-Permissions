@@ -143,7 +143,7 @@ class Settings
 
             foreach (array_keys($ui->tab_captions) as $tab) {
                 $display = ($default_tab == $tab) ? '' : 'display:none';
-                echo "<div id='pp-" . esc_attr($tab) . "' style='clear:both;margin:0;" . esc_attr($display) . "' class='pp-options " . esc_attr($color_class) . "'>";
+                echo "<div id='pp-" . esc_attr($tab) . "' style='clear:both;margin:0;" . esc_attr($display) . "' class='pp-options'>";
 
                 do_action("presspermit_" . esc_attr($tab) . "_options_pre_ui");
 
