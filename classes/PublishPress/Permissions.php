@@ -177,6 +177,7 @@ class Permissions
             'media_search_results' => 1,
             'term_counts_unfiltered' => 0,
             'advanced_options' => 0,
+            'delete_settings_on_uninstall' => 0,
             'edd_key' => false,
             'supplemental_role_defs' => [], // stored by Capability Manager Enhanced
             'customized_roles' => [],       // stored by Capability Manager Enhanced
@@ -512,7 +513,19 @@ class Permissions
 				) {
                     $user->allcaps[PRESSPERMIT_READ_PUBLIC_CAP] = true;
                 }
-            }   
+
+                if ($this->getOption('list_others_uneditable_posts')) {
+                    foreach ($this->getEnabledPostTypes() as $post_type) {
+                        if ($type_obj = get_post_type_object($post_type)) {
+                            if (isset($type_obj->cap->edit_posts) && !empty($user->allcaps[$type_obj->cap->edit_posts])
+                            && isset($type_obj->cap->edit_others_posts) && empty($user->allcaps[$type_obj->cap->edit_others_posts])) {
+                                $list_others_cap = str_replace('edit_', 'list_', $type_obj->cap->edit_others_posts);
+                                $user->allcaps[$list_others_cap] = true;
+                            }
+                        }
+                    }
+                }
+            }
 
             // merge in caps from typecast WP role assignments (and also clear false-valued allcaps entries)
             $this->capCaster();

@@ -28,11 +28,12 @@ class SettingsTabEditing
     function sectionCaptions($sections)
     {
         $new = [
-            'content_management' => esc_html__('Content Management', 'press-permit-core'),
+            'post_editor' => esc_html__('Editor Options', 'press-permit-core'),
+            'content_management' => esc_html__('Posts / Pages Listing', 'press-permit-core'),
             'page_structure' => esc_html__('Page Structure', 'press-permit-core'),
             'limited_editing_elements' => esc_html__('Limited Editing Elements', 'press-permit-core'),
             'media_library' => esc_html__('Media Library', 'press-permit-core'),
-            'nav_menu_management' => esc_html__('Nav Menu Management', 'press-permit-core'),
+            'nav_menu_management' => esc_html__('Nav Menu Editing', 'press-permit-core'),
             'user_management' => esc_html__('User Management', 'press-permit-core'),
             'post_forking' => esc_html__('Post Forking', 'press-permit-core'),
         ];
@@ -59,6 +60,7 @@ class SettingsTabEditing
             'admin_nav_menu_lock_custom' => esc_html__('Lock custom menu items', 'press-permit-core'),
             'limit_user_edit_by_level' => esc_html__('Limit User Edit by Level', 'press-permit-core'),
             'default_privacy' => esc_html__('Default visibility for new posts:', 'press-permit-core'),
+            'list_others_uneditable_posts' => esc_html__('List other user\'s uneditable posts', 'press-permit-core'),
             'page_parent_order' => esc_html__('Order Page Parent dropdown by Title', 'press-permit-core'),
             'add_author_pages' => esc_html__('Bulk-Add Author Pages (on Users screen)', 'press-permit-core'),
             'publish_author_pages' => esc_html__('Publish Author Pages at bulk creation', 'press-permit-core'),
@@ -77,8 +79,9 @@ class SettingsTabEditing
         // Editing tab
         $new = [
             'page_structure' => ['lock_top_pages'],
-            'user_management' => ['limit_user_edit_by_level'],
-            'content_management' => ['default_privacy', 'force_default_privacy', 'page_parent_order', 'force_taxonomy_cols', 'add_author_pages', 'publish_author_pages'],
+            'user_management' => ['limit_user_edit_by_level', 'add_author_pages', 'publish_author_pages'],
+            'post_editor' => ['default_privacy', 'force_default_privacy', 'page_parent_order'],
+            'content_management' => ['list_others_uneditable_posts', 'force_taxonomy_cols'],
             'media_library' => ['admin_others_attached_files', 'admin_others_attached_to_readable', 'admin_others_unattached_files', 'edit_others_attached_files', 'own_attachments_always_editable'],
             'nav_menu_management' => ['admin_nav_menu_filter_items', 'admin_nav_menu_partial_editing', 'admin_nav_menu_lock_custom'],
             'post_forking' => ['fork_published_only', 'fork_require_edit_others'],
@@ -124,7 +127,7 @@ class SettingsTabEditing
         $ui = \PublishPress\Permissions\UI\SettingsAdmin::instance(); 
         $tab = 'editing';
 
-        $section = 'content_management';                        // --- CONTENT MANAGEMENT SECTION ---
+        $section = 'post_editor';                        // --- EDITOR OPTIONS SECTION ---
         if (!empty($ui->form_options[$tab][$section])) :
             ?>
             <tr>
@@ -213,15 +216,24 @@ class SettingsTabEditing
 
                     <br/>
                     <?php
-                    $hint = '';
-                    $ui->optionCheckbox('page_parent_order', $tab, $section, $hint, '<br />');
+                    $ui->optionCheckbox('page_parent_order', $tab, $section);
+                    ?>
+                </td>
+            </tr>
+        <?php endif; // any options accessable in this section
+
+        $section = 'content_management';                        // --- POSTS / PAGES LISTING SECTION ---
+        if (!empty($ui->form_options[$tab][$section])) :
+            ?>
+            <tr>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
+                <td>
+                    <?php
+                    if (!defined('PP_ADMIN_READONLY_LISTABLE') || ($pp->getOption('admin_hide_uneditable_posts') && !defined('PP_ADMIN_POSTS_NO_FILTER'))) {
+                        $ui->optionCheckbox('list_others_uneditable_posts', $tab, $section, true);
+                    }
 
                     $ui->optionCheckbox('force_taxonomy_cols', $tab, $section, true, '');
-
-                    $ui->optionCheckbox('add_author_pages', $tab, $section, true, '');
-
-                    $div_style = ($pp->getOption('add_author_pages')) ? '' : 'display:none';
-                    $ui->optionCheckbox('publish_author_pages', $tab, $section, '', '', compact('div_style'));
                     ?>
                 </td>
             </tr>
@@ -428,12 +440,20 @@ class SettingsTabEditing
                     ?>
                     </select>&nbsp;
 
-                    <p><span class='pp-subtext'>
+                    <div class='pp-subtext'>
                     <?php
                     SettingsAdmin::echoStr('limit_user_edit_by_level');
                     ?>
-                    </span>
-                    </p>
+                    </div>
+
+                    <div style="margin-top:20px">
+                    <?php
+                    $ui->optionCheckbox('add_author_pages', $tab, $section, true, '');
+
+                    $div_style = ($pp->getOption('add_author_pages')) ? '' : 'display:none';
+                    $ui->optionCheckbox('publish_author_pages', $tab, $section, '', '', compact('div_style'));
+                    ?>
+                    </div>
                 </td>
             </tr>
         <?php endif; // any options accessable in this section

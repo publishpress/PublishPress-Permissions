@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 6.0
 Requires PHP: 5.6.20
-Stable tag: 3.7.12
+Stable tag: 3.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -237,6 +237,23 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 3.8 - 13 Oct 2022 =
+* Fixed : Category / Term Management restrictions did not exclude unmanagable terms from list
+* Fixed : Clearance of category_children field caused issues for some third party plugins
+* Fixed : Query Loop block - Sticky Posts displayed redundantly
+* Fixed : Multisite - Invalid UI on some plugin screens for network installations
+* Fixed : Users screen - PHP Notice for required parameter $column_name, $id
+* Fixed : Edit Permission Group screen - PHP Notice for required parameter $agent_type
+* Fixed : Edit Permission Group screen - PHP Notice for deprecated function
+* Fixed : Archive widget - PHP Warning
+* Fixed : HTML Forms plugin - PHP Notices
+* Feature : Option to delete all plugin data and settings on plugin deletion
+* Feature : New setting "List other user's uneditable posts", default disable on new installations
+* Change : Disable "Add Author Page" dropdown on new installations
+* Change : Settings screen caption, styling improvements
+* Change : Use instance protection library to deal with duplicate / obsolete plugin activations
+* Change : Plugin review request
 
 = 3.7.12 - 30 Aug 2022 =
 * Fixed : Sticky Posts were displayed redundantly in Query Loop block

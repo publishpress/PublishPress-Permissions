@@ -69,6 +69,13 @@ class Settings
         foreach ($reviewed_options as $option_name) {
             $pp->deleteOption($default_prefix . $option_name, $args);
         }
+
+        require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
+        \PublishPress\Permissions\PluginUpdated::deactivateModules(['current_deactivations' => []]);
+
+        $tab = (!presspermit_empty_POST('pp_tab')) ? "&pp_tab={" . presspermit_POST_key('pp_tab') . "}" : '';
+        wp_redirect(admin_url("admin.php?page=presspermit-settings$tab&presspermit_submit_redirect=1"));
+        exit;
     }
 
     private function updatePageOptions($args)
@@ -87,6 +94,14 @@ class Settings
 
         foreach (array_map('pp_permissions_sanitize_entry', explode(',', sanitize_text_field($all_options))) as $option_basename) {
             $value = presspermit_POST_var($option_basename);
+
+            if (in_array($option_basename, ['teaser_redirect_page', 'teaser_redirect_anon_page'])) {
+                $compare_option = ('teaser_redirect_anon_page' == $option_basename) ? 'teaser_redirect_anon' : 'teaser_redirect';
+                
+                if (('[login]' == presspermit_POST_var($compare_option))) {
+                    $value = '[login]';
+                }
+            }
 
             $_value = apply_filters('presspermit_custom_sanitize_setting', null, $option_basename, $value);
 

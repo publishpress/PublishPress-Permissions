@@ -196,26 +196,26 @@ class Admin
         
         $blurb = [
             'circles' => 'Visibility Circles and Editorial Circles block access to content not authored by other group members.',
-            'collaboration' => 'Content-specific permissions for editing, term assignment and page parent selection.',
+            'collaboration' => 'Post-specific and category-specific permissions for creation and editing.',
             'compatibility' => 'Integration with bbPress, BuddyPress, Relevanssi, WPML and other plugins; enhanced Multisite support.',
-            'teaser' => 'On the site front end, replace non-readable content with placeholder text.',
-            'status-control' => 'Custom post statuses: Control permissions for multi-step Workflow or custom Privacy.',
-            'file-access' => "Filters direct file access, based on user's access to post(s) which the file is attached to.",
+            'teaser' => 'On the site front end, display teaser text for unreadable posts instead of hiding them.',
+            'status-control' => 'Customize access to custom publication workflow statuses or visibility statuses.',
+            'file-access' => "Restrict direct file requests based on user's access to the page a file is attached to.",
             'import' => 'Import Role Scoper groups, roles, restrictions and settings.',
-            'membership' => 'Allows Permission Group membership to be date-limited (delayed and/or scheduled for expiration).',
-            'sync' => 'Create or synchronize posts to match users. Designed for Team / Staff plugins, but with broad usage potential.',
-            'role-scoper-migration-advisor' => 'Analyzes your Role Scoper installation, identifying PP migration readiness or issues.', 
+            'membership' => 'Time-limit access customizations by delaying or expiring Permission Group membership.',
+            'sync' => 'Auto-create a page for each user of specified roles. Compatible with several Team / Staff plugins.',
+            'role-scoper-migration-advisor' => 'Analyzes your Role Scoper installation, identifying Permissions migration readiness or issues.', 
         ];
         
         $descript = [
             'circles' => 'Visibility Circles and Editorial Circles block access to content not authored by other group members. Any WP Role, BuddyPress Group or custom Group can be marked as a Circle for specified post types.',
-            'collaboration' => 'Supports content-specific permissions for editing, term assignment and page parent selection. In combination with other modules, supports workflow statuses, PublishPress, Revisionary and Post Forking.',
-            'compatibility' => 'Adds compatibility or integration with bbPress, Relevanssi, Co-Authors Plus, CMS Tree Page View, Custom Post Type UI, Subscribe2, WPML, various other plugins. BuddyPress Permissions Groups. For multisite, provides network-wide permission groups.',
+            'collaboration' => 'Supports content-specific permissions for editing, term assignment and page parent selection. In combination with other modules, supports workflow statuses, PublishPress and PublishPress Revisions.',
+            'compatibility' => 'Adds compatibility or integration with bbPress, Relevanssi, CMS Tree Page View, Custom Post Type UI, Subscribe2, WPML, various other plugins. Configure any BuddyPress Group as a Permissions Group. For multisite, provides network-wide Permission Groups.',
             'teaser' => 'On the site front end, replace non-readable content with placeholder text. Can be enabled for any post type. Custom filters are provided but no programming is required for basic usage.',
-            'status-control' => 'Custom post statuses: Workflow statuses (also requires Collaborative Publishing module) allow unlimited orderable steps between pending and published, each with distinct capability requirements and role assignments.  Both privacy and workflow statuses can be type-specific.',
+            'status-control' => 'Custom post statuses: Workflow statuses allow unlimited orderable steps between pending and published, each with distinct capability requirements and role assignments. Statuses can be type-specific.',
             'file-access' => "Filters direct file access, based on user's access to post(s) which the file is attached to. No additional configuration required. Creates/modifies .htaccess file in uploads folder (and in main folder for multisite).",
             'import' => 'Import Role Scoper groups, roles, restrictions and settings.',
-            'membership' => 'Allows Permission Group membership to be date-limited (delayed and/or scheduled for expiration). Simple date picker UI alongside member selection.',
+            'membership' => 'Allows Permission Group membership to be date-limited (delayed and/or scheduled for expiration). Simple date picker UI alongside group membership selection.',
             'sync' => 'Create or synchronize posts to match users. Designed for Team / Staff plugins, but with broad usage potential.',
             'role-scoper-migration-advisor' => 'Analyzes your Role Scoper installation, identifying groups, roles, restrictions and options which can (or cannot) be automatically imported by the Import module.', 
         ];

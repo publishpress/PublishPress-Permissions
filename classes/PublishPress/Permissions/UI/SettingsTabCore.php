@@ -30,7 +30,7 @@ class SettingsTabCore
             'permissions' => esc_html__('Permissions', 'press-permit-core'),
             'front_end' => esc_html__('Front End', 'press-permit-core'),
             'admin' => esc_html__('Admin Back End', 'press-permit-core'),
-            'user_profile' => esc_html__('User Management / Profile', 'press-permit-core'),
+            'user_profile' => esc_html__('User Management', 'press-permit-core'),
             'db_maint' => esc_html__('Database Maintenance', 'press-permit-core'),
         ];
 
@@ -78,12 +78,14 @@ class SettingsTabCore
 
     public function optionsPreUI()
     {
+        /*
         if (SettingsAdmin::instance()->getOption('display_hints')) {
             echo '<div class="pp-optionhint">';
             esc_html_e("Basic settings for content filtering, management and presentation.", 'press-permit-core');
             do_action('presspermit_options_form_hint');
             echo '</div>';
         }
+        */
     }
 
     public function optionsUI()
@@ -332,21 +334,25 @@ class SettingsTabCore
                 <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
                     <?php
-                    $ui->optionCheckbox('display_branding', $tab, $section, '', '<br />');
+                    $ui->optionCheckbox('display_branding', $tab, $section);
                     
                     if (defined('PP_ADMIN_READONLY_LISTABLE') && (!$pp->getOption('admin_hide_uneditable_posts') || defined('PP_ADMIN_POSTS_NO_FILTER'))) {
                         $hint = SettingsAdmin::getStr('posts_listing_unmodified');
                     } else {
                         $hint = ($pp->moduleActive('collaboration'))
-                            ? SettingsAdmin::getStr('posts_listing_editable_only')
+                            ? ''
                             : SettingsAdmin::getStr('posts_listing_editable_only_collab_prompt');
                     }
                     ?>
-                    <div class="pp-hint">
+                    
+                    <?php if ($hint):?>
+                    <br />
+                    <div class="pp-subtext pp-subtext-show">
                     <?php
                     printf(esc_html__('%sPosts / Pages Listing:%s %s', 'press-permit-core'), '<b>', '</b>', esc_html($hint));
                     ?>
-                    </p>
+                    </div>
+                    <?php endif;?>
                 </td>
             </tr>
         <?php

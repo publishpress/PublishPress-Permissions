@@ -3,18 +3,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PublishPress Permissions Hints\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-18 17:41-0400\n"
+"POT-Creation-Date: 2022-10-06 19:16-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: PublishPress <help@publishpress.com>\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_c;__ngettext;_n;_x;_ex;esc_html__;esc_html_e\n"
-"Language: en\n"
-"X-Generator: Poedit 2.4.3\n"
+"X-Generator: Poedit 3.0.1\n"
 "X-Poedit-SearchPath-0: classes/PublishPress/Permissions/UI/SettingsAdmin.php\n"
 "X-Poedit-SearchPath-1: classes/PublishPress/Permissions/Constants.php\n"
 "X-Poedit-SearchPath-2: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImportNotes.php\n"
@@ -313,70 +313,70 @@ msgid "Unmodified from WordPress default behavior. To enable filtering, remove c
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:71
-msgid "Uneditable posts are hidden from wp-admin listings. To expose them, use a role editor to add desired capabilities: list_posts, list_other_pages etc."
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:74
 msgid "To customize editing permissions, enable the Collaborative Publishing module."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:77
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:74
 msgid "Note: Groups and Roles are always displayed in \"Edit User\""
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:82
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:79
 msgid "Note: if you disable these settings, the stored values (including Role Usage adjustments) are retained but ignored."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:85
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:82
 msgid "Most sites don't need advanced settings. But enable them if you need to work with custom WP Roles or apply performance tweaks."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:88
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:85
 msgid "Disable Permissions filtering for users who are not logged in."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:91
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:88
 msgid "If checked, pages blocked from the \"All\" or \"Logged In\" groups will still be listed to Administrators."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:94
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:91
 msgid "If enabled, users with the pp_set_read_exceptions capability in the WP role can set reading permissions for their editable posts."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:97
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:94
 msgid "Display a role dropdown alongside the user search input box to narrow results."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:100
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:97
 msgid "Display additional descriptions in role assignment and options UI."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:103
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:100
 msgid "Display descriptive captions for additional functionality provided by missing or deactivated modules (Permissions Pro package)."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:106
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:103
 msgid "Detect user roles which are appended dynamically but not stored to the WP database. May be useful for sites that sync with Active Directory or other external user registration systems."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:109
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:106
 #, php-format
 msgid "You can also %1$s add Permissions administration capabilities to a WordPress role%2$s:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:112
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:109
 #, php-format
 msgid "You can add Permissions administration capabilities to a WordPress role using %1$s:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:117
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:114
 #, php-format
 msgid "Settings related to content editing permissions, provided by the %s module."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:117
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:114
 msgid "Collaborative Publishing"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:117
+msgid "If this setting is disabled, a specific role can be given capabilities: list_others_posts, list_others_pages, etc."
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:120
@@ -400,20 +400,15 @@ msgid "The following settings are currently overridden by the constant PP_MEDIA_
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:135
-msgid "For non-Administrators, determines visibility of files uploaded by another user and now attached to a post which the logged user can edit. To force a user to view all media regardless of this setting, add the pp_list_all_files capability to their role."
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:138
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:144
-msgid "For non-Administrators, determines editing access to files uploaded by another user and now attached to a post which the logged user can edit."
+msgid "To allow a role to view all media regardless of this setting, give it the pp_list_all_files capability."
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:141
-msgid "If enabled, all users who have Media Library access will be implicitly granted the list_others_unattached_files capability. Media Editors can view and edit regardless of this setting."
+msgid "To enable a specific role instead, give it the list_others_unattached_files capability. Note that Media Editors can always view and edit these files."
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:147
-msgid "Ensures users can always edit attachments they have uploaded, even if they are later attached to a post which the user cannot edit. If disabled, you can grant individual users the edit_own_attachments capability or assign Media editing Permissions for individual files."
+msgid "If disabled, access may be blocked based on the attachment page. In that case, a role can be given the edit_own_attachments capability, or Permissions for a specific file."
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:150
@@ -437,7 +432,7 @@ msgid "If a user lacks the edit_others_posts capability for the post type, they 
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:165
-msgid "If enabled, presence of the pp_set_edit_exceptions, pp_set_associate_exceptions, etc. capabilities in the WP role will be honored. See list of capabilities below."
+msgid "If enabled, the capabilities pp_set_edit_exceptions, pp_set_associate_exceptions, etc. will be honored. See list of capabilities below."
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:170

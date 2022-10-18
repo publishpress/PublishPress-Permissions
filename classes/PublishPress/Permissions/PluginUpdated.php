@@ -50,6 +50,20 @@ class PluginUpdated
         
         	do_action('presspermit_version_updated', $prev_version);
 
+            if (version_compare($prev_version, '3.8-beta2', '<')) {
+                // Restore taxonomy_children option arrays now that an alternate filtering mechanism is in place
+                presspermit()->flags['disable_term_filtering'] = true;
+
+                if (function_exists('_get_term_hierarchy')) {
+                    foreach (presspermit()->getEnabledTaxonomies(['object_type' => false]) as $taxonomy) {
+                        delete_option("{$taxonomy}_children");
+                        _get_term_hierarchy($taxonomy);
+                    }
+                }
+
+                presspermit()->flags['disable_term_filtering'] = false;
+            } else break;
+
             if (version_compare($prev_version, '3.3.3', '<')) {
                 // Activation of invalid "Custom permissions for Authors" setting on Edit Author screen broke Authors > Authors listing and editing access
                 if ($taxs = get_option('presspermit_enabled_taxonomies')) {
@@ -134,8 +148,7 @@ class PluginUpdated
                 'presspermit-circles', 
                 'presspermit-file-access', 
                 'presspermit-import', 
-                'presspermit-membership', 
-                'presspermit-teaser'
+                'presspermit-membership'
             ];
         }
 

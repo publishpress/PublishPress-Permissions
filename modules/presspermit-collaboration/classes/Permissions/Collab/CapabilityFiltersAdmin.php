@@ -15,12 +15,6 @@ class CapabilityFiltersAdmin
         add_filter('terms_clauses', [$this, 'fltGetTermsPreserveCurrentParent'], 55, 3);
         add_filter('presspermit_posts_clauses_intercept', [$this, 'fltBypassAttachmentsFiltering'], 10, 4);
 
-        // filter pre_option_category_children, pre_update_option_category_children to disable/enable terms filtering
-        foreach (presspermit()->getEnabledTaxonomies(['object_type' => false]) as $taxonomy) {
-            add_filter("pre_option_{$taxonomy}_children", [$this, 'fltTriggerDisableTermsFilter'], 10, 2);
-            add_filter("pre_update_option_{$taxonomy}_children", [$this, 'fltTriggerDisableTermsFilter'], 10, 2);
-        }
-
         add_filter('map_meta_cap', [$this, 'fltAdjustReqdCaps'], 1, 4);
 
         add_filter('presspermit_adjust_posts_where_clause', [$this, 'fltAdjustPostsWhereClause'], 10, 4);
@@ -203,23 +197,6 @@ class CapabilityFiltersAdmin
         }
 
         return $reqd_caps;
-    }
-
-    function fltTriggerDisableTermsFilter($option_val, $option_name)
-    {  // fires on pre_option_$taxonomy filter
-        presspermit()->flags['disable_term_filtering'] = true;
-
-        $taxonomy = str_replace('_children', '', $option_name);
-        add_filter("option_{$taxonomy}_children", [$this, 'enable_terms_filter'], 10, 2);
-        add_filter("update_option_{$taxonomy}_children", [$this, 'enable_terms_filter'], 10, 2);
-
-        return $option_val;
-    }
-
-    public function enable_terms_filter($option_val, $option_name)
-    {
-        unset(presspermit()->flags['disable_term_filtering']);
-        return $option_val;
     }
 
     private function taxonomy_from_caps($caps)

@@ -910,9 +910,11 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
             $this->import_option("presspermit_default_privacy", $type_default_visibility, 'scoper_default_private', $imported_options);
         }
 
+        /*
         if (isset($rs_options['scoper_do_teaser'])) {
             $this->import_option("presspermit_post_teaser_enabled", !empty($rs_options['scoper_do_teaser']['post']), 'scoper_do_teaser', $imported_options);
         }
+        */
 
         if (!empty($rs_options['scoper_use_teaser'])) {
             $tease_types = [];

@@ -17,8 +17,10 @@
 
 /* --- Settings table layout --- */
 
-#pp_settings_form .form-table th {
-    padding-right:25px;
+#pp_settings_form .pp-form-table th {
+    width: 185px !important;
+    width: initial;
+    padding-right: 10px;
 }
 
 .pp-options {
@@ -58,6 +60,10 @@
     padding-right: 10px;
 }
 
+.pp-form-table tr:last-of-type th, .pp-form-table tr:last-of-type td {
+    border-bottom: 4px solid #f4f4f4;
+}
+
 .pp-vtight input {
     margin-top: 0.15em;
 }
@@ -79,6 +85,10 @@ table.pp-options-table .pp-optionhint {
 #wpbody-content li.agp-selected_agent a {
     font-weight: bold;
     color: white;
+}
+
+#pp_settings_form li.nav-tab{
+    margin-bottom: -1px;
 }
 
 #pp_settings_form .activating, #pp_settings_form .activating, #pp-install .activating, #tab-panel-pp .activating {
@@ -108,6 +118,10 @@ table.pp-options-table .pp-optionhint {
     display: none;
 }
 
+#pp_settings_form .pp-subtext-show {
+    display: block;
+}
+
 #pp_settings_form .pp-no-hide {
     display: revert;
     margin-top: 5px;
@@ -124,7 +138,7 @@ table.pp-options-table .pp-optionhint {
 }
 
 /* --- Install Tab --- */
-#pp-install_table span.publishpress, #pp-install_table span.publishpress a, #pp-install_table span.publishpress a:visited {
+#pp-modules_table span.publishpress, #pp-install_table span.publishpress a, #pp-install_table span.publishpress a:visited {
     color: #655997;
     font-weight: bold
 }
@@ -199,32 +213,36 @@ table.pp-options-table .pp-optionhint {
     margin-bottom: 10px
 }
 
-#pp-install table.pp-extensions tr th, #pp-install table.pp-extensions tr td, #pp-install table.pp-extensions tr {
+#pp-modules table.pp-extensions tr th, #pp-modules table.pp-extensions tr td, #pp-modules table.pp-extensions tr {
     margin-bottom: 1px;
     vertical-align: top;
     border-bottom: none;
 }
 
-#pp-install table.pp-extensions {
+#pp-modules table.pp-extensions {
     margin-right: 20px;
     margin-top: 2px;
     margin-left: 0;
 }
 
-#pp-install table.pp-extensions tr th {
+#pp-modules table.pp-extensions tr th {
     line-height: 8px
 }
 
-#pp-install table.pp-extensions tr td {
+#pp-modules table.pp-extensions tr td {
     line-height: 15px;
     padding-left: 5px;
     background-color: #fff;
     padding: 8px;
+    min-width: 200px;
 }
 
-#pp-install span.pp-ext-info {
+#pp-modules span.pp-ext-info {
     color: #777;
-    font-style: italic;
+}
+
+#pp-modules table.pp-extensions tr td:nth-child(2) {
+    min-width: 640px !important;
 }
 
 #pp_config_upload_caption {

@@ -40,8 +40,7 @@ class PermissionsHooks
 
         // filter pre_option_category_children to disable/enable terms filtering
         foreach (presspermit()->getEnabledTaxonomies(['object_type' => false]) as $taxonomy) {
-            add_action("pre_update_option_{$taxonomy}_children", [$this, 'actClearTermChildrenCache'], 99, 3);
-            add_action("update_option_{$taxonomy}_children", [$this, 'actClearTermChildrenCache'], 99, 3);
+            add_filter("pre_option_{$taxonomy}_children", [$this, 'fltTermChildren'], 10, 3);
         }
     }
 
@@ -57,6 +56,34 @@ class PermissionsHooks
     public function filteringEnabled()
     {
         return $this->filtering_enabled;
+    }
+
+    function fltTermChildren($option_val, $option_name, $default_val) {
+        if (!empty(presspermit()->flags['disable_term_filtering'])) {
+            return $option_val;
+        }
+        
+        if ($pos = strrpos($option_name, '_children')) {
+            $taxonomy = substr($option_name, 0, $pos);
+        }
+
+        $children = array();
+        $terms    = get_terms(
+            array(
+                'taxonomy'               => $taxonomy,
+                'get'                    => 'all',
+                'orderby'                => 'id',
+                'fields'                 => 'id=>parent',
+                'update_term_meta_cache' => false,
+            )
+        );
+        foreach ( $terms as $term_id => $parent ) {
+            if ( $parent > 0 ) {
+                $children[ $parent ][] = $term_id;
+            }
+        }
+
+        return $children;
     }
 
     // if Advanced Options are not enabled, ignore stored settings
@@ -189,12 +216,16 @@ class PermissionsHooks
         $pp = presspermit();
 
         // --- version check ---
-        if ( ! $ver = get_option('presspermitpro_version') ) {
-            if (!defined('PRESSPERMIT_PRO_VERSION')) {
+        $compare_version = PRESSPERMIT_VERSION;
+
+        $ver = get_option('presspermitpro_version');
+
+        if (!$ver || !defined('PRESSPERMIT_PRO_VERSION') ) {
             	if ( ! $ver = get_option('presspermit_version') ) {
                 	$ver = get_option('pp_c_version');
                 }
-            }
+        } else {
+            $compare_version = PRESSPERMIT_PRO_VERSION;
         }
 
         if (!$ver || !is_array($ver) || empty($ver['db_version']) || version_compare(PRESSPERMIT_DB_VERSION, $ver['db_version'], '!=')) {
@@ -212,7 +243,7 @@ class PermissionsHooks
 
         if ($ver && !empty($ver['version'])) {
             // These maintenance operations only apply when a previous version of PP was installed 
-            if (version_compare(PRESSPERMIT_VERSION, $ver['version'], '!=')) {
+            if (version_compare($compare_version, $ver['version'], '!=')) {
                 require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
                 new Permissions\PluginUpdated($ver['version']);
                 update_option('presspermit_version', ['version' => PRESSPERMIT_VERSION, 'db_version' => PRESSPERMIT_DB_VERSION]);
