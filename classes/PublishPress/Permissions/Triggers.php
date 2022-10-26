@@ -194,6 +194,7 @@ class Triggers
             DB\GroupUpdate::deleteUserFromGroups($user_id);
         }
 
+        require_once(PRESSPERMIT_ABSPATH . '/library/api-legacy.php');
         ppc_delete_agent_permissions($user_ids, 'user');
     }
 
