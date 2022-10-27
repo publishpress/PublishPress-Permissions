@@ -89,13 +89,13 @@ class PermissionsUser extends \WP_User
                 )];
 
         foreach ($pp_groups->getGroupTypes([], 'names') as $agent_type) {
-            if (('pp_net_group' == $agent_type) && !$pp->getOption('netwide_groups')) {
+            if (('pp_net_group' == $agent_type) && !get_site_option('presspermit_netwide_groups')) {
                 continue;
             }
 
             $apply_groups = (isset($this->groups[$agent_type])) ? $this->groups[$agent_type] : [];
 
-            if (('pp_group' == $agent_type) && $pp->getOption('netwide_groups')) {
+            if (('pp_group' == $agent_type) && get_site_option('presspermit_netwide_groups')) {
                 foreach (array_keys($apply_groups) as $k) {
                     if (empty($apply_groups[$k]->metagroup_type)) {
                         unset($apply_groups[$k]);
