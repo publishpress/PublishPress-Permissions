@@ -240,6 +240,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 = 3.8.1 - 27 Oct 2022 =
 * Fixed : Pro support - network activation of plugin was not detected
+* Fixed : PHP error "undefined function PublishPress\Permissions\ppc_delete_agent_permissions()" at user deletion on some installations
 
 = 3.8 - 18 Oct 2022 =
 * Fixed : Category / Term Management restrictions did not exclude unmanagable terms from list
