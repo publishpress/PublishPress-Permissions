@@ -1096,6 +1096,9 @@ class AgentPermissionsUI
                                     }
 
                                     break;
+
+                                default:
+                                    $mirror_ops = apply_filters('presspermit_available_mirror_ops', [], $op, $for_type);
                             }
 
                             $mirror_ops = array_diff($mirror_ops, [$operation]);
