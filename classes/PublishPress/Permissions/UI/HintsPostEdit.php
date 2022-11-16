@@ -43,10 +43,10 @@ class HintsPostEdit
         if (!$pp->moduleActive('status-control') || !$pp->moduleActive('collaboration')) {
             $need_exts = [];
             if (!$pp->moduleActive('collaboration'))
-                $need_exts[] = 'Collaborative Publishing';
+                $need_exts[] = esc_html__('Collaborative Publishing', 'presspermit-pro');
 
             if (!$pp->moduleActive('status-control'))
-                $need_exts[] = 'Status Control';
+                $need_exts[] = esc_html__('Status Control', 'presspermit-pro');
 
             $need_exts = implode(' and ', $need_exts);
             ?>
