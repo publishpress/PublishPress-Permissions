@@ -311,6 +311,10 @@ class CollabHooks
             return $wp_sitecaps;
         }
 
+        if ($args[1] != $current_user->ID) {
+            return $wp_sitecaps;
+        }
+
         $post_id = PWP::getPostID();
 
         // Work around Divi Page Builder requiring edit_posts for other post types
@@ -435,7 +439,6 @@ class CollabHooks
             update_option('ppce_version', ['version' => PRESSPERMIT_COLLAB_VERSION, 'db_version' => 0]);
         }
         // --- end version check ---
-
 
         if (defined('XMLRPC_REQUEST')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/XmlRpc.php');

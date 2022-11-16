@@ -231,6 +231,12 @@ class AdminFilters
             || in_array('remove_users', $orig_reqd_caps, true) || in_array('promote_users', $orig_reqd_caps, true)
             ) && !empty($args[2])
         ) {
+            global $current_user;
+
+            if ($args[1] != $current_user->ID) {
+                return $wp_sitecaps;
+            }
+
             if ($editing_limitation = presspermit()->getOption('limit_user_edit_by_level')) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Users.php');
                 $wp_sitecaps = Users::hasEditUserCap($wp_sitecaps, $orig_reqd_caps, $args, $editing_limitation);
