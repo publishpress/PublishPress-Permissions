@@ -248,8 +248,11 @@ class AdminFilters
 
     function fltPageParent($parent_id, $args = [])
     {
-        if (!presspermit()->filteringEnabled() || ('revision' == PWP::findPostType()) || did_action('pp_disable_page_parent_filter') || ($this->inserting_post))
+        if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+        || !presspermit()->filteringEnabled() || ('revision' == PWP::findPostType()) || did_action('pp_disable_page_parent_filter') || ($this->inserting_post)
+        ) {
             return $parent_id;
+        }
 
         // Avoid preview failure with ACF active
         if (presspermit_is_REQUEST('wp-preview', 'dopreview') 
