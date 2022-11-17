@@ -49,6 +49,10 @@ class CapabilityFilters
             return $wp_sitecaps;
         }
 
+        if ($args[1] != $current_user->ID) {
+            return $wp_sitecaps;
+        }
+
         $orig_cap = (isset($args[0])) ? sanitize_key($args[0]) : '';
 
         if (isset($args[2])) {

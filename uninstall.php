@@ -24,7 +24,9 @@ if (get_option('presspermit_delete_settings_on_uninstall')) {
         $site_ids = (function_exists('get_sites')) ? get_sites(['fields' => 'ids']) : (array) $orig_site_id;
         
         foreach ($site_ids as $blog_id) {
-            switch_to_blog($blog_id);
+            if (is_multisite()) {
+            	switch_to_blog($blog_id);
+            }
 
             if (!empty($wpdb->options)) {
                 @$wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '%presspermit%'");
@@ -83,6 +85,8 @@ if (get_option('presspermit_delete_settings_on_uninstall')) {
             }
         }
 
-        switch_to_blog($orig_site_id);
+        if (is_multisite()) {
+        	switch_to_blog($orig_site_id);
+        }
     }
 }

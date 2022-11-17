@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PublishPress Permissions\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-06 19:15-0400\n"
+"POT-Creation-Date: 2022-11-07 17:16-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: PublishPress <help@publishpress.com>\n"
@@ -36,6 +36,53 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/Admin.php:120
 msgid "Reading"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Admin.php:185
+msgid "Access Circles"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Admin.php:186
+#: classes/PublishPress/Permissions/UI/HintsPostEdit.php:46
+#: modules/presspermit-collaboration/presspermit-collaboration.php:47
+msgid "Collaborative Publishing"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Admin.php:187
+msgid "Compatibility Pack"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Admin.php:188 includes/CoreAdmin.php:95
+#: includes/CoreAdmin.php:96
+msgid "Teaser"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Admin.php:189
+#: classes/PublishPress/Permissions/UI/HintsPostEdit.php:49
+msgid "Status Control"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Admin.php:190
+msgid "File Access"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Admin.php:191
+#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:25
+#: modules/presspermit-import/presspermit-import.php:48
+msgid "Import"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Admin.php:192
+msgid "Membership"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Admin.php:193 includes/CoreAdmin.php:86
+#: includes/CoreAdmin.php:87
+msgid "Sync Posts"
+msgstr ""
+
+#: classes/PublishPress/Permissions/Admin.php:194
+msgid "Role Scoper Migration Advisor"
 msgstr ""
 
 #: classes/PublishPress/Permissions/Admin.php:261
@@ -986,23 +1033,23 @@ msgstr ""
 msgid "Please upgrade PublishPress Authors to version 3.8.0 or later for Permissions integration."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:74
+#: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:76
 #: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:312
 #: classes/PublishPress/Permissions/UI/Settings.php:84
 msgid "Permissions Settings"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:96
+#: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:98
 #, php-format
 msgid "Permissions: Select this %s as Parent"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:100
+#: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:102
 #, php-format
 msgid "Permissions: %s this %s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:148
+#: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:150
 #: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:336
 #, php-format
 msgid "enable custom permissions for %s"
@@ -1817,17 +1864,9 @@ msgstr ""
 msgid "Visibility Statuses"
 msgstr ""
 
-#: includes/CoreAdmin.php:86 includes/CoreAdmin.php:87
-msgid "Sync Posts"
-msgstr ""
-
-#: includes/CoreAdmin.php:95 includes/CoreAdmin.php:96
-msgid "Teaser"
-msgstr ""
-
 #: includes/CoreAdmin.php:116 includes/CoreAdmin.php:117
+#: includes/promo/posts-teaser-promo.php:23
 #: includes/promo/statuses-promo.php:23 includes/promo/sync-promo.php:23
-#: includes/promo/teaser-promo.php:23
 #: includes/promo/visibility-statuses-promo.php:23
 msgid "Upgrade to Pro"
 msgstr ""
@@ -1910,6 +1949,14 @@ msgstr ""
 msgid "PHP Version: %s"
 msgstr ""
 
+#: includes/promo/posts-teaser-promo.php:5
+msgid "Posts Teaser"
+msgstr ""
+
+#: includes/promo/posts-teaser-promo.php:19
+msgid "Show a teaser message or login prompt for protected content. Available in PublishPress Permissions Pro."
+msgstr ""
+
 #: includes/promo/statuses-promo.php:5
 msgid "Post Statuses for Editorial Workflow"
 msgstr ""
@@ -1924,14 +1971,6 @@ msgstr ""
 
 #: includes/promo/sync-promo.php:19
 msgid "Automatically generate a personal page for each user. This feature is available in PublishPress Permissions Pro."
-msgstr ""
-
-#: includes/promo/teaser-promo.php:5
-msgid "Posts Teaser"
-msgstr ""
-
-#: includes/promo/teaser-promo.php:19
-msgid "Show a teaser message or login prompt for protected content. Available in PublishPress Permissions Pro."
 msgstr ""
 
 #: includes/promo/visibility-statuses-promo.php:5
@@ -2529,10 +2568,6 @@ msgstr ""
 msgid "Revisor"
 msgstr ""
 
-#: modules/presspermit-collaboration/presspermit-collaboration.php:47
-msgid "Collaborative Publishing"
-msgstr ""
-
 #: modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:25
 msgid "Sites"
 msgstr ""
@@ -2556,11 +2591,6 @@ msgstr ""
 #: modules/presspermit-import/classes/Permissions/Import/Importer.php:38
 #: modules/presspermit-import/classes/Permissions/Import/Importer.php:48
 msgid "You are not allowed to manage Permissions settings"
-msgstr ""
-
-#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:25
-#: modules/presspermit-import/presspermit-import.php:48
-msgid "Import"
 msgstr ""
 
 #: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:45
@@ -2608,57 +2638,4 @@ msgstr ""
 
 #: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:181
 msgid "All imported groups, roles, permissions and options will be deleted. Are you sure?"
-msgstr ""
-
-#: vendor/publishpress/publishpress-instance-protection/core/InstanceChecker.php:212
-msgid "This plugin is outdated. You already have a more recent version installed. Please remove this version."
-msgstr ""
-
-#: vendor/publishpress/publishpress-instance-protection/core/InstanceChecker.php:243
-#, php-format
-msgid "This plugin is not installed in the standard folder. The current path is %s but it is expected to be %s."
-msgstr ""
-
-#: vendor/publishpress/publishpress-instance-protection/core/InstanceChecker.php:269
-#, php-format
-msgid "You have activated multiple instances of %s. Please keep only one activated and remove the others."
-msgstr ""
-
-#: vendor/publishpress/publishpress-instance-protection/core/InstanceChecker.php:289
-#, php-format
-msgid "Please deactivate %s when %s is activated."
-msgstr ""
-
-#: vendor/publishpress/wordpress-reviews/ReviewsController.php:332
-#, php-format
-msgid "Hey, you've been using %1$s for %2$s on your site. We hope the plugin has been useful. Please could you quickly leave a 5-star rating on WordPress.org? It really does help to keep %1$s growing."
-msgstr ""
-
-#: vendor/publishpress/wordpress-reviews/ReviewsController.php:342
-msgid "1 week"
-msgstr ""
-
-#: vendor/publishpress/wordpress-reviews/ReviewsController.php:350
-msgid "1 month"
-msgstr ""
-
-#: vendor/publishpress/wordpress-reviews/ReviewsController.php:361
-msgid "3 months"
-msgstr ""
-
-#: vendor/publishpress/wordpress-reviews/ReviewsController.php:615
-#, php-format
-msgid "Click here to add your rating for %s"
-msgstr ""
-
-#: vendor/publishpress/wordpress-reviews/ReviewsController.php:621
-msgid "Maybe later"
-msgstr ""
-
-#: vendor/publishpress/wordpress-reviews/ReviewsController.php:626
-msgid "I already did"
-msgstr ""
-
-#: vendor/publishpress/wordpress-version-notices/src/Module/MenuLink/Module.php:129
-msgid "Amazing! We are redirecting you to our site..."
 msgstr ""

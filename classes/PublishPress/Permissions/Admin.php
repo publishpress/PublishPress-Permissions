@@ -182,16 +182,16 @@ class Admin
     public function getModuleInfo($args=[])
     {
         $title = [
-            'circles' =>        'Access Circles',
-            'collaboration' =>  'Collaborative Publishing',
-            'compatibility' =>  'Compatibility Pack',
-            'teaser' =>         'Teaser',
-            'status-control' => 'Status Control',
-            'file-access' =>    'File Access',
-            'import' =>         'Import',
-            'membership' =>     'Membership',
-            'sync' =>           'Sync Posts',
-            'role-scoper-migration-advisor' => 'Role Scoper Migration Advisor',
+            'circles' =>        esc_html__('Access Circles', 'presspermit-pro'),
+            'collaboration' =>  esc_html__('Collaborative Publishing', 'presspermit-pro'),
+            'compatibility' =>  esc_html__('Compatibility Pack', 'presspermit-pro'),
+            'teaser' =>         esc_html__('Teaser', 'presspermit-pro'),
+            'status-control' => esc_html__('Status Control', 'presspermit-pro'),
+            'file-access' =>    esc_html__('File Access', 'presspermit-pro'),
+            'import' =>         esc_html__('Import', 'presspermit-pro'),
+            'membership' =>     esc_html__('Membership', 'presspermit-pro'),
+            'sync' =>           esc_html__('Sync Posts', 'presspermit-pro'),
+            'role-scoper-migration-advisor' => esc_html__('Role Scoper Migration Advisor', 'presspermit-pro'),
         ];
         
         $blurb = [
