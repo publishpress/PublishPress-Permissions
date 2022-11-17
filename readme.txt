@@ -238,9 +238,10 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.8.2 - 16 Nov 2022 =
+= 3.8.2 - 17 Nov 2022 =
 * Fixed : Post preview did not display unsaved changes
 * Fixed : WP 6.0 - Advanced option to "Delete settings on plugin deletion" prevented successful plugin deletion
+* Fixed : PHP error "undefined function PublishPress\Permissions\ppc_delete_agent_permissions()" at user deletion on some installations
 * Fixed : PHP error "undefined function PublishPress\Permissions\ppc_delete_agent_permissions()" at user deletion on some installations
 * Compat : Nested Pages - Subpages not listed if Permissions configured to make root level page uneditable
 * Compat : Elementor - Work around Elementor requiring edit_posts capability no matter what type of post is being edited
