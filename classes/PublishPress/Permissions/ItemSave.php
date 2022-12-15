@@ -178,7 +178,7 @@ class ItemSave
         }
 
         // Inherit exceptions from new parent post/term, but only for new items or if parent is changed
-        if ((intval($set_parent) != intval($last_parent)) || $is_new_term) {
+        if ((intval($set_parent) != intval($last_parent)) || $is_new_term || $is_new) {
 
             // retain all explicitly selected exceptions
             global $wpdb;
