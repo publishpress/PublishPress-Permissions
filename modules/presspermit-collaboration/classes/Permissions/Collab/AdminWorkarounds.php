@@ -178,7 +178,7 @@ class AdminWorkarounds
             $menu_id = presspermit_REQUEST_int('menu');
 
             if (!$pp->isUserUnfiltered() 
-            && empty($current_user->allcaps['edit_theme_options']) && empty($current_user->allcaps['edit_menus'])) 
+            && empty($current_user->allcaps['edit_theme_options']) && empty($current_user->allcaps['edit_menus']) && empty(presspermit()->getUser()->site_roles['pp_nav_menu_manager'])) 
             {
                 if ($menu = get_term($menu_id, 'nav_menu')) {
                     $_REQUEST['menu-name'] = $menu->name;
