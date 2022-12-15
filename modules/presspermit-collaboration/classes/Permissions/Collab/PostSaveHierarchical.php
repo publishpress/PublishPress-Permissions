@@ -201,6 +201,17 @@ class PostSaveHierarchical
             } else {
                 $parent_id = 0;
             }
+
+            require_once(PRESSPERMIT_CLASSPATH . '/PostSave.php');
+
+            if ($parent_id) {
+                $is_new = true;
+                require_once(PRESSPERMIT_CLASSPATH . '/ItemSave.php');
+                $via_item_source = 'post';
+                $set_parent = $parent_id;
+                $_args = compact('via_item_source', 'set_parent', 'is_new');
+                \PublishPress\Permissions\ItemSave::inheritParentExceptions($post_id, $_args);
+            }
         }
 
         $_POST['parent_id'] = $parent_id; // for subsequent post_status filter

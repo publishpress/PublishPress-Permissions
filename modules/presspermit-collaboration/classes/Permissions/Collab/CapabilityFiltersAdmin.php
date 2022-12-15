@@ -418,6 +418,23 @@ class CapabilityFiltersAdmin
         if (!current_user_can('edit_post', $post_id)) {
             if ($type_obj = get_post_type_object(get_post_field('post_type', $post_id))) {
                 if (presspermit_is_POST('save') || presspermit_is_POST('publish')) {
+                
+                    require_once(PRESSPERMIT_CLASSPATH . '/PostSave.php');
+
+                    if ($is_new = \PublishPress\Permissions\PostSave::isNewPost($post_id)) {
+                        if ($post = get_post($post_id)) {
+                            require_once(PRESSPERMIT_CLASSPATH . '/ItemSave.php');
+                            
+                            $via_item_source = 'post';
+                            $set_parent = $post->post_parent;
+                            $_args = compact('via_item_source', 'set_parent', 'is_new');
+
+                            \PublishPress\Permissions\ItemSave::inheritParentExceptions($post_id, $_args);
+
+                            return $location;
+                        }
+                    }
+                  
                     wp_die(
                         '<p>' 
                         . sprintf(
