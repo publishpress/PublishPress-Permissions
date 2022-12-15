@@ -123,7 +123,12 @@ class PageFilters
         }
 
         foreach(['include', 'exclude', 'exclude_parent', 'exclude_tree', 'authors'] as $var) {
-            $r[$var] = wp_parse_id_list($r[$var]);
+            // PressPermit: need to maintain explicitly set array value of zero ("Only these: (none))", but ignore scalar zero passed by third party code
+			if (('include' == $var) && is_scalar($r['include']) && empty($r['include'])) {
+				$r['include'] = [];
+			} else {
+            	$r[$var] = wp_parse_id_list($r[$var]);
+        	}
         }
 
         if ($_filtered_vars = apply_filters('presspermit_get_pages_args', $r)) {  // PPCE filter modifies append_page, exclude_tree, sort_column
@@ -212,34 +217,46 @@ class PageFilters
             $hierarchical = false;
             $incpages = wp_parse_id_list($include);
             if (!empty($incpages)) {
-                foreach ($incpages as $incpage) {  // todo: change to IN clause after confirming no issues with PP query parsing
-                    if ($incpage) {
-                        if (empty($inclusions))
-                            $inclusions = ' AND ( ID = ' . intval($incpage) . ' ';
-                        else
-                            $inclusions .= ' OR ID = ' . intval($incpage) . ' ';
+                if (defined('PRESSPERMIT_GET_PAGES_DISABLE_IN_CLAUSE') && PRESSPERMIT_GET_PAGES_DISABLE_IN_CLAUSE) {
+	                foreach ($incpages as $incpage) {  // todo: change to IN clause after confirming no issues with PP query parsing
+	                    if ($incpage) {
+	                        if (empty($inclusions))
+	                            $inclusions = ' AND ( ID = ' . intval($incpage) . ' ';
+	                        else
+	                            $inclusions .= ' OR ID = ' . intval($incpage) . ' ';
+	                    }
+	                }
+
+                    if (!empty($inclusions)) {
+                        $inclusions .= ')';
                     }
-                }
-            }
-        }
-        if (!empty($inclusions)) {
-            $inclusions .= ')';
+                } else {
+                    $incpages = array_map('intval', $incpages);
+                    $inclusions = ' AND ID IN (' . implode(",", $incpages) . ')';
+            	}
+        	}
         }
 
         $exclusions = '';
         if (!empty($exclude)) {
             $expages = wp_parse_id_list($exclude);
             if (!empty($expages)) {
-                foreach ($expages as $expage) { // todo: change to IN clause after confirming no issues with PP query parsing
-                    if (empty($exclusions))
-                        $exclusions = ' AND ( ID <> ' . intval($expage) . ' ';
-                    else
-                        $exclusions .= ' AND ID <> ' . intval($expage) . ' ';
-                }
-            }
-        }
-        if (!empty($exclusions)) {
-            $exclusions .= ')';
+                if (defined('PRESSPERMIT_GET_PAGES_DISABLE_IN_CLAUSE') && PRESSPERMIT_GET_PAGES_DISABLE_IN_CLAUSE) {
+	                foreach ($expages as $expage) { // todo: change to IN clause after confirming no issues with PP query parsing
+	                    if (empty($exclusions))
+	                        $exclusions = ' AND ( ID <> ' . intval($expage) . ' ';
+	                    else
+	                        $exclusions .= ' AND ID <> ' . intval($expage) . ' ';
+	                }
+
+                    if (!empty($exclusions)) {
+                        $exclusions .= ')';
+                    }
+                } else {
+                    $expages = array_map('intval', $expages);
+                    $exclusions = ' AND ID NOT IN (' . implode(",", $expages) . ')';
+            	}
+        	}
         }
 
         $author_query = '';

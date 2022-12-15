@@ -16,6 +16,7 @@ namespace PublishPress\Permissions;
 class Triggers
 {
     private $users_to_sync = [];
+    private $revision_publication = false;
 
     public function __construct()
     {
@@ -24,6 +25,8 @@ class Triggers
         // =============== Post Maintenance =================
         add_action('save_post', [$this, 'actSavePost'], 10, 2);
         add_action('delete_post', [$this, 'actDeletePost']);
+
+        add_filter('revisionary_apply_revision_data', [$this, 'fltLogRevisionPublication'], 10, 3);
 
         add_action('edit_attachment', [$this, 'actEditAttachment']);
 
@@ -129,14 +132,23 @@ class Triggers
         PostSave::actSaveItem('post', $post_id, false);
     }
 
+    public function fltLogRevisionPublication($val, $arg1, $arg2) {
+        $this->revision_publication = true;
+        return $val;
+    }
+
     public function actSavePost($post_id, $post)
     {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-            return;
+            if (defined('PRESSPERMIT_AUTOSAVE_BYPASS_SAVE_FILTERS')) {
+            	return;
+        	}
         }
 
         if (!empty(presspermit()->flags['ignore_save_post'])) {
-            return;
+            if (defined('PRESSPERMIT_SAVE_POST_ALLOW_BYPASS') || !empty($this->revision_publication)) {
+            	return;
+            }
         }
 
         require_once(PRESSPERMIT_CLASSPATH . '/PostSave.php');

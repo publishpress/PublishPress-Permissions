@@ -95,7 +95,7 @@ class PermissionsUser extends \WP_User
 
             $apply_groups = (isset($this->groups[$agent_type])) ? $this->groups[$agent_type] : [];
 
-            if (('pp_group' == $agent_type) && get_site_option('presspermit_netwide_groups')) {
+            if (('pp_group' == $agent_type) && is_multisite() && get_site_option('presspermit_netwide_groups')) {
                 foreach (array_keys($apply_groups) as $k) {
                     if (empty($apply_groups[$k]->metagroup_type)) {
                         unset($apply_groups[$k]);
