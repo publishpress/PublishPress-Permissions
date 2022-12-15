@@ -192,8 +192,10 @@ class AdminFilters
 
         if (!empty($matches[1])) {
             $taxonomy = $matches[1];
-            if ($tx_obj = get_taxonomy($taxonomy))
+
+            if ($tx_obj = get_taxonomy($taxonomy)) {
                 $role_title = sprintf(esc_html__('%s Manager', 'press-permit-core'), $tx_obj->labels->singular_name);
+            }
         }
 
         return $role_title;
