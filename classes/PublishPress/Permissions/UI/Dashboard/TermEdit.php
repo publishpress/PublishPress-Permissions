@@ -256,17 +256,18 @@ class TermEdit
         ) {
             return;
         }
-        ?>
-        <div class="edit-tag-actions">
-            <input class="button button-primary" value="<?php esc_attr_e('Update', 'press-permit-core'); ?>" type="submit">
-        </div>
-        <?php
 
-        if ($post_type) {
-            echo '<br />';
-            self::universalExceptionsNote($tag, $taxonomy, $post_type);
-        }
-        ?>
+        if ((current_user_can('pp_administer_content') || defined('PRESSPERMIT_EDIT_TERM_EXTRA_BUTTON')) && !defined('PRESSPERMIT_EDIT_TERM_SUPPRESS_EXTRA_BUTTON')) :?>
+	        <div class="edit-tag-actions">
+	            <input class="button button-primary" value="<?php esc_attr_e('Update', 'press-permit-core'); ?>" type="submit">
+	        </div>
+	        <?php
+	
+	        if ($post_type) {
+	            echo '<br />';
+	            self::universalExceptionsNote($tag, $taxonomy, $post_type);
+	        }
+        endif; ?>
         <div id="poststuff" class="metabox-holder">
             <div id="post-body">
                 <div id="post-body-content">
