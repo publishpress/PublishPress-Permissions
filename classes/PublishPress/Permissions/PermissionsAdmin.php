@@ -104,7 +104,9 @@ class PermissionsAdmin
                 if ($type_obj = $pp->getTypeObject($arr_name[1], $arr_name[2])) {
                     $type_caption = $type_obj->labels->singular_name;
                 } else {
-                    return ($slug_fallback) ? $role_name : '';
+                    $role_name = ($slug_fallback) ? $role_name : '';
+                    echo ($echo) ? $role_name : '';
+                    return $role_name;
                 }
 
                 $cond_caption = '';
@@ -139,7 +141,7 @@ class PermissionsAdmin
                             echo '</span>';
                         }
                     } else {
-                        return trim(
+                        $role_name = trim(
                             sprintf(
                                 esc_html__('%1$s&nbsp;%2$s&nbsp;%3$s-&nbsp;%4$s%5$s%6$s', 'press-permit-core'),
                                 esc_html($type_caption),
@@ -169,7 +171,7 @@ class PermissionsAdmin
                             echo '</span>';
                         }
                     } else {
-                        return trim(
+                        $role_name = trim(
                             sprintf(
                                 esc_html__('%1$s&nbsp;%2$s&nbsp;%3$s', 'press-permit-core'),
                                 esc_html($type_caption),
@@ -181,9 +183,12 @@ class PermissionsAdmin
                 }
             }
         } elseif (isset($wp_roles->role_names[$role_name])) {
-            return $wp_roles->role_names[$role_name];
+            $role_name = $wp_roles->role_names[$role_name];
         } else {
-            return apply_filters('presspermit_role_title', $role_name, $args);
+            $role_name = apply_filters('presspermit_role_title', $role_name, $args);
         }
+
+        echo ($echo) ? $role_name : '';
+        return $role_name;
     }
 }
