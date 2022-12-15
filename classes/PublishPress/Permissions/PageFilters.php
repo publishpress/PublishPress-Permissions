@@ -212,34 +212,46 @@ class PageFilters
             $hierarchical = false;
             $incpages = wp_parse_id_list($include);
             if (!empty($incpages)) {
-                foreach ($incpages as $incpage) {  // todo: change to IN clause after confirming no issues with PP query parsing
-                    if ($incpage) {
-                        if (empty($inclusions))
-                            $inclusions = ' AND ( ID = ' . intval($incpage) . ' ';
-                        else
-                            $inclusions .= ' OR ID = ' . intval($incpage) . ' ';
+                if (defined('PRESSPERMIT_GET_PAGES_DISABLE_IN_CLAUSE') && PRESSPERMIT_GET_PAGES_DISABLE_IN_CLAUSE) {
+	                foreach ($incpages as $incpage) {  // todo: change to IN clause after confirming no issues with PP query parsing
+	                    if ($incpage) {
+	                        if (empty($inclusions))
+	                            $inclusions = ' AND ( ID = ' . intval($incpage) . ' ';
+	                        else
+	                            $inclusions .= ' OR ID = ' . intval($incpage) . ' ';
+	                    }
+	                }
+
+                    if (!empty($inclusions)) {
+                        $inclusions .= ')';
                     }
-                }
-            }
-        }
-        if (!empty($inclusions)) {
-            $inclusions .= ')';
+                } else {
+                    $incpages = array_map('intval', $incpages);
+                    $inclusions = ' AND ID IN (' . implode(",", $incpages) . ')';
+            	}
+        	}
         }
 
         $exclusions = '';
         if (!empty($exclude)) {
             $expages = wp_parse_id_list($exclude);
             if (!empty($expages)) {
-                foreach ($expages as $expage) { // todo: change to IN clause after confirming no issues with PP query parsing
-                    if (empty($exclusions))
-                        $exclusions = ' AND ( ID <> ' . intval($expage) . ' ';
-                    else
-                        $exclusions .= ' AND ID <> ' . intval($expage) . ' ';
-                }
-            }
-        }
-        if (!empty($exclusions)) {
-            $exclusions .= ')';
+                if (defined('PRESSPERMIT_GET_PAGES_DISABLE_IN_CLAUSE') && PRESSPERMIT_GET_PAGES_DISABLE_IN_CLAUSE) {
+	                foreach ($expages as $expage) { // todo: change to IN clause after confirming no issues with PP query parsing
+	                    if (empty($exclusions))
+	                        $exclusions = ' AND ( ID <> ' . intval($expage) . ' ';
+	                    else
+	                        $exclusions .= ' AND ID <> ' . intval($expage) . ' ';
+	                }
+
+                    if (!empty($exclusions)) {
+                        $exclusions .= ')';
+                    }
+                } else {
+                    $expages = array_map('intval', $expages);
+                    $exclusions = ' AND ID NOT IN (' . implode(",", $expages) . ')';
+            	}
+        	}
         }
 
         $author_query = '';
