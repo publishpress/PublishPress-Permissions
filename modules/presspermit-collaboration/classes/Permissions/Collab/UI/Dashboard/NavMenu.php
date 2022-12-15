@@ -250,8 +250,9 @@ class NavMenu
     {
         global $current_user;
 
-        if (!empty($current_user->allcaps['edit_theme_options']))
+        if (!empty($current_user->allcaps['edit_theme_options']) || current_user_can('manage_nav_menus') || !empty(presspermit()->getUser()->site_roles['pp_nav_menu_manager'])) {
             return;
+        }
 
         if (empty($current_user->allcaps['edit_menus'])) :
             if ($menu_id = NavMenus::determine_selected_menu()) {
