@@ -123,7 +123,12 @@ class PageFilters
         }
 
         foreach(['include', 'exclude', 'exclude_parent', 'exclude_tree', 'authors'] as $var) {
-            $r[$var] = wp_parse_id_list($r[$var]);
+            // PressPermit: need to maintain explicitly set array value of zero ("Only these: (none))", but ignore scalar zero passed by third party code
+			if (('include' == $var) && is_scalar($r['include']) && empty($r['include'])) {
+				$r['include'] = [];
+			} else {
+            	$r[$var] = wp_parse_id_list($r[$var]);
+        	}
         }
 
         if ($_filtered_vars = apply_filters('presspermit_get_pages_args', $r)) {  // PPCE filter modifies append_page, exclude_tree, sort_column
