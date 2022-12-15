@@ -223,9 +223,6 @@ class GroupUpdate
         $wpdb->delete($members_table, compact('group_id'));
 
         do_action('presspermit_deleted_group', $group_id, $agent_type);
-        if (PRESSPERMIT_LEGACY_HOOKS) {
-            do_action('presspermit_deleted_group', $group_id, $agent_type);
-        }
 
         return true;
     }
