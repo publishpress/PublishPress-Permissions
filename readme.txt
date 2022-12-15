@@ -244,7 +244,6 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Fixed : get_pages() call with large include or exclude array caused excessively large query
 * Fixed : Classic Editor - limited authors may be locked out of editing new page if access depends on inheriting specific permissions from a required parent page
 * Fixed : Edit Category / Tag - Extra update button, not needed for non-Administrators, who don't have multiple Specific Permission metaboxes
-* Compat : WPML - Tags, Menus cannot be edited under some configurations
 
 = 3.8.2 - 17 Nov 2022 =
 * Fixed : Post preview did not display unsaved changes
