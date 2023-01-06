@@ -492,7 +492,7 @@ class SettingsTabAdvanced
     add_filter( 'presspermit_options', 'my_presspermit_options', 99 );
 
     // Use this filter if you also want to hide an option from the PP settings screen (works for most options)
-    add_filter( 'presspermit_hide_options', 'my_pp_options', 99 );
+    add_filter( 'presspermit_hide_options', 'my_presspermit_options', 99 );
 
     public function my_presspermit_options( $options ) {
         // Array key corresponds to pp_prefixed name attributes of checkboxes, dropdowns and input boxes. 
