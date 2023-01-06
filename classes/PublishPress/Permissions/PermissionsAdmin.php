@@ -140,6 +140,8 @@ class PermissionsAdmin
                             );
                             echo '</span>';
                         }
+
+                        $echo_done = true;
                     } else {
                         $role_name = trim(
                             sprintf(
@@ -170,6 +172,8 @@ class PermissionsAdmin
                             ); 
                             echo '</span>';
                         }
+
+                        $echo_done = true;
                     } else {
                         $role_name = trim(
                             sprintf(
@@ -188,7 +192,7 @@ class PermissionsAdmin
             $role_name = apply_filters('presspermit_role_title', $role_name, $args);
         }
 
-        echo ($echo) ? $role_name : '';
+        echo ($echo && empty($echo_done)) ? $role_name : '';
         return $role_name;
     }
 }
