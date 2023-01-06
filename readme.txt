@@ -238,6 +238,11 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.8.5 - 19 Dec 2022 =
+* Fixed : PHP Warning in login popup after current login times out
+* Fixed : Nav Menu Management: Menu update by a limited user cause all uneditable menu items to be removed 
+* Compat : PublishPress Permissions - Permissions limiting revision creation to only specific posts also blocked reading access to other posts
+
 = 3.8.4 - 15 Dec 2022 =
 * Fixed : Nav Menu Manager role had no label on Edit Permissions screen after storage
 * Fixed : Nav Menu Manager role did not allow menu creation
