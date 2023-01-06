@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 6.1
 Requires PHP: 5.6.20
-Stable tag: 3.8.4
+Stable tag: 3.8.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -238,7 +238,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.8.5 - 19 Dec 2022 =
+= 3.8.5 - 9 Jan 2023 =
 * Fixed : PHP Warning in login popup after current login times out
 * Fixed : Nav Menu Management: Menu update by a limited user cause all uneditable menu items to be removed 
 * Compat : PublishPress Permissions - Permissions limiting revision creation to only specific posts also blocked reading access to other posts
