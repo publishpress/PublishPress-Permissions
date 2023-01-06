@@ -198,6 +198,10 @@ class Admin
             $$var = $args[$var];
         }
 
+        if ('read' == $required_operation) {
+			return $where;
+		}
+
         $user = presspermit()->getUser();
 
         $excluded_ttids_published = [];
