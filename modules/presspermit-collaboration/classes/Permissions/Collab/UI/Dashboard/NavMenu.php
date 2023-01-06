@@ -15,6 +15,8 @@ require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');
  */
 class NavMenu
 {
+    var $menu_edit_checked = [];
+
     function __construct()
     {
         add_filter('presspermit_posts_where_limit_statuses', [$this, 'posts_where_limit_statuses'], 10, 2);
@@ -27,6 +29,7 @@ class NavMenu
         add_filter('get_user_option_nav_menu_recently_edited', [$this, 'fltNavMenuRecent']);
 
         if (!presspermit_empty_POST()) {
+            add_filter('update_post_metadata', [$this, 'flt_police_menu_item_data_edit'], 10, 5);
             add_action('pre_post_update', [$this, 'act_police_menu_item_edit']);
             add_action('presspermit_delete_object', [$this, 'act_police_menu_item_deletion'], 10, 3);
             add_filter('wp_insert_post_parent', [$this, 'flt_police_menu_item_parent'], 10, 4);
@@ -94,8 +97,21 @@ class NavMenu
         }
     }
 
+    function flt_police_menu_item_data_edit($retval, $object_id, $meta_key, $meta_value, $prev_value) {
+        if ('_menu_item_type' == $meta_key) { // This is the first postmeta record updated by wp_update_nav_menu_item()
+            $this->act_police_menu_item_edit($object_id);
+            $this->menu_edit_checked[$object_id] = true;
+        }
+
+        return $retval;
+    }
+
     function act_police_menu_item_edit($object_id)
     {
+        if (!empty($this->menu_edit_checked[$object_id])) {
+            return;
+        }
+
         // don't allow modification of menu items for posts which user can't edit  
         // (this is a pain because WP fires update for each menu item even if unmodified)
         NavMenus::modify_nav_menu_item($object_id, 'edit');
@@ -114,14 +130,15 @@ class NavMenu
 
     function act_disable_uneditable_items_ui()
     {
+        global $current_user;
+
         // Exposing uneditable items for labeling makes it necessary to block menu item re-ordering.  
         // Otherwise drag-drop functionality is confused by the mingling of editable and un-editable items.
-        if (presspermit()->getOption('admin_nav_menu_partial_editing') && !NavMenus::is_unrestricted()) : ?>
+        if (/*presspermit()->getOption('admin_nav_menu_partial_editing') && */ !NavMenus::is_unrestricted()) : ?>
             <style type="text/css">fieldset.field-move {
                     display: none !important;
                 }</style>
             <?php
-            return;
         endif;
 
         if (!$menu_id = NavMenus::determine_selected_menu())
@@ -131,21 +148,41 @@ class NavMenu
 
         $uneditable_items = [];
         foreach (array_keys($menu_items) as $key) {
-            if (!NavMenus::can_edit_menu_item($menu_items[$key]->ID))
+            if (!NavMenus::can_edit_menu_item($menu_items[$key]->ID, ['force_check' => true]))
                 $uneditable_items[] = $menu_items[$key]->ID;
         }
 
         if ($uneditable_items) :
+            $partial_editing = presspermit()->getOption('admin_nav_menu_partial_editing');
             ?>
             <style type="text/css">
                 <?php
                 $comma = '';
                 foreach( $uneditable_items as $id ) {
-                    echo "#delete-" . esc_attr($id) . ",#cancel-" . esc_attr($id);
+                    echo $comma . "#delete-" . esc_attr($id) . ",#cancel-" . esc_attr($id) . ",#menu-item-" . esc_attr($id) . " span.meta-sep";
+
+                    if (!$partial_editing) {
+                        echo ",#edit-" . esc_attr($id);
+                    }
+
                     $comma = ',';
                 }
 
                 echo '{display:none;}';
+
+                foreach( $uneditable_items as $id ) {
+                    echo "#menu-item-" . esc_attr($id) . " div.menu-item-bar div.menu-item-handle label.item-title span.menu-item-title {color: #ccc;}";
+
+                    if (!presspermit()->isContentAdministrator() && empty($current_user->allcaps['edit_theme_options']) && presspermit()->getOption('admin_nav_menu_lock_custom')) {
+                        if ('custom' == get_post_meta($id, '_menu_item_type', true)) {
+                            echo '#edit-menu-item-url-' . $id . ' {pointer-events: none;}';
+                        }
+                    }
+
+                    if (!$partial_editing) {
+                        echo '#menu-item-' . $id . ' {pointer-events: none;}';
+                    }
+                }
                 ?>
             </style>
         <?php endif;
@@ -229,7 +266,7 @@ class NavMenu
                 $comma = '';
                 if ( presspermit()->getOption( 'admin_nav_menu_partial_editing' ) ) {
                     foreach( $uneditable_items as $id ) {
-                        echo esc_attr($comma) . "#menu-item-" . esc_attr($id) . " a.item-delete,#menu-item-" . esc_attr($id) . " span.meta-sep,#menu-item-" . esc_attr($id);
+                        echo esc_attr($comma) . "#menu-item-" . esc_attr($id) . " a.item-delete,#menu-item-" . esc_attr($id) . " span.meta-sep";
                         $comma = ',';
                     }
                 } else {
@@ -240,6 +277,18 @@ class NavMenu
                 }
 
                 echo '{display:none;}';
+
+                $comma = ' ';
+                foreach( $uneditable_items as $id ) {
+                    if ('custom' == get_post_meta($id, '_menu_item_type', true)) {
+                        $any_custom_items = true;
+                        echo esc_attr($comma) . "#edit-menu-item-url-" . esc_attr($id);
+                    }
+                }
+
+                if (!empty($any_custom_items)) {
+                    echo '{pointer-events: none;}';
+                }
                 ?>
             </style>
         <?php endif;
