@@ -390,16 +390,21 @@ class SettingsAdmin
 
     private function hideNetworkOption($option_name)
     {
+                                                                        // Precautionary exception: don't change storage location for license key
+    	$is_main_site = (defined('PRESSPERMIT_LEGACY_MAIN_SITE_CHECK') || (('edd_key' == $option_name) && !defined('PRESSPERMIT_EDD_KEY_SITEMETA_STORAGE'))) ? (1 == get_current_blog_id()) : is_main_site();
+    	
         if (is_multisite()) {
             return (in_array($option_name, presspermit()->netwide_options, true) && PWP::isNetworkActivated()
-                && !is_network_admin() && (1 != get_current_blog_id()));
+                && !is_network_admin() && !$is_main_site);
         } else
             return false;
     }
 
     public function filterNetworkOptions()
     {
-        if (is_multisite() && !is_network_admin() && (1 != get_current_blog_id())) {
+    	$is_main_site = (defined('PRESSPERMIT_LEGACY_MAIN_SITE_CHECK')) ? (1 == get_current_blog_id()) : is_main_site();
+    	
+        if (is_multisite() && !is_network_admin() && !$is_main_site) {
             $pp = presspermit();
             $this->all_options = array_diff($this->all_options, $pp->netwide_options);
             $this->all_otype_options = array_diff($this->all_otype_options, $pp->netwide_options);
