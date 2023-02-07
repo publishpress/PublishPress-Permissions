@@ -326,8 +326,9 @@ class AgentPermissionsUI
         add_action('admin_print_footer_scripts', [__CLASS__, 'actScriptHideTermSelectPaging']);
 
         foreach ($type_objects as $type_obj) {
-            if (defined('PP_' . strtoupper($type_obj->name) . '_NO_EXCEPTIONS'))
+            if (defined('PP_' . strtoupper($type_obj->name) . '_NO_EXCEPTIONS') || defined('PP_NO' . strtoupper($type_obj->name) . '_EXCEPTIONS')) {
                 continue;
+            }
 
             $type_obj = apply_filters('presspermit_permit_items_meta_box_object', $type_obj);
 
