@@ -291,7 +291,7 @@ class AgentEdit
                 $group->group_name = sanitize_text_field(presspermit_REQUEST_var('group_name'));
             }
 
-            if (presspermit_is_REQUEST('description')) {
+            if (presspermit_is_REQUEST('description') && (!presspermit_is_REQUEST('action') || 'pp_updateexceptions' != presspermit_REQUEST_var('action'))) {
                 $group->group_description = sanitize_text_field(presspermit_REQUEST_var('description'));
             }
 
