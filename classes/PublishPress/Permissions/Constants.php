@@ -28,7 +28,7 @@ $consts = [
     'PP_NO_ADDITIONAL_ACCESS' => esc_html__("Specific Permissions: additions ('Enabled') are not applied, cannot be assigned", 'press-permit-core'),
     'PP_POST_NO_EXCEPTIONS' => esc_html__("Don't assign or apply specific permissions for the 'post' type", 'press-permit-core'),
     'PP_PAGE_NO_EXCEPTIONS' => esc_html__("Don't assign or apply specific permissions for the 'page' type", 'press-permit-core'),
-    'PP_MEDIA_NO_EXCEPTIONS' => esc_html__("Don't assign or apply specific permissions for the 'media' type", 'press-permit-core'),
+    'PP_ATTACHMENT_NO_EXCEPTIONS' => esc_html__("Don't assign or apply specific permissions for the 'media' type", 'press-permit-core'),
     'PP_MY_CUSTOM_TYPE_NO_EXCEPTIONS' => esc_html__("Don't assign or apply specific permissions for the specified custom post type", 'press-permit-core'),
 ];
 foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 'type' => $type];
