@@ -52,6 +52,13 @@ class PostEdit
             ) {
                 $clauses['where'] .= $restriction_where;
             }
+
+            // If all included parent IDs are descendants (or the page itself), avoid treating it as unrestricted
+            if ($include_ids = $user->getExceptionPosts('associate', 'include', $post_type)) {
+                if (!array_diff($include_ids, $descendants)) {
+                    $clauses['where'] .= " AND 1=2";
+                }
+            }
         }
 
         if ($additional_ids = presspermit()->getUser()->getExceptionPosts('associate', 'additional', $post_type)) {
