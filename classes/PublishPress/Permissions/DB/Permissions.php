@@ -601,7 +601,7 @@ class Permissions
     {
         global $wpdb;
 
-        $defaults = ['merge_additions' => false, 'exempt_post_types' => [], 'mod_types' => ['include', 'exclude'], 'additional_ttids' => [], 'apply_object_additions' => false, 'join' => ''];
+        $defaults = ['merge_additions' => false, 'exempt_post_types' => [], 'mod_types' => ['exclude', 'include'], 'additional_ttids' => [], 'apply_object_additions' => false, 'join' => ''];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -670,6 +670,10 @@ class Permissions
             foreach ($mod_types as $mod) {
                 if ($tt_ids = $user->getExceptionTerms($required_operation, $mod, $post_type, $taxonomy, array_merge($args, ['merge_universals' => true]))) {
                     if ('include' == $mod) {
+                        if (!empty($excluded_ttids) && defined('PP_RESTRICTION_PRIORITY')) {
+                            $tt_ids = array_diff($tt_ids, $excluded_ttids);
+                        }
+                        
                         if ($tx_additional_ids) {
                             $tt_ids = array_merge($tt_ids, $tx_additional_ids);
                         }
