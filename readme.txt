@@ -238,10 +238,14 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.8.5 - 9 Jan 2023 =
-* Fixed : PHP Warning in login popup after current login times out
+= 3.8.5 - 8 Feb 2023 =
+* Fixed : Permission Group description was cleared when a new Permission is saved
+* Fixed : If Permissions were set to limit Page Parent selection to a single page and its descendants, when that page itself was edited, all pages were displayed in Page Parent selector (though they could not be saved)
 * Fixed : Nav Menu Management: Menu update by a limited user cause all uneditable menu items to be removed 
-* Compat : PublishPress Permissions - Permissions limiting revision creation to only specific posts also blocked reading access to other posts
+* Fixed : Nav Menu management by limited user based on Permissions for a specific menu - On menu update, all uneditable items were removed 
+* Fixed : PHP Warning in login popup after current login times out
+* Fixed : If constant PP_RESTRICTION_PRIORITY is set, "Limit to" Category permissions (the unblocked list) were still overriding "Exclude" Category permissions
+* Compat : PublishPress Revisions - Permissions limiting revision creation to only specific posts also blocked reading access to other posts
 
 = 3.8.4 - 15 Dec 2022 =
 * Fixed : Nav Menu Manager role had no label on Edit Permissions screen after storage
