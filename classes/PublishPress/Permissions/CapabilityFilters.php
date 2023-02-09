@@ -423,7 +423,8 @@ class CapabilityFilters
             'post_type' => $post_type,
             'post_id' => $post_id,
             'user_id' => (int) $args[1],
-            'required_operation' => $pp_args['required_operation']
+            'required_operation' => $pp_args['required_operation'],
+            'orig_reqd_caps' => $orig_reqd_caps
         ];
 
         if ($_vars = apply_filters_ref_array('presspermit_has_post_cap_vars', [$null_vars, $wp_sitecaps, $pp_reqd_caps, $post_cap_args])) {

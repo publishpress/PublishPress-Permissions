@@ -130,8 +130,10 @@ class NavMenus
 
         $pp = presspermit();
 
+        if (empty($args['force_check'])) {
         // This option enables uneditable menu items to be re-named.  Limitations are applied elsewhere to prevent other editing.
-        if ($pp->getOption('admin_nav_menu_partial_editing')) return true;
+            return true;
+        }
 
         if (!$object_type)
             $object_type = get_post_meta($menu_item_id, '_menu_item_object', true);
@@ -142,7 +144,8 @@ class NavMenus
         if (!$menu_item_type)
             $menu_item_type = get_post_meta($menu_item_id, '_menu_item_type', true);
 
-        $lock_custom = !$pp->isContentAdministrator() && !current_user_can('edit_theme_options') && $pp->getOption('admin_nav_menu_lock_custom');
+        global $current_user;
+        $lock_custom = !$pp->isContentAdministrator() && empty($current_user->allcaps['edit_theme_options']) && $pp->getOption('admin_nav_menu_lock_custom');
 
         if ((('custom' == $menu_item_type) || !in_array($menu_item_type, ['post_type', 'taxonomy'], true)) && $lock_custom) {
             return false;
@@ -250,7 +253,7 @@ class NavMenus
             if ($item->ID == $object_id)
                 continue;
 
-            if (self::can_edit_menu_item($item->ID) && !empty($item->post_date_gmt)) {
+            if (self::can_edit_menu_item($item->ID, ['force_check' => true]) && !empty($item->post_date_gmt)) {
                 $editable_items[] = $item;
                 $editable_item_ids[] = $item->ID;
                 $item_parents[$item->ID] = get_post_meta($item->ID, '_menu_item_menu_item_parent', true);
@@ -315,8 +318,8 @@ class NavMenus
                         'target' => 'menu-item-target',
                         'classes' => 'menu-item-classes', 
                         'xfn' => 'menu-item-xfn', 
-                        'menu_order' => 'menu-item-position', 
-                        'menu_parent' => 'menu-item-parent-id'
+                        'menu_parent' => 'menu-item-parent-id',
+                        'url' => 'menu-item-url',
                         ] as $property => $col
                     ) {
                         if (isset($_POST[$col][$menu_item_id]))
@@ -326,16 +329,24 @@ class NavMenus
                     if (isset($posted_vals['classes']))
                         $posted_vals['classes'] = array_map('sanitize_html_class', explode(' ', $posted_vals['classes']));
 
+                    $menu_data = (!empty($_REQUEST['nav-menu-data'])) ? json_decode(stripslashes($_REQUEST['nav-menu-data'])) : [];
+
+                    foreach($menu_data as $data_obj) {
+                        if (!empty($data_obj->name) && ("menu-item-url[{$menu_item_id}]" == $data_obj->name)) {
+                            $posted_vals['url'] = (!empty($data_obj->value)) ? $data_obj->value : '';
+                        }
+                    }
+
                     // If this option is enabled, allow the menu item title to be edited even if the item is generally uneditable
                     if (presspermit()->getOption('admin_nav_menu_partial_editing')) unset($posted_vals['title']);
 
                     $stored_vals = [];
 
+					// Note: menu order is regulated by a different mechanism, so menu items can be inserted for editable posts
                     $check_fields = [
                         'title' => 'post_title', 
                         'attribute' => 'post_excerpt', 
                         'description' => 'post_content', 
-                        'menu_order' => 'menu_order'
                     ];
 
                     foreach ($check_fields as $property => $col) {
@@ -347,11 +358,13 @@ class NavMenus
                     $stored_vals['classes'] = (array)get_post_meta($menu_item_id, '_menu_item_classes', true);
                     $stored_vals['xfn'] = get_post_meta($menu_item_id, '_menu_item_xfn', true);
 
-                    if (empty($stored_val['title'])) {
-                        $stored_vals['title'] = ($is_post_type) 
+                    if (isset($posted_vals['url'])) {
+                        $stored_vals['url'] = get_post_meta($menu_item_id, '_menu_item_url', true);
+                    }
+
+                    $stored_vals['title'] = ($is_post_type || ('custom' == get_post_meta($menu_item_id, '_menu_item_type', true))) 
                         ? get_post_field('post_title', $object_id) 
                         : get_term_field('name', $object_id, $object_type);
-                    }
 
                     $changed = false;
                     foreach (array_keys($posted_vals) as $property) {
@@ -365,11 +378,19 @@ class NavMenus
                         return;
                 }
 
+                global $current_user;
+
                 if ($is_post_type) {
                     $deny_menu_operation = !current_user_can('edit_post', $object_id);
                 } elseif ($is_taxonomy) {
                     if ($tx_obj = get_taxonomy($object_type)) {
                         $deny_menu_operation = !current_user_can($tx_obj->cap->manage_terms, $object_id);
+                    }
+                } elseif (!presspermit()->isContentAdministrator() && empty($current_user->allcaps['edit_theme_options']) && presspermit()->getOption('admin_nav_menu_lock_custom')) {
+                    if ('custom' == get_post_meta($menu_item_id, '_menu_item_type', true)) {
+                        $stored_vals['title'] = get_post_field('post_title', $menu_item_id);
+                        
+                        $deny_menu_operation = true;
                     }
                 }
 
@@ -377,7 +398,7 @@ class NavMenus
                     if (empty($stored_vals['title']))
                         $stored_vals['title'] = $menu_item->post_title;
 
-                    if (empty($stored_val['title'])) {
+                    if (empty($stored_vals['title'])) {
                         $stored_vals['title'] = ($is_post_type) 
                         ? get_post_field('post_title', $object_id) 
                         : get_term_field('name', $object_id, $object_type);
@@ -387,25 +408,34 @@ class NavMenus
 
                     switch ($menu_operation) {
                         case 'move':
-                            wp_die(sprintf(
-                                esc_html__('You do not have permission to move the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
-                                esc_html($stored_vals['title']),
-                                esc_url($link)
-                            ));
+                            wp_die(
+                                sprintf(
+                                    esc_html__('You do not have permission to move the menu item "%1$s"', 'press-permit-core'), 
+                                    esc_html($stored_vals['title'])
+                                ) 
+                                . '<br /><br /><a href="' . esc_url($link) . '">'
+                                . esc_html__('Return to Menu Editor', 'press-permit-core') . '</a>'
+                            );
                             break;
                         case 'delete':
-                            wp_die(sprintf(
-                                esc_html__('You do not have permission to delete the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
-                                esc_html($stored_vals['title']), 
-                                esc_url($link)
-                            ));
+                            wp_die(
+                                sprintf(
+                                    esc_html__('You do not have permission to delete the menu item "%1$s"', 'press-permit-core'), 
+                                    esc_html($stored_vals['title'])
+                                ) 
+                                . '<br /><br /><a href="' . esc_url($link) . '">'
+                                . esc_html__('Return to Menu Editor', 'press-permit-core') . '</a>'
+                            );
                             break;
                         default:
-                            wp_die(sprintf(
-                                esc_html__('You do not have permission to edit the menu item "%1$s". <br /><br /><a href="%2$s">Return to Menu Editor</a>', 'press-permit-core'), 
-                                esc_html($stored_vals['title']), 
-                                esc_url($link)
-                            ));
+                            wp_die(
+                                sprintf(
+                                    esc_html__('You do not have permission to edit the menu item "%1$s"', 'press-permit-core'), 
+                                    esc_html($stored_vals['title'])
+                                ) 
+                                . '<br /><br /><a href="' . esc_url($link) . '">'
+                                . esc_html__('Return to Menu Editor', 'press-permit-core') . '</a>'
+                            );
                     } // end switch
                 }
             }

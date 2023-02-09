@@ -104,7 +104,7 @@ class GroupQuery
         }
 
         $skip_meta_types = [];
-        if ($this->group_variant && ('wp_role' != $this->group_variant)) {
+        if ($this->group_variant && ('pp_net_group' != $this->group_variant) && ('wp_role' != $this->group_variant)) {
             $skip_meta_types[] = 'wp_role';
         } else {
             $pp_only_roles = (array) $pp->getOption('supplemental_role_defs');
