@@ -33,7 +33,9 @@ class PageFilters
 
         // depth is not really a get_pages arg, but remap exclude arg to exclude_tree if wp_list_terms called with depth=1
         if (!empty($args['exclude']) && empty($args['exclude_tree']) && !empty($args['depth']) && (1 == $args['depth'])) {
-            if (0 !== strpos($args['exclude'], ',')) {
+            if ((is_array($args['exclude']) && count($args['exclude']) > 1) 
+            || (!is_array($args['exclude']) && (0 !== strpos($args['exclude'], ',')))
+            ) {
                 // work around wp_list_pages() bug of attaching leading comma if a plugin uses wp_list_pages_excludes filter
                 $args['exclude_tree'] = $args['exclude'];
             }

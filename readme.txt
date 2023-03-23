@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 6.1
 Requires PHP: 5.6.20
-Stable tag: 3.8.5
+Stable tag: 3.8.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -238,7 +238,12 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.8.5 - 8 Feb 2023 =
+= 3.8.6 - 23 Mar 2023 =
+* Compat : Elementor - Error, memory exhaustion when users try to edit their own draft in Elementor
+* Compat : PublishPress Revisions - When revision submission is enabled for unpublished posts, Revision Creation exceptions also allowed publication of main post
+* Fixed : Fatal Error for some get_pages() queries
+
+= 3.8.5 - 9 Feb 2023 =
 * Fixed : Permission Group description was cleared when a new Permission is saved
 * Fixed : If Permissions were set to limit Page Parent selection to a single page and its descendants, when that page itself was edited, all pages were displayed in Page Parent selector (though they could not be saved)
 * Fixed : Nav Menu Management: Menu update by a limited user cause all uneditable menu items to be removed 

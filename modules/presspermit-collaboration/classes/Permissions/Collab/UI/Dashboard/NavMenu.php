@@ -112,6 +112,10 @@ class NavMenu
             return;
         }
 
+        if (defined('PRESSPERMIT_NAV_MENU_EDIT_DEBUG')) {
+            return;
+        }
+
         // don't allow modification of menu items for posts which user can't edit  
         // (this is a pain because WP fires update for each menu item even if unmodified)
         NavMenus::modify_nav_menu_item($object_id, 'edit');
