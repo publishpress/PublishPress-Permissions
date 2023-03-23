@@ -244,7 +244,7 @@ class CapabilityFilters
 
                                 $exc_post_type = apply_filters('presspermit_exception_post_type', $item_type, $op, $_args);
 
-                                if ($additional_ids = $user->getExceptionPosts($op, 'additional', $exc_post_type, ['status' => true, 'merge_related_operations' => true])) {
+                                if ($additional_ids = $user->getExceptionPosts($op, 'additional', $exc_post_type, ['status' => true, 'merge_related_operations' => true, 'has_cap_check' => true])) {
                                     $additional_ids = Arr::flatten(array_intersect_key($additional_ids, $valid_stati));
 
                                     if (defined('PP_RESTRICTION_PRIORITY') && PP_RESTRICTION_PRIORITY) {
