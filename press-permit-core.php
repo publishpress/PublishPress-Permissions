@@ -60,6 +60,22 @@ if (false === $presspermit_loaded_by_pro) {
             }
         }
     }
+	
+	if ($pro_active) {
+		add_filter(
+			'plugin_row_meta', 
+			function($links, $file)
+			{
+				if ($file == plugin_basename(__FILE__)) {
+					$links[]= __('<strong>This plugin can be deleted.</strong>', 'revisionary');
+				}
+	
+				return $links;
+			},
+			10, 2
+		);
+		return;
+	}
 }
 
 $includeFileRelativePath = '/publishpress/publishpress-instance-protection/include.php';
