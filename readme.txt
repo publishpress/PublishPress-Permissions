@@ -238,7 +238,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.8.5 - 8 Feb 2023 =
+= 3.8.5 - 9 Feb 2023 =
 * Fixed : Permission Group description was cleared when a new Permission is saved
 * Fixed : If Permissions were set to limit Page Parent selection to a single page and its descendants, when that page itself was edited, all pages were displayed in Page Parent selector (though they could not be saved)
 * Fixed : Nav Menu Management: Menu update by a limited user cause all uneditable menu items to be removed 
