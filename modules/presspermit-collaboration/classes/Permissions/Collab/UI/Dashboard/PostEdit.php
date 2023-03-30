@@ -40,6 +40,8 @@ class PostEdit
             $descendants = \PublishPress\Permissions\Collab\PostSaveHierarchical::getPageDescendantIds($post->ID);
             $descendants[] = $post->ID;
             $clauses['where'] .= " AND $col_id NOT IN ('" . implode("','", $descendants) . "')";
+        } else {
+            $descendants = [];
         }
 
         if (!current_user_can('pp_associate_any_page')) {
