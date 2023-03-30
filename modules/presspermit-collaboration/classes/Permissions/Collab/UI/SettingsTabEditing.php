@@ -53,7 +53,8 @@ class SettingsTabEditing
             'admin_others_attached_files' => esc_html__("List other users' uploads if attached to an editable post", 'press-permit-core'),
             'admin_others_attached_to_readable' => esc_html__("List other users' uploads if attached to a readable post", 'press-permit-core'),
             'admin_others_unattached_files' => esc_html__("Other users' unattached uploads listed by default", 'press-permit-core'),
-            'edit_others_attached_files' => esc_html__("Edit other users' uploads if attached to an editable post", 'press-permit-core'),
+            'edit_others_attached_files' => esc_html__("Allow editing other users' uploads if attached to an editable post", 'press-permit-core'),
+            'attachment_edit_requires_parent_access' => esc_html('Prevent editing uploads if attached to a non-editable post', 'press-permit-core'),
             'own_attachments_always_editable' => esc_html__('Users can always edit their own attachments', 'press-permit-core'),
             'admin_nav_menu_filter_items' => esc_html__('List only user-editable content as available items', 'press-permit-core'),
             'admin_nav_menu_partial_editing' => esc_html__('Allow Renaming of Uneditable Items', 'press-permit-core'),
@@ -82,10 +83,14 @@ class SettingsTabEditing
             'user_management' => ['limit_user_edit_by_level', 'add_author_pages', 'publish_author_pages'],
             'post_editor' => ['default_privacy', 'force_default_privacy', 'page_parent_order'],
             'content_management' => ['list_others_uneditable_posts', 'force_taxonomy_cols'],
-            'media_library' => ['admin_others_attached_files', 'admin_others_attached_to_readable', 'admin_others_unattached_files', 'edit_others_attached_files', 'own_attachments_always_editable'],
+            'media_library' => ['admin_others_attached_files', 'admin_others_attached_to_readable', 'admin_others_unattached_files', 'edit_others_attached_files', 'attachment_edit_requires_parent_access', 'own_attachments_always_editable'],
             'nav_menu_management' => ['admin_nav_menu_filter_items', 'admin_nav_menu_partial_editing', 'admin_nav_menu_lock_custom'],
             'post_forking' => ['fork_published_only', 'fork_require_edit_others'],
         ];
+
+        if (!presspermit()->getOption('define_media_post_caps')) {
+            $new['media_library'] = array_diff($new['media_library'], ['attachment_edit_requires_parent_access']);
+        }
 
         if (!PWP::isBlockEditorActive()) {
             if (presspermit()->getOption('advanced_options'))
@@ -385,13 +390,19 @@ class SettingsTabEditing
                         </span></div><br />
                     <?php endif;
 
+                    $ret = $ui->optionCheckbox('admin_others_unattached_files', $tab, $section, true, '');
+
                     $ret = $ui->optionCheckbox('admin_others_attached_to_readable', $tab, $section, true, '');
 
                     $ret = $ui->optionCheckbox('admin_others_attached_files', $tab, $section, true, '');
 
+                    echo '<br />';
+
                     $ret = $ui->optionCheckbox('edit_others_attached_files', $tab, $section, true, '');
 
-                    $ret = $ui->optionCheckbox('admin_others_unattached_files', $tab, $section, true, '');
+                    if (presspermit()->getOption('define_media_post_caps')) {
+                        $ret = $ui->optionCheckbox('attachment_edit_requires_parent_access', $tab, $section, true, '');
+                    }
 
                     $ret = $ui->optionCheckbox('own_attachments_always_editable', $tab, $section, true, '');
                     ?>
