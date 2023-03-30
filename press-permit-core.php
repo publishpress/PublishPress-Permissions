@@ -9,7 +9,7 @@
  * Text Domain: press-permit-core
  * Domain Path: /languages/
  * Min WP Version: 4.9.7
- * Requires PHP: 5.6.20
+ * Requires PHP: 7.2.5
  *
  * Copyright (c) 2022 PublishPress
  *
@@ -126,7 +126,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    $presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'vendor/publishpress/');
 	
 	    $min_wp_version = '4.9.7';
-	    $min_php_version = '5.6.20';
+	    $min_php_version = '7.2.5';
 	
 	    $php_version = phpversion();
 	
