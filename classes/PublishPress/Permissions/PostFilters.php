@@ -665,7 +665,7 @@ class PostFilters
 
         $flag_meta_caps = !empty($caps);
 
-        if ('read' == $required_operation && !defined('PP_DISABLE_UNFILTERED_TYPES_CLAUSE') && !$user->ID) {
+        if ('read' == $required_operation && !defined('PP_DISABLE_UNFILTERED_TYPES_CLAUSE')) {
             $all_post_types = get_post_types(['public' => true, 'show_ui' => true], 'names', 'or');
 
             $unfiltered_post_types = array_diff($all_post_types, $post_types);
