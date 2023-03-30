@@ -238,6 +238,13 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.8.7 - 30 Mar 2023 =
+* Change : Media Library - new setting to disable "Prevent editing uploads if attached to a non-editable post", available if Settings > Core > Filtered Post Types > "Enforce distinct capabilities for Media" is enabled 
+* Compat : WPML - Logged in users saw 404 error on Home Page viewing request if post type is not enabled for Permissions filtering
+* Fixed : Error on post creation / update by Editor, under some configurations
+* Fixed : PHP 8.1 - Notice in wp-admin 
+* Change : Minimum PHP version 7.2.5
+
 = 3.8.6 - 23 Mar 2023 =
 * Compat : Elementor - Error, memory exhaustion when users try to edit their own draft in Elementor
 * Compat : PublishPress Revisions - When revision submission is enabled for unpublished posts, Revision Creation exceptions also allowed publication of main post
