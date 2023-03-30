@@ -33,6 +33,7 @@ class Permissions
     private $modules = [];
     private $min_module_version = [];
     public $default_options = [];
+    public $default_advanced_options = [];
     public $netwide_options = [];
     public $site_options = [];
     public $net_options = [];

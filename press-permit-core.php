@@ -5,13 +5,13 @@
  * Description: Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
  * Author: PublishPress
  * Author URI:  https://publishpress.com/
- * Version:     3.8.6
+ * Version:     3.8.7
  * Text Domain: press-permit-core
  * Domain Path: /languages/
  * Min WP Version: 4.9.7
- * Requires PHP: 5.6.20
+ * Requires PHP: 7.2.5
  *
- * Copyright (c) 2022 PublishPress
+ * Copyright (c) 2023 PublishPress
  *
  * GNU General Public License, Free Software Foundation <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -31,7 +31,7 @@
  * @package     PressPermit
  * @category    Core
  * @author      PublishPress
- * @copyright   Copyright (c) 2022 PublishPress. All rights reserved.
+ * @copyright   Copyright (c) 2023 PublishPress. All rights reserved.
  *
  **/
 
@@ -126,7 +126,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    $presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'vendor/publishpress/');
 	
 	    $min_wp_version = '4.9.7';
-	    $min_php_version = '5.6.20';
+	    $min_php_version = '7.2.5';
 	
 	    $php_version = phpversion();
 	
@@ -151,7 +151,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	        return;
 	    }
 	
-		define('PRESSPERMIT_VERSION', '3.8.6');
+		define('PRESSPERMIT_VERSION', '3.8.7');
 	    
 	    if (!defined('PRESSPERMIT_READ_PUBLIC_CAP')) {
 	        define('PRESSPERMIT_READ_PUBLIC_CAP', 'read');

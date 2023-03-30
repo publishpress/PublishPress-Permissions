@@ -3,9 +3,9 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.9.7
-Tested up to: 6.1
-Requires PHP: 5.6.20
-Stable tag: 3.8.6
+Tested up to: 6.2
+Requires PHP: 7.2.5
+Stable tag: 3.8.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -237,6 +237,13 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 3.8.7 - 30 Mar 2023 =
+* Change : Media Library - new setting to disable "Prevent editing uploads if attached to a non-editable post", available if Settings > Core > Filtered Post Types > "Enforce distinct capabilities for Media" is enabled 
+* Compat : WPML - Logged in users saw 404 error on Home Page viewing request if post type is not enabled for Permissions filtering
+* Fixed : Error on post creation / update by Editor, under some configurations
+* Fixed : PHP 8.1 - Notice in wp-admin 
+* Change : Minimum PHP version 7.2.5
 
 = 3.8.6 - 23 Mar 2023 =
 * Compat : Elementor - Error, memory exhaustion when users try to edit their own draft in Elementor
