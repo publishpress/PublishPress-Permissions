@@ -164,6 +164,7 @@ class CollabHooks
             'admin_others_attached_to_readable' => 0,
             'admin_others_unattached_files' => 0,
             'edit_others_attached_files' => 0,
+            'attachment_edit_requires_parent_access' => 1,
             'own_attachments_always_editable' => 1,
             'admin_nav_menu_filter_items' => 1,
             'admin_nav_menu_partial_editing' => 0,

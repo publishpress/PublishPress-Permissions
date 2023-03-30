@@ -77,7 +77,10 @@ class CapabilityFiltersAdmin
     {
         global $current_user;
 
-        return (empty($args['pp_context']) || 'count_attachments' != $args['pp_context']);
+        return (
+            (empty($args['pp_context']) || 'count_attachments' != $args['pp_context'])
+            && (presspermit()->getOption('attachment_edit_requires_parent_access'))
+        );
     }
 
     function fltHaveSiteCaps($have_site_caps, $post_type, $args)
