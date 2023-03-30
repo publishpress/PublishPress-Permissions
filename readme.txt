@@ -3,7 +3,7 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 4.9.7
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 7.2.5
 Stable tag: 3.8.6
 License: GPLv3
