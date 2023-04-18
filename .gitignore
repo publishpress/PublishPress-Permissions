@@ -17,6 +17,8 @@ wp-content/plugins/hello.php
 /sitemap.xml
 /sitemap.xml.gz
 
-.idea/*.*
-.vscode/*.*
+.idea/
+.vscode/
 modules/presspermit-collaboration/.vscode/launch.json
+
+/vendor

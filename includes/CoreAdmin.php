@@ -20,13 +20,6 @@ class CoreAdmin {
 
         add_action('admin_print_scripts', [$this, 'setUpgradeMenuLink'], 50);
 
-        $autoloadPath = PRESSPERMIT_ABSPATH . '/vendor/autoload.php';
-        if (file_exists($autoloadPath)) {
-            require_once $autoloadPath;
-        }
-
-        require_once PRESSPERMIT_ABSPATH . '/vendor/publishpress/wordpress-version-notices/includes.php';
-
         add_filter(\PPVersionNotices\Module\TopNotice\Module::SETTINGS_FILTER, function ($settings) {
             $settings['press-permit-core'] = [
                 'message' => 'You\'re using PublishPress Permissions Free. The Pro version has more features and support. %sUpgrade to Pro%s',
