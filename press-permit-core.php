@@ -118,6 +118,11 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	        }
 	    }
 	}
+
+    $autoloadPath = __DIR__ . '/vendor/autoload.php';
+    if (file_exists($autoloadPath)) {
+        require_once $autoloadPath;
+    }
 	
 	function presspermit_load() {
 		global $wp_version, $presspermit_loaded_by_pro;
