@@ -25,6 +25,6 @@
     "php": ">=7.2.5",
     "publishpress/wordpress-reviews":  "^1.1",
     "publishpress/instance-protection": "^2.0",
-    "publishpress/wordpress-version-notices": "dev-development"
+    "publishpress/wordpress-version-notices": "^2.0"
   }
 }

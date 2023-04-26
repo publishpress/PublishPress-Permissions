@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1a3b5d26e76a98b104828c03f59170b6",
+    "content-hash": "c6f90d00dd6af0ac246082cccebf8efd",
     "packages": [
         {
             "name": "publishpress/instance-protection",
@@ -312,16 +312,16 @@
         },
         {
             "name": "publishpress/wordpress-version-notices",
-            "version": "dev-development",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/publishpress/library-wordpress-version-notices.git",
-                "reference": "4951f1f47d02c7e6d1999a54dce75052277f48bb"
+                "reference": "e14d377949dd67d27fe27d483a79b0ae353b0966"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/publishpress/library-wordpress-version-notices/zipball/4951f1f47d02c7e6d1999a54dce75052277f48bb",
-                "reference": "4951f1f47d02c7e6d1999a54dce75052277f48bb",
+                "url": "https://api.github.com/repos/publishpress/library-wordpress-version-notices/zipball/e14d377949dd67d27fe27d483a79b0ae353b0966",
+                "reference": "e14d377949dd67d27fe27d483a79b0ae353b0966",
                 "shasum": ""
             },
             "require": {
@@ -343,7 +343,6 @@
                 "overtrue/phplint": "^2.1",
                 "publishpress/version-loader-generator": "^1.0"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "generator": {
@@ -373,17 +372,15 @@
             "description": "Library for displaying version notices for Pro plugins in WordPress.",
             "support": {
                 "issues": "https://github.com/publishpress/library-wordpress-version-notices/issues",
-                "source": "https://github.com/publishpress/library-wordpress-version-notices/tree/development"
+                "source": "https://github.com/publishpress/library-wordpress-version-notices/tree/2.0.2"
             },
-            "time": "2023-04-26T05:49:40+00:00"
+            "time": "2023-04-26T15:29:22+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "publishpress/wordpress-version-notices": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
