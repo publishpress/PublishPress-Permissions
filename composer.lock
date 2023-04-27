@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d89b98e4e10728a9738fc7cce8c358f0",
+    "content-hash": "86192053445aa8de6acea25ad68fe04e",
     "packages": [
         {
             "name": "publishpress/instance-protection",
@@ -233,20 +233,19 @@
             "time": "2023-04-27T21:09:00+00:00"
         },
         {
-            "name": "publishpress/vendor-locator",
-            "version": "dev-main",
+            "name": "publishpress/vendor-locator-permissions",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/publishpress/vendor-locator.git",
-                "reference": "56e199a2c8dd477fc2117d521f6a5a4e671c8ee5"
+                "url": "https://github.com/publishpress/vendor-locator-permissions.git",
+                "reference": "352365576033124eed4864157d6722a2ad90163a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/publishpress/vendor-locator/zipball/56e199a2c8dd477fc2117d521f6a5a4e671c8ee5",
-                "reference": "56e199a2c8dd477fc2117d521f6a5a4e671c8ee5",
+                "url": "https://api.github.com/repos/publishpress/vendor-locator-permissions/zipball/352365576033124eed4864157d6722a2ad90163a",
+                "reference": "352365576033124eed4864157d6722a2ad90163a",
                 "shasum": ""
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -266,10 +265,9 @@
                 }
             ],
             "support": {
-                "issues": "https://github.com/publishpress/vendor-locator/issues",
-                "source": "https://github.com/publishpress/vendor-locator/tree/main"
+                "source": "https://github.com/publishpress/vendor-locator-permissions/tree/1.0.0"
             },
-            "time": "2023-02-22T20:21:45+00:00"
+            "time": "2023-04-27T21:54:01+00:00"
         },
         {
             "name": "publishpress/wordpress-reviews",
@@ -341,16 +339,16 @@
         },
         {
             "name": "publishpress/wordpress-version-notices",
-            "version": "2.1.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/publishpress/library-wordpress-version-notices.git",
-                "reference": "64d8bd8c8b77e43fefa76bbf567ba3affb99706a"
+                "reference": "64596e11a0b7f1358e5bf511d4dd87d8ba8730cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/publishpress/library-wordpress-version-notices/zipball/64d8bd8c8b77e43fefa76bbf567ba3affb99706a",
-                "reference": "64d8bd8c8b77e43fefa76bbf567ba3affb99706a",
+                "url": "https://api.github.com/repos/publishpress/library-wordpress-version-notices/zipball/64596e11a0b7f1358e5bf511d4dd87d8ba8730cd",
+                "reference": "64596e11a0b7f1358e5bf511d4dd87d8ba8730cd",
                 "shasum": ""
             },
             "require": {
@@ -381,11 +379,6 @@
                     "action-register-priority": "-190"
                 }
             },
-            "autoload": {
-                "files": [
-                    "src/include.php"
-                ]
-            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0-or-later"
@@ -401,17 +394,15 @@
             "description": "Library for displaying version notices for Pro plugins in WordPress.",
             "support": {
                 "issues": "https://github.com/publishpress/library-wordpress-version-notices/issues",
-                "source": "https://github.com/publishpress/library-wordpress-version-notices/tree/2.1.0"
+                "source": "https://github.com/publishpress/library-wordpress-version-notices/tree/2.1.1"
             },
-            "time": "2023-04-27T21:29:46+00:00"
+            "time": "2023-04-27T22:22:03+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "publishpress/vendor-locator": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
