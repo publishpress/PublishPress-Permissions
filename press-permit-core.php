@@ -123,6 +123,9 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
     if (file_exists($autoloadPath)) {
         require_once $autoloadPath;
     }
+
+    require_once PUBLISHPRESS_VENDOR_PATH . '/publishpress/psr-container/lib/include.php';
+    require_once PUBLISHPRESS_VENDOR_PATH . '/publishpress/pimple-pimple/lib/include.php';
 	
 	function presspermit_load() {
 		global $wp_version, $presspermit_loaded_by_pro;
