@@ -37,6 +37,11 @@
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
+// If the PHP version is not compatible, terminate the plugin execution.
+if (! include_once __DIR__ . '/library/check-php-version.php') {
+    return;
+}
+
 $pro_active = false;
 
 global $presspermit_loaded_by_pro;
@@ -135,8 +140,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    $presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'vendor/publishpress/');
 	
 	    $min_wp_version = '4.9.7';
-	    $min_php_version = '7.2.5';
-	
+
 	    $php_version = phpversion();
 	
 	    if (!function_exists('presspermit')) {
@@ -144,8 +148,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    }
 	
 	    // Critical errors that prevent initialization
-	    if ((version_compare($min_php_version, $php_version, '>') && presspermit_err('old_php', ['min_version' => $min_php_version, 'version' => $php_version]))
-	        || (version_compare($wp_version, $min_wp_version, '<') && presspermit_err('old_wp', ['min_version' => $min_wp_version, 'version' => $wp_version]))
+	    if ((version_compare($wp_version, $min_wp_version, '<') && presspermit_err('old_wp', ['min_version' => $min_wp_version, 'version' => $wp_version]))
 	        || (defined('PPC_FOLDER') && defined('PPC_BASENAME') && function_exists('ppc_deactivate') && presspermit_err('pp_core_active'))
 	        || (defined('PP_VERSION') && function_exists('pp_get_otype_option') && presspermit_err('pp_legacy_active'))  // Press Permit 1.x (circa 2012) active
 	        || (defined('SCOPER_VERSION') && function_exists('rs_get_user') && presspermit_err('rs_active') && ! is_admin())
