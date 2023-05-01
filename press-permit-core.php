@@ -38,7 +38,17 @@
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 // If the PHP version is not compatible, terminate the plugin execution.
-if (! include_once __DIR__ . '/library/check-php-version.php') {
+if (! function_exists('get_plugin_data')) {
+    require_once ABSPATH . 'wp-admin/includes/plugin.php';
+}
+
+if (! function_exists('is_php_version_compatible')) {
+    require_once ABSPATH . 'wp-admin/includes/functions.php';
+}
+
+$data = get_plugin_data( __FILE__ );
+
+if (! is_php_version_compatible($data['RequiresPHP'])) {
     return;
 }
 
