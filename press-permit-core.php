@@ -8,7 +8,7 @@
  * Version:     3.8.7
  * Text Domain: press-permit-core
  * Domain Path: /languages/
- * Min WP Version: 5.5
+ * Requires at least: 5.5
  * Requires PHP: 7.2.5
  *
  * Copyright (c) 2023 PublishPress
@@ -45,36 +45,9 @@ if (version_compare(phpversion(), $min_php_version, '<')) {
     return;
 }
 
-// If the WP version is not compatible, terminate the plugin execution and show a warning.
+// If the WP version is not compatible, terminate the plugin execution. WP will take care of showing a warning.
 global $wp_version;
 if (version_compare($wp_version, $min_wp_version, '<')) {
-    add_action('after_plugin_row_' . basename(dirname(__FILE__)) . '/' . basename(__FILE__), function ($pluginFile) {
-        /**
-         * @var \WP_Plugins_List_Table $wpListTable
-         */
-        $wpListTable = _get_list_table('WP_Plugins_List_Table', ['screen' => get_current_screen(),] );
-        ?>
-        <tr class="plugin-update-tr">
-            <td colspan="<?php echo esc_attr($wpListTable->get_column_count()); ?>" class="plugin-update colspanchange">
-                <div class="update-message notice inline notice-error notice-alt">
-                    <p>
-                        <?php
-                        echo esc_html(__('This plugin does not work with your version of WordPress.'));
-                        if (current_user_can('update_core')) {
-                            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-                            printf(
-                                /* translators: %s: URL to WordPress Updates screen. */
-                                ' ' . __('<a href="%s">Please update WordPress</a>.'),
-                                self_admin_url('update-core.php')
-                            );
-                        }
-                        ?>
-                    </p>
-                </div>
-            </td>
-        </tr>
-        <?php
-    });
     return;
 }
 
