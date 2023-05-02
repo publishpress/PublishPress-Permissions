@@ -37,16 +37,21 @@
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
+global $wp_version;
+
 $min_php_version = '7.2.5';
 $min_wp_version  = '5.5';
 
+$invalid_php_version = version_compare(phpversion(), $min_php_version, '<');
+$invalid_wp_version = version_compare($wp_version, $min_wp_version, '<');
+
 // If the PHP version is not compatible, terminate the plugin execution, and show a admin notice with dismiss button.
-if (version_compare(phpversion(), $min_php_version, '<')) {
+if ($invalid_php_version) {
     if (current_user_can('activate_plugins')) {
         add_action(
             'admin_notices',
             function () use ($min_php_version) {
-                echo '<div class="notice notice-error is-dismissible"><p>';
+                echo '<div class="notice notice-error"><p>';
                 printf(
                     __('PublishPress Permissions requires PHP version %s or higher.', 'press-permit-core'),
                     $min_php_version
@@ -55,17 +60,15 @@ if (version_compare(phpversion(), $min_php_version, '<')) {
             }
         );
     }
-    return;
 }
 
 // If the WP version is not compatible, terminate the plugin execution, and show a admin notice.
-global $wp_version;
-if (version_compare($wp_version, $min_wp_version, '<')) {
+if ($invalid_wp_version) {
     if (current_user_can('activate_plugins')) {
         add_action(
             'admin_notices',
             function () use ($min_wp_version) {
-                echo '<div class="notice notice-error is-dismissible"><p>';
+                echo '<div class="notice notice-error"><p>';
                 printf(
                     __('PublishPress Permissions requires WordPress version %s or higher.', 'press-permit-core'),
                     $min_wp_version
@@ -74,8 +77,12 @@ if (version_compare($wp_version, $min_wp_version, '<')) {
             }
         );
     }
+}
+
+if ($invalid_php_version || $invalid_wp_version) {
     return;
 }
+
 
 $pro_active = false;
 
