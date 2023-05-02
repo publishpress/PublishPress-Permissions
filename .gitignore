@@ -20,3 +20,6 @@ wp-content/plugins/hello.php
 .idea/*.*
 .vscode/*.*
 modules/presspermit-collaboration/.vscode/launch.json
+
+/vendor
+/dist
