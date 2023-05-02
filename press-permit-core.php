@@ -5,7 +5,7 @@
  * Description: Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
  * Author: PublishPress
  * Author URI:  https://publishpress.com/
- * Version:     3.8.7
+ * Version:     4.0.0-beta.1
  * Text Domain: press-permit-core
  * Domain Path: /languages/
  * Requires at least: 5.5
@@ -37,17 +37,49 @@
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
+global $wp_version;
+
 $min_php_version = '7.2.5';
 $min_wp_version  = '5.5';
 
-// If the PHP version is not compatible, terminate the plugin execution. WP will take care of showing a warning.
-if (version_compare(phpversion(), $min_php_version, '<')) {
-    return;
+$invalid_php_version = version_compare(phpversion(), $min_php_version, '<');
+$invalid_wp_version = version_compare($wp_version, $min_wp_version, '<');
+
+// If the PHP version is not compatible, terminate the plugin execution, and show a admin notice with dismiss button.
+if ($invalid_php_version) {
+    if (current_user_can('activate_plugins')) {
+        add_action(
+            'admin_notices',
+            function () use ($min_php_version) {
+                echo '<div class="notice notice-error"><p>';
+                printf(
+                    __('PublishPress Permissions requires PHP version %s or higher.', 'press-permit-core'),
+                    $min_php_version
+                );
+                echo '</p></div>';
+            }
+        );
+    }
 }
 
-// If the WP version is not compatible, terminate the plugin execution. WP will take care of showing a warning.
-global $wp_version;
-if (version_compare($wp_version, $min_wp_version, '<')) {
+// If the WP version is not compatible, terminate the plugin execution, and show a admin notice.
+if ($invalid_wp_version) {
+    if (current_user_can('activate_plugins')) {
+        add_action(
+            'admin_notices',
+            function () use ($min_wp_version) {
+                echo '<div class="notice notice-error"><p>';
+                printf(
+                    __('PublishPress Permissions requires WordPress version %s or higher.', 'press-permit-core'),
+                    $min_wp_version
+                );
+                echo '</p></div>';
+            }
+        );
+    }
+}
+
+if ($invalid_php_version || $invalid_wp_version) {
     return;
 }
 
@@ -166,7 +198,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	        return;
 	    }
 	
-		define('PRESSPERMIT_VERSION', '3.8.7');
+		define('PRESSPERMIT_VERSION', '4.0.0-beta.1');
 	    
 	    if (!defined('PRESSPERMIT_READ_PUBLIC_CAP')) {
 	        define('PRESSPERMIT_READ_PUBLIC_CAP', 'read');
