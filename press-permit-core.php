@@ -8,7 +8,7 @@
  * Version:     3.8.7
  * Text Domain: press-permit-core
  * Domain Path: /languages/
- * Min WP Version: 4.9.7
+ * Min WP Version: 5.5
  * Requires PHP: 7.2.5
  *
  * Copyright (c) 2023 PublishPress
@@ -37,18 +37,44 @@
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
-// If the PHP version is not compatible, terminate the plugin execution.
-if (! function_exists('get_plugin_data')) {
-    require_once ABSPATH . 'wp-admin/includes/plugin.php';
+$min_php_version = '7.2.5';
+$min_wp_version  = '5.5';
+
+// If the PHP version is not compatible, terminate the plugin execution. WP will take care of showing a warning.
+if (version_compare(phpversion(), $min_php_version, '<')) {
+    return;
 }
 
-if (! function_exists('is_php_version_compatible')) {
-    require_once ABSPATH . 'wp-admin/includes/functions.php';
-}
-
-$data = get_plugin_data( __FILE__ );
-
-if (! is_php_version_compatible($data['RequiresPHP'])) {
+// If the WP version is not compatible, terminate the plugin execution and show a warning.
+global $wp_version;
+if (version_compare($wp_version, $min_wp_version, '<')) {
+    add_action('after_plugin_row_' . basename(dirname(__FILE__)) . '/' . basename(__FILE__), function ($pluginFile) {
+        /**
+         * @var \WP_Plugins_List_Table $wpListTable
+         */
+        $wpListTable = _get_list_table('WP_Plugins_List_Table', ['screen' => get_current_screen(),] );
+        ?>
+        <tr class="plugin-update-tr">
+            <td colspan="<?php echo esc_attr($wpListTable->get_column_count()); ?>" class="plugin-update colspanchange">
+                <div class="update-message notice inline notice-error notice-alt">
+                    <p>
+                        <?php
+                        echo esc_html(__('This plugin does not work with your version of WordPress.'));
+                        if (current_user_can('update_core')) {
+                            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                            printf(
+                                /* translators: %s: URL to WordPress Updates screen. */
+                                ' ' . __('<a href="%s">Please update WordPress</a>.'),
+                                self_admin_url('update-core.php')
+                            );
+                        }
+                        ?>
+                    </p>
+                </div>
+            </td>
+        </tr>
+        <?php
+    });
     return;
 }
 
@@ -144,22 +170,16 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
     require_once PUBLISHPRESS_PERMISSIONS_VENDOR_PATH . '/publishpress/wordpress-version-notices/src/include.php';
 	
 	function presspermit_load() {
-		global $wp_version, $presspermit_loaded_by_pro;
-	    global $presspermit_loaded_by_pro;
+		global $presspermit_loaded_by_pro;
 	
 	    $presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'vendor/publishpress/');
-	
-	    $min_wp_version = '4.9.7';
 
-	    $php_version = phpversion();
-	
 	    if (!function_exists('presspermit')) {
 	        require_once(__DIR__ . '/functions.php');
 	    }
 	
 	    // Critical errors that prevent initialization
-	    if ((version_compare($wp_version, $min_wp_version, '<') && presspermit_err('old_wp', ['min_version' => $min_wp_version, 'version' => $wp_version]))
-	        || (defined('PPC_FOLDER') && defined('PPC_BASENAME') && function_exists('ppc_deactivate') && presspermit_err('pp_core_active'))
+	    if ((defined('PPC_FOLDER') && defined('PPC_BASENAME') && function_exists('ppc_deactivate') && presspermit_err('pp_core_active'))
 	        || (defined('PP_VERSION') && function_exists('pp_get_otype_option') && presspermit_err('pp_legacy_active'))  // Press Permit 1.x (circa 2012) active
 	        || (defined('SCOPER_VERSION') && function_exists('rs_get_user') && presspermit_err('rs_active') && ! is_admin())
 	        || (constant('PRESSPERMIT_DEBUG') && is_admin() && presspermit_editing_plugin()) // avoid lockout in case of erroneous plugin edit via wp-admin
