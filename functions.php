@@ -57,6 +57,31 @@ function presspermit_REQUEST_key($var) {
     return (is_array($_REQUEST[$var])) ? array_map('sanitize_key', $_REQUEST[$var]) : sanitize_key($_REQUEST[$var]);
 }
 
+function presspermit_REQUEST_key_match($var, $match, $args = []) {
+    $args = (array) $args;
+    
+    $match_type = (!empty($args['match_type'])) ? $args['match_type'] : 'starts';
+
+	$matched = false;
+    
+    $request_key = presspermit_REQUEST_key($var);
+
+    if (is_array($request_key)) {
+        $matched = false;
+    } else {
+    	switch ($match_type) {
+    		case 'contains':
+    			$matched = (false !== strpos($request_key, $match));
+    			break;
+    			
+    		default: // 'starts'
+        		$matched = (0 === strpos($request_key, $match));
+    	}
+    }
+
+	return $matched;
+}
+
 function presspermit_REQUEST_int($var) {
     return (!empty($_REQUEST[$var])) ? intval($_REQUEST[$var]) : 0;
 }
