@@ -198,7 +198,9 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	
 	    presspermit();
 
-        require_once __DIR__ . '/library/v3dot9_warning.php';
+		if (is_admin()) {
+        	require_once __DIR__ . '/library/v3dot9_warning.php';
+		}
 	}
 	
 	// negative priority to precede any default WP action handlers
