@@ -5,7 +5,7 @@
  * Description: Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
  * Author: PublishPress
  * Author URI:  https://publishpress.com/
- * Version:     4.0.0-beta.1
+ * Version:     3.9.0-rc
  * Text Domain: press-permit-core
  * Domain Path: /languages/
  * Requires at least: 5.5
@@ -193,8 +193,8 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    if (is_admin() && isset($pagenow) && ('customize.php' == $pagenow)) {
 	        return;
 	    }
-	
-		define('PRESSPERMIT_VERSION', '4.0.0-beta.1');
+
+		  define('PRESSPERMIT_VERSION', '3.9.0-rc');
 	    
 	    if (!defined('PRESSPERMIT_READ_PUBLIC_CAP')) {
 	        define('PRESSPERMIT_READ_PUBLIC_CAP', 'read');
@@ -240,6 +240,10 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    require_once(__DIR__ . '/classes/PublishPress/Permissions.php');
 	
 	    presspermit();
+
+		if (is_admin()) {
+        	require_once __DIR__ . '/library/v3dot9_warning.php';
+		}
 	}
 	
 	// negative priority to precede any default WP action handlers
