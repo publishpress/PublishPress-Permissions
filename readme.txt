@@ -238,6 +238,9 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.8.8 - 04 May 2023 =
+* Change: Added warning about end of support for WordPress 5.4 and earlier. PublishPress Permissions 3.9 will require WordPress 5.5 or later.
+
 = 3.8.7 - 30 Mar 2023 =
 * Change : Media Library - new setting to disable "Prevent editing uploads if attached to a non-editable post", available if Settings > Core > Filtered Post Types > "Enforce distinct capabilities for Media" is enabled 
 * Compat : WPML - Logged in users saw 404 error on Home Page viewing request if post type is not enabled for Permissions filtering
