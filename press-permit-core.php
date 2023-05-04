@@ -197,6 +197,8 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    require_once(__DIR__ . '/classes/PublishPress/Permissions.php');
 	
 	    presspermit();
+
+        require_once __DIR__ . '/library/v3dot9_warning.php';
 	}
 	
 	// negative priority to precede any default WP action handlers
