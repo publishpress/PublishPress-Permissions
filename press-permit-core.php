@@ -5,10 +5,10 @@
  * Description: Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
  * Author: PublishPress
  * Author URI:  https://publishpress.com/
- * Version:     3.8.8
+ * Version:     3.9.0-rc
  * Text Domain: press-permit-core
  * Domain Path: /languages/
- * Min WP Version: 4.9.7
+ * Requires at least: 5.5
  * Requires PHP: 7.2.5
  *
  * Copyright (c) 2023 PublishPress
@@ -36,6 +36,48 @@
  **/
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
+
+global $wp_version;
+
+$min_php_version = '7.2.5';
+$min_wp_version  = '5.5';
+
+$invalid_php_version = version_compare(phpversion(), $min_php_version, '<');
+$invalid_wp_version = version_compare($wp_version, $min_wp_version, '<');
+
+// If the PHP version is not compatible, terminate the plugin execution, and show a admin notice with dismiss button.
+if (is_admin() && $invalid_php_version && current_user_can('activate_plugins')) {
+    add_action(
+        'admin_notices',
+        function () use ($min_php_version) {
+            echo '<div class="notice notice-error"><p>';
+            printf(
+                __('PublishPress Permissions requires PHP version %s or higher.', 'press-permit-core'),
+                $min_php_version
+            );
+            echo '</p></div>';
+        }
+    );
+}
+
+// If the WP version is not compatible, terminate the plugin executˆon, and show a admin notice.
+if (is_admin() && $invalid_wp_version && current_user_can('activate_plugins')) {
+    add_action(
+        'admin_notices',
+        function () use ($min_wp_version) {
+            echo '<div class="notice notice-error"><p>';
+            printf(
+                __('PublishPress Permissions requires WordPress version %s or higher.', 'press-permit-core'),
+                $min_wp_version
+            );
+            echo '</p></div>';
+        }
+    );
+}
+
+if ($invalid_php_version || $invalid_wp_version) {
+    return;
+}
 
 $pro_active = false;
 
@@ -118,26 +160,27 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	        }
 	    }
 	}
+
+    $autoloadPath = __DIR__ . '/vendor/autoload.php';
+    if (file_exists($autoloadPath)) {
+        require_once $autoloadPath;
+    }
+
+    require_once PUBLISHPRESS_PERMISSIONS_VENDOR_PATH . '/publishpress/psr-container/lib/include.php';
+    require_once PUBLISHPRESS_PERMISSIONS_VENDOR_PATH . '/publishpress/pimple-pimple/lib/include.php';
+    require_once PUBLISHPRESS_PERMISSIONS_VENDOR_PATH . '/publishpress/wordpress-version-notices/src/include.php';
 	
 	function presspermit_load() {
-		global $wp_version, $presspermit_loaded_by_pro;
-	    global $presspermit_loaded_by_pro;
+		global $presspermit_loaded_by_pro;
 	
 	    $presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'vendor/publishpress/');
-	
-	    $min_wp_version = '4.9.7';
-	    $min_php_version = '7.2.5';
-	
-	    $php_version = phpversion();
-	
+
 	    if (!function_exists('presspermit')) {
 	        require_once(__DIR__ . '/functions.php');
 	    }
 	
 	    // Critical errors that prevent initialization
-	    if ((version_compare($min_php_version, $php_version, '>') && presspermit_err('old_php', ['min_version' => $min_php_version, 'version' => $php_version]))
-	        || (version_compare($wp_version, $min_wp_version, '<') && presspermit_err('old_wp', ['min_version' => $min_wp_version, 'version' => $wp_version]))
-	        || (defined('PPC_FOLDER') && defined('PPC_BASENAME') && function_exists('ppc_deactivate') && presspermit_err('pp_core_active'))
+	    if ((defined('PPC_FOLDER') && defined('PPC_BASENAME') && function_exists('ppc_deactivate') && presspermit_err('pp_core_active'))
 	        || (defined('PP_VERSION') && function_exists('pp_get_otype_option') && presspermit_err('pp_legacy_active'))  // Press Permit 1.x (circa 2012) active
 	        || (defined('SCOPER_VERSION') && function_exists('rs_get_user') && presspermit_err('rs_active') && ! is_admin())
 	        || (constant('PRESSPERMIT_DEBUG') && is_admin() && presspermit_editing_plugin()) // avoid lockout in case of erroneous plugin edit via wp-admin
@@ -150,8 +193,8 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    if (is_admin() && isset($pagenow) && ('customize.php' == $pagenow)) {
 	        return;
 	    }
-	
-		define('PRESSPERMIT_VERSION', '3.8.8');
+
+		  define('PRESSPERMIT_VERSION', '3.9.0-rc');
 	    
 	    if (!defined('PRESSPERMIT_READ_PUBLIC_CAP')) {
 	        define('PRESSPERMIT_READ_PUBLIC_CAP', 'read');
