@@ -98,7 +98,7 @@ class DashboardFilters
 
         wp_enqueue_style('presspermit', PRESSPERMIT_URLPATH . '/common/css/presspermit.css', [], PRESSPERMIT_VERSION);
 
-        if ($pp_plugin_page || (!presspermit_empty_REQUEST('page') && (0 === strpos(presspermit_REQUEST_key('page'), 'capsman')))) {
+        if ($pp_plugin_page || (!presspermit_empty_REQUEST('page') && presspermit_REQUEST_key_match('page', 'capsman'))) {
             wp_enqueue_style('presspermit-plugin-pages', PRESSPERMIT_URLPATH . '/common/css/plugin-pages.css', [], PRESSPERMIT_VERSION);
             wp_enqueue_style('presspermit-admin-common', PRESSPERMIT_URLPATH . '/common/css/pressshack-admin.css', [], PRESSPERMIT_VERSION);
         }

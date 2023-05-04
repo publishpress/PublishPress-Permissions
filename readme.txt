@@ -2,10 +2,10 @@
 
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
-Requires at least: 4.9.7
+Requires at least: 5.5
 Tested up to: 6.2
 Requires PHP: 7.2.5
-Stable tag: 3.8.8
+Stable tag: 3.9.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,13 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 3.9.0 - 4 May 2023 =
+* Fixed : Error updating plugin with Composer, fixed by removing unused vendor libraries
+* Fixed : Fatal error in wp-admin if certain request variables have unexpected values
+* Change : Bump WordPress version requirement to 5.5
+* Change : Bump PHP version requirement to 7.2.5
+* Change : Update vendor libraries based on revised PHP version support
 
 = 3.8.8 - 04 May 2023 =
 * Change: Added warning about end of support for WordPress 5.4 and earlier. PublishPress Permissions 3.9 will require WordPress 5.5 or later.
