@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 4.9.7
 Tested up to: 6.2
 Requires PHP: 7.2.5
-Stable tag: 3.8.7
+Stable tag: 3.8.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,9 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 3.8.8 - 04 May 2023 =
+* Change: Added warning about end of support for WordPress 5.4 and earlier. PublishPress Permissions 3.9 will require WordPress 5.5 or later.
 
 = 3.8.7 - 30 Mar 2023 =
 * Change : Media Library - new setting to disable "Prevent editing uploads if attached to a non-editable post", available if Settings > Core > Filtered Post Types > "Enforce distinct capabilities for Media" is enabled 
