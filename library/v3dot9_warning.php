@@ -50,8 +50,8 @@ add_action(
         $notice = '<div class="notice notice-warning is-dismissible" id="' . $notice_id . '">';
         $notice .= '<p><strong>';
         $notice .= esc_html__('Attention:', 'press-permit-core');
-        $notice .= '</strong>';
-        $notice .= esc_html__('PublishPress Permissions next update (v3.9) will be dropping support for WordPress versions older than 5.5. Please update your WordPress installation to continue using PublishPress Permissions, or do not update beyond v3.8.7.', 'press-permit-core');
+        $notice .= '</strong> ';
+        $notice .= esc_html__('The next update of PublishPress Permissions (v3.9) will drop support for WordPress versions older than 5.5. Please update your WordPress installation to continue using PublishPress Permissions, or do not update beyond v3.8.7.', 'press-permit-core');
         $notice .= '</p>';
 
         // Add a acknowledge button
