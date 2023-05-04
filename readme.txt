@@ -240,6 +240,13 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.9.0 - 4 May 2023 =
+* Fixed : Error updating plugin with Composer, fixed by removing unused vendor libraries
+* Fixed : Fatal error in wp-admin if certain request variables have unexpected values
+* Change : Bump WordPress version requirement to 5.5
+* Change : Bump PHP version requirement to 7.2.5
+* Change : Update vendor libraries based on revised PHP version support
+
 = 3.8.8 - 04 May 2023 =
 * Change: Added warning about end of support for WordPress 5.4 and earlier. PublishPress Permissions 3.9 will require WordPress 5.5 or later.
 
