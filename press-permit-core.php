@@ -60,7 +60,7 @@ if (is_admin() && $invalid_php_version && current_user_can('activate_plugins')) 
     );
 }
 
-// If the WP version is not compatible, terminate the plugin executˆon, and show a admin notice.
+// If the WP version is not compatible, terminate the plugin execution, and show a admin notice.
 if (is_admin() && $invalid_wp_version && current_user_can('activate_plugins')) {
     add_action(
         'admin_notices',
@@ -194,7 +194,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	        return;
 	    }
 
-		  define('PRESSPERMIT_VERSION', '3.9.0-rc');
+		define('PRESSPERMIT_VERSION', '3.9.0-rc');
 	    
 	    if (!defined('PRESSPERMIT_READ_PUBLIC_CAP')) {
 	        define('PRESSPERMIT_READ_PUBLIC_CAP', 'read');
