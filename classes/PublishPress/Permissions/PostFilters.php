@@ -142,6 +142,10 @@ class PostFilters
 
         $pp = presspermit();
 
+        if (defined('PUBLISHPRESS_VERSION') && did_action('publishpress_notifications_trigger_workflows')) {
+			return $clauses;
+		}
+
         $args['query_obj'] = $_wp_query;
 
         if ($pp->isUserUnfiltered($current_user->ID, $args) && 
