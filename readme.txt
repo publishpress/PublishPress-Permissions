@@ -241,6 +241,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 == Changelog ==
 
 = 3.9.1 - 9 May 2023 =
+* Fixed : Fatal error in Composer installs due to missing vendor libraries
 * Compat : PublishPress Planner - Status Change notifications were not sent
 
 = 3.9.0 - 4 May 2023 =
