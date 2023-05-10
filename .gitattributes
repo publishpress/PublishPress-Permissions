@@ -35,11 +35,7 @@ ray-dist.php export-ignore
 ray.php export-ignore
 screenshot-*.png export-ignore
 tests export-ignore
-vendor export-ignore
-vendor/publishpress/vendor-locator/composer.json export-ignore
-vendor/publishpress/wordpress-banners/.gitattributes export-ignore
-vendor/woocommerce/action-scheduler/README.md export-ignore
-vendor/woocommerce/action-scheduler/changelog.txt export-ignore
 version.txt export-ignore
 webpack.config.js export-ignore
 yarn.lock export-ignore
+version.txt export-ignore

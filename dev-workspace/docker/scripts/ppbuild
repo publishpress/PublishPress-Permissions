@@ -211,6 +211,7 @@ case "${command}" in
     echo ""
     build_to_dir
     pack_built_dir
+    clean_dist
     echo ""
     echo "Plugin successfully built to a zip file!"
     show_time

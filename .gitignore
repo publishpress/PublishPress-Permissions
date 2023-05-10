@@ -23,3 +23,4 @@ modules/presspermit-collaboration/.vscode/launch.json
 
 /vendor
 /dist
+/version.txt
