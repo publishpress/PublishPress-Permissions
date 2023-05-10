@@ -240,6 +240,9 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.9.2 - 11 May 2023 =
+* Fixed : Remove .git nested folders from some vendor libraries, using the build script
+
 = 3.9.1 - 9 May 2023 =
 * Fixed : Fatal error in Composer installs due to missing vendor libraries
 * Compat : PublishPress Planner - Status Change notifications were not sent
