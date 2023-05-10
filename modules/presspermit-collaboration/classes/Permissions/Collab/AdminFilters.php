@@ -270,7 +270,7 @@ class AdminFilters
             return $parent_id;
         }
 
-        if (defined('DOING_AJAX') && DOING_AJAX && !presspermit_empty_REQUEST('action') && (false !== strpos(presspermit_REQUEST_key('action'), 'woocommerce_'))) {
+        if (defined('DOING_AJAX') && DOING_AJAX && !presspermit_empty_REQUEST('action') && presspermit_REQUEST_key_match('action', 'woocommerce_', ['match_type' => 'contains'])) {
 			return $parent_id;
 		}
 
