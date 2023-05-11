@@ -241,10 +241,11 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 == Changelog ==
 
 = 3.9.3 - 11 May 2023 =
-* Change: Changed version number just for avoiding cache on the fix released as 3.9.2
+* Change : Adjustment to composer.json
+* Change : Adjustment to .gitignore
 
-= 3.9.2 - 11 May 2023 =
-* Fixed : Remove .git nested folders from some vendor libraries, using the build script
+= 3.9.2 - 10 May 2023 =
+* Fixed : Remove .git nested folders from some vendor libraries, using build script
 
 = 3.9.1 - 9 May 2023 =
 * Fixed : Fatal error in Composer installs due to missing vendor libraries
