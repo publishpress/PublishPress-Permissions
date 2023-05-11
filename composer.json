@@ -17,17 +17,28 @@
     }
   ],
   "config": {
-    "preferred-install": "dist"
+    "preferred-install": {
+      "*": "dist"
+    }
   },
   "minimum-stability": "stable",
   "prefer-stable": true,
   "require": {
     "php": ">=7.2.5",
     "publishpress/vendor-locator-permissions": "^1.0",
-    "publishpress/pimple-pimple": "^3.5.0.9",
-    "publishpress/psr-container": "^2.0.1.9",
-    "publishpress/wordpress-reviews":  "^1.1",
+    "publishpress/wordpress-reviews": "^1.1",
     "publishpress/instance-protection": "^2.0",
     "publishpress/wordpress-version-notices": "^2.1"
+  },
+  "scripts": {
+    "build": "/project/dev-workspace/docker/scripts/ppbuild build",
+    "build:dir": "/project/dev-workspace/docker/scripts/ppbuild build-dir",
+    "build:clean": "/project/dev-workspace/docker/scripts/ppbuild clean",
+    "get-version": "/project/dev-workspace/docker/scripts/ppbuild version"
+  },
+  "extra": {
+    "plugin-slug": "press-permit-core",
+    "plugin-name": "publishpress-permissions",
+    "plugin-folder": "press-permit-core"
   }
 }

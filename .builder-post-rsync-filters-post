@@ -1,0 +1,6 @@
+- composer.json
+- composer.lock
+- vendor/publishpress/vendor-locator/composer.json
+- vendor/publishpress/wordpress-banners/.gitattributes
+- vendor/woocommerce/action-scheduler/README.md
+- vendor/woocommerce/action-scheduler/changelog.txt
