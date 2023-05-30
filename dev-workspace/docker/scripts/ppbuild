@@ -2,7 +2,7 @@
 
 start_time=$(date +%s)
 
-script_version="1.1.2"
+script_version="1.2.0"
 
 command=${1}
 source_path=$(pwd)
@@ -61,6 +61,7 @@ get_plugin_version() {
 plugin_version=$(get_plugin_version)
 
 tmp_build_dir="${dist_path}/${plugin_folder}"
+tmp_internal_vendor_dir="${tmp_build_dir}/libraries/"
 
 #######################################
 # Echo the string as an step in the output.
@@ -98,16 +99,16 @@ clean_dist() {
 build_to_dir() {
     clean_dist
 
-    echo_step "Copying plugin files to the dist dir"
+    echo_step "Copying plugin files to the dist dir filtering the files listed on .rsync-filters-pre-build"
     mkdir -p "${tmp_build_dir}"
-    rsync -r -f 'merge .builder-rsync-filters' "${source_path}/" "${tmp_build_dir}"
+    rsync -r -f 'merge .rsync-filters-pre-build' "${source_path}/" "${tmp_build_dir}"
 
-    echo_step "Running composer install"
+    echo_step "Running composer dumpautoload"
     echo ""
-    composer install --no-dev --working-dir="${tmp_build_dir}"
+    composer dumpautoload -o --working-dir="${tmp_internal_vendor_dir}"
 
-    echo_step "Removing files listed on the file .builder-post-rsync-filters-post"
-    rsync -r -f 'merge .builder-post-rsync-filters-post' "${tmp_build_dir}/" "${tmp_build_dir}-tmp"
+    echo_step "Removing files listed on .rsync-filters-post-build"
+    rsync -r -f 'merge .rsync-filters-post-build' "${tmp_build_dir}/" "${tmp_build_dir}-tmp"
     rm -rf "${tmp_build_dir}"
     mv "${tmp_build_dir}-tmp" "${tmp_build_dir}"
 

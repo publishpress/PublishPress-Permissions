@@ -83,7 +83,7 @@ $pro_active = false;
 
 global $presspermit_loaded_by_pro;
 
-$presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'vendor/publishpress/');
+$presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'internal-vendor/publishpress/');
 
 // Detect separate Pro plugin activation, but not self-activation (this file loaded in vendor library by Pro)
 if (false === $presspermit_loaded_by_pro) {
@@ -121,8 +121,8 @@ if (false === $presspermit_loaded_by_pro) {
 }
 
 $includeFileRelativePath = '/publishpress/publishpress-instance-protection/include.php';
-if (file_exists(__DIR__ . '/vendor' . $includeFileRelativePath)) {
-	require_once __DIR__ . '/vendor' . $includeFileRelativePath;
+if (file_exists(__DIR__ . '/libraries/internal-vendor' . $includeFileRelativePath)) {
+	require_once __DIR__ . '/libraries/internal-vendor' . $includeFileRelativePath;
 }
 
 if (class_exists('PublishPressInstanceProtection\\Config')) {
@@ -138,6 +138,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	define('PRESSPERMIT_FILE', __FILE__);
 	define('PRESSPERMIT_ABSPATH', __DIR__);
 	define('PRESSPERMIT_CLASSPATH', __DIR__ . '/classes/PublishPress/Permissions');
+    define('PRESSPERMIT_INTERNAL_VENDORPATH', __DIR__ . '/libraries/internal-vendor');
 	
 	if (!defined('PRESSPERMIT_CLASSPATH_COMMON')) {
 	    define('PRESSPERMIT_CLASSPATH_COMMON', __DIR__ . '/classes/PressShack');
@@ -161,19 +162,16 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	    }
 	}
 
-    $autoloadPath = __DIR__ . '/vendor/autoload.php';
-    if (file_exists($autoloadPath)) {
-        require_once $autoloadPath;
+    if (! class_exists('ComposerAutoloaderInitPressPermit')
+         && file_exists(PRESSPERMIT_INTERNAL_VENDORPATH . '/autoload.php')
+    ) {
+        require_once PRESSPERMIT_INTERNAL_VENDORPATH . '/autoload.php';
     }
 
-    require_once PUBLISHPRESS_PERMISSIONS_VENDOR_PATH . '/publishpress/psr-container/lib/include.php';
-    require_once PUBLISHPRESS_PERMISSIONS_VENDOR_PATH . '/publishpress/pimple-pimple/lib/include.php';
-    require_once PUBLISHPRESS_PERMISSIONS_VENDOR_PATH . '/publishpress/wordpress-version-notices/src/include.php';
-	
 	function presspermit_load() {
 		global $presspermit_loaded_by_pro;
 	
-	    $presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'vendor/publishpress/');
+	    $presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'internal-vendor/publishpress/');
 
 	    if (!function_exists('presspermit')) {
 	        require_once(__DIR__ . '/functions.php');

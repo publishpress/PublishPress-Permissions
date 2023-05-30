@@ -22,5 +22,6 @@ wp-content/plugins/hello.php
 modules/presspermit-collaboration/.vscode/launch.json
 
 /vendor
+/libraries/**/.git
 /dist
 /version.txt
