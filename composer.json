@@ -24,11 +24,7 @@
   "minimum-stability": "stable",
   "prefer-stable": true,
   "require": {
-    "php": ">=7.2.5",
-    "publishpress/vendor-locator-permissions": "^1.0",
-    "publishpress/wordpress-reviews": "^1.1",
-    "publishpress/instance-protection": "^2.0",
-    "publishpress/wordpress-version-notices": "^2.1"
+    "php": ">=7.2.5"
   },
   "scripts": {
     "build": "/project/dev-workspace/docker/scripts/ppbuild build",
