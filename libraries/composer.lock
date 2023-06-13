@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8186c6c1209e53f5e33c5c5ce91754c2",
+    "content-hash": "9e0491b02bfcb557a25294364568f2db",
     "packages": [
         {
             "name": "publishpress/instance-protection",
