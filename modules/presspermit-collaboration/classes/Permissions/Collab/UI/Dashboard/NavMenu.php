@@ -172,7 +172,7 @@ class NavMenu
                     $comma = ',';
                 }
 
-                echo '{display:none;}';
+                echo '{display:none;} ';
 
                 foreach( $uneditable_items as $id ) {
                     echo "#menu-item-" . esc_attr($id) . " div.menu-item-bar div.menu-item-handle label.item-title span.menu-item-title {color: #ccc;}";
