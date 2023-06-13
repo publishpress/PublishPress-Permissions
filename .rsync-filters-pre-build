@@ -1,13 +1,12 @@
 - *.code-workspace
 - .babelrc
-- .rsync-filters-pre-build
-- .rsync-filters-post-build
+- .builder-post-rsync-filters-post
+- .builder-rsync-filters
 - .distignore
 - .git
 - .gitattributes
 - .github
 - .gitignore
-- .gitkeep
 - .idea
 - .php-cs-fixer.cache
 - .phpcs.xml
@@ -37,6 +36,10 @@
 - screenshot-*.png
 - tests
 - /vendor
+- /vendor/publishpress/vendor-locator/composer.json
+- /vendor/publishpress/wordpress-banners/.gitattributes
+- /vendor/publishpress/pimple-pimple/scripts
+- /vendor/publishpress/pimple-pimple/tests
 - /version.txt
 - /webpack.config.js
 - /yarn.lock
