@@ -163,7 +163,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 	}
 
     if (! class_exists('ComposerAutoloaderInitPressPermit')
-         && file_exists(PRESSPERMIT_INTERNAL_VENDORPATH . '/autoload.php')
+    && file_exists(PRESSPERMIT_INTERNAL_VENDORPATH . '/autoload.php')
     ) {
         require_once PRESSPERMIT_INTERNAL_VENDORPATH . '/autoload.php';
     }
