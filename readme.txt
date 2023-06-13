@@ -240,6 +240,13 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.9.4-rc =
+* Compat : WooCommerce - Private Products were not listed in Shop, even if Read Permissions are assigned
+* Compat : ACF Extended - Extra Update button on Edit Term screen
+* Fixed : Fatal error for undefined PUBLISHPRESS_PERMISSIONS_PRO_VENDOR_PATH on some installations
+* Fixed : If a "Limit to: (none)" Permission is assigned to default-restrict a post type, creating a new post causes a post-specific allowance to be assigned
+* Fixed : Category filtering error caused Nav Menu corruption if empty category is used as a top level menu
+
 = 3.9.3 - 11 May 2023 =
 * Change : Adjustment to composer.json
 * Change : Adjustment to .gitignore
