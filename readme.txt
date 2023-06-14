@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 5.5
 Tested up to: 6.2
 Requires PHP: 7.2.5
-Stable tag: 3.9.3
+Stable tag: 3.9.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -240,7 +240,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.9.4-rc =
+= 3.9.4 - 14 Jun 2023 =
 * Compat : WooCommerce - Private Products were not listed in Shop, even if Read Permissions are assigned
 * Compat : ACF Extended - Extra Update button on Edit Term screen
 * Fixed : Fatal error for undefined PUBLISHPRESS_PERMISSIONS_PRO_VENDOR_PATH on some installations
