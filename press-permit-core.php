@@ -45,32 +45,36 @@ $min_wp_version  = '5.5';
 $invalid_php_version = version_compare(phpversion(), $min_php_version, '<');
 $invalid_wp_version = version_compare($wp_version, $min_wp_version, '<');
 
-// If the PHP version is not compatible, terminate the plugin execution, and show a admin notice with dismiss button.
-if (is_admin() && $invalid_php_version && current_user_can('activate_plugins')) {
+// If the PHP version is not compatible, terminate the plugin execution and show an admin notice.
+if (is_admin() && $invalid_php_version) {
     add_action(
         'admin_notices',
         function () use ($min_php_version) {
-            echo '<div class="notice notice-error"><p>';
-            printf(
-                __('PublishPress Permissions requires PHP version %s or higher.', 'press-permit-core'),
-                $min_php_version
-            );
-            echo '</p></div>';
+            if (current_user_can('activate_plugins')) {
+                echo '<div class="notice notice-error"><p>';
+                printf(
+                    'PublishPress Permissions Pro requires PHP version %s or higher.',
+                    $min_php_version
+                );
+                echo '</p></div>';
+            }
         }
     );
 }
 
-// If the WP version is not compatible, terminate the plugin execution, and show a admin notice.
-if (is_admin() && $invalid_wp_version && current_user_can('activate_plugins')) {
+// If the WP version is not compatible, terminate the plugin execution and show an admin notice.
+if (is_admin() && $invalid_wp_version) {
     add_action(
         'admin_notices',
         function () use ($min_wp_version) {
-            echo '<div class="notice notice-error"><p>';
-            printf(
-                __('PublishPress Permissions requires WordPress version %s or higher.', 'press-permit-core'),
-                $min_wp_version
-            );
-            echo '</p></div>';
+            if (current_user_can('activate_plugins')) {
+                echo '<div class="notice notice-error"><p>';
+                printf(
+                    'PublishPress Permissions Pro requires WordPress version %s or higher.',
+                    $min_wp_version
+                );
+                echo '</p></div>';
+            }
         }
     );
 }
