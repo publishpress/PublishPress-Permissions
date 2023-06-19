@@ -38,6 +38,8 @@
 - /vendor
 - /vendor/publishpress/vendor-locator/composer.json
 - /vendor/publishpress/wordpress-banners/.gitattributes
+- /vendor/publishpress/pimple-pimple/scripts
+- /vendor/publishpress/pimple-pimple/tests
 - /version.txt
 - /webpack.config.js
 - /yarn.lock

@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 5.5
 Tested up to: 6.2
 Requires PHP: 7.2.5
-Stable tag: 3.9.3
+Stable tag: 3.10.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,16 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 3.10.0 - 19 Jun 2023 =
+* Compat : WooCommerce - Private Products were not listed in Shop, even if Read Permissions are assigned
+* Compat : ACF Extended - Extra Update button on Edit Term screen
+* Fixed : Fatal error for undefined PUBLISHPRESS_PERMISSIONS_PRO_VENDOR_PATH on some installations
+* Fixed : If a "Limit to: (none)" Permission is assigned to default-restrict a post type, creating a new post causes a post-specific allowance to be assigned
+* Fixed : Category filtering error caused Nav Menu corruption if empty category is used as a top level menu
+* Change : Bump WordPress version requirement to 5.5
+* Change : Bump PHP version requirement to 7.2.5
+* Change : Update vendor libraries based on revised PHP version support
 
 = 3.9.3 - 11 May 2023 =
 * Change : Adjustment to composer.json

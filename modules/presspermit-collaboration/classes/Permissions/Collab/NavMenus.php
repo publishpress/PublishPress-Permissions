@@ -131,7 +131,7 @@ class NavMenus
         $pp = presspermit();
 
         if (empty($args['force_check'])) {
-        // This option enables uneditable menu items to be re-named.  Limitations are applied elsewhere to prevent other editing.
+            // This option enables uneditable menu items to be re-named.  Limitations are applied elsewhere to prevent other editing.
             return true;
         }
 
@@ -363,8 +363,8 @@ class NavMenus
                     }
 
                     $stored_vals['title'] = ($is_post_type || ('custom' == get_post_meta($menu_item_id, '_menu_item_type', true))) 
-                        ? get_post_field('post_title', $object_id) 
-                        : get_term_field('name', $object_id, $object_type);
+                    ? get_post_field('post_title', $object_id) 
+                    : get_term_field('name', $object_id, $object_type);
 
                     $changed = false;
                     foreach (array_keys($posted_vals) as $property) {
