@@ -39,5 +39,3 @@ version.txt export-ignore
 webpack.config.js export-ignore
 yarn.lock export-ignore
 version.txt export-ignore
-libraries/composer.json export-ignore
-libraries/composer.lock export-ignore
