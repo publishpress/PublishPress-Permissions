@@ -10,7 +10,7 @@ class Core {
             || (defined('DOING_AJAX') && DOING_AJAX && !empty($_REQUEST['action']) && (false !== strpos(sanitize_key($_REQUEST['action']), 'press-permit-core')))
             ) {
                 if (!class_exists('\PublishPress\WordPressReviews\ReviewsController')) {
-                    include_once PRESSPERMIT_ABSPATH . '/libraries/internal-vendor/publishpress/wordpress-reviews/ReviewsController.php';
+                    include_once PRESSPERMIT_ABSPATH . '/lib/vendor/publishpress/wordpress-reviews/ReviewsController.php';
                 }
         
                 if (class_exists('\PublishPress\WordPressReviews\ReviewsController')) {

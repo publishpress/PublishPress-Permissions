@@ -21,4 +21,4 @@ wp-content/plugins/hello.php
 .vscode/
 
 /vendor
-/libraries/**/.git
+/lib/**/.git

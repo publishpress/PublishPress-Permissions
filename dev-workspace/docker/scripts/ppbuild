@@ -61,7 +61,7 @@ get_plugin_version() {
 plugin_version=$(get_plugin_version)
 
 tmp_build_dir="${dist_path}/${plugin_folder}"
-tmp_internal_vendor_dir="${tmp_build_dir}/libraries/"
+tmp_internal_vendor_dir="${tmp_build_dir}/lib/"
 
 #######################################
 # Echo the string as an step in the output.
