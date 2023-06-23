@@ -131,7 +131,7 @@ if (! defined('PRESSPERMIT_INTERNAL_VENDORPATH')) {
 if (! $presspermit_loaded_by_pro) {
     $includeFileRelativePath = '/publishpress/instance-protection/include.php';
     if (file_exists(PRESSPERMIT_INTERNAL_VENDORPATH . $includeFileRelativePath)) {
-        require_once __DIR__ . PRESSPERMIT_INTERNAL_VENDORPATH . $includeFileRelativePath;
+        require_once PRESSPERMIT_INTERNAL_VENDORPATH . $includeFileRelativePath;
     }
 
     if (class_exists('PublishPressInstanceProtection\\Config')) {
