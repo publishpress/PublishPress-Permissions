@@ -27,10 +27,15 @@
     "php": ">=7.2.5"
   },
   "scripts": {
-    "build": "/project/dev-workspace/docker/scripts/ppbuild build",
-    "build:dir": "/project/dev-workspace/docker/scripts/ppbuild build-dir",
-    "build:clean": "/project/dev-workspace/docker/scripts/ppbuild clean",
-    "get-version": "/project/dev-workspace/docker/scripts/ppbuild version"
+    "build": "ppbuild build",
+    "build:dir": "ppbuild build-dir",
+    "build:clean": "ppbuild clean",
+    "get:version": "ppbuild version",
+    "check:longpath": "longpath .",
+
+    "pre-autoload-dump": "composer dumpautoload --working-dir=./lib",
+    "pre-update-cmd": "composer update --working-dir=./lib",
+    "pre-install-cmd": "composer install --working-dir=./lib"
   },
   "extra": {
     "plugin-slug": "press-permit-core",
