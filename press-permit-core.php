@@ -5,7 +5,7 @@
  * Description: Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
  * Author: PublishPress
  * Author URI:  https://publishpress.com/
- * Version:     3.9.4-rc3
+ * Version:     3.11.0-beta
  * Text Domain: press-permit-core
  * Domain Path: /languages/
  * Requires at least: 5.5
@@ -87,7 +87,7 @@ $pro_active = false;
 
 global $presspermit_loaded_by_pro;
 
-$presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'internal-vendor/publishpress/');
+$presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'vendor/publishpress/');
 
 // Detect separate Pro plugin activation, but not self-activation (this file loaded in vendor library by Pro)
 if (false === $presspermit_loaded_by_pro) {
@@ -106,156 +106,161 @@ if (false === $presspermit_loaded_by_pro) {
             }
         }
     }
-	
-	if ($pro_active) {
-		add_filter(
-			'plugin_row_meta', 
-			function($links, $file)
-			{
-				if ($file == plugin_basename(__FILE__)) {
-					$links[]= __('<strong>This plugin can be deleted.</strong>', 'revisionary');
-				}
-	
-				return $links;
-			},
-			10, 2
-		);
-		return;
-	}
+
+    if ($pro_active) {
+        add_filter(
+            'plugin_row_meta',
+            function($links, $file)
+            {
+                if ($file == plugin_basename(__FILE__)) {
+                    $links[]= __('<strong>This plugin can be deleted.</strong>', 'revisionary');
+                }
+
+                return $links;
+            },
+            10, 2
+        );
+        return;
+    }
 }
 
-$includeFileRelativePath = '/publishpress/publishpress-instance-protection/include.php';
-if (file_exists(__DIR__ . '/libraries/internal-vendor' . $includeFileRelativePath)) {
-	require_once __DIR__ . '/libraries/internal-vendor' . $includeFileRelativePath;
+if (! defined('PRESSPERMIT_INTERNAL_VENDORPATH')) {
+    define('PRESSPERMIT_INTERNAL_VENDORPATH', __DIR__ . '/lib/vendor');
 }
 
-if (class_exists('PublishPressInstanceProtection\\Config')) {
-	$pluginCheckerConfig = new PublishPressInstanceProtection\Config();
-	$pluginCheckerConfig->pluginSlug    = 'press-permit-core';
-	$pluginCheckerConfig->pluginFolder  = 'press-permit-core';
-	$pluginCheckerConfig->pluginName    = 'PublishPress Permissions';
+if (! $presspermit_loaded_by_pro) {
+    $includeFileRelativePath = '/publishpress/instance-protection/include.php';
+    if (file_exists(PRESSPERMIT_INTERNAL_VENDORPATH . $includeFileRelativePath)) {
+        require_once PRESSPERMIT_INTERNAL_VENDORPATH . $includeFileRelativePath;
+    }
 
-	$pluginChecker = new PublishPressInstanceProtection\InstanceChecker($pluginCheckerConfig);
-}
+    if (class_exists('PublishPressInstanceProtection\\Config')) {
+        $pluginCheckerConfig = new PublishPressInstanceProtection\Config();
+        $pluginCheckerConfig->pluginSlug    = 'press-permit-core';
+        $pluginCheckerConfig->pluginFolder  = 'press-permit-core';
+        $pluginCheckerConfig->pluginName    = 'PublishPress Permissions';
 
-if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro) {
-	define('PRESSPERMIT_FILE', __FILE__);
-	define('PRESSPERMIT_ABSPATH', __DIR__);
-	define('PRESSPERMIT_CLASSPATH', __DIR__ . '/classes/PublishPress/Permissions');
-    define('PRESSPERMIT_INTERNAL_VENDORPATH', __DIR__ . '/libraries/internal-vendor');
-	
-	if (!defined('PRESSPERMIT_CLASSPATH_COMMON')) {
-	    define('PRESSPERMIT_CLASSPATH_COMMON', __DIR__ . '/classes/PressShack');
-	}
-	
-	define('PRESSPERMIT_DB_VERSION', '2.0.1');
-	
-	if (!defined('PRESSPERMIT_DEBUG')) {
-	    define('PRESSPERMIT_DEBUG', false);
-	}
-	
-	include_once(constant('PRESSPERMIT_DEBUG') ? __DIR__ . '/library/debug.php' : __DIR__ . '/library/debug_shell.php');
-	
-	if (!function_exists('presspermit_err')) {
-	    function presspermit_err($err_slug, $args = [])
-	    {
-	        if (is_admin()) {
-	            require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');
-	            return new \PublishPress\Permissions\ErrorNotice($err_slug, $args);
-	        }
-	    }
-	}
+        $pluginChecker = new PublishPressInstanceProtection\InstanceChecker($pluginCheckerConfig);
+    }
 
     if (! class_exists('ComposerAutoloaderInitPressPermit')
-    && file_exists(PRESSPERMIT_INTERNAL_VENDORPATH . '/autoload.php')
+        && file_exists(PRESSPERMIT_INTERNAL_VENDORPATH . '/autoload.php')
     ) {
         require_once PRESSPERMIT_INTERNAL_VENDORPATH . '/autoload.php';
     }
+}
 
-	function presspermit_load() {
-		global $presspermit_loaded_by_pro;
-	
-	    $presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'internal-vendor/publishpress/');
+if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro) {
+    define('PRESSPERMIT_FILE', __FILE__);
+    define('PRESSPERMIT_ABSPATH', __DIR__);
+    define('PRESSPERMIT_CLASSPATH', __DIR__ . '/classes/PublishPress/Permissions');
 
-	    if (!function_exists('presspermit')) {
-	        require_once(__DIR__ . '/functions.php');
-	    }
-	
-	    // Critical errors that prevent initialization
-	    if ((defined('PPC_FOLDER') && defined('PPC_BASENAME') && function_exists('ppc_deactivate') && presspermit_err('pp_core_active'))
-	        || (defined('PP_VERSION') && function_exists('pp_get_otype_option') && presspermit_err('pp_legacy_active'))  // Press Permit 1.x (circa 2012) active
-	        || (defined('SCOPER_VERSION') && function_exists('rs_get_user') && presspermit_err('rs_active') && ! is_admin())
-	        || (constant('PRESSPERMIT_DEBUG') && is_admin() && presspermit_editing_plugin()) // avoid lockout in case of erroneous plugin edit via wp-admin
-	    ) {
-	        return;
-	    }
-	
-	    global $pagenow;
-	
-	    if (is_admin() && isset($pagenow) && ('customize.php' == $pagenow)) {
-	        return;
-	    }
+    if (!defined('PRESSPERMIT_CLASSPATH_COMMON')) {
+        define('PRESSPERMIT_CLASSPATH_COMMON', __DIR__ . '/classes/PressShack');
+    }
 
-		define('PRESSPERMIT_VERSION', '3.9.4-rc3');
-	    
-	    if (!defined('PRESSPERMIT_READ_PUBLIC_CAP')) {
-	        define('PRESSPERMIT_READ_PUBLIC_CAP', 'read');
-	    }
-	
-	    if (!$presspermit_loaded_by_pro) {
-	        require_once(__DIR__ . '/includes/Core.php');
-	        new \PublishPress\Permissions\Core();
-	
-	        if (is_admin()) {
-	            require_once(__DIR__ . '/includes/CoreAdmin.php');
-	            new \PublishPress\Permissions\CoreAdmin();
-	        }
-	    }
-	
-	    if (!defined('PRESSPERMIT_LEGACY_HOOKS')) {
-	        define('PRESSPERMIT_LEGACY_HOOKS', false);
-	    }
-	
-	    // Non-critical intialization errors (may prevent integration with module or external plugin, but continue with initialization)
-	    if (defined('RVY_VERSION') && !defined('REVISIONARY_VERSION')) {
-	        presspermit_err('old_extension', ['module_title' => 'Revisionary', 'min_version' => '1.3.5']);
-	    }
-	
-	    require_once(PRESSPERMIT_CLASSPATH_COMMON . '/LibArray.php');
-	    class_alias('\PressShack\LibArray', '\PublishPress\Arr');
-	    class_alias('\PressShack\LibArray', '\PublishPress\Permissions\Arr');
-	    class_alias('\PressShack\LibArray', '\PublishPress\Permissions\DB\Arr');
-	    class_alias('\PressShack\LibArray', '\PublishPress\Permissions\UI\Arr');
-	    class_alias('\PressShack\LibArray', '\PublishPress\Permissions\UI\Dashboard\Arr');
-	
-	    require_once(PRESSPERMIT_CLASSPATH_COMMON . '/LibWP.php');
-	    class_alias('\PressShack\LibWP', '\PublishPress\PWP');
-	    class_alias('\PressShack\LibWP', '\PublishPress\Permissions\PWP');
-	    class_alias('\PressShack\LibWP', '\PublishPress\Permissions\DB\PWP');
-	    class_alias('\PressShack\LibWP', '\PublishPress\Permissions\UI\PWP');
-	    class_alias('\PressShack\LibWP', '\PublishPress\Permissions\UI\Dashboard\PWP');
-	    class_alias('\PressShack\LibWP', '\PublishPress\Permissions\UI\Handlers\PWP');
-	
-	    require_once(PRESSPERMIT_CLASSPATH . '/API.php');
-	    
-	    require_once(__DIR__ . '/db-config.php');
-	    require_once(__DIR__ . '/classes/PublishPress/Permissions.php');
-	
-	    presspermit();
-	}
-	
-	// negative priority to precede any default WP action handlers
-	if ($presspermit_loaded_by_pro) {
-		presspermit_load();	// Pro support
-	} else {
-		add_action('plugins_loaded', 'presspermit_load', -10);
-	}
-	
-	register_activation_hook(
-	    __FILE__, 
-	    function()
-	    {
-	        require_once( __DIR__.'/activation.php' );
-	    }
-	);
+    define('PRESSPERMIT_DB_VERSION', '2.0.1');
+
+    if (!defined('PRESSPERMIT_DEBUG')) {
+        define('PRESSPERMIT_DEBUG', false);
+    }
+
+    include_once(constant('PRESSPERMIT_DEBUG') ? __DIR__ . '/library/debug.php' : __DIR__ . '/library/debug_shell.php');
+
+    if (!function_exists('presspermit_err')) {
+        function presspermit_err($err_slug, $args = [])
+        {
+            if (is_admin()) {
+                require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');
+                return new \PublishPress\Permissions\ErrorNotice($err_slug, $args);
+            }
+        }
+    }
+
+    function presspermit_load() {
+        global $presspermit_loaded_by_pro;
+
+        $presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'vendor/publishpress/');
+
+        if (!function_exists('presspermit')) {
+            require_once(__DIR__ . '/functions.php');
+        }
+
+        // Critical errors that prevent initialization
+        if ((defined('PPC_FOLDER') && defined('PPC_BASENAME') && function_exists('ppc_deactivate') && presspermit_err('pp_core_active'))
+            || (defined('PP_VERSION') && function_exists('pp_get_otype_option') && presspermit_err('pp_legacy_active'))  // Press Permit 1.x (circa 2012) active
+            || (defined('SCOPER_VERSION') && function_exists('rs_get_user') && presspermit_err('rs_active') && ! is_admin())
+            || (constant('PRESSPERMIT_DEBUG') && is_admin() && presspermit_editing_plugin()) // avoid lockout in case of erroneous plugin edit via wp-admin
+        ) {
+            return;
+        }
+
+        global $pagenow;
+
+        if (is_admin() && isset($pagenow) && ('customize.php' == $pagenow)) {
+            return;
+        }
+
+        define('PRESSPERMIT_VERSION', '3.11.0-beta');
+
+        if (!defined('PRESSPERMIT_READ_PUBLIC_CAP')) {
+            define('PRESSPERMIT_READ_PUBLIC_CAP', 'read');
+        }
+
+        if (!$presspermit_loaded_by_pro) {
+            require_once(__DIR__ . '/includes/Core.php');
+            new \PublishPress\Permissions\Core();
+
+            if (is_admin()) {
+                require_once(__DIR__ . '/includes/CoreAdmin.php');
+                new \PublishPress\Permissions\CoreAdmin();
+            }
+        }
+
+        if (!defined('PRESSPERMIT_LEGACY_HOOKS')) {
+            define('PRESSPERMIT_LEGACY_HOOKS', false);
+        }
+
+        // Non-critical intialization errors (may prevent integration with module or external plugin, but continue with initialization)
+        if (defined('RVY_VERSION') && !defined('REVISIONARY_VERSION')) {
+            presspermit_err('old_extension', ['module_title' => 'Revisionary', 'min_version' => '1.3.5']);
+        }
+
+        require_once(PRESSPERMIT_CLASSPATH_COMMON . '/LibArray.php');
+        class_alias('\PressShack\LibArray', '\PublishPress\Arr');
+        class_alias('\PressShack\LibArray', '\PublishPress\Permissions\Arr');
+        class_alias('\PressShack\LibArray', '\PublishPress\Permissions\DB\Arr');
+        class_alias('\PressShack\LibArray', '\PublishPress\Permissions\UI\Arr');
+        class_alias('\PressShack\LibArray', '\PublishPress\Permissions\UI\Dashboard\Arr');
+
+        require_once(PRESSPERMIT_CLASSPATH_COMMON . '/LibWP.php');
+        class_alias('\PressShack\LibWP', '\PublishPress\PWP');
+        class_alias('\PressShack\LibWP', '\PublishPress\Permissions\PWP');
+        class_alias('\PressShack\LibWP', '\PublishPress\Permissions\DB\PWP');
+        class_alias('\PressShack\LibWP', '\PublishPress\Permissions\UI\PWP');
+        class_alias('\PressShack\LibWP', '\PublishPress\Permissions\UI\Dashboard\PWP');
+        class_alias('\PressShack\LibWP', '\PublishPress\Permissions\UI\Handlers\PWP');
+
+        require_once(PRESSPERMIT_CLASSPATH . '/API.php');
+
+        require_once(__DIR__ . '/db-config.php');
+        require_once(__DIR__ . '/classes/PublishPress/Permissions.php');
+
+        presspermit();
+    }
+
+    // negative priority to precede any default WP action handlers
+    if ($presspermit_loaded_by_pro) {
+        presspermit_load();	// Pro support
+    } else {
+        add_action('plugins_loaded', 'presspermit_load', -10);
+    }
+
+    register_activation_hook(
+        __FILE__,
+        function()
+        {
+            require_once( __DIR__.'/activation.php' );
+        }
+    );
 }

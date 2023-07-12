@@ -1,7 +1,7 @@
 *.code-workspace export-ignore
 .babelrc export-ignore
-.builder-post-rsync-filters-post export-ignore
-.builder-rsync-filters export-ignore
+.rsync-filters-post-build export-ignore
+.rsync-filters-pre-build export-ignore
 .distignore export-ignore
 .git export-ignore
 .gitattributes export-ignore
@@ -39,5 +39,3 @@ version.txt export-ignore
 webpack.config.js export-ignore
 yarn.lock export-ignore
 version.txt export-ignore
-libraries/composer.json export-ignore
-libraries/composer.lock export-ignore
