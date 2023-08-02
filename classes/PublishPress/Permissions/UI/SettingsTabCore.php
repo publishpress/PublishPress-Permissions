@@ -195,6 +195,12 @@ class SettingsTabCore
                                     <?php
                                     if (isset($obj->labels_pp)) {
                                         echo esc_html($obj->labels_pp->name);
+                                    } elseif ('wp_navigation' == $key) {    // @todo: use labels_pp property?
+                                        if (in_array(get_locale(), ['en_EN', 'en_US'])) {
+                                           _e('Nav Menus (Block)', 'press-permit-core');
+                                        } else {
+                                            echo $obj->labels->singular_name .= ' (' . __('Block', 'press-permit-core') . ')';
+                                        }
                                     } elseif (isset($obj->labels->name)) {
                                         echo esc_html($obj->labels->name);
                                     } else {

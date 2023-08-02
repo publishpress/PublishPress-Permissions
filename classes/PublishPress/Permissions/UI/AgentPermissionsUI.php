@@ -91,6 +91,14 @@ class AgentPermissionsUI
         echo "<option class='pp-opt-none' value=''>" . esc_html__('select...', 'press-permit-core') . '</option>';
 
         foreach ($type_objects as $_type => $type_obj) {
+            if ('wp_navigation' == $_type) {    // @todo: use labels_pp property?
+                if (in_array(get_locale(), ['en_EN', 'en_US'])) {
+                    $type_obj->labels->singular_name = __('Nav Menu (Block)', 'press-permit-core');
+                } else {
+                    $type_obj->labels->singular_name .= ' (' . __('Block', 'press-permit-core') . ')';
+                }
+            }
+
             echo "<option value='" . esc_attr($type_obj->name) . "'>" . esc_html($type_obj->labels->singular_name) . '</option>';
         }
 
