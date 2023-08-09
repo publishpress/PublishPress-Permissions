@@ -2,7 +2,7 @@ name: devworkspace_permissions_free
 services:
     terminal:
         build: ./docker
-        image: publishpress/dev-workspace-terminal:permissions-free-2.0
+        image: publishpress/dev-workspace-terminal:permissions-free-2
         command: ["zsh"]
         stdin_open: true
         tty: true
