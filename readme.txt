@@ -240,6 +240,10 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.11.1-rc =
+* Fixed : Gallery block in Gutenberg editor: error loading Image Size dropdown options
+* Fixed : Caption for Navigation Menus (for Navigation block) did not distinguish them from legacy Nav Menus
+
 = 3.10.0 - 19 Jun 2023 =
 * Compat : WooCommerce - Private Products were not listed in Shop, even if Read Permissions are assigned
 * Compat : ACF Extended - Extra Update button on Edit Term screen
