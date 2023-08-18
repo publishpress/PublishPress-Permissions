@@ -10,3 +10,4 @@ else
 fi
 
 echo "$DOCKER_HOST_IP"
+
