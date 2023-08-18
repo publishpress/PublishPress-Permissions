@@ -91,6 +91,14 @@ class AgentPermissionsUI
         echo "<option class='pp-opt-none' value=''>" . esc_html__('select...', 'press-permit-core') . '</option>';
 
         foreach ($type_objects as $_type => $type_obj) {
+            if ('wp_navigation' == $_type) {    // @todo: use labels_pp property?
+                if (in_array(get_locale(), ['en_EN', 'en_US'])) {
+                    $type_obj->labels->singular_name = __('Nav Menu (Block)', 'press-permit-core');
+                } else {
+                    $type_obj->labels->singular_name .= ' (' . __('Block', 'press-permit-core') . ')';
+                }
+            }
+
             echo "<option value='" . esc_attr($type_obj->name) . "'>" . esc_html($type_obj->labels->singular_name) . '</option>';
         }
 
@@ -835,6 +843,20 @@ class AgentPermissionsUI
             foreach (array_keys($exceptions[$via_src]) as $via_type) {
                 if ($via_type_obj = $pp->getTypeObject($via_src, $via_type)) {
                     $via_type_caption = $via_type_obj->labels->singular_name;
+
+                    if ('wp_navigation' == $via_type) {    // @todo: use labels_pp property?
+                        if (in_array(get_locale(), ['en_EN', 'en_US'])) {
+                            $via_type_caption = __('Nav Menu (Block)', 'press-permit-core');
+                        } else {
+                            $via_type_caption .= ' (' . __('Block', 'press-permit-core') . ')';
+                        }
+                    } elseif ('nav_menu' == $via_type) {    // @todo: use labels_pp property?
+                        if (in_array(get_locale(), ['en_EN', 'en_US'])) {
+                            $via_type_caption = __('Nav Menu (Legacy)', 'press-permit-core');
+                        } else {
+                            $via_type_caption .= ' (' . __('Legacy', 'press-permit-core') . ')';
+                        }
+                    }
                 } else
                     continue;
 
