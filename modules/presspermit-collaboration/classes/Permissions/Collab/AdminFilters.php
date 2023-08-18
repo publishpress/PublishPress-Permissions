@@ -194,6 +194,14 @@ class AdminFilters
             $taxonomy = $matches[1];
 
             if ($tx_obj = get_taxonomy($taxonomy)) {
+                if ('nav_menu' == $taxonomy) {  // @todo: use labels_pp property?
+                    if (in_array(get_locale(), ['en_EN', 'en_US'])) {
+                        $tx_obj->labels->singular_name = __('Nav Menu (Legacy)', 'press-permit-core');
+                    } else {
+                        $tx_obj->labels->singular_name .= ' (' . __('Legacy', 'press-permit-core') . ')';
+                    }
+                }
+
                 $role_title = sprintf(esc_html__('%s Manager', 'press-permit-core'), $tx_obj->labels->singular_name);
             }
         }
