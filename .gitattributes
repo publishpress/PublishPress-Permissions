@@ -25,7 +25,6 @@ builder.yml export-ignore
 codeception.dist.yml export-ignore
 cs export-ignore
 dev-workspace export-ignore
-dist export-ignore
 jsconfig.json export-ignore
 node_modules export-ignore
 package-lock.json export-ignore
@@ -39,3 +38,5 @@ version.txt export-ignore
 webpack.config.js export-ignore
 yarn.lock export-ignore
 version.txt export-ignore
+/vendor export-ignore
+/dist export-ignore
