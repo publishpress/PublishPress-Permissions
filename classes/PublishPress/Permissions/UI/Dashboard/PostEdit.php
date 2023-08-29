@@ -5,6 +5,8 @@ require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/ItemEdit.php');
 
 class PostEdit
 {
+    var $item_exceptions_ui = false;
+
     public function __construct()
     {
         wp_enqueue_style('presspermit-item-edit', PRESSPERMIT_URLPATH . '/common/css/item-edit.css', [], PRESSPERMIT_VERSION);
