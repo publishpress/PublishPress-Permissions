@@ -466,7 +466,7 @@ class CollabHooks
         if (isset($options['presspermit_enabled_taxonomies']))
             $options['presspermit_enabled_taxonomies'] = array_merge(
                 maybe_unserialize($options['presspermit_enabled_taxonomies']), 
-                ['nav_menu' => '1']
+                []
             );
 
         if (!empty($options['presspermit_default_privacy'])) {
