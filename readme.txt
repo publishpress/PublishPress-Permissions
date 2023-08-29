@@ -241,8 +241,11 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 == Changelog ==
 
 = 3.11.1-rc =
+* Fixed : Rest API access error on some sites (potentially preventing login)
 * Fixed : Gallery block in Gutenberg editor: error loading Image Size dropdown options
 * Fixed : Caption for Navigation Menus (for Navigation block) did not distinguish them from legacy Nav Menus
+* Fixed : PHP 8.1 - Warning for dynamic property creation in post editor
+* Compat : Peepso - Non-administrators couldn't submit front end posts on PHP >= 8.1
 
 = 3.10.0 - 19 Jun 2023 =
 * Compat : WooCommerce - Private Products were not listed in Shop, even if Read Permissions are assigned
