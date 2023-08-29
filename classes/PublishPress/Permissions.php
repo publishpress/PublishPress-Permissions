@@ -466,10 +466,10 @@ class Permissions
                 // Avoid redundant execution if no late changes were made to roles, capabilities, types or statuses 
                 if (!defined('PRESSPERMIT_STATUSES_VERSION')) { // Status Control module causes late registration of statuses
                     $allcaps_hash = md5(serialize($user->allcaps));
-                    $site_roles_hash = md5(serialize($user->site_roles));
-                    $wp_roles_hash = md5(serialize($wp_roles));
-                    $post_types_hash = md5(serialize($wp_post_types));
-                    $post_statuses_hash = md5(serialize($wp_post_statuses));
+                    $site_roles_hash = md5(serialize(array_keys($user->site_roles)));
+                    $wp_roles_hash = md5(serialize(array_keys($wp_roles)));
+                    $post_types_hash = md5(serialize(array_keys($wp_post_types)));
+                    $post_statuses_hash = md5(serialize(array_keys($wp_post_statuses)));
 
                     static $last_allcaps_hash = null;
                     static $last_site_roles_hash = null;
