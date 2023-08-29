@@ -241,7 +241,13 @@ class PostSaveHierarchical
         } else
             return $status;
 
-        $_post = get_post($post_id);
+        if (!$_post = get_post($post_id)) {
+            return $status;
+        }
+
+        if (empty($_post->post_status)) {
+            return $status;
+        }
 
         if ($saved_status_object = get_post_status_object($_post->post_status))
             $already_published = ($saved_status_object->public || $saved_status_object->private);
