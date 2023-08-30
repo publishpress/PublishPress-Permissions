@@ -467,7 +467,7 @@ class Permissions
                 if (!defined('PRESSPERMIT_STATUSES_VERSION')) { // Status Control module causes late registration of statuses
                     $allcaps_hash = md5(serialize($user->allcaps));
                     $site_roles_hash = md5(serialize(array_keys($user->site_roles)));
-                    $wp_roles_hash = md5(serialize(array_keys($wp_roles)));
+                    $wp_roles_hash = md5(serialize(array_keys($wp_roles->role_objects)));
                     $post_types_hash = md5(serialize(array_keys($wp_post_types)));
                     $post_statuses_hash = md5(serialize(array_keys($wp_post_statuses)));
 
