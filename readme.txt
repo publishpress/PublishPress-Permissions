@@ -240,7 +240,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.11.1-rc =
+= 3.11.1 - 30 Aug 2023 =
 * Fixed : Rest API access error on some sites (potentially preventing login)
 * Fixed : Gallery block in Gutenberg editor: error loading Image Size dropdown options
 * Fixed : Caption for Navigation Menus (for Navigation block) did not distinguish them from legacy Nav Menus
