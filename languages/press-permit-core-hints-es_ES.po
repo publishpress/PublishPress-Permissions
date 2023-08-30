@@ -1,0 +1,3545 @@
+# Translation of Plugins - PublishPress Permissions: Control User Access for Posts, Pages, Categories, Tags - Stable (latest release) in Spanish (Spain)
+# This file is distributed under the same license as the Plugins - PublishPress Permissions: Control User Access for Posts, Pages, Categories, Tags - Stable (latest release) package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Plugins - PublishPress Permissions: Control User Access "
+"for Posts, Pages, Categories, Tags - Stable (latest release)\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-10-06 19:16-0400\n"
+"PO-Revision-Date: 2023-08-30 13:00+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 3.3\n"
+
+#: classes/PublishPress/Permissions/Constants.php:19
+msgid ""
+"Specific Permissions: restrictions ('Blocked') take priority over additions "
+"('Enabled')"
+msgstr ""
+"Permisos específicos: las restricciones («Bloqueado») tienen prioridad sobre "
+"las adiciones («Activado»)"
+
+#: classes/PublishPress/Permissions/Constants.php:20
+msgid ""
+"Specific Permissions: restrictions ('Blocked') can be applied to custom-"
+"defined groups"
+msgstr ""
+"Permisos específicos: se pueden aplicar restricciones («Bloqueados») a "
+"grupos definidos por el usuario"
+
+#: classes/PublishPress/Permissions/Constants.php:21
+msgid ""
+"Supplemental roles assignment available for {All} and {Anonymous} metagroups"
+msgstr ""
+"Asignación de roles suplementarios disponible para los grupos meta {All} y "
+"{Anonymous}"
+
+#: classes/PublishPress/Permissions/Constants.php:22
+msgid ""
+"Allow the {All} and {Anonymous} metagroups to be granted specific reading "
+"permissions for private content"
+msgstr ""
+"Permitir que se concedan a {All} y a los grupos meta {Anonymous} permisos de "
+"lectura específicos para contenidos privados"
+
+#: classes/PublishPress/Permissions/Constants.php:23
+msgid ""
+"PRO: Users who have specific editing permissions for a post or attachment "
+"can also delete it"
+msgstr ""
+"PRO: Los usuarios que tienen permisos de edición para una entrada o un "
+"archivo adjunto también pueden eliminarlo"
+
+#: classes/PublishPress/Permissions/Constants.php:24
+msgid ""
+"PRO: Users who have custom editing permissions for an attachment can also "
+"delete it"
+msgstr ""
+"PRO: Los usuarios que tienen permisos de edición personalizados para un "
+"archivo adjunto también pueden eliminarlo"
+
+#: classes/PublishPress/Permissions/Constants.php:25
+msgid ""
+"Disable front end filtering if logged user is a content administrator "
+"(normally filter to force inclusion of readable private posts in get_pages() "
+"listing, post counts, etc."
+msgstr ""
+"Desactiva el filtrado de la portada si el usuario conectado es un "
+"administrador de contenidos (normalmente se filtra para forzar la inclusión "
+"de entradas privadas legibles en el listado `get_pages()`, recuentos de "
+"entradas, etc."
+
+#: classes/PublishPress/Permissions/Constants.php:26
+msgid ""
+"Disable front end filtering for all users (subject to limitation by "
+"PP_UNFILTERED_FRONT_TYPES)"
+msgstr ""
+"Desactiva el filtrado de la portada por todos los usuarios (con la "
+"limitación de `PP_UNFILTERED_FRONT_TYPES`)"
+
+#: classes/PublishPress/Permissions/Constants.php:27
+msgid ""
+"Comma-separated list of post types to limit the effect of "
+"PP_UNFILTERED_FRONT and apply_filters( 'presspermit_skip_cap_filtering' )"
+msgstr ""
+"Lista separada por comas de los tipos de contenido para limitar el efecto de "
+"`PP_UNFILTERED_FRONT` y `apply_filters( 'presspermit_skip_cap_filtering' )`"
+
+#: classes/PublishPress/Permissions/Constants.php:28
+msgid ""
+"Specific Permissions: additions ('Enabled') are not applied, cannot be "
+"assigned"
+msgstr ""
+"Permisos específicos: los añadidos («Activado») no se aplican, no se pueden "
+"asignar"
+
+#: classes/PublishPress/Permissions/Constants.php:29
+msgid "Don't assign or apply specific permissions for the 'post' type"
+msgstr "No asignar o aplicar permisos específicos para el tipo de entrada"
+
+#: classes/PublishPress/Permissions/Constants.php:30
+msgid "Don't assign or apply specific permissions for the 'page' type"
+msgstr "No asignar o aplicar permisos específicos para el tipo de página"
+
+#: classes/PublishPress/Permissions/Constants.php:31
+msgid "Don't assign or apply specific permissions for the 'media' type"
+msgstr "No asignar o aplicar permisos específicos para el tipo de medios"
+
+#: classes/PublishPress/Permissions/Constants.php:32
+msgid ""
+"Don't assign or apply specific permissions for the specified custom post type"
+msgstr ""
+"No asignar o aplicar permisos específicos para el tipo de contenido "
+"personalizado especificado"
+
+#: classes/PublishPress/Permissions/Constants.php:38
+msgid "Include scheduled posts in the posts query if user can edit them"
+msgstr ""
+"Incluir las entradas programadas en la consulta de entradas si el usuario "
+"puede editarlas"
+
+#: classes/PublishPress/Permissions/Constants.php:39
+msgid "Don't filter term post counts in get_terms() call"
+msgstr ""
+"No filtrar los recuentos de los términos de las entradas en la llamada "
+"`get_terms()`"
+
+#: classes/PublishPress/Permissions/Constants.php:40
+msgid "Leave unreadable posts on WP Navigation Menus"
+msgstr "Dejar las entradas no legibles en los menús de navegación de WP"
+
+#: classes/PublishPress/Permissions/Constants.php:41
+msgid "Leave terms with no readable posts on WP Navigation Menus"
+msgstr ""
+"Dejar los términos sin entradas legibles en los menús de navegación de WP"
+
+#: classes/PublishPress/Permissions/Constants.php:47
+msgid "Filter priority for 'get_pages' filter (default: 1)"
+msgstr "Prioridad de filtrado para el filtro `get_pages` (por defecto: 1)"
+
+#: classes/PublishPress/Permissions/Constants.php:48
+msgid ""
+"Don't include readable private pages in the Pages widget or other "
+"wp_list_pages() / get_pages() results    "
+msgstr ""
+"No incluye páginas privadas legibles en el widget Páginas o en otros "
+"resultados de `wp_list_pages()` / `get_pages()`    "
+
+#: classes/PublishPress/Permissions/Constants.php:49
+msgid ""
+"If some pages have been suppressed from get_pages() results, change child "
+"pages' corresponding post_parent values to a visible ancestor"
+msgstr ""
+"Si se han suprimido algunas páginas de los resultados de `get_pages()`, hay "
+"que cambiar los valores parentales correspondientes de `post_parent` a un "
+"ancestro visible"
+
+#: classes/PublishPress/Permissions/Constants.php:50
+msgid ""
+"Never modify the post_parent value in the get_pages() result set, even if "
+"some pages have been suppressed"
+msgstr ""
+"No modificar nunca el valor de `post_parent` en el conjunto de resultados "
+"`get_pages()`, aunque se hayan suprimido algunas páginas"
+
+#: classes/PublishPress/Permissions/Constants.php:51
+msgid ""
+"For performance, change the get_pages() database query to return only a "
+"subset of fields, excluding post_content"
+msgstr ""
+"Para mejorar el rendimiento, modifica la consulta a la base de datos "
+"`get_pages()` para que sólo devuelva un subconjunto de campos, excluyendo "
+"`post_content`"
+
+#: classes/PublishPress/Permissions/Constants.php:52
+msgid ""
+"PRO: Don't apply content teaser to get_pages() results (leave unreadable "
+"posts hidden)"
+msgstr ""
+"PRO: No aplicar el avance de contenido a los resultados de `get_pages()` "
+"(dejar ocultas las entradas no legibles)"
+
+#: classes/PublishPress/Permissions/Constants.php:58
+msgid ""
+"If some terms have been suppressed from get_terms() results, change child "
+"terms' corresponding parent values to a visible ancestor"
+msgstr ""
+"Si se han suprimido algunos términos de los resultados de `get_terms()`, hay "
+"que cambiar los valores parentales correspondientes de los términos hijos a "
+"un ancestro visible"
+
+#: classes/PublishPress/Permissions/Constants.php:59
+msgid ""
+"Never modify the parent value in the get_terms() result set, even if some "
+"terms have been suppressed"
+msgstr ""
+"No modificar nunca el valor del padre en el conjunto de resultados de "
+"`get_terms()`, aunque se hayan suprimido algunos términos"
+
+#: classes/PublishPress/Permissions/Constants.php:65
+msgid ""
+"Leave Media Library with normal access criteria based on user's role "
+"capabilities "
+msgstr ""
+"Dejar la biblioteca de medios con los criterios de acceso normales basados "
+"en las capacidades del perfil del usuario "
+
+#: classes/PublishPress/Permissions/Constants.php:71
+msgid ""
+"On Users listing, Permission groups in custom column are list filter links "
+"instead of group edit links"
+msgstr ""
+"En la lista de usuarios, los grupos de permisos en la columna personalizada "
+"son enlaces de filtro de lista en lugar de enlaces de edición de grupos"
+
+#: classes/PublishPress/Permissions/Constants.php:72
+msgid ""
+"Unlock Permissions > Settings > Core > Admin Back End > 'Hide non-editable "
+"posts'"
+msgstr ""
+"Desbloquear Permisos > Ajustes > Núcleo > Administración > Ocultar entradas "
+"no editables"
+
+#: classes/PublishPress/Permissions/Constants.php:73
+msgid ""
+"Within the async-upload.php script, filtering author's retrieval of the "
+"attachment they just uploaded"
+msgstr ""
+"Dentro del script `async-upload.php`, filtrar la recuperación de los autores "
+"del archivo adjunto que acaban de subir"
+
+#: classes/PublishPress/Permissions/Constants.php:74
+msgid "Don't filter comment display or moderation within wp-admin"
+msgstr ""
+"No filtrar la visualización de los comentarios o la moderación dentro de wp-"
+"admin"
+
+#: classes/PublishPress/Permissions/Constants.php:81
+msgid ""
+"If propagating permissions are assigned to a page branch, overwrite any "
+"explicitly assigned permissions in sub-pages"
+msgstr ""
+"Si se asignan permisos de propagación a una rama de la página, se "
+"sobrescriben los permisos asignados explícitamente en las subpáginas"
+
+#: classes/PublishPress/Permissions/Constants.php:82
+msgid ""
+"Max number of specific permissions to insert in a single database query "
+"(default 1000)"
+msgstr ""
+"Número máximo de permisos específicos a insertar en una sola consulta a la "
+"base de datos (por defecto 1000)"
+
+#: classes/PublishPress/Permissions/Constants.php:83
+msgid ""
+"Don't tweak the admin menu indexes to position Permissions menu under Users"
+msgstr ""
+"No modifiques los índices del menú de administración para posicionar el menú "
+"Permisos bajo Usuarios"
+
+#: classes/PublishPress/Permissions/Constants.php:84
+msgid ""
+"Don't add a Permissions menu. Instead, add menu items to the Users and "
+"Settings menus."
+msgstr ""
+"No añadir un menú de permisos. En su lugar, añade elementos de menú a los "
+"menús Usuarios y Ajustes."
+
+#: classes/PublishPress/Permissions/Constants.php:90
+msgid "Customize 'Permission Groups' caption"
+msgstr "Personalizar la leyenda de «Grupos de permisos»"
+
+#: classes/PublishPress/Permissions/Constants.php:91
+msgid "Customize 'Permission Groups' caption on user profile"
+msgstr ""
+"Personalizar la descripción de la leyenda «Grupos de permisos» en perfil de "
+"usuario"
+
+#: classes/PublishPress/Permissions/Constants.php:92
+msgid "Only one group is selectable on Add User screen"
+msgstr ""
+"Sólo se puede seleccionar un grupo en la pantalla de «Añadir nuevo usuario»"
+
+#: classes/PublishPress/Permissions/Constants.php:93
+msgid "Only one group is selectable on Edit User screen"
+msgstr ""
+"Sólo se puede seleccionar un grupo en la pantalla de «Editar el usuario»"
+
+#: classes/PublishPress/Permissions/Constants.php:94
+msgid "Customize description under 'Permission Groups' caption "
+msgstr "Personalizar la descripción debajo de la leyenda «Grupos de Permisos» "
+
+#: classes/PublishPress/Permissions/Constants.php:95
+msgid ""
+"Max number of non-hierarchical posts / terms to display at one time (per "
+"page)"
+msgstr ""
+"Número máximo de entradas no jerárquicas y términos a mostrar a la vez (por "
+"página)"
+
+#: classes/PublishPress/Permissions/Constants.php:96
+msgid ""
+"Max number of hierarchical posts / terms to display at one time (per page)"
+msgstr ""
+"Número máximo de entradas jerárquicas y términos a mostrar a la vez (por "
+"página)"
+
+#: classes/PublishPress/Permissions/Constants.php:97
+msgid ""
+"Disable auto-determination of how many levels of page tree to make visble by "
+"default. Instead, use specified value."
+msgstr ""
+"Desactivar la determinación automática de cuántos niveles del árbol de "
+"páginas se muestran por defecto. En su lugar, utiliza el valor especificado."
+
+#: classes/PublishPress/Permissions/Constants.php:98
+msgid ""
+"Target number of visible pages/terms, used for auto-determination of number "
+"of visible levels"
+msgstr ""
+"Número objetivo de páginas/términos visibles, utilizado para la "
+"autodeterminación del número de niveles visibles"
+
+#: classes/PublishPress/Permissions/Constants.php:99
+msgid "Make search function on the post selection metabox look at post content"
+msgstr ""
+"Hacer que la función de búsqueda en la caja meta de selección de la entrada "
+"consulte el contenido de la entrada"
+
+#: classes/PublishPress/Permissions/Constants.php:100
+msgid "Make search function on the post selection metabox look at post excerpt"
+msgstr ""
+"Hacer que la función de búsqueda en la caja meta de selección de la entrada "
+"consulte el extracto de la entrada"
+
+#: classes/PublishPress/Permissions/Constants.php:106
+msgid "Search by last name instead of display name"
+msgstr "Buscar por el apellido en lugar del nombre visible"
+
+#: classes/PublishPress/Permissions/Constants.php:107
+msgid "User field to search by default"
+msgstr "Campo de usuario a buscar por defecto"
+
+#: classes/PublishPress/Permissions/Constants.php:108
+msgid "User meta fields selectable for search (comma-separated)"
+msgstr ""
+"Campos meta del usuario seleccionables para la búsqueda (separados por comas)"
+
+#: classes/PublishPress/Permissions/Constants.php:109
+msgid "User meta fields which should be treated as numeric (comma-separated)"
+msgstr ""
+"Campos meta del usuario que deben ser tratados como numéricos (separados por "
+"comas)"
+
+#: classes/PublishPress/Permissions/Constants.php:110
+msgid "User meta fields which should be treated as boolean (comma-separated)"
+msgstr ""
+"Campos meta del usuario que deben ser tratados como booleanos (separados por "
+"comas)"
+
+#: classes/PublishPress/Permissions/Constants.php:111
+msgid "Use display name for search results instead of user_login"
+msgstr ""
+"Utilizar el nombre visible para los resultados de la búsqueda en lugar de "
+"`user_login`"
+
+#: classes/PublishPress/Permissions/Constants.php:117
+msgid ""
+"Don't auto-assign role metagroups for all users. Instead, assign per-user at "
+"first login."
+msgstr ""
+"No asignes automáticamente perfiles de grupos meta para todos los usuarios. "
+"En su lugar, asigna por usuario en el primer inicio de sesión."
+
+#: classes/PublishPress/Permissions/Constants.php:118
+msgid ""
+"When synchronizing role metagroups to currently defined WP roles, don't "
+"delete groups for previously defined WP roles."
+msgstr ""
+"Al sincronizar los grupos meta de los perfiles con los perfiles de WP "
+"definidos actualmente, no se deben eliminar los grupos de los perfiles de WP "
+"definidos anteriormente."
+
+#: classes/PublishPress/Permissions/Constants.php:124
+msgid ""
+"Force detection of WP user roles which are appended dynamically but not "
+"stored to the WP database."
+msgstr ""
+"Forzar la detección de los perfiles de usuario de WP que se añaden "
+"dinámicamente pero no se almacenan en la base de datos de WP."
+
+#: classes/PublishPress/Permissions/Constants.php:130
+msgid ""
+"To save memory on front end access, don't register any filters related to "
+"content editing"
+msgstr ""
+"Para ahorrar memoria en el acceso a la portada, no registrar ningún filtro "
+"relacionado con la edición de contenidos"
+
+#: classes/PublishPress/Permissions/Constants.php:131
+msgid ""
+"Attached media do not have any comments, so don't append clauses to comment "
+"queries for them"
+msgstr ""
+"Los medios adjuntos no tienen comentarios, por lo que no hay que añadir "
+"cláusulas a las consultas de comentarios para ellos"
+
+#: classes/PublishPress/Permissions/Constants.php:132
+msgid ""
+"Reduce overhead of pages query (in get_pages() and wp-admin) by defaulting "
+"fields to a set list that does not include post_content "
+msgstr ""
+"Reducir la sobrecarga de la consulta para las páginas (en `get_pages()` y "
+"`wp-admin`) por los campos por defecto a una lista de conjunto que no "
+"incluye `post_content` "
+
+#: classes/PublishPress/Permissions/Constants.php:133
+msgid ""
+"Reduce overhead of wp-admin posts query by defaulting fields to a set list "
+"that does not include post_content "
+msgstr ""
+"Reducir la sobrecarga de la consulta para las entradas de wp-admin por los "
+"campos por defecto a una lista de conjunto que no incluye `post_content` "
+
+#: classes/PublishPress/Permissions/Constants.php:134
+msgid ""
+"Reduce overhead of wp-admin Media query by defaulting fields to a set list "
+"that does not include post_content "
+msgstr ""
+"Reducir la sobrecarga de la consulta para los medios de wp-admin por los "
+"campos por defecto a una lista de conjunto que no incluye `post_content` "
+
+#: classes/PublishPress/Permissions/Constants.php:135
+msgid ""
+"Reduce overhead of wp-admin query for specified custom post type by "
+"defaulting fields to a set list that does not include post_content "
+msgstr ""
+"Reducir la sobrecarga de la consulta para el tipo de contenido personalizado "
+"de wp-admin especificado por los campos por defecto a una lista de conjunto "
+"que no incluye `post_content` "
+
+#: classes/PublishPress/Permissions/Constants.php:141
+msgid ""
+"Don't restore pre-4.4 behavior of not requiring 'publish' status for "
+"inclusion in page uri hierarchy"
+msgstr ""
+"No restablecer el comportamiento anterior a la versión 4.4 de no requerir el "
+"estado «publicar» para su inclusión en la jerarquía de uri de la página"
+
+#: classes/PublishPress/Permissions/Constants.php:178
+msgid ""
+"Development use only (suppresses post_status = 'publish' clause for "
+"unfiltered post types with anonymous user)"
+msgstr ""
+"Sólo para uso de desarrollo (suprime la cláusula post_status = `publish`para "
+"los tipos de contenido no filtrados con usuario anónimo)"
+
+#: classes/PublishPress/Permissions/Constants.php:179
+msgid ""
+"Development use only (on front end, do not replace 'post_status = 'publish'' "
+"clause with filtered equivalent)"
+msgstr ""
+"Sólo para uso de desarrollo (en la portada, no sustituye la cláusula "
+"`post_status = publish` por su equivalente filtrado)"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:44
+msgid ""
+"If disabled, manually \"blocked\" posts can be unblocked by specific "
+"Category / Term Permissions."
+msgstr ""
+"Si se desactiva, las entradas «bloqueadas» manualmente pueden ser "
+"desbloqueadas por medio de permisos específicos de categoría/término."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:47
+msgid ""
+"For most installations, leave this disabled. If enabled, corresponding edit "
+"and delete capabilities must be added to existing roles."
+msgstr ""
+"Para la mayoría de las instalaciones, deja esta opción desactivada. Si se "
+"activa, se deben añadir las correspondientes capacidades de edición y "
+"eliminación a los perfiles existentes."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:50
+msgid ""
+"For most installations, leave this disabled. See Editing tab for specialized "
+"Media Library permissions."
+msgstr ""
+"Para la mayoría de las instalaciones, deja esta opción desactivada. Ve la "
+"pestaña de Edición para los permisos especializados de la Biblioteca de "
+"medios."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:53
+msgid ""
+"For most installations, leave this disabled. For specialized Media Library "
+"permissions, install the Collaborative Publishing module."
+msgstr ""
+"Para la mayoría de las instalaciones, deja esta opción desactivada. Para "
+"obtener permisos especializados para la biblioteca de medios, hay que "
+"instalar el módulo de publicación colaborativa."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:56
+msgid ""
+"To customize bbPress forum permissions, activate the Compatibility Pack "
+"module."
+msgstr ""
+"Para personalizar los permisos del foro de bbPress, activa el módulo "
+"Compatibility pack."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:59
+msgid ""
+"To customize bbPress forum permissions, activate your Permissions Pro "
+"license key."
+msgstr ""
+"Para personalizar los permisos del foro de bbPress, activa tu clave de "
+"licencia Permissions Pro."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:62
+msgid "Remove the \"Private:\" and \"Protected\" prefix from Post, Page titles"
+msgstr ""
+"Quitar el prefijo «Privado:» y «Protegido» de los títulos de las entradas y "
+"páginas"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:65
+msgid ""
+"Remove unreadable Menu Items. If menu rendering problems occur with a third "
+"party plugin, disable this setting."
+msgstr ""
+"Eliminar elementos de menú ilegibles. Si se producen problemas de "
+"procesamiento del menú con un plugin de terceros, desactiva esta "
+"configuración."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:68
+msgid ""
+"Unmodified from WordPress default behavior. To enable filtering, remove "
+"constant definition PP_ADMIN_READONLY_LISTABLE."
+msgstr ""
+"No se ha modificado el comportamiento por defecto de WordPress. Para activar "
+"el filtrado, elimina la definición de la constante "
+"`PP_ADMIN_READONLY_LISTABLE`."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:71
+msgid ""
+"To customize editing permissions, enable the Collaborative Publishing module."
+msgstr ""
+"Para personalizar los permisos de edición, activa el módulo de publicación "
+"colaborativa."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:74
+msgid "Note: Groups and Roles are always displayed in \"Edit User\""
+msgstr ""
+"Nota: Grupos y perfiles están siempre visualizado en «Editar el usuario»"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:79
+msgid ""
+"Note: if you disable these settings, the stored values (including Role Usage "
+"adjustments) are retained but ignored."
+msgstr ""
+"Nota: si desactiva estos ajustes, los valores almacenados (incluidos los "
+"ajustes de uso de perfiles) se conservan pero se ignoran."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:82
+msgid ""
+"Most sites don't need advanced settings. But enable them if you need to work "
+"with custom WP Roles or apply performance tweaks."
+msgstr ""
+"La mayoría de los sitios no necesitan los ajustes avanzados. Pero "
+"habilítalos si necesitas trabajar con perfiles personalizados de WP o "
+"aplicar ajustes de rendimiento."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:85
+msgid "Disable Permissions filtering for users who are not logged in."
+msgstr "Desactivar el filtrado de permisos para los usuarios no conectados."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:88
+msgid ""
+"If checked, pages blocked from the \"All\" or \"Logged In\" groups will "
+"still be listed to Administrators."
+msgstr ""
+"Si está marcada, las páginas bloqueadas de los grupos «Todos» o «Conectados» "
+"seguirán apareciendo para los administradores."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:91
+msgid ""
+"If enabled, users with the pp_set_read_exceptions capability in the WP role "
+"can set reading permissions for their editable posts."
+msgstr ""
+"Si se activa, los usuarios con la capacidad `pp_set_read_exceptions` en el "
+"perfil de WP pueden establecer permisos de lectura para sus entradas "
+"editables."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:94
+msgid ""
+"Display a role dropdown alongside the user search input box to narrow "
+"results."
+msgstr ""
+"Mostrar un desplegable de perfiles junto a la casilla de búsqueda del "
+"usuario para afinar los resultados."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:97
+msgid "Display additional descriptions in role assignment and options UI."
+msgstr ""
+"Mostrar descripciones adicionales en la interfaz de asignación de perfiles y "
+"opciones."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:100
+msgid ""
+"Display descriptive captions for additional functionality provided by "
+"missing or deactivated modules (Permissions Pro package)."
+msgstr ""
+"Mostrar subtítulos descriptivos para la funcionalidad adicional "
+"proporcionada por los módulos ausentes o desactivados (paquete Permissions "
+"Pro)."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:103
+msgid ""
+"Detect user roles which are appended dynamically but not stored to the WP "
+"database. May be useful for sites that sync with Active Directory or other "
+"external user registration systems."
+msgstr ""
+"Detecta los perfiles de usuario que se añaden dinámicamente pero no se "
+"almacenan en la base de datos de WP. Puede ser útil para los sitios que se "
+"sincronizan con Active Directory u otros sistemas de registro de usuarios "
+"externos."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:106
+#, php-format
+msgid ""
+"You can also %1$s add Permissions administration capabilities to a WordPress "
+"role%2$s:"
+msgstr ""
+"También puedes %1$s añadir capacidades de administración de permisos a un "
+"perfil de WordPress%2$s:"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:109
+#, php-format
+msgid ""
+"You can add Permissions administration capabilities to a WordPress role "
+"using %1$s:"
+msgstr ""
+"Puedes añadir capacidades de administración de permisos a un perfil de "
+"WordPress utilizando %1$s:"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:114
+#, php-format
+msgid ""
+"Settings related to content editing permissions, provided by the %s module."
+msgstr ""
+"Ajustes relacionados con los permisos de edición de contenidos, "
+"proporcionados por el módulo %s."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:114
+msgid "Collaborative Publishing"
+msgstr "Publicación colaborativa"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:117
+msgid ""
+"If this setting is disabled, a specific role can be given capabilities: "
+"list_others_posts, list_others_pages, etc."
+msgstr ""
+"Si este ajuste está desactivado, se puede dar a un perfil específico "
+"capacidades: `list_others_posts`, `list_others_pages`, etc."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:120
+msgid ""
+"Display a custom column on Edit Posts screen for all related taxonomies "
+"which are enabled for Permissions filtering."
+msgstr ""
+"Mostrar una columna personalizada en la pantalla de «Editar entradas» para "
+"todas las taxonomías relacionadas que están habilitadas para el filtrado de "
+"permisos."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:123
+msgid ""
+"Allows creation of a new post (of any type) for each selected user, using an "
+"existing post as the pattern."
+msgstr ""
+"Permite crear una nueva entrada (de cualquier tipo) para cada usuario "
+"seleccionado, utilizando una entrada existente como patrón."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:126
+msgid ""
+"Users who do not meet this site-wide role requirement will not be able to "
+"publish new top-level pages (Parent = \"Main Page\").  They will also be "
+"unable to move a currently published page from \"Main Page\" to a different "
+"Page Parent."
+msgstr ""
+"Los usuarios que no cumplan este requisito de perfil en todo el sitio no "
+"podrán publicar nuevas páginas de nivel superior (Padre = `Página "
+"principal`).  Tampoco podrán mover una página actualmente publicada de "
+"`Página principal` a una página padre diferente."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:129
+msgid ""
+"Remove Edit Form elements with these (comma-separated) html IDs from users "
+"who do not have full editing capabilities for the post/page."
+msgstr ""
+"Elimina los elementos del formulario de edición con estos IDs html "
+"(separados por comas) de los usuarios que no tienen capacidad de edición "
+"completa para la entrada/página."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:132
+msgid ""
+"The following settings are currently overridden by the constant "
+"PP_MEDIA_LIB_UNFILTERED (defined in wp-config.php or some other file you "
+"maintain). Media Library access will not be altered by Permissions."
+msgstr ""
+"Los siguientes ajustes son actualmente anulados por la constante "
+"`PP_MEDIA_LIB_UNFILTERED` (definida en `wp-config.php` o algún otro archivo "
+"que usted mantenga). El acceso a la biblioteca de medios no será alterado "
+"por los permisos."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:135
+msgid ""
+"To allow a role to view all media regardless of this setting, give it the "
+"pp_list_all_files capability."
+msgstr ""
+"Para permitir que un perfil vea todos los medios independientemente de este "
+"ajuste, dale la capacidad `pp_list_all_files`."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:141
+msgid ""
+"To enable a specific role instead, give it the list_others_unattached_files "
+"capability. Note that Media Editors can always view and edit these files."
+msgstr ""
+"Para activar un perfil específico, dale la capacidad "
+"`list_others_unattached_files`. Ten en cuenta que los editores de medios "
+"siempre pueden ver y editar estos archivos."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:147
+msgid ""
+"If disabled, access may be blocked based on the attachment page. In that "
+"case, a role can be given the edit_own_attachments capability, or "
+"Permissions for a specific file."
+msgstr ""
+"Si se desactiva, se puede bloquear el acceso en función de la página de "
+"archivos adjuntos. En ese caso, se puede dar a un perfil la capacidad "
+"edit_own_attachments, o los permisos para un archivo específico."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:150
+msgid ""
+"Allow non-Administrators to rename menu items they cannot fully edit. Menu "
+"items will be locked into current positions."
+msgstr ""
+"Permitir que los no administradores renombren los elementos del menú que no "
+"pueden editar completamente. Los elementos del menú permanecerán bloqueados "
+"en las posiciones actuales."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:153
+msgid ""
+"Prevent creation or editing of custom items for non-Administrators who lack "
+"edit_theme_options capability."
+msgstr ""
+"Evitar la creación o edición de elementos personalizados para los no "
+"administradores que no tienen la capacidad de `edit_theme_options`."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:156
+msgid ""
+"Prevent non-Administrators with user editing permissions from editing a "
+"higher-level user or assigning a role higher than their own."
+msgstr ""
+"Evitar que los no administradores con permisos de edición de usuarios editen "
+"un usuario de nivel superior o asignen un perfil superior al suyo."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:159
+msgid "Fork published posts only."
+msgstr "Bifurcar sólo las entradas publicadas."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:162
+msgid ""
+"If a user lacks the edit_others_posts capability for the post type, they "
+"cannot fork other's posts either."
+msgstr ""
+"Si un usuario carece de la capacidad de edit_others_posts para el tipo de "
+"contenido, tampoco puede bifurcar las entradas de otros."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:165
+msgid ""
+"If enabled, the capabilities pp_set_edit_exceptions, "
+"pp_set_associate_exceptions, etc. will be honored. See list of capabilities "
+"below."
+msgstr ""
+"Si se activa, se respetarán las capacidades `pp_set_edit_exceptions`, "
+"`pp_set_associate_exceptions`, etc. Consulta la lista de capacidades más "
+"abajo."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:170
+#, php-format
+msgid ""
+"Once your import task is complete, you can eliminate this tab by disabling "
+"the %s module."
+msgstr ""
+"Una vez completada la tarea de importación, puedes eliminar esta pestaña "
+"desactivando el módulo %s."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:170
+msgid "Import"
+msgstr "Importar"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:182
+msgid ""
+"Enable post contributors or authors with pp_set_edit_exceptions capability "
+"to set editing Permissions on posts authored by others"
+msgstr ""
+"Permitir a los colaboradores o autores de entradas con la capacidad "
+"`pp_set_edit_exceptions` de establecer permisos de edición para las entradas "
+"creadas por otros"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:186
+msgid "Don't try to integrate with the Post Forking plugin"
+msgstr "No intentes la integración con el plugin Post Forking"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:189
+msgid ""
+"Permissions setting 'Pages can be set or removed from Top Level by' applies "
+"to 'page' type only"
+msgstr ""
+"Los ajustes de permisos «Las páginas pueden ser establecidas o eliminadas "
+"del nivel superior por» se aplican sólo al tipo «página»"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:192
+msgid ""
+"If user cannot generally save pages to top level but a page they are editing "
+"is already there, allow it to stay at top level even if not yet published "
+msgstr ""
+"Si el usuario no puede en general guardar las páginas en el nivel superior, "
+"pero una página que está editando ya está allí, permita que permanezca en el "
+"nivel superior aunque aún no se haya publicado "
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:195
+msgid ""
+"Circle membership does not limit page association (page parent setting) "
+"ability"
+msgstr ""
+"La pertenencia a un círculo no limita la capacidad de asociación de páginas "
+"(configuración de páginas padre)"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:198
+msgid ""
+"When saving a post, if default term (of any taxonomy) is not in user's "
+"subset of assignable terms, substitute first available"
+msgstr ""
+"Al guardar una entrada, si el término por defecto (de cualquier taxonomía) "
+"no está en el subconjunto de términos asignables del usuario, lo sustituye "
+"por el primero disponible"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:201
+msgid ""
+"When saving a post, if default category is not in user's subset of "
+"assignable categories, substitute first available"
+msgstr ""
+"Al guardar una entrada, si la categoría por defecto no está en el "
+"subconjunto de categorías asignables del usuario, lo sustituye por la "
+"primera disponible"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:204
+msgid ""
+"When saving a post, if default tag is not in user's subset of assignable "
+"tags, substitute first available"
+msgstr ""
+"Al guardar una entrada, si la etiqueta por defecto no está en el subconjunto "
+"de etiquetas asignables del usuario, lo sustituye por la primera disponible"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:207
+msgid ""
+"When saving a post, if default term (of specified taxonomy) is not in user's "
+"subset of assignable tags, substitute first available"
+msgstr ""
+"Al guardar una entrada, si el término por defecto (de la taxonomía "
+"especificada) no está en el subconjunto de etiquetas asignables del usuario, "
+"lo sustituye por el primero disponible"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:210
+msgid ""
+"When saving a post, never auto-assign a term (of any taxonomy), even if it "
+"is the user's only assignable term"
+msgstr ""
+"Al guardar una entrada, nunca debe asignarse automáticamente un término (de "
+"cualquier taxonomía), incluso si es el único término asignable del usuario"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:213
+msgid ""
+"When saving a post, never auto-assign a category, even if it is the user's "
+"only assignable category"
+msgstr ""
+"Al guardar una entrada, nunca debe asignarse automáticamente una categoría, "
+"incluso si es la única categoría asignable del usuario"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:216
+msgid ""
+"When saving a post, never auto-assign a tag, even if it is the user's only "
+"assignable tag"
+msgstr ""
+"Al guardar una entrada, nunca debe asignarse automáticamente una etiqueta, "
+"incluso si es la única etiqueta asignable del usuario"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:219
+msgid ""
+"When saving a post, never auto-assign a term (of specified taxonomy), even "
+"if it is the user's only assignable term"
+msgstr ""
+"Al guardar una entrada, nunca debe asignarse automáticamente un término (de "
+"la taxonomía especificada), incluso si es el único término asignable del "
+"usuario"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:222
+msgid ""
+"When a limited user updates a post, strip out currently stored categories "
+"they don't have permission to assign"
+msgstr ""
+"Cuando un usuario limitado actualiza una entrada, elimina las categorías "
+"almacenadas que no tiene permiso para asignar"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:225
+msgid ""
+"When a limited user updates a post, strip out currently stored tags they "
+"don't have permission to assign"
+msgstr ""
+"Cuando un usuario limitado actualiza una entrada, elimina las etiquetas "
+"almacenadas que no tiene permiso para asignar"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:228
+msgid ""
+"When a limited user updates a post, strip out currently stored terms (of "
+"specified taxonomy) they don't have permission to assign"
+msgstr ""
+"Cuando un usuario limitado actualiza una entrada, elimina los términos "
+"almacenados actualmente (de la taxonomía especificada) que no tiene permiso "
+"para asignar"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:231
+msgid ""
+"Don't define an 'Approved' status, even if Status Control module is active"
+msgstr ""
+"No defines un estado `Aprobado`, incluso si el módulo de control de estado "
+"está activo"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:236
+msgid ""
+"If user has Nav Menu management capabilities but can't 'edit_theme_options', "
+"strip link out of wp-admin Appearance Menu instead of linking it to nav-menus"
+msgstr ""
+"Si el usuario tiene capacidad de gestión de Nav Menu pero no puede "
+"`edit_theme_options`, elimine el enlace del Menú de Apariencia de `wp-admin` "
+"en lugar de vincularlo a los nav-menus"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:239
+msgid ""
+"Don't credit implicit 'manage_nav_menus' capability to users who have "
+"'edit_theme_options' or 'switch_themes' capability"
+msgstr ""
+"No atribuir la capacidad implícita de `manage_nav_menus` a los usuarios que "
+"tienen la capacidad de `edit_theme_options` o `switch_themes`"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:242
+msgid ""
+"Prevent non-Administrators from adding new Nav Menu items to top level (add "
+"below existing editable items instead)"
+msgstr ""
+"Evitar que los no administradores añadan nuevos elementos del menú de "
+"navegación en el nivel superior (añadirlos debajo de los elementos editables "
+"existentes)"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:245
+msgid ""
+"For non-Administrators, new Nav Menu items default to being a child of first "
+"editable item "
+msgstr ""
+"Para los que no son administradores, los nuevos elementos del menú de "
+"navegación son por defecto hijos del primer elemento editable "
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:248
+msgid ""
+"Don't require any additional capabilities for management of Nav Menu "
+"settings (normally require 'manage_menu_settings', 'edit_others_pages' or "
+"'publish_pages') "
+msgstr ""
+"No requiere ninguna capacidad adicional para la gestión de los ajustes del "
+"menú de navegación (normalmente requiere `manage_menu_settings`, "
+"`edit_others_pages` o `publish_pages`) "
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:251
+msgid ""
+"Eliminate extra filtering queries on Nav Menu update, even for non-"
+"Administrators"
+msgstr ""
+"Eliminación de las consultas de filtrado adicionales en la actualización del "
+"menú de navegación, incluso para los no administradores"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:256
+msgid ""
+"Don't allow non-Administrators to see others' unattached uploads, regardless "
+"of Permissions settings.  Their own unattached uploads are still accessible "
+"unless option 'own_attachments_always_editable' is set false"
+msgstr ""
+"No permitas que los que no son administradores vean las subidas no adjuntas "
+"de otros, independientemente de los ajustes de permisos.  Sus propias "
+"subidas sin adjuntar siguen siendo accesibles a menos que la opción "
+"`own_attachments_always_editable` esté definida como falsa"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:261
+msgid "Limited User Editors can assign their own role"
+msgstr "Los editores de usuarios limitados pueden asignar su propio perfil"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:264
+msgid ""
+"Post Meta fields to copy when using 'Add Author Page' dropdown on Users "
+"screen"
+msgstr ""
+"Los campos meta de la entrada se copian cuando se utiliza el menú "
+"desplegable «Añadir página de autor» en la pantalla de usuarios"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:273
+msgid "Modify these Permissions settings"
+msgstr "Modificar estos ajustes de permisos"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:274
+msgid ""
+"PublishPress Permissions does not apply any Supplemental Roles or Specific "
+"Permissions to limit or expand viewing or editing access"
+msgstr ""
+"PublishPress Permissions no aplica ningún tipo de perfiles suplementarios o "
+"permisos específicos para limitar o ampliar el acceso de visualización o "
+"edición"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:275
+msgid ""
+"PublishPress Permissions implicitly grants capabilities for all post types "
+"and statuses, but does not apply Specific Permissions"
+msgstr ""
+"PublishPress Permissions otorga implícitamente capacidades para todos los "
+"tipos de contenido y estados, pero no aplica permisos específicos"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:276
+msgid "Can create Permission Groups"
+msgstr "Puedes crear grupos de permisos"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:277
+msgid "Can edit all Permission Groups (barring Specific Permissions)"
+msgstr ""
+"Puedes editar todos los grupos de permisos (excepto los permisos específicos)"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:278
+msgid "Can delete Permission Groups"
+msgstr "Puedes borrar los Grupos de permisos"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:279
+msgid "If group editing is allowed, can also modify group membership"
+msgstr ""
+"Si permite la edición de grupos, también puede modificar la membresía del "
+"grupo"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:280
+msgid ""
+"Assign Supplemental Roles or Specific Permissions. Other capabilities may "
+"also be required."
+msgstr ""
+"Asignar perfiles suplementarios o permisos específicos. También pueden ser "
+"necesarias otras capacidades."
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:281
+msgid ""
+"Set Read Permissions for specific posts on Edit Post/Term screen (for non-"
+"Administrators lacking edit_users capability; may be disabled by Permissions "
+"Settings)"
+msgstr ""
+"Establece permisos de lectura para entradas específicas en la pantalla de "
+"edición de entradas/términos (para quienes no son administradores y no "
+"tienen la capacidad de editar usuarios; puede ser desactivado por los "
+"ajustes de permisos)"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:284
+msgid "Set Forking Permissions on Edit Post/Term screen (where applicable)"
+msgstr ""
+"Establece permisos de bifurcación en la pantalla Editar entrada/término "
+"(cuando corresponda)"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:288
+msgid "Set Revision Permissions on Edit Post/Term screen (where applicable)"
+msgstr ""
+"Establece los permisos de revisión en la pantalla de edición de entradas y "
+"términos (cuando sea aplicable)"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:291
+msgid "Set Editing Permissions on Edit Post/Term screen (where applicable)"
+msgstr ""
+"Establece los permisos de edición en la pantalla Editar entrada/término "
+"(cuando corresponda)"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:292
+msgid ""
+"Set Association (Parent) Permissions on Edit Post screen (where applicable)"
+msgstr ""
+"Establece los permisos de asociación (padre) en la pantalla de edición de la "
+"entrada (cuando corresponda)"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:293
+msgid ""
+"Set Term Assignment Permissions on Edit Term screen (in relation to an "
+"editable post type)"
+msgstr ""
+"Establece los permisos de asignación de términos en la pantalla de edición "
+"de términos (en relación con un tipo de puesto editable)"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:294
+msgid "Set Term Management Permissions on Edit Term screen"
+msgstr ""
+"Establece los permisos de gestión de términos en la pantalla de edición de "
+"términos"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:295
+msgid "Set Term Association (Parent) Permissions on Edit Term screen"
+msgstr ""
+"Establece los permisos de asociación de términos (padres) en la pantalla de "
+"edición de términos"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:297
+msgid ""
+"Edit own file uploads, even if they become attached to an uneditable post"
+msgstr ""
+"Editar las subidas de archivos propios, incluso si se adjuntan a una entrada "
+"no editable"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:298
+msgid "See other user's unattached file uploads in Media Library"
+msgstr ""
+"Ver las subidas de archivos no adjuntos de otros usuarios en la biblioteca "
+"de medios"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:299
+msgid "Disregard association permissions (for all hierarchical post types)"
+msgstr ""
+"Ignorar los permisos de asociación (para todos los tipos de contenido "
+"jerárquicos)"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:301
+msgid "Do not alter the Media Library listing provided by WordPress"
+msgstr ""
+"No alterar la lista de la biblioteca de medios proporcionada por WordPress"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:302
+msgid ""
+"On the Posts screen, satisfy a missing edit_posts capability by listing "
+"uneditable drafts"
+msgstr ""
+"En la pantalla de Entradas, satisface la falta de capacidad de `edit_posts` "
+"capability listando los borradores no editables"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:303
+msgid ""
+"On the Posts screen, satisfy a missing edit_others_posts capability by "
+"listing other user's uneditable posts"
+msgstr ""
+"En la pantalla de Entradas, satisface la falta de capacidad de "
+"`edit_others_posts` listando las entradas no editables de otros usuarios"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:304
+msgid ""
+"On the Pages screen, satisfy a missing edit_private_pages capability by "
+"listing uneditable private pages"
+msgstr ""
+"En la pantalla de páginas, satisface la falta de capacidad de "
+"`edit_private_pages` listando las páginas privadas no editables"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:305
+msgid ""
+"Make Quick Edit and Bulk Edit available to non-Administrators even though "
+"some inappropriate selections may be possible"
+msgstr ""
+"Hacer que la Edición rápida y la Edición en lote estén disponibles para los "
+"que no son administradores, aunque sea posible realizar algunas selecciones "
+"inapropiadas"
+
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:311
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:312
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:313
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:314
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:315
+msgid "(Permissions Pro capability)"
+msgstr "(Capacidad de Permissions Pro)"
+
+#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImportNotes.php:9
+msgid "The import can be run multiple times if source values change."
+msgstr ""
+"La importación puede ejecutarse varias veces si los valores de origen "
+"cambian."
+
+#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImportNotes.php:10
+msgid ""
+"Configuration items will be imported even if the request exceeds PHP "
+"execution time limit. Repeat as necessary until all items are imported."
+msgstr ""
+"Los elementos de configuración se importarán incluso si la solicitud supera "
+"el límite de tiempo de ejecución de PHP. Repite lo necesario hasta que se "
+"importen todos los elementos."
+
+#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImportNotes.php:11
+msgid ""
+"Current Role Scoper configuration is not modified or deleted. You will still "
+"be able to restore previous behavior by reactivating Role Scoper if "
+"necessary."
+msgstr ""
+"La configuración actual de Role Scoper no ha sido modificada ni eliminada. "
+"Todavía podrás restablecer el funcionamiento anterior reactivando Role "
+"Scoper si es necesario."
+
+#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImportNotes.php:12
+msgid ""
+"Following import, you should manually review the results and confirm that "
+"permissions are correct. Some manual followup may be required."
+msgstr ""
+"Tras la importación, debes revisar manualmente los resultados y confirmar "
+"que los permisos son correctos. Es posible que sea necesario un seguimiento "
+"manual."
+
+#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImportNotes.php:13
+msgid ""
+"If your Role Scoper configuration has Category Restrictions on the Author or "
+"Editor role, specific Publish Permissions will be enabled to control "
+"publishing permissions separate from editing permissions. Existing specific "
+"Edit Permissions will be mirrored as specific Publish Permissions to "
+"maintain previous access."
+msgstr ""
+"Si tu configuración de Role Scoper tiene restricciones de categoría en el "
+"perfil de Autor o Editor, se habilitarán permisos de publicación específicos "
+"para controlar los permisos de publicación separados de los permisos de "
+"edición. Los permisos de edición específicos existentes se reflejarán como "
+"permisos de publicación específicos para mantener el acceso anterior."
+
+#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImportNotes.php:14
+msgid ""
+"Category Restrictions on the Editor role are converted to specific Edit, "
+"Publish and Term Assignment Permissions. If a Post Editor should be blocked "
+"from editing other's posts within a specified category but still be able to "
+"submit / edit / publish their own posts in that category, they will need to "
+"be switched to a WordPress role that does not have the \"edit_others_pages\" "
+"capability. Then specific editing permissions can be granted per-category."
+msgstr ""
+"Las restricciones de categoría en el perfil de editor se convierten en "
+"permisos específicos de edición, publicación y asignación de términos. Si un "
+"editor de entradas debe ser bloqueado de la edición de otras entradas dentro "
+"de una categoría especificada, pero todavía ser capaz de enviar / editar / "
+"publicar sus propias entradas en esa categoría, tendrá que ser cambiado a un "
+"perfil de WordPress que no tiene la capacidad `edit_others_pages`. Entonces "
+"puedes conceder permisos de edición específicos por categoría."
+
+#~ msgid "List other user's uneditable posts"
+#~ msgstr "Listar las entradas no editables de otros usuarios"
+
+#~ msgid "Nav Menu Editing"
+#~ msgstr "Edición del menú de navegación"
+
+#~ msgid "Posts / Pages Listing"
+#~ msgstr "Listado de Entradas/Páginas"
+
+#~ msgid "Editor Options"
+#~ msgstr "Opciones del editor"
+
+#~ msgid "License"
+#~ msgstr "Licencia"
+
+#~ msgid ""
+#~ "Control access to post visibility statuses. This workflow feature is "
+#~ "available in PublishPress Permissions Pro."
+#~ msgstr ""
+#~ "Control del acceso a los estados de visibilidad de las entradas. Esta "
+#~ "característica de flujo de trabajo está disponible en PublishPress "
+#~ "Permissions Pro."
+
+#~ msgid "Post Visibility Statuses"
+#~ msgstr "Estados de visibilidad de las entradas"
+
+#~ msgid "Post Statuses for Editorial Workflow"
+#~ msgstr "Estados de las entradas para el flujo de trabajo"
+
+#~ msgid "Posts Teaser"
+#~ msgstr "Avance de las entradas"
+
+#~ msgid "Visibility Statuses"
+#~ msgstr "Estados de visibilidad"
+
+#~ msgid "Workflow Statuses"
+#~ msgstr "Estados del flujo de trabajo"
+
+#~ msgid ""
+#~ "note: Plugin settings and configuration data will be deleted, but only "
+#~ "after the last copy of Permissions / Permissions Pro is deleted."
+#~ msgstr ""
+#~ "Nota: Los ajustes del plugin y los datos de configuración se eliminarán, "
+#~ "pero sólo después de que se elimine la última copia de Permissions/"
+#~ "Permissions Pro."
+
+#~ msgid "Delete settings on plugin deletion"
+#~ msgstr "Borrar la configuración al eliminar el plugin"
+
+#~ msgid "Advanced Settings"
+#~ msgstr "Ajustes avanzados"
+
+#~ msgid "Notes:"
+#~ msgstr "Notas:"
+
+#~ msgid "patterned on..."
+#~ msgstr "con un patrón de..."
+
+#~ msgid ""
+#~ "To temporarily restore Pro features before migrating to a publishpress."
+#~ "com account, delete this version and install %sPress Permit Core 2.6.x%s "
+#~ "using Plugins > Add New > Upload."
+#~ msgstr ""
+#~ "Para restablecer temporalmente las características Pro antes de migrar a "
+#~ "una cuenta de publishpress.com, elimine esta versión e instale %sPress "
+#~ "Permit Core 2.6.x%s utilizando Plugins > Añadir nuevo > Cargar."
+
+#~ msgid "Show more details"
+#~ msgstr "Mostrar más detalles"
+
+#~ msgid "%s more"
+#~ msgstr "%s Más"
+
+#~ msgid ""
+#~ "Your license key has expired. For updates to PublishPress Permissions Pro "
+#~ "and priority support, %splease renew%s."
+#~ msgstr ""
+#~ "Tu clave de licencia ha caducado. Para las actualizaciones de "
+#~ "PublishPress Permisos Pro y el soporte prioritario, %spor favor, "
+#~ "renueva%s."
+
+#~ msgid "%1$s&nbsp;%2$s&nbsp;%3$s-&nbsp;%4$s%5$s%6$s"
+#~ msgstr "%1$s&nbsp;%2$s&nbsp;%3$s-&nbsp;%4$s%5$s%6$s"
+
+#~ msgid "Submitted Revision"
+#~ msgstr "Revisión enviada"
+
+#~ msgid "Submit Revision"
+#~ msgstr "Enviar revisión"
+
+#~ msgid "Submit Revision of"
+#~ msgstr "Enviar la revisión de"
+
+#~ msgid "New Revision"
+#~ msgstr "Nueva revisión"
+
+#~ msgid "Create Revision"
+#~ msgstr "Crear revisión"
+
+#~ msgid "Create Revision of"
+#~ msgstr "Crear una revisión de"
+
+#~ msgid "Request"
+#~ msgstr "Solicitud"
+
+#~ msgid "Submit Changes"
+#~ msgstr "Enviar cambios"
+
+#~ msgid "Submit Changes to"
+#~ msgstr "Enviar cambios a"
+
+#~ msgid "Copy"
+#~ msgstr "Copiar"
+
+#~ msgid "Working Copy"
+#~ msgstr "Copia de trabajo"
+
+#~ msgid "Working Copy of"
+#~ msgstr "Copia de trabajo de"
+
+#~ msgid " %1$sfix sub-%2$s permissions %3$s"
+#~ msgstr " %1$sfix sub-%2$s permisos %3$s"
+
+#~ msgid "%1$s - %2$s"
+#~ msgstr "%1$s - %2$s"
+
+#~ msgid "Scheduled Change Notifications"
+#~ msgstr "Avisos de cambios programados"
+
+#~ msgid "Change Request Notifications"
+#~ msgstr "Avisos de solicitud de cambio"
+
+#~ msgid "Teaser"
+#~ msgstr "El avance"
+
+#~ msgid "Sync Posts"
+#~ msgstr "Sincronizar entradas"
+
+#~ msgid ""
+#~ "Automatically generate a personal page for each user. This feature is "
+#~ "available in PublishPress Permissions Pro."
+#~ msgstr ""
+#~ "Generar automáticamente una página personal para cada usuario. Esta "
+#~ "función está disponible en PublishPress Permisos Pro."
+
+#~ msgid "Sync User Posts"
+#~ msgstr "Sincronizar publicaciones de usuarios"
+
+#~ msgid ""
+#~ "Show a teaser message or login prompt for protected content. Available in "
+#~ "PublishPress Permissions Pro."
+#~ msgstr ""
+#~ "Muestra un mensaje de presentación o un aviso de inicio de sesión para el "
+#~ "contenido protegido. Disponible en PublishPress Permisos Pro."
+
+#~ msgid ""
+#~ "Control access to custom post statuses. This workflow feature is "
+#~ "available in PublishPress Permissions Pro."
+#~ msgstr ""
+#~ "Controla el acceso a los estados de las entradas personalizadas. Esta "
+#~ "característica de flujo de trabajo está disponible en PublishPress "
+#~ "Permisos Pro."
+
+#~ msgid "Login State"
+#~ msgstr "Estado de acceso"
+
+#~ msgid "Type"
+#~ msgstr "Tipo"
+
+#~ msgid "Copy Roles and Permissions from:"
+#~ msgstr "Copiar los perfiles y los permisos de:"
+
+#~ msgid ""
+#~ "To assign page-specific PublishPress Revision permissions, enable the "
+#~ "Collaborative Publishing module."
+#~ msgstr ""
+#~ "Para asignar permisos de revisión de PublishPress específicos para cada "
+#~ "página, active el módulo de publicación colaborativa."
+
+#~ msgid ""
+#~ "To assign forum-specific Permissions for bbPress, %1$supgrade to "
+#~ "Permissions Pro%2$s and enable the Compatibility Pack module."
+#~ msgstr ""
+#~ "Para asignar permisos específicos del foro para bbPress, %1$sactualiza a "
+#~ "Permisos Pro%2$s y activa el módulo Compatibility Pack."
+
+#~ msgid ""
+#~ "To assign forum-specific Permissions for bbPress, activate the "
+#~ "Compatibility Pack module."
+#~ msgstr ""
+#~ "Para asignar permisos específicos del foro para bbPress, activa el módulo "
+#~ "Compatibility Pack."
+
+#~ msgid ""
+#~ "%1$sNote:%2$s If enabled, the create_posts, create_pages, etc. "
+#~ "capabilities will be enforced for all Filtered Post Types. You can use a "
+#~ "WordPress role editor like %3$sPublishPress Capabilities%4$s to add these "
+#~ "capabilities to any role that needs it."
+#~ msgstr ""
+#~ "%1$sNota:%2$s Si se activa, las capacidades `create_posts`, "
+#~ "`create_pages`, etc. se aplicarán a todos los tipos de contenidos "
+#~ "filtrados. Puedes utilizar un editor de perfiles de WordPress como "
+#~ "%3$sPublishPress Capabilities%4$s para añadir estas capacidades a "
+#~ "cualquier perfil que lo necesite."
+
+#~ msgid ""
+#~ "%1$sNote:%2$s If enabled, the create_posts, create_pages, etc. "
+#~ "capabilities will be enforced for all Filtered Post Types. You can "
+#~ "%3$sadd these capabilities to any role%4$s that needs it."
+#~ msgstr ""
+#~ "%1$sNota:%2$s Si se activa, las capacidades `create_posts`, "
+#~ "`create_pages`, etc. se aplicarán a todos los tipos de contenidos "
+#~ "filtrados. Puedes %3$sañadir estas capacidades a cualquier perfil%4$s que "
+#~ "lo necesite."
+
+#~ msgid ""
+#~ "%1$sNote%2$s: This causes type-specific capabilities to be required for "
+#~ "editing (\"edit_things\" instead of \"edit_posts\"). You can %3$sassign "
+#~ "supplemental roles%4$s for the post type or add the capabilities directly "
+#~ "to a WordPress role."
+#~ msgstr ""
+#~ "%1$sNota:%2$s: Esto hace que se requieran capacidades de tipo específico "
+#~ "para la edición (`edit_things`en lugar de `edit_posts`Puedes %3$sasignar "
+#~ "perfiles suplementarios%4$s para el tipo de contenido o añadir las "
+#~ "capacidades directamente a un perfil de WordPress."
+
+#~ msgid "To control the makeup of Supplemental Roles, see %1$sRole Usage%2$s."
+#~ msgstr ""
+#~ "Para controlar la composición de los perfiles suplementarios, ve %1$sUso "
+#~ "de perfiles%2$s."
+
+#~ msgid "To filter the Users list by Permissions, follow a link below:"
+#~ msgstr ""
+#~ "Para filtrar la lista de usuarios por permisos, sigue el siguiente enlace:"
+
+#~ msgid ""
+#~ "For user-specific Supplemental Roles and Permissions, click a \"Roles\" "
+#~ "cell on the %1$sUsers%2$s screen."
+#~ msgstr ""
+#~ "Para ver los perfiles y permisos suplementarios específicos de cada "
+#~ "usuario, haz clic en una celda de «perfiles» en la pantalla de "
+#~ "%1$sUsuarios%2$s."
+
+#~ msgid "Roles"
+#~ msgstr "Perfiles"
+
+#~ msgid ""
+#~ "Please upgrade PublishPress Authors to version 3.8.0 or later for "
+#~ "Permissions integration."
+#~ msgstr ""
+#~ "Por favor, actualiza PublishPress Authors a la versión 3.8.0 o superior "
+#~ "para la integración de los permisos."
+
+#~ msgid "Click to show only users who have specific permissions"
+#~ msgstr ""
+#~ "Haz clic para mostrar sólo los usuarios que tienen permisos específicos"
+
+#~ msgid "Search Custom Groups"
+#~ msgstr "Buscar grupos personalizados"
+
+#~ msgid "Search Users"
+#~ msgstr "Buscar usuarios"
+
+#~ msgid "All"
+#~ msgstr "Todos"
+
+#~ msgid "WordPress Roles"
+#~ msgstr "Perfiles de WordPress"
+
+#~ msgid "WordPress Role"
+#~ msgstr "Perfil de WordPress"
+
+#~ msgid "Add New"
+#~ msgstr "Añadir nuevo"
+
+#~ msgid "Scheduled Revision Monitors"
+#~ msgstr "Monitores de revisión programada"
+
+#~ msgid "Pending Revision Monitors"
+#~ msgstr "Monitores de revisión pendientes"
+
+#~ msgid "Everyone"
+#~ msgstr "Todos"
+
+#~ msgid "Not Logged In"
+#~ msgstr "Desconectado"
+
+#~ msgid "Logged In"
+#~ msgstr "Conectado"
+
+#~ msgid "Custom Groups"
+#~ msgstr "Grupos personalizados"
+
+#~ msgid "Performance: Don't filter category / tag counts"
+#~ msgstr "Rendimiento: No filtrar los recuentos de categorías/etiquetas"
+
+#~ msgid "Search Results include Media"
+#~ msgstr "Los resultados de la búsqueda incluyen los medios"
+
+#~ msgid "%s permissions have not been added or blocked for any %s."
+#~ msgstr ""
+#~ "Los permisos de %s no han sido añadidos o bloqueados para ningún %s."
+
+#~ msgid "%sPosts / Pages Listing:%s %s"
+#~ msgstr "%sListado de entradas/páginas:%s %s"
+
+#~ msgid ""
+#~ "Permissions Pro was previously active. You are now running the free "
+#~ "version, with fewer features."
+#~ msgstr ""
+#~ "Anteriormente, Permisos Pro estaba activo. Ahora estás ejecutando la "
+#~ "versión gratuita, con menos características."
+
+#~ msgid "Set as Parent"
+#~ msgstr "Establecer como padre"
+
+#~ msgid "Permissions: Select this %1$s as Parent"
+#~ msgstr "Permisos: Selecciona este %1$s como padre"
+
+#~ msgid "Assign Publish Permissions separate from Edit Permissions"
+#~ msgstr ""
+#~ "Asignar permisos de publicación separados de los permisos de edición"
+
+#~ msgid ""
+#~ "PublishPress Revisions integration requires the Collaborative Publishing "
+#~ "module. Please notify your Administrator."
+#~ msgstr ""
+#~ "La integración de PublishPress Revisions requiere el módulo de "
+#~ "Publicación colaborativa. Por favor, avísele a tu administrador."
+
+#~ msgid ""
+#~ "Please %senable the Collaborative Publishing module%s for PublishPress "
+#~ "Revisions integration."
+#~ msgstr ""
+#~ "Por favor, %shabilita el módulo de Publicación colaborativa%s para la "
+#~ "integración de PublishPress Revisions."
+
+#~ msgctxt "count"
+#~ msgid "Permissions"
+#~ msgstr "Permisos"
+
+#~ msgid "%1$sDo not apply%2$s metagroup permissions for Administrators"
+#~ msgstr "%1$sNo aplicar permisos de metagrupo%2$s para administradores"
+
+#~ msgid "Specific Permissions %1$s*%2$s"
+#~ msgstr "Permisos específicos %1$s*%2$s"
+
+#~ msgid "Permissions: %1$s this %2$s"
+#~ msgstr "Permisos: %1$s este %2$s"
+
+#~ msgid "Permissions: %1$s all content in this %2$s"
+#~ msgstr "Permisos: %1$s todo el contenido en este %2$s"
+
+#~ msgid "Permissions: %1$s %2$s in this %3$s"
+#~ msgstr "Permisos: %1$s %2$s en este %3$s"
+
+#~ msgid "Permissions: Assign this %2$s"
+#~ msgstr "Permisos: Asignar este %2$s"
+
+#~ msgid "Permissions: Assign this %2$s to %3$s"
+#~ msgstr "Permisos: Asignar este %2$s a %3$s"
+
+#~ msgid "Specific Permissions (from primary role or group membership)"
+#~ msgstr ""
+#~ "Permisos específicos (del perfil principal o de la pertenencia a un grupo)"
+
+#~ msgid "Universal Permissions"
+#~ msgstr "Permisos universal"
+
+#~ msgid "%1$s Permissions %2$s*%3$s"
+#~ msgstr "%1$s Permisos %2$s*%3$s"
+
+#~ msgid "Permissions: %s this %s"
+#~ msgstr "Permisos: %s este %s"
+
+#~ msgid "Permissions: Select this %s as Parent"
+#~ msgstr "Permisos: Selecciona este %s como padre"
+
+#~ msgid "Detailed Feature Grid"
+#~ msgstr "Cuadrícula detallada de las características"
+
+#~ msgid "Knowledge Base"
+#~ msgstr "Base de conocimiento"
+
+#~ msgid "Post-specific Permissions take priority"
+#~ msgstr "Los permisos específicos para la entrada tienen prioridad"
+
+#~ msgid "Filter Menu Items"
+#~ msgstr "Filtrar los elementos del menú"
+
+#~ msgid "Add Selected"
+#~ msgstr "Añadir seleccionados"
+
+#~ msgid "sub-%s:"
+#~ msgstr "sub-%s:"
+
+#~ msgid "Block:"
+#~ msgstr "Bloquear:"
+
+#~ msgid "Enable:"
+#~ msgstr "Activar:"
+
+#~ msgid "Enabled:"
+#~ msgstr "Activado:"
+
+#~ msgid "Blocked:"
+#~ msgstr "Bloqueado:"
+
+#~ msgid "Limit to:"
+#~ msgstr "Limitar a:"
+
+#~ msgid "Mirror to %s %s"
+#~ msgstr "Espejo a %s %s"
+
+#~ msgid "Mirror to %s"
+#~ msgstr "Espejo a %s"
+
+#~ msgid "Specific Permissions"
+#~ msgstr "Permisos específicos"
+
+#~ msgid "Specific Permissions %1$s(for user)%2$s"
+#~ msgstr "Permisos específicos %1$s(para usuario)%2$s"
+
+#~ msgid "Save Permissions"
+#~ msgstr "Guardar permisos"
+
+#~ msgid "Mirror all selections to other operation(s)"
+#~ msgstr "Reflejar todas las selecciones en otra(s) operación(es)"
+
+#~ msgid "No Qualification selected!"
+#~ msgstr "¡Ninguna calificación seleccionada!"
+
+#~ msgid "Permissions mirrored. Reload form to view newly saved permissions."
+#~ msgstr ""
+#~ "Permisos reflejados. Recargar el formulario para ver los permisos recién "
+#~ "guardados."
+
+#~ msgid "Permissions submission in progress..."
+#~ msgstr "Envío de permisos en curso..."
+
+#~ msgid "Permission already selected!"
+#~ msgstr "¡Permiso ya seleccionado!"
+
+#~ msgid ""
+#~ "Review selection(s) below, then click Save. Saved permissions can be "
+#~ "mirrored to other operations by bulk edit."
+#~ msgstr ""
+#~ "Revisa la(s) selección(es) a continuación y haz clic en Guardar. Los "
+#~ "permisos guardados pueden reflejarse en otras operaciones mediante una "
+#~ "edición en lote."
+
+#~ msgid "Set Specific Permissions"
+#~ msgstr "Establecer permisos específicos"
+
+#~ msgid ""
+#~ "\"Enable\" : Expand access to allow specified items regardless of role "
+#~ "capabilities or restrictions."
+#~ msgstr ""
+#~ "«Activar» : Amplía el acceso para permitir los elementos especificados "
+#~ "independientemente de las capacidades o restricciones de los perfiles."
+
+#~ msgid ""
+#~ "\"Limit to\" : Restrict access by limiting Role Capabilities to apply "
+#~ "only for specified items. Users still need capabilities in their main "
+#~ "role or supplemental roles."
+#~ msgstr ""
+#~ "«Limitar a» : Restringe el acceso limitando las capacidades de los "
+#~ "perfiles para que se apliquen sólo a los elementos especificados. Los "
+#~ "usuarios siguen necesitando las capacidades de su perfil principal o de "
+#~ "sus perfiles complementarios."
+
+#~ msgid ""
+#~ "\"Block\" : Restrict access by blocking specified items unless an "
+#~ "\"Enabled\" exception is also stored."
+#~ msgstr ""
+#~ "«Bloquear» : Restringe el acceso bloqueando los elementos especificados, "
+#~ "a menos que también se almacene una excepción «Activada»."
+
+#~ msgid "Specific Permissions Explained:"
+#~ msgstr "Explicación de los permisos específicos:"
+
+#~ msgid "Specific Permissions updated."
+#~ msgstr "Permisos específicos actualizados."
+
+#~ msgid "%1$sUsers who have Specific Permissions (directly or via group)%2$s"
+#~ msgstr ""
+#~ "%1$sUsuarios que tienen permisos específicos (directamente o a través de "
+#~ "un grupo)%2$s"
+
+#~ msgid "%1$sUsers who have Specific Permissions assigned directly%2$s"
+#~ msgstr ""
+#~ "%1$sUsuarios que tienen permisos específicos asignados directamente%2$s"
+
+#~ msgid "Options"
+#~ msgstr "Opciones"
+
+#~ msgid "Restrictions"
+#~ msgstr "Restricciones"
+
+#~ msgid "Term / Object Roles"
+#~ msgstr "Perfiles de término/objeto"
+
+#~ msgid "General Roles"
+#~ msgstr "Perfiles generales"
+
+#~ msgid "Sites"
+#~ msgstr "Sitios"
+
+#~ msgid "Undo All Imports"
+#~ msgstr "Deshacer todas las importaciones"
+
+#~ msgid ""
+#~ "All imported groups, roles, permissions and options will be deleted. Are "
+#~ "you sure?"
+#~ msgstr ""
+#~ "Todos los grupos, perfiles, permisos y opciones importados serán "
+#~ "eliminados. ¿Estás seguro?"
+
+#~ msgid " (%s configuration item previously imported)"
+#~ msgid_plural " (%s configuration items previously imported)"
+#~ msgstr[0] " (%s elemento de configuración previamente importado)"
+#~ msgstr[1] " (%s elementos de configuración previamente importados)"
+
+#~ msgid ""
+#~ "Migrates Role Scoper Options, Role Groups, Roles and Restrictions to "
+#~ "PublishPress Permissions."
+#~ msgstr ""
+#~ "Migra las opciones de Role Scoper, los grupos de perfiles, los perfiles y "
+#~ "las restricciones a PublishPress Permissions."
+
+#~ msgid "Role Scoper Import"
+#~ msgstr "Importación de Role Scoper"
+
+#~ msgid "Previous import values have been deleted"
+#~ msgstr "Los valores de importación anteriores han sido borrados"
+
+#~ msgid "%1$s imported: %2$s"
+#~ msgstr "%1$s importado: %2$s"
+
+#~ msgid "Nothing to import!"
+#~ msgstr "¡Nada que importar!"
+
+#~ msgid "1 site examined:"
+#~ msgid_plural "%1$s sites examined:"
+#~ msgstr[0] "1 sitio examinado:"
+#~ msgstr[1] "%1$s sitios examinados:"
+
+#~ msgid ""
+#~ "Import completed partially, but reached time limit. Please run again."
+#~ msgstr ""
+#~ "La importación se ha completado parcialmente, pero ha alcanzado el límite "
+#~ "de tiempo. Por favor, vuelve a ejecutarla."
+
+#~ msgid "Role Scoper Import Results:"
+#~ msgstr "Resultados de la importación de Role Scoper:"
+
+#~ msgid "You are not allowed to manage Permissions settings"
+#~ msgstr "No estás autorizado a gestionar los ajustes de los permisos"
+
+#~ msgid "%s Manager"
+#~ msgstr "%s Gestor"
+
+#~ msgid "term (manage)"
+#~ msgstr "término (gestionar)"
+
+#~ msgid "Compare"
+#~ msgstr "Comparar"
+
+#~ msgid "Create branch"
+#~ msgstr "Crear rama"
+
+#~ msgid ""
+#~ "You do not have permission to edit the menu item \"%1$s\". <br /><br /><a "
+#~ "href=\"%2$s\">Return to Menu Editor</a>"
+#~ msgstr ""
+#~ "No tienes permiso para editar el elemento del menú «%1$s». <br /><br /><a "
+#~ "href=\"%2$s\">Vuelve al editor de menús</a>"
+
+#~ msgid ""
+#~ "You do not have permission to delete the menu item \"%1$s\". <br /><br /"
+#~ "><a href=\"%2$s\">Return to Menu Editor</a>"
+#~ msgstr ""
+#~ "No tienes permiso para borrar el elemento del menú «%1$s». <br /><br /><a "
+#~ "href=\"%2$s\">Vuelve al editor de menús</a>"
+
+#~ msgid ""
+#~ "You do not have permission to move the menu item \"%1$s\". <br /><br /><a "
+#~ "href=\"%2$s\">Return to Menu Editor</a>"
+#~ msgstr ""
+#~ "No tienes permiso para mover el elemento del menú «%1$s». <br /><br /><a "
+#~ "href=\"%2$s\">Vuelve al editor de menús</a>"
+
+#~ msgid "You do not have permission to delete that Navigation Menu."
+#~ msgstr "No tienes permiso para borrar el menú de navegación."
+
+#~ msgid "You do not have permission to create new Navigation Menus"
+#~ msgstr "No tienes permiso para crear nuevos menús de navegación"
+
+#~ msgid "You do not have permission to update that Navigation Menu"
+#~ msgstr "No tienes permiso para actualizar ese menú de navegación"
+
+#~ msgid "Menus"
+#~ msgstr "Menús"
+
+#~ msgctxt "tag delimiter"
+#~ msgid ","
+#~ msgstr ","
+
+#~ msgid "No matching roles were found."
+#~ msgstr "No se han encontrado coincidencias en los perfiles."
+
+#~ msgid "(unpublished)"
+#~ msgstr "(despublicado)"
+
+#~ msgid "Management"
+#~ msgstr "Gestión"
+
+#~ msgid "Manage"
+#~ msgstr "Gestionar"
+
+#~ msgid "Assignment"
+#~ msgstr "Asignación"
+
+#~ msgid "Assign Term"
+#~ msgstr "Asignar término"
+
+#~ msgid "Fork"
+#~ msgstr "Bifurcar"
+
+#~ msgid "Revision"
+#~ msgstr "Revisión"
+
+#~ msgid "Revise"
+#~ msgstr "Revisar"
+
+#~ msgid "Publishing"
+#~ msgstr "Publicación"
+
+#~ msgid "Publish"
+#~ msgstr "Publicar"
+
+#~ msgid "Edit"
+#~ msgstr "Editar"
+
+#~ msgid "Workflow"
+#~ msgstr "Flujo de trabajo"
+
+#~ msgid "Role Usage"
+#~ msgstr "Uso del perfil"
+
+#~ msgid "You are not permitted to manage menu locations"
+#~ msgstr "No tienes permiso para gestionar las ubicaciones de los menús"
+
+#~ msgid "select other"
+#~ msgstr "seleccionar otro"
+
+#~ msgid "Author Search / Select"
+#~ msgstr "Búsqueda/selección de autor"
+
+#~ msgid "Page Approved"
+#~ msgstr "Página aprobada"
+
+#~ msgid "Post Approved"
+#~ msgstr "Entrada aprobada"
+
+#~ msgid "Add Pages"
+#~ msgstr "Añadir páginas"
+
+#~ msgid "supported tags are [username] and [userid]"
+#~ msgstr "las etiquetas admitidas son [username] y [userid]"
+
+#~ msgid "Title:"
+#~ msgstr "Título:"
+
+#~ msgid "enter post ID/slug"
+#~ msgstr "introduce el ID/slug de la entrada"
+
+#~ msgid "Pattern ID:"
+#~ msgstr "ID del patrón:"
+
+#~ msgid "patterned on&hellip;"
+#~ msgstr "con un patrón de&hellip;"
+
+#~ msgid "pattern page sets parent and default content for author page"
+#~ msgstr ""
+#~ "la página patrón establece el contenido principal y por defecto de la "
+#~ "página de autor"
+
+#~ msgid ""
+#~ "pattern post sets parent, default content and template for author page"
+#~ msgstr ""
+#~ "la entrada del patrón establece el padre, el contenido por defecto y la "
+#~ "plantilla para la página del autor"
+
+#~ msgid "pattern post sets default content and categories for author post"
+#~ msgstr ""
+#~ "la entrada del patrón establece el contenido por defecto y la categoría "
+#~ "para la entrada del autor"
+
+#~ msgid "make each selected user the author of a new page"
+#~ msgstr ""
+#~ "hacer que cada usuario seleccionado sea el autor de una nueva página"
+
+#~ msgid "Add Author Page&hellip;"
+#~ msgstr "Añadir página de autor&hellip;"
+
+#~ msgid "Selected users already have specified author page"
+#~ msgstr "Los usuarios seleccionados ya tienen una específica página de autor"
+
+#~ msgid "No users selected"
+#~ msgstr "No hay usuarios seleccionados"
+
+#~ msgid "%s author page added"
+#~ msgid_plural "%s author pages added"
+#~ msgstr[0] "%s página de autor añadida"
+#~ msgstr[1] "%s páginas de autor añadidas"
+
+#~ msgid "You do not have permission to select that Parent"
+#~ msgstr "No tienes permiso para seleccionar a ese padre"
+
+#~ msgid ""
+#~ "If one of the default roles is deleted from the WP database, it will "
+#~ "remain available as a pattern role with default WP capabilities (but can "
+#~ "be disabled here)."
+#~ msgstr ""
+#~ "Si uno de los perfiles por defecto es eliminado de la base de datos de "
+#~ "WP, permanecerá disponible como un perfil patrón con capacidades por "
+#~ "defecto de WP (pero puede ser desactivado aquí)."
+
+#~ msgid ""
+#~ "Capabilities formally defined for other post types (i.e. "
+#~ "'edit_others_pages', 'edit_doohickies') apply to primary role assignment "
+#~ "and supplemental direct assignment, but not pattern role assignment."
+#~ msgstr ""
+#~ "Las capacidades formalmente definidas para otros tipos de contenido (por "
+#~ "ejemplo, `edit_others_pages`, `edit_doohickies`) se aplican a la "
+#~ "asignación de perfiles primarios y a la asignación directa suplementaria, "
+#~ "pero no a la asignación de perfiles patrón."
+
+#~ msgid ""
+#~ "The 'posts' capabilities in a WP role determine its function as a Pattern "
+#~ "Role for supplemental assignment to Permission Groups. When you assign "
+#~ "the 'Author' pattern role for Pages, edit_posts and edit_published_posts "
+#~ "become edit_pages and edit_published_pages."
+#~ msgstr ""
+#~ "Las capacidades de «Entradas» en un perfil de WP determinan su función "
+#~ "como perfil de patrón para la asignación complementaria a los grupos de "
+#~ "permisos. Cuando se asigna el perfil de patrón «Autor» para Páginas, "
+#~ "`edit_posts` y `edit_published_posts` se convierten en `edit_pages` y "
+#~ "`edit_published_pages`."
+
+#~ msgid "Notes"
+#~ msgstr "Notas"
+
+#~ msgid "lower role levels"
+#~ msgstr "niveles de perfil inferiores"
+
+#~ msgid "equal or lower role levels"
+#~ msgstr "niveles de perfil iguales o inferiores"
+
+#~ msgid "any user"
+#~ msgstr "todos los usuarios"
+
+#~ msgid "User editing capabilities apply for"
+#~ msgstr "Las capacidades de edición del usuario se aplican para"
+
+#~ msgid ""
+#~ "The following settings apply to users who have the upload_files or "
+#~ "edit_files capability:"
+#~ msgstr ""
+#~ "Los siguientes ajustes se aplican a los usuarios que tienen la capacidad "
+#~ "`upload_files` o `edit_files`:"
+
+#~ msgid "Option Administrator"
+#~ msgstr "Administrador de opciones"
+
+#~ msgid "User Administrator"
+#~ msgstr "Administrador de usuarios"
+
+#~ msgid "Author / Editor"
+#~ msgstr "Autor/Editor"
+
+#~ msgid "Contributor / Author / Editor"
+#~ msgstr "Colaborador/Autor/Editor"
+
+#~ msgid "no requirement"
+#~ msgstr "ningún requisito"
+
+#~ msgid "Content Administrator"
+#~ msgstr "Administrador de contenidos"
+
+#~ msgid "%1$s sample IDs:%2$s %3$s"
+#~ msgstr "%1$s muestra de IDs:%2$s %3$s"
+
+#~ msgid "Edit Form HTML IDs:"
+#~ msgstr "Editar los IDs HTML de los formularios:"
+
+#~ msgid "Administrators"
+#~ msgstr "Administradores"
+
+#~ msgid "Page Editors and Administrators"
+#~ msgstr "Editores y administradores de páginas"
+
+#~ msgid "Page Authors, Editors and Administrators"
+#~ msgstr "Autores, editores y administradores de páginas"
+
+#~ msgid "no Page Parent filter"
+#~ msgstr "no hay filtro de página principal"
+
+#~ msgid "lock"
+#~ msgstr "bloqueado"
+
+#~ msgid "Public"
+#~ msgstr "Público"
+
+#~ msgid ""
+#~ "Non-Administrators can set Editing Permissions for their editable posts"
+#~ msgstr ""
+#~ "Los no administradores pueden establecer permisos de edición para sus "
+#~ "entradas editables"
+
+#~ msgid "Add taxonomy columns to Edit Posts screen"
+#~ msgstr "Añadir columnas de taxonomías en la pantalla de «Editar entradas»"
+
+#~ msgid "Forking enforces edit_others_posts capability"
+#~ msgstr "La bifurcación hace cumplir la capacidad de `edit_others_posts`"
+
+#~ msgid "Fork published posts only"
+#~ msgstr "Bifurcar sólo las entradas publicadas"
+
+#~ msgid "Publish Author Pages at bulk creation"
+#~ msgstr "Publicar páginas de autor en la creación en lote"
+
+#~ msgid "Bulk-Add Author Pages (on Users screen)"
+#~ msgstr "Añadir páginas de autor por lote (en la pantalla de Usuarios)"
+
+#~ msgid "Order Page Parent dropdown by Title"
+#~ msgstr "Ordenar el desplegable de los padres de la página por el título"
+
+#~ msgid "Default visibility for new posts:"
+#~ msgstr "Visibilidad por defecto para las nuevas entradas:"
+
+#~ msgid "Limit User Edit by Level"
+#~ msgstr "Limitar la edición del usuario por nivel"
+
+#~ msgid "Lock custom menu items"
+#~ msgstr "Bloquear los elementos del menú personalizado"
+
+#~ msgid "Allow Renaming of Uneditable Items"
+#~ msgstr "Permitir de renombrar los elementos no editables"
+
+#~ msgid "List only user-editable content as available items"
+#~ msgstr ""
+#~ "Listar sólo los contenidos editables por el usuario como elementos "
+#~ "disponibles"
+
+#~ msgid "Users can always edit their own attachments"
+#~ msgstr "Los usuarios siempre pueden editar sus propios adjuntos"
+
+#~ msgid "Edit other users' uploads if attached to an editable post"
+#~ msgstr ""
+#~ "Editar las subidas de otros usuarios si se adjuntan a una entrada editable"
+
+#~ msgid "Other users' unattached uploads listed by default"
+#~ msgstr "Las subidas sin adjuntar de otros usuarios aparecen por defecto"
+
+#~ msgid "List other users' uploads if attached to a readable post"
+#~ msgstr ""
+#~ "Listar las subidas de otros usuarios si se adjuntan a una entrada legible"
+
+#~ msgid "List other users' uploads if attached to an editable post"
+#~ msgstr ""
+#~ "Listar las subidas de otros usuarios si se adjuntan a una entrada editable"
+
+#~ msgid "Specified element IDs also require the following site-wide Role:"
+#~ msgstr ""
+#~ "Los IDs de elementos especificados también requieren el siguiente perfil "
+#~ "a nivel de sitio:"
+
+#~ msgid "Pages can be set or removed from Top Level by:"
+#~ msgstr "Las páginas pueden ser creadas o eliminadas del nivel superior por:"
+
+#~ msgid "Post Forking"
+#~ msgstr "Bifurcación de las entradas"
+
+#~ msgid "User Management"
+#~ msgstr "Gestión de usuarios"
+
+#~ msgid "Media Library"
+#~ msgstr "Biblioteca de medios"
+
+#~ msgid "Limited Editing Elements"
+#~ msgstr "Elementos de edición limitados"
+
+#~ msgid "Page Structure"
+#~ msgstr "Estructura de la página"
+
+#~ msgid "Editing"
+#~ msgstr "Edición"
+
+#~ msgid "Back to Role Usage List"
+#~ msgstr "Volver a la lista de uso de perfiles"
+
+#~ msgid "Notes regarding Pattern Roles"
+#~ msgstr "Notas sobre los patrones de perfiles"
+
+#~ msgid ""
+#~ "All capabilities defined for this WordPress role will be applied in "
+#~ "supplemental assignments:"
+#~ msgstr ""
+#~ "Todas las capacidades definidas para este perfil de WordPress se "
+#~ "aplicarán en las asignaciones suplementarias:"
+
+#~ msgid "Role Capabilities"
+#~ msgstr "Capacidades de perfiles"
+
+#~ msgid "The following capabilities are included in supplemental %s roles:"
+#~ msgstr ""
+#~ "Las siguientes capacidades se incluyen en los perfiles suplementarios de "
+#~ "%s:"
+
+#~ msgid "Arbitrary Capabilities"
+#~ msgstr "Capacidades arbitrarias"
+
+#~ msgid ""
+#~ "Type-specific and/or status-specific equivalents of the following "
+#~ "capabilities are included in supplemental %s roles:"
+#~ msgstr ""
+#~ "Los equivalentes específicos de tipo y/o estado de las siguientes "
+#~ "capacidades se incluyen en los perfiles suplementarios %s:"
+
+#~ msgid "Post Capabilities"
+#~ msgstr "Capacidades de las entradas"
+
+#~ msgid "Direct Assignment"
+#~ msgstr "Asignación directa"
+
+#~ msgid "Pattern Role"
+#~ msgstr "Perfil patrón"
+
+#~ msgid "no supplemental assignment"
+#~ msgstr "ninguna asignación suplementaria"
+
+#~ msgid "Usage"
+#~ msgstr "Uso"
+
+#~ msgid "Role Usage: %s"
+#~ msgstr "Uso del perfil: %s"
+
+#~ msgid "Role Usage updated."
+#~ msgstr "Uso del perfil actualizado."
+
+#~ msgid "All Role Usage settings will be reset to DEFAULTS.  Are you sure?"
+#~ msgstr ""
+#~ "Todos los ajustes de uso de los perfiles se restablecerán a los valores "
+#~ "por defecto.  ¿Estás seguro?"
+
+#~ msgid ""
+#~ "With Direct Assignment, capabilities are applied without modification "
+#~ "(leaving you responsible to add custom type caps to the WP Role "
+#~ "Definitions)."
+#~ msgstr ""
+#~ "Con la Asignación directa, las capacidades se aplican sin modificación "
+#~ "(dejándote la responsabilidad de añadir tapas de tipos personalizados a "
+#~ "las definiciones de los perfiles de WP)."
+
+#~ msgid ""
+#~ "Pattern Roles convert 'post' capabilities to the corresponding type-"
+#~ "specific capability.  In a normal WP installation, this is the easiest "
+#~ "solution."
+#~ msgstr ""
+#~ "Los perfiles patrón convierten las capacidades de `entrada` en la "
+#~ "capacidad específica del tipo correspondiente.  En una instalación normal "
+#~ "de WP, esta es la solución más fácil."
+
+#~ msgid ""
+#~ "These <strong>optional</strong> settings customize how PublishPress "
+#~ "Permissions applies <strong>supplemental roles</strong>. Your existing WP "
+#~ "Role Definitions can be applied in two different ways:"
+#~ msgstr ""
+#~ "Estos ajustes <strong>opcionales</strong> personalizan la manera en que "
+#~ "PublishPress Permissions aplica los <strong>perfiles suplementarios</"
+#~ "strong>. Tus definiciones de los perfiles existentes de WP pueden ser "
+#~ "aplicadas de dos maneras diferentes:"
+
+#~ msgid "Edit Role Usage"
+#~ msgstr "Editar el uso de perfil"
+
+#~ msgid "Role Usage edited."
+#~ msgstr "Uso de perfil editado."
+
+#~ msgid "(select...)"
+#~ msgstr "(selecciona...)"
+
+#~ msgid "Sorry, you cannot edit this post."
+#~ msgstr "Lo siento, no puedes editar esta entrada."
+
+#~ msgid "Invalid post ID."
+#~ msgstr "ID de la entrada no válida."
+
+#~ msgid ""
+#~ "The requested modification was processed, but you can no longer edit the "
+#~ "post."
+#~ msgstr ""
+#~ "La modificación solicitada ha sido procesada, pero ya no puedes editar la "
+#~ "entrada."
+
+#~ msgid "Dashboard"
+#~ msgstr "Escritorio"
+
+#~ msgid "The %s was saved, but you can no longer edit it."
+#~ msgstr "El %s se ha guardado, pero ya no lo puedes editar."
+
+#~ msgid "Go to %s"
+#~ msgstr "Ve a %s"
+
+#~ msgid "access denied"
+#~ msgstr "acceso denegado"
+
+#~ msgid "Revisor"
+#~ msgstr "Revisor"
+
+#~ msgid "Revisors"
+#~ msgstr "Revisores"
+
+#~ msgid "Approved <span class=\"count\">(%s)</span>"
+#~ msgid_plural "Approved <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "Aprobado <span class=\"count\">(%s)</span>"
+#~ msgstr[1] "Aprobados <span class=\"count\">(%s)</span>"
+
+#~ msgid "Approve"
+#~ msgstr "Aprobado"
+
+#~ msgctxt "post"
+#~ msgid "Approved"
+#~ msgstr "Aprobada"
+
+#~ msgid "Duplicate %1$s module activated (%2$s in folder %3$s)."
+#~ msgstr "Módulo duplicado %1$s activado (%2$s en la carpeta %3$s)."
+
+#~ msgid "Display Module Hints"
+#~ msgstr "Sugerencias para el módulo de visualización"
+
+#~ msgid "Permissions Capabilities"
+#~ msgstr "Capacidades de los permisos"
+
+#~ msgid ""
+#~ "Permission Groups adjust user access with type-specific Roles and item-"
+#~ "specific Permissions. To customize permissions for a single user instead, "
+#~ "click their Role in the Users listing."
+#~ msgstr ""
+#~ "Los grupos de permisos establecen el acceso de los usuarios con los "
+#~ "perfiles específicos de cada tipo y los permisos específicos de cada "
+#~ "elemento. Para personalizar los permisos de un solo usuario, haz clic en "
+#~ "su perfil en la lista de usuarios."
+
+#~ msgid "Enforce distinct edit, delete capability requirements for Media"
+#~ msgstr ""
+#~ "Hacer cumplir distintos requisitos de capacidad de edición y eliminación "
+#~ "para los medios"
+
+#~ msgid "Permissions Settings"
+#~ msgstr "Ajustes de los permisos"
+
+#~ msgid "(no parent)"
+#~ msgstr "(sin padre)"
+
+#~ msgid "Edit Permission Group (WordPress Role)"
+#~ msgstr "Editar Grupo de permisos (Perfiles de WordPress)"
+
+#~ msgid "Edit role capabilities directly"
+#~ msgstr "Editar directamente las capacidades de los perfiles"
+
+#~ msgid "Edit Permission Group (%sWordPress Role%s)"
+#~ msgstr "Editar Grupo de permisos (%sPerfiles de WordPress%s)"
+
+#~ msgid "Contact"
+#~ msgstr "Contacto"
+
+#~ msgid "Contact the PublishPress team"
+#~ msgstr "Contacta con el equipo de PublishPress"
+
+#~ msgid "Documentation"
+#~ msgstr "Documentación"
+
+#~ msgid "Permissions Documentation"
+#~ msgstr "Documentación de permisos"
+
+#~ msgid "About"
+#~ msgstr "Acerca de"
+
+#~ msgid "About PublishPress Permissions"
+#~ msgstr "Acerca de PublishPress Permissions"
+
+#~ msgid "If you like %s, please leave us a %s rating. Thank you!"
+#~ msgstr "Si te gusta %s, por favor déjanos una valoración de %s. ¡Gracias!"
+
+#~ msgid ""
+#~ "Role Scoper installation detected. To migrate your groups, roles, "
+#~ "restrictions and options to PublishPress Permissions, run the %sImport "
+#~ "tool%s."
+#~ msgstr ""
+#~ "Se ha detectado una instalación de Role Scoper. Para migrar tus grupos, "
+#~ "perfiles, restricciones y opciones a PublishPress Permissions, ejecuta la "
+#~ "herramienta %sImportar%s."
+
+#~ msgid "Pro Modules:"
+#~ msgstr "Módulos Pro:"
+
+#~ msgid "Inactive Modules:"
+#~ msgstr "Módulos inactivos:"
+
+#~ msgid "Active Modules:"
+#~ msgstr "Módulos activos:"
+
+#~ msgid "PublishPress Permissions Version: %1$s %2$s"
+#~ msgstr "PublishPress Permissions versión: %1$s %2$s"
+
+#~ msgid ""
+#~ "A presspermit.com key appears to be active. <a href=\"%s\" "
+#~ "target=\"_blank\">Contact us</a> for assistance in migrating your account "
+#~ "to publishpress.com."
+#~ msgstr ""
+#~ "Una clave de presspermit.com parece estar activa. <a href=\"%s\" "
+#~ "target=\"_blank\">Contacta con nosotros</a> para que te ayudemos a migrar "
+#~ "tu cuenta a publishpress.com."
+
+#~ msgid "Modules"
+#~ msgstr "Módulos"
+
+#~ msgid "Upgrade to Pro"
+#~ msgstr "Actualizar a Pro"
+
+#~ msgid "PublishPress Permissions"
+#~ msgstr "PublishPress Permissions"
+
+#~ msgid ""
+#~ "To block direct URL access to attachments of unreadable posts, "
+#~ "%1$supgrade to Permissions Pro%2$s and enable the File Access module."
+#~ msgstr ""
+#~ "Para bloquear el acceso directo a la URL de los archivos adjuntos de las "
+#~ "entradas no legibles, %1$sactualiza a Permissions Pro%2$s y activa el "
+#~ "módulo File Access."
+
+#~ msgid ""
+#~ "To assign roles for bbPress forums, %1$supgrade to Permissions Pro%2$s "
+#~ "and enable the Compatibility Pack module."
+#~ msgstr ""
+#~ "Para asignar perfiles a los foros de bbPress, %1$sactualiza a Permissions "
+#~ "Pro%2$s y activa el módulo Compatibility pack."
+
+#~ msgid ""
+#~ "To assign roles for custom post statuses, %1$supgrade to Permissions "
+#~ "Pro%2$s and enable the Status Control module."
+#~ msgstr ""
+#~ "Para asignar perfiles a los estados de las entradas personalizadas, "
+#~ "%1$sactualiza a Permissions Pro%2$s y activa el módulo de control de "
+#~ "estados."
+
+#~ msgid ""
+#~ "To define publication workflow statuses, %1$supgrade to Permissions "
+#~ "Pro%2$s. Then enable the following modules: %3$s."
+#~ msgstr ""
+#~ "Para definir los estados del flujo de trabajo de publicación, "
+#~ "%1$sactualiza a Permissions Pro%2$s y activa los siguientes módulos: %3$s."
+
+#~ msgid ""
+#~ "To define custom privacy statuses, %1$supgrade to Permissions Pro%2$s and "
+#~ "enable the Status Control module."
+#~ msgstr ""
+#~ "Para definir estados de privacidad personalizados, %1$sactualiza a "
+#~ "Permissions Pro%2$s y activa el módulo de control de estados."
+
+#~ msgid ""
+#~ "To assign roles or permissions to BuddyPress groups, %1$supgrade to "
+#~ "Permissions Pro%2$s and enable the Compatibility Pack module."
+#~ msgstr ""
+#~ "Para asignar perfiles o permisos a los grupos de BuddyPress, "
+#~ "%1$sactualiza a Permissions Pro%2$s y activa el módulo Compatibility pack."
+
+#~ msgid ""
+#~ "%1$s won&#39;t work until you upgrade PHP to version %2$s or later. "
+#~ "Current version: %3$s"
+#~ msgstr ""
+#~ "%1$s no funcionará hasta que actualice PHP a la versión %2$s o posterior. "
+#~ "Versión actual: %3$s"
+
+#~ msgid "%s&nbsp;details"
+#~ msgstr "%s&nbsp;detalles"
+
+#~ msgid "Original presspermit.com support key hash: <strong>%s</strong>"
+#~ msgstr ""
+#~ "Hash de clave de soporte original de presspermit.com: <strong>%s</strong>"
+
+#~ msgid ""
+#~ "Original presspermit.com support key hash: <strong>%s</strong> (expires "
+#~ "%s)"
+#~ msgstr ""
+#~ "Hash de clave de soporte original de presspermit.com: <strong>%s</strong> "
+#~ "(expira %s)"
+
+#~ msgid "Further details for your installation:"
+#~ msgstr "Más detalles para tu instalación:"
+
+#~ msgid ""
+#~ "Your presspermit.com key has expired, but a <a href=\"%s\">PublishPress "
+#~ "renewal</a> discount may be available."
+#~ msgstr ""
+#~ "Tu clave de presspermit.com ha caducado, pero es posible que haya un "
+#~ "descuento <a href=\"%s\">Renovación de PublishPress</a> disponible."
+
+#~ msgid "Account"
+#~ msgstr "Cuenta"
+
+#~ msgid "Regulate permissions for PublishPress post statuses"
+#~ msgstr ""
+#~ "Regular los permisos para los estados de las entradas de PublishPress"
+
+#~ msgid ""
+#~ "To assign roles or permissions to BuddyPress groups, activate the "
+#~ "Compatibility Pack module"
+#~ msgstr ""
+#~ "Para asignar perfiles o permisos a los grupos de BuddyPress, activa el "
+#~ "módulo Compatibility pack"
+
+#~ msgid "All settings were updated."
+#~ msgstr "Todos los ajustes han sido actualizado."
+
+#~ msgid ""
+#~ "To assign roles for custom post statuses, activate the Status Control "
+#~ "module."
+#~ msgstr ""
+#~ "Para asignar perfiles a los estados de las entradas personalizadas, "
+#~ "activa el módulo de control de estados."
+
+#~ msgid ""
+#~ "To block direct access to unreadable files, %1$supgrade to Permissions "
+#~ "Pro%2$s and install the File Access module."
+#~ msgstr ""
+#~ "Para bloquear el acceso directo a los archivos no legibles, %1$sactualiza "
+#~ "a Permissions Pro%2$s y instala el módulo File Access."
+
+#~ msgid ""
+#~ "To block direct access to unreadable files, activate the File Access "
+#~ "module."
+#~ msgstr ""
+#~ "Para bloquear el acceso directo a los archivos no legibles, activa el "
+#~ "módulo File Access."
+
+#~ msgid "To define publication workflow statuses, %1$sactivate%2$s %3$s."
+#~ msgstr ""
+#~ "Para definir los estados del flujo de trabajo de publicación, "
+#~ "%1$sactiva%2$s %3$s."
+
+#~ msgid ""
+#~ "To define custom privacy statuses, activate the Status Control module."
+#~ msgstr ""
+#~ "Para definir estados de privacidad personalizados, activa el módulo de "
+#~ "control de estados."
+
+#~ msgid "https://publishpress.com/presspermit"
+#~ msgstr "https://publishpress.com/presspermit"
+
+#~ msgid "Sorry, you are not allowed to do that."
+#~ msgstr "Lo siento, no tienes permiso para hacerlo."
+
+#~ msgid "Search Groups"
+#~ msgstr "Buscar grupos"
+
+#~ msgid "Search Results for &#8220;%s&#8221;"
+#~ msgstr "Resultados de la búsqueda por &#8220;%s&#8221;"
+
+#~ msgid "%1$sGroup Type:%2$s %3$s"
+#~ msgstr "%1$sTipo de grupo:%2$s %3$s"
+
+#~ msgid "Custom Group"
+#~ msgstr "Grupo personalizado"
+
+#~ msgid "New group created."
+#~ msgstr "Creado un nuevo grupo."
+
+#~ msgid "%s group deleted"
+#~ msgid_plural "%s groups deleted"
+#~ msgstr[0] "%s grupo borrado"
+#~ msgstr[1] "%s grupos borrados"
+
+#~ msgid "There are no valid groups selected for deletion."
+#~ msgstr "No hay grupos válidos seleccionados para ser borrados."
+
+#~ msgid "Confirm Deletion"
+#~ msgstr "Confirmar el borrado"
+
+#~ msgid "ID #%1s: %2s"
+#~ msgstr "ID #%1s: %2s"
+
+#~ msgid "You have specified this group for deletion:"
+#~ msgid_plural "You have specified these groups for deletion:"
+#~ msgstr[0] "Has especificado este grupo para borrarlo:"
+#~ msgstr[1] "Has especificado estos grupos para borrarlos:"
+
+#~ msgid "Delete Groups"
+#~ msgstr "Borrar grupos"
+
+#~ msgid "Modify permissions for these Post Types:"
+#~ msgstr "Modificar los permisos para estos tipos de contenido:"
+
+#~ msgid "Modify permissions for these Taxonomies:"
+#~ msgstr "Modificar los permisos para estas taxonomías:"
+
+#~ msgid "Select Permission Groups at User creation"
+#~ msgstr "Selecciona los grupos de permisos en la creación de usuarios"
+
+#~ msgid "Supplemental Roles on User Profile"
+#~ msgstr "Perfiles suplementarios en el perfil del usuario"
+
+#~ msgid "Permission Groups on User Profile"
+#~ msgstr "Grupos de permisos en el perfil del usuario"
+
+#~ msgid "Suppress \"Private:\" Caption"
+#~ msgstr "Suprimir la leyenda `Privado:`"
+
+#~ msgid "Use create_posts capability"
+#~ msgstr "Utilzar la capacidad `create_posts`"
+
+#~ msgid "Database Maintenance"
+#~ msgstr "Mantenimiento de la base de datos"
+
+#~ msgid "Admin Back End"
+#~ msgstr "Administración"
+
+#~ msgid "Front End"
+#~ msgstr "Portada"
+
+#~ msgid "Filtered Post Types"
+#~ msgstr "Tipos de contenido filtrados"
+
+#~ msgid "Filtered Taxonomies"
+#~ msgstr "Taxonomías filtradas"
+
+#~ msgid "Core"
+#~ msgstr "Núcleo"
+
+#~ msgid "Click to list/edit universal permissions"
+#~ msgstr "Haz clic para listar/editar los permisos universales"
+
+#~ msgid ""
+#~ "Listed permissions are those assigned for the \"%1$s\" type. You can also "
+#~ "%2$sdefine universal %3$s permissions which apply to all related post "
+#~ "types%4$s."
+#~ msgstr ""
+#~ "Los permisos listados son los asignados para el tipo «%1$s». También "
+#~ "puedes %2$sdefinir permisos universales %3$s que se aplican a todos los "
+#~ "tipos de contenido relacionados%4$s."
+
+#~ msgid "Roles %1$s*%2$s"
+#~ msgstr "Perfiles %1$s*%2$s"
+
+#~ msgid "Click to show only users who have supplemental roles"
+#~ msgstr ""
+#~ "Haz clic para mostrar sólo los usuarios que tienen perfiles suplementarios"
+
+#~ msgid "%1$s(x)%2$s"
+#~ msgstr "%1$s(x)%2$s"
+
+#~ msgid "Click to show only users who have no group"
+#~ msgstr "Haz clic para mostrar sólo los usuarios que no tienen un grupo"
+
+#~ msgid "Remove selected users from Permission Group"
+#~ msgstr "Quitar los usuarios seleccionados del Grupo de permisos"
+
+#~ msgid "Remove"
+#~ msgstr "Quitar"
+
+#~ msgid "Add selected users to Permission Group"
+#~ msgstr "Añadir los usuarios seleccionados al Grupo de permisos"
+
+#~ msgid "Add"
+#~ msgstr "Añadir"
+
+#~ msgid "Permissions&hellip;"
+#~ msgstr "Permisos&hellip;"
+
+#~ msgid "Dismiss"
+#~ msgstr "Descartar"
+
+#~ msgid "Edit Permissions"
+#~ msgstr "Editar permisos"
+
+#~ msgid "Settings"
+#~ msgstr "Ajustes"
+
+#~ msgid "Add New Permission Group"
+#~ msgstr "Añadir nuevo grupo de permisos"
+
+#~ msgid "Permissions"
+#~ msgstr "Permisos"
+
+#~ msgctxt "groups per page (screen options)"
+#~ msgid "Groups"
+#~ msgstr "Grupos"
+
+#~ msgid ""
+#~ "PublishPress Permissions needs directions. Please go to %1$sPermissions > "
+#~ "Settings%2$s and indicate which Post Types and Taxonomies should be "
+#~ "filtered."
+#~ msgstr ""
+#~ "PublishPress Permissions necesita indicaciones. Por favor, ve a "
+#~ "%1$sPermisos > Ajustes%2$s e indica qué tipos de contenido y taxonomías "
+#~ "deben ser filtrados."
+
+#~ msgctxt "count"
+#~ msgid "Roles"
+#~ msgstr "Perfiles"
+
+#~ msgctxt "count"
+#~ msgid "Users"
+#~ msgstr "Usuarios"
+
+#~ msgid "Delete"
+#~ msgstr "Borrar"
+
+#~ msgid "No matching groups were found."
+#~ msgstr "No se han encontrado grupos coincidentes."
+
+#~ msgid "%s, more..."
+#~ msgstr "%s, más…"
+
+#~ msgid "#%d (no title)"
+#~ msgstr "#%d (sin título)"
+
+#~ msgid "Most Used"
+#~ msgstr "Más utilizadas"
+
+#~ msgid "Select All"
+#~ msgstr "Seleccionar todo"
+
+#~ msgid "Search"
+#~ msgstr "Buscar"
+
+#~ msgid "View All"
+#~ msgstr "Ver todo"
+
+#~ msgid "Most Recent"
+#~ msgstr "Más reciente"
+
+#~ msgid "&raquo;"
+#~ msgstr "&raquo;"
+
+#~ msgid "&laquo;"
+#~ msgstr "&laquo;"
+
+#~ msgid "No items."
+#~ msgstr "No hay elementos."
+
+#~ msgid ""
+#~ "To customize for a specific post status, edit the desired role / group / "
+#~ "user permissions directly (Permissions > Groups or Users)"
+#~ msgstr ""
+#~ "Para personalizar el estado de una entrada específica, edita directamente "
+#~ "los permisos del perfil/grupo/usuario deseado (Permisos > Grupos o "
+#~ "Usuarios)"
+
+#~ msgid "create group"
+#~ msgstr "crear grupo"
+
+#~ msgid "close"
+#~ msgstr "cierra"
+
+#~ msgid "select groups"
+#~ msgstr "selecciona los grupos"
+
+#~ msgid "select users"
+#~ msgstr "selecciona los usuarios"
+
+#~ msgid "clear all"
+#~ msgstr "vaciar todo"
+
+#~ msgid "default all"
+#~ msgstr "todos por defecto"
+
+#~ msgid "Sub-%s"
+#~ msgstr "Sub-%s"
+
+#~ msgid "This %s"
+#~ msgstr "Este %s"
+
+#~ msgid "User"
+#~ msgstr "Usuario"
+
+#~ msgid "Users"
+#~ msgstr "Usuarios"
+
+#~ msgid "selected %s:"
+#~ msgstr "%s seleccionado:"
+
+#~ msgid "selected:"
+#~ msgstr "seleccionado:"
+
+#~ msgid "Customize"
+#~ msgstr "Personalizar"
+
+#~ msgid "define custom privacy"
+#~ msgstr "definir la privacidad personalizada"
+
+#~ msgid "Search Results:"
+#~ msgstr "Resultados de la búsqueda:"
+
+#~ msgid "(any WP role)"
+#~ msgstr "(cualquier perfil de WP)"
+
+#~ msgid "(user field)"
+#~ msgstr "(campo usuario)"
+
+#~ msgid "Nickname"
+#~ msgstr "Alias"
+
+#~ msgid "Last Name"
+#~ msgstr "Apellido"
+
+#~ msgid "First Name"
+#~ msgstr "Nombre"
+
+#~ msgid "For additional fields, define constant PP_USER_SEARCH_META_FIELDS"
+#~ msgstr ""
+#~ "Para los campos adicionales, definir la constante "
+#~ "`PP_USER_SEARCH_META_FIELDS`"
+
+#~ msgid "Find Users by %s"
+#~ msgstr "Buscar usuarios por %s"
+
+#~ msgid "Current Selections:"
+#~ msgstr "Selecciones actuales:"
+
+#~ msgctxt "user"
+#~ msgid "&lt; Unselect"
+#~ msgstr "&lt; no seleccionado"
+
+#~ msgctxt "user"
+#~ msgid "Select &gt;"
+#~ msgstr "Seleccionado &gt;"
+
+#~ msgid "Editor"
+#~ msgstr "Editor"
+
+#~ msgid "Editors"
+#~ msgstr "Editores"
+
+#~ msgid "Author"
+#~ msgstr "Autor"
+
+#~ msgid "Authors"
+#~ msgstr "Autores"
+
+#~ msgid "Contributor"
+#~ msgstr "Colaborador"
+
+#~ msgid "Contributors"
+#~ msgstr "Colaboradores"
+
+#~ msgid "Subscriber"
+#~ msgstr "Suscriptor"
+
+#~ msgid "Subscribers"
+#~ msgstr "Suscriptores"
+
+#~ msgid "%1$s&nbsp;%2$s&nbsp;%3$s"
+#~ msgstr "%1$s&nbsp;%2$s&nbsp;%3$s"
+
+#~ msgid "(using default capabilities due to invalid %s definition)"
+#~ msgstr ""
+#~ "(usando capacidades por defecto debido a una definición %s inválida)"
+
+#~ msgid "Create Group"
+#~ msgstr "Crear nuevo grupo"
+
+#~ msgid ""
+#~ "Note: Supplemental Roles and other group settings can be configured here "
+#~ "after the new group is created."
+#~ msgstr ""
+#~ "Nota: Los perfiles suplementarios y otros ajustes del grupo pueden ser "
+#~ "ajustados aquí después de la creación del nuevo grupo."
+
+#~ msgid "Name"
+#~ msgstr "Nombre"
+
+#~ msgid "Create New %s"
+#~ msgstr "Crear nuevo %s"
+
+#~ msgid "Create New Permission Group"
+#~ msgstr "Crear nuevo grupo de permisos"
+
+#~ msgid ""
+#~ "Keep in mind that Roles and Specific Permissions can be assigned to WP "
+#~ "Roles, BuddyPress Groups, Custom Groups and/or individual Users.  "
+#~ "\"Enable\" and \"Limit to\" adjustments are unavailable for groups in "
+#~ "some contexts."
+#~ msgstr ""
+#~ "Ten en cuenta que los perfiles y los permisos específicos se pueden "
+#~ "asignar a los perfiles de WP, a los grupos de BuddyPress, a los grupos "
+#~ "personalizados y/o a los usuarios individuales.  Los ajustes «Habilitar» "
+#~ "y «Limitar a» no están disponibles para los grupos en algunos contextos."
+
+#~ msgid "View currently stored user permissions:"
+#~ msgstr "Ver los permisos de usuario almacenados actualmente:"
+
+#~ msgid ""
+#~ "Specific Permissions %1$s(from primary role or %2$sgroup "
+#~ "membership%3$s)%4$s"
+#~ msgstr ""
+#~ "Permisos específicos %1$s(del perfil principal o de la %2$spertenencia a "
+#~ "un grupo%3$s)%4$s"
+
+#~ msgid ""
+#~ "Supplemental Roles %1$s(from primary role or %2$sgroup membership%3$s)%4$s"
+#~ msgstr ""
+#~ "Perfiles suplementarios %1$s(del perfil principal o de la %2$spertenencia "
+#~ "a un grupo%3$s)%4$s"
+
+#~ msgid "Update Group"
+#~ msgstr "Actualizar el grupo"
+
+#~ msgid "Primary Role:"
+#~ msgstr "Perfil principal:"
+
+#~ msgid "Name:"
+#~ msgstr "Nombre:"
+
+#~ msgid "User Login:"
+#~ msgstr "Acceso del usuario:"
+
+#~ msgid "Edit Permissions (%s)"
+#~ msgstr "Editar permisos (%s)"
+
+#~ msgid "Edit Permission Group"
+#~ msgstr "Editar grupo de permisos"
+
+#~ msgid "Add User Permissions"
+#~ msgstr "Añadir permisos de usuario"
+
+#~ msgid "Edit User Permissions"
+#~ msgstr "Editar permisos de usuario"
+
+#~ msgid "Group created."
+#~ msgstr "Grupo creado."
+
+#~ msgid "Back to groups list"
+#~ msgstr "Volver a la lista de grupos"
+
+#~ msgid "Group updated."
+#~ msgstr "Grupo actualizado."
+
+#~ msgid "Permissions cloned."
+#~ msgstr "Permisos clonados."
+
+#~ msgid "Roles updated."
+#~ msgstr "Perfiles actualizados."
+
+#~ msgid "Invalid group ID."
+#~ msgstr "ID de grupo inválido."
+
+#~ msgid "Invalid user ID."
+#~ msgstr "ID de usuario inválido."
+
+#~ msgid "No user/group specified."
+#~ msgstr "No hay ningún usuario/grupo especificado."
+
+#~ msgid "No results found."
+#~ msgstr "No se han encontrado resultados."
+
+#~ msgid "No items selected!"
+#~ msgstr "¡No se ha seleccionado ningún elemento!"
+
+#~ msgid "Reload form for further changes to this permission"
+#~ msgstr "Recargar el formulario para hacer otros cambios a este permiso"
+
+#~ msgid "Reload form for further changes to this role"
+#~ msgstr "Recargar el formulario para hacer otros cambios a este perfil"
+
+#~ msgid "Role submission in progress..."
+#~ msgstr "Envío del perfil en curso…"
+
+#~ msgid "No Action selected!"
+#~ msgstr "¡No se ha seleccionado ninguna acción!"
+
+#~ msgid "Role already selected!"
+#~ msgstr "¡El perfil ya está seleccionado!"
+
+#~ msgid "Review selection(s) below, then click Save."
+#~ msgstr "Revisa la(s) selección(es) a continuación y haz clic en Guardar."
+
+#~ msgid "No statuses selected!"
+#~ msgstr "¡No se ha seleccionado ningún estado!"
+
+#~ msgid "Add Roles"
+#~ msgstr "Añadir perfiles"
+
+#~ msgid "You can&#8217;t delete that group."
+#~ msgstr "No puedes eliminar ese grupo."
+
+#~ msgid "Reading"
+#~ msgstr "Lectura"
+
+#~ msgid "Read"
+#~ msgstr "Leer"
+
+#~ msgid ""
+#~ "Note: BuddyPress Groups and other externally defined groups are not "
+#~ "listed here, even if they modify permissions"
+#~ msgstr ""
+#~ "Nota: Los grupos de BuddyPress y otros grupos definidos externamente no "
+#~ "aparecen aquí, aunque modifiquen los permisos"
+
+#~ msgid "add / edit membership"
+#~ msgstr "añadir/editar membresía"
+
+#~ msgid "Edit this user's group membership"
+#~ msgstr "Editar la pertenencia a un grupo de este usuario"
+
+#~ msgid "This user is not a member of any custom Permission Groups."
+#~ msgstr "Este usuario no pertenece a ningún grupo de permisos."
+
+#~ msgid "Permission Groups"
+#~ msgstr "Grupos de permisos"
+
+#~ msgid "Supplemental Roles %1$s(from primary role or group membership)%2$s"
+#~ msgstr ""
+#~ "Perfiles suplementarios %1$s(del perfil principal o de la pertenencia a "
+#~ "un grupo)%2$s"
+
+#~ msgid "Supplemental Roles %1$s(for this user)%2$s"
+#~ msgstr "Perfiles suplementarios %1$s(para este usuario)%2$s"
+
+#~ msgid ""
+#~ "Supplemental roles and specific permissions assigned to a user's primary "
+#~ "role or other Permission Groups are usually the cleanest way to customize "
+#~ "permissions.  You can also %1$scustomize this user directly%2$s."
+#~ msgstr ""
+#~ "Los perfiles suplementarios y los permisos específicos asignados al "
+#~ "perfil principal de un usuario o a otros grupos de permisos suelen ser la "
+#~ "forma más limpia de personalizar los permisos.  También puedes "
+#~ "%1$spersonalizar a este usuario directamente%2$s."
+
+#~ msgid "Custom User Permissions"
+#~ msgstr "Permisos de usuario personalizados"
+
+#~ msgid ""
+#~ "%sNote%s: If you don't see the Roles column on the Users screen, make "
+#~ "sure it is enabled in Screen Options. "
+#~ msgstr ""
+#~ "%sNota%s: Si no ves la columna de Perfiles en la pantalla de Usuarios, "
+#~ "verificas que esté habilitada en las Opciones de pantalla. "
+
+#~ msgid ""
+#~ "%1$sUsers who have Supplemental Roles or Specific Permissions (directly "
+#~ "or via group)%2$s"
+#~ msgstr ""
+#~ "%1$sUsuarios que tienen perfiles suplementarios o permisos específicos "
+#~ "(directamente o a través de un grupo)%2$s"
+
+#~ msgid "%1$sUsers who have Supplemental Roles (directly or via group)%2$s"
+#~ msgstr ""
+#~ "%1$sUsuarios que tienen perfiles suplementarios (directamente o a través "
+#~ "de un grupo)%2$s"
+
+#~ msgid ""
+#~ "%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s"
+#~ msgstr ""
+#~ "%1$sUsuarios que tienen perfiles suplementarios o permisos específicos "
+#~ "directamente%2$s"
+
+#~ msgid "%1$sUsers who have Supplemental Roles assigned directly%2$s"
+#~ msgstr ""
+#~ "%1$sUsuarios que tienen perfiles suplementarios asignados directamente%2$s"
+
+#~ msgid "%1$sUsers who have no custom Permission Group membership%2$s"
+#~ msgstr ""
+#~ "%1$sUsuarios que no pertenecen a ningún grupo de permisos "
+#~ "personalizados%2$s"
+
+#~ msgid "User Permissions"
+#~ msgstr "Permisos de usuario"
+
+#~ msgid "Block URL access"
+#~ msgstr "Bloquear el acceso a las URL"
+
+#~ msgid ""
+#~ "To block direct URL access to attachments of unreadable posts, activate "
+#~ "the File Access module."
+#~ msgstr ""
+#~ "Para bloquear el acceso directo a la URL de los archivos adjuntos de las "
+#~ "entradas no legibles, debes activar el módulo de Acceso a archivos."
+
+#~ msgid ""
+#~ "<strong>ERROR</strong>: This group name is already registered. Please "
+#~ "choose another one."
+#~ msgstr ""
+#~ "<strong>ERROR</strong>: Este nombre de grupo ya está registrado. Por "
+#~ "favor, elige otro."
+
+#~ msgid "<strong>ERROR</strong>: Please enter a group name."
+#~ msgstr "<strong>ERROR</strong>: Por favor, introduce el nombre de grupo."
+
+#~ msgid "You are not permitted to do that."
+#~ msgstr "No tienes permiso para hacerlo."
+
+#~ msgid ""
+#~ "To force the value of one or more settings network-wide, <strong>copy</"
+#~ "strong> the following code into your theme's <strong>functions.php</"
+#~ "strong> file (or some other file which is always executed and not auto-"
+#~ "updated) and modify as desired:"
+#~ msgstr ""
+#~ "Para forzar el valor de uno o más ajustes en toda la red, <strong>copia</"
+#~ "strong> el siguiente código en el archivo <strong>functions.php</strong> "
+#~ "de tu tema (o en algún otro archivo que se ejecute siempre y no se "
+#~ "actualice automáticamente) y modifícalo como desees:"
+
+#~ msgid ""
+#~ "To modify one or more default settings network-wide, <strong>copy</"
+#~ "strong> the following code into your theme's <strong>functions.php</"
+#~ "strong> file (or some other file which is always executed and not auto-"
+#~ "updated) and modify as desired:"
+#~ msgstr ""
+#~ "Para forzar el valor de uno o más ajustes por defecto en toda la red, "
+#~ "<strong>copia</strong> el siguiente código en el archivo "
+#~ "<strong>functions.php</strong> de tu tema (o en algún otro archivo que se "
+#~ "ejecute siempre y no se actualice automáticamente) y modifícalo como "
+#~ "desees:"
+
+#~ msgid "Available Constant"
+#~ msgstr "Constante disponible"
+
+#~ msgid "Setting"
+#~ msgstr "Ajustes"
+
+#~ msgid "Defined Constant"
+#~ msgstr "Constante definida"
+
+#~ msgid "Description"
+#~ msgstr "Descripción"
+
+#~ msgid "Capability Name"
+#~ msgstr "Nombre de la capacidad"
+
+#~ msgid "Bulk Add / Remove Groups on Users Screen"
+#~ msgstr "Añadir/Quitar grupos por lote en la patalla de usuarios"
+
+#~ msgid ""
+#~ "Non-Administrators can set Reading Permissions for their editable posts"
+#~ msgstr ""
+#~ "Los no administradores pueden establecer permisos de lectura para sus "
+#~ "entradas editables"
+
+#~ msgid "Detect Dynamically Mapped WP Roles"
+#~ msgstr "Detectar los perfiles de WP asignados dinámicamente"
+
+#~ msgid "Display Administrative Hints"
+#~ msgstr "Mostrar sugerencias de administración"
+
+#~ msgid "User Search: Filter by WP role"
+#~ msgstr "Buscar usuario: filtrar por perfil de WP"
+
+#~ msgid "%1$sDisable%2$s all filtering for anonymous users"
+#~ msgstr "%1$sDesactivar%2$s todos los filtrados para usuarios anónimos"
+
+#~ msgid "Enable advanced settings"
+#~ msgstr "Activar los ajustes avanzados"
+
+#~ msgid "Miscellaneous"
+#~ msgstr "Varios"
+
+#~ msgid "Constants"
+#~ msgstr "Constantes"
+
+#~ msgid "Role Integration"
+#~ msgstr "Integración de perfiles"
+
+#~ msgid "%s capabilities"
+#~ msgstr "Capacidades de %s"
+
+#~ msgid "Permissions Admin"
+#~ msgstr "Administración de permisos"
+
+#~ msgid "Content Filtering"
+#~ msgstr "Filtrado de contenidos"
+
+#~ msgid "Network-Wide Settings"
+#~ msgstr "Ajustes de la red"
+
+#~ msgid "File Filtering"
+#~ msgstr "Filtrado de archivos"
+
+#~ msgid "Advanced"
+#~ msgstr "Avanzados"
+
+#~ msgid "view / edit group"
+#~ msgstr "ver/editar grupo"
+
+#~ msgid "current (%d):"
+#~ msgstr "actual (%d):"
+
+#~ msgid "eligible (%d):"
+#~ msgstr "elegible (%d):"
+
+#~ msgid "enable custom permissions for %s"
+#~ msgstr "activar los permisos personalizados para %s"
+
+#~ msgid ""
+#~ "Displayed permissions are those assigned for the \"%1$s\" type. You can "
+#~ "also %2$sdefine universal %3$s permissions which apply to all related "
+#~ "post types%4$s."
+#~ msgstr ""
+#~ "Los permisos mostrados son los asignados para el tipo «%1$s». También se "
+#~ "pueden %2$sdefinir permisos universales %3$s que se aplican a todos los "
+#~ "tipos de contenido relaccionados%4$s."
+
+#~ msgid "Update"
+#~ msgstr "Actualizar"
+
+#~ msgid "Unblocked"
+#~ msgstr "Desbloqueado"
+
+#~ msgid "(Blocked)"
+#~ msgstr "(Bloqueado)"
+
+#~ msgid "Blocked"
+#~ msgstr "Bloqueado"
+
+#~ msgid "Enabled"
+#~ msgstr "Activado"
+
+#~ msgid "(no setting)"
+#~ msgstr "(sin ajuste)"
+
+#~ msgid "(default: No)"
+#~ msgstr "(por defecto: No)"
+
+#~ msgid "(default: Yes)"
+#~ msgstr "(por defecto: Sí)"
+
+#~ msgid "(default access)"
+#~ msgstr "(acceso por defecto)"
+
+#~ msgid "Hide"
+#~ msgstr "Ocultar"
+
+#~ msgid "Purchase"
+#~ msgstr "Comprar"
+
+#~ msgid "Contact Us"
+#~ msgstr "Contacta con nosotros"
+
+#~ msgid "Help ticket system"
+#~ msgstr "Sistema de tickets de ayuda"
+
+#~ msgid "WPML integration to mirror permissions to translations"
+#~ msgstr "Integración de WPML para reflejar los permisos en las traducciones"
+
+#~ msgid "Grant supplemental content permissions to a BuddyPress group"
+#~ msgstr ""
+#~ "Conceder permisos de contenido complementario a un grupo de BuddyPress"
+
+#~ msgid ""
+#~ "Customize the moderated editing of published content with Revisionary"
+#~ msgstr ""
+#~ "Personaliza la edición moderada de los contenidos publicados con "
+#~ "Revisionary"
+
+#~ msgid ""
+#~ "Custom Moderation statuses for access-controlled, multi-step publishing "
+#~ "workflow"
+#~ msgstr ""
+#~ "Estados de moderación personalizados para un flujo de trabajo con control "
+#~ "de acceso y múltiples pasos de publicación"
+
+#~ msgid ""
+#~ "Custom Post Visibility statuses, fully implemented throughout wp-admin"
+#~ msgstr ""
+#~ "Estados de visibilidad de entradas personalizados, totalmente "
+#~ "implementados en wp-admin"
+
+#~ msgid "Date-limited membership in Permissions Groups"
+#~ msgstr "Pertenencia a grupos de permisos con fecha limitada"
+
+#~ msgid ""
+#~ "bbPress: customize viewing, topic creation or reply submission "
+#~ "permissions per-forum"
+#~ msgstr ""
+#~ "bbPress: personalizar los permisos de visualización, creación de temas o "
+#~ "envío de respuestas por foro"
+
+#~ msgid "Hidden Content Teaser"
+#~ msgstr "Avance del contenido oculto"
+
+#~ msgid "File Access: regulate direct access to uploaded files"
+#~ msgstr ""
+#~ "Acceso a los archivos: regula el acceso directo a los archivos cargados"
+
+#~ msgid "Limit category/term assignment and page parent selection"
+#~ msgstr ""
+#~ "Limitar la asignación de categorías/términos y la selección de páginas "
+#~ "padre"
+
+#~ msgid "Customize editing permissions per-category or per-post"
+#~ msgstr "Personalizar los permisos de edición por categoría o por entrada"
+
+#~ msgid "Show list of Permissions Pro features and screencasts"
+#~ msgstr ""
+#~ "Mostrar la lista de características y presentaciones de Permissions Pro"
+
+#~ msgid "<strong>Change Log</strong> (since your current version)"
+#~ msgstr "<strong>Registro de cambios</strong> (desde tu versión actual)"
+
+#~ msgid "PHP Version: %s"
+#~ msgstr "PHP versión: %s"
+
+#~ msgid "WordPress Version: %s"
+#~ msgstr "WordPress versión: %s"
+
+#~ msgid "Database Schema Version: %s"
+#~ msgstr "Versión del esquema de la base de datos: %s"
+
+#~ msgid "Version info was refreshed."
+#~ msgstr "La información de la versión ha sido actualizada."
+
+#~ msgid "settings"
+#~ msgstr "ajustes"
+
+#~ msgid "Version"
+#~ msgstr "Versión"
+
+#~ msgid "Revert to Defaults"
+#~ msgstr "Restaurar valores por defecto"
+
+#~ msgid ""
+#~ "All settings in this form (including those on undisplayed tabs) will be "
+#~ "reset to DEFAULTS.  Are you sure?"
+#~ msgstr ""
+#~ "Todos los ajustes de este formulario (incluidos los de las pestañas no "
+#~ "mostradas) se restablecerán a los valores por defecto.  ¿Estás seguro?"
+
+#~ msgid "All settings were reset to defaults."
+#~ msgstr "Todos los ajustes se restablecieron a los valores por defecto."
+
+#~ msgid "Save Changes"
+#~ msgstr "Guardar cambios"
+
+#~ msgid ""
+#~ "Note: Permissions inherited from parent %1$s or terms are not displayed. "
+#~ "%2$sshow all%3$s"
+#~ msgstr ""
+#~ "Nota: Los permisos heredados de los padres %1$s o los términos no se "
+#~ "muestran. %2$smostrar todo%3$s"
+
+#~ msgid ""
+#~ "Note: Permissions inherited from parent %1$s are not displayed. %2$sshow "
+#~ "all%3$s"
+#~ msgstr ""
+#~ "Nota: Los permisos heredados de los padres %1$s no se muestran. "
+#~ "%2$smostrar todo%3$s"
+
+#~ msgid "* = assigned for sub-%s only"
+#~ msgstr "* = asignado sólo para sub-%s"
+
+#~ msgid "... = assigned for %1$s and sub-%1$s"
+#~ msgstr "... = asignado para %1$s y sub-%1$s"
+
+#~ msgid ""
+#~ "* = Permissions redundant due to a corresponding &quot;only these&quot; "
+#~ "entry"
+#~ msgstr ""
+#~ "* = Permisos redundantes debido a una entrada &quot;sólo estos&quot; "
+#~ "correspondiente"
+
+#~ msgid "Assign for sub-terms only"
+#~ msgstr "Asignado sólo para subtérminos"
+
+#~ msgid "Assign for selected term only"
+#~ msgstr "Asignado sólo para los términos seleccionados"
+
+#~ msgid "Assign for selected and sub-terms"
+#~ msgstr "Asignado para los seleccionados y los subtérminos"
+
+#~ msgid "Assign for sub-%s only"
+#~ msgstr "Asignado sólo para sub-%s"
+
+#~ msgid "Assign for selected %s only"
+#~ msgstr "Asignar sólo para %s seleccionados"
+
+#~ msgid "Assign for selected and sub-%s"
+#~ msgstr "Asignado para los seleccionados y los sub-%s"
+
+#~ msgid "edit"
+#~ msgstr "editar"
+
+#~ msgid "%s:"
+#~ msgstr "%s:"
+
+#~ msgid "* %s"
+#~ msgstr "* %s"
+
+#~ msgid "%1$s (%2$s)"
+#~ msgstr "%1$s (%2$s)"
+
+#~ msgid "unpublished"
+#~ msgstr "no publicado"
+
+#~ msgid "%1$s %2$s"
+#~ msgstr "%1$s %2$s"
+
+#~ msgid "%1$s %2$s %3$s"
+#~ msgstr "%1$s %2$s %3$s"
+
+#~ msgid "%1$s (%2$s: %3$s)"
+#~ msgstr "%1$s (%2$s: %3$s)"
+
+#~ msgid "(all post types)"
+#~ msgstr "(todos los tipos de contenido)"
+
+#~ msgid "(none)"
+#~ msgstr "(ningún)"
+
+#~ msgid "Apply"
+#~ msgstr "Aplicar"
+
+#~ msgid "%s Roles"
+#~ msgstr "%s perfiles"
+
+#~ msgid "Disabled Type"
+#~ msgstr "Tipo desactivado"
+
+#~ msgid "Direct-Assigned"
+#~ msgstr "Asignado directamente"
+
+#~ msgid "objects"
+#~ msgstr "objetos"
+
+#~ msgid "Term Management"
+#~ msgstr "Gestión de términos"
+
+#~ msgid "Supplemental Roles"
+#~ msgstr "Perfiles suplementarios"
+
+#~ msgid "Supplemental Roles %1$s(for user)%2$s"
+#~ msgstr "Perfiles suplementarios %1$s(para usuario)%2$s"
+
+#~ msgid "Clone"
+#~ msgstr "Clonar"
+
+#~ msgid "Add Supplemental Roles"
+#~ msgstr "Añadir perfiles suplementarios"
+
+#~ msgid "clear"
+#~ msgstr "vaciar"
+
+#~ msgid "Operation"
+#~ msgstr "Operación"
+
+#~ msgid "Save Roles"
+#~ msgstr "Gardar perfiles"
+
+#~ msgid "Status"
+#~ msgstr "Estado"
+
+#~ msgid "Select %s"
+#~ msgstr "Seleccionar %s"
+
+#~ msgid ""
+#~ "To assign page-specific Permissions for editing, parent selection or term "
+#~ "assignment, enable the Collaborative Publishing module."
+#~ msgstr ""
+#~ "Para asignar permisos específicos de página para la edición, la selección "
+#~ "de padres o la asignación de términos, hay que activar el módulo de "
+#~ "publicación colaborativa."
+
+#~ msgid ""
+#~ "Warning: Content hidden by these Permissions will be displayed if PP is "
+#~ "deactivated. Consider setting a private Visibility on Edit Post screen "
+#~ "instead."
+#~ msgstr ""
+#~ "Advertencia: El contenido oculto por estos permisos se mostrará si PP "
+#~ "está desactivado. Considera la posibilidad de establecer una visibilidad "
+#~ "privada en la pantalla de edición de la entrada."
+
+#~ msgid "for item"
+#~ msgstr "por elemento"
+
+#~ msgid "Statuses"
+#~ msgstr "Estados"
+
+#~ msgid "Qualification"
+#~ msgstr "Calificación"
+
+#~ msgid "Adjustment"
+#~ msgstr "Ajuste"
+
+#~ msgid ""
+#~ "To assign roles for bbPress forums, activate the Compatibility Pack "
+#~ "module."
+#~ msgstr ""
+#~ "Para asignar roles a los foros de bbPress, activa el módulo Compatibility "
+#~ "pack."
+
+#~ msgid "Add Role"
+#~ msgstr "Añadir perfil"
+
+#~ msgid "Status: Private"
+#~ msgstr "Estado: privado"
+
+#~ msgid "For Statuses"
+#~ msgstr "Por estados"
+
+#~ msgid "Role"
+#~ msgstr "Perfil"
+
+#~ msgid "Post Type"
+#~ msgstr "Tipo de contenido"
+
+#~ msgid "Do Clone"
+#~ msgstr "Clonar"
+
+#~ msgid "n/a"
+#~ msgstr "n/d"
+
+#~ msgid "(all)"
+#~ msgstr "(todos)"
+
+#~ msgid "select..."
+#~ msgstr "seleccionar…"
+
+#~ msgid "Group Members"
+#~ msgstr "Miembros del grupo"
+
+#~ msgid "%s Visibility"
+#~ msgstr "%s de visibilidad"
+
+#~ msgid "Standard statuses"
+#~ msgstr "Estados estándar"
+
+#~ msgid "(invalid role definition)"
+#~ msgstr "(definición de perfil inválida)"
+
+#~ msgid "(login timed out)"
+#~ msgstr "(acceso agotado)"
+
+#~ msgid "Permission Group"
+#~ msgstr "Grupo de permisos"
+
+#~ msgid "All users with the WordPress role of %s"
+#~ msgstr "Todos los usuarios con el perfil de WordPress de %s"
+
+#~ msgid "All users (including anonymous)"
+#~ msgstr "Todos los usuarios (incluyendo a los anónimos)"
+
+#~ msgid "Anonymous users (not logged in)"
+#~ msgstr "Usuarios anónimos (no conectados)"
+
+#~ msgid "Authenticated site users (logged in)"
+#~ msgstr "Usuarios del sitio identificados (conectados)"
+
+#~ msgid "Groups"
+#~ msgstr "Grupos"
+
+#~ msgid ""
+#~ "This version of %1$s cannot work with your current %2$s version. Please "
+#~ "upgrade it to %3$s or later."
+#~ msgstr ""
+#~ "Esta versión de %1$s no puede funcionar con tu versión actual de %2$s. "
+#~ "Por favor, actualízala a %3$s o posterior."
+
+#~ msgid ""
+#~ "%1$s won&#39;t work until you upgrade WordPress to version %2$s or later."
+#~ msgstr ""
+#~ "%1$s no funcionará hasta que no se actualice WordPress a la versión %2$s "
+#~ "o posterior."
+
+#~ msgid "%1$s won&#39;t work until you upgrade %2$s to version %3$s or later."
+#~ msgstr ""
+#~ "%1$s no funcionará hasta que no se actualice %2$s a la versión %3$s o "
+#~ "posterior."
+
+#~ msgid "%1$s queries in %2$s seconds. %3$s MB used."
+#~ msgstr "%1$s consultas en %2$s segundos. %3$s MB utilizados."
+
+#~ msgid "https://publishpress.com/"
+#~ msgstr "https://publishpress.com/"
+
+#~ msgid "PublishPress"
+#~ msgstr "PublishPress"
+
+#~ msgid ""
+#~ "Advanced yet accessible content permissions. Give users or groups type-"
+#~ "specific roles. Enable or block access for specific posts or terms."
+#~ msgstr ""
+#~ "Permisos de contenido avanzados pero accesibles. Otorga a los usuarios o "
+#~ "grupos perfiles específicos para cada tipo de contenido. Permite o "
+#~ "bloquea el acceso a entradas o términos específicos."
