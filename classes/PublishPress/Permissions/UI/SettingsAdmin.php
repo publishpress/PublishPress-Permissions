@@ -99,6 +99,9 @@ class SettingsAdmin
         case 'display_extension_hints' :
         return  __('Display descriptive captions for additional functionality provided by missing or deactivated modules (Permissions Pro package).', 'press-permit-core-hints');
 
+        case 'pattern_roles_include_generic_rolecaps':
+        return __('Supplemental roles assigned for a specific post type will always apply "_posts" capabilities in the Pattern Role (Author, Editor, etc.) for the selected post type. This setting pertains to other capabilities in the Pattern Role. For the most consistent permissions model, capabilities unrelated to a specific type should not normally be granted by a type-specific role, but some installations may require it. Enable this setting to restore previous plugin behavior; leave it disabled for more narrowly targeted Supplemental Roles.', 'press-permit-core-hints');
+
         case 'dynamic_wp_roles' :
         return __('Detect user roles which are appended dynamically but not stored to the WP database. May be useful for sites that sync with Active Directory or other external user registration systems.', 'press-permit-core-hints');
 

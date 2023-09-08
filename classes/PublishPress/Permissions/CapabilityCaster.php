@@ -65,25 +65,48 @@ class CapabilityCaster
         $type_caps = [];
         $type_caps['post'] = array_diff_key(get_object_vars($type_obj->cap), array_fill_keys(['read_post', 'edit_post', 'delete_post'], true));
 
-        $exclude_caps = array_fill_keys(
-            apply_filters(
-                'presspermit_exclude_arbitrary_caps',
-                [
-                    'level_0', 'level_1', 'level_2', 'level_3', 'level_4', 'level_5', 'level_6', 'level_7', 'level_8', 'level_9',
-                    'level_10', 'edit_dashboard', 'add_users', 'create_users', 'edit_users', 'list_users', 'promote_users',
-                    'remove_users', 'activate_plugins', 'delete_plugins', 'edit_plugins', 'install_plugins', 'update_plugins',
-                    'delete_themes', 'edit_theme_options', 'edit_themes', 'install_themes', 'switch_themes', 'update_themes',
-                    'export', 'import', 'manage_links', 'manage_categories', 'manage_options', 'update_core', 'pp_manage_settings',
-                    'pp_administer_content', 'pp_unfiltered', 'pp_create_groups', 'pp_delete_groups', 'pp_edit_groups',
-                    'pp_manage_members'
-                ]
-            ),
-            true
-        );
+        if ($use_strict_rolecaps = !presspermit()->getOption('pattern_roles_include_generic_rolecaps')) {
+            $include_caps = array_fill_keys(
+                apply_filters(
+                    'presspermit_exclude_arbitrary_caps',
+                    [
+                        'read', 'unfiltered_html', 'upload_files', 'edit_files',
+                    ]
+                ),
+                true
+            );
+        } else {
+            $exclude_caps = array_fill_keys(
+                apply_filters(
+                    'presspermit_exclude_arbitrary_caps',
+                    [
+                        'level_0', 'level_1', 'level_2', 'level_3', 'level_4', 'level_5', 'level_6', 'level_7', 'level_8', 'level_9',
+                        'level_10', 'edit_dashboard', 'add_users', 'create_users', 'edit_users', 'list_users', 'promote_users',
+                        'remove_users', 'activate_plugins', 'delete_plugins', 'edit_plugins', 'install_plugins', 'update_plugins',
+                        'delete_themes', 'edit_theme_options', 'edit_themes', 'install_themes', 'switch_themes', 'update_themes',
+                        'export', 'import', 'manage_links', 'manage_categories', 'manage_options', 'update_core', 'pp_manage_settings',
+                        'pp_administer_content', 'pp_unfiltered', 'pp_create_groups', 'pp_delete_groups', 'pp_edit_groups',
+                        'pp_manage_members', 'manage_capabilities_dashboard',
+                        'manage_capabilities_roles',
+                        'manage_capabilities',
+                        'manage_capabilities_editor_features',
+                        'manage_capabilities_admin_features',
+                        'manage_capabilities_admin_menus',
+                        'manage_capabilities_frontend_features',
+                        'manage_capabilities_profile_features',
+                        'manage_capabilities_nav_menus',
+                        'manage_capabilities_user_testing',
+                        'manage_capabilities_backup',
+                        'manage_capabilities_settings',
+                    ]
+                ),
+                true
+            );
 
-        foreach ($pp->getOperations() as $op) {
-            $exclude_caps["pp_set_{$op}_exceptions"] = true;
-            $exclude_caps["pp_set_term_{$op}_exceptions"] = true;
+            foreach ($pp->getOperations() as $op) {
+                $exclude_caps["pp_set_{$op}_exceptions"] = true;
+                $exclude_caps["pp_set_term_{$op}_exceptions"] = true;
+            }
         }
 
         foreach (array_keys($caps) as $role_name) {
@@ -103,8 +126,15 @@ class CapabilityCaster
             }
 
             // log caps not defined for any post type or status
-            if ($misc_caps = array_diff_key($caps[$role_name], $pp->capDefs()->all_type_caps, $exclude_caps))
+            if ($use_strict_rolecaps) {
+                $misc_caps = array_intersect_key($caps[$role_name], $pp->capDefs()->all_type_caps, $include_caps);
+            } else {
+                $misc_caps = array_diff_key($caps[$role_name], $pp->capDefs()->all_type_caps, $exclude_caps);
+            }
+
+            if ($misc_caps) {
                 $this->pattern_role_arbitrary_caps[$role_name] = array_combine(array_keys($misc_caps), array_keys($misc_caps));
+            }
         }
 
         do_action('presspermit_define_pattern_caps', $caps);
@@ -210,6 +240,17 @@ class CapabilityCaster
             // note: getTypecastCaps() returns arr[pattern_cap_name] = type_cap_name
             //   but we need to return arr[type_cap_name] = true
             $add_caps = array_merge($add_caps, array_fill_keys($this->getTypecastCaps($role_name), true));
+    
+            if (!presspermit()->getOption('pattern_roles_include_generic_rolecaps')) {
+                $arr_name = explode(':', $role_name);
+                if (!empty($arr_name[3]) && ('post_status' == $arr_name[3])) {
+                    foreach (array_keys($add_caps) as $cap_name) {
+                        if (0 === strpos($cap_name, 'status_change_')) {
+                            unset($add_caps[$cap_name]);
+                        }
+                    }
+                }
+            }
         }
 
         return $add_caps;
