@@ -182,6 +182,7 @@ class Permissions
             'edd_key' => false,
             'supplemental_role_defs' => [], // stored by Capability Manager Enhanced
             'customized_roles' => [],       // stored by Capability Manager Enhanced
+            'pattern_roles_include_generic_rolecaps' => 0, // This is exposed on the Advanced tab, but intentionally excluded from the default_advanced_options array
         ];
 
         // need these keyed in separate array to force defaults if advanced options are disabled

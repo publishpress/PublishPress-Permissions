@@ -50,6 +50,15 @@ class PluginUpdated
         
         	do_action('presspermit_version_updated', $prev_version);
 
+            if (version_compare($prev_version, '3.11.3', '<')) {
+                if (false === get_option('presspermit_pattern_roles_include_generic_rolecaps')) {
+                    // If any type-specific supplemental roles are already stored, default to previous behavior of including many generic capabilities from Pattern Role
+                    if ($wpdb->get_row("SELECT assignment_id FROM $wpdb->ppc_roles WHERE role_name LIKE '%:%'")) {
+                        update_option('presspermit_pattern_roles_include_generic_rolecaps', 1);
+                    }
+                }
+            } else break;
+
             if (version_compare($prev_version, '3.8-beta2', '<')) {
                 // Restore taxonomy_children option arrays now that an alternate filtering mechanism is in place
                 presspermit()->flags['disable_term_filtering'] = true;
