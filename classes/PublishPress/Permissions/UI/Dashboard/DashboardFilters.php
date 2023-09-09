@@ -380,7 +380,7 @@ class DashboardFilters
         global $pagenow;
 
         $site_url = wp_parse_url(get_option('siteurl'));
-        if (isset($site_url['path']) && !empty($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] == PWP::adminRelUrl()) {
+        if (isset($site_url['path']) && !empty($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] == $site_url['path'] . '/wp-admin/') {
             return;
         }
 

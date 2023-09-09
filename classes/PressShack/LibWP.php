@@ -564,16 +564,4 @@ class LibWP
 
         return $clause;
     }
-
-    public static function adminRelUrl($rel_url = '') {
-        $site_arr = parse_url(site_url());
-    
-        $admin_arr = parse_url(admin_url($rel_url));
-    
-        $admin_rel_path = (!empty($site_arr['path'])) 
-        ? substr($admin_arr['path'], strlen(trailingslashit($site_arr['path'])) - 1)
-        : $admin_arr['path'];
-
-        return $admin_rel_path;
-    }
 }

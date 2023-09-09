@@ -25,9 +25,7 @@ class CollabHooksAdmin
         add_filter('presspermit_admin_groups', [$this, 'fltAdminGroups'], 10, 2);
 
         if (defined('PRESSPERMIT_ENABLE_PAGE_TEMPLATE_LIMITER') && PRESSPERMIT_ENABLE_PAGE_TEMPLATE_LIMITER && !empty($_SERVER['REQUEST_URI'])) {
-            if (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), PWP::adminRelUrl('post.php'))
-            || false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), PWP::adminRelUrl('post-new.php'))
-            ) {
+            if (strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'wp-admin/post.php') || strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'wp-admin/post-new.php')) {   
                 require_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/PageTemplateLimiter.php');
                 new \PublishPress\Permissions\PageTemplateLimiter();
             }
