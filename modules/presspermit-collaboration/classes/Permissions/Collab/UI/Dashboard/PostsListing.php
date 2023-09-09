@@ -84,8 +84,10 @@ class PostsListing
                 foreach (PWP::getPostStatuses(
                     ['_builtin' => false, 
                     'moderation' => true, 
-                    'post_type' => $screen->post_type], 
-                    'object') as $status => $status_obj 
+                    'post_type' => $screen->post_type
+                    ], 
+                    'object'
+                    ) as $status => $status_obj 
                 ) {
                     $set_status_cap = "set_{$status}_posts";
 
