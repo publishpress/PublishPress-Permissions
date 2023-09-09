@@ -290,12 +290,19 @@ class TermFilters
                     if (!empty($_SERVER['HTTP_REFERER'])) {
                         $referer = esc_url_raw($_SERVER['HTTP_REFERER']);
 
+                        $wp_admin = 'wp-admin';
+                        $admin_rel_url = str_replace(["\\", '/'], '', PWP::adminRelUrl());
+
+                        if ($admin_rel_url && ('wp-admin' != $admin_rel_url)) {
+                            $wp_admin = $admin_rel_url;
+                        }
+
                         $matches = [];
-                        preg_match("/wp-admin\/post\.php\?post=([0-9]+)/", $referer, $matches);
+                        preg_match("/$wp_admin\/post\.php\?post=([0-9]+)/", $referer, $matches);
                         if (!empty($matches[1])) {
                             $args['object_type'] = get_post_field('post_type', $matches[1]);
-                        } elseif (strpos($referer, 'wp-admin/post-new.php')) {
-                            preg_match("/wp-admin\/post-new\.php\?post_type=([a-zA-Z_\-0-9]+)/", $referer, $matches);
+                        } elseif (strpos($referer, $wp_admin . '/post-new.php')) {
+                            preg_match("/$wp_admin\/post-new\.php\?post_type=([a-zA-Z_\-0-9]+)/", $referer, $matches);
                             if (!empty($matches[1])) {
                                 $args['object_type'] = $matches[1];
                             } else {
