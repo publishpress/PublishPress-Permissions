@@ -116,7 +116,7 @@ class CollabHooksCompat
 
     function actRegistrations()
     {
-        if (defined('PRESSPERMIT_STATUSES_VERSION')) {
+        if (defined('PUBLISHPRESS_STATUSES_VERSION') && defined('PRESSPERMIT_STATUSES_VERSION')) {
             global $wp_post_statuses;
 
             $pp = presspermit();
@@ -130,7 +130,7 @@ class CollabHooksCompat
             }
 
             // unfortunate little hack due to execution order
-            if ($pp->getOption('supplemental_cap_moderate_any') && $user->ID 
+            if (!empty(\PublishPress_Statuses::instance()->options->supplemental_cap_moderate_any) && $user->ID
             && $user->site_roles && !$pp->isContentAdministrator()
             ) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Permissions.php');
@@ -147,7 +147,7 @@ class CollabHooksCompat
             );
 
             // register each custom post status as an attribute condition with mapped caps
-            foreach (get_post_stati([], 'object') as $status => $status_obj) {
+            foreach (PWP::getPostStatuses(['moderation' => true], 'object') as $status => $status_obj) {
                 if (!empty($status_obj->moderation)) {
                     if (in_array($status, ['pending', 'future'], true) || !empty($status_obj->pp_custom)) { // pp_custom = defined by PublishPress
                         if (!$pp->getOption("custom_{$status}_caps") 
