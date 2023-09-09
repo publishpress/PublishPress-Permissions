@@ -210,7 +210,7 @@ class DashboardFilters
 
     public function actBuildMenu()
     {
-        if (!empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'wp-admin/network/')) {
+        if (!empty($_SERVER['REQUEST_URI']) && false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), PWP::adminRelUrl('network/'))) {
             return;
         }
 
