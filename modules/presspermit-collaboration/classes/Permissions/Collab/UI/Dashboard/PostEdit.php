@@ -150,8 +150,9 @@ class PostEdit
         <script type="text/javascript">
             /* <![CDATA[ */
             jQuery(document).ready(function ($) {
-                $('#visibility-radio-<?php echo esc_attr($set_visibility); ?>').click();
+                $('#visibility-radio-<?php echo esc_attr($set_visibility); ?>').prop('selected', 'selected'); //click();
 
+                /*
                 if (typeof(postL10n) != 'undefined') {
 					var vis = $('#post-visibility-select input:radio:checked').val();
                     var str = '';
@@ -168,10 +169,11 @@ class PostEdit
 		                );
                     }
                 } else {
+                */
                     $('#post-visibility-display').html(
                         $('#visibility-radio-<?php echo esc_attr($set_visibility); ?>').next('label').html()
                     );
-                }
+                //}
             });
             /* ]]> */
         </script>
