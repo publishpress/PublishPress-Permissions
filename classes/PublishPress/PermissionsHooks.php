@@ -244,6 +244,8 @@ class PermissionsHooks
         if ($ver && !empty($ver['version'])) {
             // These maintenance operations only apply when a previous version of PP was installed 
             if (version_compare($compare_version, $ver['version'], '!=')) {
+                update_option('presspermit_previous_version', $ver);
+                
                 require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
                 new Permissions\PluginUpdated($ver['version']);
                 update_option('presspermit_version', ['version' => PRESSPERMIT_VERSION, 'db_version' => PRESSPERMIT_DB_VERSION]);
