@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 5.5
 Tested up to: 6.2
 Requires PHP: 7.2.5
-Stable tag: 3.10.0
+Stable tag: 3.11.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,9 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 3.11.3-beta =
+* Fixed : Type-specific Supplemental Roles also granted most generic capabliities in Pattern Role. Introduce new Permissions > Advanced > Role Integration setting to restore previous behavior if needed.
 
 = 3.11.1 - 30 Aug 2023 =
 * Fixed : Rest API access error on some sites (potentially preventing login)
