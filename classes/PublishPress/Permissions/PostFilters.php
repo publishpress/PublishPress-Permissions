@@ -140,6 +140,11 @@ class PostFilters
     {
         global $pagenow, $current_user;
 
+        // Gallery block in Gutenberg editor: error loading Image Size dropdown options
+        if (defined('REST_REQUEST') && (0 == strpos($_SERVER['REQUEST_URI'], "/blocks")) && !empty($_REQUEST['context']) && ('edit' == $_REQUEST['context'])) {
+            return $clauses;
+        }
+
         $pp = presspermit();
 
         if (defined('PUBLISHPRESS_VERSION') && did_action('publishpress_notifications_trigger_workflows')) {

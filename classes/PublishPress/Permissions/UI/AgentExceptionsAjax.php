@@ -146,6 +146,14 @@ class AgentExceptionsAjax
                         if ($taxonomies) {
                             $tax_types = [];
                             foreach ($taxonomies as $_taxonomy => $tx) {
+                                if ('nav_menu' == $_taxonomy) {    // @todo: use labels_pp property?
+                                    if (in_array(get_locale(), ['en_EN', 'en_US'])) {
+                                        $tx->labels->name = __('Nav Menus (Legacy)', 'press-permit-core');
+                                    } else {
+                                        $tx->labels->name .= ' (' . __('Legacy', 'press-permit-core') . ')';
+                                    }
+                                }
+
                                 $tax_types[$_taxonomy] = sprintf(esc_html__('%s:', 'press-permit-core'), $tx->labels->name);
                             }
 

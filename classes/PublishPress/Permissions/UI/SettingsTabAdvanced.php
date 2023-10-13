@@ -65,6 +65,7 @@ class SettingsTabAdvanced
                 'user_search_by_role' => esc_html__('User Search: Filter by WP role', 'press-permit-core'),
                 'display_hints' => esc_html__('Display Administrative Hints', 'press-permit-core'),
                 'display_extension_hints' => esc_html__('Display Module Hints', 'press-permit-core'),
+                'pattern_roles_include_generic_rolecaps' => esc_html__('Type-specific Supplemental Roles also provide all general capabilities in Pattern Role', 'press-permit-core'),
                 'dynamic_wp_roles' => esc_html__('Detect Dynamically Mapped WP Roles', 'press-permit-core'),
                 'non_admins_set_read_exceptions' => esc_html__('Non-Administrators can set Reading Permissions for their editable posts', 'press-permit-core'),
                 'users_bulk_groups' => esc_html__('Bulk Add / Remove Groups on Users Screen', 'press-permit-core'),
@@ -83,7 +84,7 @@ class SettingsTabAdvanced
                 'anonymous' => ['anonymous_unfiltered', 'suppress_administrator_metagroups'],
                 'permissions_admin' => ['non_admins_set_read_exceptions'],
                 'user_permissions' => ['user_permissions'],
-                'role_integration' => ['dynamic_wp_roles'],
+                'role_integration' => ['pattern_roles_include_generic_rolecaps', 'dynamic_wp_roles'],
                 'misc' => ['users_bulk_groups', 'user_search_by_role', 'display_hints', 'display_extension_hints'],
             ]);
         }
@@ -266,6 +267,10 @@ class SettingsTabAdvanced
                 <tr>
                     <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                     <td>
+                        <?php
+                        $ui->optionCheckbox('pattern_roles_include_generic_rolecaps', $tab, $section, true, '');
+                        ?>
+
                         <div>
                         <?php printf(
                             esc_html__('To control the makeup of Supplemental Roles, see %1$sRole Usage%2$s.', 'press-permit-core'),

@@ -127,8 +127,17 @@ class AjaxUI
     public static function fltExceptionViaTypes($types, $for_item_source, $for_type, $operation, $mod_type)
     {
         if ('_term_' == $for_item_source) {
-            foreach (presspermit()->getEnabledTaxonomies(['object_type' => false], 'object') as $taxonomy => $tx_obj)
+            foreach (presspermit()->getEnabledTaxonomies(['object_type' => false], 'object') as $taxonomy => $tx_obj) {
+                if ('nav_menu' == $taxonomy) {    // @todo: use labels_pp property?
+                    if (in_array(get_locale(), ['en_EN', 'en_US'])) {
+                        $tx_obj->labels->name = __('Nav Menus (Legacy)', 'press-permit-core');
+                    } else {
+                        $tx_obj->labels->name .= ' (' . __('Legacy', 'press-permit-core') . ')';
+                    }
+                }
+            
                 $types[$taxonomy] = $tx_obj->labels->name;
+            }
 
             if ('manage' != $operation)
                 unset($types['nav_menu']);

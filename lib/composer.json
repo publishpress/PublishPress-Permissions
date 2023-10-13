@@ -2,7 +2,7 @@
   "minimum-stability": "stable",
   "prefer-stable": true,
   "config": {
-    "vendor-dir": "internal-vendor",
+    "vendor-dir": "vendor",
     "preferred-install": {
       "*": "dist"
     },

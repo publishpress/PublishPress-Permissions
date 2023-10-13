@@ -182,6 +182,7 @@ class Permissions
             'edd_key' => false,
             'supplemental_role_defs' => [], // stored by Capability Manager Enhanced
             'customized_roles' => [],       // stored by Capability Manager Enhanced
+            'pattern_roles_include_generic_rolecaps' => 0, // This is exposed on the Advanced tab, but intentionally excluded from the default_advanced_options array
         ];
 
         // need these keyed in separate array to force defaults if advanced options are disabled
@@ -466,10 +467,10 @@ class Permissions
                 // Avoid redundant execution if no late changes were made to roles, capabilities, types or statuses 
                 if (!defined('PRESSPERMIT_STATUSES_VERSION')) { // Status Control module causes late registration of statuses
                     $allcaps_hash = md5(serialize($user->allcaps));
-                    $site_roles_hash = md5(serialize($user->site_roles));
-                    $wp_roles_hash = md5(serialize($wp_roles));
-                    $post_types_hash = md5(serialize($wp_post_types));
-                    $post_statuses_hash = md5(serialize($wp_post_statuses));
+                    $site_roles_hash = md5(serialize(array_keys($user->site_roles)));
+                    $wp_roles_hash = md5(serialize(array_keys($wp_roles->role_objects)));
+                    $post_types_hash = md5(serialize(array_keys($wp_post_types)));
+                    $post_statuses_hash = md5(serialize(array_keys($wp_post_statuses)));
 
                     static $last_allcaps_hash = null;
                     static $last_site_roles_hash = null;
