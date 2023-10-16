@@ -106,7 +106,7 @@ class TermEdit
         $post_type = (!presspermit_empty_REQUEST('pp_universal')) ? '' : $typenow;
 
         $hidden_types = apply_filters('presspermit_hidden_post_types', []);
-        $hidden_taxonomies = apply_filters('presspermit_hidden_taxonomies', []);
+        $hidden_taxonomies = apply_filters('presspermit_hidden_taxonomies', ['post_status_core_wp_pp', 'pseudo_status_pp', 'post_visibility_pp']);
 
         if (!empty($hidden_taxonomies[$taxonomy]) || ($post_type && !empty($hidden_types[$post_type]))) {
             return;

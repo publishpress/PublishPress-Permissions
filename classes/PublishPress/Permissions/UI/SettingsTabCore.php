@@ -140,7 +140,7 @@ class SettingsTabCore
 	                        }
                         }
 
-                        $hidden_types = apply_filters('presspermit_hidden_taxonomies', []);
+                        $hidden_types = apply_filters('presspermit_hidden_taxonomies', ['post_status_core_wp_pp', 'pseudo_status_pp', 'post_visibility_pp']);
 
                         //$locked_types = apply_filters('presspermit_locked_taxonomies', ['nav_menu' => true]);
 
