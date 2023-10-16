@@ -78,7 +78,7 @@ class PageFilters
 
         $enabled_post_types = presspermit()->getEnabledPostTypes();
 
-        if (defined('PP_UNFILTERED_FRONT')) {
+        if (defined('PP_UNFILTERED_FRONT') && PWP::isFront()) {
             if (defined('PP_UNFILTERED_FRONT_TYPES')) {
                 $unfiltered_types = str_replace(' ', '', PP_UNFILTERED_FRONT_TYPES);
                 $unfiltered_types = explode(',', constant($unfiltered_types));
