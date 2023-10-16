@@ -213,6 +213,17 @@ class PermissionsHooks
         }
         $done = true;
 
+        // @todo: determine cause of this condition
+        if (is_admin() && empty($this->admin_hooks)) {
+            static $busy;
+
+            if (empty($busy)) {
+                $this->loadFilters();
+            }
+
+            $busy = true;
+        }
+
         $pp = presspermit();
 
         // --- version check ---
