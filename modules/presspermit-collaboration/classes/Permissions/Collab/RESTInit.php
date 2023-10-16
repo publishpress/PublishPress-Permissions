@@ -89,7 +89,7 @@ class RESTInit
             if ($is_administrator = presspermit()->isContentAdministrator()) {
                 $pages = get_pages(
                     ['post_type' => $args['post_type'], 
-                    'suppress_filters' => 1,
+                    'no_pp_filter' => 1,
                     'post_status' => $post_statuses,
                     ]
                 );
