@@ -68,7 +68,7 @@ class CapabilityCaster
         if ($use_strict_rolecaps = !presspermit()->getOption('pattern_roles_include_generic_rolecaps')) {
             $include_caps = array_fill_keys(
                 apply_filters(
-                    'presspermit_exclude_arbitrary_caps',
+                    'presspermit_include_arbitrary_caps',
                     [
                         'read', 'unfiltered_html', 'upload_files', 'edit_files',
                     ]
