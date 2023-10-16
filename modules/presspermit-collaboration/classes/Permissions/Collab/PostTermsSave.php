@@ -329,14 +329,7 @@ class PostTermsSave
             else
                 $default_term_option = "default_{$taxonomy}";
 
-            // avoid recursive filtering.  todo: use remove_filter so we can call get_option, support filtering by other plugins 
-            global $wpdb;
-            $default_terms = (array)maybe_unserialize($wpdb->get_var(
-                $wpdb->prepare(
-                    "SELECT option_value FROM $wpdb->options WHERE option_name = %s", 
-                    $default_term_option
-                )
-            ));
+            $default_terms = (array) get_option($default_term_option);
 
             // but if the default term is not defined or is not in user's subset of usable terms, substitute first available
             if ($user_terms) {
@@ -349,19 +342,23 @@ class PostTermsSave
                     $default_terms = $filtered_default_terms;
 
                 } elseif (is_array($user_terms)) {
+					// This excecutes only if no default terms are user-assignable
+					
                     sort($user_terms); // default to lowest ID term
                     
-                    // always substitute 1st available if this constant is defined
-                    if ($default_terms || !empty($select_default_term) || defined('PP_AUTO_DEFAULT_TERM') || defined('PP_AUTO_DEFAULT_' . strtoupper($taxonomy))) {
-                        $default_terms = (array)$user_terms[0];
-                    } else {
-                        if ((count($user_terms) == 1) && !defined('PP_NO_AUTO_DEFAULT_TERM') 
+                    // Substitute 1st available based on certain conditions or constant definitions 
+                    // (Previously always assigned first user term here, regardless of $select_default_term flag or $user_terms count)
+                    if ((
+                        (!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') || !empty($select_default_term) || (count($user_terms) == 1))
+						&& !defined('PP_NO_AUTO_DEFAULT_TERM') 
                         && !defined('PP_NO_AUTO_DEFAULT_' . strtoupper($taxonomy))
-                        ) {
-                            $default_terms = (array)$user_terms[0];
-                        } else {
-                            $default_terms = [];
-                        }
+                        )
+					|| defined('PP_AUTO_DEFAULT_TERM') 
+					|| defined('PP_AUTO_DEFAULT_' . strtoupper($taxonomy))
+                    ) {
+                    	$default_terms = (array)$user_terms[0];
+                    } else {
+                    	$default_terms = [];
                     }
                 }
 
