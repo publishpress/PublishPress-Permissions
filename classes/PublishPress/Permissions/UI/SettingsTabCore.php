@@ -171,7 +171,9 @@ class SettingsTabCore
                     $ui->all_otype_options[] = $option_name;
 
                     if (isset($pp->default_options[$option_name])) {
-                        if (!$enabled = apply_filters('presspermit_enabled_post_types', $ui->getOption($option_name))) {
+                        $filter_name = ('term' == $scope) ? 'presspermit_enabled_taxonomies_by_key' : 'presspermit_enabled_post_types';
+                    	
+                        if (!$enabled = apply_filters($filter_name, $ui->getOption($option_name))) {
                             $enabled = [];
                         }
 

@@ -12,6 +12,7 @@ class AdminFilters
         add_action('presspermit_init', [$this, 'actDisableForumPatternRoles']);
 
         add_filter('presspermit_enabled_taxonomies', [$this, 'fltGetEnabledTaxonomies'], 10, 2);
+        add_filter('presspermit_enabled_taxonomies_by_key', [$this, 'fltGetEnabledTaxonomiesByKey'], 10, 2);
         add_filter('wp_dropdown_pages', [$this, 'fltDropdownPages']);
 
         add_filter('pre_post_parent', [$this, 'fltPageParent'], 50, 1);
@@ -114,12 +115,18 @@ class AdminFilters
         );
     }
 
-    function fltGetEnabledTaxonomies($taxonomies, $args)
+    function fltGetEnabledTaxonomies($taxonomies, $args = [])
     {
-        if (empty($args['object_type']) || ('nav_menu_item' == $args['object_type']))
+        if (empty($args['object_type']) || ('nav_menu_item' == $args['object_type'])) {
             $taxonomies['nav_menu'] = 'nav_menu';
+        }
 
         return $taxonomies;
+    }
+
+    function fltGetEnabledTaxonomiesByKey($taxonomies, $args = []) {
+        $taxonomies = $this->fltGetEnabledTaxonomies(array_keys($taxonomies), $args);
+        return array_fill_keys($taxonomies, true);
     }
 
     function fltAddException($exception)
