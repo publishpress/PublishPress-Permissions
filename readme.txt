@@ -240,6 +240,16 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.11.3-beta =
+* Fixed : Some Permissions filtering was not applied on sites with a custom wp-admin URL
+* Fixed : Type-specific Supplemental Roles also granted most generic capabliities in Pattern Role. Introduce new Permissions > Advanced > Role Integration setting to restore previous behavior if needed.
+* Fixed : On page edit, if the Page Parent is not editable by the logged in user, it is hidden from the Page Parent selector. This occurred only with WP >= 6.3 and with a non-standard advanced Permissions configuration.
+* Fixed : PHP Warning in term filtering (Attempt to read property "term_taxonomy_id" on string) under some configurations
+* Fixed : Filtering of default category / term by other plugin was overridden
+* Fixed : Edit User Permissions - PHP Warning "compact(): Argument must be string..."
+* Fixed : Fatal error "Call to a member function init() on null" under some configurations
+* Compat : Polylang + WP 6.3 - Language filter was no longer applied to Page Parent dropdown
+
 = 3.11.1 - 30 Aug 2023 =
 * Fixed : Rest API access error on some sites (potentially preventing login)
 * Fixed : Gallery block in Gutenberg editor: error loading Image Size dropdown options
