@@ -3,6 +3,8 @@ namespace PublishPress\Permissions;
 
 class CollabHooksCompat
 {
+    private $wp_version;
+
     function __construct() {
         add_action('init', [$this, 'actStatusRegistrations'], 44);  // statuses need to be registered before establish_status_caps() execution
 
@@ -12,6 +14,26 @@ class CollabHooksCompat
         add_filter('presspermit_operations', [$this, 'fltOperations']);
         add_action('presspermit_define_pattern_caps', [$this, 'actDefinePatternCaps']);
         add_filter('presspermit_apply_arbitrary_caps', [$this, 'fltApplyArbitraryCaps'], 10, 3);
+
+        if (defined('POLYLANG_VERSION') && !defined('PRESSPERMIT_NO_POLYLANG_WORKAROUND')) {
+            add_action('wp_loaded', function() {
+                global $wp_version;
+
+                // For now, we need Polylang to apply 'get_pages' filtering as in its previous versions
+                if (version_compare($wp_version, '6.3-alpha', '>=')) {
+                    $this->wp_version = $wp_version;
+                    $wp_version = '6.2.2';
+                }
+            }, 4);
+
+            add_action('wp_loaded', function() {
+                global $wp_version;
+
+                if (isset($this->wp_version)) {
+                    $wp_version = $this->wp_version;
+                }
+            }, 6);
+        }
     }
 
     function fltOperations($ops)
