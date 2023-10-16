@@ -26,6 +26,10 @@ class PageFilters
         //
         global $current_user, $pagenow;
 
+        if (!empty($args['no_pp_filter'])) {
+            return $results;
+        }
+
         $results = (array)$results;
 
         // buffer titles in case they were filtered previously

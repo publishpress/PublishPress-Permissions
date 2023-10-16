@@ -10,6 +10,10 @@ class PageFilters
 
     function fltGetPagesArgs($args)
     {
+        if (!empty($args['no_pp_filter'])) {
+            return $args;
+        }
+
         if (!empty($args['name']) && ('parent_id' == $args['name'])) {
             global $post;
 
