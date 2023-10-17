@@ -98,7 +98,7 @@ class TermFilters
             if (presspermit()->doing_rest) {
                 $operation = REST::instance()->operation;
 
-            } elseif (!empty($_SERVER['HTTP_REFERER']) && false !== strpos(esc_url_raw($_SERVER['HTTP_REFERER']), PWP::adminRelUrl('post'))) {
+            } elseif (!empty($_SERVER['HTTP_REFERER']) && false !== strpos(esc_url_raw($_SERVER['HTTP_REFERER']), PWP::admin_rel_url('post'))) {
                 $operation = 'edit';
             }
 
@@ -209,7 +209,7 @@ class TermFilters
             
             if ($rest->is_posts_request) {
                 if (empty($args['required_operation']) || ('assign' != $args['required_operation'])) {
-                    if (!empty($_SERVER['HTTP_REFERER']) && false !== strpos(esc_url_raw($_SERVER['HTTP_REFERER']), PWP::adminRelUrl('post'))) {
+                    if (!empty($_SERVER['HTTP_REFERER']) && false !== strpos(esc_url_raw($_SERVER['HTTP_REFERER']), PWP::admin_rel_url('post'))) {
                         $args['required_operation'] = 'edit';
                     } else {
                         $args['required_operation'] = $rest->operation;
@@ -290,19 +290,25 @@ class TermFilters
                     if (!empty($_SERVER['HTTP_REFERER'])) {
                         $referer = esc_url_raw($_SERVER['HTTP_REFERER']);
 
-                        $wp_admin = 'wp-admin';
-                        $admin_rel_url = str_replace(["\\", '/'], '', PWP::adminRelUrl());
+                        $admin_post_rel_url = preg_quote(
+                            PWP::admin_rel_url('post.php'),
+                            '/'
+                        );
 
-                        if ($admin_rel_url && ('wp-admin' != $admin_rel_url)) {
-                            $wp_admin = $admin_rel_url;
-                        }
+                        $admin_post_new_rel_url = preg_quote(
+                            PWP::admin_rel_url('post-new.php'),
+                            '/'
+                        );
 
                         $matches = [];
-                        preg_match("/$wp_admin\/post\.php\?post=([0-9]+)/", $referer, $matches);
+                        preg_match("/$admin_post_rel_url\?post=([0-9]+)/", $referer, $matches);
+
                         if (!empty($matches[1])) {
                             $args['object_type'] = get_post_field('post_type', $matches[1]);
-                        } elseif (strpos($referer, $wp_admin . '/post-new.php')) {
-                            preg_match("/$wp_admin\/post-new\.php\?post_type=([a-zA-Z_\-0-9]+)/", $referer, $matches);
+
+                        } elseif (false !== strpos($referer, $admin_post_new_url)) {
+                            preg_match("/$admin_post_new_rel_url\?post_type=([a-zA-Z_\-0-9]+)/", $referer, $matches);
+
                             if (!empty($matches[1])) {
                                 $args['object_type'] = $matches[1];
                             } else {

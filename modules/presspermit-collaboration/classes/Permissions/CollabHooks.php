@@ -289,7 +289,7 @@ class CollabHooks
 
     function actPreventTrashSuffixing($wp_query)
     {
-        if (!empty($_SERVER['REQUEST_URI']) && false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), PWP::adminRelUrl('nav-menus.php')) 
+        if (!empty($_SERVER['REQUEST_URI']) && false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), PWP::admin_rel_url('nav-menus.php')) 
         && presspermit_is_POST('action', 'update')
         ) {
             $bt = debug_backtrace();
