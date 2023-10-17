@@ -575,15 +575,4 @@ class LibWP
 
         return $admin_rel_path;
     }
-
-    public static function network_admin_rel_url($admin_page = '') {
-        $admin_url = network_admin_url($admin_page);
-        $admin_arr = wp_parse_url($admin_url);
-    
-        $admin_rel_path = (!empty($admin_arr['path']))
-        ? $admin_arr['path']
-        : $admin_url;
-
-        return $admin_rel_path;
-    }
 }
