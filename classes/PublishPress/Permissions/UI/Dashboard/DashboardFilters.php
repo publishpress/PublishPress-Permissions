@@ -212,7 +212,7 @@ class DashboardFilters
     {
         $request_uri = esc_url_raw(presspermit_SERVER_var('REQUEST_URI'));
 
-        if ($request_uri && false !== strpos($request_uri, untrailingslashit(PWP::network_admin_rel_url('')))
+        if ($request_uri && false !== strpos($request_uri, trailingslashit(PWP::admin_rel_url('')) . 'network/')
         ) {
             return;
         }
