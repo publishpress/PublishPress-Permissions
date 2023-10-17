@@ -33,7 +33,7 @@ class PluginPage
 
     public static function icon()
     {
-        echo '<div class="pp-icon"><img src="' . esc_url(PRESSPERMIT_URLPATH . '/common/img/publishpress-logo-icon.png') . '" alt="" /></div>';
+        //echo '<div class="pp-icon"><img src="' . esc_url(PRESSPERMIT_URLPATH . '/common/img/publishpress-logo-icon.png') . '" alt="" /></div>';
     }
 
     public function actAdminHead()
