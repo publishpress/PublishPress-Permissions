@@ -1,0 +1,4 @@
+path: ./dist/publishpress-statuses
+jobs: 10
+extensions:
+  - php
