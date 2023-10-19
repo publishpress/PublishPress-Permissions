@@ -169,7 +169,7 @@ class TermFilters
         // Kriesi Enfold theme conflict on "More Posts" query
         if (
             defined('DOING_AJAX') && DOING_AJAX
-            && presspermit_is_REQUEST('action', apply_filters('presspermit_unfiltered_ajax_termcount', ['avia_ajax_masonry_more']))
+            && PWP::is_REQUEST('action', apply_filters('presspermit_unfiltered_ajax_termcount', ['avia_ajax_masonry_more']))
         ) {
             return true;
         }
@@ -280,6 +280,8 @@ class TermFilters
             if (!in_array($required_operation, ['manage', 'associate'], true)) {
                 $universal = [];
                 $universal['include'] = $user->getExceptionTerms($required_operation, 'include', '', $taxonomy);
+
+                // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                 $universal['exclude'] = ($universal['include']) ? [] : $user->getExceptionTerms($required_operation, 'exclude', '', $taxonomy);
                 $universal['additional'] = $user->getExceptionTerms($required_operation, 'additional', '', $taxonomy);
 
@@ -308,7 +310,7 @@ class TermFilters
 
                         } elseif (false !== strpos($referer, $admin_post_new_url)) {
                             preg_match("/$admin_post_new_rel_url\?post_type=([a-zA-Z_\-0-9]+)/", $referer, $matches);
-
+                            
                             if (!empty($matches[1])) {
                                 $args['object_type'] = $matches[1];
                             } else {
@@ -357,6 +359,7 @@ class TermFilters
 
                     // remove type-specific inclusions from universal exclusions
                     if ('include' == $mod_type) {
+                        // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                         $universal['exclude'] = array_diff($universal['exclude'], $tt_ids);
                     }
 

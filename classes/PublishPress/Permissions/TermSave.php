@@ -10,7 +10,7 @@ class TermSave
     public static function actSaveItem($term_id, $tt_id, $taxonomy)
     {
         if (!in_array($taxonomy, presspermit()->getEnabledTaxonomies(), true)) {
-            if (!presspermit_empty_REQUEST('pp_enable_taxonomy')) {
+            if (!PWP::empty_REQUEST('pp_enable_taxonomy')) {
                 $enabled_taxonomies = get_option('presspermit_enabled_taxonomies');
                 $enabled_taxonomies[$taxonomy] = '1';
                 update_option('presspermit_enabled_taxonomies', $enabled_taxonomies);
@@ -28,7 +28,7 @@ class TermSave
             return;
 
         // parent settings can affect the auto-assignment of propagating exceptions
-        $set_parent = (is_taxonomy_hierarchical($taxonomy) && !presspermit_empty_REQUEST('parent')) ? presspermit_REQUEST_int('parent') : 0;
+        $set_parent = (is_taxonomy_hierarchical($taxonomy) && !PWP::empty_REQUEST('parent')) ? PWP::REQUEST_int('parent') : 0;
 
         if ($set_parent < 0)
             $set_parent = 0;

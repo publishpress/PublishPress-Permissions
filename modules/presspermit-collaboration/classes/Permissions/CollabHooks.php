@@ -7,16 +7,16 @@ class CollabHooks
         global $pagenow;
 
         // Divi Page Builder
-        if (presspermit_is_REQUEST('action', 'editpost') && !presspermit_empty_REQUEST('et_pb_use_builder') && !presspermit_empty_REQUEST('auto_draft')) {
+        if (PWP::is_REQUEST('action', 'editpost') && !PWP::empty_REQUEST('et_pb_use_builder') && !PWP::empty_REQUEST('auto_draft')) {
             return;
         }
 
         add_filter('presspermit_item_edit_exception_ops', [$this, 'fltItemEditExceptionOps'], 10, 4);
 
         // Divi Page Builder  todo: test whether these can be implemented with 'presspermit_unfiltered_ajax' filter in PostFilters::fltPostsClauses instead
-        if (presspermit_SERVER_var('REQUEST_URI') && strpos(esc_url_raw(presspermit_SERVER_var('REQUEST_URI')), 'admin-ajax.php')) {
+        if (PWP::SERVER_url('REQUEST_URI') && strpos(esc_url_raw(PWP::SERVER_url('REQUEST_URI')), 'admin-ajax.php')) {
             if (in_array(
-                presspermit_REQUEST_key('action'), 
+                PWP::REQUEST_key('action'), 
                 apply_filters('presspermit_unfiltered_ajax_actions',
                     ['et_fb_ajax_drop_autosave',
                     'et_builder_resolve_post_content',
@@ -282,6 +282,10 @@ class CollabHooks
         if ($post_before->post_parent && !$post_after->post_parent) {
             if ($post_id == get_post_meta($post_before->post_parent, '_thumbnail_id', true)) {
                 global $wpdb;
+
+                // @todo: still needed?
+
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $wpdb->update($wpdb->posts, ['post_parent' => $post_before->post_parent], ['ID' => $post_id]);
             }
         }
@@ -290,12 +294,16 @@ class CollabHooks
     function actPreventTrashSuffixing($wp_query)
     {
         if (!empty($_SERVER['REQUEST_URI']) && false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), PWP::admin_rel_url('nav-menus.php')) 
-        && presspermit_is_POST('action', 'update')
+        && PWP::is_POST('action', 'update')
         ) {
+            // Workaround for Nav Menu deletion (@todo: still needed?)
+
+            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace
             $bt = debug_backtrace();
 
             foreach ($bt as $fcall) {
                 if (!empty($fcall['function']) && 'wp_add_trashed_suffix_to_post_name_for_trashed_posts' == $fcall['function']) {
+                    // phpcs:ignore WordPressVIPMinimum.Hooks.PreGetPosts.PreGetPosts
                     $wp_query->query_vars['suppress_filters'] = 1;
                     break;
                 }
@@ -308,7 +316,7 @@ class CollabHooks
         global $current_user;
 
         // Work around Divi Page Builder requiring off-type capabilities, which prevents Specific Permissions from satisfying edit_published_pages capability requirement
-        if ((is_admin() || presspermit_empty_REQUEST('et_fb')) && (empty($_SERVER['REQUEST_URI']) || !strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'admin-ajax.php') || !did_action('wp_ajax_et_fb_ajax_save'))) {
+        if ((is_admin() || PWP::empty_REQUEST('et_fb')) && (empty($_SERVER['REQUEST_URI']) || !strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'admin-ajax.php') || !did_action('wp_ajax_et_fb_ajax_save'))) {
             return $wp_sitecaps;
         }
 
@@ -357,8 +365,8 @@ class CollabHooks
     {
         // Divi Page Builder
 		if (defined('ET_BUILDER_THEME')) {
-			if (presspermit_is_REQUEST('action', 'edit')) {
-                if ($post_id = presspermit_REQUEST_int('post')) {
+			if (PWP::is_REQUEST('action', 'edit')) {
+                if ($post_id = PWP::REQUEST_int('post')) {
                     if ($_post = get_post($post_id)) {
                         global $current_user;
                         if (in_array($_post->post_status, ['draft', 'auto-draft']) && ($_post->post_author == $current_user->ID) && !$_post->post_name) {
@@ -621,6 +629,9 @@ class CollabHooks
         if ($tx_obj = get_taxonomy($taxonomy)) {
             $rest_base = (!empty($tx_obj->rest_base)) ? $tx_obj->rest_base : $tx_obj->name;
 
+            // phpcs Note: this is only executed with WP < 5.6
+
+            // phpcs:ignore WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsRemoteFile
             $payload_vars = json_decode(file_get_contents('php://input'), true);
 
             if ($payload_vars && is_array($payload_vars) && isset($payload_vars[$rest_base]) && is_array($payload_vars[$rest_base])) {

@@ -26,6 +26,7 @@ class AdminNonAdministratorLegacy
             $src_table = ($args['source_alias']) ? $args['source_alias'] : $wpdb->posts;
 
             if (!empty($args['user']->ID)) {
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 if ($owner_object_ids = $wpdb->get_col(
                     $wpdb->prepare(
                         "SELECT ID FROM $wpdb->posts WHERE post_type IN (%s,%s) AND post_author = %d", 

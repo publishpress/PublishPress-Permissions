@@ -117,8 +117,8 @@ class CapabilityFiltersAdmin
 	            $alt_caps = ['edit_posts' => ['edit_pages']];
 	            
 	            if (did_action('wp_ajax_et_fb_ajax_save') 
-	            || (presspermit_is_REQUEST('action', 'heartbeat') && !presspermit_empty_REQUEST('et_fb_autosave'))
-                || (presspermit_is_REQUEST('action', 'et_pb_get_backbone_template'))
+	            || (PWP::is_REQUEST('action', 'heartbeat') && !PWP::empty_REQUEST('et_fb_autosave'))
+                || (PWP::is_REQUEST('action', 'et_pb_get_backbone_template'))
 	            ) {
 	                $alt_caps = array_merge($alt_caps, ['publish_posts' => ['edit_published_posts', 'edit_published_pages'], 'publish_pages' => ['edit_published_pages'], 'edit_published_posts' => ['edit_published_pages']]);
 	            }
@@ -173,7 +173,7 @@ class CapabilityFiltersAdmin
             $key = array_search('upload_files', $reqd_caps);
 
             if (false !== $key && (PWP::doingAdminMenus() || in_array($pagenow, ['upload.php', 'post.php', 'post-new.php']) 
-            || (defined('DOING_AJAX') && DOING_AJAX && presspermit_is_REQUEST('action', ['query-attachments', 'mla-query-attachments'])))
+            || (defined('DOING_AJAX') && DOING_AJAX && PWP::is_REQUEST('action', ['query-attachments', 'mla-query-attachments'])))
             ) {
                 if (empty($current_user->allcaps['upload_files']) && !empty($current_user->allcaps['edit_files']))
                     $reqd_caps[$key] = 'edit_files';
@@ -286,7 +286,7 @@ class CapabilityFiltersAdmin
             if (empty($params['item_id'])) {
                 $qvar = ('nav_menu' == $item_type) ? 'menu' : 'tag_ID';
 
-                if ($id = presspermit_REQUEST_int($qvar)) {
+                if ($id = PWP::REQUEST_int($qvar)) {
                     $return['item_id'] = PWP::termidToTtid($id, $item_type);
                 }
             }
@@ -377,8 +377,8 @@ class CapabilityFiltersAdmin
     {
         global $pagenow;
 
-        if (is_admin() && in_array($pagenow, ['edit-tags.php', 'term.php']) && !presspermit_is_REQUEST('action', 'editedtag')) {
-            if ($tag_id = presspermit_REQUEST_int('tag_ID')) {
+        if (is_admin() && in_array($pagenow, ['edit-tags.php', 'term.php']) && !PWP::is_REQUEST('action', 'editedtag')) {
+            if ($tag_id = PWP::REQUEST_int('tag_ID')) {
                 $tx_obj = get_taxonomy(reset($taxonomies));
                 if ($tx_obj->hierarchical) {
                     global $wpdb;
@@ -398,7 +398,7 @@ class CapabilityFiltersAdmin
     function fltConstructPostsRequestArgs($args)
     {
         foreach (['action', 'action2'] as $var) {
-            if (!presspermit_empty_REQUEST($var) && in_array(presspermit_REQUEST_key($var), ['trash', 'untrash', 'delete'])) {
+            if (!PWP::empty_REQUEST($var) && in_array(PWP::REQUEST_key($var), ['trash', 'untrash', 'delete'])) {
                 $args['include_trash'] = true;
             }
         }
@@ -418,7 +418,7 @@ class CapabilityFiltersAdmin
     {
         if (!current_user_can('edit_post', $post_id)) {
             if ($type_obj = get_post_type_object(get_post_field('post_type', $post_id))) {
-                if (presspermit_is_POST('save') || presspermit_is_POST('publish')) {
+                if (PWP::is_POST('save') || PWP::is_POST('publish')) {
                 
                 	if (!defined('PRESSPERMIT_NO_PROCESS_BEFORE_REDIRECT')) {
 	                    require_once(PRESSPERMIT_CLASSPATH . '/PostSave.php');

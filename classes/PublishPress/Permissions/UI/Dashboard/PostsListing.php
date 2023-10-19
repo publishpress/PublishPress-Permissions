@@ -7,7 +7,7 @@ class PostsListing
 
     public function __construct()
     {
-        if (!$post_type = presspermit_REQUEST_key('post_type')) {
+        if (!$post_type = PWP::REQUEST_key('post_type')) {
             $post_type = 'post';
         }
 
@@ -58,11 +58,14 @@ class PostsListing
                     $agent_type_csv = implode("','", array_map('sanitize_key', array_merge(['user'], $pp->groups()->getGroupTypes())));
 
                     $id_csv = implode("','", array_map('intval', array_keys($pp->listed_ids[$typenow])));
+
+                    // One locally cached direct query of plugin tables to retrieve exceptions info for all listed Posts
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                     $results = $wpdb->get_results(
                         "SELECT DISTINCT i.item_id, e.operation FROM $wpdb->ppc_exceptions AS e"
                         . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
                         . " WHERE e.for_item_source = 'post' AND e.via_item_source = 'post'"
-                        . " AND e.agent_type IN ('$agent_type_csv') AND i.item_id IN ('$id_csv')"
+                        . " AND e.agent_type IN ('$agent_type_csv') AND i.item_id IN ('$id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                     );
 
                     foreach ($results as $row) {

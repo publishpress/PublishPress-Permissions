@@ -22,7 +22,8 @@ class PluginUpdated
                 break;  // no need to run through version comparisons if no previous version
             }
 
-            // todo: confirm this is only needed after Import from Role Scoper / Press Permit Beta
+            // Direct query on options table to use LIKE clause for this plugin update operation
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'buffer_metagroup_id_%'");
 
             if (version_compare($prev_version, '2.7-beta', '>=')
@@ -53,6 +54,9 @@ class PluginUpdated
             if (version_compare($prev_version, '3.11.3', '<')) {
                 if (false === get_option('presspermit_pattern_roles_include_generic_rolecaps')) {
                     // If any type-specific supplemental roles are already stored, default to previous behavior of including many generic capabilities from Pattern Role
+                    
+                    // Direct query on plugin table for version update operation
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                     if ($wpdb->get_row("SELECT assignment_id FROM $wpdb->ppc_roles WHERE role_name LIKE '%:%'")) {
                         update_option('presspermit_pattern_roles_include_generic_rolecaps', 1);
                     }
@@ -135,6 +139,8 @@ class PluginUpdated
             } else break;
 
             if (version_compare($prev_version, '2.1.16-beta', '<')) {
+                // Direct query on plugin table for version update operation
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $wpdb->query("UPDATE $wpdb->ppc_exceptions SET for_item_source = 'post' WHERE for_item_source = 'all'");
             } else break;
         } while (0); // end single-pass version check loop
@@ -183,16 +189,26 @@ class PluginUpdated
 
     public static function populateRoles($reload_user = false)
     {
+        $administrator_caps = array_fill_keys(
+            [
+            'pp_manage_settings', 
+            'pp_administer_content', 
+            'pp_create_groups', 
+            'pp_edit_groups', 
+            'pp_delete_groups', 
+            'pp_manage_members', 
+            'pp_assign_roles', 
+            'pp_set_read_exceptions'
+            ], 
+            true
+        );
+
         if ($role = @get_role('administrator')) {
             $role->remove_cap('pp_bulk_assign_roles');
-            $role->add_cap('pp_manage_settings');
-            $role->add_cap('pp_administer_content');
-            $role->add_cap('pp_create_groups');
-            $role->add_cap('pp_edit_groups');
-            $role->add_cap('pp_delete_groups');
-            $role->add_cap('pp_manage_members');
-            $role->add_cap('pp_assign_roles');
-            $role->add_cap('pp_set_read_exceptions');
+
+            foreach (array_keys($administrator_caps) as $cap) {
+                $role->add_cap($cap);
+            }
         }
 
         if ($role = @get_role('editor')) {
@@ -208,20 +224,15 @@ class PluginUpdated
 
         update_option('ppperm_added_role_caps_10beta', true);
 
-        if ($reload_user) {
-            global $wp_roles;
-            $wp_roles = new \WP_Roles();
+        if (is_super_admin() || current_user_can('administrator')) {
+            global $current_user;
 
-            // force full menu display after activation
-            global $current_user, $wpdb;
-            if (!empty($current_user)) {
-                wp_cache_delete($current_user->ID, 'user_meta');
-                $current_user = new \WP_User($current_user->ID);
+            $current_user->allcaps = array_merge($current_user->allcaps, $administrator_caps);
 
-                $pp = presspermit();
-                if ($pp->isUserSet()) {
-                    $pp->getUser()->allcaps = array_merge($pp->getUser()->allcaps, $current_user->allcaps);
-                }
+            $pp = presspermit();
+
+            if ($pp->isUserSet()) {
+                $pp->getUser()->allcaps = array_merge($pp->getUser()->allcaps, $current_user->allcaps);
             }
         }
     }
@@ -230,13 +241,18 @@ class PluginUpdated
     {
         global $wpdb;
 
+        // Direct query on plugin table for version update operation
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         if ($orphan_ids = $wpdb->get_col(
             "SELECT eitem_id FROM $wpdb->ppc_exception_items AS i INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id "
             . "WHERE ( e.via_item_source = 'post' AND i.item_id NOT IN ( SELECT ID FROM $wpdb->posts ) )"
             . " OR ( e.via_item_source = 'term' AND i.item_id NOT IN ( SELECT term_taxonomy_id FROM $wpdb->term_taxonomy ) )"
         )) {
             $orphan_id_csv = implode("','", array_map('intval', $orphan_ids));
-            $wpdb->query("DELETE FROM $wpdb->ppc_exception_items WHERE eitem_id IN ('$orphan_id_csv')");
+
+            $wpdb->query(
+                "DELETE FROM $wpdb->ppc_exception_items WHERE eitem_id IN ('$orphan_id_csv')" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            );
         }
     }
 
@@ -250,7 +266,7 @@ class PluginUpdated
         // obsolete
     }
 
-    public static function syncWordPressRoles($user_ids = '', $role_name_arg = '', $blog_id_arg = '')
+    public static function syncWordPressRoles()
     {
         global $wpdb, $wp_roles;
 
@@ -258,23 +274,13 @@ class PluginUpdated
             return;
         }
 
-        if (!$user_ids) {
-            $wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'presspermit_buffer_metagroup%'");
-        }
+        // Direct query on options table to use LIKE clause for this plugin update operation
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        $wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'presspermit_buffer_metagroup%'");
 
-        if ($user_ids) {
-            $user_ids = (array)$user_ids;
-        }
+        $metagroups = $stored_metagroups = $all_role_metagroups = [];
 
-        $metagroups = $stored_metagroups = $all_role_metagroups = $stored_role_metagroups = $insert_sql_rows = $delete_clauses = [];
-
-        if ($blog_id_arg) {
-            $wpdb->members_table = ($blog_id_arg > 1)
-                ? $wpdb->base_prefix . $blog_id_arg . '_' . 'pp_group_members'
-                : $wpdb->base_prefix . 'pp_group_members';
-        } else {
-            $wpdb->members_table = $wpdb->pp_group_members;
-        }
+        $wpdb->members_table = $wpdb->pp_group_members;
 
         $length_limit = apply_filters('presspermit_rolename_max_length', 40);
         if ($length_limit < 40) {
@@ -331,6 +337,8 @@ class PluginUpdated
 
         $do_group_deletions = defined('PP_AUTODELETE_ROLE_METAGROUPS') && PP_AUTODELETE_ROLE_METAGROUPS;
 
+        // Direct queries on plugin tables for plugin maintenance operation
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         if ($results = $wpdb->get_results("SELECT * FROM $wpdb->pp_groups WHERE metagroup_id != ''")) {
             $delete_metagroup_ids = [];
 
@@ -348,8 +356,14 @@ class PluginUpdated
 
             if ($delete_metagroup_ids) {
                 $id_csv = implode("','", array_map('intval', $delete_metagroup_ids));
-                $wpdb->query("DELETE FROM $wpdb->pp_groups WHERE ID IN ('$id_csv')");
-                $wpdb->query("DELETE FROM $wpdb->members_table WHERE group_id IN ('$id_csv')");
+
+                $wpdb->query(
+                    "DELETE FROM $wpdb->pp_groups WHERE ID IN ('$id_csv')" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                );
+
+                $wpdb->query(
+                    "DELETE FROM $wpdb->members_table WHERE group_id IN ('$id_csv')" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                );
             }
         }
 
@@ -371,87 +385,6 @@ class PluginUpdated
             }
         }
 
-        if ($user_ids || !defined('PP_SKIP_USER_SYNC') || !PP_SKIP_USER_SYNC) {
-            $group_id_csv = implode("','", array_map('intval', $all_role_metagroups));
-
-            // which user roles are already represented by PP metagroup membership?
-            if ($user_ids) {
-                $user_id_csv = implode("','", array_map('intval', $user_ids));
-
-                $results = $wpdb->get_results(
-                    "SELECT group_id, user_id FROM $wpdb->members_table WHERE group_id IN ('$group_id_csv') AND user_id IN ('$user_id_csv')"
-                );
-            } else {
-                $results = $wpdb->get_results(
-                    "SELECT group_id, user_id FROM $wpdb->members_table WHERE group_id IN ('$group_id_csv')"
-                );
-            }
-
-            foreach ($results as $key => $row) {
-                $stored_role_metagroups[$row->user_id][] = $row->group_id;
-            }
-
-            // Now step through every WP usermeta capabilities record, synchronizing PP metagroup membership with WP role and custom caps
-            if ($user_ids) {
-                $user_id_csv = implode("','", array_map('intval', $user_ids));
-
-                $usermeta = $wpdb->get_results(
-                    $wpdb->prepare(
-                        "SELECT user_id, meta_value FROM $wpdb->usermeta WHERE meta_key = %s AND user_id IN ('$user_id_csv')",
-                        "{$wpdb->prefix}capabilities"
-                    )
-                );
-            } else {
-                $usermeta = $wpdb->get_results(
-                    $wpdb->prepare(
-                        "SELECT user_id, meta_value FROM $wpdb->usermeta WHERE meta_key = %s",
-                        "{$wpdb->prefix}capabilities"
-                    )
-                );
-            }
-
-            foreach (array_keys($usermeta) as $key) {
-                $user_caps = maybe_unserialize($usermeta[$key]->meta_value);
-                if (empty($user_caps) || !is_array($user_caps))
-                    continue;
-
-                // Filter out caps that are not role names
-                $user_role_metagroups = array_intersect_key($all_role_metagroups, array_diff($user_caps, ['', 0, false]));
-
-                $user_id = $usermeta[$key]->user_id;
-
-                if (isset($stored_role_metagroups[$user_id])) {
-                    if ($delete_role_metagroups = array_diff($stored_role_metagroups[$user_id], $user_role_metagroups)) {
-                        $group_id_csv = implode("','", array_map('intval', $delete_role_metagroups));
-
-                        $delete_clauses[] = $wpdb->prepare(
-                            "user_id = %d AND group_id IN ('$group_id_csv')",
-                            $user_id
-                        );
-                    }
-                }
-
-                if (isset($stored_role_metagroups[$user_id]))
-                    $user_role_metagroups = array_diff($user_role_metagroups, $stored_role_metagroups[$user_id]);
-
-                foreach ($user_role_metagroups as $group_id) {
-                    $insert_sql_rows[] = $wpdb->prepare(
-                        "(%d, %d, 'member', 'active')",
-                        $user_id,
-                        $group_id
-                    );
-                }
-            }
-
-            if ($delete_clauses) {
-                $wpdb->query("DELETE FROM $wpdb->members_table WHERE ( " . implode(' ) OR ( ', $delete_clauses) . " )");
-            }
-
-            if ($insert_sql_rows) {
-                $wpdb->query("INSERT INTO $wpdb->members_table (user_id, group_id, member_type, status ) VALUES " . implode(',', $insert_sql_rows));
-            }
-        }
-
         update_option('presspermit_wp_role_sync', true);
-    } // end syncWordPressRoles function
+    }
 }

@@ -586,7 +586,7 @@ jQuery(document).ready(function ($) {
 
         $('img.waiting', panel).show();
 
-        $.post(ajaxurl, params, function (menuMarkup) {
+        $.post(ppItems.ajaxurl, params, function (menuMarkup) {
             presspermitProcessQuickSearchResponse(menuMarkup, params, panel);
         });
     }

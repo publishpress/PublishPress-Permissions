@@ -5,6 +5,7 @@ class XmlRpc
 {
     function __construct() {
         if (version_compare('7.0', phpversion(), '>=')) {
+            // phpcs:ignore WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsRemoteFile
             $raw_post_data = file_get_contents('php://input');
         } else {
             global $HTTP_RAW_POST_DATA;

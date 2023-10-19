@@ -20,12 +20,7 @@ class PermissionsHooksAdmin
         }
 
         // make sure empty terms are included in quick search results in "Set Specific Permissions" term selection metaboxes
-        if (PWP::isAjax('pp-menu-quick-search') && !empty($_REQUEST['action'])) {
-            require_once(PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
-            add_action('wp_ajax_' . presspermit_REQUEST_key('action'), ['\PublishPress\Permissions\UI\ItemsMetabox', 'ajax_menu_quick_search'], 1);
-        }
 
-        // thanks to GravityForms for the nifty dismissal script
         if (!empty($_SERVER['PHP_SELF']) && in_array(basename($_SERVER['PHP_SELF']), ['admin.php', 'admin-ajax.php'])) {
             add_action('wp_ajax_pp_dismiss_msg', [$this, 'dashboardDismissMsg']);
         }
@@ -66,26 +61,26 @@ class PermissionsHooksAdmin
             Permissions\UI\PluginPage::instance();
         }
 
-        if (!presspermit_empty_POST() || !presspermit_empty_REQUEST('action') || !presspermit_empty_REQUEST('action2') || !presspermit_empty_REQUEST('pp_action')) {
+        if (!PWP::empty_POST() || !PWP::empty_REQUEST('action') || !PWP::empty_REQUEST('action2') || !PWP::empty_REQUEST('pp_action')) {
             require_once(PRESSPERMIT_CLASSPATH . '/UI/Handlers/Admin.php');
             Permissions\UI\Handlers\Admin::handleRequest();
         }
 
         add_action('wp_loaded', [$this,'actLoadAjaxHandler'], 20);
 
-        if (!presspermit_empty_POST('presspermit_submit') || !presspermit_empty_POST('presspermit_defaults') || !presspermit_empty_POST('pp_role_usage_defaults')) {
+        if (!PWP::empty_POST('presspermit_submit') || !PWP::empty_POST('presspermit_defaults') || !PWP::empty_POST('pp_role_usage_defaults')) {
             // For 'settings' admin panels, handle updated options right after current_user load (and before pp_init).
             // By then, check_admin_referer is available, but PP config and WP admin menu has not been loaded yet.
             require_once(PRESSPERMIT_CLASSPATH . '/UI/Handlers/Settings.php');
             new Permissions\UI\Handlers\Settings();
         }
 
-        if (!presspermit_empty_REQUEST('presspermit_refresh_updates') || !presspermit_empty_REQUEST('pp_renewal')) {
+        if (!PWP::empty_REQUEST('presspermit_refresh_updates') || !PWP::empty_REQUEST('pp_renewal')) {
             if (!current_user_can('pp_manage_settings')) {
                 wp_die(esc_html(PWP::__wp('Cheatin&#8217; uh?')));
             }
     
-            if (!presspermit_empty_REQUEST('presspermit_refresh_updates')) {
+            if (!PWP::empty_REQUEST('presspermit_refresh_updates')) {
                 delete_site_transient('update_plugins');
                 delete_option('_site_transient_update_plugins');
                 wp_update_plugins();
@@ -93,7 +88,7 @@ class PermissionsHooksAdmin
                 exit;
             }
     
-            if (!presspermit_empty_REQUEST('pp_renewal')) {
+            if (!PWP::empty_REQUEST('pp_renewal')) {
                 if (presspermit()->isPro()) {
                     include_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/pro-renewal-redirect.php');
                 } else {
@@ -104,7 +99,7 @@ class PermissionsHooksAdmin
             }
         }
 
-        if (presspermit_is_GET('pp_agent_search')) {
+        if (PWP::is_GET('pp_agent_search')) {
             require_once(PRESSPERMIT_CLASSPATH . '/UI/AgentsAjax.php');
             new Permissions\UI\AgentsAjax();
             exit;
@@ -158,7 +153,8 @@ class PermissionsHooksAdmin
     public function actLoadAjaxHandler()
     {
         foreach (['item', 'agent_roles', 'agent_exceptions', 'agent_permissions', 'user', 'settings', 'items_metabox'] as $ajax_type) { // todo: term_ui ?
-            if (isset($_REQUEST["pp_ajax_{$ajax_type}"])) {
+            // This is for admin UI output.
+            if (PWP::is_REQUEST("pp_ajax_{$ajax_type}")) {
                 $class_name = str_replace('_', '', ucwords( $ajax_type, '_') ) . 'Ajax';
                 
                 $class_parent = ( in_array($class_name, ['ItemAjax','UserAjax']) ) ? 'Dashboard' : '';
@@ -173,6 +169,13 @@ class PermissionsHooksAdmin
 
                 exit;
             }
+        }
+
+        if ('pp-menu-quick-search' == PWP::REQUEST_key('action')) {
+            require_once(PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
+            \PublishPress\Permissions\UI\ItemsMetabox::ajax_menu_quick_search();
+
+            exit;
         }
     }
 
@@ -196,7 +199,7 @@ class PermissionsHooksAdmin
 
         if (defined("PUBLISHPRESS_REVISIONS_VERSION") || defined('REVISIONARY_VERSION')) {
             if (!defined('PRESSPERMIT_COLLAB_VERSION')) {
-                if (!presspermitPluginPage() && presspermit_is_REQUEST('page', ['revisionary-q', 'revisionary-settings']) && ('edit.php' !== $pagenow)) {
+                if (!presspermitPluginPage() && PWP::is_REQUEST('page', ['revisionary-q', 'revisionary-settings']) && ('edit.php' !== $pagenow)) {
                     return;
                 }
 
@@ -256,6 +259,9 @@ class PermissionsHooksAdmin
             $dismissals = [];
         }
 
+        // phpcs Note: No need for nonce verification on the notice dismissal
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
         $msg_id = (isset($_REQUEST['msg_id'])) ? sanitize_key($_REQUEST['msg_id']) : 'post_blockage_priority';
         $dismissals[$msg_id] = true;
         update_option('presspermit_dismissals', $dismissals);
@@ -289,7 +295,7 @@ class PermissionsHooksAdmin
         || presspermit()->isAdministrator() 
         || !function_exists('get_multiple_authors') 
         || !function_exists('is_multiple_author_for_post')
-        || !presspermit_is_POST('authors')
+        || !PWP::is_POST('authors')
         || !apply_filters('presspermit_maybe_override_authors_change', true, $post)
         ) {
             return;
@@ -306,11 +312,14 @@ class PermissionsHooksAdmin
                         return;
                     }
 
-                    $authors = presspermit_POST_var('authors');
+                    // phpcs Note: No nonce verification because we need to apply this PublishPress Authors safeguard regardless of how the post update was initiated
+
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                    $authors = (!empty($_POST['authors'])) ? array_map('sanitize_key', $_POST['authors']) : [];
 
                     if (!in_array($current_author->term_id, $authors)) {
                         if (apply_filters('presspermit_override_authors_change', true, $post)) {
-                            $_POST['authors'] = array_merge([strval($current_author->term_id)], array_map('sanitize_key', $authors));
+                            $_POST['authors'] = array_merge([strval($current_author->term_id)], $authors);
                         }
                     }
                 }

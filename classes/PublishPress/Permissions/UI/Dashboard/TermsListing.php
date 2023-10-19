@@ -14,8 +14,8 @@ class TermsListing
             add_action('admin_print_footer_scripts', [$this, 'actScriptUniversalExceptions']);
         }
 
-        if (presspermit_empty_REQUEST('tag_ID')) {
-            if ($taxonomy = presspermit_REQUEST_key('taxonomy')) {
+        if (PWP::empty_REQUEST('tag_ID')) {
+            if ($taxonomy = PWP::REQUEST_key('taxonomy')) {
 	            add_filter("manage_edit-{$taxonomy}_columns", [$this, 'fltDefineColumns']);
 	            add_filter("manage_{$taxonomy}_columns", [$this, 'fltDefineColumns']);
                 add_action("manage_{$taxonomy}_custom_column", [$this, 'fltCustomColumn'], 10, 3);
@@ -29,8 +29,8 @@ class TermsListing
     {
         global $typenow;
 
-        if (presspermit_empty_REQUEST('pp_universal')) {
-            $taxonomy = presspermit_REQUEST_key('taxonomy');
+        if (PWP::empty_REQUEST('pp_universal')) {
+            $taxonomy = PWP::REQUEST_key('taxonomy');
             $tx_obj = get_taxonomy($taxonomy);
             $type_obj = get_post_type_object($typenow);
             $url = "edit-tags.php?taxonomy=$taxonomy&pp_universal=1";
@@ -56,8 +56,8 @@ class TermsListing
     {
         global $typenow;
 
-        if (presspermit_empty_REQUEST('pp_universal')) {
-            $taxonomy = presspermit_REQUEST_key('taxonomy');
+        if (PWP::empty_REQUEST('pp_universal')) {
+            $taxonomy = PWP::REQUEST_key('taxonomy');
             $type_obj = get_post_type_object($typenow);
             $title = esc_html__('Click to list/edit universal permissions', 'press-permit-core');
             $lbl = ($type_obj && $type_obj->labels) ? $type_obj->labels->singular_name : '';
@@ -131,7 +131,7 @@ class TermsListing
     {
         global $post_type;
 
-        if (presspermit_empty_REQUEST('pp_universal')) {
+        if (PWP::empty_REQUEST('pp_universal')) {
             return;
         }
         ?>
@@ -164,11 +164,11 @@ class TermsListing
     // In "Add New Term" form, hide the "Main" option from Parent dropdown if the logged user doesn't have manage_terms cap site-wide
     public function actScriptHideMainOption()
     {
-        if (presspermit_is_REQUEST('action', 'edit')) {
+        if (PWP::is_REQUEST('action', 'edit')) {
             return;
         }
 
-        if ($taxonomy = presspermit_REQUEST_key('taxonomy')) {  // using this with edit-link-categories
+        if ($taxonomy = PWP::REQUEST_key('taxonomy')) {  // using this with edit-link-categories
             if ($tx_obj = get_taxonomy($taxonomy)) {
                 $cap_name = $tx_obj->cap->manage_terms;
             }
@@ -180,7 +180,7 @@ class TermsListing
 
         if (!empty(presspermit()->getUser()->allcaps[$cap_name])
         ) {
-            $taxonomy = presspermit_REQUEST_key('taxonomy');
+            $taxonomy = PWP::REQUEST_key('taxonomy');
 
             if (!presspermit()->getUser()->getExceptionTerms('manage', 'include', sanitize_key($taxonomy), sanitize_key($taxonomy), ['merge_universals' => true])) {
             	return;
@@ -201,7 +201,7 @@ class TermsListing
     {
         global $wp_object_cache, $wpdb, $typenow;
 
-        $taxonomy = presspermit_REQUEST_key('taxonomy');
+        $taxonomy = PWP::REQUEST_key('taxonomy');
 
         if (!empty($wp_object_cache) && (isset($wp_object_cache->cache[$taxonomy]) || isset($wp_object_cache->cache['terms']))) {
             $cache = (isset($wp_object_cache->cache[$taxonomy])) ? $wp_object_cache->cache[$taxonomy] : $wp_object_cache->cache['terms'];
@@ -226,7 +226,7 @@ class TermsListing
                 }
             }
 
-            if (presspermit_empty_REQUEST('paged')) {
+            if (PWP::empty_REQUEST('paged')) {
                 $listed_tt_ids[] = 0;
             }
         } else {
@@ -235,10 +235,10 @@ class TermsListing
 
         $for_type = $typenow;
 
-        if (!presspermit_empty_REQUEST('pp_universal')) {
+        if (!PWP::empty_REQUEST('pp_universal')) {
             $for_type = '';
         } elseif (empty($typenow)) {
-            $for_type = presspermit_REQUEST_key('post_type');
+            $for_type = PWP::REQUEST_key('post_type');
         }
 
         $this->exceptions = [];
@@ -246,16 +246,19 @@ class TermsListing
         if (!empty($listed_tt_ids)) {
             $agent_type_csv = implode("','", array_map('sanitize_key', array_merge(['user'], presspermit()->groups()->getGroupTypes())));
             $id_csv = implode("','", array_map('intval', $listed_tt_ids));
-            $post_type = (!presspermit_empty_REQUEST('pp_universal')) ? '' : $for_type;
+            $post_type = (!PWP::empty_REQUEST('pp_universal')) ? '' : $for_type;
 
             $for_types = ($typenow) ? [$post_type] : ['', $taxonomy];
             $for_type_csv = implode("','", array_map('sanitize_key', $for_types));
 
+            // One locally cached direct query of plugin tables to retrieve exceptions info for all listed Terms
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $results = $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT DISTINCT i.item_id, e.operation FROM $wpdb->ppc_exceptions AS e"
                     . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
-                    . " WHERE e.for_item_type IN ('$for_type_csv') AND e.via_item_source = 'term' AND e.via_item_type = %s AND e.agent_type IN ('$agent_type_csv') AND i.item_id IN ('$id_csv')",
+                    . " WHERE e.for_item_type IN ('$for_type_csv') AND e.via_item_source = 'term'"                      // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                    . " AND e.via_item_type = %s AND e.agent_type IN ('$agent_type_csv') AND i.item_id IN ('$id_csv')", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                     $taxonomy
                 )

@@ -55,7 +55,10 @@ class GroupsListTable extends GroupsListTableBase
     {
         global $groupsearch;
 
-        $groupsearch = sanitize_text_field(presspermit_REQUEST_var('s'));
+        // phpcs Note: nonce verification unnecessary for groups listing search / orderby / order parameters
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        $groupsearch = (!empty($_REQUEST['s'])) ? sanitize_text_field($_REQUEST['s']) : '';
 
         $groups_per_page = $this->get_items_per_page('groups_per_page');
 
@@ -69,12 +72,14 @@ class GroupsListTable extends GroupsListTableBase
 
         $args['search'] = '*' . $args['search'] . '*';
 
-        if ($orderby = presspermit_REQUEST_var('orderby')) {
-            $args['orderby'] = PWP::sanitizeWord($orderby);
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        if ($orderby = (!empty($_REQUEST['orderby'])) ? sanitize_sql_orderby($_REQUEST['orderby']) : '') {
+            $args['orderby'] = $orderby;
         }
 
-        if ($order = presspermit_REQUEST_var('order')) {
-            $args['order'] = PWP::sanitizeWord($order);
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        if ($order = (!empty($_REQUEST['order'])) ? sanitize_sql_orderby($_REQUEST['order']) : '') {
+            $args['order'] = $order;
         }
 
         // Query the user IDs for this page
@@ -144,7 +149,7 @@ class GroupsListTable extends GroupsListTableBase
 
         if (
             current_user_can('pp_delete_groups')
-            && !presspermit_is_REQUEST('group_variant', $this->deleted_roles_listed())
+            && !PWP::is_REQUEST('group_variant', $this->deleted_roles_listed())
         ) {
             $actions['delete'] = esc_html__('Delete', 'press-permit-core');
         }
@@ -154,7 +159,7 @@ class GroupsListTable extends GroupsListTableBase
 
     public function get_columns()
     {
-        $bulk_check_all = !presspermit_is_REQUEST('group_variant', 'wp_role') || $this->deleted_roles_listed()
+        $bulk_check_all = !PWP::is_REQUEST('group_variant', 'wp_role') || $this->deleted_roles_listed()
         ? '<input type="checkbox" />' 
         : '';
 
@@ -397,7 +402,7 @@ class GroupsListTable extends GroupsListTableBase
      */
     public function search_box($text, $input_id, $type = '', $tabindex = '', $unused = '')
     {
-        if (presspermit_empty_REQUEST('s') && !$this->has_items()) {
+        if (PWP::empty_REQUEST('s') && !$this->has_items()) {
             return;
         }
 
@@ -414,19 +419,20 @@ class GroupsListTable extends GroupsListTableBase
         // Remove empty items, remove duplicate items, and finally build a string.
         $class = implode(' ', array_unique(array_filter($classes)));
 
-        if ($orderby = presspermit_request_var('orderby')) {
-            echo '<input type="hidden" name="orderby" value="' . esc_attr(sanitize_text_field($orderby)) . '" />';
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        if ($orderby = (!empty($_REQUEST['orderby'])) ? sanitize_sql_orderby($_REQUEST['orderby']) : '') {
+            echo '<input type="hidden" name="orderby" value="' . esc_attr($orderby) . '" />';
         }
 
-        if ($order = presspermit_REQUEST_key('order')) {
+        if ($order = PWP::REQUEST_key('order')) {
             echo '<input type="hidden" name="order" value="' . esc_attr($order) . '" />';
         }
 
-        if ($post_mime_type = presspermit_REQUEST_key('post_mime_type')) {
+        if ($post_mime_type = PWP::REQUEST_key('post_mime_type')) {
             echo '<input type="hidden" name="post_mime_type" value="' . esc_attr($post_mime_type) . '" />';
         }
 
-        if ($detached = presspermit_REQUEST_int('detached')) {
+        if ($detached = PWP::REQUEST_int('detached')) {
             echo '<input type="hidden" name="detached" value="' . esc_attr($detached) . '" />';
         }
         ?>

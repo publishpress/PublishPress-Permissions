@@ -118,9 +118,10 @@ class PostFiltersFrontNonAdministrator
             ['post_types' => $post_types, 'skip_teaser' => true, 'required_operation' => 'read', 'force_types' => true]
         );
 
-        $query = "SELECT {$clauses['distinct']} ID FROM $wpdb->posts {$clauses['join']} WHERE 1=1 {$clauses['where']}";
-
-        $okay_ids = $wpdb->get_col($query);
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        $okay_ids = $wpdb->get_col(
+            "SELECT {$clauses['distinct']} ID FROM $wpdb->posts {$clauses['join']} WHERE 1=1 {$clauses['where']}"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        );
 
         foreach ($post_types as $_post_type) {
             $remove_ids = array_diff($item_types['post_type'][$_post_type], $okay_ids);

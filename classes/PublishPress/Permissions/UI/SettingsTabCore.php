@@ -78,14 +78,6 @@ class SettingsTabCore
 
     public function optionsPreUI()
     {
-        /*
-        if (SettingsAdmin::instance()->getOption('display_hints')) {
-            echo '<div class="pp-optionhint">';
-            esc_html_e("Basic settings for content filtering, management and presentation.", 'press-permit-core');
-            do_action('presspermit_options_form_hint');
-            echo '</div>';
-        }
-        */
     }
 
     public function optionsUI()
@@ -172,7 +164,7 @@ class SettingsTabCore
                     $ui->all_otype_options[] = $option_name;
 
                     if (isset($pp->default_options[$option_name])) {
-                        $filter_name = ('term' == $scope) ? 'presspermit_enabled_taxonomies_by_key' : 'presspermit_enabled_post_types';
+                    	$filter_name = ('term' == $scope) ? 'presspermit_enabled_taxonomies_by_key' : 'presspermit_enabled_post_types';
                     	
                         if (!$enabled = apply_filters($filter_name, $ui->getOption($option_name))) {
                             $enabled = [];
@@ -203,15 +195,15 @@ class SettingsTabCore
                                         echo esc_html($obj->labels_pp->name);
                                     } elseif ('nav_menu' == $key) {    // @todo: use labels_pp property?
                                         if (in_array(get_locale(), ['en_EN', 'en_US'])) {
-                                           _e('Nav Menus (Legacy)', 'press-permit-core');
+                                            esc_html_e('Nav Menus (Legacy)', 'press-permit-core');
                                         } else {
-                                            echo $obj->labels->singular_name .= ' (' . __('Legacy', 'press-permit-core') . ')';
+                                            echo esc_html($obj->labels->singular_name) . ' (' . esc_html__('Legacy', 'press-permit-core') . ')';
                                         }
                                     } elseif ('wp_navigation' == $key) {    // @todo: use labels_pp property?
                                         if (in_array(get_locale(), ['en_EN', 'en_US'])) {
-                                           _e('Nav Menus (Block)', 'press-permit-core');
+                                            esc_html_e('Nav Menus (Block)', 'press-permit-core');
                                         } else {
-                                            echo $obj->labels->singular_name .= ' (' . __('Block', 'press-permit-core') . ')';
+                                            echo esc_html($obj->labels->singular_name) . ' (' . esc_html__('Block', 'press-permit-core') . ')';
                                         }
                                     } elseif (isset($obj->labels->name)) {
                                         echo esc_html($obj->labels->name);
@@ -234,7 +226,7 @@ class SettingsTabCore
                                 <!-- <input name="<?php echo esc_attr($name); ?>" type="hidden" id="<?php echo esc_attr($id); ?>" value="1"/> -->
                             <?php endif;
                         } // end foreach src_otype
-                    } // endif default option isset
+                    } // endif default option isset  // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 
                     if ('object' == $scope) {
                         if ($pp->getOption('display_hints')) {

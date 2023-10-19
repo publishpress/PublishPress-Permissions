@@ -19,7 +19,7 @@ class Admin
     {
         if (!presspermit()->getOption('offer_rs_migration') 
         || !presspermit()->isAdministrator() 
-        || (apply_filters('presspermit_import_count', 0, 'rs') && presspermit_empty_REQUEST('rs-not-imported'))
+        || (apply_filters('presspermit_import_count', 0, 'rs') && PWP::empty_REQUEST('rs-not-imported'))
         ) {
             return;
         }
@@ -226,7 +226,7 @@ class Admin
     public function isPluginAction()
     {
         return (!empty($_SERVER['REQUEST_URI']) && (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'plugin-install.php' )))
-        || presspermit_is_REQUEST('action', ['activate', 'deactivate']);
+        || PWP::is_REQUEST('action', ['activate', 'deactivate']);
     }
 
     public function errorNotice($err_slug, $args)
@@ -239,7 +239,7 @@ class Admin
     {
 		$dismissals = (array) pp_get_option('dismissals');
 
-		if ($msg_id && isset($dismissals[$msg_id]) && !presspermit_is_REQUEST('pp_ignore_dismissal', $msg_id)) {
+		if ($msg_id && isset($dismissals[$msg_id]) && !PWP::is_REQUEST('pp_ignore_dismissal', $msg_id)) {
 			return;
         }
 		
@@ -281,14 +281,12 @@ class Admin
         </a></li>
         </ul>
         </nav>
-        
-        <!--
+
         <div class="pp-pressshack-logo">
         <a href="//publishpress.com" target="_blank" rel="noopener noreferrer">
-        <img src="" />
+        <img src="<?php echo esc_url(plugins_url('', PRESSPERMIT_FILE)) . '/common/img/publishpress-logo.png';?>" />
         </a>
         </div>
-        -->
 
         </footer>
     <?php

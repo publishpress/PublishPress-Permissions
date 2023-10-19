@@ -11,7 +11,7 @@ class PostEdit
         add_action('admin_print_footer_scripts', [$this, 'suppress_upload_ui']);
         add_action('admin_print_footer_scripts', [$this, 'suppress_add_category_ui']);
 
-        if (presspermit_is_REQUEST('message', 6)) {
+        if (PWP::is_REQUEST('message', 6)) {
             add_filter('post_updated_messages', [$this, 'flt_post_updated_messages']);
         }
 
@@ -121,7 +121,7 @@ class PostEdit
 
         wp_enqueue_script('presspermit-agent-select', PRESSPERMIT_URLPATH . "/common/js/agent-exception-select{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
         $wp_scripts->in_footer[] = 'presspermit-agent-select';
-        wp_localize_script('presspermit-agent-select', 'PPAgentSelect', ['adminurl' => admin_url(''), 'ajaxhandler' => 'got_ajax_listbox']);
+        wp_localize_script('presspermit-agent-select', 'PPAgentSelect', ['ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax'), 'ajaxhandler' => 'got_ajax_listbox']);
 
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
         wp_enqueue_script('presspermit-collab-post-edit', PRESSPERMIT_COLLAB_URLPATH . "/common/js/post-edit{$suffix}.js", [], PRESSPERMIT_COLLAB_VERSION);

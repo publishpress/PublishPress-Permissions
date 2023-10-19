@@ -19,8 +19,10 @@ class Collab {
 
     public static function populateRoles()
     {
-        require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Updated.php');
-        Collab\Updated::populateRoles();
+        if (!get_option('ppce_added_role_caps_21beta')) {
+            require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Updated.php');
+            Collab\Updated::populateRoles();
+        }
     }
 
     public static function getObjectTerms($object_ids, $taxonomy, $args = [])

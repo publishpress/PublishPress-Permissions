@@ -125,6 +125,8 @@ class TermFiltersCount
     {
         global $pagenow;
 
+        // phpcs Note: The exclude and meta_value args supported here are for WP API compat, passing on any such arguments supplied by the get_terms() or get_pages() function
+
         $defaults = [
             'fields' => '',
             'hierarchical' => false,
@@ -134,7 +136,7 @@ class TermFiltersCount
             'number' => 0,
             'offset' => 0,
             'include' => false,
-            'exclude' => false,
+            'exclude' => false,  // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
             'actual_args' => [],
 
             'pad_counts' => false,

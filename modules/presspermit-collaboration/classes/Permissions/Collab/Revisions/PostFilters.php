@@ -129,8 +129,8 @@ class PostFilters
     function fltPostsWhere($where, $args)
     {
         // for past revisions
-        if (defined('PUBLISHPRESS_REVISIONS_VERSION') && !is_admin() && presspermit_is_REQUEST('post_type', 'revision') 
-        && (!presspermit_empty_REQUEST('preview') || !presspermit_empty_REQUEST('preview_id'))) {
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION') && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+        && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))) {
             $matches = [];
             if (preg_match("/post_type = '([0-9a-zA-Z_\-]+)'/", $where, $matches)) {
                 if ($matches[1]) {
@@ -156,8 +156,8 @@ class PostFilters
     }
 
     function flt_meta_cap($meta_cap) {
-        if (defined('PUBLISHPRESS_REVISIONS_VERSION') && ('read_post' == $meta_cap) && !is_admin() && presspermit_is_REQUEST('post_type', 'revision') 
-        && (!presspermit_empty_REQUEST('preview') || !presspermit_empty_REQUEST('preview_id'))
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION') && ('read_post' == $meta_cap) && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+        && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
         ) {
             $meta_cap = 'edit_post';
         }

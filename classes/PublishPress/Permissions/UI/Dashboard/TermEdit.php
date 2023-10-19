@@ -20,7 +20,7 @@ class TermEdit
 
 	        add_action('admin_menu', [$this, 'actAddMetaBoxes']);
 	
-	        if ($taxonomy = presspermit_REQUEST_key('taxonomy')) {
+	        if ($taxonomy = PWP::REQUEST_key('taxonomy')) {
 	            if (presspermit()->isTaxonomyEnabled($taxonomy)) {
 	                add_action('admin_head', [$this, 'actScriptsWP']);
 	
@@ -29,7 +29,7 @@ class TermEdit
 	                add_action("{$taxonomy}_edit_form", [$this, 'actTaxonomyEnableUI']);
 	            }
 	
-	            if (!presspermit_empty_REQUEST('pp_universal')) {
+	            if (!PWP::empty_REQUEST('pp_universal')) {
 	                add_action("{$taxonomy}_edit_form", [$this, 'actUniversalExceptionsUIsupport']);
 	            }
 	        }
@@ -91,19 +91,19 @@ class TermEdit
 
         $pp = presspermit();
 
-        $taxonomy = presspermit_REQUEST_key('taxonomy');
+        $taxonomy = PWP::REQUEST_key('taxonomy');
 
         if (!in_array($taxonomy, $pp->getEnabledTaxonomies(), true)) {
             return;
         }
 
-        if ($tag_id = presspermit_REQUEST_int('tag_ID')) {
+        if ($tag_id = PWP::REQUEST_int('tag_ID')) {
             $tt_id = PWP::termidToTtid($tag_id, $taxonomy);
         } else {
             $tt_id = 0;
         }
 
-        $post_type = (!presspermit_empty_REQUEST('pp_universal')) ? '' : $typenow;
+        $post_type = (!PWP::empty_REQUEST('pp_universal')) ? '' : $typenow;
 
         $hidden_types = apply_filters('presspermit_hidden_post_types', []);
         $hidden_taxonomies = apply_filters('presspermit_hidden_taxonomies', ['post_status_core_wp_pp', 'pseudo_status_pp', 'post_visibility_pp']);
@@ -218,8 +218,8 @@ class TermEdit
 
         global $typenow;
 
-        $post_type = (!presspermit_empty_REQUEST('pp_universal')) ? '' : $typenow;
-        $taxonomy = presspermit_REQUEST_key('taxonomy');
+        $post_type = (!PWP::empty_REQUEST('pp_universal')) ? '' : $typenow;
+        $taxonomy = PWP::REQUEST_key('taxonomy');
 
         if (current_user_can('pp_assign_roles')) {
             $this->initItemExceptionsUI();
@@ -248,7 +248,7 @@ class TermEdit
             return;
         }
 
-        $post_type = (!presspermit_empty_REQUEST('pp_universal')) ? '' : $typenow;
+        $post_type = (!PWP::empty_REQUEST('pp_universal')) ? '' : $typenow;
 
         if (
             !current_user_can('pp_assign_roles')
@@ -401,7 +401,7 @@ class TermEdit
         add_thickbox();
         wp_enqueue_script('media-upload');
 
-        $taxonomy = presspermit_REQUEST_key('taxonomy');
+        $taxonomy = PWP::REQUEST_key('taxonomy');
         ItemEdit::scriptItemEdit($taxonomy);
     }
 }

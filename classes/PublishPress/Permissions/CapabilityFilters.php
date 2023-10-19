@@ -14,7 +14,7 @@ require_once(PRESSPERMIT_CLASSPATH . '/PostFilters.php');
  */
 class CapabilityFilters
 {
-    private $memcache = []; // keys: 'cache_tested_ids', 'cache_okay_ids', 'cache_where_clause'
+    private $memcache = []; // keys are tested_ids, okay_ids
     private $in_process = false;
     private $flag_defaults = [];
     private $meta_caps = [];
@@ -211,7 +211,7 @@ class CapabilityFilters
                     if (!isset($buffer_qualified) || $pp->flags['memcache_disabled']) {
                         $buffer_qualified = [];
                     }
-                    $bkey = $item_type . $item_id . md5(serialize($type_caps));
+                    $bkey = $item_type . $item_id . md5(wp_json_encode($type_caps));
                     if (!empty($buffer_qualified[$bkey])) {
                         $this->in_process = false;
                         return array_merge($wp_sitecaps, array_fill_keys($orig_reqd_caps, true));
@@ -222,6 +222,9 @@ class CapabilityFilters
                         $base_caps = PostFilters::getBaseCaps($type_caps, $item_type);
 
                         if (count($base_caps) == 1) {
+                            // This capability check is for a post type capability, but NOT a meta cap check (read_post / edit_post / delete_post)
+                            // We are going to pass the capability check if it's for a post which the user has a corresponding Specific Permission assigned for.
+
                             $base_cap = reset($base_caps);
                             switch ($base_cap) {
                                 case PRESSPERMIT_READ_PUBLIC_CAP:
@@ -275,22 +278,85 @@ class CapabilityFilters
                                     $pass = true;
                                 } else {
                                     if ($enabled_taxonomies = $pp->getEnabledTaxonomies(['object_type' => $item_type])) {
-                                        global $wpdb;
+                                        // This capability check is for a post type capability, but NOT a meta cap check (read_post / edit_post / delete_post)
+                                        // Either the check is not for an individual post, or the user does not have a corresponding Specific Permission for that post.
+                                        
+                                        global $wpdb, $pagenow;
 
-                                        $taxonomies_csv = implode("','", array_map('sanitize_key', $enabled_taxonomies));
+                                        static $listed_post_tt_ids;
 
-                                        if (!$item_id 
-                                        || $post_ttids = $wpdb->get_col(
-                                                $wpdb->prepare(
-                                                    "SELECT tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
+                                        if (!isset($listed_post_tt_ids)) {
+                                            $listed_post_tt_ids = [];
+                                        }
+
+                                        if ($item_id) {
+                                            // We are going to pass the capability check if it's for a post that has categories / terms which the user has a corresponding Specific Permission assigned for.
+
+                                            $post_tt_ids = [];
+
+                                            // Did WP already cache post terms cached for all enabled taxonomies?
+                                            foreach ($enabled_taxonomies as $taxonomy) {
+                                                $_terms = get_object_term_cache($item_id, $taxonomy);
+
+                                                if (false === $_terms) {
+                                                    // If terms need to be queried for any taxonomy, force a single query for all taxonomies.
+                                                    $post_tt_ids = false;
+                                                    break;
+                                                } else {
+                                                    foreach ($_terms as $term) {
+                                                        $post_tt_ids[] = $term->term_taxonomy_id; 
+                                                    }
+                                                }
+                                            }
+
+                                            // If not, did this function already cache this post's terms to static variable?
+                                            if (false === $post_tt_ids) {
+                                                if (isset($listed_post_tt_ids[$item_id])) {
+                                                    $post_tt_ids = $listed_post_tt_ids[$item_id];
+                                                }
+                                            }
+
+                                            // If not, execute a query to build the static cache of terms for all currently listed posts (or at least the currently checked post)
+                                            if (false === $post_tt_ids) {
+                                                if (isset($pp->listed_ids[$item_type]) && (!is_admin() || ('index.php' != $pagenow))) {  // there's too much happening on the dashboard to buffer listed IDs reliably.
+                                                    $listed_ids = array_keys($pp->listed_ids[$item_type]);
+                                                } else {
+                                                    $listed_ids = [];
+                                                }
+
+                                                $listed_ids []= $item_id;
+                                                $id_csv = implode("','", array_map('intval', array_unique($listed_ids)));
+
+                                                $taxonomies_csv = implode("','", array_map('sanitize_key', $enabled_taxonomies));
+
+                                                // Since the object terms are not cached, one direct query for all enabled taxonomies and listed IDs to avoid a get_terms() call. get_terms() would involve multiple filters and queries.
+                                                // IN clauses are constructed and sanitized above.
+                                                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+                                                $results = $wpdb->get_results(
+                                                    "SELECT tr.object_id, tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
                                                     . " INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_taxonomy_id = tr.term_taxonomy_id"
-                                                    . " WHERE tt.taxonomy IN ('$taxonomies_csv') AND tr.object_id = %d",
+                                                    . " WHERE tt.taxonomy IN ('$taxonomies_csv') AND tr.object_id IN ('$id_csv')"           // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                                                );
 
-                                                    $item_id
-                                                )
-                                            )
-                                        ) {
-                                            foreach ($pp->getEnabledTaxonomies(['object_type' => $item_type]) as $taxonomy) {
+                                                foreach ($results as $row) {
+                                                    if (!isset($listed_post_tt_ids[$row->object_id])) {
+                                                        $listed_post_tt_ids[$row->object_id] = [];
+                                                    }
+
+                                                    $listed_post_tt_ids[$row->object_id] []= $row->term_taxonomy_id;
+                                                }
+
+                                                if (isset($listed_post_tt_ids[$item_id])) {
+                                                    $post_tt_ids = $listed_post_tt_ids[$item_id];
+                                                }
+                                            }
+                                        }
+
+                                        if (!$item_id || $post_ttids) {
+                                            // Pass the capability check if it's for a post that has categories / terms which the user has a corresponding Specific Permission assigned for,
+                                            // OR if the capability check is not for an individual post, and the user has a coresponding Specific Permissions assigned for any term related to this post type
+
+                                            foreach ($enabled_taxonomies as $taxonomy) {
                                                 if ($additional_tt_ids = $user->getExceptionTerms($op, 'additional', $item_type, $taxonomy, ['status' => true])) {
                                                     $additional_tt_ids = Arr::flatten(array_intersect_key($additional_tt_ids, $valid_stati));
                                                 }
@@ -383,7 +449,7 @@ class CapabilityFilters
                 break;
             default:
                 $return = $wp_sitecaps;
-        } // end switch
+        }
 
         $this->in_process = false;
         unset($pp->flags['cap_filter_in_process']);
@@ -453,8 +519,8 @@ class CapabilityFilters
         // skip the memcache under certain circumstances
         if (!$memcache_disabled) {
 			if ( 
-            (!presspermit_empty_POST() && ( 'post.php' == $pagenow ) && PWP::getTypeCap( $post_type, 'edit_post' ) == reset($pp_reqd_caps) )  				   // edit_post cap check on wp-admin/post.php submission   			
-            || (!presspermit_empty_GET('doaction') && in_array( reset($pp_reqd_caps), ['delete_post', PWP::getTypeCap( $post_type, 'delete_post' )], true ) )  // bulk post/page deletion is broken by hascap buffering
+            (!PWP::empty_POST() && ( 'post.php' == $pagenow ) && PWP::getTypeCap( $post_type, 'edit_post' ) == reset($pp_reqd_caps) )  				   // edit_post cap check on wp-admin/post.php submission   			
+            || (!PWP::empty_GET('doaction') && in_array( reset($pp_reqd_caps), ['delete_post', PWP::getTypeCap( $post_type, 'delete_post' )], true ) )  // bulk post/page deletion is broken by hascap buffering
             ) { 
                 $this->memcache = [];
                 $memcache_disabled = true;
@@ -466,7 +532,7 @@ class CapabilityFilters
 
         // generate a string key for this set of required caps, for use below in checking, caching the filtered results
         $cap_arg = ( 'edit_page' == $args[0] ) ? 'edit_post' : sanitize_key($args[0]); // minor perf boost on uploads.php, TODO: move to PPCE
-        $capreqs_key = ($memcache_disabled) ? false : $cap_arg . $pp->flags['cache_key_suffix'] . md5(serialize($query_args));
+        $capreqs_key = ($memcache_disabled) ? false : $cap_arg . $pp->flags['cache_key_suffix'] . md5(wp_json_encode($query_args));
 
         // Check whether this object id was already tested for the same reqd_caps in a previous execution of this function within the same http request
         if (!isset($this->memcache['tested_ids'][$post_type][$capreqs_key][$post_id]) || !empty($pp->flags['force_memcache_refresh'])) {
@@ -523,6 +589,11 @@ class CapabilityFilters
             if (isset($this->memcache['okay_ids'][$qkey]) && !$memcache_disabled) {
                 $okay_ids = $this->memcache['okay_ids'][$qkey];
             } else {
+                // phpcs Note: All clauses in this request are sanitized above and or upstream in function constructPostsRequest.
+                // This shared function ensures matching filtering by the 'posts_request' and 'user_has_cap' filters.
+
+                // Direct database query to apply all relevant Permissions configuration to the currently 
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
                 $okay_ids = $wpdb->get_col($request);
 
                 if (!$memcache_disabled) {

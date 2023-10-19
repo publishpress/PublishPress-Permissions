@@ -10,7 +10,7 @@ class DashboardFilters
         define('PRESSPERMIT_COLLAB_URLPATH', plugins_url('', PRESSPERMIT_COLLAB_FILE));
 
         if (('nav-menus.php' == $pagenow) 
-        || (defined('DOING_AJAX') && DOING_AJAX && presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
+        || (defined('DOING_AJAX') && DOING_AJAX && PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
         ) {  // Administrators also need this, to add private posts to available items list
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/NavMenuQuery.php');
             new NavMenuQuery();
@@ -115,7 +115,7 @@ class DashboardFilters
 
     function actAdminHead()
     {
-        if (presspermit_is_REQUEST('page', 'presspermit-role-usage')) {
+        if (PWP::is_REQUEST('page', 'presspermit-role-usage')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/RoleUsageListTable.php');
             \PublishPress\Permissions\Collab\UI\RoleUsageListTable::instance();
         }

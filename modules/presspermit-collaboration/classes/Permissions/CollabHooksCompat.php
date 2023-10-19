@@ -22,6 +22,8 @@ class CollabHooksCompat
                 // For now, we need Polylang to apply 'get_pages' filtering as in its previous versions
                 if (version_compare($wp_version, '6.3-alpha', '>=')) {
                     $this->wp_version = $wp_version;
+
+                    // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
                     $wp_version = '6.2.2';
                 }
             }, 4);
@@ -30,6 +32,8 @@ class CollabHooksCompat
                 global $wp_version;
 
                 if (isset($this->wp_version)) {
+
+                    // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
                     $wp_version = $this->wp_version;
                 }
             }, 6);
@@ -163,7 +167,7 @@ class CollabHooksCompat
             && (!is_admin() || ('presspermit-statuses' != presspermitPluginPage()))       // Capabilities screen needs all status capabilities loaded for administration
             && (
             	((isset($_SERVER['SCRIPT_NAME']) && false == strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'admin.php'))
-                || !presspermit_is_REQUEST('page', 'capsman')) 
+                || !PWP::is_REQUEST('page', 'capsman')) 
                 || (!presspermit()->isAdministrator() && !current_user_can('manage_capabilities')
                 )
             );

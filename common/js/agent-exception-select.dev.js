@@ -16,7 +16,7 @@ function presspermitLoadAgentsJS(id_sfx, agent_type, context, agent_id, suppress
         }
 
         $("#agent_results_" + id_sfx).DynamicListbox({
-            ajax_url: PPAgentSelect.adminurl,
+            ajaxurl: PPAgentSelect.ajaxurl,
             agent_type: agent_type,
             search_id: 'agent_search_text_' + id_sfx,
             results_id: 'agent_results_' + id_sfx,
@@ -54,7 +54,7 @@ var presspermitEagentAjaxRequest = function (agent_ids, id_sfx) {
         };
 
         $.ajax({
-            url: ppException.ajax_url,
+            url: ppException.ajaxurl,
             data: data,
             dataType: "html",
             success: presspermitEagentGotAjaxListbox,

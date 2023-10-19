@@ -1,6 +1,13 @@
 <?php
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
+// phpcs Note: This file is only loaded if WP_DEBUG is enabled
+
+// phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize, WordPress.PHP.DevelopmentFunctions.error_log_error_log
+// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_var_dump, WordPress.PHP.DevelopmentFunctions.error_log_var_dump
+// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace
+// phpcs:disable PublishPressStandards.Debug.DisallowDebugFunctions.FoundVarDumpFunction, 
+
 add_action('admin_footer', 'presspermit_echo_usage_message', 50);
 
 function presspermit_usage_message($translate = true)
@@ -29,7 +36,7 @@ function presspermit_editing_plugin()
     if (is_admin() && isset($pagenow) && ('plugin-editor.php' == $pagenow)) {
         require_once(PRESSPERMIT_ABSPATH . '/functions.php');
 
-        if (!presspermit_is_REQUEST('action', ['activate', 'deactivate'])) {
+        if (!PWP::is_REQUEST('action', ['activate', 'deactivate'])) {
             return true;
     	}
     }

@@ -54,10 +54,12 @@ class LibWP
         }
 
         if (class_exists('Classic_Editor')) {
-			if (presspermit_is_REQUEST('classic-editor__forget') && (presspermit_is_REQUEST('classic') || presspermit_is_REQUEST('classic-editor'))) {
+			if (self::is_REQUEST('classic-editor__forget') && (self::is_REQUEST('classic') || self::is_REQUEST('classic-editor'))) {
 				return false;
-			} elseif (presspermit_is_REQUEST('classic-editor__forget') && !presspermit_is_REQUEST('classic') && !presspermit_is_REQUEST('classic-editor')) {
+
+			} elseif (self::is_REQUEST('classic-editor__forget') && !self::is_REQUEST('classic') && !self::is_REQUEST('classic-editor')) {
 				return true;
+
 			} elseif (get_option('classic-editor-allow-users') === 'allow') {
 				if ($post_id = self::getPostID()) {
 					$which = get_post_meta( $post_id, 'classic-editor-remember', true );
@@ -128,12 +130,12 @@ class LibWP
 		$conditions[] = self::isWp5()
                         && $pluginsState['classic-editor']
                         && (get_option('classic-editor-replace') === 'block'
-                            && ! presspermit_is_GET('classic-editor__forget'));
+                            && ! self::is_GET('classic-editor__forget'));
 
         $conditions[] = self::isWp5()
                         && $pluginsState['classic-editor']
                         && (get_option('classic-editor-replace') === 'classic'
-                            && presspermit_is_GET('classic-editor__forget'));
+                            && self::is_GET('classic-editor__forget'));
 
         $conditions[] = $pluginsState['gutenberg-ramp'] 
                         && apply_filters('use_block_editor_for_post', true, get_post(self::getPostID()), PHP_INT_MAX);
@@ -167,6 +169,205 @@ class LibWP
     public static function sanitizeCSV($key)
     {
         return preg_replace('/[^A-Za-z0-9_\-\.,}{:\|\(\)\s\t\r\n]/', '', $key);
+    }
+
+    /**
+     * Sanitizes a string entry
+     *
+     * Keys are used as internal identifiers. Uppercase or lowercase alphanumeric characters,
+     * spaces, periods, commas, plusses, asterisks, colons, pipes, parentheses, dashes and underscores are allowed.
+     *
+     * @param string $entry String entry
+     * @return string Sanitized entry
+     */
+    public static function sanitizeEntry( $entry ) {
+        $entry = preg_replace( '/[^a-zA-Z0-9 \.\,\+\*\:\|\(\)_\-]/', '', $entry );
+        return $entry;
+    }
+
+    /*
+    * Same as sanitize_key(), but without applying filters
+    */
+    public static function sanitizeKey( $key ) {
+        $raw_key = $key;
+        $key     = strtolower( $key );
+        $key     = preg_replace( '/[^a-z0-9_\-]/', '', $key );
+        
+        return $key;
+    }
+
+
+    // REQUEST / POST / GET / SERVER wrapper functions used to:
+    //
+    // * Qualify a request to deterimine filter loading
+    // * Retrieve a variable when nonce verification is not necessary, or has already been applied
+
+    public static function empty_REQUEST($var = false) {
+        if (false === $var) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            return empty($_REQUEST);
+        } else {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            return empty($_REQUEST[$var]);
+        }
+    }
+
+    public static function is_REQUEST($var, $match = false) {
+        if (false === $match) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            return isset($_REQUEST[$var]);
+            
+        } elseif (is_array($match)) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            return (isset($_REQUEST[$var]) && in_array($_REQUEST[$var], $match));
+        } else {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            return (isset($_REQUEST[$var]) && ($_REQUEST[$var] == $match));
+        }
+    }
+
+    public static function REQUEST_key($var) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        if (empty($_REQUEST[$var])) {
+            return '';
+        }
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        return (is_array($_REQUEST[$var])) ? array_map('sanitize_key', $_REQUEST[$var]) : sanitize_key($_REQUEST[$var]);
+    }
+
+    public static function REQUEST_key_match($var, $match, $args = []) {
+        $args = (array) $args;
+        
+        $match_type = (!empty($args['match_type'])) ? $args['match_type'] : 'starts';
+
+        $matched = false;
+        
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $request_key = self::REQUEST_key($var);
+
+        if (is_array($request_key)) {
+            $matched = false;
+        } else {
+            switch ($match_type) {
+                case 'contains':
+                    $matched = (false !== strpos($request_key, $match));
+                    break;
+                    
+                default: // 'starts'
+                    $matched = (0 === strpos($request_key, $match));
+            }
+        }
+
+        return $matched;
+    }
+
+    public static function REQUEST_int($var) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        return (!empty($_REQUEST[$var])) ? intval($_REQUEST[$var]) : 0;
+    }
+
+    public static function REQUEST_url($var) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        return (!empty($_REQUEST) && !empty($_REQUEST[$var])) ? sanitize_url($_REQUEST[$var]) : '';
+    }
+
+    public static function empty_POST($var = false) {
+        if (false === $var) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            return empty($_POST);
+        } else {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            return empty($_POST[$var]);
+        }
+    }
+
+    public static function is_POST($var, $match = false) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        if (empty($_POST)) {
+            return false;
+        }
+        
+        if (false == $match) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            return (isset($_POST[$var]));
+        
+        } elseif (is_array($match)) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            return (isset($_POST[$var]) && in_array($_POST[$var], $match));
+        } else {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            return (isset($_POST[$var]) && ($_POST[$var] == $match));
+        }
+    }
+
+    public static function POST_key($var) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        if (empty($_POST) || empty($_POST[$var])) {
+            return '';
+        }
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        return (is_array($_POST[$var])) ? array_map('sanitize_key', $_POST[$var]) : sanitize_key($_POST[$var]);
+    }
+
+    public static function POST_int($var) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        return (!empty($_POST) && !empty($_POST[$var])) ? intval($_POST[$var]) : 0;
+    }
+
+    public static function POST_url($var) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        return (!empty($_POST) && !empty($_POST[$var])) ? sanitize_url($_POST[$var]) : '';
+    }
+
+    public static function empty_GET($var = false) {
+        if (false === $var) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            return empty($_GET);
+        } else {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            return empty($_GET[$var]);
+        }
+    }
+
+    public static function is_GET($var, $match = false) {
+        if (false === $match) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            return isset($_GET[$var]);
+
+        } elseif (is_array($match)) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            return (isset($_GET[$var]) && in_array($_GET[$var], $match));
+        } else {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            return (!empty($_GET[$var]) && ($_GET[$var] == $match));
+        }
+    }
+
+    public static function GET_key($var) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        if (empty($_GET[$var])) {
+            return '';
+        }
+
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        return (is_array($_GET[$var])) ? array_map('sanitize_key', $_GET[$var]) : sanitize_key($_GET[$var]);
+    }
+
+    public static function GET_int($var) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        return (!empty($_GET[$var])) ? intval($_GET[$var]) : 0;
+    }
+
+    public static function GET_url($var) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        return (!empty($_GET[$var])) ? sanitize_url($_GET[$var]) : '';
+    }
+
+    public static function SERVER_url($var) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        return (!empty($_SERVER[$var])) ? sanitize_url($_SERVER[$var]) : '';
     }
 
     public static function isAttachment()
@@ -239,7 +440,7 @@ class LibWP
             $ajax_post_types = apply_filters('pp_ajax_post_types', ['ai1ec_doing_ajax' => 'ai1ec_event']);
 
             foreach (array_keys($ajax_post_types) as $arg) {
-                if (!presspermit_empty_REQUEST($arg) || presspermit_is_REQUEST('action', $arg)) {
+                if (!self::empty_REQUEST($arg) || self::is_REQUEST('action', $arg)) {
                     return $ajax_post_types[$arg];
                 }
             }
@@ -268,19 +469,19 @@ class LibWP
                 }
             }
         } elseif (in_array($pagenow, ['post-new.php', 'edit.php'])) {
-            $object_type = presspermit_is_GET('post_type') ? presspermit_GET_key('post_type') : 'post';
+            $object_type = self::is_GET('post_type') ? self::GET_key('post_type') : 'post';
 
         } elseif (in_array($pagenow, ['edit-tags.php'])) {
-            $object_type = !presspermit_empty_REQUEST('taxonomy') ? presspermit_REQUEST_key('taxonomy') : 'category';
+            $object_type = !self::empty_REQUEST('taxonomy') ? self::REQUEST_key('taxonomy') : 'category';
 
-        } elseif (in_array($pagenow, ['admin-ajax.php']) && !presspermit_empty_REQUEST('taxonomy')) {
-            $object_type = presspermit_REQUEST_key('taxonomy');
+        } elseif (in_array($pagenow, ['admin-ajax.php']) && !self::empty_REQUEST('taxonomy')) {
+            $object_type = self::REQUEST_key('taxonomy');
 
-        } elseif ($_post_id = presspermit_POST_int('post_ID')) {
+        } elseif ($_post_id = self::POST_int('post_ID')) {
             if ($_post = get_post($_post_id)) {
                 $object_type = $_post->post_type;
             }
-        } elseif ($id = presspermit_GET_int('post')) {  // post.php
+        } elseif ($id = self::GET_int('post')) {  // post.php
             if ($_post = get_post($id)) {
                 $object_type = $_post->post_type;
             }
@@ -315,8 +516,12 @@ class LibWP
             if (!empty($wp_query)) {
                 if (!empty($wp_query->query_vars) && !empty($wp_query->query_vars['p'])) {
                     return (int) $wp_query->query_vars['p'];
+
                 } elseif (!empty($wp_query->query['post_type']) && !empty($wp_query->query['name'])) {
                     global $wpdb;
+
+                    // This direct query is executed only under unusual conditions when the Post ID is not already available
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                     return $wpdb->get_var(
                         $wpdb->prepare(
                             "SELECT ID FROM $wpdb->posts WHERE post_type = %s AND post_name = %s LIMIT 1",
@@ -326,17 +531,17 @@ class LibWP
                     );
                 }
             }
-        } elseif (presspermit_is_REQUEST('post')) {
-            return presspermit_REQUEST_int('post');
+        } elseif (self::is_REQUEST('post')) {
+            return self::REQUEST_int('post');
 
-        } elseif (presspermit_is_REQUEST('post_ID')) {
-            return presspermit_REQUEST_int('post_ID');
+        } elseif (self::is_REQUEST('post_ID')) {
+            return self::REQUEST_int('post_ID');
 
-        } elseif (presspermit_is_REQUEST('post_id')) {
-            return presspermit_REQUEST_int('post_id');
+        } elseif (self::is_REQUEST('post_id')) {
+            return self::REQUEST_int('post_id');
 
-        } elseif (defined('WOOCOMMERCE_VERSION') && !presspermit_empty_REQUEST('product_id')) {
-            return presspermit_REQUEST_int('product_id');
+        } elseif (defined('WOOCOMMERCE_VERSION') && !self::empty_REQUEST('product_id')) {
+            return self::REQUEST_int('product_id');
         }
     }
 
@@ -365,6 +570,8 @@ class LibWP
 
                 $buffer_all_terms = [];
 
+                // This result is cached to a static variable to ensure no more than one query per http request, for all taxonomies
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $results = $wpdb->get_results("SELECT taxonomy, term_id, term_taxonomy_id FROM $wpdb->term_taxonomy");
                 foreach ($results as $row) {
                     $buffer_all_terms[$row->taxonomy][] = $row;
@@ -410,6 +617,8 @@ class LibWP
 
                 $buffer_all_terms = [];
 
+                // This result is cached to a static variable to ensure no more than one query per http request, for all taxonomies
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $results = $wpdb->get_results("SELECT taxonomy, term_id, term_taxonomy_id FROM $wpdb->term_taxonomy");
                 foreach ($results as $row) {
                     $buffer_all_terms[$row->taxonomy][] = $row;
@@ -437,9 +646,35 @@ class LibWP
 
     public static function getDescendantIds($item_source, $item_id, $args = [])
     {
-        // previously, removed some items based on user_can_admin_object()
-        require_once(PRESSPERMIT_CLASSPATH_COMMON . '/AncestryQuery.php');
-        return \PressShack\AncestryQuery::queryDescendantIDs($item_source, $item_id, $args);
+        require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Ancestry.php');
+        
+        switch ($item_source) {
+            case 'post':
+                // Back compat for existing getDescendantIds() calls
+                if (isset($args['post_types'])) {
+                    $args['post_type'] = (array) $args['post_types'];
+                    unset($args['post_types']);
+                }
+                
+                if (!isset($args['post_type']) && empty($args['any_type_or_taxonomy'])) {
+                    $args['post_type'] = false;
+                }
+
+                return \PressShack\Ancestry::getPageDescendants($item_id, $args);
+                break;
+
+            case 'term':
+                // Back compat for existing getDescendantIds() calls
+                if (!isset($args['taxonomy']) && !empty($args['any_type_or_taxonomy'])) {
+                    $args['taxonomy'] = false;
+                }
+
+                return \PressShack\Ancestry::getTermDescendants($item_id, $args);
+                break;
+
+            default:
+                return [];
+        }
     }
 
     // written because WP is_plugin_active() requires plugin folder in arg
@@ -472,28 +707,9 @@ class LibWP
 
     public static function wpVer($wp_ver_requirement)
     {
-        static $cache_wp_ver;
+        global $wp_version;
 
-        if (empty($cache_wp_ver)) {
-            global $wp_version;
-            $cache_wp_ver = $wp_version;
-        }
-
-        if (!version_compare($cache_wp_ver, '0', '>')) {
-            // If global $wp_version has been wiped by WP Security Scan plugin, temporarily restore it by re-including version.php
-            if (file_exists(ABSPATH . WPINC . '/version.php')) {
-                include(ABSPATH . WPINC . '/version.php');
-                $return = version_compare($wp_version, $wp_ver_requirement, '>=');
-                $wp_version = $cache_wp_ver;  // restore previous wp_version setting, assuming it was cleared for security purposes
-                return $return;
-            } else {
-                // Must be running a future version of WP which doesn't use version.php
-                return true;
-            }
-        }
-
-        // normal case - global $wp_version has not been tampered with
-        return version_compare($cache_wp_ver, $wp_ver_requirement, '>=');
+        return version_compare($wp_version, $wp_ver_requirement, '>=');
     }
 
     public static function isMuPlugin($plugin_path = '')
@@ -519,7 +735,7 @@ class LibWP
 
     public static function isAjax($action)
     {
-        return defined('DOING_AJAX') && DOING_AJAX && $action && in_array(presspermit_REQUEST_var('action'), (array)$action);
+        return defined('DOING_AJAX') && DOING_AJAX && $action && in_array(self::REQUEST_key('action'), (array)$action);
     }
 
     public static function doingAdminMenus()

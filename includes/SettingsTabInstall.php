@@ -62,7 +62,7 @@ class SettingsTabInstall
 
     public function optionsPreUI()
     {
-        if (presspermit_is_REQUEST('presspermit_refresh_done') && !!presspermit_empty_POST()) : ?>
+        if (PWP::is_REQUEST('presspermit_refresh_done') && !!PWP::empty_POST()) : ?>
             <div id="message" class="updated">
                 <p>
                     <strong><?php esc_html_e('Version info was refreshed.', 'press-permit-core'); ?>&nbsp;</strong>

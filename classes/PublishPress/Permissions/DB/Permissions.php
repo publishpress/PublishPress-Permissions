@@ -23,7 +23,7 @@ class Permissions
                 $agent_roles = [];
                 $last_query_agent_ids = false;
             }
-            $query_key = serialize($query_agent_ids) . $agent_type;
+            $query_key = md5(wp_json_encode($query_agent_ids)) . $agent_type;
         } else {
             $agent_roles = [];
             $query_agent_ids = (array)$agent_id;
@@ -46,10 +46,12 @@ class Permissions
 
             $agent_id_csv = implode("','", array_map('intval', $query_agent_ids));
 
+            // Direct query of plugin table (IN clause sanitized above)
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $results = $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT assignment_id, role_name, agent_id FROM $wpdb->ppc_roles WHERE agent_type = %s"
-                    . " AND agent_id IN ('$agent_id_csv') ORDER BY role_name",
+                    . " AND agent_id IN ('$agent_id_csv') ORDER BY role_name",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                     $agent_type
                 )
@@ -95,8 +97,7 @@ class Permissions
             'query_agent_ids' => [],
             'ug_clause' => '',
             'return_raw_results' => false,
-            'extra_cols' => [],
-            'cols' => []
+            'cols' => '*'
         ];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
@@ -208,7 +209,7 @@ class Permissions
                     $type_csv = implode("','", array_map('sanitize_key', array_unique($for_types)));
 
                     $for_item_clauses[] = $wpdb->prepare(
-                        "e.for_item_source = %s AND e.for_item_type IN ('', '$type_csv')",
+                        "e.for_item_source = %s AND e.for_item_type IN ('', '$type_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                         $for_source_name
                     );
                 }
@@ -225,7 +226,12 @@ class Permissions
 
         if ($agent_type && !$ug_clause) {
             $agent_id_csv = implode("','", array_map('intval', (array)$agent_id));
-            $ug_clause = $wpdb->prepare(" AND e.agent_type = %s AND e.agent_id IN ('$agent_id_csv')", $agent_type);
+
+            // IN clause constructed and sanitized above
+            $ug_clause = $wpdb->prepare(
+                " AND e.agent_type = %s AND e.agent_id IN ('$agent_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                $agent_type
+            );
         }
 
         $operations_csv = implode("','", array_map('sanitize_key', $operations));
@@ -252,19 +258,24 @@ class Permissions
             $status_clause = "AND e.for_item_status IN ('" . implode("','", $stati) . "')";
         }
 
-        if (!$cols) {
-            $cols = "e.operation, e.for_item_source, e.for_item_type, e.mod_type, e.via_item_source, e.via_item_type, e.for_item_status, i.item_id, i.assign_for";
-        }
+        if ('eitem_ids' == $cols) {
+            $cols = "e.agent_type, e.agent_id, e.operation, e.mod_type, i.eitem_id, i.assign_for, e.for_item_type";
 
-        $extra_cols_clause = ($extra_cols) ? ', ' . implode(",", array_map('pp_permissions_sanitize_entry', $extra_cols)) : '';
+        } else {
+            $cols = "*";
+        }
 
         $id_clause = (false !== $item_id) ? $wpdb->prepare("AND i.item_id = %d", $item_id) : '';
 
-        $query = "SELECT $cols{$extra_cols_clause} FROM $wpdb->ppc_exceptions AS e"
-        . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
-        . " WHERE ( 1=1 AND e.operation IN ('$operations_csv') $assign_for_clause $inherited_from_clause $mod_clause $type_clause $status_clause $id_clause ) $ug_clause";
+        // phpcs Note: clauses constructed and sanitized above
 
-        $results = $wpdb->get_results($query);
+        // Direct query of plugin table (Once on each non-Administrator request after loading user)
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        $results = $wpdb->get_results(
+            "SELECT $cols FROM $wpdb->ppc_exceptions AS e"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
+            . " WHERE ( 1=1 AND e.operation IN ('$operations_csv') $assign_for_clause $inherited_from_clause $mod_clause $type_clause $status_clause $id_clause ) $ug_clause"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        );
 
         if ($return_raw_results) {
             return $results;
@@ -373,6 +384,7 @@ class Permissions
                 $post_blockage_priority = presspermit()->getOption('post_blockage_priority');
                 $post_blockage_clause = '';
 
+                // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                 foreach (['include' => 'IN', 'exclude' => 'NOT IN'] as $mod => $logic) {
                     if ($ids = $user->getExceptionPosts($required_operation, $mod, $exc_post_type)) {
                         if (!defined('PP_RESTRICTION_PRIORITY') && !empty($additional_ids['']) && !defined('PP_LEGACY_POST_BLOCKAGE')) {
@@ -425,7 +437,7 @@ class Permissions
 
             if (('edit' == $required_operation) 
             && ((!$type_obj || empty($type_obj->cap->edit_published_posts) || empty($user->allcaps[$type_obj->cap->edit_published_posts]))                                         // prevent Revise exceptions from allowing Authors to restore revisions
-                || ('revision.php' != $pagenow) && (!defined('DOING_AJAX') || ! DOING_AJAX || !presspermit_is_REQUEST('action', 'get-revision-diffs'))
+                || ('revision.php' != $pagenow) && (!defined('DOING_AJAX') || ! DOING_AJAX || !PWP::is_REQUEST('action', 'get-revision-diffs'))
                 )
             ) {
                 if (empty($args['has_cap_check'])) {
@@ -731,6 +743,9 @@ class Permissions
     private static function get_orphaned_exception_items()
     {
         global $wpdb;
+
+        // Direct query of plugin table
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         return $wpdb->get_col(
             "SELECT eitem_id FROM $wpdb->ppc_exception_items WHERE inherited_from > 0"
             . " AND inherited_from NOT IN ( SELECT eitem_id FROM $wpdb->ppc_exception_items WHERE assign_for = 'children' )"
@@ -743,7 +758,12 @@ class Permissions
 
         if ($eitem_ids = self::get_orphaned_exception_items()) {
             $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
-            $wpdb->query("UPDATE $wpdb->ppc_exception_items SET inherited_from = 0 WHERE eitem_id IN ('$eitem_id_csv')");
+
+            // Direct query of plugin table (IN clause constructed and sanitized above)
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            $wpdb->query(
+                "UPDATE $wpdb->ppc_exception_items SET inherited_from = 0 WHERE eitem_id IN ('$eitem_id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            );
 
             // keep a log in case questions arise
             if (!$arr = get_option('ppc_exposed_eitem_orphans'))

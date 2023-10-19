@@ -21,7 +21,7 @@ function presspermitLoadAgentsJS(id_sfx, agent_type, context, agent_id, selectio
             });
 
             $("#agent_results_" + id_sfx).DynamicListbox({
-                ajax_url: PPAgentSelect.adminurl,
+                ajaxurl: PPAgentSelect.ajaxurl,
                 agent_type: agent_type,
                 search_id: 'agent_search_text_' + id_sfx,
                 results_id: 'agent_results_' + id_sfx,

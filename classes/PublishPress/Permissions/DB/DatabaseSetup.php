@@ -13,6 +13,9 @@ class DatabaseSetup
     {
         global $wpdb;
 
+        // Direct database query to create or modify plugin tables. Infrequent plugin install operation.
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
         $charset_collate = '';
 
         if (!empty($wpdb->charset))
@@ -88,8 +91,6 @@ class DatabaseSetup
             via_item_type: post type or taxonomy which triggers the exception (Needed for when post exceptions are based on term assignment. Nullstring means redundant / not applicable)
             assigner_id: ID of user who stored the exception
         */
-
-        // KEY pp_exc (agent_id,agent_type,operation,via_item_source,via_item_type,for_item_source,for_item_type),
 
         $tabledefs .= "CREATE TABLE $wpdb->ppc_exceptions (
          exception_id bigint(20) unsigned NOT NULL auto_increment,
@@ -174,8 +175,9 @@ class DatabaseSetup
                 // If a table query exists for the database table...
                 if (array_key_exists(strtolower($table), $cqueries)) {
                     // Clear the field and index arrays
-                    unset($cfields);
-                    unset($indices);
+                    $cfields = [];
+                    $indices = [];
+
                     // Get all of the field names in the query from between the parens
                     preg_match("|\((.*)\)|ms", $cqueries[strtolower($table)], $match2);
                     $qryline = trim($match2[1]);
@@ -210,8 +212,11 @@ class DatabaseSetup
                         }
                     }
 
-                    // Fetch the table column structure from the database
-                    $tablefields = $wpdb->get_results("DESCRIBE {$table};");
+                    $table = sanitize_key($table);
+
+                    // Fetch the table column structure from the database (NOTE: table variable is not to be quoted, so sanitized above)
+                    
+                    $tablefields = $wpdb->get_results("DESCRIBE {$table};");  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                     // For every field in the table
                     foreach ($tablefields as $tablefield) {
@@ -252,13 +257,16 @@ class DatabaseSetup
                         $for_update[$table . '.' . $fieldname] = 'Added column ' . $table . '.' . $fieldname;
                     }
 
+                    $table = sanitize_key($table);
+
                     // Index stuff goes here
-                    // Fetch the table index structure from the database
-                    $tableindices = $wpdb->get_results("SHOW INDEX FROM {$table};");
+                    // Fetch the table index structure from the database  (NOTE: table variable is not to be quoted, so sanitized above)
+                    
+                    $tableindices = $wpdb->get_results("SHOW INDEX FROM {$table};"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                     if ($tableindices) {
                         // Clear the index array
-                        unset($index_ary);
+                        $index_ary = [];
 
                         // For every index in the table
                         foreach ($tableindices as $tableindex) {
@@ -318,6 +326,8 @@ class DatabaseSetup
         $allqueries = array_merge($cqueries, $iqueries);
         if ($execute) {
             foreach ($allqueries as $query) {
+                // Execute the queries that were built and sanitized above. Longstanding code from WP core dbDelta().
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
                 $wpdb->query($query);
             }
         }

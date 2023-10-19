@@ -5,7 +5,7 @@ class RoleUsage
 {
     public static function handleRequest() 
     {
-        $action = presspermit_REQUEST_key('action');
+        $action = PWP::REQUEST_key('action');
 
         $url = apply_filters('presspermit_role_usage_base_url', 'admin.php');
         $redirect = $err = false;
@@ -17,13 +17,13 @@ class RoleUsage
 
         switch ($action) {
             case 'update' :
-                if (!$role = presspermit_REQUEST_key('role')) {
+                if (!$role = PWP::REQUEST_key('role')) {
                     break;
                 }
 
                 $pp = presspermit();
 
-                $role_name = pp_permissions_sanitize_entry($role);
+                $role_name = PWP::sanitizeEntry($role);
                 check_admin_referer('pp-update-role-usage_' . $role_name);
 
                 // overall pattern role enable
@@ -33,7 +33,7 @@ class RoleUsage
                     $role_usage = array_merge($role_usage, array_fill_keys(array_keys($pp->role_defs->direct_roles), 'direct'));
                 }
 
-                $role_usage[$role_name] = presspermit_POST_key('pp_role_usage');
+                $role_usage[$role_name] = PWP::POST_key('pp_role_usage');
 
                 $pp->updateOption('role_usage', $role_usage);
 
@@ -48,7 +48,7 @@ class RoleUsage
         } // end switch
 
         if ($redirect) {
-            if ($wp_http_referer = presspermit_REQUEST_var('wp_http_referer'))  {
+            if ($wp_http_referer = PWP::REQUEST_url('wp_http_referer'))  {
                 $redirect = add_query_arg('wp_http_referer', urlencode(esc_url_raw($wp_http_referer)), $redirect);
             }
 

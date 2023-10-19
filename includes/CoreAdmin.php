@@ -131,7 +131,7 @@ class CoreAdmin {
 
     function actProModulesUI($active_module_plugin_slugs, $inactive) {
         $pro_modules = array_diff(
-            presspermit()->getAvailableModules(['suppress_filters' => true]), 
+            presspermit()->getAvailableModules(['force_all' => true]), 
             $active_module_plugin_slugs, 
             array_keys($inactive)
         );
