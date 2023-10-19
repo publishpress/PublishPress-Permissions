@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 5.5
 Tested up to: 6.2
 Requires PHP: 7.2.5
-Stable tag: 3.11.1
+Stable tag: 3.11.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -240,7 +240,10 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.11.3-beta =
+= 3.12.0 =
+* Code : Improved phpcs scan results
+
+= 3.11.3 - 17 Oct 2023 =
 * Fixed : Some Permissions filtering was not applied on sites with a custom wp-admin URL
 * Fixed : Type-specific Supplemental Roles also granted most generic capabliities in Pattern Role. Introduce new Permissions > Advanced > Role Integration setting to restore previous behavior if needed.
 * Fixed : On page edit, if the Page Parent is not editable by the logged in user, it is hidden from the Page Parent selector. This occurred only with WP >= 6.3 and with a non-standard advanced Permissions configuration.
