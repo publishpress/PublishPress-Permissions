@@ -438,8 +438,9 @@ class GroupsListTable extends GroupsListTableBase
         ?>
         <p class="search-box">
             <label class="screen-reader-text" for="<?php echo esc_attr($input_id); ?>"><?php echo esc_html($text); ?>:</label>
-            <input type="search" id="<?php echo esc_attr($input_id); ?>" name="s" value="
-                            <?php _admin_search_query(); ?>" class="<?php echo esc_attr($class);?>" <?php if ($tabindex) echo ' tabindex="' . (int) $tabindex . '"'; ?> />
+            
+            <input type="search" id="<?php echo esc_attr($input_id); ?>" name="s" value="<?php _admin_search_query(); ?>" 
+            class="<?php echo esc_attr($class);?>" <?php if ($tabindex) echo ' tabindex="' . (int) $tabindex . '"'; ?> />
 
             <?php
             $attribs = ($tabindex) ? ['id' => 'search-submit', 'tabindex' => $tabindex + 1] : ['id' => 'search-submit'];
