@@ -193,7 +193,7 @@ class LibWP
     }
 
     // support array matching for post type
-    public static function getPostStatuses($args, $return = 'names', $operator = 'and', $params = [])
+    public static function getPostStatuses($args, $return = 'names', $operator = 'and', $function_args = [])
     {
         if (isset($args['post_type'])) {
             $post_type = $args['post_type'];
@@ -210,7 +210,7 @@ class LibWP
             $statuses = get_post_stati($args, $return, $operator);
         }
 
-        return apply_filters('presspermit_get_post_statuses', $statuses, $args, $return, $operator, $params);
+        return apply_filters('presspermit_get_post_statuses', $statuses, $args, $return, $operator, $function_args);
     }
 
     public static function findPostType($post_id = 0, $return_default = true)
@@ -563,5 +563,16 @@ class LibWP
         }
 
         return $clause;
+    }
+
+    public static function admin_rel_url($admin_page = '') {
+        $admin_url = admin_url($admin_page);
+        $admin_arr = wp_parse_url($admin_url);
+    
+        $admin_rel_path = (!empty($admin_arr['path']))
+        ? $admin_arr['path']
+        : $admin_url;
+
+        return $admin_rel_path;
     }
 }

@@ -26,6 +26,10 @@ class PageFilters
         //
         global $current_user, $pagenow;
 
+        if (!empty($args['no_pp_filter'])) {
+            return $results;
+        }
+
         $results = (array)$results;
 
         // buffer titles in case they were filtered previously
@@ -74,7 +78,7 @@ class PageFilters
 
         $enabled_post_types = presspermit()->getEnabledPostTypes();
 
-        if (defined('PP_UNFILTERED_FRONT')) {
+        if (defined('PP_UNFILTERED_FRONT') && PWP::isFront()) {
             if (defined('PP_UNFILTERED_FRONT_TYPES')) {
                 $unfiltered_types = str_replace(' ', '', PP_UNFILTERED_FRONT_TYPES);
                 $unfiltered_types = explode(',', constant($unfiltered_types));

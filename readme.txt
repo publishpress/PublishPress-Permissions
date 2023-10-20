@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 5.5
 Tested up to: 6.2
 Requires PHP: 7.2.5
-Stable tag: 3.10.0
+Stable tag: 3.11.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,23 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 3.11.3 - 17 Oct 2023 =
+* Fixed : Some Permissions filtering was not applied on sites with a custom wp-admin URL
+* Fixed : Type-specific Supplemental Roles also granted most generic capabliities in Pattern Role. Introduce new Permissions > Advanced > Role Integration setting to restore previous behavior if needed.
+* Fixed : On page edit, if the Page Parent is not editable by the logged in user, it is hidden from the Page Parent selector. This occurred only with WP >= 6.3 and with a non-standard advanced Permissions configuration.
+* Fixed : PHP Warning in term filtering (Attempt to read property "term_taxonomy_id" on string) under some configurations
+* Fixed : Filtering of default category / term by other plugin was overridden
+* Fixed : Edit User Permissions - PHP Warning "compact(): Argument must be string..."
+* Fixed : Fatal error "Call to a member function init() on null" under some configurations
+* Compat : Polylang + WP 6.3 - Language filter was no longer applied to Page Parent dropdown
+
+= 3.11.1 - 30 Aug 2023 =
+* Fixed : Rest API access error on some sites (potentially preventing login)
+* Fixed : Gallery block in Gutenberg editor: error loading Image Size dropdown options
+* Fixed : Caption for Navigation Menus (for Navigation block) did not distinguish them from legacy Nav Menus
+* Fixed : PHP 8.1 - Warning for dynamic property creation in post editor
+* Compat : Peepso - Non-administrators couldn't submit front end posts on PHP >= 8.1
 
 = 3.10.0 - 19 Jun 2023 =
 * Compat : WooCommerce - Private Products were not listed in Shop, even if Read Permissions are assigned

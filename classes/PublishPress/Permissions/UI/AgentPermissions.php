@@ -321,7 +321,7 @@ class AgentPermissions
 
                                 foreach (array_keys($user->groups) as $agent_type) {
                                     foreach (array_keys($user->groups[$agent_type]) as $_agent_id) {
-                                        $args = compact($post_types, $taxonomies);
+                                        $args = compact('post_types', 'taxonomies');
                                         $args['query_agent_ids'] = array_keys($user->groups[$agent_type]);
                                         $roles = array_merge($roles, $pp->getRoles($_agent_id, $agent_type, $args));
                                     }

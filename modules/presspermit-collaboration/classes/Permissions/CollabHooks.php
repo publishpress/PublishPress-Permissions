@@ -289,7 +289,7 @@ class CollabHooks
 
     function actPreventTrashSuffixing($wp_query)
     {
-        if (!empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'wp-admin/nav-menus.php') 
+        if (!empty($_SERVER['REQUEST_URI']) && false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), PWP::admin_rel_url('nav-menus.php')) 
         && presspermit_is_POST('action', 'update')
         ) {
             $bt = debug_backtrace();
@@ -466,7 +466,7 @@ class CollabHooks
         if (isset($options['presspermit_enabled_taxonomies']))
             $options['presspermit_enabled_taxonomies'] = array_merge(
                 maybe_unserialize($options['presspermit_enabled_taxonomies']), 
-                ['nav_menu' => '1']
+                []
             );
 
         if (!empty($options['presspermit_default_privacy'])) {

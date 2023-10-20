@@ -129,6 +129,10 @@ class SettingsTabCore
                         $_args = (defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) ? [] : ['public' => true];
                         $types = get_taxonomies($_args, 'object');
 
+                        if (taxonomy_exists('nav_menu')) {
+                            $types['nav_menu'] = get_taxonomy('nav_menu'); 
+                        }
+
                         if ($omit_types = $pp->getUnfilteredTaxonomies()) // avoid confusion with PublishPress administrative taxonomy
                         {
                             if (!defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) {
@@ -136,7 +140,10 @@ class SettingsTabCore
 	                        }
                         }
 
-                        $hidden_types = apply_filters('presspermit_hidden_taxonomies', []);
+                        $hidden_types = apply_filters('presspermit_hidden_taxonomies', array_fill_keys(['nav_menu', 'post_status_core_wp_pp', 'pseudo_status_pp', 'post_visibility_pp'], true));
+
+                        // Legacy Nav Menu filtering is currently locked on by a filter in the Collaborative Editing module, so reflect that in option storage
+                        $locked_types = apply_filters('presspermit_locked_taxonomies', defined('PRESSPERMIT_COLLAB_VERSION') ? ['nav_menu' => true] : []);
 
                         if (defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) {
                             $hidden_types = [];
@@ -157,7 +164,7 @@ class SettingsTabCore
 
                         $hidden_types = apply_filters('presspermit_hidden_post_types', []);
 
-                        $locked_types = apply_filters('presspermit_locked_post_types', []);
+                        $locked_types = apply_filters('presspermit_locked_post_types', ['nav_menu' => 'nav_menu']);
 
                         $types = $pp->admin()->orderTypes($types);
                     }
@@ -165,7 +172,9 @@ class SettingsTabCore
                     $ui->all_otype_options[] = $option_name;
 
                     if (isset($pp->default_options[$option_name])) {
-                        if (!$enabled = apply_filters('presspermit_enabled_post_types', $ui->getOption($option_name))) {
+                        $filter_name = ('term' == $scope) ? 'presspermit_enabled_taxonomies_by_key' : 'presspermit_enabled_post_types';
+                    	
+                        if (!$enabled = apply_filters($filter_name, $ui->getOption($option_name))) {
                             $enabled = [];
                         }
 
@@ -178,9 +187,6 @@ class SettingsTabCore
                             $name = $option_name . "[$key]";
                             ?>
 
-                            <?php if ('nav_menu' == $key) : ?>
-                                <input name="<?php echo esc_attr($name); ?>" type="hidden" id="<?php echo esc_attr($id); ?>" value="1"/>
-                            <?php else : ?>
                             <?php if (isset($hidden_types[$key])) : ?>
                                 <input name="<?php echo esc_attr($name); ?>" type="hidden" value="<?php echo esc_attr($hidden_types[$key]); ?>"/>
                             <?php else : 
@@ -195,6 +201,18 @@ class SettingsTabCore
                                     <?php
                                     if (isset($obj->labels_pp)) {
                                         echo esc_html($obj->labels_pp->name);
+                                    } elseif ('nav_menu' == $key) {    // @todo: use labels_pp property?
+                                        if (in_array(get_locale(), ['en_EN', 'en_US'])) {
+                                           _e('Nav Menus (Legacy)', 'press-permit-core');
+                                        } else {
+                                            echo $obj->labels->singular_name .= ' (' . __('Legacy', 'press-permit-core') . ')';
+                                        }
+                                    } elseif ('wp_navigation' == $key) {    // @todo: use labels_pp property?
+                                        if (in_array(get_locale(), ['en_EN', 'en_US'])) {
+                                           _e('Nav Menus (Block)', 'press-permit-core');
+                                        } else {
+                                            echo $obj->labels->singular_name .= ' (' . __('Block', 'press-permit-core') . ')';
+                                        }
                                     } elseif (isset($obj->labels->name)) {
                                         echo esc_html($obj->labels->name);
                                     } else {
@@ -210,9 +228,11 @@ class SettingsTabCore
                                     }
 
                                     echo '</div>';
-                                endif;
                             endif; // displaying checkbox UI
 
+                            if ('nav_menu' == $key) : ?>
+                                <!-- <input name="<?php echo esc_attr($name); ?>" type="hidden" id="<?php echo esc_attr($id); ?>" value="1"/> -->
+                            <?php endif;
                         } // end foreach src_otype
                     } // endif default option isset
 

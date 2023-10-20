@@ -334,6 +334,10 @@ label.pp_faded {
     font-style: italic;
 }
 
+#pp_current_exceptions table td.pp_item_role_caption {
+    padding-top: 5px;
+}
+
 .pp_exceptions_notes {
   margin: 0 0 20px;
   padding: 20px;
@@ -410,6 +414,8 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
 #pp-permissions-wrapper table tr td {
   text-align: left;
   vertical-align: top;
+  user-select: none;
+  -moz-user-select: none;
 }
 #pp-permissions-wrapper .pp-edit-msg {
   padding: .7em 0.9em;

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Plugins - PublishPress Permissions: Control User Access for Posts, Pages, Categories, Tags - Stable (latest release)\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2022-10-19 09:45+0200\n"
+"PO-Revision-Date: 2023-08-30 13:09+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: it\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.3\n"
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:63
 msgid "List other user's uneditable posts"
@@ -588,7 +588,7 @@ msgstr "\"Abilita\": Espandere l'accesso per consentire gli elementi specificati
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:396
 msgid "\"Limit to\" : Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles."
-msgstr "\"Limita a\": limita l'accesso limitando le capacità del ruolo da applicare solo agli elementi specificati. Gli utenti hanno ancora bisogno di competenze nel loro ruolo principale o ruoli supplementari."
+msgstr "\"Limita a\": limita l'accesso limitando le capacità del ruolo da applicare solo agli elementi specificati. Gli utenti hanno ancora bisogno di capacità nel loro ruolo principale o ruoli supplementari."
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:395
 msgid "\"Block\" : Restrict access by blocking specified items unless an \"Enabled\" exception is also stored."
@@ -930,11 +930,11 @@ msgstr "Non hai le autorizzazioni per selezionare quel genitore"
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageHelper.php:42
 msgid "If one of the default roles is deleted from the WP database, it will remain available as a pattern role with default WP capabilities (but can be disabled here)."
-msgstr "Quando uno dei ruoli predefiniti viene eliminato dal database WP, rimarrà comunque disponibile come ruolo modello con competenze WP predefinite (ma può essere disabilitato qui)."
+msgstr "Quando uno dei ruoli predefiniti viene eliminato dal database WP, rimarrà comunque disponibile come ruolo modello con capacità WP predefinite (ma può essere disabilitato qui)."
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageHelper.php:39
 msgid "Capabilities formally defined for other post types (i.e. 'edit_others_pages', 'edit_doohickies') apply to primary role assignment and supplemental direct assignment, but not pattern role assignment."
-msgstr "Le competenze definite formalmente per altri tipi di articoli (ad esempio 'edit_others_pages', 'edit_doohickies') si applicano all'assegnazione del ruolo principale e all'assegnazione diretta supplementare, ma non all'assegnazione del ruolo del modello."
+msgstr "Le capacità definite formalmente per altri tipi di articoli (ad esempio 'edit_others_pages', 'edit_doohickies') si applicano all'assegnazione del ruolo principale e all'assegnazione diretta supplementare, ma non all'assegnazione del ruolo del modello."
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageHelper.php:36
 msgid "The 'posts' capabilities in a WP role determine its function as a Pattern Role for supplemental assignment to Permission Groups. When you assign the 'Author' pattern role for Pages, edit_posts and edit_published_posts become edit_pages and edit_published_pages."
@@ -1225,7 +1225,7 @@ msgstr "Note relative ai ruoli modello"
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageEdit.php:161
 msgid "All capabilities defined for this WordPress role will be applied in supplemental assignments:"
-msgstr "Tutte le competenze definite per questo ruolo WordPress verranno applicate in assegnazioni supplementari:"
+msgstr "Tutte le capacità definite per questo ruolo WordPress verranno applicate in assegnazioni supplementari:"
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageEdit.php:158
 msgid "Role Capabilities"
@@ -1281,11 +1281,11 @@ msgstr "Tutte le impostazioni dell'uso di ruolo verranno ripristinate ai VALORI 
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsage.php:78
 msgid "With Direct Assignment, capabilities are applied without modification (leaving you responsible to add custom type caps to the WP Role Definitions)."
-msgstr "Con l'assegnazione diretta, le competenze vengono applicate senza modifiche (lasciando all'utente la responsabilità di aggiungere limiti di tipo personalizzati alle definizioni dei ruoli WP)."
+msgstr "Con l'assegnazione diretta, le capacità vengono applicate senza modifiche (lasciando all'utente la responsabilità di aggiungere limiti di tipo personalizzati alle definizioni dei ruoli WP)."
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsage.php:74
 msgid "Pattern Roles convert 'post' capabilities to the corresponding type-specific capability.  In a normal WP installation, this is the easiest solution."
-msgstr "I ruoli modello convertono le competenze di \"pubblicazione\" nel corrispondente tipo di competenza specifica. In una normale installazione di WP, questa è la soluzione più semplice."
+msgstr "I ruoli modello convertono le capacità di \"pubblicazione\" nel corrispondente tipo di competenza specifica. In una normale installazione di WP, questa è la soluzione più semplice."
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsage.php:71
 msgid "These <strong>optional</strong> settings customize how PublishPress Permissions applies <strong>supplemental roles</strong>. Your existing WP Role Definitions can be applied in two different ways:"
@@ -1350,7 +1350,7 @@ msgstr "Elimina le query di filtro aggiuntive sull'aggiornamento del menu di nav
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:248
 msgid "Don't require any additional capabilities for management of Nav Menu settings (normally require 'manage_menu_settings', 'edit_others_pages' or 'publish_pages') "
-msgstr "Non richiedono competenze aggiuntive per la gestione delle impostazioni del menu di navigazione (normalmente richiedono 'manage_menu_settings', 'edit_others_pages' oppure 'publish_pages') "
+msgstr "Non richiedono capacità aggiuntive per la gestione delle impostazioni del menu di navigazione (normalmente richiedono 'manage_menu_settings', 'edit_others_pages' oppure 'publish_pages') "
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:245
 msgid "For non-Administrators, new Nav Menu items default to being a child of first editable item "
@@ -1501,7 +1501,7 @@ msgstr "Per la maggior parte delle installazioni, lasciarlo disabilitato. Vedere
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:47
 msgid "For most installations, leave this disabled. If enabled, corresponding edit and delete capabilities must be added to existing roles."
-msgstr "Per la maggior parte delle installazioni, lasciarlo disabilitato. Se abilitate, le corrispondenti competenze di modifica ed eliminazione devono essere aggiunte ai ruoli esistenti."
+msgstr "Per la maggior parte delle installazioni, lasciarlo disabilitato. Se abilitate, le corrispondenti capacità di modifica ed eliminazione devono essere aggiunte ai ruoli esistenti."
 
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:48
 msgid "Enforce distinct edit, delete capability requirements for Media"
@@ -1525,7 +1525,7 @@ msgstr "Modifica gruppo di autorizzazioni (ruolo WordPress)"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:147
 msgid "Edit role capabilities directly"
-msgstr "Modifica direttamente le competenze di ruolo"
+msgstr "Modifica direttamente le capacità di ruolo"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:146
 msgid "Edit Permission Group (%sWordPress Role%s)"
@@ -1828,7 +1828,7 @@ msgstr "Nell'elenco utenti, i gruppi di autorizzazioni nella colonna personalizz
 
 #: classes/PublishPress/Permissions/Constants.php:65
 msgid "Leave Media Library with normal access criteria based on user's role capabilities "
-msgstr "Lascia la libreria media con i normali criteri di accesso basati sulle competenze del ruolo dell'utente "
+msgstr "Lascia la libreria media con i normali criteri di accesso basati sulle capacità del ruolo dell'utente "
 
 #: classes/PublishPress/Permissions/Constants.php:59
 msgid "Never modify the parent value in the get_terms() result set, even if some terms have been suppressed"
@@ -2338,7 +2338,7 @@ msgstr "%1$s&nbsp;%2$s&nbsp;%3$s"
 #: classes/PublishPress/Permissions/PermissionsAdmin.php:136
 #: classes/PublishPress/Permissions/PermissionsAdmin.php:166
 msgid "(using default capabilities due to invalid %s definition)"
-msgstr "(usando le competenze predefinite a causa della definizione %s non valida)"
+msgstr "(usando le capacità predefinite a causa della definizione %s non valida)"
 
 #: classes/PublishPress/Permissions/UI/GroupNew.php:121
 msgid "Create Group"
@@ -2634,7 +2634,7 @@ msgstr "Imposta i permessi di lettura per articoli specifici nella schermata mod
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:280
 msgid "Assign Supplemental Roles or Specific Permissions. Other capabilities may also be required."
-msgstr "Assegna ruoli supplementari e autorizzazioni specifiche. Altre competenze possono essere necessarie."
+msgstr "Assegna ruoli supplementari e autorizzazioni specifiche. Altre capacità possono essere necessarie."
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:279
 msgid "If group editing is allowed, can also modify group membership"
@@ -2650,7 +2650,7 @@ msgstr "Può creare gruppi di autorizzazioni"
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:275
 msgid "PublishPress Permissions implicitly grants capabilities for all post types and statuses, but does not apply Specific Permissions"
-msgstr "PublishPress Permissions concede implicitamente competenze per tutti i tipi di articoli e gli stati, ma non applica autorizzazioni specifiche"
+msgstr "PublishPress Permissions concede implicitamente capacità per tutti i tipi di articoli e gli stati, ma non applica autorizzazioni specifiche"
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:274
 msgid "PublishPress Permissions does not apply any Supplemental Roles or Specific Permissions to limit or expand viewing or editing access"
@@ -2670,7 +2670,7 @@ msgstr "Nome competenza"
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:100
 msgid "Display descriptive captions for additional functionality provided by missing or deactivated modules (Permissions Pro package)."
-msgstr "Visualizza didascalie descrittive per competenze aggiuntive fornite da moduli mancanti o disattivati (pacchetto Permissions Pro)."
+msgstr "Visualizza didascalie descrittive per funzionalità aggiuntive fornite da moduli mancanti o disattivati (pacchetto Permissions Pro)."
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:97
 msgid "Display additional descriptions in role assignment and options UI."
@@ -2738,7 +2738,7 @@ msgstr "Integrazione ruolo"
 
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:208
 msgid "%s capabilities"
-msgstr "%s competenze"
+msgstr "%s capacità"
 
 #: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:40
 msgid "Permissions Admin"

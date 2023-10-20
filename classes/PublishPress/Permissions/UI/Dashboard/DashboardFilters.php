@@ -210,7 +210,10 @@ class DashboardFilters
 
     public function actBuildMenu()
     {
-        if (!empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'wp-admin/network/')) {
+        $request_uri = esc_url_raw(presspermit_SERVER_var('REQUEST_URI'));
+
+        if ($request_uri && false !== strpos($request_uri, trailingslashit(PWP::admin_rel_url('')) . 'network/')
+        ) {
             return;
         }
 
@@ -380,13 +383,14 @@ class DashboardFilters
         global $pagenow;
 
         $site_url = wp_parse_url(get_option('siteurl'));
-        if (isset($site_url['path']) && !empty($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] == $site_url['path'] . '/wp-admin/') {
+
+        $request_uri = esc_url_raw(presspermit_SERVER_var('REQUEST_URI'));
+
+        if (isset($site_url['path']) && $request_uri && (untrailingslashit($request_uri) == untrailingslashit(admin_url('')))) {
             return;
         }
 
-        if (('index.php' == $pagenow) && !empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), '.php')
-            && !strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'index.php')
-        ) {
+        if (('index.php' == $pagenow) && $request_uri && strpos($request_uri, '.php') && !strpos($request_uri, 'index.php')) {
             $pagenow = '';
         }
     }

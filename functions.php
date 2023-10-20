@@ -182,7 +182,15 @@ function presspermitPluginPage()
 }
 
 function presspermit_is_preview() {
-    if (!$is_preview = is_preview()) {
+    global $wp_query;
+
+	if (isset($wp_query)) {
+        $is_preview = is_preview();
+    } else {
+        $is_preview = !empty($_REQUEST['preview']);
+    }
+
+    if (!$is_preview) {
         if (defined('ELEMENTOR_VERSION')) {
            $is_preview = !presspermit_empty_REQUEST('elementor-preview');
         } elseif (defined('ET_CORE')) {
