@@ -5,6 +5,8 @@ class TermEditWorkarounds
 {
     public static function term_edit_attempt()
     {
+        // Nonce verification unnecessary because this needs to be checked regardless of how the term edit was triggered, and can only block the operation.
+
         // filter category parent selection for Category editing
         if (!$tag_id = PWP::POST_int('tag_ID')) {
             return;

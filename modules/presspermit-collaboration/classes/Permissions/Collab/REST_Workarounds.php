@@ -88,12 +88,12 @@ class REST_Workarounds
                     $_POST['post_type'] = $type_rest_base;
                     break;
 
-                // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
                 } elseif (!empty($_REQUEST[$rest_base])) { // legacy Gutenberg versions
                     
                     // No nonce verification because we need to deal with the term assignment attempt in any case
 
-                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
                     $selected_terms = array_intersect(array_map('intval', (array) $_REQUEST[$rest_base]), $user_terms);
                     
                     $taxonomy = $tx_obj->name;

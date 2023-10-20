@@ -57,7 +57,10 @@ class Groups
 
             case 'delete':
             case 'bulkdelete':
-                // phpcs Note: group IDs processing here is only to report number of groups that were updated
+                // phpcs Note: Nonce verification unnecessary because this is only generating a confirmation message,
+                // or reporting on an update operation already completed.
+                
+                // group IDs processing is only to report number of groups that were updated
 
                 // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
                 if (!empty($_REQUEST['groups'])) {

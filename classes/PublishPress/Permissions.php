@@ -126,6 +126,7 @@ class Permissions
     }
 
     public function checkInitInterrupt() {
+        // Image Source Control plugin compat
         if (defined('ISCVERSION') || defined('PRESSPERMIT_LIMIT_ASYNC_UPLOAD_FILTERING')) {
             if ( is_admin() && isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'async-upload.php') && !PWP::empty_POST('attachment_id') && PWP::is_POST('fetch', 3)) {
                 if ($att = get_post(PWP::POST_int('attachment_id'))) {

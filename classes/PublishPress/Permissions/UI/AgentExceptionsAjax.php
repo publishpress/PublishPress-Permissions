@@ -22,12 +22,9 @@ class AgentExceptionsAjax
             exit;
         }
 
-        // phpcs Note: nonce verification is not necessary here because this is just returning UI
-
         $agent_type = PWP::GET_key('pp_agent_type');
         $agent_id = PWP::GET_int('pp_agent_id');
 
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $for_type = isset($_GET['pp_for_type']) ? PWP::sanitizeEntry(sanitize_text_field($_GET['pp_for_type'])) : '';
         $operation = PWP::GET_key('pp_operation');
         $via_type = PWP::GET_key('pp_via_type');

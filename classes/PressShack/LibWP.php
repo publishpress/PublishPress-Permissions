@@ -120,7 +120,6 @@ class LibWP
         	}
         }
 
-		// phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.Security.NonceVerification.NoNonceVerification
         $conditions[] = (self::isWp5() || $pluginsState['gutenberg'])
 						&& ! $pluginsState['classic-editor']
 						&& ! $pluginsState['gutenberg-ramp']
@@ -204,35 +203,35 @@ class LibWP
 
     public static function empty_REQUEST($var = false) {
         if (false === $var) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
             return empty($_REQUEST);
         } else {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
             return empty($_REQUEST[$var]);
         }
     }
 
     public static function is_REQUEST($var, $match = false) {
         if (false === $match) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
             return isset($_REQUEST[$var]);
             
         } elseif (is_array($match)) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
             return (isset($_REQUEST[$var]) && in_array($_REQUEST[$var], $match));
         } else {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
             return (isset($_REQUEST[$var]) && ($_REQUEST[$var] == $match));
         }
     }
 
     public static function REQUEST_key($var) {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
         if (empty($_REQUEST[$var])) {
             return '';
         }
 
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
         return (is_array($_REQUEST[$var])) ? array_map('sanitize_key', $_REQUEST[$var]) : sanitize_key($_REQUEST[$var]);
     }
 
@@ -243,7 +242,7 @@ class LibWP
 
         $matched = false;
         
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
         $request_key = self::REQUEST_key($var);
 
         if (is_array($request_key)) {
