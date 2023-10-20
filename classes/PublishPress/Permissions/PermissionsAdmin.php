@@ -158,7 +158,7 @@ class PermissionsAdmin
                 } else {
                     if (!empty($args['echo'])) {
                         printf(
-                            esc_html__('%1$s&nbsp;%2$s&nbsp;%3$s', 'press-permit-core'),
+                            esc_html__('%1$s&nbsp;%2$s%3$s', 'press-permit-core'),
                             esc_html($type_caption),
                             esc_html($role_caption),
                             ''
@@ -177,10 +177,10 @@ class PermissionsAdmin
                     } else {
                         $role_name = trim(
                             sprintf(
-                                esc_html__('%1$s&nbsp;%2$s&nbsp;%3$s', 'press-permit-core'),
+                                esc_html__('%1$s&nbsp;%2$s%3$s', 'press-permit-core'),
                                 esc_html($type_caption),
                                 esc_html($role_caption),
-                                $warning // previously escaped in this function
+                                " $warning" // previously escaped in this function
                             )
                         );
                     }
