@@ -214,7 +214,11 @@ class PermissionsMeta
             $no_ext = !$pp->moduleActive('collaboration') && !$pp->moduleActive('status-control');
             $no_custom_stati = !$pp->moduleActive('status-control');
 
-            if (isset($arr_role[2]) && in_array($arr_role[2], $item_types, true)) {
+            if (isset($arr_role[2])) {
+                if (!in_array($arr_role[2], $item_types, true)) {
+                    continue;
+                }
+
                 // roles for these post statuses will not be applied if corresponding modules are inactive, so do not indicate in users/groups listing or profile
                 if ($no_ext && strpos($row->role_name, ':post_status:') && !strpos($row->role_name, ':post_status:private')) {
                     continue;
@@ -224,16 +228,18 @@ class PermissionsMeta
                 ) {
                     continue;
                 }
+            }
 
-                if ($role_title = $pp->admin()->getRoleTitle($row->role_name, ['slug_fallback' => false])) {
-                    $count[$row->agent_id]['roles'][$role_title] = $row->rolecount;
+            // Note: If a post type was not parsed out of the role_name, also support display of direct-assigned roles or spcially-defined roles (Nav Menu Manager (Legacy))
 
-                    if (!isset($count[$row->agent_id]['role_count'])) {
-                        $count[$row->agent_id]['role_count'] = 0;
-                    }
+            if ($role_title = $pp->admin()->getRoleTitle($row->role_name, ['slug_fallback' => false])) {
+                $count[$row->agent_id]['roles'][$role_title] = $row->rolecount;
 
-                    $count[$row->agent_id]['role_count'] += $row->rolecount;
+                if (!isset($count[$row->agent_id]['role_count'])) {
+                    $count[$row->agent_id]['role_count'] = 0;
                 }
+
+                $count[$row->agent_id]['role_count'] += $row->rolecount;
             }
         }
 
