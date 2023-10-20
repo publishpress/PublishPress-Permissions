@@ -11,7 +11,7 @@
     <arg name="parallel" value="20"/>
     <arg value="ps"/>
 
-    <file>./dist/publishpress-statuses</file>
+    <file>./dist/press-permit-core</file>
 
     <rule ref="PHPCompatibility"/>
 </ruleset>
