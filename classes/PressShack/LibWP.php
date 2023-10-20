@@ -268,8 +268,8 @@ class LibWP
     }
 
     public static function REQUEST_url($var) {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-        return (!empty($_REQUEST) && !empty($_REQUEST[$var])) ? sanitize_url($_REQUEST[$var]) : '';
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        return (!empty($_REQUEST) && !empty($_REQUEST[$var])) ? sanitize_url(sanitize_text_field($_REQUEST[$var])) : '';
     }
 
     public static function empty_POST($var = false) {
@@ -317,8 +317,8 @@ class LibWP
     }
 
     public static function POST_url($var) {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-        return (!empty($_POST) && !empty($_POST[$var])) ? sanitize_url($_POST[$var]) : '';
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        return (!empty($_POST) && !empty($_POST[$var])) ? sanitize_url(sanitize_text_field($_POST[$var])) : '';
     }
 
     public static function empty_GET($var = false) {
@@ -361,13 +361,13 @@ class LibWP
     }
 
     public static function GET_url($var) {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-        return (!empty($_GET[$var])) ? sanitize_url($_GET[$var]) : '';
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        return (!empty($_GET[$var])) ? sanitize_url(sanitize_text_field($_GET[$var])) : '';
     }
 
     public static function SERVER_url($var) {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-        return (!empty($_SERVER[$var])) ? sanitize_url($_SERVER[$var]) : '';
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        return (!empty($_SERVER[$var])) ? sanitize_url(sanitize_text_field($_SERVER[$var])) : '';
     }
 
     public static function isAttachment()
