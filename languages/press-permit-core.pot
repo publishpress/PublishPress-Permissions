@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the PublishPress Permissions plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: PublishPress Permissions 3.12.0-beta\n"
+"Project-Id-Version: PublishPress Permissions 3.12.0-rc\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-10-19T19:11:23+00:00\n"
+"POT-Creation-Date: 2023-10-20T20:34:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: press-permit-core\n"
@@ -150,13 +150,13 @@ msgid "Duplicate %1$s module activated (%2$s in folder %3$s)."
 msgstr ""
 
 #: classes/PublishPress/Permissions/Groups.php:54
-#: classes/PublishPress/Permissions/UI/Groups.php:196
+#: classes/PublishPress/Permissions/UI/Groups.php:199
 #: classes/PublishPress/Permissions/UI/GroupsListTable.php:330
 msgid "Custom Group"
 msgstr ""
 
 #: classes/PublishPress/Permissions/Groups.php:55
-#: classes/PublishPress/Permissions/UI/Groups.php:196
+#: classes/PublishPress/Permissions/UI/Groups.php:199
 msgid "Custom Groups"
 msgstr ""
 
@@ -180,52 +180,52 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/PermissionsAdmin.php:163
 #: classes/PublishPress/Permissions/PermissionsAdmin.php:182
-msgid "%1$s&nbsp;%2$s&nbsp;%3$s"
+msgid "%1$s&nbsp;%2$s%3$s"
 msgstr ""
 
 #: classes/PublishPress/Permissions/PluginStatus.php:12
 msgid "Your license key has expired. For updates to PublishPress Permissions Pro and priority support, %splease renew%s."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:67
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:94
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:135
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:197
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:239
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:64
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:91
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:132
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:194
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:236
 #: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:44
 #: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:66
 #: classes/PublishPress/Permissions/UI/Dashboard/ItemAjax.php:26
 msgid "(login timed out)"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:71
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:68
 msgid "Read"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:110
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:107
 msgid "Enable:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:115
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:112
 msgid "Block:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:118
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:115
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1409
 msgid "Limit to:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:145
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:142
 msgid "selected:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:157
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:154
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:198
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:133
 msgid "Nav Menus (Legacy)"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:159
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:156
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:872
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:200
 #: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:211
@@ -233,29 +233,29 @@ msgstr ""
 msgid "Legacy"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:163
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:176
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:182
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:160
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:173
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:179
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:976
 msgid "%s:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:210
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:207
 msgid "selected %s:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:217
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:214
 msgid "sub-%s:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:250
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:247
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:106
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:169
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1046
 msgid "(all)"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:263
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:260
 #: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:110
 msgid "%s Visibility"
 msgstr ""
@@ -1016,7 +1016,7 @@ msgid "Specific Permissions (from primary role or group membership)"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:186
-#: classes/PublishPress/Permissions/UI/Groups.php:160
+#: classes/PublishPress/Permissions/UI/Groups.php:163
 #: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:158
 msgid "Permission Groups"
 msgstr ""
@@ -1167,59 +1167,59 @@ msgstr ""
 msgid "Create Group"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:77
+#: classes/PublishPress/Permissions/UI/Groups.php:80
 msgid "You have specified this group for deletion:"
 msgid_plural "You have specified these groups for deletion:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:106
+#: classes/PublishPress/Permissions/UI/Groups.php:109
 msgid "There are no valid groups selected for deletion."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:125
+#: classes/PublishPress/Permissions/UI/Groups.php:128
 msgid "%s group deleted"
 msgid_plural "%s groups deleted"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:130
+#: classes/PublishPress/Permissions/UI/Groups.php:133
 msgid "New group created."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:185
+#: classes/PublishPress/Permissions/UI/Groups.php:188
 msgid "Permission Groups adjust user access with type-specific Roles and item-specific Permissions. To customize permissions for a single user instead, click their Role in the Users listing."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:194
+#: classes/PublishPress/Permissions/UI/Groups.php:197
 msgid "WordPress Role"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:194
+#: classes/PublishPress/Permissions/UI/Groups.php:197
 msgid "WordPress Roles"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:202
+#: classes/PublishPress/Permissions/UI/Groups.php:205
 msgid "%1$sGroup Type:%2$s %3$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:206
+#: classes/PublishPress/Permissions/UI/Groups.php:209
 msgid "All"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:230
+#: classes/PublishPress/Permissions/UI/Groups.php:233
 msgid "Search Results for &#8220;%s&#8221;"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:240
+#: classes/PublishPress/Permissions/UI/Groups.php:243
 msgid "Search Groups"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:257
+#: classes/PublishPress/Permissions/UI/Groups.php:260
 msgid "To assign roles or permissions to BuddyPress groups, activate the Compatibility Pack module"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:260
+#: classes/PublishPress/Permissions/UI/Groups.php:263
 msgid "To assign roles or permissions to BuddyPress groups, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module."
 msgstr ""
 
@@ -1932,7 +1932,7 @@ msgstr ""
 msgid "Permissions: Select this %1$s as Parent"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/TermEditWorkarounds.php:84
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/TermEditWorkarounds.php:86
 msgid "You do not have permission to select that Parent"
 msgstr ""
 
