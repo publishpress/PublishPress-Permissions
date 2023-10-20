@@ -55,9 +55,9 @@ class AdminWorkarounds
             $action = PWP::REQUEST_key('action');
 
             if ('add-menu-item' == $action) {
-                // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                check_admin_referer( 'add-menu_item', 'menu-settings-column-nonce' );
+
                 if (!empty($_REQUEST['menu-item'])) {
-                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
                     foreach (array_map('sanitize_key', $_REQUEST['menu-item']) as $menu_item) {  // normally just one element in array
                         $menu_item_type = (isset($menu_item['menu-item-type'])) ? $menu_item['menu-item-type'] : '';
                         $object_type = (isset($menu_item['menu-item-object'])) ? $menu_item['menu-item-object'] : '';
