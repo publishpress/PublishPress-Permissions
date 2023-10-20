@@ -198,7 +198,7 @@ class CapabilityFilters
     {
         // Workaround to deal with WP core's checking of publish cap prior to storing categories:
         // Store terms to DB in advance of any cap-checking query which may use those terms to qualify an operation.
-        if (('post' != $source_name) || PWP::empty_REQUEST('action') || !in_array(PWP::REQUEST_int('action'), ['editpost', 'autosave'])) {
+        if (('post' != $source_name) || PWP::empty_REQUEST('action') || !in_array(PWP::REQUEST_key('action'), ['editpost', 'autosave'])) {
             return;
         }
 
