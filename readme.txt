@@ -241,6 +241,9 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 == Changelog ==
 
 = 3.12.0 =
+* Perf : Eliminated scan of users table on plugin activation (impacting sites with large number of users)
+* Perf : Eliminated recursive query of subpages (impacting sites with complex page hierarchies)
+* Perf : Improved caching of post capability checks
 * Code : Improved phpcs scan results
 
 = 3.11.3 - 17 Oct 2023 =
