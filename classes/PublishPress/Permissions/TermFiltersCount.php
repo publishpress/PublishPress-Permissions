@@ -220,7 +220,7 @@ class TermFiltersCount
 
                     foreach (array_keys($terms) as $k) {
                         foreach (array_keys($all_terms) as $key) {
-                            if (is_object($all_terms[$key])) {
+                            if (is_object($all_terms[$key]) && is_object($terms[$k])) {
                             	if ($all_terms[$key]->term_taxonomy_id == $terms[$k]->term_taxonomy_id) {
                                 	$terms[$k]->count = $all_terms[$key]->count;
                                 	break;
