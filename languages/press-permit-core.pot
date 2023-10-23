@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the PublishPress Permissions plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: PublishPress Permissions 3.12.0-rc\n"
+"Project-Id-Version: PublishPress Permissions 3.12.0-rc2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-10-20T20:34:44+00:00\n"
+"POT-Creation-Date: 2023-10-23T18:59:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: press-permit-core\n"
@@ -1681,32 +1681,22 @@ msgstr ""
 msgid "PublishPress Revisions integration requires the Collaborative Publishing module. Please notify your Administrator."
 msgstr ""
 
-#: includes/CoreAdmin.php:61
-#: includes/CoreAdmin.php:62
-msgid "Workflow Statuses"
-msgstr ""
-
-#: includes/CoreAdmin.php:70
-#: includes/CoreAdmin.php:71
-msgid "Visibility Statuses"
-msgstr ""
-
-#: includes/CoreAdmin.php:79
-#: includes/CoreAdmin.php:80
+#: includes/CoreAdmin.php:84
+#: includes/CoreAdmin.php:85
 msgid "Sync Posts"
 msgstr ""
 
-#: includes/CoreAdmin.php:88
-#: includes/CoreAdmin.php:89
+#: includes/CoreAdmin.php:93
+#: includes/CoreAdmin.php:94
 msgid "Teaser"
 msgstr ""
 
-#: includes/CoreAdmin.php:109
-#: includes/CoreAdmin.php:110
+#: includes/CoreAdmin.php:114
+#: includes/CoreAdmin.php:115
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: includes/CoreAdmin.php:143
+#: includes/CoreAdmin.php:148
 msgid "Pro Modules:"
 msgstr ""
 
