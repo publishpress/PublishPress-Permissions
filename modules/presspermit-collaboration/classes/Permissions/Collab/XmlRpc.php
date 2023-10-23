@@ -8,7 +8,12 @@ class XmlRpc
             // phpcs:ignore WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsRemoteFile
             $raw_post_data = file_get_contents('php://input');
         } else {
+            // This is only used for PHP version < 7.0
+
+            // phpcs:ignore PHPCompatibility.Variables.RemovedPredefinedGlobalVariables.http_raw_post_dataDeprecatedRemoved
             global $HTTP_RAW_POST_DATA;
+
+            // phpcs:ignore PHPCompatibility.Variables.RemovedPredefinedGlobalVariables.http_raw_post_dataDeprecatedRemoved
             $raw_post_data = !empty($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : '';
         }
 
