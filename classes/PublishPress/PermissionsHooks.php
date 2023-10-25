@@ -227,49 +227,65 @@ class PermissionsHooks
         $pp = presspermit();
 
         // --- version check ---
-        $compare_version = PRESSPERMIT_VERSION;
-
-        $ver = get_option('presspermitpro_version');
-
-        if (!$ver || !defined('PRESSPERMIT_PRO_VERSION') ) {
-            	if ( ! $ver = get_option('presspermit_version') ) {
-                	$ver = get_option('pp_c_version');
-                }
-        } else {
-            $compare_version = PRESSPERMIT_PRO_VERSION;
+        if (!$ver = get_option('presspermit_version')) {
+            $ver = get_option('pp_c_version');
         }
 
-        if (!$ver || !is_array($ver) || empty($ver['db_version']) || version_compare(PRESSPERMIT_DB_VERSION, $ver['db_version'], '!=')) {
-            if (!$ver) {
-                require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
-                new Permissions\PluginUpdated('');
-            }
+        $updated = false;
 
+        $prev_core_version = ($ver && is_array($ver) && !empty($ver['version'])) ? $ver['version'] : '';
+
+        if (version_compare(PRESSPERMIT_VERSION, $prev_core_version, '!=')) {
+            require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
+            new Permissions\PluginUpdated($prev_core_version);
+
+            // Always store current PP Core version, even if loaded by Pro
             update_option('presspermit_version', ['version' => PRESSPERMIT_VERSION, 'db_version' => PRESSPERMIT_DB_VERSION]);
+            $updated = true;
 
-            if (defined('PRESSPERMIT_PRO_VERSION')) {
-                update_option('presspermitpro_version', ['version' => PRESSPERMIT_PRO_VERSION, 'db_version' => PRESSPERMIT_DB_VERSION]);
-            }
-        }
-
-        if ($ver && !empty($ver['version'])) {
-            // These maintenance operations only apply when a previous version of PP was installed 
-            if (version_compare($compare_version, $ver['version'], '!=')) {
-                update_option('presspermit_previous_version', $ver);
-                
-                require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
-                new Permissions\PluginUpdated($ver['version']);
-                update_option('presspermit_version', ['version' => PRESSPERMIT_VERSION, 'db_version' => PRESSPERMIT_DB_VERSION]);
-
-                if (defined('PRESSPERMIT_PRO_VERSION')) {
-                    update_option('presspermitpro_version', ['version' => PRESSPERMIT_PRO_VERSION, 'db_version' => PRESSPERMIT_DB_VERSION]);
-                }
-            }
-
-            if (is_multisite() && !$pp->getOption('wp_role_sync')) {
-                require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
+            if ($ver && is_multisite() && !$pp->getOption('wp_role_sync')) {
                 Permissions\PluginUpdated::syncWordPressRoles();
             }
+        }
+
+        if (defined('PRESSPERMIT_PRO_VERSION')) {
+            $ver_pro = get_option('presspermitpro_version');
+            $prev_pro_version = ($ver_pro && is_array($ver_pro) && !empty($ver_pro['version'])) ? $ver_pro['version'] : '';
+
+            if (version_compare(PRESSPERMIT_PRO_VERSION, $prev_pro_version, '!=')) {
+                do_action('presspermit_pro_version_updated', $prev_pro_version);
+
+                update_option('presspermitpro_version', ['version' => PRESSPERMIT_PRO_VERSION, 'db_version' => PRESSPERMIT_DB_VERSION]);
+                $updated = true;
+            }
+        }
+
+        if (!empty($updated)) {
+            // Core and Pro intentionally share the same version history log, to capture the installation sequence of any Free or Pro package
+
+            if ($ver_history = get_option('ppperm_version_history')) {
+                $ver_history = (array) json_decode($ver_history);
+            } else {
+                // Initiate version history log with the last stored version (Pro or Free)
+
+                if (defined('PRESSPERMIT_PRO_VERSION') && !empty($prev_pro_version)) {
+                    $ver_history = [(object) ['version' => $prev_pro_version, 'date' => '', 'isPro' => true]];
+                } 
+                
+                // In case last Pro version is an irrelevant old entry, also include last Core version if it's higher
+                if ($prev_core_version && (!defined('PRESSPERMIT_PRO_VERSION') || version_compare($prev_core_version, $prev_pro_version, '>'))) {
+                    $ver_history = [(object) ['version' => $prev_core_version, 'date' => '', 'isPro' => false]];
+                }
+            }
+
+            // In the version history, log Core version changes only if they are installed directly by Free package
+            if (defined('PRESSPERMIT_PRO_VERSION')) {
+                $ver_history [] = (object) ['version' => PRESSPERMIT_PRO_VERSION, 'date' => gmdate('m/d/Y'), 'isPro' => true];
+            } else {
+                $ver_history [] = (object) ['version' => PRESSPERMIT_VERSION, 'date' => gmdate('m/d/Y'), 'isPro' => false];
+            }
+
+            update_option('ppperm_version_history', wp_json_encode($ver_history));
         }
         // --- end version check ---
 
