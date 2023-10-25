@@ -410,7 +410,7 @@ class PostFilters
                         $valid_stati['future'] = 'future';
                     }
                 } else {
-                    $valid_stati = PWP::getPostStatuses(['internal' => false, 'post_type' => $post_types], 'names', '', ['context' => 'edit']);
+                    $valid_stati = PWP::getPostStatuses(['internal' => false, 'post_type' => $post_types], 'names', 'and', ['context' => 'edit']);
                 }
 
                 global $wp_query;

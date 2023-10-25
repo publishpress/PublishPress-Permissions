@@ -56,6 +56,9 @@ class CoreAdmin {
     }
 
     function actAdminMenuPromos($pp_options_menu, $handler) {
+        
+        // Disable custom status promos until PublishPress Statuses and compatible version of Permissions Pro are released
+        /*
         add_submenu_page(
             $pp_options_menu, 
             esc_html__('Workflow Statuses', 'press-permit-core'), 
@@ -73,6 +76,7 @@ class CoreAdmin {
             'presspermit-visibility-statuses', 
             $handler
         );
+        */
 
         add_submenu_page(
             $pp_options_menu, 

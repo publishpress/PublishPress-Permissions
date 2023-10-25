@@ -6,8 +6,6 @@ use PublishPress\Permissions\Factory;
 
 class SettingsTabModules
 {
-    const LEGACY_VERSION = '2.6.3';
-
     public function __construct()
     {
         add_filter('presspermit_option_tabs', [$this, 'optionTabs'], 0);

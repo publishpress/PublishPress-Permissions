@@ -6,8 +6,6 @@ use PublishPress\Permissions\Factory;
 
 class SettingsTabInstall
 {
-    const LEGACY_VERSION = '2.6.3';
-
     public function __construct()
     {
         add_filter('presspermit_option_tabs', [$this, 'optionTabs'], 90);
@@ -108,9 +106,9 @@ class SettingsTabInstall
         $key_string = (is_array($opt_val) && count($opt_val) > 1) ? $opt_val[1] : ''; 
         $expire_date = (is_array($opt_val) && isset($opt_val['expire_date_gmt'])) ? $opt_val['expire_date_gmt'] : ''; 
 
-        $downgrade_note = empty($modern_pro_version) && ((is_array($opt_val) && count($opt_val) > 1) || get_option('pps_version') || get_option('ppp_version'));
+        $modern_pro_version = get_option('presspermitpro_version');
 
-        if ($msg || $downgrade_note || $key_string) :
+        if ($msg || $modern_pro_version || $key_string) :
             $section = 'key'; // --- UPDATE KEY SECTION ---
             if (!empty($ui->form_options[$tab][$section]) && !$suppress_updates) : ?>
                 <tr>
@@ -155,18 +153,6 @@ class SettingsTabInstall
                                 echo esc_html(sprintf(__("Original presspermit.com support key hash: <strong>%s</strong> (expires %s)"), esc_html($key_string), esc_html($expire_date)));
                             else
                                 echo esc_html(sprintf(__("Original presspermit.com support key hash: <strong>%s</strong>"), esc_html($key_string), esc_html($expire_date)));
-                            ?>
-                            </li>
-                            <?php endif;?>
-
-                            <?php if ($downgrade_note):?>
-                            <li class='pp-pro-extensions-migration-note'>
-                            <?php
-                            printf(
-                                esc_html__('To temporarily restore Pro features before migrating to a publishpress.com account, delete this version and install %sPress Permit Core 2.6.x%s using Plugins > Add New > Upload.', 'press-permit-core'),
-                                '<span style="white-space:nowrap"><a href="' . esc_url('https://downloads.wordpress.org/plugin/press-permit-core.' . self::LEGACY_VERSION . '.zip') . '" target="_blank">',
-                                '</a></span>'
-                            );
                             ?>
                             </li>
                             <?php endif;?>
@@ -228,7 +214,6 @@ class SettingsTabInstall
                         }
                         ?>
                         <br/>
-                        <span style="display:none"><?php printf(esc_html__("Database Schema Version: %s", 'press-permit-core'), esc_html(PRESSPERMIT_DB_VERSION)); ?><br/></span>
                     </p>
 
                     <p>
