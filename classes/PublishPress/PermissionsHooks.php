@@ -267,14 +267,15 @@ class PermissionsHooks
                 $ver_history = (array) json_decode($ver_history);
             } else {
                 // Initiate version history log with the last stored version (Pro or Free)
+                $ver_history = [];
 
                 if (defined('PRESSPERMIT_PRO_VERSION') && !empty($prev_pro_version)) {
-                    $ver_history = [(object) ['version' => $prev_pro_version, 'date' => '', 'isPro' => true]];
+                    $ver_history [] = (object) ['version' => $prev_pro_version, 'date' => '', 'isPro' => true];
                 } 
                 
                 // In case last Pro version is an irrelevant old entry, also include last Core version if it's higher
                 if ($prev_core_version && (!defined('PRESSPERMIT_PRO_VERSION') || version_compare($prev_core_version, $prev_pro_version, '>'))) {
-                    $ver_history = [(object) ['version' => $prev_core_version, 'date' => '', 'isPro' => false]];
+                    $ver_history [] = (object) ['version' => $prev_core_version, 'date' => '', 'isPro' => false];
                 }
             }
 
