@@ -105,7 +105,7 @@ class PostsListing
                 }
                 <?php endforeach;?>
             });
-            //]]>
+            /* ]]> */
         </script>
         <?php
     } // end function add_inline_edit_ui

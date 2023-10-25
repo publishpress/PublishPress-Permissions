@@ -127,9 +127,11 @@ class CoreAdmin {
         </style>
 
 		<script type="text/javascript">
+        /* <![CDATA[ */
             jQuery(document).ready(function($) {
                 $('#toplevel_page_presspermit-groups ul li:last a').attr('href', '<?php echo esc_url($url);?>').attr('target', '_blank').css('font-weight', 'bold').css('color', '#FEB123');
             });
+        /* ]]> */
         </script>
 		<?php
     }

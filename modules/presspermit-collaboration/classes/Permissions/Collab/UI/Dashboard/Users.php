@@ -131,7 +131,7 @@ class Users
                     }
                 });
             });
-            //]]>
+            /* ]]> */
         </script>
         <?php
     } // end function add_member_page_js

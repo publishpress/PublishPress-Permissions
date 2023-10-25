@@ -205,6 +205,7 @@ class AgentPermissionsUI
                 $(document).on('pp_exceptions_ui', handle_anon_warning);
                 $(document).on('change', 'select[name="pp_select_x_via_type"]', handle_anon_warning);
             });
+            /* ]]> */
         </script>
     <?php endif; ?>
 
