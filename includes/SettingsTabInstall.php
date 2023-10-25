@@ -131,7 +131,7 @@ class SettingsTabInstall
                                     );
                                 }
                     
-                            } elseif ($modern_pro_version = get_option('presspermitpro_version')) {
+                            } elseif ($modern_pro_version) {
                                 echo esc_html__('Permissions Pro was previously active. You are now running the free version, with fewer features.', 'press-permit-core');
                     
                             } elseif ($activated) {
