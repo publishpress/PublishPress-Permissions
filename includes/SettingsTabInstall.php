@@ -246,7 +246,7 @@ class SettingsTabInstall
                                     } else {
                                         printf(
                                             esc_html__('%s (previous install)', 'press-permit-core'),
-                                            $version
+                                            esc_html($version)
                                         );
                                     }
                                 }
