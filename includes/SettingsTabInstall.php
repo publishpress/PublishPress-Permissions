@@ -214,7 +214,6 @@ class SettingsTabInstall
                         }
                         ?>
                         <br/>
-                        <span style="display:none"><?php printf(esc_html__("Database Schema Version: %s", 'press-permit-core'), esc_html(PRESSPERMIT_DB_VERSION)); ?><br/></span>
                     </p>
 
                     <p>
