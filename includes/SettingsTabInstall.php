@@ -213,9 +213,51 @@ class SettingsTabInstall
                             );
                         }
                         ?>
-                        <br/>
                     </p>
 
+                    <?php
+                    if ($ver_history = get_option('ppperm_version_history')) :?>
+                        <br />
+                        <div>
+                            <?php
+                            if ($ver_history = (array) json_decode($ver_history)) :
+                                $ver_history = array_reverse($ver_history, true);
+                            ?>
+                                <div class="agp-vtight"><?php esc_html_e('Installation History', 'press-permit-core');?></div>
+                                <?php 
+                                echo '<textarea id="pp_version_history" name="pp_version_history" rows="5" cols="30" style="width: 250px; height: 85px" readonly="readonly">';
+
+                                for ($i = 0; $i < count($ver_history); $i++) {
+                                    if ($i) {
+                                        echo "\r\n";
+                                    }
+
+                                    $ver_data = current($ver_history);
+                                    next($ver_history);
+
+                                    if (!is_object($ver_data) || empty($ver_data->version)) {
+                                        continue;
+                                    }
+
+                                    $version = (!empty($ver_data->isPro)) ? $ver_data->version . ' Pro' : $ver_data->version;
+
+                                    if (!empty($ver_data->date)) {
+                                        echo esc_html($version) . ' : ' .  esc_html($ver_data->date);
+                                    } else {
+                                        printf(
+                                            esc_html__('%s (previous install)', 'press-permit-core'),
+                                            $version
+                                        );
+                                    }
+                                }
+
+                                echo '</textarea>'; 
+                                ?>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <br />
                     <p>
                     <?php
 
