@@ -10,7 +10,9 @@ class PostsListing
 
         add_action('admin_print_scripts', [$this, 'act_maybe_hide_quickedit']);
         
-        add_action('admin_head', [$this, 'act_register_column_filters']);
+        if (!defined('PUBLISHPRESS_STATUSES_VERSION')) {
+        	add_action('admin_head', [$this, 'act_register_column_filters']);
+    	}
         
         add_action('init', [$this, 'act_tax_force_show_admin_col'], 99);
     }
@@ -29,7 +31,10 @@ class PostsListing
     public function act_register_column_filters()
     {
         global $typenow;
-        add_action("manage_{$typenow}_posts_custom_column", [$this, 'actManagePostsCustomColumn'], 10, 2);
+        
+        if (!defined('PUBLISHPRESS_STATUSES_VERSION')) {
+        	add_action("manage_{$typenow}_posts_custom_column", [$this, 'actManagePostsCustomColumn'], 10, 2);
+    	}
     }
 
     public function actManagePostsCustomColumn($column_name, $id)

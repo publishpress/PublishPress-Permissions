@@ -142,7 +142,11 @@ class CollabHooksCompat
 
     function actRegistrations()
     {
-        if (defined('PRESSPERMIT_STATUSES_VERSION')) {
+        // Register custom statuses for post capabilities only if Permissions Pro Status Control is enabled.
+    	// Also require PublishPress Statuses plugin activation if this Permissions plugin version is higher than 4.0
+        if (defined('PRESSPERMIT_STATUSES_VERSION')
+        && (defined('PUBLISHPRESS_STATUSES_VERSION') || version_compare('PRESSPERMIT_VERSION', '4.0-beta', '<'))
+        ) {
             global $wp_post_statuses;
 
             $pp = presspermit();
@@ -155,8 +159,12 @@ class CollabHooksCompat
                 }
             }
 
+            $supplemental_cap_moderate_any = (defined('PUBLISHPRESS_STATUSES_VERSION'))
+			? !empty(\PublishPress_Statuses::instance()->options->supplemental_cap_moderate_any)
+			: $pp->getOption('supplemental_cap_moderate_any');
+
             // unfortunate little hack due to execution order
-            if ($pp->getOption('supplemental_cap_moderate_any') && $user->ID 
+            if ($supplemental_cap_moderate_any && $user->ID 
             && $user->site_roles && !$pp->isContentAdministrator()
             ) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Permissions.php');
@@ -172,8 +180,12 @@ class CollabHooksCompat
                 )
             );
 
+            $statuses = (defined('PUBLISHPRESS_STATUSES_VERSION'))
+			? PWP::getPostStatuses(['moderation' => true], 'object')
+			: get_post_stati([], 'object');
+
             // register each custom post status as an attribute condition with mapped caps
-            foreach (get_post_stati([], 'object') as $status => $status_obj) {
+            foreach ($statuses as $status => $status_obj) {
                 if (!empty($status_obj->moderation)) {
                     if (in_array($status, ['pending', 'future'], true) || !empty($status_obj->pp_custom)) { // pp_custom = defined by PublishPress
                         if (!$pp->getOption("custom_{$status}_caps") 
