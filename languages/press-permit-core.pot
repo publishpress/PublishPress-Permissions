@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-10-23T18:48:46+00:00\n"
+"POT-Creation-Date: 2023-10-25T14:57:03+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: press-permit-core\n"
@@ -1614,25 +1614,25 @@ msgstr ""
 msgid "%sPosts / Pages Listing:%s %s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabModules.php:23
+#: classes/PublishPress/Permissions/UI/SettingsTabModules.php:21
 msgid "Modules"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabModules.php:42
-#: includes/SettingsTabInstall.php:44
-#: includes/SettingsTabInstall.php:45
+#: classes/PublishPress/Permissions/UI/SettingsTabModules.php:40
+#: includes/SettingsTabInstall.php:42
+#: includes/SettingsTabInstall.php:43
 msgid "settings"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabModules.php:83
+#: classes/PublishPress/Permissions/UI/SettingsTabModules.php:81
 msgid "<strong>Change Log</strong> (since your current version)"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabModules.php:86
+#: classes/PublishPress/Permissions/UI/SettingsTabModules.php:84
 msgid "Active Modules:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabModules.php:140
+#: classes/PublishPress/Permissions/UI/SettingsTabModules.php:138
 msgid "Inactive Modules:"
 msgstr ""
 
@@ -1727,60 +1727,60 @@ msgstr ""
 msgid "Control access to post visibility statuses. This workflow feature is available in PublishPress Permissions Pro."
 msgstr ""
 
-#: includes/SettingsTabInstall.php:24
+#: includes/SettingsTabInstall.php:22
 msgid "License"
 msgstr ""
 
-#: includes/SettingsTabInstall.php:31
+#: includes/SettingsTabInstall.php:29
 msgid "Account"
 msgstr ""
 
-#: includes/SettingsTabInstall.php:32
+#: includes/SettingsTabInstall.php:30
 msgid "Version"
 msgstr ""
 
-#: includes/SettingsTabInstall.php:68
+#: includes/SettingsTabInstall.php:66
 msgid "Version info was refreshed."
 msgstr ""
 
-#: includes/SettingsTabInstall.php:122
+#: includes/SettingsTabInstall.php:120
 msgid "Further details for your installation:"
 msgstr ""
 
-#: includes/SettingsTabInstall.php:131
+#: includes/SettingsTabInstall.php:129
 msgid "Your presspermit.com key has expired, but a <a href=\"%s\">PublishPress renewal</a> discount may be available."
 msgstr ""
 
-#: includes/SettingsTabInstall.php:137
+#: includes/SettingsTabInstall.php:135
 msgid "Permissions Pro was previously active. You are now running the free version, with fewer features."
 msgstr ""
 
-#: includes/SettingsTabInstall.php:143
+#: includes/SettingsTabInstall.php:141
 msgid "A presspermit.com key appears to be active. <a href=\"%s\" target=\"_blank\">Contact us</a> for assistance in migrating your account to publishpress.com."
 msgstr ""
 
-#: includes/SettingsTabInstall.php:166
-msgid "To temporarily restore Pro features before migrating to a publishpress.com account, delete this version and install %sPress Permit Core 2.6.x%s using Plugins > Add New > Upload."
-msgstr ""
-
-#: includes/SettingsTabInstall.php:214
-#: includes/SettingsTabInstall.php:224
+#: includes/SettingsTabInstall.php:200
+#: includes/SettingsTabInstall.php:210
 msgid "PublishPress Permissions Version: %1$s %2$s"
 msgstr ""
 
-#: includes/SettingsTabInstall.php:219
+#: includes/SettingsTabInstall.php:205
 msgid "%s&nbsp;details"
 msgstr ""
 
-#: includes/SettingsTabInstall.php:231
-msgid "Database Schema Version: %s"
+#: includes/SettingsTabInstall.php:226
+msgid "Installation History"
 msgstr ""
 
-#: includes/SettingsTabInstall.php:238
+#: includes/SettingsTabInstall.php:248
+msgid "%s (previous install)"
+msgstr ""
+
+#: includes/SettingsTabInstall.php:265
 msgid "WordPress Version: %s"
 msgstr ""
 
-#: includes/SettingsTabInstall.php:242
+#: includes/SettingsTabInstall.php:269
 msgid "PHP Version: %s"
 msgstr ""
 
