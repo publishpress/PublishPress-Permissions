@@ -52,7 +52,7 @@
     "build:clean": "ppbuild clean",
     "get:version": "ppbuild version",
 	"gen:mo": "wp i18n make-mo ./languages ./languages --allow-root",
-    "gen:pot": "wp i18n make-pot . languages/publishpress-statuses.pot --domain=publishpress-statuses --exclude=dev-workspace,.wordpress-org,.github,dist,tests, --allow-root",
+    "gen:pot": "wp i18n make-pot . languages/press-permit-core.pot --domain=press-permit-core --exclude=dev-workspace,.wordpress-org,.github,dist,tests,vendor, --allow-root",
     "check:longpath": "longpath .",
     "check:lint": "phplint",
     "check:phpcs": "phpcs",
@@ -64,7 +64,7 @@
         "@check:php81",
         "@check:php82"
     ],
-    "check:php56": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 5.6 ./publishpress-statuses.php",
+    "check:php56": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 5.6 ./press-permit-core.php",
     "check:php72": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 7.2",
     "check:php74": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 7.4",
     "check:php80": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 8.0",
