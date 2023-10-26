@@ -14,6 +14,23 @@ class LibWP
         return version_compare($wp_version, '5.0', '>=') || substr($wp_version, 0, 2) === '5.';
     }
 
+    public static function getPluginPage() {
+        global $plugin_page, $pagenow;
+
+        if (!is_admin()) {
+            return false;
+
+        } elseif (!empty($plugin_page)) {
+            return $plugin_page;
+
+        } elseif (empty($pagenow) || ('admin.php' != $pagenow)) {
+            return false;
+
+        } else {
+            return self::REQUEST_key('page');
+        }
+    }
+
     /**
      * Based on Edit Flow's \Block_Editor_Compatible::should_apply_compat method.
      *
