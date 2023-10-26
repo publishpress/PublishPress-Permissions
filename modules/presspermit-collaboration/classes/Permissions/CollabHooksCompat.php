@@ -172,7 +172,12 @@ class CollabHooksCompat
             }
 
             $skip_metacaps = !empty($user->allcaps['pp_moderate_any']) 
-            && (!is_admin() || ('presspermit-statuses' != presspermitPluginPage()))       // Capabilities screen needs all status capabilities loaded for administration
+            && (!is_admin() ||      // Capabilities screen needs all status capabilities loaded for administration
+                (
+                ('presspermit-statuses' != presspermitPluginPage())
+                && (('publishpress-statuses' != PWP::getPluginPage()) || ('edit-status' != PWP::REQUEST_key('action')))
+                )
+            )
             && (
             	((isset($_SERVER['SCRIPT_NAME']) && false == strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'admin.php'))
                 || !PWP::is_REQUEST('page', 'capsman')) 
