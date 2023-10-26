@@ -3,9 +3,9 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 5.5
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 7.2.5
-Stable tag: 3.11.3
+Stable tag: 3.11.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -246,6 +246,11 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Perf : Improved caching of post capability checks
 * Code : Improved phpcs scan results
 
+= 3.11.4 - 26 Oct 2023 =
+* Fixed : Collaborative Publishing module was not loaded correctly on some installations
+* Fixed : Caption for Permissions: Assign Term metabox in post editor
+* Fixed : PHP Warnings on Permission Groups screen
+
 = 3.11.3 - 25 Oct 2023 =
 * Fixed : Some Permissions filtering was not applied on sites with a custom wp-admin URL
 * Fixed : Type-specific Supplemental Roles also granted most generic capabliities in Pattern Role. Introduce new Permissions > Advanced > Role Integration setting to restore previous behavior if needed.
@@ -254,6 +259,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Fixed : Filtering of default category / term by other plugin was overridden
 * Fixed : Edit User Permissions - PHP Warning "compact(): Argument must be string..."
 * Fixed : Fatal error "Call to a member function init() on null" under some configurations
+* Fixed : Version update script triggering could be skipped on Pro installation under some conditions
 * Compat : Polylang + WP 6.3 - Language filter was no longer applied to Page Parent dropdown
 * Change : Added installation log to Permissions > Settings > Install
 
