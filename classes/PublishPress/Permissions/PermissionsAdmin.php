@@ -83,7 +83,9 @@ class PermissionsAdmin
                 $warning = '';
 
                 if (isset($pp->role_defs->pattern_roles[$arr_name[0]])) {
-                    $role_caption = $pp->role_defs->pattern_roles[$arr_name[0]]->labels->$caption_prop;
+                    $role_caption = (isset($pp->role_defs->pattern_roles[$arr_name[0]]->labels->$caption_prop)) 
+                    ? $pp->role_defs->pattern_roles[$arr_name[0]]->labels->$caption_prop 
+                    : '';
 
                     if (
                         $include_warnings && isset($wp_roles->role_names[$arr_name[0]])

@@ -93,16 +93,30 @@ class PostEdit
 
         foreach (array_keys($operations) as $op) {
             if ($op_obj = $pp->admin()->getOperationObject($op, $post_type)) {
-                $caption = ('associate' == $op) 
-                ? sprintf(
-                    esc_html__('Permissions: Select this %s as Parent', 'press-permit-core'),
-                    $type_obj->labels->singular_name
-                )
-                : sprintf(
-                    esc_html__('Permissions: %s this %s', 'press-permit-core'),
-                    $op_obj->label,
-                    $type_obj->labels->singular_name
-                );
+                switch ($op) {
+                    case 'associate':
+                        $caption = sprintf(
+		                    esc_html__('Permissions: Select this %s as Parent', 'press-permit-core'),
+		                    $type_obj->labels->singular_name
+		                );
+                
+                        break;
+
+                    case 'assign':
+                        $caption = sprintf(
+                            esc_html__('Permissions: Assign Terms to this %s', 'press-permit-core'),
+                            $type_obj->labels->singular_name
+                        );
+
+                        break;
+
+                    default:
+                        $caption = sprintf(
+		                    esc_html__('Permissions: %s this %s', 'press-permit-core'),
+		                    $op_obj->label,
+		                    $type_obj->labels->singular_name
+		                );
+                }
                 
                 add_meta_box(
                     "pp_{$op}_{$post_type}_exceptions",
