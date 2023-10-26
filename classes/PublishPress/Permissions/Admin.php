@@ -282,13 +282,11 @@ class Admin
         </ul>
         </nav>
         
-        <!--
         <div class="pp-pressshack-logo">
         <a href="//publishpress.com" target="_blank" rel="noopener noreferrer">
-        <img src="" />
+        <img src="<?php echo esc_url(plugins_url('', PRESSPERMIT_FILE)) . '/common/img/publishpress-logo.png';?>" />
         </a>
         </div>
-        -->
 
         </footer>
     <?php
