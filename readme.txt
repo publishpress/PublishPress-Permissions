@@ -242,6 +242,8 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 = 3.11.4 - 26 Oct 2023 =
 * Fixed : Collaborative Publishing module was not loaded correctly on some installations
+* Fixed : Caption for Permissions: Assign Term metabox in post editor
+* Fixed : PHP Warnings on Permission Groups screen
 
 = 3.11.3 - 25 Oct 2023 =
 * Fixed : Some Permissions filtering was not applied on sites with a custom wp-admin URL
