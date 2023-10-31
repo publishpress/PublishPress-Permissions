@@ -40,6 +40,7 @@ class DashboardFilters
 
         add_filter('presspermit_term_include_clause', [$this, 'flt_term_include_clause'], 10, 2);
 
+		// Used only by Permissions Pro < 4.0
         add_filter('presspermit_post_status_types', [$this, 'flt_status_links'], 5);
 
         if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
@@ -179,6 +180,7 @@ class DashboardFilters
         new TermEdit();
     }
 
+	// Used only by Permissions Pro < 4.0
     function flt_status_links($links)
     {
         if (current_user_can('pp_define_post_status') || current_user_can('pp_define_moderation')) {
