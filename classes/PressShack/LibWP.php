@@ -305,7 +305,7 @@ class LibWP
             }
         }
 
-        if (!empty($post) && is_object($post)) {
+        if (!empty($post) && is_object($post) && isset($post->ID)) {
             if (!empty($post->post_status) && ('auto-draft' == $post->post_status)) {
                 return 0;
             } else {
