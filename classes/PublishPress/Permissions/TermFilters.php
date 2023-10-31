@@ -306,7 +306,7 @@ class TermFilters
                         if (!empty($matches[1])) {
                             $args['object_type'] = get_post_field('post_type', $matches[1]);
 
-                        } elseif (false !== strpos($referer, $admin_post_new_url)) {
+                        } elseif (false !== strpos($referer, $admin_post_new_rel_url)) {
                             preg_match("/$admin_post_new_rel_url\?post_type=([a-zA-Z_\-0-9]+)/", $referer, $matches);
 
                             if (!empty($matches[1])) {
