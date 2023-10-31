@@ -240,6 +240,10 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 3.11.5 =
+* Fixed : PHP Warning "Attempt to read property 'count' on string"
+* Fixed : PHP Warning "Undefined variable $admin_post_new_url"
+
 = 3.11.4 - 26 Oct 2023 =
 * Fixed : Collaborative Publishing module was not loaded correctly on some installations
 * Fixed : Caption for Permissions: Assign Term metabox in post editor
@@ -255,6 +259,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Fixed : Fatal error "Call to a member function init() on null" under some configurations
 * Fixed : Version update script triggering could be skipped on Pro installation under some conditions
 * Compat : Polylang + WP 6.3 - Language filter was no longer applied to Page Parent dropdown
+* Change : Added installation log to Permissions > Settings > Install
 
 = 3.11.1 - 30 Aug 2023 =
 * Fixed : Rest API access error on some sites (potentially preventing login)
