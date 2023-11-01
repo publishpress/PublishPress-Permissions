@@ -36,7 +36,7 @@ class CollabHooks
 
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Capabilities.php');
 
-		add_action('init', [$this, 'init']);
+        add_action('init', [$this, 'init']);
 
         add_action('presspermit_pre_init', [$this, 'actOnInit']);
         add_action('presspermit_options', [$this, 'actAdjustOptions']);
