@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 5.5
 Tested up to: 6.3
 Requires PHP: 7.2.5
-Stable tag: 3.11.4
+Stable tag: 3.11.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -240,7 +240,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.11.5 =
+= 3.11.5 - 1 Nov 2023 =
 * Compat : Beaver Builder - Queries within BB shortcodes were improperly filtered
 * Fixed : Supplemental role captions were blank
 * Fixed : PHP Warning "Attempt to read property 'count' on string"
