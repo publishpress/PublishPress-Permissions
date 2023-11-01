@@ -241,6 +241,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 == Changelog ==
 
 = 3.11.5 =
+* Compat : Beaver Builder - Queries within BB shortcodes were improperly filtered
 * Fixed : PHP Warning "Attempt to read property 'count' on string"
 * Fixed : PHP Warning "Undefined variable $admin_post_new_url"
 
