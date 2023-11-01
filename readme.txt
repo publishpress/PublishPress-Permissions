@@ -246,6 +246,12 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Perf : Improved caching of post capability checks
 * Code : Improved phpcs scan results
 
+= 3.11.5 =
+* Compat : Beaver Builder - Queries within BB shortcodes were improperly filtered
+* Fixed : Supplemental role captions were blank
+* Fixed : PHP Warning "Attempt to read property 'count' on string"
+* Fixed : PHP Warning "Undefined variable $admin_post_new_url"
+
 = 3.11.4 - 26 Oct 2023 =
 * Fixed : Collaborative Publishing module was not loaded correctly on some installations
 * Fixed : Caption for Permissions: Assign Term metabox in post editor
