@@ -36,10 +36,11 @@ class CollabHooks
 
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Capabilities.php');
 
+		add_action('init', [$this, 'init']);
+
         add_action('presspermit_pre_init', [$this, 'actOnInit']);
         add_action('presspermit_options', [$this, 'actAdjustOptions']);
         add_filter('presspermit_role_caps', [$this, 'fltRoleCaps'], 10, 2);
-        add_filter('presspermit_pattern_roles', [$this, 'fltPatternRoles']);
         add_action('presspermit_roles_defined', [$this, 'actSetRoleUsage']);
 
         add_action('presspermit_maintenance_triggers', [$this, 'actLoadFilters']); // fires early if is_admin() - at bottom of AdminUI constructor
@@ -148,6 +149,11 @@ class CollabHooks
         add_filter('pre_post_tax_input', [$this, 'fltTaxInput'], 50, 1);
         add_filter('pre_post_category', [$this, 'fltPrePostTerms'], 50, 1);
         add_filter('presspermit_pre_object_terms', [$this, 'fltPrePostTerms'], 50, 3);
+    }
+
+    function init()
+    {
+        add_filter('presspermit_pattern_roles', [$this, 'fltPatternRoles']);
     }
 
     function fltDefaultOptions($def)
