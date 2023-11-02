@@ -259,7 +259,7 @@ class TermFiltersCount
                 }
             } else {
                 foreach ($terms as $key => $term) {
-                    if (!$term->count) {
+                    if (is_object($term) && isset($term->count) && !$term->count) {
                         unset($terms[$key]);
                     }
                 }
