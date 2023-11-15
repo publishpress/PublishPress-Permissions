@@ -8,7 +8,6 @@ class CollabHooksCompat
     function __construct() {
         add_action('init', [$this, 'actStatusRegistrations'], 44);  // statuses need to be registered before establish_status_caps() execution
 
-        add_action('presspermit_registrations', [$this, 'actRegistrations']);  // this action is triggered by Status Control module
         add_action('presspermit_roles_defined', [$this, 'actAdjustDefaultPatternRoles']);
 
         add_filter('presspermit_operations', [$this, 'fltOperations']);
@@ -137,93 +136,6 @@ class CollabHooksCompat
                 'label_count' => _n_noop('Approved <span class="count">(%s)</span>', 'Approved <span class="count">(%s)</span>'),
                 'pp_builtin' => true,
             ]);
-        }
-    }
-
-    function actRegistrations()
-    {
-        // Register custom statuses for post capabilities only if Permissions Pro Status Control is enabled.
-    	// Also require PublishPress Statuses plugin activation if this Permissions plugin version is higher than 4.0
-        if (defined('PRESSPERMIT_STATUSES_VERSION')
-        && (defined('PUBLISHPRESS_STATUSES_VERSION') || version_compare('PRESSPERMIT_VERSION', '4.0-beta', '<'))
-        ) {
-            global $wp_post_statuses;
-
-            $pp = presspermit();
-
-            $user = presspermit()->getUser();
-
-            foreach (['pending', 'future'] as $status) {
-                if (!empty($wp_post_statuses[$status])) {
-                    $wp_post_statuses[$status]->moderation = true;
-                }
-            }
-
-            $supplemental_cap_moderate_any = (defined('PUBLISHPRESS_STATUSES_VERSION'))
-			? !empty(\PublishPress_Statuses::instance()->options->supplemental_cap_moderate_any)
-			: $pp->getOption('supplemental_cap_moderate_any');
-
-            // unfortunate little hack due to execution order
-            if ($supplemental_cap_moderate_any && $user->ID 
-            && $user->site_roles && !$pp->isContentAdministrator()
-            ) {
-                require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Permissions.php');
-                Collab\Permissions::supplementModerateAnyCap();
-            }
-
-            $skip_metacaps = !empty($user->allcaps['pp_moderate_any']) 
-            && (!is_admin() ||      // Capabilities screen needs all status capabilities loaded for administration
-                (
-                ('presspermit-statuses' != presspermitPluginPage())
-                && (('publishpress-statuses' != PWP::getPluginPage()) || ('edit-status' != PWP::REQUEST_key('action')))
-                )
-            )
-            && (
-            	((isset($_SERVER['SCRIPT_NAME']) && false == strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'admin.php'))
-                || !PWP::is_REQUEST('page', 'capsman')) 
-                || (!presspermit()->isAdministrator() && !current_user_can('manage_capabilities')
-                )
-            );
-
-            $statuses = (defined('PUBLISHPRESS_STATUSES_VERSION'))
-			? PWP::getPostStatuses(['moderation' => true], 'object')
-			: get_post_stati([], 'object');
-
-            // register each custom post status as an attribute condition with mapped caps
-            foreach ($statuses as $status => $status_obj) {
-                if (!empty($status_obj->moderation)) {
-                    if (in_array($status, ['pending', 'future'], true) || !empty($status_obj->pp_custom)) { // pp_custom = defined by PublishPress
-                        if (!$pp->getOption("custom_{$status}_caps") 
-                        || (defined('PP_LEGACY_PENDING_STATUS') && ('pending' == $status))
-                        ) {
-                            continue;
-                        }
-                    }
-
-                    if (isset($status_obj->capability_status) && ('' === $status_obj->capability_status)) {
-                        continue;
-                    }
-
-                    $_status = (isset($status_obj->capability_status) && ($status != $status_obj->capability_status) 
-                    && !empty($wp_post_statuses[$status_obj->capability_status])) 
-                    ? $status_obj->capability_status 
-                    : $status;
-
-                    $metacap_map = ($skip_metacaps) 
-                    ? [] 
-                    : ['edit_post' => "edit_{$_status}_posts", 'delete_post' => "delete_{$_status}_posts"];
-
-                    PPS::registerCondition('post_status', $status, [
-                        'label' => $status_obj->label,
-                        'metacap_map' => $metacap_map,
-                        'cap_map' => [
-                            'set_posts_status' => "set_posts_{$_status}",                         
-                            'edit_others_posts' => "edit_others_{$status}_posts",
-                            'delete_others_posts' => "delete_others_{$status}_posts"
-                        ]
-                    ]);
-                }
-            }
         }
     }
 
