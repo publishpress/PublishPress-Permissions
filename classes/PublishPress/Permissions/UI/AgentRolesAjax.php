@@ -53,7 +53,7 @@ class AgentRolesAjax
                     foreach ($roles as $_role_name => $role_title) {
                         if ($pp_admin->userCanAdminRole($_role_name, $for_item_type)) {
                             $selected = ($_role_name == $role_name) ? ' selected ' : '';
-                            echo "<option value='" . esc_attr($_role_name) . "'" . esc_attr($selected) . "'>". esc_html($role_title) . "</option>";
+                            echo "<option value='" . esc_attr($_role_name) . "'" . esc_attr($selected) . ">". esc_html($role_title) . "</option>";
                         }
                     }
                 } else {
