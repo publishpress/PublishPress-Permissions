@@ -291,7 +291,7 @@ class TermFilters
                     // todo: WP Trac ticket for post_id or post_type argument in terms query a better solution
                     if (!empty($_SERVER['HTTP_REFERER'])) {
                         $referer = esc_url_raw($_SERVER['HTTP_REFERER']);
-
+                      
                         $admin_post_rel_url = preg_quote(
                             PWP::admin_rel_url('post.php'),
                             '/'

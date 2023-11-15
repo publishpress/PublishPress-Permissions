@@ -389,6 +389,7 @@ class DashboardFilters
         $request_uri = esc_url_raw(PWP::SERVER_url('REQUEST_URI'));
 
         if (isset($site_url['path']) && $request_uri && (untrailingslashit($request_uri) == untrailingslashit(admin_url('')))) {
+
             return;
         }
 

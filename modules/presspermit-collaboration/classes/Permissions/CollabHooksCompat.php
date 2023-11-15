@@ -138,7 +138,7 @@ class CollabHooksCompat
             ]);
         }
     }
-
+  
     function actAdjustDefaultPatternRoles()
     {
         if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) {
