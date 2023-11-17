@@ -352,7 +352,7 @@ class CapabilityFilters
                                             }
                                         }
 
-                                        if (!$item_id || $post_ttids) {
+                                        if (!$item_id || !empty($post_ttids)) {
                                             // Pass the capability check if it's for a post that has categories / terms which the user has a corresponding Specific Permission assigned for,
                                             // OR if the capability check is not for an individual post, and the user has a coresponding Specific Permissions assigned for any term related to this post type
 
