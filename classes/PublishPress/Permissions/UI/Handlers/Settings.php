@@ -107,14 +107,13 @@ class Settings
         $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
 
         foreach (array_map('\PressShack\LibWP::sanitizeEntry', $all_options) as $option_basename) {
-            if (!apply_filters('presspermit_custom_sanitize_setting', false, $option_basename, $default_prefix, $args)) {
+            if (!apply_filters('presspermit_custom_sanitize_setting', false, $option_basename, $default_prefix, $args)) {                
+                if (isset($_POST[$option_basename]) && is_array($_POST[$option_basename])) {
+                    $pp->updateOption($default_prefix . $option_basename, array_map('sanitize_text_field', $_POST[$option_basename]), $args);
+                } else {
+                    $val = (isset($_POST[$option_basename])) ? trim(sanitize_text_field($_POST[$option_basename])) : '';
 
-                if (isset($_POST[$option_basename])) {
-                    if (!is_array($_POST[$option_basename])) {
-                        $pp->updateOption($default_prefix . $option_basename, trim(sanitize_text_field($_POST[$option_basename])), $args);
-                    } else {
-                        $pp->updateOption($default_prefix . $option_basename, array_map('sanitize_text_field', $_POST[$option_basename]), $args);
-                    }
+                    $pp->updateOption($default_prefix . $option_basename, $val, $args);
                 }
             }
         }
