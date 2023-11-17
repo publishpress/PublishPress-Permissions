@@ -29,8 +29,8 @@ class Admin
         $this->notice(
             sprintf(
                 esc_html__('Role Scoper installation detected. To migrate your groups, roles, restrictions and options to PublishPress Permissions, run the %sImport tool%s.', 'press-permit-core'),
-                '<a href="' . esc_url($url) . '">',
-                '</a>'
+                '',
+                ''
             ), 'rs-migration'
         );
     }

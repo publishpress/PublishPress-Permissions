@@ -206,8 +206,8 @@ class PermissionsHooksAdmin
                 $msg = current_user_can('pp_manage_settings')
                 ? sprintf(
                     esc_html__('Please %senable the Collaborative Publishing module%s for PublishPress Revisions integration.', 'press-permit-core'),
-                    '<a href="' . admin_url('admin.php?page=presspermit-settings') . '" style="text-decoration:underline">',
-                    '</a>'
+                    '',
+                    ''
                 )
                 : esc_html__('PublishPress Revisions integration requires the Collaborative Publishing module. Please notify your Administrator.', 'press-permit-core');
 
