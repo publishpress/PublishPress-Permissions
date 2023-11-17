@@ -348,7 +348,7 @@ class AgentEdit
                     // handle member changes
                     $current = $pp->groups()->getGroupMembers($group_id, $agent_type, 'id', compact('member_type'));
 
-                    $selected = array_map('intval', explode(",", sanitize_text_field($_REQUEST["{$member_type}_csv"])));
+                    $selected = explode(",", sanitize_text_field($_REQUEST["{$member_type}_csv"]));
 
                     if (('member' != $member_type)
                         || !apply_filters('presspermit_custom_agent_update', false, $agent_type, $group_id, $selected)
