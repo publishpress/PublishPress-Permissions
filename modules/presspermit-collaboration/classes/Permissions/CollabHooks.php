@@ -146,6 +146,7 @@ class CollabHooks
         // Filtering of terms selection:
         add_filter('pre_post_category', [$this, 'fltOriginalRestPostTerms'], 1, 1);  // ensure actual term selections are passed into filter
 
+        add_filter('pre_post_tags_input', [$this, 'fltTagsInput'], 50, 1);
         add_filter('pre_post_tax_input', [$this, 'fltTaxInput'], 50, 1);
         add_filter('pre_post_category', [$this, 'fltPrePostTerms'], 50, 1);
         add_filter('presspermit_pre_object_terms', [$this, 'fltPrePostTerms'], 50, 3);
@@ -604,6 +605,12 @@ class CollabHooks
             'pp_list_all_files'
             ]
         );
+    }
+
+    function fltTagsInput($tags_input)
+    {
+        require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
+        return Collab\PostTermsSave::fltTagsInput($tags_input);
     }
 
     function fltTaxInput($tax_input)
