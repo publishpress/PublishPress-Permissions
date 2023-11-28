@@ -187,6 +187,15 @@ class PostTermsSave
         return [];
     }
 
+    public static function fltTagsInput($tags_input)
+    {
+        $arr = self::fltTaxInput(
+            ['post_tag' => (array) $tags_input]
+        );
+
+        return (isset($arr['post_tag'])) ? $arr['post_tag'] : [];
+    }
+
     public static function fltTaxInput($tax_input)
     {
         $pp = presspermit();
