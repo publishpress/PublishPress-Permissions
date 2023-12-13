@@ -280,8 +280,8 @@ class SettingsTabCore
 
                         echo '<div class="pp-subtext pp-no-hide">';
 
-                        if (defined('PUBLISHPRPESS_CAPS_VERSION')) {
-                            $url = admin_url('admin.php?page=capsman');
+                        if (defined('PUBLISHPRESS_CAPS_VERSION')) {
+                            $url = admin_url('admin.php?page=pp-capabilities');
 
                             printf(
                                 esc_html__(
