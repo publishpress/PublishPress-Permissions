@@ -3,9 +3,9 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 5.5
-Tested up to: 6.3
+Tested up to: 6.4
 Requires PHP: 7.2.5
-Stable tag: 3.11.5
+Stable tag: 3.11.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,12 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 3.11.6 - 13 Dec 2023 =
+* Feature : Option to require Taxonomy edit capability to assign post tags that do not already exist
+* Fixed : On Post edit, Tags were not filtered based on Specific Permissions
+* Fixed : On Permissions > Settings, All Taxonomies remained checked even after updating with some disabled
+* Compat : Work around unidentified compatibility issue affecting term filtering and access to certain static methods
 
 = 3.11.5 - 1 Nov 2023 =
 * Compat : Beaver Builder - Queries within BB shortcodes were improperly filtered

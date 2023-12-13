@@ -146,6 +146,15 @@ class PostTermsSave
         return [];
     }
 
+    public static function fltTagsInput($tags_input)
+    {
+        $arr = self::fltTaxInput(
+            ['post_tag' => (array) $tags_input]
+        );
+
+        return (isset($arr['post_tag'])) ? $arr['post_tag'] : [];
+    }
+
     public static function fltTaxInput($tax_input)
     {
         $pp = presspermit();
@@ -316,7 +325,7 @@ class PostTermsSave
                 }
             }
         }
-
+		
         if (empty($selected_terms) && ((is_taxonomy_hierarchical($taxonomy) 
         && ('post_tag' != $taxonomy)) || self::userHasTermLimitations($taxonomy))
         ) {
@@ -325,12 +334,12 @@ class PostTermsSave
 
             // For now, always check the DB for default terms.  todo: only if the default_term_option property is set
             if (isset($tx_obj->default_term_option))
-                $default_term_option = $tx_obj->default_term_option;
+            	$default_term_option = $tx_obj->default_term_option;
             else
-                $default_term_option = "default_{$taxonomy}";
+            	$default_term_option = "default_{$taxonomy}";
 
             $default_terms = (array) get_option($default_term_option);
-
+			
             // but if the default term is not defined or is not in user's subset of usable terms, substitute first available
             if ($user_terms) {
                 if (true === $user_terms)
@@ -351,12 +360,12 @@ class PostTermsSave
                     if ((
                         (!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') || !empty($select_default_term) || (count($user_terms) == 1))
 						&& !defined('PP_NO_AUTO_DEFAULT_TERM') 
-                        && !defined('PP_NO_AUTO_DEFAULT_' . strtoupper($taxonomy))
+						&& !defined('PP_NO_AUTO_DEFAULT_' . strtoupper($taxonomy))
                         )
 					|| defined('PP_AUTO_DEFAULT_TERM') 
 					|| defined('PP_AUTO_DEFAULT_' . strtoupper($taxonomy))
-                    ) {
-                    	$default_terms = (array)$user_terms[0];
+					) {
+                        $default_terms = (array)$user_terms[0];
                     } else {
                     	$default_terms = [];
                     }
