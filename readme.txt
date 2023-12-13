@@ -240,12 +240,17 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 3.12.0 =
+= 4.0.0 - 13 Dec 2023 =
 * Perf : Eliminated scan of users table on plugin activation (impacting sites with large number of users)
 * Perf : Eliminated recursive query of subpages (impacting sites with complex page hierarchies)
 * Perf : Improved caching of post capability checks
-* Fixed : On Post edit, Tags were not filtered based on Specific Permissions
 * Code : Improved phpcs scan results
+
+= 3.11.6 =
+* Feature : Option to require Taxonomy edit capability to assign post tags that do not already exist
+* Fixed : On Post edit, Tags were not filtered based on Specific Permissions
+* Fixed : On Permissions > Settings, All Taxonomies remained checked even after updating with some disabled
+* Compat : Work around unidentified compatibility issue affecting term filtering and access to certain static methods
 
 = 3.11.5 =
 * Compat : Beaver Builder - Queries within BB shortcodes were improperly filtered
