@@ -150,6 +150,7 @@ class CollabHooks
         add_filter('pre_post_tax_input', [$this, 'fltTaxInput'], 50, 1);
         add_filter('pre_post_category', [$this, 'fltPrePostTerms'], 50, 1);
         add_filter('presspermit_pre_object_terms', [$this, 'fltPrePostTerms'], 50, 3);
+        add_filter('pre_insert_term', [$this, 'fltPreInsertTerm'], 10, 3);
     }
 
     function init()
@@ -182,6 +183,7 @@ class CollabHooks
             'default_privacy' => [],
             'force_default_privacy' => [],
             'page_parent_order' => '',
+            'create_tag_require_edit_cap' => 0,
         ];
 
         return array_merge($def, $new);
@@ -623,6 +625,19 @@ class CollabHooks
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
         return Collab\PostTermsSave::fltPreObjectTerms($terms, $taxonomy, $args);
+    }
+
+    public function fltPreInsertTerm($term, $taxonomy, $args) {
+        if ($tx_obj = get_taxonomy($taxonomy)) {
+            if (empty($tx_obj->hierarchical) && presspermit()->getOption('create_tag_require_edit_cap') && !presspermit()->isAdministrator()) {
+                if (!current_user_can($tx_obj->cap->edit_terms)) {
+                    $tx_label = (!empty($tx_obj->labels) && !empty($tx_obj->labels->name)) ? $tx_obj->labels->name : $taxonomy;
+                    $term = new \WP_Error('unauthorized', sprintf(esc_html__('You are not allowed to create new %s', 'press-permit-core'), $tx_label));
+                }
+            }
+        }
+
+        return $term;
     }
 
     function fltOriginalRestPostTerms($terms, $taxonomy = 'category')
