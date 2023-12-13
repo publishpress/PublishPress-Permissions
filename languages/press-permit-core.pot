@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the PublishPress Permissions plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: PublishPress Permissions 3.11.5\n"
+"Project-Id-Version: PublishPress Permissions 3.11.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-11-01T18:39:50+00:00\n"
+"POT-Creation-Date: 2023-12-13T19:48:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: press-permit-core\n"
@@ -220,14 +220,14 @@ msgid "selected:"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:151
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:206
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:207
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:133
 msgid "Nav Menus (Legacy)"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:153
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:857
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:208
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:209
 #: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:208
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:135
 msgid "Legacy"
@@ -502,7 +502,7 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:98
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:851
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:214
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:215
 msgid "Block"
 msgstr ""
 
@@ -1533,7 +1533,7 @@ msgid "Filtered Taxonomies"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:29
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:47
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:48
 msgid "Filtered Post Types"
 msgstr ""
 
@@ -1554,67 +1554,79 @@ msgstr ""
 msgid "Database Maintenance"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:48
-msgid "Enforce distinct edit, delete capability requirements for Media"
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:47
+msgid "Tag creation requires Tag edit capability"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:49
-msgid "Use create_posts capability"
+msgid "Enforce distinct edit, delete capability requirements for Media"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:50
-msgid "Search Results include Media"
+msgid "Use create_posts capability"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:51
-msgid "Performance: Don't filter category / tag counts"
+msgid "Search Results include Media"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:52
-msgid "Suppress \"Private:\" Caption"
+msgid "Performance: Don't filter category / tag counts"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:53
-msgid "Filter Menu Items"
+msgid "Suppress \"Private:\" Caption"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:54
-msgid "Permission Groups on User Profile"
+msgid "Filter Menu Items"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:55
-msgid "Supplemental Roles on User Profile"
+msgid "Permission Groups on User Profile"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:56
-msgid "Select Permission Groups at User creation"
+msgid "Supplemental Roles on User Profile"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:57
+msgid "Select Permission Groups at User creation"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:58
 msgid "Post-specific Permissions take priority"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:126
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:127
 msgid "Modify permissions for these Taxonomies:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:155
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:156
 msgid "Modify permissions for these Post Types:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:212
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:213
 msgid "Nav Menus (Block)"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:294
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:295
 msgid "%1$sNote:%2$s If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types. You can %3$sadd these capabilities to any role%4$s that needs it."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:307
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:308
 msgid "%1$sNote:%2$s If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types. You can use a WordPress role editor like %3$sPublishPress Capabilities%4$s to add these capabilities to any role that needs it."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:372
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:333
+msgid "%1$sNote:%2$s If enabled, users cannot add previously non-existant tags to a post unless their role includes the Edit capability for its taxonomy. You can %3$sadd these capabilities to Capabilities > Capabilities > Taxonomies%4$s for any role that needs it."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:346
+msgid "%1$sNote:%2$s If enabled, users cannot add previously non-existent tags to a post unless their role includes the Edit capability for its taxonomy. You can use a WordPress role editor like %3$sPublishPress Capabilities%4$s to add these capabilities to any role that needs it."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:412
 msgid "%sPosts / Pages Listing:%s %s"
 msgstr ""
 
@@ -2277,6 +2289,10 @@ msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:446
 msgid "lower role levels"
+msgstr ""
+
+#: modules/presspermit-collaboration/classes/Permissions/CollabHooks.php:627
+msgid "You are not allowed to create new %s"
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/CollabHooksAdmin.php:212
