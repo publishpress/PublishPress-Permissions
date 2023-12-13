@@ -166,6 +166,20 @@ class TermFilters
             return true;
         }
 
+        if (defined('DOING_AJAX') && DOING_AJAX && method_exists('\PressShack\LibWP', 'REQUEST_key')) {
+            if ($action = PWP::REQUEST_key('action')) {
+                if (in_array(
+                    $action, 
+                    (array) apply_filters(
+                        'presspermit_unfiltered_ajax',
+                        ['woocommerce_load_variations', 'woocommerce_add_variation', 'woocommerce_remove_variations', 'woocommerce_save_variations', 'us_ajax_grid']
+                    ), true)
+                ) {
+                    return true;
+                }
+            }
+        }
+
         // Kriesi Enfold theme conflict on "More Posts" query
         if (
             defined('DOING_AJAX') && DOING_AJAX
