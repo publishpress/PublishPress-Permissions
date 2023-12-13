@@ -45,6 +45,8 @@ class GroupUpdate
 
             $data['user_id'] = $user_id;
 
+            // Direct query of plugin table on plugin admin operation
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             if ($already_member = $wpdb->get_col($wpdb->prepare(
                 "SELECT user_id FROM $wpdb->members_table WHERE group_id = %d AND user_id = %d",
                 $group_id,
@@ -54,6 +56,8 @@ class GroupUpdate
                 return;
             } else {
                 $data['add_date_gmt'] = current_time('mysql', 1);
+
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $wpdb->insert($wpdb->members_table, $data);
             }
 
@@ -83,9 +87,12 @@ class GroupUpdate
         $user_ids = array_map('intval', (array) $user_ids);
 
         $id_csv = implode("', '", array_map('intval', $user_ids));
+
+        // Direct query of plugin table on plugin admin operation (IN clause constructed and sanitized above)
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $wpdb->query(
             $wpdb->prepare(
-                "DELETE FROM $wpdb->members_table WHERE member_type = %s AND group_id = %d AND user_id IN ('$id_csv')",
+                "DELETE FROM $wpdb->members_table WHERE member_type = %s AND group_id = %d AND user_id IN ('$id_csv')", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 $member_type,
                 $group_id
             )
@@ -147,9 +154,11 @@ class GroupUpdate
 
         $user_id_csv = implode("', '", array_map('intval', (array)$user_ids));
 
+        // Direct query of plugin table on plugin admin operation (IN clause sanitized above)
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $results = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT * FROM $wpdb->members_table WHERE group_id = %d AND user_id IN ('$user_id_csv')", 
+                "SELECT * FROM $wpdb->members_table WHERE group_id = %d AND user_id IN ('$user_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 $group_id
             )
         );
@@ -159,6 +168,8 @@ class GroupUpdate
         }
 
         foreach ((array)$user_ids as $user_id) {
+            // Direct query of plugin table on plugin admin operation
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $wpdb->update($wpdb->members_table, $cols, ['group_id' => $group_id, 'user_id' => $user_id]);
 
             $_prev = (isset($prev[$user_id])) ? $prev[$user_id] : '';
@@ -176,6 +187,8 @@ class GroupUpdate
 
         // possible todo: pre-query user groups so we can do_action('presspermit_delete_group_user')
 
+        // Direct query of plugin table on plugin admin operation
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $wpdb->delete($wpdb->pp_group_members, compact('user_id'));
     }
 
@@ -193,6 +206,8 @@ class GroupUpdate
             return false;
         }
 
+        // Direct query of plugin table on plugin admin operation
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $wpdb->insert($groups_table, $groupdata);
 
         do_action('presspermit_created_group', (int)$wpdb->insert_id, $agent_type);
@@ -215,6 +230,9 @@ class GroupUpdate
         $members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
 
         do_action('presspermit_delete_group', $group_id, $agent_type);
+
+        // Direct query of plugin table on plugin admin operations
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
         $wpdb->delete($wpdb->ppc_roles, ['agent_type' => $agent_type, 'agent_id' => $group_id]);
 
@@ -246,6 +264,9 @@ class GroupUpdate
 
         $wpdb->groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, $agent_type);
 
+        // Direct query of plugin table on plugin admin operations
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
         if ($prev = $wpdb->get_row(
             $wpdb->prepare(
                 "SELECT * FROM $wpdb->groups_table WHERE ID = %d", 
@@ -273,6 +294,8 @@ class GroupUpdate
 
         $wpdb->groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, $agent_type);
 
+        // Direct query of plugin table on plugin admin operation
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         if ($string && !$wpdb->get_var(
             $wpdb->prepare(
                 "SELECT ID FROM $wpdb->groups_table WHERE group_name = %s LIMIT 1", 

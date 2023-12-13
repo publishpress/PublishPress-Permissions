@@ -107,7 +107,7 @@ class PermissionsAdmin
                     $type_caption = $type_obj->labels->singular_name;
                 } else {
                     $role_name = ($slug_fallback) ? $role_name : '';
-                    echo ($echo) ? $role_name : '';
+                    echo ($echo) ? esc_html($role_name) : '';
                     return $role_name;
                 }
 
@@ -127,8 +127,10 @@ class PermissionsAdmin
                         printf(
                             esc_html__('%1$s&nbsp;%2$s&nbsp;%3$s-&nbsp;%4$s%5$s%6$s', 'press-permit-core'),
                             esc_html($type_caption),
+                            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                             str_replace(' ', '&nbsp;', esc_html($role_caption)),
                             '<span class="pp_nolink">',
+                            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                             str_replace(' ', '&nbsp;', esc_html($cond_caption)),
                             '</span>',
                             ''
@@ -194,7 +196,7 @@ class PermissionsAdmin
             $role_name = apply_filters('presspermit_role_title', $role_name, $args);
         }
 
-        echo ($echo && empty($echo_done)) ? $role_name : '';
+        echo ($echo && empty($echo_done)) ? esc_html($role_name) : '';
         return $role_name;
     }
 }

@@ -8,6 +8,9 @@ class Migration
     {
         global $wpdb;
 
+        // Direct query of plugin table on plugin version update operation
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
         $options = $wpdb->get_results("SELECT option_name, option_value FROM $wpdb->options WHERE option_name LIKE 'pp\_%'");
         foreach ($options as $row) {
             update_option('presspermit_' . substr($row->option_name, 3), maybe_unserialize($row->option_value));
@@ -83,6 +86,8 @@ class Migration
     {
         global $wpdb;
 
+        // Direct query of plugin table on plugin version update operation
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $options = $wpdb->get_results("SELECT meta_key, meta_value FROM $wpdb->sitemeta WHERE meta_key LIKE 'pp\_%'");
         foreach ($options as $row) {
             update_site_option('presspermit_' . substr($row->meta_key, 3), maybe_unserialize($row->meta_value));
@@ -102,6 +107,9 @@ class Migration
     private static function get_propagated_attachment_exceptions()
     {
         global $wpdb;
+
+        // Direct query of plugin table on plugin version update operation
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         return $wpdb->get_col(
             "SELECT eitem_id FROM $wpdb->ppc_exception_items AS i INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
             . " WHERE e.for_item_source = 'post' AND i.inherited_from > 0 AND e.for_item_type = 'attachment'"
@@ -114,7 +122,12 @@ class Migration
 
         if ($eitem_ids = self::get_propagated_attachment_exceptions()) {
             $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
-            $wpdb->query("UPDATE $wpdb->ppc_exception_items SET inherited_from = 0 WHERE eitem_id IN ('$eitem_id_csv')");
+
+            // Direct query of plugin table on plugin admin operation (IN clause constructed and sanitized above)
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            $wpdb->query(
+                "UPDATE $wpdb->ppc_exception_items SET inherited_from = 0 WHERE eitem_id IN ('$eitem_id_csv')"  //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            );
 
             // keep a log in case questions arise
             if (!$arr = get_option('ppc_exposed_attachment_eitems'))
@@ -130,11 +143,16 @@ class Migration
         global $wpdb;
 
         // first, delete any attachment exception with assign_for = 'children'
+
+        // Direct query of plugin table on plugin admin operation
+        // phpcs:delete WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         if ($eitem_ids = $wpdb->get_col(
             "SELECT eitem_id FROM $wpdb->ppc_exception_items AS i INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
             . " WHERE e.for_item_source = 'post' AND e.for_item_type = 'attachment' AND i.assign_for = 'children'"
         )) {
             $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
+
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             $wpdb->query("DELETE FROM $wpdb->ppc_exception_items WHERE eitem_id IN ('$eitem_id_csv')");
         }
 
@@ -147,7 +165,7 @@ class Migration
                         "SELECT eitem_id, item_id FROM $wpdb->ppc_exception_items AS i"
                         . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
                         . " WHERE i.inherited_from > 0 AND e.for_item_source = 'post' AND e.for_item_type = 'attachment'"
-                        . " AND e.operation = %s $mod_type_clause",
+                        . " AND e.operation = %s $mod_type_clause", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                         $operation
                     )
@@ -162,7 +180,10 @@ class Migration
                 }
 
                 $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
-                $wpdb->query("DELETE FROM $wpdb->ppc_exception_items WHERE eitem_id IN ('$eitem_id_csv')");
+
+                $wpdb->query(
+                    "DELETE FROM $wpdb->ppc_exception_items WHERE eitem_id IN ('$eitem_id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                );
 
                 // keep a log in case questions arise
                 if (!$arr = get_option("ppc_deleted_{$operation}_exc_attachments"))
@@ -184,10 +205,11 @@ class Migration
 
             foreach ($tableindices as $tableindex) {
                 if ('PRIMARY' == $tableindex->Key_name) {
-                    $wpdb->query("ALTER TABLE $wpdb->pp_group_members MODIFY group_id bigint(20) unsigned NOT NULL default '0'");
-                    $wpdb->query("ALTER TABLE $wpdb->pp_group_members MODIFY user_id bigint(20) unsigned NOT NULL default '0'");
-                    $wpdb->query("ALTER TABLE $wpdb->pp_group_members DROP PRIMARY KEY");
-                    $wpdb->query("ALTER TABLE $wpdb->pp_group_members ADD INDEX `pp_group_user` (`group_id`,`user_id`)");
+                    // phpcs:delete WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+                    $wpdb->query("ALTER TABLE $wpdb->pp_group_members MODIFY group_id bigint(20) unsigned NOT NULL default '0'");   // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
+                    $wpdb->query("ALTER TABLE $wpdb->pp_group_members MODIFY user_id bigint(20) unsigned NOT NULL default '0'");    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
+                    $wpdb->query("ALTER TABLE $wpdb->pp_group_members DROP PRIMARY KEY");                                           // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
+                    $wpdb->query("ALTER TABLE $wpdb->pp_group_members ADD INDEX `pp_group_user` (`group_id`,`user_id`)");           // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange
                 }
             }
         }

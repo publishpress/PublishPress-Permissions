@@ -103,7 +103,7 @@ class AgentsDynamicUI
                         for ($i = 0; $i < $ilim; $i++) :
                             ?>
                             <div class="pp-user-meta-search" <?php
-                            if ($i > 0 && presspermit_empty_GET("pp_search_user_meta_key_{$i}_{$id_suffix}")) {
+                            if ($i > 0 && PWP::empty_GET("pp_search_user_meta_key_{$i}_{$id_suffix}")) {
                                 echo ' style="display:none;"';
                             }
                             ?>>
@@ -117,14 +117,14 @@ class AgentsDynamicUI
 
                                 <input id="pp_search_user_meta_val_<?php echo esc_attr($i); ?>_<?php echo esc_attr($id_suffix); ?>" class="pp-user-meta-field" 
                                        type="text" <?php
-                                if (presspermit_empty_GET("pp_search_user_meta_key_{$i}_{$id_suffix}")) {
+                                if (PWP::empty_GET("pp_search_user_meta_key_{$i}_{$id_suffix}")) {
                                     echo 'style="display:none"';
                                 }
                                 ?> title="<?php echo esc_attr($title); ?>" size="8"/>
 
                                 <?php if ($i < $ilim - 1) : ?>
                                     &nbsp;<span class="pp-usermeta-field-more" <?php
-                                    if (presspermit_empty_GET("pp_search_user_meta_key_{$i}_{$id_suffix}")) {
+                                    if (PWP::empty_GET("pp_search_user_meta_key_{$i}_{$id_suffix}")) {
                                         echo 'style="display:none"';
                                     }
                                     ?>>+</span>
@@ -265,10 +265,10 @@ class AgentsDynamicUI
 
             wp_enqueue_script('presspermit-agent-select', PRESSPERMIT_URLPATH . "/common/js/agent-exception-select{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
 
-            $arr = array_merge($args, ['agent_type' => $agent_type, 'ajaxurl' => admin_url('')]);
+            $arr = array_merge($args, ['agent_type' => $agent_type, 'ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax')]);
             wp_localize_script('presspermit-agent-select', 'ppException', $arr);
         } else {
-            wp_localize_script('presspermit-listbox', 'ppListbox', ['omit_admins' => '0', 'metagroups' => 0]);
+            wp_localize_script('presspermit-listbox', 'ppListbox', ['omit_admins' => '1', 'metagroups' => 0]);
 
             if (!apply_filters('presspermit_override_agent_select_js', false)) {
                 wp_enqueue_script('presspermit-agent-select', PRESSPERMIT_URLPATH . "/common/js/agent-select{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
@@ -278,7 +278,7 @@ class AgentsDynamicUI
         $wp_scripts->in_footer[] = 'presspermit-agent-select'; // otherwise it will not be printed in footer, as of WP 3.2.1
 
         $ajaxhandler = (!empty($args['create_dropdowns'])) ? 'got_ajax_dropdowns' : 'got_ajax_listbox';
-        wp_localize_script('presspermit-agent-select', 'PPAgentSelect', ['adminurl' => admin_url(''), 'ajaxhandler' => $ajaxhandler]);
+        wp_localize_script('presspermit-agent-select', 'PPAgentSelect', ['ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax'), 'ajaxhandler' => $ajaxhandler]);
 
         if (!$this->agents_js_queue) {
             $this->agents_js_queue = [];

@@ -28,7 +28,7 @@ class NavMenu
 
         add_filter('get_user_option_nav_menu_recently_edited', [$this, 'fltNavMenuRecent']);
 
-        if (!presspermit_empty_POST()) {
+        if (!PWP::empty_POST()) {
             add_filter('update_post_metadata', [$this, 'flt_police_menu_item_data_edit'], 10, 5);
             add_action('pre_post_update', [$this, 'act_police_menu_item_edit']);
             add_action('presspermit_delete_object', [$this, 'act_police_menu_item_deletion'], 10, 3);
@@ -138,6 +138,8 @@ class NavMenu
 
         // Exposing uneditable items for labeling makes it necessary to block menu item re-ordering.  
         // Otherwise drag-drop functionality is confused by the mingling of editable and un-editable items.
+
+        // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
         if (/*presspermit()->getOption('admin_nav_menu_partial_editing') && */ !NavMenus::is_unrestricted()) : ?>
             <style type="text/css">fieldset.field-move {
                     display: none !important;
@@ -163,7 +165,7 @@ class NavMenu
                 <?php
                 $comma = '';
                 foreach( $uneditable_items as $id ) {
-                    echo $comma . "#delete-" . esc_attr($id) . ",#cancel-" . esc_attr($id) . ",#menu-item-" . esc_attr($id) . " span.meta-sep";
+                    echo esc_attr($comma) . "#delete-" . esc_attr($id) . ",#cancel-" . esc_attr($id) . ",#menu-item-" . esc_attr($id) . " span.meta-sep";
 
                     if (!$partial_editing) {
                         echo ",#edit-" . esc_attr($id);
@@ -179,12 +181,12 @@ class NavMenu
 
                     if (!presspermit()->isContentAdministrator() && empty($current_user->allcaps['edit_theme_options']) && presspermit()->getOption('admin_nav_menu_lock_custom')) {
                         if ('custom' == get_post_meta($id, '_menu_item_type', true)) {
-                            echo '#edit-menu-item-url-' . $id . ' {pointer-events: none;}';
+                            echo '#edit-menu-item-url-' . esc_attr($id) . ' {pointer-events: none;}';
                         }
                     }
 
                     if (!$partial_editing) {
-                        echo '#menu-item-' . $id . ' {pointer-events: none;}';
+                        echo '#menu-item-' . esc_attr($id) . ' {pointer-events: none;}';
                     }
                 }
                 ?>

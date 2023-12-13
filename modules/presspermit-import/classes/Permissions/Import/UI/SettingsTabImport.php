@@ -34,7 +34,7 @@ class SettingsTabImport
 
     function actOptionsPreUI()
     {
-        if (!presspermit_empty_POST('pp_rs_import') && did_action('presspermit_importing')) {
+        if (!PWP::empty_POST('pp_rs_import') && did_action('presspermit_importing')) {
             $rs_import = Import\DB\RoleScoper::instance();
 
             ?>
@@ -84,7 +84,7 @@ class SettingsTabImport
             <?php
         }
 
-        if (!presspermit_empty_POST('pp_undo_imports')) {
+        if (!PWP::empty_POST('pp_undo_imports')) {
             ?>
             <table class="form-table pp-form-table pp-options-table">
                 <tr>
@@ -122,6 +122,7 @@ class SettingsTabImport
             <input name="pp_rs_import" type="submit" value="Do Import"/>
 
             <?php
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             if ($count = $wpdb->get_var("SELECT COUNT(i.ID) FROM $wpdb->ppi_imported AS i INNER JOIN $wpdb->ppi_runs AS r ON i.run_id = r.ID AND r.import_type = 'rs'")) :
                 ?>
                 <span class='prev-imports'>
@@ -142,7 +143,7 @@ class SettingsTabImport
         <?php
         endif;
 
-        if (empty($offer_rs) && empty($offer_pp) && presspermit_empty_POST('pp_rs_import') && presspermit_empty_POST('pp_pp_import')) : ?>
+        if (empty($offer_rs) && empty($offer_pp) && PWP::empty_POST('pp_rs_import') && PWP::empty_POST('pp_pp_import')) : ?>
             <p>
                 <?php esc_html_e('Nothing to import!', 'press-permit-core'); ?>
             </p>
@@ -165,13 +166,14 @@ class SettingsTabImport
 
         <?php
         if (is_multisite()) {
-            $site_clause = (is_main_site()) ? "AND site > 0" : "AND site = %d";  // if on main site, will undo import for all sites
+            $site_clause = (is_main_site()) ? "AND site > 0" : $wpdb->prepare("AND site = %d", get_current_blog_id());  // if on main site, will undo import for all sites
         } else {
             $site_clause = '';
         }
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         if ($wpdb->get_col(
-                "SELECT run_id FROM $wpdb->ppi_imported WHERE run_id > 0 $site_clause"
+                "SELECT run_id FROM $wpdb->ppi_imported WHERE run_id > 0 $site_clause"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             ) 
         ) : ?>
             <tr>

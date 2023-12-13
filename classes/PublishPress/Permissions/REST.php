@@ -155,8 +155,8 @@ class REST
                 }
 
 			  // voluntary filtering of get_items (for WYSIWY can edit, etc.)
-                if ($this->is_view_method && ('read' == $this->operation) && !presspermit_empty_REQUEST('operation')) {
-                    $this->operation = presspermit_REQUEST_key('operation');
+                if ($this->is_view_method && ('read' == $this->operation) && !PWP::empty_REQUEST('operation')) {
+                    $this->operation = PWP::REQUEST_key('operation');
                 }
 			
                 // NOTE: setting or default may be adapted downstream
@@ -183,7 +183,16 @@ class REST
                     if (('revision' != $this->post_type) && presspermit()->getTypeOption('default_privacy', $this->post_type)) {
                         if (false === get_post_meta($this->post_id, '_pp_original_status')) {
                             global $wpdb;
-                            if ( $post_status = $wpdb->get_var( $wpdb->prepare("SELECT post_status FROM $wpdb->posts WHERE ID = %s", $this->post_id) ) ) {
+
+                            // phpcs Note: When imposing a default privacy, ensure retrieval of stored original status, not newly updated value
+
+                            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+                            if ( $post_status = $wpdb->get_var( 
+                                $wpdb->prepare(
+                                    "SELECT post_status FROM $wpdb->posts WHERE ID = %s", 
+                                    $this->post_id
+                                )
+                            )) {
                                 update_post_meta($this->post_id, '_pp_original_status', $this->post_status);
                             }
                         }

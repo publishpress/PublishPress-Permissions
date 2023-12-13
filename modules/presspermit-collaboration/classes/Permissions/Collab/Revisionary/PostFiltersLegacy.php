@@ -44,8 +44,8 @@ class PostFiltersLegacy
     // this is no longer used as a filter, but still called internally
     function fltPostsWhere($where, $args)
     {
-        if (defined('REVISIONARY_VERSION') && !is_admin() && presspermit_is_REQUEST('post_type', 'revision') 
-        && (!presspermit_empty_REQUEST('preview') || !presspermit_empty_REQUEST('preview_id'))) {
+        if (defined('REVISIONARY_VERSION') && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+        && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))) {
             $matches = [];
             if (preg_match("/post_type = '([0-9a-zA-Z_\-]+)'/", $where, $matches)) {
                 if ($matches[1]) {
@@ -68,8 +68,8 @@ class PostFiltersLegacy
 
     function flt_meta_cap($meta_cap)
     {
-        if (defined('REVISIONARY_VERSION') && ('read_post' == $meta_cap) && !is_admin() && presspermit_is_REQUEST('post_type', 'revision') 
-        && (!presspermit_empty_REQUEST('preview') || !presspermit_empty_REQUEST('preview_id'))
+        if (defined('REVISIONARY_VERSION') && ('read_post' == $meta_cap) && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+        && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
         ) {
             $meta_cap = 'edit_post';
         }

@@ -56,6 +56,7 @@ if (!defined('PRESSPERMIT_IMPORT_FILE')) {
                 
                 class_alias( '\PressShack\LibArray', '\PublishPress\Permissions\Import\Arr' );
                 class_alias( '\PressShack\LibWP', '\PublishPress\Permissions\Import\PWP' );
+                class_alias( '\PressShack\LibWP', '\PublishPress\Permissions\Import\UI\PWP' );
 
                 require_once(__DIR__ . '/classes/Permissions/ImportHooksAdmin.php');
                 new \PublishPress\Permissions\ImportHooksAdmin();

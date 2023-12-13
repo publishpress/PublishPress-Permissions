@@ -6,7 +6,7 @@ class PostSave
 {
     public static function actSaveItem($item_source, $post_id, $post)
     {
-        if (!function_exists('presspermit_is_REQUEST') || presspermit_is_REQUEST('action', 'untrash')) {
+        if (!method_exists('\PressShack\LibWP', 'is_REQUEST') || PWP::is_REQUEST('action', 'untrash')) {
             return;
         }
 
@@ -27,7 +27,7 @@ class PostSave
         }
 
         if (!in_array($post->post_type, presspermit()->getEnabledPostTypes(), true)) {
-            if (!presspermit_empty_REQUEST('pp_enable_post_type')) {
+            if (!PWP::empty_REQUEST('pp_enable_post_type')) {
                 $enabled = get_option('presspermit_enabled_post_types');
                 $enabled[$post->post_type] = '1';
 
@@ -61,7 +61,7 @@ class PostSave
             $last_parent = 0;
         }
 
-        if (!presspermit_is_REQUEST('page', 'rvy-revisions')) {
+        if (!PWP::is_REQUEST('page', 'rvy-revisions')) {
             usleep(5000); // Work around intermittent failure to propagate exceptions.  Maybe storage of post row is delayed on some db servers.
             require_once(PRESSPERMIT_CLASSPATH . '/ItemSave.php');
             ItemSave::itemUpdateProcessExceptions('post', 'post', $post_id, compact('is_new', 'set_parent', 'last_parent'));

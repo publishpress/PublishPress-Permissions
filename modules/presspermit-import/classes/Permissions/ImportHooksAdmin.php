@@ -20,6 +20,7 @@ class ImportHooksAdmin
         global $wpdb;
 
         if ('rs' == $type) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $count = $wpdb->get_var(
                 "SELECT COUNT(i.ID) FROM $wpdb->ppi_imported AS i INNER JOIN $wpdb->ppi_runs AS r ON i.run_id = r.ID AND r.import_type = 'rs'"
             );
@@ -30,7 +31,7 @@ class ImportHooksAdmin
 
     function actAdminInit()
     {
-        if (!presspermit_empty_POST('pp_rs_import') || !presspermit_empty_POST('pp_pp_import') || !presspermit_empty_POST('pp_undo_imports')) {
+        if (!PWP::empty_POST('pp_rs_import') || !PWP::empty_POST('pp_pp_import') || !PWP::empty_POST('pp_undo_imports')) {
             check_admin_referer('pp-rs-import', '_pp_import_nonce');
 
             require_once(PRESSPERMIT_IMPORT_CLASSPATH . '/Importer.php');
@@ -40,7 +41,7 @@ class ImportHooksAdmin
 
     function fltDefaultTab($default_tab)
     {
-        if (presspermit_is_POST('pp_rs_import') || presspermit_is_POST('pp_pp_import') || presspermit_is_POST('pp_undo_imports')) {
+        if (PWP::is_POST('pp_rs_import') || PWP::is_POST('pp_pp_import') || PWP::is_POST('pp_undo_imports')) {
             $default_tab = 'import';
         }
 

@@ -18,11 +18,9 @@ class PostFiltersFront
 
         add_filter('getarchives_where', [$this, 'fltGetarchivesWhere']);
 
-        add_filter('option_sticky_posts', [$this, 'fltStickyPosts']);
-
         add_filter('shortcode_atts_gallery', [$this, 'fltAttsGallery'], 10, 3);
 
-        if (!presspermit_empty_REQUEST('preview')) {
+        if (!PWP::empty_REQUEST('preview')) {
             add_filter('wp_link_pages_link', [$this, 'fltPagesLink']);
         }
 
@@ -116,23 +114,6 @@ class PostFiltersFront
 
         remove_filter('query', ['PostFiltersFront', 'fltGetArchivesRequest'], 50);
         return $request;
-    }
-
-    public function fltStickyPosts($post_ids)
-    {
-        if ($post_ids && !presspermit()->isContentAdministrator()) {
-            global $wpdb;
-            $clauses = array_fill_keys(['distinct', 'join', 'groupby', 'orderby', 'limits'], '');
-            $clauses['fields'] = 'ID';
-            $clauses['where'] = "AND ID IN ('" . implode("','", $post_ids) . "')";
-            $clauses = apply_filters('presspermit_posts_clauses', $clauses);
-
-            $query = "SELECT {$clauses['distinct']} ID FROM $wpdb->posts {$clauses['join']} WHERE 1=1 {$clauses['where']}";
-
-            $post_ids = array_map('intval', $wpdb->get_col($query));
-        }
-
-        return $post_ids;
     }
 
     public function fltPagesLink($pagenum_link)

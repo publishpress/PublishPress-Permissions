@@ -6,7 +6,6 @@ class CommentFiltersAdmin
     function __construct() {
         add_filter('the_comments', [$this, 'fltLogCommentPostIds']);
 
-        add_filter('wp_count_comments', [$this, 'fltWpCountCommentsOverride'], 99, 2);
         add_filter('map_meta_cap', [$this, 'fltAdjustReqdCaps'], 1, 4);        
     }
 
@@ -41,76 +40,5 @@ class CommentFiltersAdmin
         }
 
         return $reqd_caps;
-    }
-
-    // force wp_count_comments() through WP_Comment_Query filtering
-    public function fltWpCountCommentsOverride($comments, $post_id = 0)
-    {
-        global $pagenow, $wpdb;
-
-        if (!current_user_can('moderate_comments') || defined('PRESSPERMIT_FORCE_COMMENT_COUNT_FILTER')) {
-            return $comments;
-        }
-
-        if (!empty($pagenow) && ('post-new.php' == $pagenow)) {
-            return $comments;
-        }
-
-        if (!$post_id) {
-            $post_id = ('edit.php' == $pagenow) ? 0 : PWP::getPostID();
-        }
-
-        $qry_obj = new \WP_Comment_Query(['post_id' => $post_id]);
-
-        $clauses = array_fill_keys( ['fields', 'join', 'orderby', 'limits', 'groupby'], '' );
-        $clauses['where'] = "comment_approved = '1'";
-
-        /**
-		 * Filters the comment query clauses.
-		 *
-		 * @since 3.1.0
-		 *
-		 * @param string[]         $pieces An associative array of comment query clauses.
-		 * @param WP_Comment_Query $this   Current instance of WP_Comment_Query (passed by reference).
-		 */
-
-		$clauses = apply_filters_ref_array( 'comments_clauses', array( $clauses, $qry_obj) );
-
-		$join    = isset( $clauses['join'] ) ? $clauses['join'] : '';
-		$where   = isset( $clauses['where'] ) ? $clauses['where'] : '';
-
-		if ( $where ) {
-			$where = 'WHERE ' . $where;
-		}
-
-        $count = $wpdb->get_results("SELECT comment_approved, COUNT( * ) AS num_comments FROM $wpdb->comments $join $where GROUP BY comment_approved");
-
-        // remainder of this function ported from WP function wp_count_comments()
-
-        $total = 0;
-        $approved = ['0' => 'moderated', '1' => 'approved', 'spam' => 'spam', 'trash' => 'trash', 'post-trashed' => 'post-trashed'];
-        foreach ((array)$count as $row) {
-            $row = (array)$row;  // PP modification
-
-            // Don't count post-trashed toward totals
-            if (!empty($row['num_comments'])) {
-                if ('post-trashed' != $row['comment_approved'] && 'trash' != $row['comment_approved'])
-                    $total += $row['num_comments'];
-
-                if (isset($approved[$row['comment_approved']]))
-                    $stats[$approved[$row['comment_approved']]] = $row['num_comments'];
-            }
-        }
-
-        $stats['total_comments'] = $total;
-        $stats['all'] = $total;
-        foreach ($approved as $key) {
-            if (empty($stats[$key]))
-                $stats[$key] = 0;
-        }
-
-        $stats = (object)$stats;
-
-        return $stats;
     }
 }

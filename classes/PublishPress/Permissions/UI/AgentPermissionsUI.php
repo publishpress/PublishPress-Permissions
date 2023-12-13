@@ -6,11 +6,11 @@ class AgentPermissionsUI
 {
     public static function roleAssignmentScripts()
     {
-        if (!$agent_type = presspermit_REQUEST_key('agent_type')) {
+        if (!$agent_type = PWP::REQUEST_key('agent_type')) {
             $agent_type = 'pp_group';
         }
 
-        $agent_id = presspermit_REQUEST_int('agent_id');
+        $agent_id = PWP::REQUEST_int('agent_id');
 
         $vars = [
             'addRoles' => esc_html__('Add Roles', 'press-permit-core'),
@@ -21,7 +21,7 @@ class AgentPermissionsUI
             'noAction' => esc_html__('No Action selected!', 'press-permit-core'),
             'submissionMsg' => esc_html__('Role submission in progress...', 'press-permit-core'),
             'reloadRequired' => esc_html__('Reload form for further changes to this role', 'press-permit-core'),
-            'ajaxurl' => admin_url(''),
+            'ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax'),
         ];
 
         $vars['agentType'] = $agent_type;
@@ -46,14 +46,14 @@ class AgentPermissionsUI
             'reloadRequired' => esc_html__('Reload form for further changes to this permission', 'press-permit-core'),
             'mirrorDone' => esc_html__('Permissions mirrored. Reload form to view newly saved permissions.', 'press-permit-core'),
             'noMode' => esc_html__('No Qualification selected!', 'press-permit-core'),
-            'ajaxurl' => admin_url(''),
+            'ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax'),
         ];
 
-        if (!$vars['agentType'] = presspermit_REQUEST_key('agent_type')) {
+        if (!$vars['agentType'] = PWP::REQUEST_key('agent_type')) {
             $vars['agentType'] = 'pp_group';
         }
 
-        $vars['agentID'] = presspermit_REQUEST_int('agent_id');
+        $vars['agentID'] = PWP::REQUEST_int('agent_id');
         
         // Simulate Nav Menu setup
         require_once( PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
@@ -65,7 +65,7 @@ class AgentPermissionsUI
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
 
         wp_enqueue_script('presspermit-item-metabox', PRESSPERMIT_URLPATH . "/common/js/item-metabox{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION);
-        wp_localize_script('presspermit-item-metabox', 'ppItems', ['ajaxurl' => admin_url(''), 'noResultsFound' => esc_html__('No results found.', 'press-permit-core')]);
+        wp_localize_script('presspermit-item-metabox', 'ppItems', ['ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax'), 'noResultsFound' => esc_html__('No results found.', 'press-permit-core')]);
 
         wp_enqueue_script('presspermit-exception-edit', PRESSPERMIT_URLPATH . "/common/js/exception-edit{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION);
         wp_localize_script('presspermit-exception-edit', 'ppRestrict', $vars);
@@ -205,6 +205,7 @@ class AgentPermissionsUI
                 $(document).on('pp_exceptions_ui', handle_anon_warning);
                 $(document).on('change', 'select[name="pp_select_x_via_type"]', handle_anon_warning);
             });
+            /* ]]> */
         </script>
     <?php endif; ?>
 
@@ -511,7 +512,12 @@ class AgentPermissionsUI
             ?>
 
         <form id="group-<?php echo esc_attr($perm_type); ?>-selections" action="<?php echo esc_url($url); ?>" method="post" <?php do_action('presspermit_group_edit_form_tag'); ?>>
-            <?php wp_nonce_field("pp-update-{$perm_type}_" . $agent_id, "_pp_nonce_$perm_type") ?>
+            <?php wp_nonce_field("pp-update-{$perm_type}_" . $agent_id, "_pp_nonce_$perm_type");
+            
+            if (in_array($agent_type, ['pp_group', 'pp_net_group'])) {
+                wp_nonce_field('pp-update-group_' . $agent_id);
+            }
+            ?>
             <?php
             if ('clone' == $perm_type) {
                 self::selectCloneUI($args['agent']);
@@ -551,7 +557,6 @@ class AgentPermissionsUI
 
         $_args = [
             'assign_for' => '',
-            'extra_cols' => ['i.assign_for', 'i.eitem_id'],
             'agent_type' => $agent_type,
             'agent_id' => $agent_id,
             'post_types' => array_keys($post_types),
@@ -559,10 +564,9 @@ class AgentPermissionsUI
             'return_raw_results' => true
         ];
 
-        if (presspermit_empty_REQUEST('show_propagated'))
+        if (PWP::empty_REQUEST('show_propagated')) {
             $_args['inherited_from'] = 0;
-        else
-            $_args['extra_cols'][] = 'i.inherited_from';
+        }
 
         // todo: Determine how exception items can become orphaned, eliminate this routine check
         require_once(PRESSPERMIT_CLASSPATH . '/DB/Permissions.php');
@@ -578,7 +582,7 @@ class AgentPermissionsUI
 
     public static function currentRolesUI($roles, $args = [])
     {
-        $defaults = ['read_only' => false, 'caption' => '', 'class' => 'pp-group-roles', 'link' => '', 'agent_type' => ''];
+        $defaults = ['read_only' => false, 'caption' => '', 'class' => 'pp-group-roles', 'link' => '', 'agent_type' => '', 'show_groups_link' => false];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -612,10 +616,15 @@ class AgentPermissionsUI
             . "<div id='pp_current_roles_header' class='pp-group-box " . esc_attr($class) . "'>"
             . '<h3>';
 
-        if ($link)
-            echo "<a href='" . esc_url($link) . "'>" . $caption . "</a>";
-        else
-            echo $caption;
+        if ($link) {
+            echo "<a href='" . esc_url($link) . "'>" . esc_html($caption) . "</a>";
+        } else {
+            esc_html_e($caption);
+        }
+
+        if ($show_groups_link) :?>
+            &nbsp;&bull;&nbsp;<small><a class='pp-show-groups' href='#'><?php _e('Show Groups', 'press-permit-core');?></a></small>
+        <?php endif;
 
         echo '</h3>';
         echo '<div>';
@@ -723,6 +732,7 @@ class AgentPermissionsUI
             'class' => 'pp-group-roles',
             'item_links' => false,
             'caption' => '',
+            'show_groups_link' => false,
             'link' => '',
             'agent_type' => ''
         ];
@@ -814,17 +824,23 @@ class AgentPermissionsUI
             . "<div id='pp_current_exceptions' class='pp-group-box " . esc_attr($class) . "'>"
             . '<h3>';
 
-        if ($link)
-            echo "<a href='" . esc_url($link) . "'>" . $caption . "</a>";
-        else
-            echo $caption;
-        
+        if ($link) {
+            echo "<a href='" . esc_url($link) . "'>" . esc_html($caption) . "</a>";
+        } else {
+            esc_html_e($caption);
+        }
+
+        if ($show_groups_link) :?>
+            &nbsp;&bull;&nbsp;<small><a class='pp-show-groups' href='#'><?php _e('Show Groups', 'press-permit-core');?></a></small>
+        <?php endif;
+
         echo '</h3>';
+
         echo '<div>';
 
         echo '<div id="pp_current_exceptions_inner">';
 
-        if (presspermit_empty_REQUEST('all_types') && !empty($exceptions['post'])) {
+        if (PWP::empty_REQUEST('all_types') && !empty($exceptions['post'])) {
             $all_types = array_fill_keys(array_merge($post_types, $taxonomies, ['']), true);
 
             // hide topic, reply assignments even if they are somehow saved/imported without inherited_from value
@@ -1191,7 +1207,7 @@ class AgentPermissionsUI
 
                     endif;
 
-                    if ((presspermit_empty_REQUEST('show_propagated') || !empty($fix_child_exceptions_link)) && !empty($_SERVER['REQUEST_URI'])) {
+                    if ((PWP::empty_REQUEST('show_propagated') || !empty($fix_child_exceptions_link)) && !empty($_SERVER['REQUEST_URI'])) {
                         $show_all_url = add_query_arg('show_propagated', '1', esc_url_raw($_SERVER['REQUEST_URI']));
 
                         if ('term' == $via_src) {
@@ -1205,7 +1221,7 @@ class AgentPermissionsUI
                         } else {
                             echo '<div class="pp-current-roles-note">';
 
-                            if (presspermit_empty_REQUEST('show_propagated')) {
+                            if (PWP::empty_REQUEST('show_propagated')) {
                                 printf(
                                     esc_html__('Note: Permissions inherited from parent %1$s or terms are not displayed. %2$sshow all%3$s', 'press-permit-core'), 
                                     esc_html($_caption), "&nbsp;&nbsp;<a href='" . esc_url($show_all_url) . "'>", 
@@ -1248,8 +1264,18 @@ class AgentPermissionsUI
     private static function userSelectionUI($group_id, $agent_type, $user_class = 'member', $all_users = '')
     {
         // This is only needed for checkbox selection
-        if (!$all_users)
-            $all_users = self::getAllUsers('id_name');
+        if (!$all_users) {
+            $all_users = get_users(
+                [
+                'fields' => ['ID', 'user_login'], 
+                'orderby' => 'user_login'
+                ]
+            );
+
+            foreach (array_keys($all_users) as $k) {
+                $all_users[$k]->display_name = $all_users[$k]->user_login;
+            }
+        }
 
         $current_users = ($group_id)
             ? presspermit()->groups()->getGroupMembers($group_id, $agent_type, 'all', ['member_type' => $user_class, 'status' => 'any'])
@@ -1270,13 +1296,6 @@ class AgentPermissionsUI
         echo '</div>';
 
         echo '</div>';
-    }
-
-    private static function getAllUsers($cols = 'id', $args = [])
-    {
-        require_once(PRESSPERMIT_CLASSPATH . '/DB/Users.php');
-        $args['cols'] = $cols;
-        return \PublishPress\Permissions\DB\Users::getUsers($args);
     }
 
     public static function drawMemberChecklists($group_id, $agent_type, $args = [])
@@ -1389,6 +1408,8 @@ class AgentPermissionsUI
         if (!isset($mod_types)) {
             $mod_types = [
                 'include' => (object)['label' => esc_html__('Limit to:', 'press-permit-core')],
+
+                // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                 'exclude' => (object)['label' => esc_html__('Blocked:', 'press-permit-core')],
             ];
 

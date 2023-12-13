@@ -11,20 +11,25 @@ class Groups
         $pp_admin = $pp->admin();
         $pp_groups = $pp->groups();
 
-        if (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2'])) {
-            $action = presspermit_REQUEST_key('action2');
+        // Nonce verification is not needed here because this is either:
+        // (a) Confirming an update that already happened
+        //  - or -
+        // (b) Displaying a confirmation prompt (with nonce field) for deletion request
 
-        } elseif (!empty($_REQUEST['action']) && !is_numeric($_REQUEST['action'])) {
-            $action = presspermit_REQUEST_key('action');
+        if (!PWP::empty_REQUEST('action2') && !is_numeric(PWP::REQUEST_key('action2'))) {
+            $action = PWP::REQUEST_key('action2');
 
-        } elseif (!empty($_REQUEST['pp_action'])) {
-            $action = presspermit_REQUEST_key('pp_action');
+        } elseif (PWP::empty_REQUEST('action') && !is_numeric(PWP::REQUEST_key('action'))) {
+            $action = PWP::REQUEST_key('action');
+
+        } elseif (!PWP::empty_REQUEST('pp_action')) {
+            $action = PWP::REQUEST_key('pp_action');
         } else {
             $action = '';
         }
 
         if ( ! in_array($action, ['delete', 'bulkdelete'])) {
-            if (!$agent_type = presspermit_REQUEST_key('agent_type')) {
+            if (!$agent_type = PWP::REQUEST_key('agent_type')) {
                 $agent_type = 'pp_group';
             }
         } else {
@@ -52,10 +57,17 @@ class Groups
 
             case 'delete':
             case 'bulkdelete':
-                if ($groups = presspermit_REQUEST_var('groups')) {
-                    $groupids = array_map('intval', (array) $groups);
+                // phpcs Note: Nonce verification unnecessary because this is only generating a confirmation message,
+                // or reporting on an update operation already completed.
+                
+                // group IDs processing is only to report number of groups that were updated
+
+                // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                if (!empty($_REQUEST['groups'])) {
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                    $groupids = array_map('intval', (array) $_REQUEST['groups']);
                 } else {
-                    $groupids = (presspermit_is_REQUEST('group')) ? [presspermit_REQUEST_int('group')] : [];
+                    $groupids = (PWP::is_REQUEST('group')) ? [PWP::REQUEST_int('group')] : [];
                 }
                 
                 ?>
@@ -106,11 +118,11 @@ class Groups
                 $groups_list_table->prepare_items();
                 $total_pages = $groups_list_table->get_pagination_arg('total_pages');
 
-                if ($update = presspermit_GET_key('update')) :
+                if ($update = PWP::GET_key('update')) :
                     switch ($update) {
                         case 'del':
                         case 'del_many':
-                            $delete_count = presspermit_GET_int('delete_count');
+                            $delete_count = PWP::GET_int('delete_count');
 
                             echo '<div id="message" class="updated"><p>'
                                 . esc_html(sprintf(_n('%s group deleted', '%s groups deleted', (int) $delete_count, 'press-permit-core'), (int) $delete_count))

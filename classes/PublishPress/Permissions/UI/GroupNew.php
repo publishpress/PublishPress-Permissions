@@ -11,10 +11,10 @@ class GroupNew
 
         $url = apply_filters('presspermit_groups_base_url', 'admin.php');
 
-        if ($wp_http_referer = presspermit_REQUEST_var('wp_http_referer')) {
+        if ($wp_http_referer = PWP::REQUEST_url('wp_http_referer')) {
             $wp_http_referer = esc_url_raw($wp_http_referer);
 
-        } elseif ($http_referer = presspermit_SERVER_var('HTTP_REFERER')) {
+        } elseif ($http_referer = PWP::SERVER_url('HTTP_REFERER')) {
             if (!strpos(esc_url_raw($http_referer), 'page=presspermit-group-new')) {
                 $wp_http_referer = esc_url_raw($http_referer);
             } else {
@@ -34,11 +34,11 @@ class GroupNew
         $pp_admin = $pp->admin();
         $pp_groups = $pp->groups();
 
-        if (!presspermit_empty_GET('update') && empty($pp_admin->errors)) : ?>
+        if (!PWP::empty_GET('update') && empty($pp_admin->errors)) : ?>
             <div id="message" class="updated">
                 <p><strong><?php esc_html_e('Group created.', 'press-permit-core') ?>&nbsp;</strong>
                     <?php
-                    if (!$group_variant = presspermit_REQUEST_key('group_variant')) {
+                    if (!$group_variant = PWP::REQUEST_key('group_variant')) {
                         $group_variant = 'pp_group';
                     }
 
@@ -69,7 +69,7 @@ class GroupNew
                 PluginPage::icon();
                 ?>
                 <h1><?php
-                    $agent_type = presspermit_REQUEST_key('agent_type');
+                    $agent_type = PWP::REQUEST_key('agent_type');
 
                     if (!$pp_groups->groupTypeEditable($agent_type)) {
                         $agent_type = 'pp_group';
@@ -83,6 +83,7 @@ class GroupNew
                 </header>
 
                 <form action="" method="post" id="creategroup" name="creategroup" class="pp-admin">
+                    <?php wp_nonce_field('pp-update-group_0') ?>
                     <input name="action" type="hidden" value="creategroup"/>
                     <input name="agent_type" type="hidden" value="<?php echo esc_attr($agent_type); ?>"/>
                     <?php wp_nonce_field('pp-create-group', '_wpnonce_pp-create-group') ?>

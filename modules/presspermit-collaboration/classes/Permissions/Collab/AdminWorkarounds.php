@@ -37,7 +37,7 @@ class AdminWorkarounds
         );
 
         // need to filter Find Posts query in Media Library
-        if (presspermit_empty_POST('ps') && !presspermit_is_REQUEST('action', 'ajax-tag-search')) {
+        if (PWP::empty_POST('ps') && !PWP::is_REQUEST('action', 'ajax-tag-search')) {
             $nomess_uris = array_merge($nomess_uris, ['admin-ajax.php']);
         }
 
@@ -52,11 +52,13 @@ class AdminWorkarounds
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');
             new NavMenus();
 
-            $action = presspermit_REQUEST_key('action');
+            $action = PWP::REQUEST_key('action');
 
             if ('add-menu-item' == $action) {
-                if ($menu_items = presspermit_REQUEST_var('menu-item')) {
-                    foreach (array_map('sanitize_key', $menu_items) as $menu_item) {  // normally just one element in array
+                check_admin_referer( 'add-menu_item', 'menu-settings-column-nonce' );
+
+                if (!empty($_REQUEST['menu-item'])) {
+                    foreach (array_map('sanitize_key', $_REQUEST['menu-item']) as $menu_item) {  // normally just one element in array
                         $menu_item_type = (isset($menu_item['menu-item-type'])) ? $menu_item['menu-item-type'] : '';
                         $object_type = (isset($menu_item['menu-item-object'])) ? $menu_item['menu-item-object'] : '';
                         $object_id = (isset($menu_item['menu-item-object-id'])) ? (int) $menu_item['menu-item-object-id'] : '';
@@ -94,7 +96,7 @@ class AdminWorkarounds
             if ($none_text == $text) {
                 $user = presspermit()->getUser();
 
-                if (!$taxonomy = presspermit_REQUEST_key('taxonomy')) {
+                if (!$taxonomy = PWP::REQUEST_key('taxonomy')) {
                     $taxonomy = 'category';
                 }
 
@@ -128,12 +130,14 @@ class AdminWorkarounds
         foreach (array_keys($menu) as $key) {
             // no need to change the cap requirement if they also have edit_posts cap
             if (('edit-comments.php' == $menu[$key][2]) && ('edit_posts' == $menu[$key][1])) {
+                // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
                 $menu[$key][1] = 'moderate_comments';
             }
         }
 
         if (isset($submenu['edit-comments.php'])) {
             if ( 'edit_posts' == $submenu['edit-comments.php'][0][1] ) {
+                // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
                 $submenu['edit-comments.php'][0][1] = 'moderate_comments';
             }
         }
@@ -155,9 +159,9 @@ class AdminWorkarounds
                         $manage_cap = 'manage_nav_menus';
                     }
 
-                    $menu[$key][0] = esc_html__('Menus');
-                    $menu[$key][1] = $manage_cap;
-                    $menu[$key][2] = 'nav-menus.php';
+                    $menu[$key][0] = esc_html__('Menus');   // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+                    $menu[$key][1] = $manage_cap;           // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+                    $menu[$key][2] = 'nav-menus.php';       // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
                 }
             }
         }
@@ -168,14 +172,14 @@ class AdminWorkarounds
     {
         $pp = presspermit();
 
-        if (!presspermit_empty_POST('tag_ID') && ('update-tag_' . presspermit_POST_int('tag_ID') == $referer_name)) {
+        if (!PWP::empty_POST('tag_ID') && ('update-tag_' . PWP::POST_int('tag_ID') == $referer_name)) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/TermEditWorkarounds.php');
             UI\Dashboard\TermEditWorkarounds::term_edit_attempt();
 
         } elseif ('update-nav_menu' == $referer_name) {
             global $current_user;
 
-            $menu_id = presspermit_REQUEST_int('menu');
+            $menu_id = PWP::REQUEST_int('menu');
 
             if (!$pp->isUserUnfiltered() 
             && empty($current_user->allcaps['edit_theme_options']) && empty($current_user->allcaps['edit_menus']) && empty(presspermit()->getUser()->site_roles['pp_nav_menu_manager'])) 
@@ -222,7 +226,7 @@ class AdminWorkarounds
             }
         } elseif ($referer_name == 'move-menu_item') {
             if ($pp->getOption('admin_nav_menu_filter_items')) {
-                if ($menu_item = presspermit_REQUEST_int('menu-item')) {
+                if ($menu_item = PWP::REQUEST_int('menu-item')) {
                     require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');
                     new NavMenus();
 
@@ -240,7 +244,7 @@ class AdminWorkarounds
             case 'add-category':
                 $user = presspermit()->getUser();
 
-                if (!$taxonomy = presspermit_REQUEST_key('taxonomy')) {
+                if (!$taxonomy = PWP::REQUEST_key('taxonomy')) {
                     $taxonomy = 'category';
                 }
 
@@ -253,7 +257,7 @@ class AdminWorkarounds
                 $post_type = PWP::findPostType();
 
                 // WP add category JS for Edit Post form does not tolerate absence of some categories from "All Categories" tab
-                $term_parent = (!presspermit_empty_REQUEST('parent') && (presspermit_REQUEST_int('parent') > 0)) ? presspermit_REQUEST_int('parent') : 0;
+                $term_parent = (!PWP::empty_REQUEST('parent') && (PWP::REQUEST_int('parent') > 0)) ? PWP::REQUEST_int('parent') : 0;
 
                 $ug_clause = $user->getUsergroupsClause('e');
                 $new_term_exceptions = presspermit()->getExceptions(
@@ -307,16 +311,26 @@ class AdminWorkarounds
 
             case 'add-menu_item':
                 if (presspermit()->getOption('admin_nav_menu_filter_items')) {
-                    $object_id = presspermit_REQUEST_int('menu-item-object-id');
-                    $menu = presspermit_is_REQUEST('menu') ? pp_permissions_sanitize_entry(presspermit_REQUEST_var('menu')) : 0;
+                    $object_id = PWP::REQUEST_int('menu-item-object-id');
 
+                    if (!empty($_REQUEST['menu'])) {              // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                        if (is_object($_REQUEST['menu'])) {       // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                            $menu = (!empty($_REQUEST['menu']->term_id)) ? intval($_REQUEST['menu']->term_id) : 0;  // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                        } else {
+                            $menu = intval($_REQUEST['menu']);    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                        }
+                    } else {
+                        $menu = 0;
+                    }
+
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
                     if (defined('PPCE_RESTRICT_MENU_TOP_LEVEL') && empty($_REQUEST['menu_item']['menu-item-parent-id'])) {
                         // prevent new menu items from going to top level
                         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');
                         new NavMenus();
 
                         if ($parent_id = NavMenus::flt_menu_item_parent(0, $object_id, $menu)) {
-                            $_REQUEST['menu_item']['menu-item-parent-id'] = $parent_id;
+                            $_REQUEST['menu_item']['menu-item-parent-id'] = $parent_id;  // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
                         } else {
                             // if no editable item is found, block the new item addition
                             die(-1);
@@ -515,7 +529,7 @@ class AdminWorkarounds
         // admin-ajax.php 'find_posts' :
         // SELECT ID, post_title, post_status, post_date FROM $wpdb->posts WHERE post_type = '$what' AND post_status IN ('draft', 'publish') AND ($search) ORDER BY post_date_gmt DESC LIMIT 50
         if (strpos($query, "ELECT ID, post_title, post_status, post_date FROM")) {
-            if ($_post_type = presspermit_POST_key('post_type')) {
+            if ($_post_type = PWP::POST_key('post_type')) {
                 $query = apply_filters('presspermit_posts_request', $query, ['post_types' => $_post_type]);
             }
         }
@@ -550,7 +564,7 @@ class AdminWorkarounds
 
         if (defined('DOING_AJAX')) {
             if (strpos($query, "ELECT t.name FROM") && !empty($_SERVER['HTTP_REFERER'])) {
-                if ($taxonomy = presspermit_REQUEST_key('tax')) {
+                if ($taxonomy = PWP::REQUEST_key('tax')) {
                     $parsed = wp_parse_url(esc_url_raw($_SERVER['HTTP_REFERER']));
                     if (!empty($parsed['query'])) {
                         $qry_vars = [];

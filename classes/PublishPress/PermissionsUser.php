@@ -13,7 +13,10 @@ class PermissionsUser extends \WP_User
 {
     var $groups = [];       // USAGE: groups [agent_type] [group id] = 1
     var $site_roles = [];
-    // note: nullstring for_item_type means all post types
+
+                            // note: nullstring for_item_type means all post types
+                            
+                            // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
     var $except = [];       // USAGE: except [{operation}_{for_item_source}] [via_item_source] [via_item_type] ['include' or 'exclude'] [for_item_type] [for_item_status] = array of stored IDs / term_taxonomy_ids
     var $cfg = [];
 
@@ -45,7 +48,11 @@ class PermissionsUser extends \WP_User
             $this->getSiteRoles();
         }
 
-        add_filter('map_meta_cap', [$this, 'reinstateCaps'], 99, 3);
+        global $current_user;
+        
+        if ($id == $current_user->ID) {
+            add_filter('map_meta_cap', [$this, 'reinstateCaps'], 99, 3);
+        }
     }
 
     public function retrieveExtraGroups($args = [])
@@ -78,13 +85,13 @@ class PermissionsUser extends \WP_User
         
         $args = array_merge(['context' => '', $args]);
 
-        $table_alias = ($table_alias) ? "$table_alias." : '';
+        $table_alias = ($table_alias) ? sanitize_key($table_alias) . '.' : '';
 
         $pp = presspermit();
         $pp_groups = $pp->groups();
 
         $arr = [$wpdb->prepare(
-                    "{$table_alias}agent_type = 'user' AND {$table_alias}agent_id = %d",
+                    "{$table_alias}agent_type = 'user' AND {$table_alias}agent_id = %d",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                     $this->ID
                 )];
 
@@ -114,13 +121,18 @@ class PermissionsUser extends \WP_User
             }
 
             if (!empty($apply_groups)) {
-                $arr[] = "{$table_alias}agent_type = '$agent_type' AND {$table_alias}agent_id IN ('"
-                    . implode("', '", array_keys($apply_groups)) . "')";
+                $id_csv = implode("', '", array_map('intval', array_keys($apply_groups)));
+
+                $arr[] = $wpdb->prepare(
+                    "{$table_alias}agent_type = %s",             // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                    $agent_type
+                )
+                . " AND {$table_alias}agent_id IN ('$id_csv')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             }
         }
 
         if (!empty($args['user_clause'])) {
-            $arr[] = "{$table_alias}agent_type = 'user' AND {$table_alias}agent_id = '$this->ID'";
+            $arr[] = "{$table_alias}agent_type = 'user' AND {$table_alias}agent_id = '$this->ID'";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
 
         $clause = Arr::implode(' OR ', $arr);
@@ -159,8 +171,8 @@ class PermissionsUser extends \WP_User
                 }
             }
         } else {
-            $args['wp_roles'] = $this->roles;
-            $user_groups = $pp_groups->getGroupsForUser($this->ID, $args['agent_type'], $args);
+            // Passing user object causes this user's wp_role metagroups to be synchronized with their WP roles
+            $user_groups = $pp_groups->getGroupsForUser($this, $args['agent_type'], $args);
 
             if (isset($this->roles)) {
                 if ($pp->getOption('dynamic_wp_roles') || defined('PP_FORCE_DYNAMIC_ROLES')) {
@@ -176,8 +188,12 @@ class PermissionsUser extends \WP_User
 
                         $wpdb->groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups);
 
+                        $id_csv = implode("','", array_map('sanitize_key', $missing_role_group_names));
+
+                        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                         $add_metagroups = $wpdb->get_results(
-                            "SELECT * FROM $wpdb->groups_table WHERE metagroup_type = 'wp_role' AND metagroup_id IN ('$id_csv')"
+                            "SELECT * FROM $wpdb->groups_table"
+                            . " WHERE metagroup_type = 'wp_role' AND metagroup_id IN ('$id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                         );
 
                         foreach ($add_metagroups as $row) {
@@ -211,7 +227,12 @@ class PermissionsUser extends \WP_User
             $roles_retrieved[$u_g_clause] = true;
         }
 
-        if ($results = $wpdb->get_results("SELECT role_name FROM $wpdb->ppc_roles AS uro WHERE 1=1 $u_g_clause")) {
+        // phpcs Note: ug_clause constructed and sanitized by getUsergroupsClause()
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        if ($results = $wpdb->get_results(
+            "SELECT role_name FROM $wpdb->ppc_roles AS uro WHERE 1=1 $u_g_clause"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        )) {
             foreach ($results as $row) {
                 $this->site_roles[$row->role_name] = true;
             }

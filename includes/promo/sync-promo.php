@@ -1,5 +1,6 @@
 <div class="wrap publishpress-caps-manage pressshack-admin-wrapper pp-conditions pp-permissions-menus-wrapper-promo">
     <header>
+    <div class="pp-icon"><?php echo '<img src="' . esc_url(PRESSPERMIT_URLPATH . '/common/img/publishpress-logo-icon.png') . '" alt="" />';?></div>
     <h1>
     <?php esc_html_e('Sync User Posts', 'press-permit-core');?>
     </h1>

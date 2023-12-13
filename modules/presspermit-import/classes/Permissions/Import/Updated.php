@@ -10,6 +10,8 @@ class Updated
             if (version_compare($prev_version, '2.1.1', '<')) {
                 global $wpdb;
 
+                // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
                 if ($wpdb->get_results("SHOW TABLES LIKE '$wpdb->pp_groups'")) {
                     if ($misnamed_anon_group_id = $wpdb->get_var("SELECT ID FROM $wpdb->pp_groups WHERE group_name = '[Anonymous]'")) {
                         if ($wpdb->get_results("SHOW TABLES LIKE '$wpdb->ppc_roles'")) {

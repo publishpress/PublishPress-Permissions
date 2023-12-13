@@ -42,10 +42,15 @@ class PostTermsSave
 
         $objects = false;
         if ('all' == $fields) {
+            // phpcs Note: Permissions handles low-level filtering, so sometimes we need a direct terms query without any external filtering
+
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $_terms = $wpdb->get_results(
                 $wpdb->prepare(
-                    "SELECT $select_this FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id"
-                    . " INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy = %s AND tr.object_id IN ('$object_id_csv')",
+                    "SELECT $select_this FROM $wpdb->terms AS t"                          // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                    . " INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id"
+                    . " INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id"
+                    . " WHERE tt.taxonomy = %s AND tr.object_id IN ('$object_id_csv')",   // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                     
                     $taxonomy
                 )
@@ -65,10 +70,15 @@ class PostTermsSave
             $objects = true;
 
         } elseif ('ids' == $fields || 'names' == $fields || 'slugs' == $fields) {
+            // phpcs Note: Permissions handles low-level filtering, so sometimes we need a direct terms query without any external filtering
+            
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $_terms = $wpdb->get_col(
                 $wpdb->prepare(
-                    "SELECT $select_this FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id"
-                    . " INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy = %s AND tr.object_id IN ('$object_id_csv')",
+                    "SELECT $select_this FROM $wpdb->terms AS t"                          // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                    . " INNER JOIN $wpdb->term_taxonomy AS tt ON tt.term_id = t.term_id"
+                    . " INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id"
+                    . " WHERE tt.taxonomy = %s AND tr.object_id IN ('$object_id_csv')",   // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                     
                     $taxonomy
                 )
@@ -79,12 +89,16 @@ class PostTermsSave
                 $_terms[$key] = sanitize_term_field($_field, $term, $term, $taxonomy, 'raw');
             }
             $terms = array_merge($terms, $_terms);
+
         } elseif ('tt_ids' == $fields) {
+            // phpcs Note: Permissions handles low-level filtering, so sometimes we need a direct terms query without any external filtering
+            
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $terms = $wpdb->get_col(
                 $wpdb->prepare(
                     "SELECT tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
                     . " INNER JOIN $wpdb->term_taxonomy AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id"
-                    . " WHERE tr.object_id IN ('$object_id_csv') AND tt.taxonomy = %s",
+                    . " WHERE tr.object_id IN ('$object_id_csv') AND tt.taxonomy = %s",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                     $taxonomy
                 )
@@ -114,36 +128,72 @@ class PostTermsSave
 
     public static function getPostedObjectTerms($taxonomy)
     {
+        // @todo: confirm this is still needed
+
         if (defined('XMLRPC_REQUEST')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSaveXmlRpc.php');
             return PostTermsSaveXmlRpc::getPostedXmlrpcTerms($taxonomy);
         }
 
+        // phpcs Note: Sometimes we need to check the terms submission directly to work around chicken/egg situations with permissions dependent on post terms
+
+        // phpcs Note: Nonce verification is unnecessary here because the term submission check is needed regardless of how the post save is initiated
+
         if ('category' == $taxonomy) {
-            if ($post_category = presspermit_POST_var('post_category')) {
-				return array_map('intval', self::fltPreObjectTerms((array) array_map('intval', $post_category), $taxonomy));
+            $post_category = (!empty($_POST['post_category']))                                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            ? array_map('intval', (array) $_POST['post_category'])                                // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            : [];
+
+            if ($post_category) {
+				return array_map('intval', self::fltPreObjectTerms($post_category, $taxonomy));
             }
         } else {
             $tx_obj = get_taxonomy($taxonomy);
-            if ($tx_obj && !empty($tx_obj->object_terms_post_var)) {
-                if (presspermit_is_POST($tx_obj->object_terms_post_var)) {
-                    return array_map('intval', presspermit_POST_var($tx_obj->object_terms_post_var));
-                }
 
-            } elseif (!empty($_POST['tax_input'][$taxonomy])) {
-                if (is_taxonomy_hierarchical($taxonomy) && is_array($_POST['tax_input'][$taxonomy])) {
-                    return array_map('intval', $_POST['tax_input'][$taxonomy]);
+            if ($tx_obj && !empty($tx_obj->object_terms_post_var)) {
+                $post_terms = (!empty($_POST[$tx_obj->object_terms_post_var]))                     // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                ? array_map('intval', (array) $_POST[$tx_obj->object_terms_post_var])              // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                : [];
+                
+                return array_map('intval', $post_terms);
+
+            } elseif (!empty($_POST['tax_input'][$taxonomy])) {                                         // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                if (is_taxonomy_hierarchical($taxonomy) && is_array($_POST['tax_input'][$taxonomy])) {  // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                    return array_map('intval', $_POST['tax_input'][$taxonomy]);                         // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
                 } else {
-                    $term_info = self::parseTermNames(array_map('sanitize_key', $_POST['tax_input'][$taxonomy]), $taxonomy);
+                    // phpcs note: the input is actually sanitized; we just need to check whether it's an array
+
+                    // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                    $terms = (is_array($_POST['tax_input'][$taxonomy]))                                 // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                    ? array_map('sanitize_key', $_POST['tax_input'][$taxonomy])                         // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                    : array_map('sanitize_key', explode(',', sanitize_text_field($_POST['tax_input'][$taxonomy])));  // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+
+                    $term_info = self::parseTermNames($terms, $taxonomy);
                     return array_map('intval', self::fltPreObjectTerms($term_info['terms'], $taxonomy));
                 }
-            } elseif ('post_tag' == $taxonomy && !presspermit_empty_POST('tags_input')) {
-                $term_info = self::parseTermNames(presspermit_POST_key('tags_input'), $taxonomy);
+            } elseif ('post_tag' == $taxonomy && !empty($_POST['tags_input'])) {                        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                // phpcs note: the input is actually sanitized; we just need to check whether it's an array
+
+                // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $terms = (is_array($_POST['tags_input']))                                                  // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                    ? array_map('sanitize_key', $_POST['tags_input'])                                      // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                    : array_map('sanitize_key', explode(',', sanitize_text_field($_POST['tags_input'])));  // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+
+                $term_info = self::parseTermNames($terms, $taxonomy);
                 return array_map('intval', self::fltPreObjectTerms($term_info['terms'], $taxonomy));
             }
         }
 
         return [];
+    }
+
+    public static function fltTagsInput($tags_input)
+    {
+        $arr = self::fltTaxInput(
+            ['post_tag' => (array) $tags_input]
+        );
+
+        return (isset($arr['post_tag'])) ? $arr['post_tag'] : [];
     }
 
     public static function fltTaxInput($tax_input)
@@ -316,7 +366,7 @@ class PostTermsSave
                 }
             }
         }
-
+		
         if (empty($selected_terms) && ((is_taxonomy_hierarchical($taxonomy) 
         && ('post_tag' != $taxonomy)) || self::userHasTermLimitations($taxonomy))
         ) {
@@ -325,12 +375,12 @@ class PostTermsSave
 
             // For now, always check the DB for default terms.  todo: only if the default_term_option property is set
             if (isset($tx_obj->default_term_option))
-                $default_term_option = $tx_obj->default_term_option;
+            	$default_term_option = $tx_obj->default_term_option;
             else
-                $default_term_option = "default_{$taxonomy}";
+            	$default_term_option = "default_{$taxonomy}";
 
             $default_terms = (array) get_option($default_term_option);
-
+			
             // but if the default term is not defined or is not in user's subset of usable terms, substitute first available
             if ($user_terms) {
                 if (true === $user_terms)
@@ -351,12 +401,12 @@ class PostTermsSave
                     if ((
                         (!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') || !empty($select_default_term) || (count($user_terms) == 1))
 						&& !defined('PP_NO_AUTO_DEFAULT_TERM') 
-                        && !defined('PP_NO_AUTO_DEFAULT_' . strtoupper($taxonomy))
+						&& !defined('PP_NO_AUTO_DEFAULT_' . strtoupper($taxonomy))
                         )
 					|| defined('PP_AUTO_DEFAULT_TERM') 
 					|| defined('PP_AUTO_DEFAULT_' . strtoupper($taxonomy))
-                    ) {
-                    	$default_terms = (array)$user_terms[0];
+					) {
+                        $default_terms = (array)$user_terms[0];
                     } else {
                     	$default_terms = [];
                     }

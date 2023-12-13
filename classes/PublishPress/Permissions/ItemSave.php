@@ -51,9 +51,13 @@ class ItemSave
             $disallow_manual_entry = defined('XMLRPC_REQUEST');
         }
 
+        // This function is triggered by the save_post hook, no nonce needed
+        // phpcs:disable WordPress.Security.NonceVerification.Missing
         if (!empty($_POST['pp_exceptions']) && !$disallow_manual_entry && $can_assign_roles) {
 
             // validate posted exceptions array
+
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             $pe = (array) $_POST['pp_exceptions']; // explicitly validated below
 
             if (isset($pe['(all)'])) {
@@ -131,6 +135,7 @@ class ItemSave
                         $args['operation'] = $op;
                         $args['agent_type'] = $agent_type;
 
+                        // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
                         // posted_exceptions [for_item_type] [op] [agent_type] [assign_for] [agent_id] = has_access 
                         $pp->assignExceptions($posted_exceptions[$for_item_type][$op][$agent_type], $agent_type, $args);
                     }
@@ -159,7 +164,7 @@ class ItemSave
             $$var = $args[$var];
         }
 
-        $is_new_term = ('term' != $via_item_source) ? false : presspermit_is_REQUEST('action', 'add-tag');
+        $is_new_term = ('term' != $via_item_source) ? false : PWP::is_REQUEST('action', 'add-tag');
 
         // don't execute this action handler more than one per post save (may be called directly on pre-save cap check)
         static $did_items;
@@ -181,8 +186,8 @@ class ItemSave
         if ((intval($set_parent) != intval($last_parent)) || $is_new_term || $is_new) {
 
             // retain all explicitly selected exceptions
-            global $wpdb;
-            $descendant_ids = PWP::getDescendantIds($via_item_source, $item_id);
+            global $wpdb;                               // any_type_or_taxonomy arg retains previous query construction (no post_type or taxonomy clause)
+            $descendant_ids = PWP::getDescendantIds($via_item_source, $item_id, ['any_type_or_taxonomy' => true, 'exclude_autodrafts' => false]);  
             if ($descendant_ids && ('term' == $via_item_source)) {
                 $descendant_ids = PWP::termidToTtid($descendant_ids, $via_item_type);
             }
@@ -200,11 +205,13 @@ class ItemSave
             if ($set_parent) {
                 $descendent_id_csv = implode("','", array_map('intval', array_merge($descendant_ids, (array) $item_id)));
 
+                // Query plugin tables on post / term update (IN clause constructed and sanitized above)
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $retain_exceptions = $wpdb->get_results(
                     $wpdb->prepare(
                         "SELECT * FROM $wpdb->ppc_exception_items AS i"
                         . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
-                        . " WHERE i.assign_for = 'item' AND i.inherited_from = '0' AND e.via_item_source = %s AND i.item_id IN ('$descendent_id_csv')",
+                        . " WHERE i.assign_for = 'item' AND i.inherited_from = '0' AND e.via_item_source = %s AND i.item_id IN ('$descendent_id_csv')", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                         $via_item_source
                     )
                 );

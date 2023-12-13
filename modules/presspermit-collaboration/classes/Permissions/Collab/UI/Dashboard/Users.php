@@ -18,10 +18,10 @@ class Users
         <script type="text/javascript">
             /* <![CDATA[ */
             jQuery(document).ready(function ($) {
-                <?php if ( !presspermit_empty_REQUEST('ppmessage') ) {
-                switch(presspermit_REQUEST_int('ppmessage')) {
+                <?php if ( !PWP::empty_REQUEST('ppmessage') ) {
+                switch(PWP::REQUEST_int('ppmessage')) {
                 case 1: ?>
-                var msg = '<?php if (presspermit_is_REQUEST('ppcount')) printf(esc_html(_n('%s author page added', '%s author pages added', (int) presspermit_REQUEST_int('ppcount'), 'press-permit-core')), (int) presspermit_REQUEST_int('ppcount')); ?>';
+                var msg = '<?php if (PWP::is_REQUEST('ppcount')) printf(esc_html(_n('%s author page added', '%s author pages added', (int) PWP::REQUEST_int('ppcount'), 'press-permit-core')), (int) PWP::REQUEST_int('ppcount')); ?>';
                 var cls = 'updated';
                 <?php
                 break;
@@ -64,6 +64,8 @@ class Users
 
                     <?php
                     global $wpdb;
+
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                     $exclude = $wpdb->get_col("SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_pp_auto_inserted'");
 
                     foreach( $post_types as $post_type => $type_obj ) :
@@ -90,9 +92,9 @@ class Users
                             'show_option_none' => esc_html__('patterned on...', 'press-permit-core'),
                             'sort_column' => 'menu_order, post_title',
                             'echo' => 0,
-                            'exclude' => array_map('intval', $exclude),
+                            'exclude' => array_map('intval', $exclude),  // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                         ];
-                        $pages = str_replace("'", '"', wp_dropdown_pages($dropdown_args));
+                        $pages = str_replace("'", '"', wp_dropdown_pages($dropdown_args));  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                         $pages = str_replace("\n", '', $pages);
                         $pages = str_replace("\r", '', $pages);
                     } else {
@@ -101,7 +103,7 @@ class Users
 
                     if ( $pages ) :
                     ?>
-                    '<?php echo $pages;?>' +
+                    '<?php echo $pages; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>' +
                     <?php else:?>
                     '<?php esc_html_e('Pattern ID:', 'press-permit-core');?><input type="text" name="<?php echo esc_attr($input_name);?>" id="<?php echo esc_attr($input_name);?>" size="20" placeholder="<?php esc_attr_e('enter post ID/slug', 'press-permit-core');?>" /></span>' +
                     <?php endif;?>
@@ -110,6 +112,7 @@ class Users
 
                     '<span id="member_page_title" style="display:none;margin-left:10px;margin-right:5px"><?php esc_html_e('Title:', 'press-permit-core');?><input type="text" name="member_page_title" id="member_page_title" value="[username]" title="<?php esc_attr_e('supported tags are [username] and [userid]', 'press-permit-core');?>" size="30" /></span>' +
                     '<span id="member_page_add" style="display:none"><?php submit_button(esc_html__('Add Pages', 'press-permit-core'), 'secondary', 'add_member_page', false); ?></span>' +
+                    '<?php wp_nonce_field('add-author-pages', '_pp_permissions_nonce');?>' +
                     '</div>';
 
                 $("select[name='action']").closest('div.top').find('div.tablenav-pages').after($(elems));
@@ -128,7 +131,7 @@ class Users
                     }
                 });
             });
-            //]]>
+            /* ]]> */
         </script>
         <?php
     } // end function add_member_page_js

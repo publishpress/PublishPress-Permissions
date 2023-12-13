@@ -8,6 +8,11 @@ class Cloner
     {
         global $wpdb, $current_user;
 
+        // Direct query of plugin table. Infrequent plugin settings update operation.
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
+        check_admin_referer('pp-update-clone_' . $agent_id, '_pp_nonce_clone');
+
         if ('pp_group' != $agent_type)
             return false;
 
@@ -70,7 +75,7 @@ class Cloner
 
         $source_eitems = $wpdb->get_results(
             "SELECT eitem_id, exception_id, item_id, assign_for, inherited_from FROM $wpdb->ppc_exception_items"
-            . " WHERE exception_id IN ('$exc_id_csv')"
+            . " WHERE exception_id IN ('$exc_id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
 
         foreach ($source_eitems as $row) {
@@ -122,6 +127,9 @@ class Cloner
 
     private static function get_exception_id(&$stored_exceptions, $data, $merge_data)
     {
+        // Direct query of plugin table. Infrequent plugin settings update operation.
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
         $exception_id = 0;
 
         foreach ($stored_exceptions as $exc) {

@@ -10,10 +10,10 @@ if (get_option('presspermit_delete_settings_on_uninstall')) {
         require_once ABSPATH . 'wp-admin/includes/plugin.php';
     }
     
-    $plugins = get_plugins();
+    $_plugins = get_plugins();
     
-    foreach($plugins as $plugin) {
-        if (!empty($plugin['Title']) && in_array($plugin['Title'], ['PublishPress Permissions', 'PublishPress Permissions Pro'])) {
+    foreach($_plugins as $_plugin) {
+        if (!empty($_plugin['Title']) && in_array($_plugin['Title'], ['PublishPress Permissions', 'PublishPress Permissions Pro'])) {
             $permissions_plugin_count++;
         }
     }
@@ -23,9 +23,11 @@ if (get_option('presspermit_delete_settings_on_uninstall')) {
         
         $site_ids = (function_exists('get_sites')) ? get_sites(['fields' => 'ids']) : (array) $orig_site_id;
         
-        foreach ($site_ids as $blog_id) {
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
+        foreach ($site_ids as $_blog_id) {
             if (is_multisite()) {
-            	switch_to_blog($blog_id);
+            	switch_to_blog($_blog_id);
             }
 
             if (!empty($wpdb->options)) {
@@ -49,6 +51,8 @@ if (get_option('presspermit_delete_settings_on_uninstall')) {
                     . ")"
                 );
             }
+
+            // phpcs:disable WordPress.DB.DirectDatabaseQuery.SchemaChange
 
             if (!empty($wpdb->pp_groups)) {
                 @$wpdb->query("DROP TABLE IF EXISTS $wpdb->pp_groups");

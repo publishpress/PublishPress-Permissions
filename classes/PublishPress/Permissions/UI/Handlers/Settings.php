@@ -14,7 +14,7 @@ class Settings
 
         $args = apply_filters('presspermit_handle_submission_args', []); // todo: is this used?
 
-        if (presspermit_is_POST('pp_submission_topic', 'options')) {
+        if (PWP::is_POST('pp_submission_topic', 'options')) {
 
             if (isset($_POST['presspermit_submit'])) {
                 $this->updateOptions($args);
@@ -39,6 +39,10 @@ class Settings
 
         global $wpdb;
 
+        // Disable WP autoload of presspermit options because we have our own cache
+
+        // Direct query of options table on plugin settings update, for bulk update
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $wpdb->query(
             "UPDATE $wpdb->options SET autoload = 'no' WHERE option_name LIKE 'presspermit_%'"
             . " AND option_name NOT LIKE '%_version' AND option_name NOT IN ('presspermit_custom_conditions_post_status')"
@@ -51,18 +55,24 @@ class Settings
 
         $pp = presspermit();
 
-        if (!$all_options = presspermit_POST_var('all_options')) {
+        $reviewed_options = (!empty($_POST['all_options'])) 
+        ? array_map('sanitize_key', explode(',', sanitize_text_field($_POST['all_options']))) 
+        : [];
+
+        if (!$reviewed_options) {
             return;
         }
 
         $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
 
-        $reviewed_options = array_map('sanitize_key', explode(',', sanitize_text_field($all_options)));
+        $all_otype_options = (!empty($_POST['all_otype_options'])) 
+        ? array_map('sanitize_key', explode(',', sanitize_text_field($_POST['all_otype_options']))) 
+        : [];
 
-        if ($all_otype_options = presspermit_POST_var('all_otype_options')) {
+        if ($all_otype_options) {
             $reviewed_options = array_merge(
                 $reviewed_options, 
-                array_map('sanitize_key', explode(',', sanitize_text_field($all_otype_options)))
+                $all_otype_options
             );
         }
 
@@ -73,7 +83,7 @@ class Settings
         require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
         \PublishPress\Permissions\PluginUpdated::deactivateModules(['current_deactivations' => []]);
 
-        $tab = (!presspermit_empty_POST('pp_tab')) ? "&pp_tab={" . presspermit_POST_key('pp_tab') . "}" : '';
+        $tab = (!PWP::empty_POST('pp_tab')) ? "&pp_tab={" . PWP::POST_key('pp_tab') . "}" : '';
         wp_redirect(admin_url("admin.php?page=presspermit-settings$tab&presspermit_submit_redirect=1"));
         exit;
     }
@@ -84,7 +94,11 @@ class Settings
 
         $pp = presspermit();
 
-        if (!$all_options = presspermit_POST_var('all_options')) {
+        $all_options = (!empty($_POST['all_options'])) 
+        ? array_map('sanitize_text_field', explode(',', sanitize_text_field($_POST['all_options']))) 
+        : [];
+
+        if (!$all_options) {
             return;
         }
 
@@ -92,56 +106,48 @@ class Settings
 
         $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
 
-        foreach (array_map('pp_permissions_sanitize_entry', explode(',', sanitize_text_field($all_options))) as $option_basename) {
-            $value = presspermit_POST_var($option_basename);
+        foreach (array_map('\PressShack\LibWP::sanitizeEntry', $all_options) as $option_basename) {
+            if (!apply_filters('presspermit_custom_sanitize_setting', false, $option_basename, $default_prefix, $args)) {                
+                if (isset($_POST[$option_basename]) && is_array($_POST[$option_basename])) {
+                    $pp->updateOption($default_prefix . $option_basename, array_map('sanitize_text_field', $_POST[$option_basename]), $args);
+                } else {
+                    $val = (isset($_POST[$option_basename])) ? trim(sanitize_text_field($_POST[$option_basename])) : '';
 
-            if (in_array($option_basename, ['teaser_redirect_page', 'teaser_redirect_anon_page'])) {
-                $compare_option = ('teaser_redirect_anon_page' == $option_basename) ? 'teaser_redirect_anon' : 'teaser_redirect';
-                
-                if (('[login]' == presspermit_POST_var($compare_option))) {
-                    $value = '[login]';
+                    $pp->updateOption($default_prefix . $option_basename, $val, $args);
                 }
             }
-
-            $_value = apply_filters('presspermit_custom_sanitize_setting', null, $option_basename, $value);
-
-            if ($_value !== null) {
-                $value = $_value;
-            } elseif (!is_array($value)) {
-                $value = trim(sanitize_text_field($value));
-            } else {
-                $value = array_map('sanitize_text_field', $value);
-            }
-
-            $pp->updateOption($default_prefix . $option_basename, $value, $args);
         }
 
-        if ($all_otype_options = presspermit_POST_var('all_otype_options')) {
-            foreach (array_map('pp_permissions_sanitize_entry', explode(',', sanitize_text_field($all_otype_options))) as $option_basename) {
+        $all_otype_options = (!empty($_POST['all_otype_options'])) 
+        ? array_map('sanitize_text_field', explode(',', sanitize_text_field($_POST['all_otype_options']))) 
+        : [];
+
+        if ($all_otype_options) {
+            foreach (array_map('\PressShack\LibWP::sanitizeEntry', $all_otype_options) as $option_basename) {
                 // support stored default values (to apply to any post type which does not have an explicit setting)
                 if (isset($_POST[$option_basename][0])) {
-                    $_POST[$option_basename][''] = pp_permissions_sanitize_entry(sanitize_text_field($_POST[$option_basename][0]));
+                    $_POST[$option_basename][''] = PWP::sanitizeEntry(sanitize_text_field($_POST[$option_basename][0]));
                     unset($_POST[$option_basename][0]);
                 }
 
                 $value = (isset($pp->default_options[$option_basename])) ? $pp->default_options[$option_basename] : [];
 
                 // retain setting for any types which were previously enabled for filtering but are currently not registered
-                $current = $pp->getOption($option_basename);
 
                 if ($current = $pp->getOption($option_basename)) {
                     $value = array_merge($value, $current);
                 }
 
-                if ($option_val = presspermit_POST_var($option_basename)) {
-                    $value = array_merge($value, array_map('pp_permissions_sanitize_entry', $option_val));
+                if (isset($_POST[$option_basename])) {
+                    $posted_val = array_map('sanitize_text_field', $_POST[$option_basename]);
+                    $value = array_merge($value, array_map('\PressShack\LibWP::sanitizeEntry', $posted_val));
                 }
 
                 $pp->updateOption($default_prefix . $option_basename, $value, $args);
             }
         }
 
-        if (!presspermit_empty_POST('post_blockage_priority')) {  // once this is switched on manually, don't ever default-disable it again
+        if (!empty($_POST['post_blockage_priority'])) {  // once this is switched on manually, don't ever default-disable it again
             if (get_option('presspermit_legacy_exception_handling')) {
                 delete_option('presspermit_legacy_exception_handling');
             }
@@ -155,23 +161,28 @@ class Settings
         $deactivated = $_deactivated;
 
         // add deactivations (unchecked from Active list)
-        if ($reviewed_modules = presspermit_POST_var('presspermit_reviewed_modules')) {
-            $reviewed_modules = array_fill_keys(array_map('sanitize_key', explode(',', sanitize_text_field($reviewed_modules))), (object)[]);
 
+        $reviewed_modules = (!empty($_POST['presspermit_reviewed_modules'])) 
+        ? array_fill_keys(array_map('sanitize_key', explode(',', sanitize_text_field($_POST['presspermit_reviewed_modules']))), (object)[])
+        : [];
+
+        if ($reviewed_modules) {
             $deactivated = array_merge(
                 $deactivated,
                 array_diff_key(
                     $reviewed_modules,
-                    !presspermit_empty_POST('presspermit_active_modules') ? array_filter((array) presspermit_POST_key('presspermit_active_modules')) : []
+                    !empty($_POST['presspermit_active_modules']) 
+                    ? array_filter((array) array_map('sanitize_key', (array) $_POST['presspermit_active_modules'])) 
+                    : []
                 )
             );
         }
 
         // remove deactivations (checked in Inactive list)
-        if ($deactivated_modules = presspermit_POST_var('presspermit_deactivated_modules')) {
+        if (!empty($_POST['presspermit_deactivated_modules'])) {
             $deactivated = array_diff_key(
                 $deactivated, 
-                array_map('sanitize_key', (array) $deactivated_modules)
+                array_map('sanitize_key', (array) $_POST['presspermit_deactivated_modules'])
             );
         }
 
@@ -187,7 +198,7 @@ class Settings
             }
 
             $pp->updateOption('deactivated_modules', $deactivated);
-            $tab = (!presspermit_empty_POST('pp_tab')) ? "&pp_tab={" . presspermit_POST_key('pp_tab') . "}" : '';
+            $tab = (!PWP::empty_POST('pp_tab')) ? "&pp_tab={" . PWP::POST_key('pp_tab') . "}" : '';
             wp_redirect(admin_url("admin.php?page=presspermit-settings$tab&presspermit_submit_redirect=1"));
             exit;
         }

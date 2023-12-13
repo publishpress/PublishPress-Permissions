@@ -40,9 +40,11 @@ class GroupsListTableBase extends \WP_List_Table
                         echo '<span class="pp-group-site-roles">';
 
                         if (count($this->role_info[$group_id]['roles']) > $display_limit) {
-                            printf(esc_html__('%s, more...', 'press-permit-core'), implode(', ', $role_titles));
+                            // phpcs Note: Role titles are escaped and html-wrapped upstream, cannot be escaped here
+
+                            printf(esc_html__('%s, more...', 'press-permit-core'), implode(', ', $role_titles));  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                         } else {
-                            echo implode(', ', $role_titles);
+                            echo implode(', ', $role_titles);  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                         }
 
                         echo '</span>';
@@ -123,13 +125,15 @@ class GroupsListTableBase extends \WP_List_Table
 		$i = 0;
 
 		foreach ( $actions as $action => $link ) {
+            // phpcs Note: row action link is escaped upstream
+
 			++$i;
 			$sep = ( $i < $action_count ) ? ' | ' : '';
-			echo "<span class='" . esc_attr($action) . "'>" . $link . esc_html($sep) . "</span>";  // row action link is escaped upstream
+			echo "<span class='" . esc_attr($action) . "'>" . $link . esc_html($sep) . "</span>";  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
 		echo '</div>';
 
 		echo '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__( 'Show more details' ) . '</span></button>';
     }
-} // end class
+}

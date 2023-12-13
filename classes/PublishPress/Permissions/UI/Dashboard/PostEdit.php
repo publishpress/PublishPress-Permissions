@@ -96,10 +96,11 @@ class PostEdit
                 switch ($op) {
                     case 'associate':
                         $caption = sprintf(
-                            esc_html__('Permissions: Select this %s as Parent', 'press-permit-core'),
+
+		                    esc_html__('Permissions: Select this %s as Parent', 'press-permit-core'),
                             $type_obj->labels->singular_name
                         );
-                
+                    
                         break;
 
                     case 'assign':
@@ -112,10 +113,10 @@ class PostEdit
 
                     default:
                         $caption = sprintf(
-                            esc_html__('Permissions: %s this %s', 'press-permit-core'),
-                            $op_obj->label,
-                            $type_obj->labels->singular_name
-                        );
+		                    esc_html__('Permissions: %s this %s', 'press-permit-core'),
+		                    $op_obj->label,
+		                    $type_obj->labels->singular_name
+		                );
                 }
                 
                 add_meta_box(

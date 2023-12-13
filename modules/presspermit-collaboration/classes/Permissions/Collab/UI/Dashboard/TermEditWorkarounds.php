@@ -5,12 +5,14 @@ class TermEditWorkarounds
 {
     public static function term_edit_attempt()
     {
+        // Nonce verification unnecessary because this needs to be checked regardless of how the term edit was triggered, and can only block the operation.
+
         // filter category parent selection for Category editing
-        if (!$tag_id = presspermit_POST_int('tag_ID')) {
+        if (!$tag_id = PWP::POST_int('tag_ID')) {
             return;
         }
 
-        if (!$taxonomy = presspermit_POST_key('taxonomy')) {
+        if (!$taxonomy = PWP::POST_key('taxonomy')) {
             return;
         }
 
@@ -24,7 +26,7 @@ class TermEditWorkarounds
 
         $stored_term = get_term_by('id', $tag_id, $taxonomy);
 
-        $selected_parent = presspermit_POST_int('parent');
+        $selected_parent = PWP::POST_int('parent');
 
         if (-1 == $selected_parent) {
             $selected_parent = 0;

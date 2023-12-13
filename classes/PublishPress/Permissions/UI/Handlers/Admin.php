@@ -7,12 +7,12 @@ class Admin
     public static function handleRequest() {
         do_action('presspermit_admin_handlers');
 
-        if (!presspermit_empty_POST()) {
+        if (!PWP::empty_POST()) {
             $pp_plugin_page = presspermitPluginPage();
 
             if (('presspermit-edit-permissions' == $pp_plugin_page)
-                || presspermit_is_POST('action', ['pp_updateroles', 'pp_updateexceptions', 'pp_updateclone'])
-                || ((presspermit_is_REQUEST('_wp_http_referer') && strpos(esc_url_raw(presspermit_REQUEST_var('_wp_http_referer')), 'presspermit-edit-permissions'))
+                || PWP::is_POST('action', ['pp_updateroles', 'pp_updateexceptions', 'pp_updateclone'])
+                || ((PWP::is_REQUEST('_wp_http_referer') && strpos(esc_url_raw(PWP::REQUEST_url('_wp_http_referer')), 'presspermit-edit-permissions'))
                 || ('presspermit-group-new' == $pp_plugin_page)
             )) {
                 add_action(
@@ -26,9 +26,9 @@ class Admin
             }
         }
 
-        if (!presspermit_empty_REQUEST('action') || !presspermit_empty_REQUEST('action2') || !presspermit_empty_REQUEST('pp_action')) {
-            if (('presspermit-groups' == presspermitPluginPage()) || (!presspermit_empty_REQUEST('wp_http_referer')
-                    && (strpos(esc_url_raw(presspermit_REQUEST_var('wp_http_referer')), 'page=presspermit-groups'))
+        if (!PWP::empty_REQUEST('action') || !PWP::empty_REQUEST('action2') || !PWP::empty_REQUEST('pp_action')) {
+            if (('presspermit-groups' == presspermitPluginPage()) || (!PWP::empty_REQUEST('wp_http_referer')
+                    && (strpos(esc_url_raw(PWP::REQUEST_url('wp_http_referer')), 'page=presspermit-groups'))
             )) {
                 add_action('presspermit_user_init', function()
                 {

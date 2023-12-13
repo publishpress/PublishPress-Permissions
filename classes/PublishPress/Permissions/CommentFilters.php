@@ -6,8 +6,6 @@ class CommentFilters
 {
     public function __construct() {
         add_filter('comments_clauses', [$this, 'fltCommentsClauses'], 10, 2);
-
-        add_filter('wp_count_comments', [$this, 'fltCountComments'], 10, 2);
     }
 
     public function fltCommentsClauses($clauses, $qry_obj = false, $args = [])
@@ -60,74 +58,5 @@ class CommentFilters
         }
 
         return $clauses;
-    }
-
-    public function fltCountComments($comment_count, $post_id = 0)
-    {
-        global $wpdb;
-
-        $post_id = (int)$post_id;
-
-        $where = ($post_id > 0) ? $wpdb->prepare("comment_post_ID = %d", $post_id) : '1=1';
-        $where = apply_filters('presspermit_count_comments_where', $where, $post_id);
-
-        // todo: move to filter
-        if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
-        	$revision_status_csv = implode("','", array_map('sanitize_key', rvy_revision_statuses()));
-        	$where .= " AND post_mime_type NOT IN ('$revision_status_csv')";
-		}
-
-        $clauses = $this->fltCommentsClauses(['join' => '', 'where' => ''], false, ['required_operation' => 'edit']);
-
-        $totals = (array)$wpdb->get_results("
-            SELECT comment_approved, COUNT( * ) AS total
-            FROM {$wpdb->comments} 
-            {$clauses['join']} 
-            WHERE {$clauses['where']} $where
-            GROUP BY comment_approved
-        ", ARRAY_A);
-
-        $comment_count = [
-            'approved' => 0,
-            'awaiting_moderation' => 0,
-            'spam' => 0,
-            'trash' => 0,
-            'post-trashed' => 0,
-            'total_comments' => 0,
-            'all' => 0,
-        ];
-
-        foreach ($totals as $row) {
-            switch ($row['comment_approved']) {
-                case 'trash':
-                    $comment_count['trash'] = $row['total'];
-                    break;
-                case 'post-trashed':
-                    $comment_count['post-trashed'] = $row['total'];
-                    break;
-                case 'spam':
-                    $comment_count['spam'] = $row['total'];
-                    $comment_count['total_comments'] += $row['total'];
-                    break;
-                case '1':
-                    $comment_count['approved'] = $row['total'];
-                    $comment_count['total_comments'] += $row['total'];
-                    $comment_count['all'] += $row['total'];
-                    break;
-                case '0':
-                    $comment_count['awaiting_moderation'] = $row['total'];
-                    $comment_count['total_comments'] += $row['total'];
-                    $comment_count['all'] += $row['total'];
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        $comment_count['moderated'] = $comment_count['awaiting_moderation'];
-        unset($comment_count['awaiting_moderation']);
-        $comment_count = (object)$comment_count;
-
-        return $comment_count;
     }
 }

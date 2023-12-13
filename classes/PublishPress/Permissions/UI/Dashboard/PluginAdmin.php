@@ -88,8 +88,7 @@ class PluginAdmin
 
         presspermit()->admin()->notice(
             esc_html__('Please upgrade PublishPress Authors to version 3.8.0 or later for Permissions integration.', 'press-permit-core'),
-            $id,
-            $args
+            $id
         );
     }
 }

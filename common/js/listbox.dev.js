@@ -5,7 +5,7 @@
             search_id: 
             ,button_id: 
             ,results_id: 
-            ,ajax_url:''	
+            ,ajaxurl:''	
             ,agent_type: 'user'
             ,agent_id: ''
             ,topic: ''
@@ -75,7 +75,7 @@
                 'pp_context': args.pp_context
             };
 
-            $.ajax({url: args.ajax_url, data: data, dataType: "html", success: got_ajax_listbox, error: ajax_failure});
+            $.ajax({url: args.ajaxurl, data: data, dataType: "html", success: got_ajax_listbox, error: ajax_failure});
         }
 
         var got_ajax_listbox = function (data, txtStatus) {

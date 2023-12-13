@@ -26,10 +26,12 @@ class RoleUsageQuery
      */
     function __construct($query = null)
     {
+        // phpcs Note: This exclude arg has nothing to do with the Posts query
+
         $this->query_vars = wp_parse_args($query, [
             'blog_id' => get_current_blog_id(),
             'include' => [],
-            'exclude' => [],
+            'exclude' => [],    // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
             'search' => '',
             'orderby' => 'login',
             'order' => 'ASC',
