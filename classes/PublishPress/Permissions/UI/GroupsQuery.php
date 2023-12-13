@@ -31,6 +31,8 @@ class GroupQuery
     private $query_orderby;
     private $query_limit;
 
+    public $query_vars;
+
     /**
      *
      * @param string|array $args The query variables
