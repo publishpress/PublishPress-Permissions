@@ -64,7 +64,7 @@
         "@check:php81",
         "@check:php82"
     ],
-    "check:php56": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 5.6 ./publishpress-statuses.php",
+    "check:php56": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 5.6 ./press-permit-core.php",
     "check:php72": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 7.2",
     "check:php74": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 7.4",
     "check:php80": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 8.0",

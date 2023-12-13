@@ -96,10 +96,11 @@ class PostEdit
                 switch ($op) {
                     case 'associate':
                         $caption = sprintf(
+
 		                    esc_html__('Permissions: Select this %s as Parent', 'press-permit-core'),
-		                    $type_obj->labels->singular_name
-		                );
-                
+                            $type_obj->labels->singular_name
+                        );
+                    
                         break;
 
                     case 'assign':
