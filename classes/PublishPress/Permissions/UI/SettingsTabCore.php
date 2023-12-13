@@ -44,6 +44,7 @@ class SettingsTabCore
     {
         $opt = [
             'enabled_taxonomies' => esc_html__('Filtered Taxonomies', 'press-permit-core'),
+            'create_tag_require_edit_cap' => esc_html__('Tag creation requires Tag edit capability', 'press-permit-core'),
             'enabled_post_types' => esc_html__('Filtered Post Types', 'press-permit-core'),
             'define_media_post_caps' => esc_html__('Enforce distinct edit, delete capability requirements for Media', 'press-permit-core'),
             'define_create_posts_cap' => esc_html__('Use create_posts capability', 'press-permit-core'),
@@ -63,7 +64,7 @@ class SettingsTabCore
     public function optionSections($sections)
     {
         $new = [
-            'taxonomies' => ['enabled_taxonomies'],
+            'taxonomies' => ['enabled_taxonomies', 'create_tag_require_edit_cap'],
             'post_types' => ['enabled_post_types', 'define_media_post_caps', 'define_create_posts_cap'],
             'permissions' => ['post_blockage_priority'],
             'front_end' => ['media_search_results', 'term_counts_unfiltered', 'strip_private_caption', 'force_nav_menu_filter'],
@@ -308,6 +309,45 @@ class SettingsTabCore
                         }
 
                         echo '</div></div>';
+
+                    } else {
+                        if (defined('PRESSPERMIT_COLLAB_VERSION')) {
+                            echo '<div><br />';
+
+                            $ret = $ui->optionCheckbox('create_tag_require_edit_cap', $tab, $section, '', '', ['hint_class' => 'pp-no-hide']);
+
+                            echo '<div class="pp-subtext pp-no-hide">';
+
+                            if (defined('PUBLISHPRESS_CAPS_VERSION')) {
+                                $url = admin_url('admin.php?page=pp-capabilities');
+
+                                printf(
+                                    esc_html__(
+                                        '%1$sNote:%2$s If enabled, users cannot add previously non-existant tags to a post unless their role includes the Edit capability for its taxonomy. You can %3$sadd these capabilities to Capabilities > Capabilities > Taxonomies%4$s for any role that needs it.', 
+                                        'press-permit-core'
+                                    ),
+                                    '<span class="pp-important">',
+                                    '</span>',
+                                    '<a href="' . esc_url($url) . '">',
+                                    '</a>'
+                                );
+                            } else {
+                                $url = Settings::pluginInfoURL('capability-manager-enhanced');
+
+                                printf(
+                                    esc_html__(
+                                        '%1$sNote:%2$s If enabled, users cannot add previously non-existent tags to a post unless their role includes the Edit capability for its taxonomy. You can use a WordPress role editor like %3$sPublishPress Capabilities%4$s to add these capabilities to any role that needs it.', 
+                                        'press-permit-core'
+                                    ),
+                                    '<span class="pp-important">',
+                                    '</span>',
+                                    '<span class="plugins update-message"><a href="' . esc_url($url) . '" class="thickbox" title=" PublishPress Capabilities">',
+                                    '</a></span>'
+                                );
+                            }
+
+                            echo '</div></div>';
+                        }
                     }
                     ?>
                 </td>
