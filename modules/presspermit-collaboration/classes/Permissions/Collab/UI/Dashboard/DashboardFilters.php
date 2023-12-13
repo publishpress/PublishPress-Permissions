@@ -10,7 +10,7 @@ class DashboardFilters
         define('PRESSPERMIT_COLLAB_URLPATH', plugins_url('', PRESSPERMIT_COLLAB_FILE));
 
         if (('nav-menus.php' == $pagenow) 
-        || (defined('DOING_AJAX') && DOING_AJAX && presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
+        || (defined('DOING_AJAX') && DOING_AJAX && PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
         ) {  // Administrators also need this, to add private posts to available items list
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/NavMenuQuery.php');
             new NavMenuQuery();
@@ -40,6 +40,7 @@ class DashboardFilters
 
         add_filter('presspermit_term_include_clause', [$this, 'flt_term_include_clause'], 10, 2);
 
+		// Used only by Permissions Pro < 4.0
         add_filter('presspermit_post_status_types', [$this, 'flt_status_links'], 5);
 
         if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
@@ -115,7 +116,7 @@ class DashboardFilters
 
     function actAdminHead()
     {
-        if (presspermit_is_REQUEST('page', 'presspermit-role-usage')) {
+        if (PWP::is_REQUEST('page', 'presspermit-role-usage')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/RoleUsageListTable.php');
             \PublishPress\Permissions\Collab\UI\RoleUsageListTable::instance();
         }
@@ -179,6 +180,7 @@ class DashboardFilters
         new TermEdit();
     }
 
+	// Used only by Permissions Pro < 4.0
     function flt_status_links($links)
     {
         if (current_user_can('pp_define_post_status') || current_user_can('pp_define_moderation')) {

@@ -4,17 +4,19 @@ namespace PublishPress\Permissions\UI;
 
 class AgentRolesAjax
 {
-    public function __construct() 
+    public function __construct()
     {
-        if (!$for_item_source = presspermit_GET_key('pp_source_name')) {
+        check_ajax_referer('pp-ajax');
+
+        if (!$for_item_source = PWP::GET_key('pp_source_name')) {
             exit;
         }
 
-        if (!$for_item_type = presspermit_GET_key('pp_object_type')) {
+        if (!$for_item_type = PWP::GET_key('pp_object_type')) {
             exit;
         }
 
-        if (!$pp_ajax_agent_roles = presspermit_GET_key('pp_ajax_agent_roles')) {
+        if (!$pp_ajax_agent_roles = PWP::GET_key('pp_ajax_agent_roles')) {
             exit;
         }
 
@@ -25,7 +27,7 @@ class AgentRolesAjax
             exit;
         }
 
-        $role_name = PWP::sanitizeCSV(presspermit_GET_var('pp_role_name'));
+        $role_name = !empty($_GET['pp_role_name']) ? PWP::sanitizeEntry(sanitize_text_field($_GET['pp_role_name'])) : '';
 
         $filterable_vars = ['for_item_source', 'for_item_type', 'role_name'];
         if ($force_vars = apply_filters('presspermit_ajax_role_ui_vars', [], compact($filterable_vars))) {
@@ -51,7 +53,7 @@ class AgentRolesAjax
                     foreach ($roles as $_role_name => $role_title) {
                         if ($pp_admin->userCanAdminRole($_role_name, $for_item_type)) {
                             $selected = ($_role_name == $role_name) ? ' selected ' : '';
-                            echo "<option value='" . esc_attr($_role_name) . "'" . esc_attr($selected) . "'>". esc_html($role_title) . "</option>";
+                            echo "<option value='" . esc_attr($_role_name) . "'" . esc_attr($selected) . ">". esc_html($role_title) . "</option>";
                         }
                     }
                 } else {

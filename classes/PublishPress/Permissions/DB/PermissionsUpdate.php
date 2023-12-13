@@ -2,6 +2,9 @@
 
 namespace PublishPress\Permissions\DB;
 
+// Direct query of plugin tables for admin operations
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
 class PermissionsUpdateHelper
 {
     var $insertion_action_enabled = true;
@@ -19,6 +22,7 @@ class PermissionsUpdate
     public static function assignRoles($assignments, $agent_type = 'pp_group', $args = [])
     {
         global $wpdb;
+
         $results = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT agent_id, assignment_id, role_name FROM $wpdb->ppc_roles WHERE agent_type = %s",
@@ -75,7 +79,7 @@ class PermissionsUpdate
             if (!$agent_id) {
                 continue;
             }
-
+            
             if ($ass_ids = $wpdb->get_col($wpdb->prepare(
                 "SELECT assignment_id FROM $wpdb->ppc_roles WHERE role_name = %s AND agent_id = %d",
                 $role_name,
@@ -105,9 +109,14 @@ class PermissionsUpdate
 
         $id_csv = implode("', '", array_map('intval', $delete_assignments));
 
-        $roles = $wpdb->get_results("SELECT * FROM $wpdb->ppc_roles WHERE assignment_id IN ('$id_csv')");  // deleted role data will be passed through action
+        // deleted role data will be passed through action
+        $roles = $wpdb->get_results(
+            "SELECT * FROM $wpdb->ppc_roles WHERE assignment_id IN ('$id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        );
 
-        $wpdb->query("DELETE FROM $wpdb->ppc_roles WHERE assignment_id IN ('$id_csv')");
+        $wpdb->query(
+            "DELETE FROM $wpdb->ppc_roles WHERE assignment_id IN ('$id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        );
 
         foreach ($roles as $role) {
             do_action('presspermit_removed_sitewide_role', $role->assignment_id, (array)$role);
@@ -126,7 +135,7 @@ class PermissionsUpdate
         
         $wpdb->query( 
             $wpdb->prepare( 
-                "DELETE FROM $wpdb->ppc_roles WHERE agent_type = %s AND agent_id IN ('$agent_id_csv')", 
+                "DELETE FROM $wpdb->ppc_roles WHERE agent_type = %s AND agent_id IN ('$agent_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 $agent_type 
             )
         );
@@ -162,7 +171,7 @@ class PermissionsUpdate
         $for_item_status = (isset($args['for_item_status'])) ? PWP::sanitizeCSV($for_item_status) : '';
 
         // temp workaround for Revisionary (otherwise lose page-assigned roles on revision approval)
-        if (presspermit_is_REQUEST('page', 'rvy-revisions')) {
+        if (PWP::is_REQUEST('page', 'rvy-revisions')) {
             return;
         }
 
@@ -189,7 +198,7 @@ class PermissionsUpdate
             $wpdb->prepare(
                 "SELECT e.agent_id, e.exception_id, e.for_item_status, e.mod_type, i.assign_for, i.inherited_from"
                 . " FROM $wpdb->ppc_exceptions AS e INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
-                . " WHERE i.item_id = %d AND e.agent_type = %s AND e.agent_id IN ('$agent_id_csv') AND e.operation = %s"
+                . " WHERE i.item_id = %d AND e.agent_type = %s AND e.agent_id IN ('$agent_id_csv') AND e.operation = %s"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 . " AND e.via_item_source = %s AND e.via_item_type = %s"
                 . " AND e.for_item_source = %s AND e.for_item_type = %s AND e.for_item_status = %s",
 
@@ -336,7 +345,7 @@ class PermissionsUpdate
                 if ($delete_eitem_ids = $wpdb->get_col(
                     $wpdb->prepare(
                         "SELECT eitem_id FROM $wpdb->ppc_exception_items WHERE assign_for = %s"
-                        . " AND item_id = %d AND exception_id IN ('$delete_exc_id_csv')",
+                        . " AND item_id = %d AND exception_id IN ('$delete_exc_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                         $assign_for,
                         $item_id
@@ -348,13 +357,14 @@ class PermissionsUpdate
         }
 
         if ($delete_agents_from_eitem['item'] || $delete_agents_from_eitem['children'] || $delete_agents_from_eitem['']) {
-            $agent_id_csv = implode("','", array_map('intval', $agent_ids));
-            
             // first retrieve ppc_exceptions records for each agent
+            
+            $agent_id_csv = implode("','", array_map('intval', $agent_ids));
+
             $stored_e = $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT e.agent_id, e.exception_id FROM $wpdb->ppc_exceptions AS e"
-                    . " WHERE e.agent_type = %s AND e.agent_id IN ('$agent_id_csv') AND e.operation = %s"
+                    . " WHERE e.agent_type = %s AND e.agent_id IN ('$agent_id_csv') AND e.operation = %s"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                     . " AND e.via_item_source = %s AND e.via_item_type = %s"
                     . " AND e.for_item_source = %s AND e.for_item_type = %s AND e.for_item_status = %s",
             
@@ -381,13 +391,14 @@ class PermissionsUpdate
                 }
 
                 if ($exception_ids) {
+                    $assign_for = sanitize_key($assign_for);
+
                     $exception_id_csv = implode("','", array_map('intval', $exception_ids));
 
-                    $assign_for = sanitize_key($assign_for);
                     if ($delete_eitem_ids = $wpdb->get_col(
                         $wpdb->prepare(
                             "SELECT eitem_id FROM $wpdb->ppc_exception_items WHERE assign_for = %s"
-                            . " AND item_id = %d AND exception_id IN ('$exception_id_csv')",
+                            . " AND item_id = %d AND exception_id IN ('$exception_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                             
                             $assign_for,
                             $item_id
@@ -405,8 +416,8 @@ class PermissionsUpdate
                                     "SELECT term_id, taxonomy FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d LIMIT 1",
                                     $item_id
                                 )
-                            )) {
-                                if ($_term_ids = PWP::getDescendantIds('term', $_term->term_id)) {
+                            )) {                                            // any_type_or_taxonomy arg retains previous query construction (no post_type or taxonomy clause)
+                                if ($_term_ids = PWP::getDescendantIds('term', $_term->term_id, ['any_type_or_taxonomy' => true])) {
                                     $descendant_ids = PWP::termidToTtid($_term_ids, $_term->taxonomy);
                                 }
                             }
@@ -420,15 +431,18 @@ class PermissionsUpdate
                             $descendant_ids = PWP::getDescendantIds(
                                 $via_item_source,
                                 $item_id,
-                                ['include_attachments' => false, 'post_types' => $propagate_post_types]
+                                ['include_attachments' => false, 'post_types' => $propagate_post_types, 'exclude_autodrafts' => false]
                             );  // normally propagate only to matching post_types
                         }
 
                         if ($descendant_ids) {
                             $id_csv = implode("','", array_map('intval', $descendant_ids));
+
+                            // phpcs Note: id and exception_id IN clauses constructed and sanitized above
+                            
                             if ($delete_eitem_ids = $wpdb->get_col(
                                 "SELECT eitem_id FROM $wpdb->ppc_exception_items WHERE inherited_from != '0'"
-                                . " AND item_id IN ('$id_csv') AND exception_id IN ('$exception_id_csv')"
+                                . " AND item_id IN ('$id_csv') AND exception_id IN ('$exception_id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                             )) {
                                 self::removeExceptionItemsById($delete_eitem_ids);
                             }
@@ -526,14 +540,15 @@ class PermissionsUpdate
         if ('children' == $assign_for) {
             if ('term' == $via_item_source) {
                 $descendant_ids = [];
+
                 if ($_term = $wpdb->get_row(
                         $wpdb->prepare(
                             "SELECT term_id, taxonomy FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d LIMIT 1",
                             $item_id
                         )
                     )
-                ) { 
-                    if ($_term_ids = PWP::getDescendantIds('term', $_term->term_id)) {
+                ) {                                         // any_type_or_taxonomy arg retains previous query construction (no post_type or taxonomy clause)
+                    if ($_term_ids = PWP::getDescendantIds('term', $_term->term_id, ['any_type_or_taxonomy' => true])) {
                         $descendant_ids = PWP::termidToTtid($_term_ids, $_term->taxonomy);
                     }
                 }
@@ -547,7 +562,7 @@ class PermissionsUpdate
                 $descendant_ids = PWP::getDescendantIds(
                     $via_item_source,
                     $item_id,
-                    ['include_attachments' => false, 'post_types' => $propagate_post_types]
+                    ['include_attachments' => false, 'post_types' => $propagate_post_types, 'exclude_autodrafts' => false]
                 );  // normally propagate only to matching post_types
             }
 
@@ -628,10 +643,11 @@ class PermissionsUpdate
                     $child_exception_id = $exception_id;
 
                     if (!defined('PP_FORCE_EXCEPTION_OVERWRITE') || !PP_FORCE_EXCEPTION_OVERWRITE) {
+                        // phpcs Note: IN clause constructed and sanitized above
                         $have_direct_assignments = $wpdb->get_col(
                             $wpdb->prepare(
                                 "SELECT item_id FROM $wpdb->ppc_exception_items WHERE exception_id = %d"
-                                . " AND inherited_from = '0' AND item_id IN ('$descendant_id_csv')",
+                                . " AND inherited_from = '0' AND item_id IN ('$descendant_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                                 $child_exception_id
                             )
@@ -642,10 +658,11 @@ class PermissionsUpdate
                         $direct_assignment_csv = '';
                     }
 
+                    // phpcs Note: IN clauses constructed and sanitized above
                     if ($eitem_ids = $wpdb->get_col(
                         $wpdb->prepare(
                             "SELECT eitem_id FROM $wpdb->ppc_exception_items WHERE 1=1 AND exception_id = %d"
-                            . " AND item_id IN ('$descendant_id_csv') AND item_id NOT IN ('$direct_assignment_csv')",
+                            . " AND item_id IN ('$descendant_id_csv') AND item_id NOT IN ('$direct_assignment_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                             
                             $child_exception_id
                         )
@@ -655,6 +672,7 @@ class PermissionsUpdate
                 }
 
                 $exceptions_by_type = [];
+
                 $_results = $wpdb->get_results(
                     $wpdb->prepare(
                         "SELECT for_item_type, exception_id FROM $wpdb->ppc_exceptions WHERE" 
@@ -671,23 +689,27 @@ class PermissionsUpdate
                 }
 
                 if (('term' == $via_item_source) && taxonomy_exists($for_item_type)) {  // need to allow for descendants of a different post type than parent
+                    // phpcs Note: IN clause constructed and sanitized above
                     $descendant_types = $wpdb->get_results(
                         "SELECT term_taxonomy_id, taxonomy AS for_item_type FROM $wpdb->term_taxonomy"
-                        . " WHERE term_taxonomy_id IN ('$descendant_id_csv')",
+                        . " WHERE term_taxonomy_id IN ('$descendant_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                         OBJECT_K
                     );
                 } elseif ('post' == $via_item_source) {
                     if ($optimized_insertions) {
+                        // phpcs Note: IN clause constructed and sanitized above
                         $descendant_types = $wpdb->get_results(
                             $wpdb->prepare(
-                                "SELECT ID, post_type AS for_item_type FROM $wpdb->posts WHERE post_type = %s AND ID IN ('$descendant_id_csv')",
+                                "SELECT ID, post_type AS for_item_type FROM $wpdb->posts"
+                                . " WHERE post_type = %s AND ID IN ('$descendant_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                                 $for_item_type
                             ),
                             OBJECT_K
                         );
                     } else {
+                        // phpcs Note: IN clause constructed and sanitized above
                         $descendant_types = $wpdb->get_results(
-                            "SELECT ID, post_type AS for_item_type FROM $wpdb->posts WHERE ID IN ('$descendant_id_csv')",
+                            "SELECT ID, post_type AS for_item_type FROM $wpdb->posts WHERE ID IN ('$descendant_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                             OBJECT_K
                         );
                     }
@@ -725,10 +747,11 @@ class PermissionsUpdate
 
                         // Don't overwrite an explicitly assigned exception with a propagated exception
                         if (!defined('PP_FORCE_EXCEPTION_OVERWRITE') || !PP_FORCE_EXCEPTION_OVERWRITE) {
+                            // phpcs Note: IN clause constructed and sanitized above
                             $have_direct_assignments = $wpdb->get_col(
                                 $wpdb->prepare(
                                     "SELECT item_id FROM $wpdb->ppc_exception_items WHERE exception_id = %d"
-                                    . " AND inherited_from = '0' AND item_id IN ('$descendant_id_csv')",
+                                    . " AND inherited_from = '0' AND item_id IN ('$descendant_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                                     $child_exception_id
                                 )
@@ -824,6 +847,8 @@ class PermissionsUpdate
                         }
 
                         if ($insert_row_count == $max_insert_rows) {
+                            // phpcs Note: The query is constructed and sanitized above
+                            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
                             $wpdb->query($qry_insert);
                             $qry_insert = $qry_insert_base;
                             $insert_row_count = 0;
@@ -843,6 +868,8 @@ class PermissionsUpdate
         } // end foreach agent_id
 
         if ($optimized_insertions && $insert_row_count) {
+            // phpcs Note: The query is constructed and sanitized above
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             $wpdb->query($qry_insert);
         }
 
@@ -866,7 +893,7 @@ class PermissionsUpdate
             . " e.mod_type, e.via_item_source, e.via_item_type, i.eitem_id, i.exception_id, i.item_id"
             . " FROM $wpdb->ppc_exception_items AS i"
             . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
-            . " WHERE i.eitem_id IN ('$eitem_id_csv') OR (i.inherited_from IN ('$eitem_id_csv') AND i.inherited_from != '0')"
+            . " WHERE i.eitem_id IN ('$eitem_id_csv') OR (i.inherited_from IN ('$eitem_id_csv') AND i.inherited_from != '0')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );  // deleted entries will be returned
 
         $eitem_ids = [];
@@ -875,7 +902,10 @@ class PermissionsUpdate
         }
 
         $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
-        $wpdb->query("DELETE FROM $wpdb->ppc_exception_items WHERE eitem_id IN ('$eitem_id_csv')");
+
+        $wpdb->query(
+            "DELETE FROM $wpdb->ppc_exception_items WHERE eitem_id IN ('$eitem_id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        );
 
         $deleted = [];
 
@@ -904,12 +934,18 @@ class PermissionsUpdate
         $agent_id_csv = implode("','", array_map('intval', (array)$agent_ids));
 
         if ($exc_ids = $wpdb->get_col($wpdb->prepare(
-            "SELECT exception_id FROM $wpdb->ppc_exceptions WHERE agent_type = %s AND agent_id IN ('$agent_id_csv')",
+            "SELECT exception_id FROM $wpdb->ppc_exceptions WHERE agent_type = %s AND agent_id IN ('$agent_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             $agent_type
         ))) {
             $exc_id_csv = implode("','", array_map('intval', $exc_ids));
-            $wpdb->query("DELETE FROM $wpdb->ppc_exception_items WHERE exception_id IN ('$exc_id_csv')");
-            $wpdb->query("DELETE FROM $wpdb->ppc_exceptions WHERE exception_id IN ('$exc_id_csv')");
+
+            $wpdb->query(
+                "DELETE FROM $wpdb->ppc_exception_items WHERE exception_id IN ('$exc_id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            );
+
+            $wpdb->query(
+                "DELETE FROM $wpdb->ppc_exceptions WHERE exception_id IN ('$exc_id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            );
         }
     }
 
@@ -936,7 +972,7 @@ class PermissionsUpdate
         if ($ass_ids = $wpdb->get_col($wpdb->prepare(
             "SELECT i.eitem_id FROM $wpdb->ppc_exception_items AS i"
             . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
-            . " WHERE e.via_item_source = %s $inherited_clause $id_clause",
+            . " WHERE e.via_item_source = %s $inherited_clause $id_clause",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             $via_item_source
         ))) {
             self::removeExceptionItemsById($ass_ids);

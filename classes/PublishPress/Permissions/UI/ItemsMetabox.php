@@ -46,10 +46,6 @@ class ItemsMetabox extends \Walker_Nav_Menu
      */
     public function start_el(&$output, $item, $depth = 0, $args = [], $current_object_id = 0)
     {
-        global $_nav_menu_placeholder;
-
-        $_nav_menu_placeholder = (0 > $_nav_menu_placeholder) ? intval($_nav_menu_placeholder) - 1 : -1;
-
         $indent = ($depth) ? str_repeat("\t", $depth) : '';
 
         $default_depth_display = (!empty($args->default_depth_display)) ? $args->default_depth_display : 1;
@@ -74,12 +70,6 @@ class ItemsMetabox extends \Walker_Nav_Menu
         $output .= '</label>';
     }
 
-    public static function echo_page_links($page_links) {
-        // todo: properly late-escape return value from paginate_links() ?
-        // Links are currently escaped upstream by WordPress function paginate_links()
-        echo $page_links;
-    }
-
     /**
      * Displays a metabox for a post type menu item.
      *
@@ -99,9 +89,9 @@ class ItemsMetabox extends \Walker_Nav_Menu
             $per_page = defined('PP_ITEM_MENU_PER_PAGE') ? PP_ITEM_MENU_PER_PAGE : 100;
         }
 
-        $current_tab = presspermit_REQUEST_key($post_type_name . '-tab');
+        $current_tab = PWP::REQUEST_key($post_type_name . '-tab');
 
-        $pagenum = $current_tab && presspermit_is_REQUEST('paged') ? absint(presspermit_REQUEST_var('paged')) : 1;
+        $pagenum = $current_tab && PWP::is_REQUEST('paged') ? absint(PWP::REQUEST_int('paged')) : 1;
         $offset = 0 < $pagenum ? $per_page * ($pagenum - 1) : 0;
 
         $args = [
@@ -110,7 +100,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             'orderby' => 'title',
             'posts_per_page' => $per_page,
             'post_type' => $post_type_name,
-            'suppress_filters' => true,
+            'suppress_filters' => true,         // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFiltersTrue
             'update_post_term_cache' => false,
             'update_post_meta_cache' => false,
         ];
@@ -136,22 +126,6 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
         $num_pages = $get_posts->max_num_pages;
 
-        $page_links = paginate_links([
-            'base' => add_query_arg(
-                [
-                    $post_type_name . '-tab' => 'all',
-                    'paged' => '%#%',
-                    'item-type' => 'post_type',
-                    'item-object' => $post_type_name,
-                ]
-            ),
-            'format' => '',
-            'prev_text' => esc_html__('&laquo;'),
-            'next_text' => esc_html__('&raquo;'),
-            'total' => $num_pages,
-            'current' => $pagenum,
-        ]);
-
         if (!$posts) {
             $error = '<li id="error">' . $post_type['args']->labels->not_found . '</li>';
         }
@@ -167,7 +141,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             $current_tab = 'most-recent';
         }
 
-        if (!presspermit_empty_REQUEST('quick-search-posttype-' . $post_type_name)) {
+        if (!PWP::empty_REQUEST('quick-search-posttype-' . $post_type_name)) {
             $current_tab = 'search';
         }
 
@@ -216,7 +190,11 @@ class ItemsMetabox extends \Walker_Nav_Menu
                 <ul id="<?php echo esc_attr($post_type_name); ?>checklist-most-recent" class="categorychecklist form-no-clear">
 
                     <?php
-                    $recent_args = array_merge($args, ['orderby' => 'post_date', 'order' => 'DESC', 'posts_per_page' => 15]);
+                    $recent_args = array_merge(
+                        $args, 
+                        ['orderby' => 'post_date', 'order' => 'DESC', 'posts_per_page' => 15]  // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page
+                    );
+
                     $most_recent = $get_posts->query($recent_args);
                     $args['walker'] = $walker;
                     echo walk_nav_menu_tree(array_map([__CLASS__, 'setup_nav_menu_item'], $most_recent), 0, (object)$args);
@@ -229,19 +207,26 @@ class ItemsMetabox extends \Walker_Nav_Menu
             ?>" id="tabs-panel-posttype-<?php echo esc_attr($post_type_name); ?>-search">
 
                 <?php
-                if ($search = presspermit_REQUEST_var('quick-search-posttype-' . $post_type_name)) {
-                    if (function_exists('_filter_query_attachment_filenames')) {
-                        add_filter('posts_clauses', '_filter_query_attachment_filenames');
+                $searched = '';
+                $search_results = [];
+
+                if (!PWP::empty_REQUEST('quick-search-posttype-' . $post_type_name)) {
+                    check_ajax_referer('pp-ajax');
+
+                    $searched = (!empty($_REQUEST['quick-search-posttype-' . $post_type_name]))
+                    ? sanitize_text_field($_REQUEST['quick-search-posttype-' . $post_type_name])
+                    : '';
+
+                    if ($searched) {
+                        if (function_exists('_filter_query_attachment_filenames')) {
+                            add_filter( "wp_allow_query_attachment_by_filename", "__return_true" );
+                        }
+
+                        $post_status = ('attachment' == $post_type_name) ? 'inherit' : '';
+                        $search_results = query_posts(['s' => $searched, 'post_type' => $post_type_name, 'fields' => 'all', 'order' => 'DESC', 'post_status' => $post_status]);
+
+                        remove_filter( "wp_allow_query_attachment_by_filename", "__return_true" );
                     }
-
-                    $searched = sanitize_text_field($search);
-                    $post_status = ('attachment' == $post_type_name) ? 'inherit' : '';
-                    $search_results = query_posts(['s' => $searched, 'post_type' => $post_type_name, 'fields' => 'all', 'order' => 'DESC', 'post_status' => $post_status]);
-
-                    remove_filter('posts_clauses', '_filter_query_attachment_filenames');
-                } else {
-                    $searched = '';
-                    $search_results = [];
                 }
                 ?>
 
@@ -269,13 +254,34 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
             </div><!-- /.tabs-panel -->
 
+            <?php
+            $page_links = paginate_links([
+                'base' => add_query_arg(
+                    [
+                        $post_type_name . '-tab' => 'all',
+                        'paged' => '%#%',
+                        'item-type' => 'post_type',
+                        'item-object' => $post_type_name,
+                    ]
+                ),
+                'format' => '',
+                'prev_text' => esc_html__('&laquo;'),
+                'next_text' => esc_html__('&raquo;'),
+                'total' => $num_pages,
+                'current' => $pagenum,
+            ]);
+            ?>
+
             <div id="<?php echo esc_attr($post_type_name); ?>-all" class="tabs-panel tabs-panel-view-all<?php
             if ('all' == $current_tab) echo ' tabs-panel-active'; else echo ' tabs-panel-inactive';
             ?>">
 
                 <?php if (!empty($page_links)) : ?>
                     <div class="add-menu-item-pagelinks">
-                        <?php self::echo_page_links($page_links); ?>
+                        <?php 
+                                           // phpcs Note: page_links sanitized above by paginate_links() function
+                        echo $page_links;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                        ?>
                     </div>
                 <?php endif; ?>
 
@@ -316,16 +322,19 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
                     $checkbox_items = walk_nav_menu_tree(array_map([__CLASS__, 'setup_nav_menu_item'], $posts), 0, (object)$args);
 
-                    if ('all' == $current_tab && !presspermit_empty_REQUEST('selectall')) {
+                    if ('all' == $current_tab && !PWP::empty_REQUEST('selectall')) {
                         $checkbox_items = preg_replace('/(type=(.)checkbox(\2))/', '$1 checked=$2checked$2', $checkbox_items);
                     }
 
-                    echo $checkbox_items;
+                    echo $checkbox_items;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     ?>
                 </ul>
                 <?php if (!empty($page_links)) : ?>
                     <div class="add-menu-item-pagelinks">
-                        <?php self::echo_page_links($page_links); ?>
+                        <?php 
+                                           // phpcs Note: page_links sanitized above by paginate_links() function
+                        echo $page_links;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                        ?>
                     </div>
                 <?php endif; ?>
 
@@ -365,11 +374,11 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
         $post_type_name = $post_type['args']->name;
 
-        $current_tab = presspermit_REQUEST_key($post_type_name . '-tab');
+        $current_tab = PWP::REQUEST_key($post_type_name . '-tab');
 
         // paginate browsing for large numbers of post objects
         $per_page = (defined('PP_ITEM_MENU_PER_PAGE')) ? PP_ITEM_MENU_PER_PAGE : 50;
-        $pagenum = $current_tab && presspermit_is_REQUEST('paged') ? absint(presspermit_is_REQUEST('paged')) : 1;
+        $pagenum = $current_tab && PWP::is_REQUEST('paged') ? absint(PWP::is_REQUEST('paged')) : 1;
         $offset = 0 < $pagenum ? $per_page * ($pagenum - 1) : 0;
 
         $args = [
@@ -394,22 +403,6 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
         $num_pages = 1;
 
-        $page_links = paginate_links([
-            'base' => add_query_arg(
-                [
-                    $post_type_name . '-tab' => 'all',
-                    'paged' => '%#%',
-                    'item-type' => 'post_type',
-                    'item-object' => $post_type_name,
-                ]
-            ),
-            'format' => '',
-            'prev_text' => esc_html__('&laquo;'),
-            'next_text' => esc_html__('&raquo;'),
-            'total' => $num_pages,
-            'current' => $pagenum,
-        ]);
-
         if (!$posts) {
             $error = '<li id="error">' . $post_type['args']->labels->not_found . '</li>';
         }
@@ -432,6 +425,22 @@ class ItemsMetabox extends \Walker_Nav_Menu
             '_wpnonce',
         ];
 
+        $page_links = paginate_links([
+            'base' => add_query_arg(
+                [
+                    $post_type_name . '-tab' => 'all',
+                    'paged' => '%#%',
+                    'item-type' => 'post_type',
+                    'item-object' => $post_type_name,
+                ]
+            ),
+            'format' => '',
+            'prev_text' => esc_html__('&laquo;'),
+            'next_text' => esc_html__('&raquo;'),
+            'total' => $num_pages,
+            'current' => $pagenum,
+        ]);
+
         ?>
         <div id="posttype-<?php echo esc_attr($post_type_name); ?>" class="posttypediv">
 
@@ -451,42 +460,16 @@ class ItemsMetabox extends \Walker_Nav_Menu
                     </a></li>
             </ul>
 
-            <div id="tabs-panel-posttype-<?php echo esc_attr($post_type_name); ?>-most-recent" class="tabs-panel <?php
-            if ('most-recent' == $current_tab) echo 'tabs-panel-active'; else echo 'tabs-panel-inactive';
-            ?>">
-
-                <ul id="<?php echo esc_attr($post_type_name); ?>checklist-most-recent" class="categorychecklist form-no-clear">
-                    <?php
-                    $_args = ['skip_meta_types' => 'wp_role', 'order_by' => 'ug.add_date_gmt DESC'];
-
-                    global $wpdb;
-                    $groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, $post_type_name);
-                    $group_members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $post_type_name);
-
-                    $_args['join'] = "INNER JOIN $group_members_table AS ug ON $groups_table.ID = ug.group_id";
-
-                    $most_recent = $pp_groups->getGroups($post_type_name, $_args);
-                    foreach (array_keys($most_recent) as $key) {
-                        $most_recent[$key]->object_id = $posts[$key]->ID;
-                        $most_recent[$key]->title = $posts[$key]->name;
-                        $most_recent[$key]->post_parent = 0;
-                        $most_recent[$key]->custom_source = $post_type_name;
-                    }
-
-                    $args['walker'] = $walker;
-                    echo walk_nav_menu_tree(array_map([__CLASS__, 'setup_nav_menu_item'], $most_recent), 0, (object)$args);
-                    ?>
-                </ul>
-
-            </div><!-- /.tabs-panel -->
-
             <div id="<?php echo esc_attr($post_type_name); ?>-all" class="tabs-panel tabs-panel-view-all<?php
             echo('all' == $current_tab ? ' tabs-panel-active' : ' tabs-panel-inactive');
             ?>">
 
                 <?php if (!empty($page_links)) : ?>
                     <div class="add-menu-item-pagelinks">
-                        <?php self::echo_page_links($page_links); ?>
+                        <?php 
+                                           // phpcs Note: page_links sanitized above by paginate_links() function
+                        echo $page_links;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                        ?>
                     </div>
                 <?php endif; ?>
 
@@ -508,16 +491,19 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
                     $checkbox_items = walk_nav_menu_tree(array_map([__CLASS__, 'setup_nav_menu_item'], $posts), 0, (object)$args);
 
-                    if ('all' == $current_tab && !presspermit_empty_REQUEST('selectall')) {
+                    if ('all' == $current_tab && !PWP::empty_REQUEST('selectall')) {
                         $checkbox_items = preg_replace('/(type=(.)checkbox(\2))/', '$1 checked=$2checked$2', $checkbox_items);
                     }
 
-                    echo $checkbox_items;
+                    echo $checkbox_items;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     ?>
                 </ul>
                 <?php if (!empty($page_links)) : ?>
                     <div class="add-menu-item-pagelinks">
-                        <?php self::echo_page_links($page_links); ?>
+                        <?php 
+                                           // phpcs Note: page_links sanitized above by paginate_links() function
+                        echo $page_links;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                        ?>
                     </div>
                 <?php endif; ?>
 
@@ -560,16 +546,16 @@ class ItemsMetabox extends \Walker_Nav_Menu
         global $nav_menu_selected_id;
         $taxonomy_name = $taxonomy['args']->name;
 
-        $current_tab = presspermit_REQUEST_key($taxonomy_name . '-tab');
+        $current_tab = PWP::REQUEST_key($taxonomy_name . '-tab');
 
         // paginate browsing for large numbers of objects
         $per_page = 50;
-        $pagenum = $current_tab && presspermit_is_REQUEST('paged') ? absint(presspermit_REQUEST_var('paged')) : 1;
+        $pagenum = $current_tab && PWP::is_REQUEST('paged') ? absint(PWP::REQUEST_int('paged')) : 1;
         $offset = 0 < $pagenum ? $per_page * ($pagenum - 1) : 0;
 
         $args = [
             'child_of' => 0,
-            'exclude' => '',
+            'exclude' => '',        // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
             'hide_empty' => false,
             'hierarchical' => 1,
             'include' => '',
@@ -632,7 +618,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             $current_tab = 'most-used';
         }
 
-        if (!presspermit_empty_REQUEST('quick-search-taxonomy-' . $taxonomy_name)) {
+        if (!PWP::empty_REQUEST('quick-search-taxonomy-' . $taxonomy_name)) {
             $current_tab = 'search';
         }
 
@@ -695,7 +681,10 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
                 <?php if (!empty($page_links)) : ?>
                     <div class="add-menu-item-pagelinks">
-                        <?php self::echo_page_links($page_links); ?>
+                        <?php 
+                                           // phpcs Note: page_links sanitized above by paginate_links() function
+                        echo $page_links;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                        ?>
                     </div>
                 <?php endif; ?>
 
@@ -733,7 +722,10 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
                 <?php if (!empty($page_links)) : ?>
                     <div class="add-menu-item-pagelinks">
-                        <?php self::echo_page_links($page_links); ?>
+                        <?php 
+                                           // phpcs Note: page_links sanitized above by paginate_links() function
+                        echo $page_links;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                        ?>
                     </div>
                 <?php endif; ?>
 
@@ -744,15 +736,22 @@ class ItemsMetabox extends \Walker_Nav_Menu
             ?>" id="tabs-panel-search-taxonomy-<?php echo esc_attr($taxonomy_name); ?>">
 
                 <?php
-                if ($search = presspermit_REQUEST_var('quick-search-taxonomy-' . $taxonomy_name)) {
-                    $searched = pp_permissions_sanitize_entry($search);
-                    $search_results = get_terms(
-                        $taxonomy_name,
-                        ['name__like' => $searched, 'fields' => 'all', 'orderby' => 'count', 'order' => 'DESC', 'hierarchical' => false]
-                    );
-                } else {
-                    $searched = '';
-                    $search_results = [];
+                $searched = '';
+                $search_results = [];
+
+                if (!PWP::empty_REQUEST('quick-search-taxonomy-' . $taxonomy_name)) {
+                    check_ajax_referer('pp-ajax');
+
+                    $searched = (!empty($_REQUEST['quick-search-taxonomy-' . $taxonomy_name])) ? 
+                    sanitize_text_field($_REQUEST['quick-search-taxonomy-' . $taxonomy_name]) 
+                    : '';
+
+                    if ($searched) {
+                        $search_results = get_terms(
+                            $taxonomy_name,
+                            ['name__like' => $searched, 'fields' => 'all', 'orderby' => 'count', 'order' => 'DESC', 'hierarchical' => false]
+                        );
+                    }
                 }
                 ?>
                 <p class="quick-search-wrap">
@@ -830,9 +829,12 @@ class ItemsMetabox extends \Walker_Nav_Menu
      */
     public static function ajax_menu_quick_search()
     {
+        check_ajax_referer('pp-ajax');
+
         $args = [];
-        $type = presspermit_REQUEST_key('type');
-        $query = sanitize_text_field(presspermit_REQUEST_var('q'));
+        $type = PWP::REQUEST_key('type');
+
+        $query = (!empty($_REQUEST['q'])) ? sanitize_text_field($_REQUEST['q']) : '';
 
         $args['walker'] = new ItemsMetabox;
         $args['is_search_result'] = true;
@@ -844,18 +846,19 @@ class ItemsMetabox extends \Walker_Nav_Menu
                 $status = ('attachment' == $matches[2]) ? 'inherit' : '';
                 add_filter('posts_search', [__CLASS__, 'item_menu_search_clause']);
 
-                if (function_exists('_filter_query_attachment_filenames')) {
-                    add_filter('posts_clauses', '_filter_query_attachment_filenames');
-                }
+                add_filter( "wp_allow_query_attachment_by_filename", "__return_true" );
 
+                // Query posts call executed on Edit Permissions screen quick search entry
                 query_posts([
-                    'posts_per_page' => 999,
+                    'posts_per_page' => 999,    // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page
                     'post_type' => $matches[2],
                     's' => $query,
                     'orderby' => 'title',
                     'order' => 'ASC',
                     'post_status' => $status,
                 ]);
+
+                remove_filter( "wp_allow_query_attachment_by_filename", "__return_true" );
 
                 remove_filter('posts_search', [__CLASS__, 'item_menu_search_clause']);
 
@@ -887,7 +890,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             }
         }
 
-        wp_die();
+        exit;
     }
 
     /**

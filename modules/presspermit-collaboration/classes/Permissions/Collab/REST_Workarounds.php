@@ -33,6 +33,10 @@ class REST_Workarounds
 
     function actRestorePostTypeTaxonomies($post) {
         global $wp_taxonomies;
+
+        // @todo: alternate method to regulate term assignment
+
+        // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
         $wp_taxonomies = $this->buffer_taxonomies;
     }
 
@@ -64,6 +68,7 @@ class REST_Workarounds
 
             $post_id = $matches[1];
 
+            // phpcs:ignore WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsRemoteFile
             $payload_vars = json_decode(file_get_contents('php://input'), true);
 
             $enabled_taxonomies = $pp->getEnabledTaxonomies([], 'object');
@@ -73,21 +78,30 @@ class REST_Workarounds
 
                 if (is_array($payload_vars) && isset($payload_vars[$rest_base])) {
                     global $typenow;
+
+                    // @todo: alternate method to regulate term assignment
+
+                    // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
                     $typenow = $type_rest_base;
 
                     $_REQUEST['post_type'] = $type_rest_base;
                     $_POST['post_type'] = $type_rest_base;
                     break;
 
-                } elseif ($terms = presspermit_REQUEST_var($rest_base)) { // legacy Gutenberg versions
+                // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                } elseif (!empty($_REQUEST[$rest_base])) { // legacy Gutenberg versions
+                    
+                    // No nonce verification because we need to deal with the term assignment attempt in any case
+
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                    $selected_terms = array_intersect(array_map('intval', (array) $_REQUEST[$rest_base]), $user_terms);
+                    
                     $taxonomy = $tx_obj->name;
 
                     $user_terms = get_terms(
                         $taxonomy, 
                         ['required_operation' => 'assign', 'hide_empty' => 0, 'fields' => 'ids', 'post_type' => $type_obj->name]
                     );
-                    
-                    $selected_terms = array_intersect(array_map('intval', (array) $terms), $user_terms);
 
                     $stored_terms = Collab::getObjectTerms($post_id, $taxonomy, ['fields' => 'ids']);
 

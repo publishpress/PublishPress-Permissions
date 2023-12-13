@@ -19,7 +19,7 @@ class CapabilityFilters
     function fltPostStatuses($statuses, $args) {
         global $pagenow;
 
-        if (!empty($args['has_cap_check']) || !presspermit_empty_REQUEST('preview') || 'revision.php' == $pagenow 
+        if (!empty($args['has_cap_check']) || !PWP::empty_REQUEST('preview') || 'revision.php' == $pagenow 
         ) {
             if (rvy_get_option('pending_revisions')) {
                 $statuses ['pending-revision']= get_post_status_object('pending-revision');
@@ -65,7 +65,7 @@ class CapabilityFilters
 
         $legacy_suffix = version_compare(REVISIONARY_VERSION, '1.5-alpha', '<') ? 'Legacy' : '';
 
-        if (('revision.php' == $pagenow) && presspermit_is_REQUEST('action', 'restore')) {
+        if (('revision.php' == $pagenow) && PWP::is_REQUEST('action', 'restore')) {
             return $reqd_caps;
         }
 
@@ -82,8 +82,8 @@ class CapabilityFilters
 
             // ensure proper cap requirements when a non-Administrator Quick-Edits or Bulk-Edits Posts/Pages 
             // (which may be included in the edit listing only for revision submission)
-            if (in_array($pagenow, ['edit.php', 'edit-tags.php', 'admin-ajax.php']) && !presspermit_empty_REQUEST('action') 
-            && (-1 != presspermit_REQUEST_key('action') || (presspermit_is_REQUEST('action2') && -1 != presspermit_REQUEST_key('action2')))
+            if (in_array($pagenow, ['edit.php', 'edit-tags.php', 'admin-ajax.php']) && !PWP::empty_REQUEST('action') 
+            && (-1 != PWP::REQUEST_key('action') || (PWP::is_REQUEST('action2') && -1 != PWP::REQUEST_key('action2')))
             ) {
                 $reqd_caps = $admin_class::fix_table_edit_reqd_caps($reqd_caps, $orig_cap, get_post($args[0]), get_post_type_object($object_type));
             }
@@ -116,8 +116,8 @@ class CapabilityFilters
         $return = [];
 
         if (('read_post' == reset($pp_reqd_caps))) {
-            if (!is_admin() && presspermit_is_REQUEST('post_type', 'revision') 
-            && (!presspermit_empty_REQUEST('preview') || !presspermit_empty_REQUEST('preview_id'))) {
+            if (!is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+            && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))) {
                 $return['pp_reqd_caps'] = ['edit_post'];
             }
         }

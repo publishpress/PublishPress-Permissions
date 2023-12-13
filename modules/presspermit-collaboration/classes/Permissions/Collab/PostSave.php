@@ -7,6 +7,8 @@ class PostSave
     // Store terms to DB in advance of any cap-checking query which may use those terms to qualify an operation
     public static function preAssignTerms($pp_reqd_caps, $post_type, $object_id)
     {
+        // @todo: confirm this is still needed
+
         $set_terms = false;
 
         if (!$post_type_obj = get_post_type_object($post_type))

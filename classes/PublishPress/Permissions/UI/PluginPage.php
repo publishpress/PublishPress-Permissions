@@ -23,7 +23,9 @@ class PluginPage
 
     public static function handleScreenOptions()
     {
-        if (presspermit_is_REQUEST('wp_screen_options')) {
+        if (PWP::is_REQUEST('wp_screen_options')) {
+            check_ajax_referer( 'screen-options-nonce', 'screenoptionnonce' );
+
             if (isset($_REQUEST['wp_screen_options']['option']) && ('groups_per_page' == $_REQUEST['wp_screen_options']['option']) && isset($_REQUEST['wp_screen_options']['value'])) {
                 global $current_user;
                 update_user_option($current_user->ID, sanitize_key($_REQUEST['wp_screen_options']['option']), (int) $_REQUEST['wp_screen_options']['value']);
@@ -33,7 +35,7 @@ class PluginPage
 
     public static function icon()
     {
-        //echo '<div class="pp-icon"><img src="' . esc_url(PRESSPERMIT_URLPATH . '/common/img/publishpress-logo-icon.png') . '" alt="" /></div>';
+        echo '<div class="pp-icon"><img src="' . esc_url(PRESSPERMIT_URLPATH . '/common/img/publishpress-logo-icon.png') . '" alt="" /></div>';
     }
 
     public function actAdminHead()
@@ -49,20 +51,20 @@ class PluginPage
 
         if ('presspermit-groups' == presspermitPluginPage()) {
             // todo: eliminate redundancy with Groups::__construct()
-            if (!empty($_REQUEST['action2']) && !is_numeric($_REQUEST['action2'])) {
-                $action = presspermit_REQUEST_key('action2');
+            if (!PWP::empty_REQUEST('action2')) {
+                $action = PWP::REQUEST_key('action2');
 
-            } elseif (!empty($_REQUEST['action']) && !is_numeric($_REQUEST['action'])) {
-                $action = presspermit_REQUEST_key('action');
+            } elseif (!PWP::empty_REQUEST('action')) {
+                $action = PWP::REQUEST_key('action');
 
-            } elseif (!empty($_REQUEST['pp_action'])) {
-                $action = presspermit_REQUEST_key('pp_action');
+            } elseif (!PWP::empty_REQUEST('pp_action')) {
+                $action = PWP::REQUEST_key('pp_action');
             } else {
                 $action = '';
             }
 
             if ( ! in_array($action, ['delete', 'bulkdelete'])) {
-                if (!$agent_type = presspermit_REQUEST_key('agent_type')) {
+                if (!$agent_type = PWP::REQUEST_key('agent_type')) {
                     $agent_type = 'pp_group';
                 }
             } else {
@@ -92,7 +94,7 @@ class PluginPage
     }
 
     public static function getAgentType($default_type = '') {
-        if (!$_agent_type = presspermit_REQUEST_key('agent_type')) {
+        if (!$_agent_type = PWP::REQUEST_key('agent_type')) {
             $_agent_type = $default_type;
         }
 
@@ -104,8 +106,8 @@ class PluginPage
     }
 
     public static function getGroupVariant() {
-        if (presspermit_empty_REQUEST('group_variant') && !presspermit_empty_REQUEST('s')) {
-            if ($wp_http_referer = presspermit_REQUEST_var('_wp_http_referer')) {
+        if (PWP::empty_REQUEST('group_variant') && !PWP::empty_REQUEST('s')) {
+            if ($wp_http_referer = PWP::REQUEST_url('_wp_http_referer')) {
                 $matches = [];
                 if (preg_match("/group_variant=([0-9a-zA-Z_\-]+)/", urldecode(esc_url_raw($wp_http_referer)), $matches)) {
                     if ($matches[1]) {
@@ -113,12 +115,12 @@ class PluginPage
                     }
                 }
             }
-        } elseif (presspermit_empty_REQUEST('group_variant') && !current_user_can('edit_users')) {
+        } elseif (PWP::empty_REQUEST('group_variant') && !current_user_can('edit_users')) {
             $group_variant = 'pp_group';
         }
 
         if (empty($group_variant)) {
-            $group_variant = presspermit_REQUEST_key('group_variant');
+            $group_variant = PWP::REQUEST_key('group_variant');
         }
 
         return sanitize_key(apply_filters('presspermit_query_group_variant', $group_variant));

@@ -6,24 +6,27 @@ class ItemsMetaboxAjax
 {
     public function __construct() 
     {
+        check_ajax_referer('pp-ajax');
+
         if ( ! current_user_can( 'pp_assign_roles' ) )
             wp_die( -1 );
 
         require_once( PRESSPERMIT_CLASSPATH . '/UI/ItemsMetabox.php' );
 
-        if (presspermit_is_POST('item-type', 'post_type')) {
+        if (PWP::is_POST('item-type', 'post_type')) {
             $type = 'posttype';
             $callback = ['\PublishPress\Permissions\UI\ItemsMetabox', 'post_type_meta_box'];
             $items = (array) presspermit()->getEnabledPostTypes([], 'object');
 
-        } elseif (presspermit_is_POST('item-type', 'taxonomy')) {
+        } elseif (PWP::is_POST('item-type', 'taxonomy')) {
             $type = 'taxonomy';
             $callback = ['\PublishPress\Permissions\UI\ItemsMetabox', 'taxonomy_meta_box'];
             $items = (array) get_taxonomies( [ 'show_ui' => true ], 'object' );
         }
 
-        if ( ! empty( $_POST['item-object'] ) ) {
-            $item_type = sanitize_key($_POST['item-object']);
+        // Nonce verificaiton is not needed here, as this is just UI output
+        if (!PWP::empty_POST('item-object')) {
+            $item_type = PWP::POST_key('item-object');
 
             if (!empty($items[$item_type])) {
                 $item = $items[$item_type];
@@ -42,7 +45,7 @@ class ItemsMetaboxAjax
 
                 $markup = ob_get_clean();
                 
-                echo json_encode([
+                echo wp_json_encode([
                     'replace-id' => $type . '-' . $item->name,
                     'markup' => $markup,
                 ]);

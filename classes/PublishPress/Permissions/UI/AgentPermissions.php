@@ -13,18 +13,18 @@ class AgentPermissions
         $pp_admin = $pp->admin();
         $pp_groups = $pp->groups();
 
-        if (!presspermit_empty_REQUEST('pp_fix_child_exceptions')) {
+        if (!PWP::empty_REQUEST('pp_fix_child_exceptions')) {
             require_once(PRESSPERMIT_CLASSPATH.'/DB/PermissionsUpdate.php');
             \PublishPress\Permissions\DB\PermissionsUpdate::ensureExceptionPropagation();
         }
 
         require_once(PRESSPERMIT_CLASSPATH . '/UI/AgentPermissionsUI.php');
 
-        if (!$agent_type = presspermit_REQUEST_key('agent_type')) {
+        if (!$agent_type = PWP::REQUEST_key('agent_type')) {
             $agent_type = 'pp_group';
         }
 
-        if ($agent_id = presspermit_REQUEST_int('agent_id')) {
+        if ($agent_id = PWP::REQUEST_int('agent_id')) {
             $agent = $pp_groups->getAgent($agent_id, $agent_type);
         } else {
             $agent_id = 0;
@@ -62,18 +62,18 @@ class AgentPermissions
 
         $url = apply_filters('presspermit_groups_base_url', 'admin.php');
 
-        if ($wp_http_referer = presspermit_REQUEST_var('wp_http_referer')) {
+        if ($wp_http_referer = PWP::REQUEST_url('wp_http_referer')) {
             $wp_http_referer = esc_url_raw($wp_http_referer);
 
-        } elseif (presspermit_SERVER_var('HTTP_REFERER') && !strpos(esc_url_raw(presspermit_SERVER_var('HTTP_REFERER')), 'page=presspermit-group-new')) {
-            $wp_http_referer = esc_url_raw(presspermit_SERVER_var('HTTP_REFERER'));
+        } elseif (PWP::SERVER_url('HTTP_REFERER') && !strpos(esc_url_raw(PWP::SERVER_url('HTTP_REFERER')), 'page=presspermit-group-new')) {
+            $wp_http_referer = esc_url_raw(PWP::SERVER_url('HTTP_REFERER'));
         } else {
             $wp_http_referer = '';
         }
 
         $wp_http_referer = remove_query_arg(['update', 'delete_count'], stripslashes($wp_http_referer));
 
-        if (!$group_variant = presspermit_REQUEST_key('group_variant')) {
+        if (!$group_variant = PWP::REQUEST_key('group_variant')) {
             $group_variant = 'pp_group';
         }
 
@@ -82,17 +82,17 @@ class AgentPermissions
         : admin_url("admin.php?page=presspermit-groups&group_variant=$group_variant"); 
         ?>
 
-        <?php if (presspermit_is_GET('updated')) : ?>
+        <?php if (PWP::is_GET('updated')) : ?>
             <div id="message" class="updated">
                 <p>
 
-                    <?php if (!presspermit_empty_REQUEST('pp_roles')) : ?>
+                    <?php if (!PWP::empty_REQUEST('pp_roles')) : ?>
                         <strong><?php esc_html_e('Roles updated.', 'press-permit-core') ?>&nbsp;</strong>
 
-                    <?php elseif (!presspermit_empty_REQUEST('pp_exc')) : ?>
+                    <?php elseif (!PWP::empty_REQUEST('pp_exc')) : ?>
                         <strong><?php esc_html_e('Specific Permissions updated.', 'press-permit-core') ?>&nbsp;</strong>
 
-                    <?php elseif (!presspermit_empty_REQUEST('pp_cloned')) : ?>
+                    <?php elseif (!PWP::empty_REQUEST('pp_cloned')) : ?>
                         <strong><?php esc_html_e('Permissions cloned.', 'press-permit-core') ?>&nbsp;</strong>
 
                     <?php else : ?>
@@ -108,7 +108,7 @@ class AgentPermissions
                 </p>
             </div>
 
-        <?php elseif (presspermit_is_GET('created')) : ?>
+        <?php elseif (PWP::is_GET('created')) : ?>
             <div id="message" class="updated">
                 <p>
                     <strong><?php esc_html_e('Group created.', 'press-permit-core') ?>&nbsp;</strong>
@@ -338,17 +338,17 @@ class AgentPermissions
 
                                 $role_group_caption = sprintf(
                                     esc_html__('Supplemental Roles %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
-                                    '<small>',
-                                    "<a class='pp-show-groups' href='#'>",
-                                    '</a>',
-                                    '</small>'
+                                    '',
+                                    '',
+                                    '',
+                                    ''
                                 );
 
-                                AgentPermissionsUI::currentRolesUI($roles, ['read_only' => true, 'class' => 'pp-group-roles', 'caption' => $role_group_caption]);
+                                AgentPermissionsUI::currentRolesUI($roles, ['read_only' => true, 'class' => 'pp-group-roles', 'caption' => $role_group_caption, 'show_groups_link' => true]);
 
                                 $exceptions = [];
 
-                                $args = ['assign_for' => '', 'inherited_from' => 0, 'extra_cols' => ['i.assign_for', 'i.eitem_id'], 'post_types' => array_keys($post_types), 'taxonomies' => array_keys($taxonomies), 'return_raw_results' => true];
+                                $args = ['assign_for' => '', 'inherited_from' => 0, 'post_types' => array_keys($post_types), 'taxonomies' => array_keys($taxonomies), 'return_raw_results' => true];
 
                                 foreach (array_keys($user->groups) as $agent_type) {
                                     $args['agent_type'] = $agent_type;
@@ -362,13 +362,13 @@ class AgentPermissions
 
                                 $role_group_caption = sprintf(
                                     esc_html__('Specific Permissions %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
-                                    '<small>',
-                                    "<a class='pp-show-groups' href='#'>",
-                                    '</a>',
-                                    '</small>'
+                                    '',
+                                    '',
+                                    '',
+                                    ''
                                 );
 
-                                AgentPermissionsUI::currentExceptionsUI($exceptions, ['read_only' => true, 'class' => 'pp-group-roles', 'caption' => $role_group_caption]);
+                                AgentPermissionsUI::currentExceptionsUI($exceptions, ['read_only' => true, 'class' => 'pp-group-roles', 'caption' => $role_group_caption, 'show_groups_link' => true]);
                             } else {
                                 ?>
                                 <h4>

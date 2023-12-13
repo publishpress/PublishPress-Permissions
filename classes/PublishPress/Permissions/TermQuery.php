@@ -75,12 +75,21 @@ class TermQuery
             $cache_results = [];
         }
 
-        if (isset($cache_results[$qry])) {
-            $results = $cache_results[$qry];
-        } else {
-            $results = $wpdb->get_results($qry);
+        $ckey = md5($qry);
 
-            $cache_results[$qry] = $results;
+        if (isset($cache_results[$ckey])) {
+            $results = $cache_results[$ckey];
+        } else {
+            // phpcs Note: query clauses constructed and sanitized above
+
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            $results = $wpdb->get_results(
+                "SELECT tr.object_id, tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
+                . " INNER JOIN $wpdb->posts ON object_id = $wpdb->posts.ID $join"               // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                . " WHERE tr.term_taxonomy_id IN ('$term_id_csv') $type_status_clause"          // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            ); 
+
+            $cache_results[$ckey] = $results;
         }
 
         foreach ($results as $row) {
@@ -90,15 +99,16 @@ class TermQuery
 
         // Touch every ancestor's lookup row for each post in each term
         foreach ($term_ids as $term_id) {
-            $child = $term_id;
-            while (!empty($terms_by_id[$child]) && $parent = $terms_by_id[$child]->parent) {
+            $child = $term_id;  // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+
+            while (!empty($terms_by_id[$child]) && $parent = $terms_by_id[$child]->parent) {  // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
                 if (!empty($term_items[$term_id])) {
                     foreach ($term_items[$term_id] as $item_id => $touches) {
                         $term_items[$parent][$item_id] = isset($term_items[$parent][$item_id]) ? ++$term_items[$parent][$item_id] : 1;
                     }
                 }
 
-                $child = $parent;
+                $child = $parent;  // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
             }
         }
 

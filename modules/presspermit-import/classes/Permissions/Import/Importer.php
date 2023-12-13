@@ -1,6 +1,8 @@
 <?php
 namespace PublishPress\Permissions\Import;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
 class Importer
 {
     private $table_codes = [];
@@ -31,7 +33,7 @@ class Importer
 
     public static function handleSubmission()
     {
-        if (!presspermit_empty_POST('pp_rs_import')) {
+        if (!PWP::empty_POST('pp_rs_import')) {
             check_admin_referer('pp-rs-import', '_pp_import_nonce');
 
             if (!current_user_can('pp_manage_settings'))
@@ -41,7 +43,7 @@ class Importer
             DB\RoleScoper::instance()->doImport();
         }
 
-        if (!presspermit_empty_POST('pp_undo_imports')) {
+        if (!PWP::empty_POST('pp_undo_imports')) {
             check_admin_referer('pp-rs-import', '_pp_import_nonce');
             
             if (!current_user_can('pp_manage_settings'))
@@ -168,7 +170,7 @@ class Importer
 
             if ($import_tables = $wpdb->get_col(
                     $wpdb->prepare(
-                        "SELECT DISTINCT import_tbl FROM $wpdb->ppi_imported WHERE run_id = %d $site_clause",
+                        "SELECT DISTINCT import_tbl FROM $wpdb->ppi_imported WHERE run_id = %d $site_clause", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                         $run_id
                     )
                 )
@@ -180,6 +182,7 @@ class Importer
                     if ($id_col = $this->getIdColumn($table_name)) {
                         $wpdb->query(
                             $wpdb->prepare(
+                                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                                 "DELETE FROM `$table_name` WHERE $id_col IN ( SELECT import_id FROM $wpdb->ppi_imported WHERE run_id = %d AND import_tbl = %s $site_clause )",
                                 $run_id,
                                 $import_tbl
@@ -189,6 +192,7 @@ class Importer
 
                     $wpdb->query(
                         $wpdb->prepare(
+                            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                             "UPDATE $wpdb->ppi_imported SET run_id = -{$run_id} WHERE run_id = %d AND import_tbl = %s $site_clause",
                             $run_id,
                             $import_tbl
@@ -201,6 +205,7 @@ class Importer
             if ($wpdb->get_results("SHOW COLUMNS FROM $wpdb->ppi_imported LIKE 'import_table'")) {
                 $import_tables = $wpdb->get_col(
                     $wpdb->prepare(
+                        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                         "SELECT DISTINCT import_table FROM $wpdb->ppi_imported WHERE run_id = %d $site_clause",
                         $run_id
                     )
@@ -210,6 +215,7 @@ class Importer
                     if ($id_col = $this->getIdColumn($table_name)) {
                         $wpdb->query(
                             $wpdb->prepare(
+                                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                                 "DELETE FROM `$table_name` WHERE $id_col IN ( SELECT import_id FROM $wpdb->ppi_imported WHERE run_id = %d AND import_table = %s $site_clause )",
                                 $run_id,
                                 $table_name
@@ -219,6 +225,7 @@ class Importer
 
                     $wpdb->query(
                         $wpdb->prepare(
+                            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                             "UPDATE $wpdb->ppi_imported SET run_id = -{$run_id} WHERE run_id = %d AND import_table = %s $site_clause",
                             $run_id,
                             $import_table
@@ -245,6 +252,7 @@ class Importer
 
         $run_ids = $wpdb->get_col(
             $wpdb->prepare(
+                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 "SELECT run_id FROM $wpdb->ppi_imported WHERE run_id > 0 $site_clause",
                 get_current_blog_id()
             )
