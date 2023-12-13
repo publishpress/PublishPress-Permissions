@@ -125,8 +125,8 @@ class AdminFilters
     }
 
     function fltGetEnabledTaxonomiesByKey($taxonomies, $args = []) {
-        $taxonomies = $this->fltGetEnabledTaxonomies(array_keys($taxonomies), $args);
-        return array_fill_keys($taxonomies, true);
+        $forced_taxonomies = $this->fltGetEnabledTaxonomies(array_keys($taxonomies), $args);
+        return array_merge($taxonomies, $forced_taxonomies);
     }
 
     function fltAddException($exception)

@@ -540,8 +540,18 @@ class PermissionsHooks
         }
 
         if (($is_front && $front_filtering) || (!$is_unfiltered && (!defined('DOING_AUTOSAVE') || !DOING_AUTOSAVE))) {
-            require_once(PRESSPERMIT_CLASSPATH . '/TermFilters.php');
-            new Permissions\TermFilters();
+            // Work around unexplained issue with access to static methods of LibWP class failing if called before init action
+            if (defined('PRESSPERMIT_TERM_FILTERS_LEGACY_LOAD')) {
+                require_once(PRESSPERMIT_CLASSPATH . '/TermFilters.php');
+                new Permissions\TermFilters();
+            } else {
+                add_action('init',
+                    function() {
+                        require_once(PRESSPERMIT_CLASSPATH . '/TermFilters.php');
+                        new Permissions\TermFilters();
+                    }
+                );
+            }
         } elseif (is_admin() && $is_unfiltered) {
             require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersAdministrator.php');  // for filtering of post count
             new Permissions\TermFiltersAdministrator();
