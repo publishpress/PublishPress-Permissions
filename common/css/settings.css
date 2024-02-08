@@ -282,10 +282,6 @@ table.pp-options-table .pp-optionhint {
     margin-top: 20px;
 }
 
-#plugin-information-footer {
-    display: none;
-}
-
 #pp-install li.pp-pro-extensions-migration-note {
     max-width: 550px;
 }
