@@ -381,7 +381,7 @@ class PostTermsSave
 
             $default_terms = (array) get_option($default_term_option);
 			
-            // but if the default term is not defined or is not in user's subset of usable terms, substitute first available
+            // But if the default term is not defined or is not in user's subset of usable terms, substitute first available
             if ($user_terms) {
                 if (true === $user_terms)
                     $filtered_default_terms = $default_terms;
@@ -396,19 +396,21 @@ class PostTermsSave
 					
                     sort($user_terms); // default to lowest ID term
                     
-                    // Substitute 1st available based on certain conditions or constant definitions 
-                    // (Previously always assigned first user term here, regardless of $select_default_term flag or $user_terms count)
+                    // If user has any "include" or "additional" term exceptions, substitute 1st available term, contingent on certain conditions or constant definitions. 
+                    // (Previously assigned regardless of user's term exceptions)
+                    // (Even earlier, always assigned regardless of $select_default_term flag or $user_terms count)
                     if ((
                         presspermit()->getOption('auto_assign_available_term')
                         && (!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') || !empty($select_default_term) || (count($user_terms) == 1))
 						&& !defined('PP_NO_AUTO_DEFAULT_' . strtoupper($taxonomy))
+                        && (defined('PP_AUTO_DEFAULT_TERM_EXCEPTIONS_NOT_REQUIRED') || self::userHasTermLimitations($taxonomy, ['include', 'additional']))
                         )
 					|| defined('PP_AUTO_DEFAULT_' . strtoupper($taxonomy))
 					) {
                         $object_id = PWP::getPostID();
 
-                        if (!$object_id  // never auto-assign terms to the front page or posts
-                        || (($object_id !== get_option('page_on_front')) && ($object_id !== get_option('page_for_posts')))
+                        if (!$object_id  // Never auto-assign terms to the front page or posts
+                        || (($object_id != get_option('page_on_front')) && ($object_id != get_option('page_for_posts')))
                         ) {
                             $default_terms = apply_filters('presspermit_auto_assign_terms', (array) $user_terms[0], $taxonomy, $object_id, $args, $user_terms);
                         }
