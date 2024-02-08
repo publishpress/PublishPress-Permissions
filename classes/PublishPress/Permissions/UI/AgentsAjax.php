@@ -162,7 +162,7 @@ class AgentsAjax
                         $val = strval((bool)$val);
                     }
 
-                    $meta_search[] = ['key' => $um_keys[$i], 'value' => $val, 'compare' => '='];
+                    $meta_search[] = ['key' => $um_keys[$i], 'value' => $val, 'compare' => 'LIKE'];
                 }
             }
 
