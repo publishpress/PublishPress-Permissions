@@ -240,6 +240,12 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 4.0.7 - 9 Jan 2024 =
+* Compat : Any plugin that creates users had that sequence interrupted by Permissions Pro
+
+= 4.0.3 - 8 Jan 2024 =
+* Compat : Pro API - Post Type argument was not passed into filter for statuses query modified by PublishPress Statuses plugin 
+
 = 4.0.0 - 13 Dec 2023 =
 * Perf : Eliminated scan of users table on plugin activation (impacting sites with large number of users)
 * Perf : Eliminated recursive query of subpages (impacting sites with complex page hierarchies)
