@@ -239,6 +239,10 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.0.12 - 24 Jan 2024 =
+* Fixed : Terms were not auto-assigned as needed for category-restricted / term-restricted editors
+
 = 4.0.11 - 22 Jan 2024 =
 * Fixed : Category / Term assignment restrictions were not applied
 * Fixed : Users / Groups screen - Roles column showed supplemental roles for custom statuses even if that status is disabled for the post type (or completely) 
