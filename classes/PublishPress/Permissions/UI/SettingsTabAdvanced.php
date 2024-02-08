@@ -269,6 +269,8 @@ class SettingsTabAdvanced
                     <td>
                         <?php
                         $ui->optionCheckbox('pattern_roles_include_generic_rolecaps', $tab, $section, true, '');
+                        
+                        do_action('presspermit_options_ui_insertion', $tab, $section);
                         ?>
 
                         <div>
