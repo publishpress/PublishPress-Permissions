@@ -46,6 +46,7 @@ class Permissions
     public $meta_cap_post = false;
     public $doing_cap_check = false;
     private $sanitizing_post_id = false;
+    private $inserted_posts = [];
 
     public static function instance($args = [])
     {
@@ -90,6 +91,18 @@ class Permissions
                 return $maybe_empty;
             }, 1, 2
         );
+
+        add_action('wp_insert_post',
+            function ($post_id, $post, $update) {
+                if (empty($update)) {
+                    $this->inserted_posts[$post_id] = true;
+                }
+            }, 10, 3
+        );
+    }
+
+    public function isInsertedPost($post_id) {
+        return !empty($this->inserted_posts[$post_id]);
     }
 
     public function capDefs() {
