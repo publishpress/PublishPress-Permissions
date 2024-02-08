@@ -29,7 +29,15 @@ class PostEdit
 
     public static function fltPostStatus($status)
     {
-        $post_type = PWP::findPostType();
+        if (!$post_id = presspermit()->getCurrentSanitizePostID()) {
+            $post_id = PWP::getPostID();
+        }
+
+        if ($post_id) {
+            $post_type = get_post_field('post_type', $post_id);
+        } else {
+            $post_type = PWP::findPostType();
+        }
 
         if ($type_obj = get_post_type_object($post_type)) {
             if ($type_obj->hierarchical && post_type_supports($post_type, 'page-attributes')) {

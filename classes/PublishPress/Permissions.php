@@ -45,6 +45,8 @@ class Permissions
     public $listed_ids = [];               // $listed_ids[object_type][object_id] = true : avoid separate capability query for each listed item
     public $meta_cap_post = false;
     public $doing_cap_check = false;
+    private $sanitizing_post_id = false;
+    private $inserted_posts = [];
 
     public static function instance($args = [])
     {
@@ -58,9 +60,49 @@ class Permissions
         return self::$instance;
     }
 
+    public function getCurrentSanitizePostID() {
+        if (!empty($this->sanitizing_post_id)) {
+            $post_id = $this->sanitizing_post_id;
+        }
+
+        return 0;
+    }
+
     private function __construct()
     {
         add_filter('presspermit_unfiltered_content', [$this, 'fltPluginCompatUnfilteredContent'], 5, 1);
+        
+        // Log the post ID field for the sanitize_post() call by wp_insert_post(), 
+        // to provide context for subsequent pre_post_status, pre_post_parent, pre_post_category, pre_post_tags_input filter applications
+        add_filter('pre_post_ID', 
+            function($post_id) {
+                $this->sanitizing_post_id = $post_id;
+                return $post_id;
+            }
+        );
+
+        // Use the next filter called by wp_insert_post() too mark the end of sanitize_text_field() calls for this post
+        add_filter('wp_insert_post_empty_content',
+            function($maybe_empty, $postarr) {
+                if ($this->sanitizing_post_id && !empty($postarr['ID']) && ($postarr['ID'] == $this->sanitizing_post_id)) {
+                    $this->sanitizing_post_id = false;
+                }
+
+                return $maybe_empty;
+            }, 1, 2
+        );
+
+        add_action('wp_insert_post',
+            function ($post_id, $post, $update) {
+                if (empty($update)) {
+                    $this->inserted_posts[$post_id] = true;
+                }
+            }, 10, 3
+        );
+    }
+
+    public function isInsertedPost($post_id) {
+        return !empty($this->inserted_posts[$post_id]);
     }
 
     public function capDefs() {
