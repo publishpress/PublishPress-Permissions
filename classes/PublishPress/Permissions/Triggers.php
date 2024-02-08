@@ -246,7 +246,7 @@ class Triggers
 
     public function actSyncUserRoleGroups($user_ids = []) {
         foreach ((array) $user_ids as $user_id) {
-            if (is_object($user)) {
+            if (is_object($user_id)) {
                 $user_id = $user_id->ID;
             }
 
