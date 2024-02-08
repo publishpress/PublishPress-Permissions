@@ -240,6 +240,11 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 4.0.13 - 25 Jan 2024 =
+* Fixed : Front page and posts page was not protected from auto-assignment of terms
+* Change : Auto-assign a term only if no default terms are selectable and the user's editing access is modified by term-specific Permissions
+* Compat : Nested Pages - Apply pp_force_quick_edit capability to Nested Pages' Quick Edit and Contextual Add / Insert buttons
+
 = 4.0.12 - 24 Jan 2024 =
 * Fixed : Terms were not auto-assigned as needed for category-restricted / term-restricted editors
 
