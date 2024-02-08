@@ -240,6 +240,14 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 4.0.15 - 30 Jan 2024 =
+* Fixed : Auto-assignment of default terms wrongly applied under some conditions
+* Fixed : Filters for Post category, Tags, Terms, Parent or Status could be applied to wrong post under certain conditions
+* Change : User search for Specific Permission assignment - use LIKE matching for user meta field searches
+
+= 4.0.14 - 25 Jan 2024 =
+* Fixed : Could not delete custom Permission Groups
+
 = 4.0.13 - 25 Jan 2024 =
 * Fixed : Front page and posts page was not protected from auto-assignment of terms
 * Change : Auto-assign a term only if no default terms are selectable and the user's editing access is modified by term-specific Permissions
