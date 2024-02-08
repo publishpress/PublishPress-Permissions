@@ -399,7 +399,7 @@ class PostTermsSave
                     // Substitute 1st available based on certain conditions or constant definitions 
                     // (Previously always assigned first user term here, regardless of $select_default_term flag or $user_terms count)
                     if ((
-                        presspermit()->getOption('assign_default_term')
+                        presspermit()->getOption('auto_assign_available_term')
                         && (!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') || !empty($select_default_term) || (count($user_terms) == 1))
 						&& !defined('PP_NO_AUTO_DEFAULT_' . strtoupper($taxonomy))
                         )
