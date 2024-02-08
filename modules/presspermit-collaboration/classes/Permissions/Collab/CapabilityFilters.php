@@ -198,7 +198,13 @@ class CapabilityFilters
     {
         // Workaround to deal with WP core's checking of publish cap prior to storing categories:
         // Store terms to DB in advance of any cap-checking query which may use those terms to qualify an operation.
-        if (('post' != $source_name) || PWP::empty_REQUEST('action') || !in_array(PWP::REQUEST_key('action'), ['editpost', 'autosave'])) {
+        if (('post' != $source_name) 
+        || PWP::empty_REQUEST('action') 
+        || !in_array(PWP::REQUEST_key('action'), ['editpost', 'autosave'])
+
+        // Only pre-assign terms if capability check is for the original post being added or edited. But on new post creation, getPostID() could return zero
+        || (($post_id != PWP::getPostID()) && (PWP::getPostID() || !presspermit()->isInsertedPost($post_id)))
+        ) {
             return;
         }
 
