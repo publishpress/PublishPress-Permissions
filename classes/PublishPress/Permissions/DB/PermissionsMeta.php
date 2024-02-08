@@ -232,7 +232,7 @@ class PermissionsMeta
 
             // Note: If a post type was not parsed out of the role_name, also support display of direct-assigned roles or spcially-defined roles (Nav Menu Manager (Legacy))
 
-            if ($role_title = $pp->admin()->getRoleTitle($row->role_name, ['slug_fallback' => false])) {
+            if ($role_title = $pp->admin()->getRoleTitle($row->role_name, ['slug_fallback' => false, 'show_disabled' => false])) {
                 $count[$row->agent_id]['roles'][$role_title] = $row->rolecount;
 
                 if (!isset($count[$row->agent_id]['role_count'])) {
