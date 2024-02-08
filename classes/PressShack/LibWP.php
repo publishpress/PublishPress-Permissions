@@ -413,6 +413,8 @@ class LibWP
     public static function getPostStatuses($args, $return = 'names', $operator = 'and', $function_args = [])
     {
         if (isset($args['post_type'])) {
+            $_post_type = $args['post_type'];
+
             $post_type = $args['post_type'];
             unset($args['post_type']);
             $stati = get_post_stati($args, 'object', $operator);
@@ -421,6 +423,9 @@ class LibWP
                 if (!empty($obj->post_type) && !array_intersect((array)$post_type, (array)$obj->post_type))
                     unset($stati[$status]);
             }
+
+            // restore original argument for filter
+            $args['post_type'] = $_post_type;
 
             $statuses = ('names' == $return) ? array_keys($stati) : $stati;
         } else {
