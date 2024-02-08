@@ -8,8 +8,6 @@ class UserGroupsUpdate
     {
         global $wpdb;
 
-        check_admin_referer('pp-user-profile-groups', '_pp_permissions_nonce');
-
         $pp = presspermit();
 
         $group_types = $pp->groups()->getGroupTypes(['editable' => true]);
@@ -24,6 +22,8 @@ class UserGroupsUpdate
             if (PWP::empty_POST($agent_type)) {
                 continue;
             }
+
+            check_admin_referer('pp-user-profile-groups', '_pp_permissions_nonce');
 
             // by retrieving filtered groups here, user will only modify membership for groups they can administer
             $posted_groups = (!empty($_POST[$agent_type])) ? array_map('intval', $_POST[$agent_type]) : [];
@@ -66,8 +66,6 @@ class UserGroupsUpdate
 
     public static function removeUserGroups($user_id)
     {
-        check_admin_referer('pp-user-profile-groups', '_pp_permissions_nonce');
-
         $pp = presspermit();
 
         $group_types = $pp->groups()->getGroupTypes(['editable' => true]);
@@ -75,9 +73,15 @@ class UserGroupsUpdate
 		$is_main_site = (defined('PRESSPERMIT_LEGACY_MAIN_SITE_CHECK')) ? (1 == get_current_blog_id()) : is_main_site();
     	
         foreach ($group_types as $agent_type) {
+            if (!PWP::is_POST($agent_type)) {
+                continue;
+            }
+
             if (('pp_group' == $agent_type) && in_array('pp_net_group', $group_types, true) && $is_main_site) {
                 continue;
 			}
+
+            check_admin_referer('pp-user-profile-groups', '_pp_permissions_nonce');
 
             $posted_groups = (!empty($_POST[$agent_type])) ? array_map('intval', $_POST[$agent_type]) : [];
 
