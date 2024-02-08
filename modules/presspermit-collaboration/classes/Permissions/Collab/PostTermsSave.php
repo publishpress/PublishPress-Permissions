@@ -407,10 +407,9 @@ class PostTermsSave
                         )
 					|| defined('PP_AUTO_DEFAULT_' . strtoupper($taxonomy))
 					) {
-                        $object_id = PWP::getPostID();
-
-                        if (!$object_id  // Never auto-assign terms to the front page or posts
-                        || (($object_id != get_option('page_on_front')) && ($object_id != get_option('page_for_posts')))
+                        if ($object_id  // Never auto-assign terms to the front page or posts
+                        && ((int) $object_id !== (int) get_option('page_on_front')) 
+                        && ((int) $object_id !== (int) get_option('page_for_posts'))
                         ) {
                             $default_terms = apply_filters('presspermit_auto_assign_terms', (array) $user_terms[0], $taxonomy, $object_id, $args, $user_terms);
                         }
