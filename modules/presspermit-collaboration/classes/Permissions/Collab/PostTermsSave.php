@@ -402,6 +402,7 @@ class PostTermsSave
                         presspermit()->getOption('auto_assign_available_term')
                         && (!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') || !empty($select_default_term) || (count($user_terms) == 1))
 						&& !defined('PP_NO_AUTO_DEFAULT_' . strtoupper($taxonomy))
+                        && (defined('PP_AUTO_DEFAULT_TERM_EXCEPTIONS_NOT_REQUIRED') || self::userHasTermLimitations($taxonomy, ['include', 'additional']))
                         )
 					|| defined('PP_AUTO_DEFAULT_' . strtoupper($taxonomy))
 					) {
