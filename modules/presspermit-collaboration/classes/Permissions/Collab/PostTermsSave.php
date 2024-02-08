@@ -399,14 +399,19 @@ class PostTermsSave
                     // Substitute 1st available based on certain conditions or constant definitions 
                     // (Previously always assigned first user term here, regardless of $select_default_term flag or $user_terms count)
                     if ((
-                        (!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') || !empty($select_default_term) || (count($user_terms) == 1))
-						&& !defined('PP_NO_AUTO_DEFAULT_TERM') 
+                        presspermit()->getOption('assign_default_term')
+                        && (!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') || !empty($select_default_term) || (count($user_terms) == 1))
 						&& !defined('PP_NO_AUTO_DEFAULT_' . strtoupper($taxonomy))
                         )
-					|| defined('PP_AUTO_DEFAULT_TERM') 
 					|| defined('PP_AUTO_DEFAULT_' . strtoupper($taxonomy))
 					) {
-                        $default_terms = (array)$user_terms[0];
+                        $object_id = PWP::getPostID();
+
+                        if (!$object_id  // never auto-assign terms to the front page or posts
+                        || (($object_id !== get_option('page_on_front')) && ($object_id !== get_option('page_for_posts')))
+                        ) {
+                            $default_terms = apply_filters('presspermit_auto_assign_terms', (array) $user_terms[0], $taxonomy, $object_id, $args, $user_terms);
+                        }
                     } else {
                     	$default_terms = [];
                     }
