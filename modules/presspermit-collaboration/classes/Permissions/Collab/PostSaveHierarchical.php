@@ -24,7 +24,9 @@ class PostSaveHierarchical
             return $parent_id;
         }
 
-        $post_id = PWP::getPostID();
+        if (!$post_id = presspermit()->getCurrentSanitizePostID()) {
+            $post_id = PWP::getPostID();
+        }
 
         if (!$post_type && presspermit()->doingREST() && \PublishPress\Permissions\REST::getPostType()) {
             if ($post_id) {

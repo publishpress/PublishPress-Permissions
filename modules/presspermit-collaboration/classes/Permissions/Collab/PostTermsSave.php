@@ -293,6 +293,16 @@ class PostTermsSave
         if (!$pp->filteringEnabled() || !$pp->isTaxonomyEnabled($taxonomy))
             return $selected_terms;
 
+        $editing_post_id = PWP::getPostID();
+        $sanitizing_post_id = presspermit()->getCurrentSanitizePostID();
+
+        // Don't auto-assign terms if this post is not the one being edited. But new posts will be initially sanitized prior to ID assignment
+        if ($sanitizing_post_id && ($sanitizing_post_id != $editing_post_id)) {
+            return $selected_terms;
+        }
+
+        $object_id = ($sanitizing_post_id) ? $sanitizing_post_id : $editing_post_id;
+
         // strip out fake term_id -1 (if applied)
         if ($selected_terms && is_array($selected_terms)) {
             // not sure who is changing empty $_POST['post_category'] array to an array with nullstring element, but we have to deal with that
@@ -353,7 +363,7 @@ class PostTermsSave
 
             $selected_terms = array_intersect($selected_terms, $user_terms);
 
-            if ($object_id = PWP::getPostID()) {
+            if ($object_id) {
                 if (!isset($stored_terms)) {
                 	$stored_terms = Collab::getObjectTerms($object_id, $taxonomy, ['fields' => 'ids', 'pp_no_filter' => true]);
                 }
