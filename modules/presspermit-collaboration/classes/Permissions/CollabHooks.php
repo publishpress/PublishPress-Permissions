@@ -204,6 +204,9 @@ class CollabHooks
             'default_privacy' => [],
             'force_default_privacy' => [],
             'page_parent_order' => '',
+
+            // For legacy compat, default to auto-assigning a default term unless constant PP_NO_AUTO_DEFAULT_TERM is defined (and not overruled by constant PP_AUTO_DEFAULT_TERM)
+            'auto_assign_available_term' => !defined('PP_NO_AUTO_DEFAULT_TERM') || defined('PP_AUTO_DEFAULT_TERM'), 
             'create_tag_require_edit_cap' => 0,
         ];
 

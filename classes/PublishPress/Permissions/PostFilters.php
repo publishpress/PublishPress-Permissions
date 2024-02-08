@@ -696,7 +696,12 @@ class PostFilters
 
         $where_arr = [];
 
-        $caps = class_exists('\PublishPress\Permissions\Statuses\CapabilityFilters') ? \PublishPress\Permissions\Statuses\CapabilityFilters::instance() : false;
+        $caps = class_exists('\PublishPress\StatusCapabilities\CapabilityFilters') ? \PublishPress\StatusCapabilities\CapabilityFilters::instance() : false;
+
+		// legacy support
+		if (!$caps) {
+        	$caps = class_exists('\PublishPress\Permissions\Statuses\CapabilityFilters') ? \PublishPress\Permissions\Statuses\CapabilityFilters::instance() : false;
+		}
 
         $flag_meta_caps = !empty($caps);
 

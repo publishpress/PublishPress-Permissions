@@ -198,7 +198,7 @@ class SettingsAdmin
 		return esc_html__("Circle membership does not limit page association (page parent setting) ability", 'press-permit-core-hints');
 
         case 'PP_AUTO_DEFAULT_TERM' :
-		return esc_html__("When saving a post, if default term (of any taxonomy) is not in user's subset of assignable terms, substitute first available", 'press-permit-core-hints');
+		return esc_html__("Determines the default value of Permissions > Settings > Editing > Auto-assign default term", 'press-permit-core-hints');
 
         case 'PP_AUTO_DEFAULT_CATEGORY' :
 		return esc_html__("When saving a post, if default category is not in user's subset of assignable categories, substitute first available", 'press-permit-core-hints');
@@ -210,7 +210,7 @@ class SettingsAdmin
 		return esc_html__("When saving a post, if default term (of specified taxonomy) is not in user's subset of assignable tags, substitute first available", 'press-permit-core-hints');
 
         case 'PP_NO_AUTO_DEFAULT_TERM' :
-		return esc_html__("When saving a post, never auto-assign a term (of any taxonomy), even if it is the user's only assignable term", 'press-permit-core-hints');
+		return esc_html__("Determines the default setting of Permissions > Settings > Editing > Auto-assign default terms", 'press-permit-core-hints');
 
         case 'PP_AUTO_DEFAULT_CATEGORY' :
 		return esc_html__("When saving a post, never auto-assign a category, even if it is the user's only assignable category", 'press-permit-core-hints');

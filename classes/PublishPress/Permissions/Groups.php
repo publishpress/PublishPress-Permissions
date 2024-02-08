@@ -139,7 +139,7 @@ class Groups
 
     /**
      * Retrieve groups for a specified user
-     * @param int user_id
+     * @param int user_id or WP_User object
      * @param string agent_type
      * @param array args :
      *   - cols ('all' | 'id')
@@ -158,6 +158,7 @@ class Groups
             return DB\Groups::getGroupsForUser($user, $args);
         }
 
+        $user_id = (is_object($user)) ? $user->ID : (int) $user;
         return apply_filters('presspermit_get_groups_for_user', [], $user_id, $agent_type, $args);
     }
 

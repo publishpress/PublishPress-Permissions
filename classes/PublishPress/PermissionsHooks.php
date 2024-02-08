@@ -541,7 +541,7 @@ class PermissionsHooks
 
         if (($is_front && $front_filtering) || (!$is_unfiltered && (!defined('DOING_AUTOSAVE') || !DOING_AUTOSAVE))) {
             // Work around unexplained issue with access to static methods of LibWP class failing if called before init action
-            if (defined('PRESSPERMIT_TERM_FILTERS_LEGACY_LOAD')) {
+            if (did_action('init') || defined('PRESSPERMIT_TERM_FILTERS_LEGACY_LOAD')) {
                 require_once(PRESSPERMIT_CLASSPATH . '/TermFilters.php');
                 new Permissions\TermFilters();
             } else {

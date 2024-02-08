@@ -239,6 +239,19 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+= 4.0.11 - 22 Jan 2024 =
+* Fixed : Category / Term assignment restrictions were not applied
+* Fixed : Users / Groups screen - Roles column showed supplemental roles for custom statuses even if that status is disabled for the post type (or completely) 
+
+* Change : Permissions > Settings > Editing option to disable auto-assignment of terms (when default term is not selectable). Note: Auto-assignment is required for some term-restricted editing configurations.
+* Change : Never auto-assign a term to front page or posts page
+* Pro API : PublishPress Statuses - Improved Visibility Statuses integration
+
+= 4.0.7 - 9 Jan 2024 =
+* Compat : Any plugin that creates users had that sequence interrupted by Permissions Pro
+
+= 4.0.3 - 8 Jan 2024 =
+* Compat : Pro API - Post Type argument was not passed into filter for statuses query modified by PublishPress Statuses plugin 
 
 = 4.0.0 - 13 Dec 2023 =
 * Perf : Eliminated scan of users table on plugin activation (impacting sites with large number of users)
