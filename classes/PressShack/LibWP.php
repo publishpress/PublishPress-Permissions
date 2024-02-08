@@ -435,7 +435,7 @@ class LibWP
         return apply_filters('presspermit_get_post_statuses', $statuses, $args, $return, $operator, $function_args);
     }
 
-    public static function findPostType($post_id = 0, $return_default = true)
+    public static function findPostType($post_id = 0, $return_default = null)
     {
         global $typenow, $post;
 
@@ -509,6 +509,10 @@ class LibWP
         }
 
         if (empty($object_type)) {
+            if (is_null($return_default)) {
+                $return_default = !defined('PRESSPERMIT_FIND_POST_TYPE_NO_DEFAULT_TYPE');
+            }
+
             if ($return_default) { // default to post type
                 return 'post';
             }
