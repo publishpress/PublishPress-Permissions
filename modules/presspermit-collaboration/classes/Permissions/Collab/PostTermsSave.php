@@ -290,8 +290,9 @@ class PostTermsSave
     {
         $pp = presspermit();
 
-        if (!$pp->filteringEnabled() || !$pp->isTaxonomyEnabled($taxonomy))
+        if (!$pp->filteringEnabled() || !$pp->isTaxonomyEnabled($taxonomy)) {
             return $selected_terms;
+        }
 
         $editing_post_id = PWP::getPostID();
         $sanitizing_post_id = presspermit()->getCurrentSanitizePostID();
