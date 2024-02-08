@@ -61,6 +61,10 @@ class Permissions
     }
 
     public function getCurrentSanitizePostID() {
+        if (defined('PRESSPERMIT_LEGACY_POST_ID_DETECT')) {
+        	return 0;	
+    	}
+
         if (!empty($this->sanitizing_post_id)) {
             $post_id = $this->sanitizing_post_id;
         }

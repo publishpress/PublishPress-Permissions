@@ -85,14 +85,16 @@ class AdminFilters
             update_post_meta($post_id, '_pp_is_autodraft', true);
 
         } elseif (!$update) {
-            // For configurations that limit access by term selection, need to default to an allowed term
-            if (!presspermit()->isAdministrator()) {
-                require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
-        
-                foreach(get_object_taxonomies($post->post_type) as $taxonomy) {
-                    if (!$terms = wp_get_object_terms($post->ID, $taxonomy, ['fields' => 'ids'])) {
-                        if ($terms = PostTermsSave::fltPreObjectTerms($terms, $taxonomy)) {
-                            wp_set_post_terms($post->ID, $terms, $taxonomy);
+            if (defined('PRESSPERMIT_LEGACY_SAVE_POST_TERM_ASSIGNMENT')) {
+                // For configurations that limit access by term selection, need to default to an allowed term
+                if (!presspermit()->isAdministrator()) {
+                    require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
+            
+                    foreach(get_object_taxonomies($post->post_type) as $taxonomy) {
+                        if (!$terms = wp_get_object_terms($post->ID, $taxonomy, ['fields' => 'ids'])) {
+                            if ($terms = PostTermsSave::fltPreObjectTerms($terms, $taxonomy)) {
+                                wp_set_post_terms($post->ID, $terms, $taxonomy);
+                            }
                         }
                     }
                 }

@@ -12,9 +12,11 @@ class CapabilityFilters
 
         add_filter('presspermit_user_has_cap_params', [$this, 'fltUserHasCapParams'], 10, 3);
 
-        add_action('presspermit_has_post_cap_pre', [$this, 'actSavePostPreAssignTerms'], 10, 4);
+        if (!defined('PRESSPERMIT_DISABLE_TERM_PREASSIGN')) {
+            add_action('presspermit_has_post_cap_pre', [$this, 'actSavePostPreAssignTerms'], 10, 4);
+        }
     }
-    
+        
     function fltUserHasCapParams($params, $orig_reqd_caps, $args)
     {
         $defaults = ['orig_cap' => '', 'item_id' => 0];
@@ -203,7 +205,7 @@ class CapabilityFilters
         || !in_array(PWP::REQUEST_key('action'), ['editpost', 'autosave'])
 
         // Only pre-assign terms if capability check is for the original post being added or edited. But on new post creation, getPostID() could return zero
-        || (($post_id != PWP::getPostID()) && (PWP::getPostID() || !presspermit()->isInsertedPost($post_id)))
+        || (($post_id != PWP::getPostID()) && (PWP::getPostID() || !presspermit()->isInsertedPost($post_id)) && !defined('PRESSPERMIT_LEGACY_PREASSIGN_TERMS'))
         ) {
             return;
         }
