@@ -396,8 +396,9 @@ class PostTermsSave
 					
                     sort($user_terms); // default to lowest ID term
                     
-                    // Substitute 1st available based on certain conditions or constant definitions 
-                    // (Previously always assigned first user term here, regardless of $select_default_term flag or $user_terms count)
+                    // If user has any "include" or "additional" term exceptions, substitute 1st available term, contingent on certain conditions or constant definitions. 
+                    // (Previously assigned regardless of user's term exceptions)
+                    // (Even earlier, always assigned regardless of $select_default_term flag or $user_terms count)
                     if ((
                         presspermit()->getOption('auto_assign_available_term')
                         && (!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') || !empty($select_default_term) || (count($user_terms) == 1))
