@@ -73,6 +73,10 @@ class UserGroupsUpdate
 		$is_main_site = (defined('PRESSPERMIT_LEGACY_MAIN_SITE_CHECK')) ? (1 == get_current_blog_id()) : is_main_site();
     	
         foreach ($group_types as $agent_type) {
+            if (!PWP::is_POST($agent_type)) {
+                continue;
+            }
+
             if (('pp_group' == $agent_type) && in_array('pp_net_group', $group_types, true) && $is_main_site) {
                 continue;
 			}
