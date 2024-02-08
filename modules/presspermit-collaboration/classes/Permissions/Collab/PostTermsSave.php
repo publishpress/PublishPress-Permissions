@@ -381,7 +381,7 @@ class PostTermsSave
 
             $default_terms = (array) get_option($default_term_option);
 			
-            // but if the default term is not defined or is not in user's subset of usable terms, substitute first available
+            // But if the default term is not defined or is not in user's subset of usable terms, substitute first available
             if ($user_terms) {
                 if (true === $user_terms)
                     $filtered_default_terms = $default_terms;
