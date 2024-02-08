@@ -19,7 +19,7 @@ class Groups
         if (!PWP::empty_REQUEST('action2') && !is_numeric(PWP::REQUEST_key('action2'))) {
             $action = PWP::REQUEST_key('action2');
 
-        } elseif (PWP::empty_REQUEST('action') && !is_numeric(PWP::REQUEST_key('action'))) {
+        } elseif (!PWP::empty_REQUEST('action') && !is_numeric(PWP::REQUEST_key('action'))) {
             $action = PWP::REQUEST_key('action');
 
         } elseif (!PWP::empty_REQUEST('pp_action')) {
