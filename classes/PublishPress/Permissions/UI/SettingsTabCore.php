@@ -235,7 +235,7 @@ class SettingsTabCore
                             <div class="pp-subtext pp-no-hide">
                                 <?php
                                 printf(
-                                    esc_html__('%1$sNote%2$s: This causes type-specific capabilities to be required for editing ("edit_things" instead of "edit_posts"). You can %3$sassign supplemental roles%4$s for the post type or add the capabilities directly to a WordPress role.'),
+                                    esc_html__('%1$sNote%2$s: This causes type-specific capabilities to be required for editing ("edit_things" instead of "edit_posts"). You can %3$sassign supplemental roles%4$s for the post type or add the capabilities directly to a WordPress role.', 'press-permit-core'),
                                     '<span class="pp-important">',
                                     '</span>',
                                     "<a href='" . esc_url(admin_url('?page=presspermit-groups')) . "'>",
