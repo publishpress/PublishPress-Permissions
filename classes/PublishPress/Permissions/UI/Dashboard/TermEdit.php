@@ -25,7 +25,8 @@ class TermEdit
 	                add_action('admin_head', [$this, 'actScriptsWP']);
 	
 	                add_action("{$taxonomy}_edit_form", [$this, 'actExceptionEditUI']);
-	            } else {
+
+	            } elseif (defined('PRESSPERMIT_LEGACY_TAXONOMY_ENABLE_METABOX')) {
 	                add_action("{$taxonomy}_edit_form", [$this, 'actTaxonomyEnableUI']);
 	            }
 	
