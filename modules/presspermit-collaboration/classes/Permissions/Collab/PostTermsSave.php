@@ -291,18 +291,24 @@ class PostTermsSave
         $pp = presspermit();
 
         if (!$pp->filteringEnabled() || !$pp->isTaxonomyEnabled($taxonomy)) {
+            if (empty($args['force_filtering'])) {
             return $selected_terms;
+        	}
         }
 
-        $editing_post_id = PWP::getPostID();
-        $sanitizing_post_id = presspermit()->getCurrentSanitizePostID();
-
-        // Don't auto-assign terms if this post is not the one being edited. But new posts will be initially sanitized prior to ID assignment
-        if ($sanitizing_post_id && ($sanitizing_post_id != $editing_post_id)) {
-            return $selected_terms;
+        if (!empty($args['object_id'])) {
+            $object_id = $args['object_id'];
+        } else {
+	        $editing_post_id = PWP::getPostID();
+	        $sanitizing_post_id = presspermit()->getCurrentSanitizePostID();
+	
+	        // Don't auto-assign terms if this post is not the one being edited. But new posts will be initially sanitized prior to ID assignment
+	        if ($sanitizing_post_id && ($sanitizing_post_id != $editing_post_id)) {
+	            return $selected_terms;
+	        }
+	
+	        $object_id = ($sanitizing_post_id) ? $sanitizing_post_id : $editing_post_id;
         }
-
-        $object_id = ($sanitizing_post_id) ? $sanitizing_post_id : $editing_post_id;
 
         // strip out fake term_id -1 (if applied)
         if ($selected_terms && is_array($selected_terms)) {
@@ -320,14 +326,14 @@ class PostTermsSave
             $stored_terms = $args['stored_terms'];
         }
 
+        $post_type = (!empty($args['post_type'])) ? $args['post_type'] : PWP::findPostType();
+
         // don't filter selected terms for content administrator, but still need to apply default term as needed when none were selected
-        if ($pp->isUserUnfiltered()) {
+        if ($pp->isUserUnfiltered() && empty($args['force_filtering'])) {
             $user_terms = $selected_terms;
         } else {
             if (!is_array($selected_terms))
                 $selected_terms = [];
-
-            $post_type = PWP::findPostType();
 
             $user_terms = get_terms(
                 $taxonomy, 
@@ -381,16 +387,17 @@ class PostTermsSave
         if (empty($selected_terms) && ((is_taxonomy_hierarchical($taxonomy) 
         && ('post_tag' != $taxonomy)) || self::userHasTermLimitations($taxonomy))
         ) {
-            if (!$tx_obj = get_taxonomy($taxonomy))
-                return $selected_terms;
-
-            // For now, always check the DB for default terms.  todo: only if the default_term_option property is set
-            if (isset($tx_obj->default_term_option))
-            	$default_term_option = $tx_obj->default_term_option;
-            else
-            	$default_term_option = "default_{$taxonomy}";
-
-            $default_terms = (array) get_option($default_term_option);
+            if ($tx_obj = get_taxonomy($taxonomy)) {
+	            // For now, always check the DB for default terms.  todo: only if the default_term_option property is set
+	            if (isset($tx_obj->default_term_option))
+	            	$default_term_option = $tx_obj->default_term_option;
+	            else
+	            	$default_term_option = "default_{$taxonomy}";
+	
+	            $default_terms = (array) get_option($default_term_option);
+            } else {
+                $default_terms = [];
+            }
 			
             // But if the default term is not defined or is not in user's subset of usable terms, substitute first available
             if ($user_terms) {
@@ -414,7 +421,7 @@ class PostTermsSave
                         presspermit()->getOption('auto_assign_available_term')
                         && (!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') || !empty($select_default_term) || (count($user_terms) == 1))
 						&& !defined('PP_NO_AUTO_DEFAULT_' . strtoupper($taxonomy))
-                        && (defined('PP_AUTO_DEFAULT_TERM_EXCEPTIONS_NOT_REQUIRED') || self::userHasTermLimitations($taxonomy, ['include', 'additional']))
+                        && (defined('PP_AUTO_DEFAULT_TERM_EXCEPTIONS_NOT_REQUIRED') || self::userHasTermLimitations($taxonomy, ['include', 'additional'], $post_type))
                         )
 					|| defined('PP_AUTO_DEFAULT_' . strtoupper($taxonomy))
 					) {
