@@ -85,7 +85,7 @@ class AdminFilters
             update_post_meta($post_id, '_pp_is_autodraft', true);
 
         } elseif (!$update) {
-            if (defined('PRESSPERMIT_LEGACY_SAVE_POST_TERM_ASSIGNMENT')) {
+            if ((PWP::isBlockEditorActive() && !defined('PRESSPERMIT_LIMIT_SAVE_POST_TERM_ASSIGNMENT')) || defined('PRESSPERMIT_LEGACY_SAVE_POST_TERM_ASSIGNMENT')) {
                 // For configurations that limit access by term selection, need to default to an allowed term
                 if (!presspermit()->isAdministrator()) {
                     require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
