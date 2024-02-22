@@ -65,8 +65,8 @@ class PostEdit
 
         $type_obj = get_post_type_object($post_type);
 
-        if (defined('PRESSPERMIT_LEGACY_POST_TYPE_ENABLE_METABOX') && !in_array($post_type, $pp->getEnabledPostTypes(['layer' => 'exceptions']), true)) {
-            if (!in_array($post_type, ['revision']) && $pp->getOption('display_hints')) {
+        if (!in_array($post_type, $pp->getEnabledPostTypes(['layer' => 'exceptions']), true)) {
+            if (defined('PRESSPERMIT_LEGACY_POST_TYPE_ENABLE_METABOX') && !in_array($post_type, ['revision']) && $pp->getOption('display_hints')) {
                 if ($type_obj->public) {
                     $omit_types = apply_filters('presspermit_unfiltered_post_types', ['wp_block']);
 

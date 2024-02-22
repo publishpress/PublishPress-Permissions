@@ -229,6 +229,7 @@ msgstr ""
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:873
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:201
 #: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:211
+
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:135
 msgid "Legacy"
 msgstr ""
