@@ -292,22 +292,22 @@ class PostTermsSave
 
         if (!$pp->filteringEnabled() || !$pp->isTaxonomyEnabled($taxonomy)) {
             if (empty($args['force_filtering'])) {
-            return $selected_terms;
-        	}
+                return $selected_terms;
+            }
         }
 
         if (!empty($args['object_id'])) {
             $object_id = $args['object_id'];
         } else {
-	        $editing_post_id = PWP::getPostID();
-	        $sanitizing_post_id = presspermit()->getCurrentSanitizePostID();
-	
-	        // Don't auto-assign terms if this post is not the one being edited. But new posts will be initially sanitized prior to ID assignment
-	        if ($sanitizing_post_id && ($sanitizing_post_id != $editing_post_id)) {
-	            return $selected_terms;
-	        }
-	
-	        $object_id = ($sanitizing_post_id) ? $sanitizing_post_id : $editing_post_id;
+            $editing_post_id = PWP::getPostID();
+            $sanitizing_post_id = presspermit()->getCurrentSanitizePostID();
+
+            // Don't auto-assign terms if this post is not the one being edited. But new posts will be initially sanitized prior to ID assignment
+            if ($sanitizing_post_id && ($sanitizing_post_id != $editing_post_id)) {
+                return $selected_terms;
+            }
+
+            $object_id = ($sanitizing_post_id) ? $sanitizing_post_id : $editing_post_id;
         }
 
         // strip out fake term_id -1 (if applied)
@@ -388,17 +388,17 @@ class PostTermsSave
         && ('post_tag' != $taxonomy)) || self::userHasTermLimitations($taxonomy))
         ) {
             if ($tx_obj = get_taxonomy($taxonomy)) {
-	            // For now, always check the DB for default terms.  todo: only if the default_term_option property is set
-	            if (isset($tx_obj->default_term_option))
-	            	$default_term_option = $tx_obj->default_term_option;
-	            else
-	            	$default_term_option = "default_{$taxonomy}";
-	
-	            $default_terms = (array) get_option($default_term_option);
+                // For now, always check the DB for default terms.  todo: only if the default_term_option property is set
+                if (isset($tx_obj->default_term_option))
+                    $default_term_option = $tx_obj->default_term_option;
+                else
+                    $default_term_option = "default_{$taxonomy}";
+
+                $default_terms = (array) get_option($default_term_option);
             } else {
                 $default_terms = [];
             }
-			
+
             // But if the default term is not defined or is not in user's subset of usable terms, substitute first available
             if ($user_terms) {
                 if (true === $user_terms)
@@ -413,7 +413,7 @@ class PostTermsSave
 					// This excecutes only if no default terms are user-assignable
 					
                     sort($user_terms); // default to lowest ID term
-                    
+
                     // If user has any "include" or "additional" term exceptions, substitute 1st available term, contingent on certain conditions or constant definitions. 
                     // (Previously assigned regardless of user's term exceptions)
                     // (Even earlier, always assigned regardless of $select_default_term flag or $user_terms count)
