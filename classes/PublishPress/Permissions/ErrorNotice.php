@@ -66,7 +66,7 @@ class ErrorNotice
             case 'rs_active':
                 define('PRESSPERMIT_DISABLE_QUERYFILTERS', true);
             
-                $args = (presspermit_is_REQUEST('page') && presspermit_REQUEST_key_match('page', 'presspermit-'))
+                $args = (PWP::is_REQUEST('page') && PWP::REQUEST_key_match('page', 'presspermit-'))
                     ? ['style' => 'color:black']
                     : [];
 
@@ -177,9 +177,9 @@ class ErrorNotice
 			    $class .= ' pp-admin-notice-plugin';
 
             if (is_numeric($msg_id)) :  // if no msg_id was provided, notice is not dismissible
-                echo "<div id='message' class='error fade' style='" . esc_attr($style) . "' class='" . esc_attr($class) . "' >" . $msg->body . '</div>';
+                echo "<div id='message' class='error fade' style='" . esc_attr($style) . "' class='" . esc_attr($class) . "' >" . esc_html($msg->body) . '</div>';
             else :?>
-                <div class='updated <?php echo esc_attr($class);?> pp_dashboard_message'><p><span class="pp-notice"><?php echo $msg->body ?></span>&nbsp;
+                <div class='updated <?php echo esc_attr($class);?> pp_dashboard_message'><p><span class="pp-notice"><?php echo esc_html($msg->body) ?></span>&nbsp;
                 <a href="javascript:void(0);" class="presspermit-dismiss-notice" style="float:right" id="<?php echo esc_attr($msg_id);?>"><?php esc_html_e("Dismiss", "pp") ?></a>
                 </p></div>
         <?php endif;

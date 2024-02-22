@@ -25,7 +25,7 @@ class SettingsTabModules
     public function sectionCaptions($sections)
     {
         $new = [
-            'modules' => '', //esc_html__('Modules', 'press-permit-core'),
+            'modules' => '',
             'help' => PWP::__wp('Help'),
         ];
 

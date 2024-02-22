@@ -6,11 +6,13 @@ class AgentExceptionsAjax
 {
     public function __construct() 
     {
-        if (!$pp_for_type = presspermit_GET_key('pp_for_type')) {
+        check_ajax_referer('pp-ajax');
+
+        if (!$pp_for_type = PWP::GET_key('pp_for_type')) {
             exit;
         }
 
-        if (!$pp_ajax_agent_exceptions = presspermit_GET_var('pp_ajax_agent_exceptions')) {
+        if (!$pp_ajax_agent_exceptions = PWP::GET_key('pp_ajax_agent_exceptions')) {
             exit;
         }
 
@@ -20,14 +22,14 @@ class AgentExceptionsAjax
             exit;
         }
 
-        $agent_type = presspermit_GET_key('pp_agent_type');
-        $agent_id = presspermit_GET_int('pp_agent_id');
+        $agent_type = PWP::GET_key('pp_agent_type');
+        $agent_id = PWP::GET_int('pp_agent_id');
 
-        $for_type = PWP::sanitizeCSV(presspermit_GET_var('pp_for_type'));
-        $operation = presspermit_GET_key('pp_operation');
-        $via_type = presspermit_GET_key('pp_via_type');
-        $mod_type = presspermit_GET_key('pp_mod_type');
-        $item_id = presspermit_GET_int('pp_item_id');
+        $for_type = isset($_GET['pp_for_type']) ? PWP::sanitizeEntry(sanitize_text_field($_GET['pp_for_type'])) : '';
+        $operation = PWP::GET_key('pp_operation');
+        $via_type = PWP::GET_key('pp_via_type');
+        $mod_type = PWP::GET_key('pp_mod_type');
+        $item_id = PWP::GET_int('pp_item_id');
 
         if ('(all)' == $for_type) {
             $for_source_name = 'post';
@@ -45,13 +47,13 @@ class AgentExceptionsAjax
                 $via_type = $for_type;
                 $via_source_name = 'post';
             } else {
-            if (post_type_exists($via_type))
-                $via_source_name = 'post';
-            elseif (taxonomy_exists($via_type))
-                $via_source_name = 'term';
-            else
-                $via_source_name = $via_type;
-        }
+                if (post_type_exists($via_type))
+                    $via_source_name = 'post';
+                elseif (taxonomy_exists($via_type))
+                    $via_source_name = 'term';
+                else
+                    $via_source_name = $via_type;
+            }
         }
 
         switch ($pp_ajax_agent_exceptions) {
@@ -106,6 +108,7 @@ class AgentExceptionsAjax
                 }
 
                 if (('user' == $agent_type) || $is_wp_role || ('assign' == $operation) || defined('PP_GROUP_RESTRICTIONS')) {
+                    // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                     $modes['exclude'] = esc_html__('Block:', 'press-permit-core');
                 }
 
@@ -146,7 +149,7 @@ class AgentExceptionsAjax
                         if ($taxonomies) {
                             $tax_types = [];
                             foreach ($taxonomies as $_taxonomy => $tx) {
-                                if ('nav_menu' == $_taxonomy) {    // @todo: use labels_pp property?
+                                if ('nav_menu' == $_taxonomy) {
                                     if (in_array(get_locale(), ['en_EN', 'en_US'])) {
                                         $tx->labels->name = __('Nav Menus (Legacy)', 'press-permit-core');
                                     } else {

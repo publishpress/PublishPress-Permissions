@@ -99,7 +99,7 @@ class Settings
         </header>
         
             <?php
-            $default_tab = presspermit_REQUEST_key('pp_tab');
+            $default_tab = PWP::REQUEST_key('pp_tab');
 
             if (!isset($ui->tab_captions[$default_tab])) {
                 $default_tab = 'modules';
@@ -123,7 +123,7 @@ class Settings
             echo '<div class="pp-options-wrapper">';
             $table_class = 'form-table pp-form-table pp-options-table';
 
-            if (presspermit_is_REQUEST('presspermit_submit') || presspermit_is_REQUEST('presspermit_submit_redirect')) :
+            if (PWP::is_REQUEST('presspermit_submit') || PWP::is_REQUEST('presspermit_submit_redirect')) :
                 ?>
                 <div id="message" class="updated">
                     <p>
@@ -131,7 +131,7 @@ class Settings
                     </p>
                 </div>
             <?php
-            elseif (presspermit_is_REQUEST('presspermit_defaults')) :
+            elseif (PWP::is_REQUEST('presspermit_defaults')) :
                 ?>
                 <div id="message" class="updated">
                     <p>
@@ -167,7 +167,7 @@ class Settings
             <div class="submit pp-submit" style="border:none;">
                 <input type="submit" name="presspermit_submit" class="button-primary" value="<?php esc_attr_e('Save Changes', 'press-permit-core'); ?>"/>
                 <input type="hidden" name="pp_tab"
-                        value="<?php if ($pp_tab = presspermit_REQUEST_key('pp_tab')) echo esc_attr($pp_tab); ?>"/>
+                        value="<?php if ($pp_tab = PWP::REQUEST_key('pp_tab')) echo esc_attr($pp_tab); ?>"/>
             </div>
             </form>
             <p style='clear:both'></p>

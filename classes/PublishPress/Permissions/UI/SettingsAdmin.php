@@ -198,7 +198,7 @@ class SettingsAdmin
 		return esc_html__("Circle membership does not limit page association (page parent setting) ability", 'press-permit-core-hints');
 
         case 'PP_AUTO_DEFAULT_TERM' :
-		return esc_html__("When saving a post, if default term (of any taxonomy) is not in user's subset of assignable terms, substitute first available", 'press-permit-core-hints');
+		return esc_html__("Determines the default value of Permissions > Settings > Editing > Auto-assign default term", 'press-permit-core-hints');
 
         case 'PP_AUTO_DEFAULT_CATEGORY' :
 		return esc_html__("When saving a post, if default category is not in user's subset of assignable categories, substitute first available", 'press-permit-core-hints');
@@ -210,7 +210,7 @@ class SettingsAdmin
 		return esc_html__("When saving a post, if default term (of specified taxonomy) is not in user's subset of assignable tags, substitute first available", 'press-permit-core-hints');
 
         case 'PP_NO_AUTO_DEFAULT_TERM' :
-		return esc_html__("When saving a post, never auto-assign a term (of any taxonomy), even if it is the user's only assignable term", 'press-permit-core-hints');
+		return esc_html__("Determines the default setting of Permissions > Settings > Editing > Auto-assign default terms", 'press-permit-core-hints');
 
         case 'PP_AUTO_DEFAULT_CATEGORY' :
 		return esc_html__("When saving a post, never auto-assign a category, even if it is the user's only assignable category", 'press-permit-core-hints');
@@ -362,10 +362,13 @@ class SettingsAdmin
 
             echo "<div class='agp-opt-checkbox " . esc_attr($option_name) . "' style='" . esc_attr($div_style) . "'>"
                 . "<label for='" . esc_attr($option_name) . "' title='" . esc_attr($title) . "'>"
-                . "<input name='" . esc_attr($option_name) . "' type='checkbox' " . esc_attr($disabled) . " style='" . esc_attr($style) . "' id='" . esc_attr($option_name) . "' value='1' " . esc_attr(checked('1', $return['val'], false)) . " autocomplete='off' /> "
-                . ( $display_label ? esc_html( $this->option_captions[$option_name] ) : '' )
-
-                . "</label>";
+                . "<input name='" . esc_attr($option_name) . "' type='checkbox' " . esc_attr($disabled) . " style='" . esc_attr($style) . "' id='" . esc_attr($option_name) . "' value='1' " . esc_attr(checked('1', $return['val'], false)) . " autocomplete='off' /> ";
+                
+            if ($display_label) {
+                esc_html_e($this->option_captions[$option_name]);
+            }
+            
+            echo "</label>";
 
             if ($hint_text && $this->display_hints) {
                 $hint_class = 'pp-subtext';

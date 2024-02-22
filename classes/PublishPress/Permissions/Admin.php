@@ -19,7 +19,7 @@ class Admin
     {
         if (!presspermit()->getOption('offer_rs_migration') 
         || !presspermit()->isAdministrator() 
-        || (apply_filters('presspermit_import_count', 0, 'rs') && presspermit_empty_REQUEST('rs-not-imported'))
+        || (apply_filters('presspermit_import_count', 0, 'rs') && PWP::empty_REQUEST('rs-not-imported'))
         ) {
             return;
         }
@@ -29,8 +29,8 @@ class Admin
         $this->notice(
             sprintf(
                 esc_html__('Role Scoper installation detected. To migrate your groups, roles, restrictions and options to PublishPress Permissions, run the %sImport tool%s.', 'press-permit-core'),
-                '<a href="' . esc_url($url) . '">',
-                '</a>'
+                '',
+                ''
             ), 'rs-migration'
         );
     }
@@ -182,42 +182,42 @@ class Admin
     public function getModuleInfo($args=[])
     {
         $title = [
-            'circles' =>        esc_html__('Access Circles', 'presspermit-pro'),
-            'collaboration' =>  esc_html__('Collaborative Publishing', 'presspermit-pro'),
-            'compatibility' =>  esc_html__('Compatibility Pack', 'presspermit-pro'),
-            'teaser' =>         esc_html__('Teaser', 'presspermit-pro'),
-            'status-control' => esc_html__('Status Control', 'presspermit-pro'),
-            'file-access' =>    esc_html__('File Access', 'presspermit-pro'),
-            'import' =>         esc_html__('Import', 'presspermit-pro'),
-            'membership' =>     esc_html__('Membership', 'presspermit-pro'),
-            'sync' =>           esc_html__('Sync Posts', 'presspermit-pro'),
-            'role-scoper-migration-advisor' => esc_html__('Role Scoper Migration Advisor', 'presspermit-pro'),
+            'circles' =>        esc_html__('Access Circles', 'press-permit-core'),
+            'collaboration' =>  esc_html__('Collaborative Publishing', 'press-permit-core'),
+            'compatibility' =>  esc_html__('Compatibility Pack', 'press-permit-core'),
+            'teaser' =>         esc_html__('Teaser', 'press-permit-core'),
+            'status-control' => esc_html__('Status Control', 'press-permit-core'),
+            'file-access' =>    esc_html__('File Access', 'press-permit-core'),
+            'import' =>         esc_html__('Import', 'press-permit-core'),
+            'membership' =>     esc_html__('Membership', 'press-permit-core'),
+            'sync' =>           esc_html__('Sync Posts', 'press-permit-core'),
+            'role-scoper-migration-advisor' => esc_html__('Role Scoper Migration Advisor', 'press-permit-core'),
         ];
         
         $blurb = [
-            'circles' => 'Visibility Circles and Editorial Circles block access to content not authored by other group members.',
-            'collaboration' => 'Post-specific and category-specific permissions for creation and editing.',
-            'compatibility' => 'Integration with bbPress, BuddyPress, Relevanssi, WPML and other plugins; enhanced Multisite support.',
-            'teaser' => 'On the site front end, display teaser text for unreadable posts instead of hiding them.',
-            'status-control' => 'Customize access to custom publication workflow statuses or visibility statuses.',
-            'file-access' => "Restrict direct file requests based on user's access to the page a file is attached to.",
-            'import' => 'Import Role Scoper groups, roles, restrictions and settings.',
-            'membership' => 'Time-limit access customizations by delaying or expiring Permission Group membership.',
-            'sync' => 'Auto-create a page for each user of specified roles. Compatible with several Team / Staff plugins.',
-            'role-scoper-migration-advisor' => 'Analyzes your Role Scoper installation, identifying Permissions migration readiness or issues.', 
+            'circles' => esc_html__('Visibility Circles and Editorial Circles block access to content not authored by other group members.', 'press-permit-core'),
+            'collaboration' => esc_html__('Post-specific and category-specific permissions for creation and editing.', 'press-permit-core'),
+            'compatibility' => esc_html__('Integration with bbPress, BuddyPress, Relevanssi, WPML and other plugins; enhanced Multisite support.', 'press-permit-core'),
+            'teaser' => esc_html__('On the site front end, display teaser text for unreadable posts instead of hiding them.', 'press-permit-core'),
+            'status-control' => esc_html__('Customize access to custom publication workflow statuses or visibility statuses.', 'press-permit-core'),
+            'file-access' => esc_html__("Restrict direct file requests based on user's access to the page a file is attached to.", 'press-permit-core'),
+            'import' => esc_html__('Import Role Scoper groups, roles, restrictions and settings.', 'press-permit-core'),
+            'membership' => esc_html__('Time-limit access customizations by delaying or expiring Permission Group membership.', 'press-permit-core'),
+            'sync' => esc_html__('Auto-create a page for each user of specified roles. Compatible with several Team / Staff plugins.', 'press-permit-core'),
+            'role-scoper-migration-advisor' => esc_html__('Analyzes your Role Scoper installation, identifying Permissions migration readiness or issues.', 'press-permit-core'), 
         ];
         
         $descript = [
-            'circles' => 'Visibility Circles and Editorial Circles block access to content not authored by other group members. Any WP Role, BuddyPress Group or custom Group can be marked as a Circle for specified post types.',
-            'collaboration' => 'Supports content-specific permissions for editing, term assignment and page parent selection. In combination with other modules, supports workflow statuses, PublishPress and PublishPress Revisions.',
-            'compatibility' => 'Adds compatibility or integration with bbPress, Relevanssi, CMS Tree Page View, Custom Post Type UI, Subscribe2, WPML, various other plugins. Configure any BuddyPress Group as a Permissions Group. For multisite, provides network-wide Permission Groups.',
-            'teaser' => 'On the site front end, replace non-readable content with placeholder text. Can be enabled for any post type. Custom filters are provided but no programming is required for basic usage.',
-            'status-control' => 'Custom post statuses: Workflow statuses allow unlimited orderable steps between pending and published, each with distinct capability requirements and role assignments. Statuses can be type-specific.',
-            'file-access' => "Filters direct file access, based on user's access to post(s) which the file is attached to. No additional configuration required. Creates/modifies .htaccess file in uploads folder (and in main folder for multisite).",
-            'import' => 'Import Role Scoper groups, roles, restrictions and settings.',
-            'membership' => 'Allows Permission Group membership to be date-limited (delayed and/or scheduled for expiration). Simple date picker UI alongside group membership selection.',
-            'sync' => 'Create or synchronize posts to match users. Designed for Team / Staff plugins, but with broad usage potential.',
-            'role-scoper-migration-advisor' => 'Analyzes your Role Scoper installation, identifying groups, roles, restrictions and options which can (or cannot) be automatically imported by the Import module.', 
+            'circles' => esc_html__('Visibility Circles and Editorial Circles block access to content not authored by other group members. Any WP Role, BuddyPress Group or custom Group can be marked as a Circle for specified post types.', 'press-permit-core'),
+            'collaboration' => esc_html__('Supports content-specific permissions for editing, term assignment and page parent selection. In combination with other modules, supports workflow statuses, PublishPress and PublishPress Revisions.', 'press-permit-core'),
+            'compatibility' => esc_html__('Adds compatibility or integration with bbPress, Relevanssi, CMS Tree Page View, Custom Post Type UI, Subscribe2, WPML, various other plugins. Configure any BuddyPress Group as a Permissions Group. For multisite, provides network-wide Permission Groups.', 'press-permit-core'),
+            'teaser' => esc_html__('On the site front end, replace non-readable content with placeholder text. Can be enabled for any post type. Custom filters are provided but no programming is required for basic usage.', 'press-permit-core'),
+            'status-control' => esc_html__('Custom post statuses: Workflow statuses allow unlimited orderable steps between pending and published, each with distinct capability requirements and role assignments. Statuses can be type-specific.', 'press-permit-core'),
+            'file-access' => esc_html__("Filters direct file access, based on user's access to post(s) which the file is attached to. No additional configuration required. Creates/modifies .htaccess file in uploads folder (and in main folder for multisite).", 'press-permit-core'),
+            'import' => esc_html__('Import Role Scoper groups, roles, restrictions and settings.', 'press-permit-core'),
+            'membership' => esc_html__('Allows Permission Group membership to be date-limited (delayed and/or scheduled for expiration). Simple date picker UI alongside group membership selection.', 'press-permit-core'),
+            'sync' => esc_html__('Create or synchronize posts to match users. Designed for Team / Staff plugins, but with broad usage potential.', 'press-permit-core'),
+            'role-scoper-migration-advisor' => esc_html__('Analyzes your Role Scoper installation, identifying groups, roles, restrictions and options which can (or cannot) be automatically imported by the Import module.', 'press-permit-core'),
         ];
 
         return (object) compact('title', 'blurb', 'descript');
@@ -226,7 +226,7 @@ class Admin
     public function isPluginAction()
     {
         return (!empty($_SERVER['REQUEST_URI']) && (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'plugin-install.php' )))
-        || presspermit_is_REQUEST('action', ['activate', 'deactivate']);
+        || PWP::is_REQUEST('action', ['activate', 'deactivate']);
     }
 
     public function errorNotice($err_slug, $args)
@@ -239,7 +239,7 @@ class Admin
     {
 		$dismissals = (array) pp_get_option('dismissals');
 
-		if ($msg_id && isset($dismissals[$msg_id]) && !presspermit_is_REQUEST('pp_ignore_dismissal', $msg_id)) {
+		if ($msg_id && isset($dismissals[$msg_id]) && !PWP::is_REQUEST('pp_ignore_dismissal', $msg_id)) {
 			return;
         }
 		

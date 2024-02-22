@@ -380,7 +380,7 @@ class PermissionsHooks
             $this->filtering_enabled = false;
         }
 
-        if (!$this->direct_file_access = presspermit_is_REQUEST('pp_rewrite') && !presspermit_empty_REQUEST('attachment')) {
+        if (!$this->direct_file_access = PWP::is_REQUEST('pp_rewrite') && !PWP::empty_REQUEST('attachment')) {
             $this->addMaintenanceTriggers();
         }
 
@@ -390,7 +390,7 @@ class PermissionsHooks
         if (is_admin() && ('update.php' == $pagenow)) {
             // todo: review with EDD
 
-            if (!presspermit_is_REQUEST('action', 'presspermit-pro')) {
+            if (!PWP::is_REQUEST('action', 'presspermit-pro')) {
                 do_action('presspermit_init');
                 return;
             }
@@ -400,7 +400,7 @@ class PermissionsHooks
         $this->loadContentFilters();
 
         if (is_admin() && ('async-upload.php' != $pagenow) && !defined('XMLRPC_REQUEST') 
-        && (!defined('DOING_AJAX') || !DOING_AJAX || presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
+        && (!defined('DOING_AJAX') || !DOING_AJAX || PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
         ) {
             // filters which are only needed for the wp-admin UI
             require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/DashboardFilters.php');
@@ -476,7 +476,7 @@ class PermissionsHooks
     private function loadContentFilters()
     {
         if (defined('DOING_AJAX') && DOING_AJAX 
-        && presspermit_is_REQUEST('action', ['woocommerce_load_variations', 'woocommerce_add_variation', 'woocommerce_remove_variations', 'woocommerce_save_variations'])
+        && PWP::is_REQUEST('action', ['woocommerce_load_variations', 'woocommerce_add_variation', 'woocommerce_remove_variations', 'woocommerce_save_variations'])
         ) {
 			return;
 		}
@@ -502,7 +502,7 @@ class PermissionsHooks
         if (($is_front && $front_filtering) 
         || !$is_unfiltered 
         || ('nav-menus.php' == $pagenow) 
-        || (defined('DOING_AJAX') && DOING_AJAX && presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
+        || (defined('DOING_AJAX') && DOING_AJAX && PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
         ) {
             if (! $this->post_filters_loaded) { // since this could possibly fire on multiple 'set_current_user' calls, avoid redundancy
                 require_once(PRESSPERMIT_CLASSPATH . '/PostFilters.php');
@@ -541,7 +541,7 @@ class PermissionsHooks
 
         if (($is_front && $front_filtering) || (!$is_unfiltered && (!defined('DOING_AUTOSAVE') || !DOING_AUTOSAVE))) {
             // Work around unexplained issue with access to static methods of LibWP class failing if called before init action
-            if (defined('PRESSPERMIT_TERM_FILTERS_LEGACY_LOAD')) {
+            if (did_action('init') || defined('PRESSPERMIT_TERM_FILTERS_LEGACY_LOAD')) {
                 require_once(PRESSPERMIT_CLASSPATH . '/TermFilters.php');
                 new Permissions\TermFilters();
             } else {

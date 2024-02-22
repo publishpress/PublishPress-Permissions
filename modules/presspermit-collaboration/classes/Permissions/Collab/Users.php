@@ -90,10 +90,12 @@ class Users
                 $user_id_csv = implode("','", array_map('intval', $query_users));
 
                 // get the WP roles for user
+
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $results = $wpdb->get_results(
                     "SELECT m.user_id, g.metagroup_id AS role_name FROM $wpdb->pp_groups AS g"
                     . " INNER JOIN $wpdb->pp_group_members AS m ON m.group_id = g.ID"
-                    . " WHERE g.metagroup_type = 'wp_role' AND m.user_id IN ('$user_id_csv')"
+                    . " WHERE g.metagroup_type = 'wp_role' AND m.user_id IN ('$user_id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 );
 
 	            // credit each user for the highest role level they have

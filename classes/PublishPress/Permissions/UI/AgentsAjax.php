@@ -10,15 +10,17 @@ class AgentsAjax
 
         require_once(ABSPATH . '/wp-admin/includes/user.php');
 
-        if (!presspermit_is_GET('pp_agent_search')) {
+        if (!PWP::is_GET('pp_agent_search')) {
             return;
         }
 
-        if (!$agent_type = pp_permissions_sanitize_entry(presspermit_GET_key('pp_agent_type'))) {
+        check_ajax_referer('pp-ajax');
+
+        if (!$agent_type = PWP::sanitizeEntry(PWP::GET_key('pp_agent_type'))) {
             return;
         }
 
-        if (!$topic = pp_permissions_sanitize_entry(presspermit_GET_key('pp_topic'))) {
+        if (!$topic = PWP::sanitizeEntry(PWP::GET_key('pp_topic'))) {
             return;
         }
 
@@ -26,15 +28,17 @@ class AgentsAjax
         $pp_admin = $pp->admin();
         $pp_groups = $pp->groups();
 
-        $authors_clause = '';
+        $include_ids = [];
+        $meta_search = [];
 
-        $orig_search_str = presspermit_GET_var('pp_agent_search');
-        $search_str = sanitize_text_field($orig_search_str);
-        $agent_id = presspermit_GET_int('pp_agent_id');
+        $search_str = !empty($_GET['pp_agent_search']) ? sanitize_text_field($_GET['pp_agent_search']) : '';
+        $orig_search_str = strval($search_str);
+        
+        $agent_id = PWP::GET_int('pp_agent_id');
         $topic = str_replace(':', ',', $topic);
 
-        $omit_admins = !presspermit_empty_GET('pp_omit_admins');
-        $context = presspermit_GET_key('pp_context');
+        $omit_admins = !PWP::empty_GET('pp_omit_admins');
+        $context = PWP::GET_key('pp_context');
         
         if (strpos($topic, ',')) {
             $arr_topic = explode(',', $topic);
@@ -78,7 +82,7 @@ class AgentsAjax
 
             $post_type = (post_type_exists($context)) ? $context : 'page';
 
-            $authors_clause = apply_filters('presspermit_select_author_clause', '', $post_type);
+            $include_ids = apply_filters('presspermit_select_author_ids', false, $post_type);
 
             $type_obj = get_post_type_object($post_type);
             if (!current_user_can($type_obj->cap->edit_others_posts)) {
@@ -93,30 +97,23 @@ class AgentsAjax
         }
 
         if ('user' == $agent_type) {
-            if (isset($current_blog) && is_object($current_blog) && isset($current_blog->blog_id)) {
-                $blog_prefix = $wpdb->get_blog_prefix($current_blog->blog_id);
+            if (0 === strpos($orig_search_str, ' ')) {
+                $orderby = 'user_login';
+                $order = 'ASC';
             } else {
-                $blog_prefix = $wpdb->get_blog_prefix();
-            }
+                $orderby = 'user_registered';
+                $order = 'DESC';
+            };
 
-            if (
-                is_multisite()
-                && apply_filters('presspermit_user_search_site_only', true, compact('agent_type', 'agent_id', 'topic', 'context', 'omit_admins'))
-            ) {
-                $join = "INNER JOIN $wpdb->usermeta AS um ON um.user_id = $wpdb->users.ID AND um.meta_key = '{$blog_prefix}capabilities'";
-            } else {
-                $join = '';
-            }
+            $um_keys = (!empty($_GET['pp_usermeta_key'])) ? array_map('sanitize_text_field', $_GET['pp_usermeta_key']) : [];
+            $um_keys = array_map('\PressShack\LibWP::sanitizeEntry', $um_keys);
 
-            $orderby = (0 === strpos($orig_search_str, ' ')) ? 'user_login' : 'user_registered DESC';
-
-            $um_keys = (!presspermit_empty_GET('pp_usermeta_key')) ? array_map('pp_permissions_sanitize_entry', presspermit_GET_var('pp_usermeta_key')) : [];
-            $um_vals = (!presspermit_empty_GET('pp_usermeta_val')) ? array_map('sanitize_text_field', presspermit_GET_var('pp_usermeta_val')) : [];
+            $um_vals = (!empty($_GET['pp_usermeta_val'])) ? array_map('sanitize_text_field', $_GET['pp_usermeta_val']) : [];
 
             if (defined('PP_USER_LASTNAME_SEARCH') && !defined('PP_USER_SEARCH_FIELD')) {
                 $default_search_field = 'last_name';
             } elseif (defined('PP_USER_SEARCH_FIELD')) {
-                $default_search_field = pp_permissions_sanitize_entry(constant('PP_USER_SEARCH_FIELD'));
+                $default_search_field = PWP::sanitizeEntry(constant('PP_USER_SEARCH_FIELD'));
             } else {
                 $default_search_field = '';
             }
@@ -124,6 +121,7 @@ class AgentsAjax
             if ($search_str && $default_search_field) {
                 $um_keys[] = $default_search_field;
                 $um_vals[] = $search_str;
+
                 $search_str = '';
             }
 
@@ -141,31 +139,17 @@ class AgentsAjax
             $um_keys = array_values($um_keys);
             $um_vals = array_values($um_vals);
 
-            if ($search_str) {
-                $where = "WHERE (user_login LIKE '%{$search_str}%' OR user_nicename LIKE '%{$search_str}%' OR display_name LIKE '%{$search_str}%')";
-            } else {
-                $where = "WHERE 1=1";
-            }
-
-            if ($pp_role_search = presspermit_GET_var('pp_role_search')) {
-                if ($role_filter = sanitize_text_field($pp_role_search)) {
-                    $blog_prefix = $wpdb->get_blog_prefix($current_blog->blog_id);
-
-                    $um_keys[] = "{$blog_prefix}capabilities";
-                    $um_vals[] = $role_filter;
-                }
-            }
+            $role_filter = !empty($_GET['pp_role_search']) ? sanitize_text_field($_GET['pp_role_search']) : '';
 
             // append where clause for meta value criteria
             if (!empty($um_keys)) {
                 // force search values to be cast as numeric or boolean
                 $force_numeric_keys = (defined('PP_USER_SEARCH_NUMERIC_FIELDS')) ? explode(',', PP_USER_SEARCH_NUMERIC_FIELDS) : [];
                 $force_boolean_keys = (defined('PP_USER_SEARCH_BOOLEAN_FIELDS')) ? explode(',', PP_USER_SEARCH_BOOLEAN_FIELDS) : [];
+                
+                $meta_search = [];
 
                 for ($i = 0; $i < count($um_keys); $i++) {
-                    $join .= " INNER JOIN $wpdb->usermeta AS um_{$um_keys[$i]} ON um_{$um_keys[$i]}.user_id = $wpdb->users.ID"
-                        . " AND um_{$um_keys[$i]}.meta_key = '{$um_keys[$i]}'";
-
                     $val = trim($um_vals[$i]);
 
                     if (in_array($um_keys[$i], $force_numeric_keys)) {
@@ -178,45 +162,49 @@ class AgentsAjax
                         $val = strval((bool)$val);
                     }
 
-                    if ($val) {
-                        $where .= " AND um_{$um_keys[$i]}.meta_value LIKE '%{$val}%'";
-                    } else {
-                        $where .= " AND um_{$um_keys[$i]}.meta_value = '{$val}'";
-                    }
+                    $meta_search[] = ['key' => $um_keys[$i], 'value' => $val, 'compare' => 'LIKE'];
                 }
             }
 
             $limit = (defined('PP_USER_SEARCH_LIMIT')) ? abs(intval(constant('PP_USER_SEARCH_LIMIT'))) : 0;
-            if ($limit) {
-                $limit_clause = "LIMIT $limit";
-            } else {
-                $limit_clause = (defined('PP_USER_SEARCH_UNLIMITED')) ? '' : 'LIMIT 10000';
+
+            $args = [
+                'fields' => ['ID', 'user_login', 'display_name'],
+                'search' => $search_str,
+                'search_columns' => ['user_login', 'user_nicename', 'display_name'],
+                'include' => $include_ids,
+                'role' => $role_filter,
+                'orderby' => $orderby,
+                'order' => $order,
+                'number' => $limit,
+            ];
+
+            if ($meta_search) {
+                $args['meta_query'] = array_merge(['relation' => 'AND'], $meta_search);  // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
             }
 
-            $query = "SELECT ID, user_login, display_name FROM $wpdb->users $join $where $authors_clause ORDER BY $orderby $limit_clause";
+            $omit_users = [];
 
-            $results = $wpdb->get_results($query);
+            // determine all current users for group in question
+            if (!empty($agent_id)) {
+                $topic = isset($topic) ? $topic : '';
+                $group_type = ($context && $pp_groups->groupTypeExists($context)) ? $context : 'pp_group';
+                $omit_users = $pp_groups->getGroupMembers($agent_id, $group_type, 'id', ['member_type' => $topic, 'status' => 'any']);
+            }
+
+            if ($omit_admins) {
+                if ($admin_roles = $pp_admin->getAdministratorRoles()) {  // Administrators can't be excluded; no need to include or enable them
+                    $args['role__not_in'] = array_map('sanitize_key', array_keys($admin_roles));
+                }
+            }
+
+            $user_search = new \WP_User_Query(
+                $args
+            );
+
+	        $results = $user_search->get_results();
 
             if ($results) {
-                $omit_users = [];
-
-                // determine all current users for group in question
-                if (!empty($agent_id)) {
-                    $topic = isset($topic) ? $topic : '';
-                    $group_type = ($context && $pp_groups->groupTypeExists($context)) ? $context : 'pp_group';
-                    $omit_users = $pp_groups->getGroupMembers($agent_id, $group_type, 'id', ['member_type' => $topic, 'status' => 'any']);
-                } elseif ($omit_admins) {
-                    if ($admin_roles = $pp_admin->getAdministratorRoles()) {  // Administrators can't be excluded; no need to include or enable them
-
-                        $role_csv = implode("','", array_map('sanitize_key', array_keys($admin_roles)));
-                        $omit_users = $wpdb->get_col(
-                            "SELECT u.ID FROM $wpdb->users AS u INNER JOIN $wpdb->pp_group_members AS gm ON u.ID = gm.user_id"
-                            . " INNER JOIN $wpdb->pp_groups AS g ON gm.group_id = g.ID"
-                            . " WHERE g.metagroup_type = 'wp_role' AND g.metagroup_id IN ('$role_csv')"
-                        );
-                    }
-                }
-
                 foreach ($results as $row) {
                     if (!in_array($row->ID, $omit_users)) {
                         if (defined('PP_USER_RESULTS_DISPLAY_NAME')) {
@@ -241,7 +229,7 @@ class AgentsAjax
 
             if ($groups = $pp_groups->getGroups(
                 $agent_type,
-                ['filtering' => true, 'include_norole_groups' => false, 'reqd_caps' => $reqd_caps, 'search' => $search_str]
+                ['search' => $search_str]
             )) {
                 foreach ($groups as $row) {
                     if ((empty($row->metagroup_id) || is_null($row->metagroup_id)) && !isset($omit_groups[$row->ID])) {

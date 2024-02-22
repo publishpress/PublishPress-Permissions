@@ -35,7 +35,7 @@ class DashboardFilters
             $is_post_admin = true;
 
         } elseif (('term.php' == $pagenow) || (('edit-tags.php' == $pagenow)
-                && presspermit_is_REQUEST('action', 'edit'))
+                && PWP::is_REQUEST('action', 'edit'))
         ) {
             if (current_user_can('pp_assign_roles')) {
                 require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/TermEdit.php');
@@ -48,7 +48,7 @@ class DashboardFilters
             new UsersListing();
 
         } elseif (('edit.php' == $pagenow) || PWP::isAjax('inline-save')) {
-            if (!$post_type = presspermit_REQUEST_key('post_type')) {
+            if (!$post_type = PWP::REQUEST_key('post_type')) {
                 $post_type = 'post';
             }
 
@@ -59,9 +59,9 @@ class DashboardFilters
             }
         } elseif (
             in_array($pagenow, ['edit-tags.php']) || (defined('DOING_AJAX') && DOING_AJAX
-                && presspermit_is_REQUEST('action', ['inline-save-tax', 'add-tag']))
+                && PWP::is_REQUEST('action', ['inline-save-tax', 'add-tag']))
         ) {
-            if (!presspermit_empty_REQUEST('taxonomy') && presspermit()->isTaxonomyEnabled(presspermit_REQUEST_key('taxonomy'))) {
+            if (!PWP::empty_REQUEST('taxonomy') && presspermit()->isTaxonomyEnabled(PWP::REQUEST_key('taxonomy'))) {
                 require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/TermsListing.php');
                 new TermsListing();
             }
@@ -69,7 +69,7 @@ class DashboardFilters
             require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/PluginAdmin.php');
             new PluginAdmin();
         } else {
-            if (presspermit_SERVER_var('REQUEST_URI') && strpos(esc_url_raw(presspermit_SERVER_var('REQUEST_URI')), 'page=presspermit-groups') && presspermit_is_REQUEST('wp_screen_options')) {
+            if (PWP::SERVER_url('REQUEST_URI') && strpos(esc_url_raw(PWP::SERVER_url('REQUEST_URI')), 'page=presspermit-groups') && PWP::is_REQUEST('wp_screen_options')) {
                 \PublishPress\Permissions\UI\PluginPage::handleScreenOptions();
             }
 
@@ -98,7 +98,7 @@ class DashboardFilters
 
         wp_enqueue_style('presspermit', PRESSPERMIT_URLPATH . '/common/css/presspermit.css', [], PRESSPERMIT_VERSION);
 
-        if ($pp_plugin_page || (!presspermit_empty_REQUEST('page') && presspermit_REQUEST_key_match('page', 'capsman'))) {
+        if ($pp_plugin_page || (!PWP::empty_REQUEST('page') && PWP::REQUEST_key_match('page', 'capsman'))) {
             wp_enqueue_style('presspermit-plugin-pages', PRESSPERMIT_URLPATH . '/common/css/plugin-pages.css', [], PRESSPERMIT_VERSION);
             wp_enqueue_style('presspermit-admin-common', PRESSPERMIT_URLPATH . '/common/css/pressshack-admin.css', [], PRESSPERMIT_VERSION);
         }
@@ -130,11 +130,11 @@ class DashboardFilters
     {
         $pp = presspermit();
 
-        if (!$agent_type = presspermit_REQUEST_key('agent_type')) {
+        if (!$agent_type = PWP::REQUEST_key('agent_type')) {
             $agent_type = 'pp_group';
         }
 
-		$agent_id = presspermit_REQUEST_int('agent_id');
+		$agent_id = PWP::REQUEST_int('agent_id');
 
         $load_role_scripts = $pp->groups()->userCan('pp_manage_members', $agent_id, $agent_type)
         || $pp->groups()->anyGroupManager() || current_user_can('pp_assign_roles')
@@ -159,18 +159,21 @@ class DashboardFilters
     {
         global $submenu;
 
+        // Work around an issue with WP menu access handling
+        // https://core.trac.wordpress.org/ticket/22895
+
         // Add a dummy submenu item to prevent WP from stripping out solitary submenus.  
         // Otherwise menu access loses type sensitivity and requires "edit_posts" cap for all types.
         foreach (array_keys($submenu) as $key) {
             if (1 == count($submenu[$key]) && (0 === strpos($key, 'edit.php'))) {
-                $submenu[$key][999] = ['', 'read', $key];
+                $submenu[$key][999] = ['', 'read', $key];  // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
             }
         }
     }
 
     public static function actMenuHandler()
     {
-        if (!$page = presspermit_GET_key('page')) {
+        if (!$page = PWP::GET_key('page')) {
             return;
         }
 
@@ -196,7 +199,7 @@ class DashboardFilters
     {
         global $pagenow;
 
-        if (presspermit_empty_REQUEST('noheader')) {
+        if (PWP::empty_REQUEST('noheader')) {
             global $wp_scripts;
             $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
             wp_enqueue_script('presspermit-misc', PRESSPERMIT_URLPATH . "/common/js/presspermit{$suffix}.js", ['jquery'], PRESSPERMIT_VERSION, true);
@@ -210,7 +213,7 @@ class DashboardFilters
 
     public function actBuildMenu()
     {
-        $request_uri = esc_url_raw(presspermit_SERVER_var('REQUEST_URI'));
+        $request_uri = esc_url_raw(PWP::SERVER_url('REQUEST_URI'));
 
         if ($request_uri && false !== strpos($request_uri, trailingslashit(PWP::admin_rel_url('')) . 'network/')
         ) {
@@ -273,7 +276,7 @@ class DashboardFilters
             }
         }
 
-        if (presspermit()->moduleActive('collaboration') && (defined('PRESSPERMIT_ROLE_USAGE_COMPAT') || !empty($_REQUEST['pp_role_usage']))) {
+        if (presspermit()->moduleActive('collaboration') && (defined('PRESSPERMIT_ROLE_USAGE_COMPAT') || !PWP::empty_REQUEST('pp_role_usage'))) {
             do_action('pp_added_role_usage_submenu');
 
             add_submenu_page(
@@ -373,24 +376,27 @@ class DashboardFilters
 
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
         wp_enqueue_script('presspermit-new-user', PRESSPERMIT_URLPATH . "/common/js/new-user{$suffix}.js", [], PRESSPERMIT_VERSION);
-        wp_localize_script('presspermit-new-user', 'ppUser', ['ajaxurl' => admin_url('')]);
+        wp_localize_script('presspermit-new-user', 'ppUser', ['ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax')]);
     }
 
     // support NextGenGallery uploader and other custom jquery calls which WP treats as index.php ( otherwise user_can_access_admin_page() fails )
-    // todo: review
     public function actNggUploaderWorkaround()
     {
         global $pagenow;
 
         $site_url = wp_parse_url(get_option('siteurl'));
 
-        $request_uri = esc_url_raw(presspermit_SERVER_var('REQUEST_URI'));
+        $request_uri = esc_url_raw(PWP::SERVER_url('REQUEST_URI'));
 
         if (isset($site_url['path']) && $request_uri && (untrailingslashit($request_uri) == untrailingslashit(admin_url('')))) {
+
             return;
         }
 
         if (('index.php' == $pagenow) && $request_uri && strpos($request_uri, '.php') && !strpos($request_uri, 'index.php')) {
+            // @todo: review for alternate solution
+
+            // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
             $pagenow = '';
         }
     }
@@ -400,4 +406,4 @@ class DashboardFilters
         require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/Profile.php');
         return Profile::listAgentExceptions($agent_type, $id, $args);
     }
-} // end class
+}

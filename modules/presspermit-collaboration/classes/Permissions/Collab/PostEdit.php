@@ -5,21 +5,21 @@ class PostEdit
 {
     public static function defaultPrivacyWorkaround()
     {
-        if (presspermit_empty_POST('publish') && presspermit_is_POST('visibility') && presspermit_is_POST('post_type') 
-        && presspermit()->getTypeOption('default_privacy', presspermit_POST_key('post_type'))
+        if (PWP::empty_POST('publish') && PWP::is_POST('visibility') && PWP::is_POST('post_type') 
+        && presspermit()->getTypeOption('default_privacy', PWP::POST_key('post_type'))
         ) {
             $stati = get_post_stati(['moderation' => true], 'names');
-            if (!presspermit_empty_POST('post_status') && in_array(presspermit_POST_key('post_status'), $stati, true)) {
+            if (!PWP::empty_POST('post_status') && in_array(PWP::POST_key('post_status'), $stati, true)) {
                 return;
             }
 
             $stati = get_post_stati(['public' => true, 'private' => true], 'names', 'or');
 
-            if (!in_array(presspermit_POST_key('visibility'), ['public', 'password'], true) 
-            && (!presspermit_is_POST('hidden_post_status') || !in_array(presspermit_POST_key('hidden_post_status'), $stati, true))
+            if (!in_array(PWP::POST_key('visibility'), ['public', 'password'], true) 
+            && (!PWP::is_POST('hidden_post_status') || !in_array(PWP::POST_key('hidden_post_status'), $stati, true))
             ) {
-                $_POST['post_status'] = presspermit_POST_key('hidden_post_status');
-                $_REQUEST['post_status'] = presspermit_POST_key('hidden_post_status');
+                $_POST['post_status'] = PWP::POST_key('hidden_post_status');
+                $_REQUEST['post_status'] = PWP::POST_key('hidden_post_status');
 
                 $_POST['visibility'] = 'public';
                 $_REQUEST['visibility'] = 'public';
@@ -29,7 +29,15 @@ class PostEdit
 
     public static function fltPostStatus($status)
     {
-        $post_type = PWP::findPostType();
+        if (!$post_id = presspermit()->getCurrentSanitizePostID()) {
+            $post_id = PWP::getPostID();
+        }
+
+        if ($post_id) {
+            $post_type = get_post_field('post_type', $post_id);
+        } else {
+            $post_type = PWP::findPostType();
+        }
 
         if ($type_obj = get_post_type_object($post_type)) {
             if ($type_obj->hierarchical && post_type_supports($post_type, 'page-attributes')) {

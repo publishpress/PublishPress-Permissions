@@ -23,11 +23,11 @@ class RoleUsageEdit {
 
         $url = apply_filters('presspermit_role_usage_base_url', 'admin.php');
 
-        if ($wp_http_referer = presspermit_REQUEST_key('wp_http_referer')) {
+        if ($wp_http_referer = PWP::REQUEST_key('wp_http_referer')) {
             $wp_http_referer = esc_url_raw($wp_http_referer);
 
-        } elseif ($http_referer = presspermit_SERVER_var('HTTP_REFERER')) {
-            $wp_http_referer = remove_query_arg(['update', 'edit', 'delete_count'], esc_url_raw(presspermit_SERVER_var('HTTP_REFERER')));
+        } elseif ($http_referer = PWP::SERVER_url('HTTP_REFERER')) {
+            $wp_http_referer = remove_query_arg(['update', 'edit', 'delete_count'], esc_url_raw(PWP::SERVER_url('HTTP_REFERER')));
         } else {
             $wp_http_referer = '';
         }
@@ -35,11 +35,11 @@ class RoleUsageEdit {
         if (!current_user_can('pp_manage_settings'))
             wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
 
-        if (!$role = presspermit_REQUEST_key('role')) {
+        if (!$role = PWP::REQUEST_key('role')) {
             wp_die('No role specified.');
 		}
 
-        $role_name = pp_permissions_sanitize_entry($role);
+        $role_name = PWP::sanitizeEntry($role);
 
         $cap_caster = $pp->capCaster();
         $cap_caster->definePatternCaps();
@@ -51,10 +51,10 @@ class RoleUsageEdit {
         } else
             wp_die('Role does not exist.');
 
-        if (!presspermit_empty_POST())
+        if (!PWP::empty_POST())
             $_GET['update'] = 1; // temp workaround
 
-        if (presspermit_is_GET('update') && empty($pp->admin()->errors)) : ?>
+        if (PWP::is_GET('update') && empty($pp->admin()->errors)) : ?>
             <div id="message" class="updated">
                 <p><strong><?php esc_html_e('Role Usage updated.', 'press-permit-core') ?>&nbsp;</strong>
                 </p>

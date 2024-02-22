@@ -52,25 +52,26 @@ class PostFilters
         add_filter('presspermit_force_post_metacap_check', [$this, 'fltForcePostMetacapCheck'], 10, 2);
 
         add_filter('pre_do_shortcode_tag', function($do_tag, $tag, $attr, $m) {
-            $this->doing_unfiltered_shortcode = in_array(
-                $tag, 
-                apply_filters('presspermit_unfiltered_shortcodes', ['fl_builder_insert_layout']),
-                true
-            );
 
-            if ($this->doing_unfiltered_shortcode) {
-                $this->doing_unfiltered_shortcode = apply_filters('presspermit_is_unfiltered_shortcode', $this->doing_unfiltered_shortcode, $tag, $attr, $m);
-            }
+          $this->doing_unfiltered_shortcode = in_array(
+            $tag, 
+            apply_filters('presspermit_unfiltered_shortcodes', ['fl_builder_insert_layout']),
+            true
+          );
 
-            return $do_tag;
-        }, 10, 4);
-            
-        add_filter('do_shortcode_tag', function($output, $tag, $attr, $m) {
-            $this->doing_unfiltered_shortcode = false;
+              if ($this->doing_unfiltered_shortcode) {
+                  $this->doing_unfiltered_shortcode = apply_filters('presspermit_is_unfiltered_shortcode', $this->doing_unfiltered_shortcode, $tag, $attr, $m);
+              }
 
-            return $output;
-        }, 10, 4);
+        return $do_tag;
+      }, 10, 4);
+			
+      add_filter('do_shortcode_tag', function($output, $tag, $attr, $m) {
+        $this->doing_unfiltered_shortcode = false;
 
+        return $output;
+      }, 10, 4);
+      
         do_action('presspermit_post_filters');
     }
 
@@ -162,32 +163,32 @@ class PostFilters
         global $pagenow, $current_user;
 
         if ($this->doing_unfiltered_shortcode) {
-            return $clauses;
+          return $clauses;
         }
 
         // Gallery block in Gutenberg editor: error loading Image Size dropdown options
-        if (defined('REST_REQUEST') && (0 == strpos($_SERVER['REQUEST_URI'], "/blocks")) && !empty($_REQUEST['context']) && ('edit' == $_REQUEST['context'])) {
+        if (defined('REST_REQUEST') && (0 == strpos(PWP::SERVER_url('REQUEST_URI'), "/blocks")) && !PWP::empty_REQUEST('context') && ('edit' == PWP::REQUEST_key('context'))) {
             return $clauses;
         }
 
         $pp = presspermit();
 
         if (defined('PUBLISHPRESS_VERSION') && did_action('publishpress_notifications_trigger_workflows')) {
-			return $clauses;
-		}
+          return $clauses;
+        }
 
         $args['query_obj'] = $_wp_query;
 
         if ($pp->isUserUnfiltered($current_user->ID, $args) && 
             (
             !is_admin() || 
-            (($pagenow != 'nav-menus.php') && (!defined('DOING_AJAX') || !DOING_AJAX || !presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search'])))
+            (($pagenow != 'nav-menus.php') && (!defined('DOING_AJAX') || !DOING_AJAX || !PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search'])))
             )
         ) { // need to make private items selectable for nav menus
             return $clauses;
         }
 
-        $action = presspermit_REQUEST_key('action');
+        $action = PWP::REQUEST_key('action');
 
         if (
             defined('PP_MEDIA_LIB_UNFILTERED') && (('upload.php' == $pagenow)
@@ -239,7 +240,7 @@ class PostFilters
             );
 
             foreach (array_keys($ajax_post_types) as $arg) {
-                if (!presspermit_empty_REQUEST($arg) || ($arg == $action)) {
+                if (!PWP::empty_REQUEST($arg) || ($arg == $action)) {
                     $_wp_query->post_type = $ajax_post_types[$arg];
                     break;
                 }
@@ -351,13 +352,13 @@ class PostFilters
         $post_types = ($post_types) ? (array)$post_types : presspermit()->getEnabledPostTypes();
 
         if (!$required_operation) {
-            if (!presspermit_empty_REQUEST('preview')) {
+            if (!PWP::empty_REQUEST('preview')) {
                 $required_opertion = 'edit';
             } else {
                 if (!$required_operation = apply_filters('presspermit_get_posts_operation', '', $args)) {
                     if (defined('REST_REQUEST') && REST_REQUEST) {
-                        if (presspermit_is_REQUEST('context', 'edit')) {
-                            $required_operation = (!presspermit_empty_REQUEST('parent_exclude')) ? 'associate' : 'edit'; // todo: better criteria
+                        if (PWP::is_REQUEST('context', 'edit')) {
+                            $required_operation = (!PWP::empty_REQUEST('parent_exclude')) ? 'associate' : 'edit'; // todo: better criteria
                         } else {
                             $required_operation = 'read';
                         }
@@ -424,7 +425,7 @@ class PostFilters
         // (But not if user is anon and hidden content teaser is enabled.  In that case, we need to replace the default "status=publish" clause)
         $matches = [];
         if ($num_matches = preg_match_all("/{$src_table}.post_status\s*=\s*'([^']+)'/", $where, $matches)) {
-            if (PWP::isFront() || (defined('REST_REQUEST') && REST_REQUEST) || (defined('DOING_AJAX') && DOING_AJAX && presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))) {
+            if (PWP::isFront() || (defined('REST_REQUEST') && REST_REQUEST) || (defined('DOING_AJAX') && DOING_AJAX && PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))) {
                 if (PWP::isFront() || 'read' == $required_operation) {
                     $valid_stati = array_merge(
                         PWP::getPostStatuses(['public' => true, 'post_type' => $post_types]),
@@ -455,7 +456,7 @@ class PostFilters
         if (1 == $num_matches) {
             // Eliminate a primary plugin incompatibility by skipping this preservation of existing single status requirements if we're on the front end and the requirement is 'publish'.  
             // (i.e. include private posts that this user has access to via PP roles or exceptions).  
-            if ((!PWP::isFront() && (!defined('REST_REQUEST') || !REST_REQUEST) && (!defined('DOING_AJAX') || !DOING_AJAX || !presspermit_is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search'])))
+            if ((!PWP::isFront() && (!defined('REST_REQUEST') || !REST_REQUEST) && (!defined('DOING_AJAX') || !DOING_AJAX || !PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search'])))
                 || ('publish' != $matches[1][0]) || $retain_status || defined('PP_RETAIN_PUBLISH_FILTER')
             ) {
                 $limit_statuses = [];
@@ -601,8 +602,8 @@ class PostFilters
 
         if (!$required_operation) {
             if (defined('REST_REQUEST') && REST_REQUEST) {
-                if (presspermit_is_REQUEST('context', 'edit')) {
-                    $required_operation = (!presspermit_empty_REQUEST('parent_exclude')) ? 'associate' : 'edit'; // todo: better criteria
+                if (PWP::is_REQUEST('context', 'edit')) {
+                    $required_operation = (!PWP::empty_REQUEST('parent_exclude')) ? 'associate' : 'edit'; // todo: better criteria
                 } else {
                     $required_operation = (presspermit_is_preview()) ? 'edit' : 'read';
                 }
@@ -688,14 +689,19 @@ class PostFilters
         }
 
         if (!is_bool($include_trash)) {
-            if (presspermit_is_REQUEST('post_status', 'trash')) {
+            if (PWP::is_REQUEST('post_status', 'trash')) {
                 $include_trash = true;
             }
         }
 
         $where_arr = [];
 
-        $caps = class_exists('\PublishPress\Permissions\Statuses\CapabilityFilters') ? \PublishPress\Permissions\Statuses\CapabilityFilters::instance() : false;
+        $caps = class_exists('\PublishPress\StatusCapabilities\CapabilityFilters') ? \PublishPress\StatusCapabilities\CapabilityFilters::instance() : false;
+
+		// legacy support
+		if (!$caps) {
+        	$caps = class_exists('\PublishPress\Permissions\Statuses\CapabilityFilters') ? \PublishPress\Permissions\Statuses\CapabilityFilters::instance() : false;
+		}
 
         $flag_meta_caps = !empty($caps);
 

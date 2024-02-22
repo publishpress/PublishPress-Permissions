@@ -18,15 +18,13 @@ class Groups
         if (!$agent_type = apply_filters('presspermit_query_group_type', ''))
             $agent_type = 'pp_group';
 
-        if (!presspermit_empty_REQUEST('action2') && !is_numeric(presspermit_REQUEST_var('action2'))) {
-            $action = presspermit_REQUEST_key('action2');
+        if (!PWP::empty_REQUEST('action2')) {
+            $action = PWP::REQUEST_key('action2');
 
-        } elseif (!presspermit_empty_REQUEST('action') && !is_numeric(presspermit_REQUEST_var('action'))) {
-            $action = presspermit_REQUEST_key('action');
+        } elseif (!PWP::empty_REQUEST('action')) {
+            $action = PWP::REQUEST_key('action');
 
-        } elseif ($pp_action = presspermit_REQUEST_key('pp_action')) {
-            $action = presspermit_REQUEST_key('pp_action');
-        } else {
+        } elseif (!$pp_action = PWP::REQUEST_key('pp_action')) {
             $action = '';
         }
 
@@ -97,7 +95,7 @@ class Groups
                     $redirect = esc_url_raw(add_query_arg([
                         'pp_action' => 'bulkdelete',
                         'agent_type' => $agent_type,
-                        'wp_http_referer' => presspermit_is_REQUEST('wp_http_referer') ? esc_url_raw(presspermit_REQUEST_var('wp_http_referer')) : '',
+                        'wp_http_referer' => PWP::is_REQUEST('wp_http_referer') ? esc_url_raw(PWP::REQUEST_url('wp_http_referer')) : '',
                         'groups' => array_map('intval', $_REQUEST['groups'])
                     ], $redirect));
 
@@ -105,7 +103,7 @@ class Groups
                     exit();
                 }
 
-                if (presspermit_empty_REQUEST('group')) {
+                if (PWP::empty_REQUEST('group')) {
                     wp_redirect($redirect);
                     exit();
                 }

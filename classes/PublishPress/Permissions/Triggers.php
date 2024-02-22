@@ -38,19 +38,10 @@ class Triggers
         add_action('edited_term', [$this, 'actSaveTerm'], 10, 3);
         add_action('delete_term', [$this, 'actDeleteTerm'], 10, 3);
 
-        // todo: make this optional
-        // include private posts in the post count for each term
-        global $wp_taxonomies;
-        foreach ($wp_taxonomies as $key => $t) {
-            if (isset($t->update_count_callback) && ('update_post_term_count' == $t->update_count_callback)) {
-                $wp_taxonomies[$key]->update_count_callback = [$this, 'updatePostTermCount'];
-            }
-        }
-
         // =============== User Maintenance =================
-        add_action('profile_update', [$this, 'actSyncWordPressRoles']);
+        add_action('profile_update', [$this, 'actSyncUserRoleGroups'], 20);
         add_action('profile_update', [$this, 'actUpdateUserGroups']);
-        add_action('set_user_role', [$this, 'actScheduleRoleSync']);
+        add_action('set_user_role', [$this, 'actSyncUserRoleGroups'], 20);
 
         if (is_multisite()) {
             add_action('remove_user_from_blog', [$this, 'actDeleteUsers'], 10, 2);
@@ -97,7 +88,7 @@ class Triggers
     {
         if ($pp_only = (array) presspermit()->getOption('supplemental_role_defs')) {
 
-            if ($user_id = presspermit_REQUEST_int('user_id')) {  // display role already set for this user, regardless of pp_only setting
+            if ($user_id = PWP::REQUEST_int('user_id')) {  // display role already set for this user, regardless of pp_only setting
                 $user = new \WP_User($user_id);
                 if (!empty($user->roles)) {
                     $pp_only = array_diff($pp_only, $user->roles);
@@ -112,10 +103,15 @@ class Triggers
     public function fltUpdateWpRoles($roles)
     {
         global $wp_roles;
+
+        // Sync to wp role definition change by PP Capabilities (or other plugin)
+
         wp_cache_delete($wp_roles->role_key, 'options');
-        $wp_roles = new \WP_Roles();
+
+        $wp_roles->for_site();
 
         $this->actSyncWordPressRoles();
+
         return $roles;
     }
 
@@ -181,7 +177,7 @@ class Triggers
 
     public function actUpdateUserGroups($user_id)
     {
-        if (!current_user_can('edit_users') || presspermit_empty_POST('pp_editing_user_groups')) { // otherwise we'd delete group assignments if another plugin calls do_action('profile_update') unexpectedly
+        if (!current_user_can('edit_users') || PWP::empty_POST('pp_editing_user_groups')) { // otherwise we'd delete group assignments if another plugin calls do_action('profile_update') unexpectedly
             return;
         }
 
@@ -190,12 +186,9 @@ class Triggers
 
     private function doGroupUpdate($user_id)
     {
-        global $wpdb;
-        $metagroup_ids = $wpdb->get_col("SELECT ID FROM $wpdb->pp_groups WHERE metagroup_type = 'wp_role'");
-
         require_once(PRESSPERMIT_CLASSPATH . '/UserGroupsUpdate.php');
-        UserGroupsUpdate::addUserGroups($user_id, $metagroup_ids);
-        UserGroupsUpdate::removeUserGroups($user_id, $metagroup_ids);
+        UserGroupsUpdate::addUserGroups($user_id);
+        UserGroupsUpdate::removeUserGroups($user_id);
     }
 
     public function actDeleteUsers($user_ids, $blog_id_arg = 0)
@@ -247,47 +240,32 @@ class Triggers
     public function syncUsers()
     {
         if ($this->users_to_sync) {
-            $this->actSyncWordPressRoles($this->users_to_sync);
+            $this->actSyncUserRoleGroups($this->users_to_sync);
         }
     }
 
-    public function actSyncWordPressRoles($user_ids = '', $role_name = '', $blog_id_arg = '')
+    public function actSyncUserRoleGroups($user_ids = []) {
+        foreach ((array) $user_ids as $user_id) {
+            if (is_object($user_id)) {
+                $user_id = $user_id->ID;
+            }
+
+            // Triggers sync of this user's role metagroups to their WP roles
+            presspermit()->getUser($user_id, '', ['retrieve_site_roles' => false]);
+        }
+    }
+
+    public function actSyncWordPressRoles()
     {
         require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
-        PluginUpdated::syncWordPressRoles($user_ids, $role_name, $blog_id_arg);
+        PluginUpdated::syncWordPressRoles();
     }
 
     public function actScheduleRoleSync()
     {
         // Capability Manager doesn't actually create the role until after the option update we're hooking on, so defer our maintenance operation
-        if (!has_action('shutdown', [$this, 'actSyncAllRoles'])) {
-            add_action('shutdown', [$this, 'actSyncAllRoles']);
-        }
-    }
-
-    // simplifies attaching this function to hook which pass irrelevant argument
-    public function actSyncAllRoles()
-    {
-        $this->actSyncWordPressRoles();
-    }
-
-    // modifies WP core _updatePostTermCount to include private posts in the count, since PP roles can grant access to them
-    public function updatePostTermCount($terms)
-    {
-        global $wpdb;
-
-        foreach ((array)$terms as $term) {
-            $stati_csv = implode("','", array_map('sanitize_key', get_post_stati(['public' => true, 'private' => true], 'names', 'or')));
-            $count = $wpdb->get_var(
-                $wpdb->prepare(
-                    "SELECT COUNT(*) FROM $wpdb->term_relationships, $wpdb->posts"
-                    . " WHERE $wpdb->posts.ID = $wpdb->term_relationships.object_id"
-                    . " AND post_status IN ('$stati_csv') AND term_taxonomy_id = %d",
-                    $term
-                )
-            );
-
-            $wpdb->update($wpdb->term_taxonomy, compact('count'), ['term_taxonomy_id' => $term]);
+        if (!has_action('shutdown', [$this, 'actSyncWordPressRoles'])) {
+            add_action('shutdown', [$this, 'actSyncWordPressRoles']);
         }
     }
 }

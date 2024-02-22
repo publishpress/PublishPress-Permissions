@@ -54,6 +54,9 @@ class NavMenus
                     unset($wp_meta_boxes['nav-menus']['side'][$section]["add-post-type-{$post_type}"]['args']->_default_query['post_status']);
                     
                     if (defined('PRESSPERMIT_EDIT_NAV_MENUS_NO_PAGING')) {
+                        // phpcs Note: Non-standard configuration: Results paging is only disabled by constant definition
+
+                        // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page
                         $wp_meta_boxes['nav-menus']['side'][$section]["add-post-type-{$post_type}"]['args']->_default_query['posts_per_page'] = 9999;
                     }
                 }
@@ -66,6 +69,9 @@ class NavMenus
                     $wp_meta_boxes['nav-menus']['side'][$section]["add-{$taxonomy}"]['args']->_default_query['suppress_filters'] = false;
 
                     if (defined('PRESSPERMIT_EDIT_NAV_MENUS_NO_PAGING')) {
+                        // phpcs Note: Non-standard configuration: Results paging is only disabled by constant definition
+
+                        // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page
                         $wp_meta_boxes['nav-menus']['side'][$section]["add-{$taxonomy}"]['args']->_default_query['posts_per_page'] = 9999;
                     }
                 }
@@ -209,8 +215,13 @@ class NavMenus
 
             if ($post_parent && ($post_parent != $meta_value)) {
                 global $wpdb;
-                if (!$wpdb->update($wpdb->postmeta, ['meta_value' => $post_parent], ['meta_key' => $meta_key, 'post_id' => $object_id]))
+
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+                if (!$wpdb->update($wpdb->postmeta, ['meta_value' => $post_parent], ['meta_key' => $meta_key, 'post_id' => $object_id])) {
+
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.SlowDBQuery.slow_db_query_meta_value
                     $wpdb->insert($wpdb->postmeta, ['meta_value' => $post_parent, 'meta_key' => $meta_key, 'post_id' => $object_id]);
+                }
 
                 $bypass = true;
             }
@@ -236,7 +247,7 @@ class NavMenus
         $menu_item = get_post($object_id);
 
         // if this menu item is already stored to top level, don't move it
-        if (!$stored_parent && (false !== $stored_parent) && !presspermit_is_REQUEST('action', 'add-menu-item')) {
+        if (!$stored_parent && (false !== $stored_parent) && !PWP::is_REQUEST('action', 'add-menu-item')) {
             return $post_parent;
         }
 
@@ -265,7 +276,7 @@ class NavMenus
         //
         // If parent is being set to zero but this menu item is already stored as a sub-item, revert it.
         if (count($editable_items) < 2) {
-            if (!$post_parent && $stored_parent && !presspermit_is_REQUEST('action', 'add-menu-item')) {
+            if (!$post_parent && $stored_parent && !PWP::is_REQUEST('action', 'add-menu-item')) {
                 return $stored_parent;
             }
         }
@@ -322,13 +333,18 @@ class NavMenus
                         'url' => 'menu-item-url',
                         ] as $property => $col
                     ) {
-                        if (isset($_POST[$col][$menu_item_id]))
+                        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                        if (isset($_POST[$col][$menu_item_id])) {
+
+                            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
                             $posted_vals[$property] = sanitize_text_field($_POST[$col][$menu_item_id]);
+                        }
                     }
 
                     if (isset($posted_vals['classes']))
                         $posted_vals['classes'] = array_map('sanitize_html_class', explode(' ', $posted_vals['classes']));
 
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
                     $menu_data = (!empty($_REQUEST['nav-menu-data'])) ? json_decode(stripslashes($_REQUEST['nav-menu-data'])) : [];
 
                     foreach($menu_data as $data_obj) {
@@ -453,9 +469,9 @@ class NavMenus
         $menu_count = count($nav_menus);
 
         // Are we on the add new screen?
-        $add_new_screen = presspermit_is_GET('menu', 0) ? true : false;
+        $add_new_screen = PWP::is_GET('menu', 0) ? true : false;
 
-        $locations_screen = presspermit_is_GET('action', 'locations') ? true : false;
+        $locations_screen = PWP::is_GET('action', 'locations') ? true : false;
 
         // If we have one theme location, and zero menus, we take them right into editing their first menu
         $page_count = wp_count_posts('page');
@@ -464,18 +480,18 @@ class NavMenus
         ? true 
         : false;
 
-        $nav_menu_selected_id = presspermit_REQUEST_int('menu');
+        $nav_menu_selected_id = PWP::REQUEST_int('menu');
 
         if (empty($recently_edited) && is_nav_menu($nav_menu_selected_id))
             $recently_edited = $nav_menu_selected_id;
 
         // Use $recently_edited if none are selected
-        if (empty($nav_menu_selected_id) && presspermit_empty_GET('menu') && is_nav_menu($recently_edited)) {
+        if (empty($nav_menu_selected_id) && PWP::empty_GET('menu') && is_nav_menu($recently_edited)) {
             $nav_menu_selected_id = $recently_edited;
         }
 
         // On deletion of menu, if another menu exists, show it
-        if (!$add_new_screen && 0 < $menu_count && presspermit_is_GET('action', 'delete')) {
+        if (!$add_new_screen && 0 < $menu_count && PWP::is_GET('action', 'delete')) {
             $nav_menu_selected_id = $nav_menus[0]->term_id;
         }
 
@@ -507,10 +523,12 @@ class NavMenus
             $new_option_value = $old_option_value;
 
             // The following sample code is left for possible future need to allow editing of some menu options while locking others
+            
+            // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
             /*
             $menu_id = self::determine_selected_menu();
             if ( ! $menu_id && isset( $_REQUEST['menu'] ) )
-                $menu_id = pp_permissions_sanitize_entry($_REQUEST['menu']);
+                $menu_id = PWP::sanitizeEntry($_REQUEST['menu']);
             
             if ( ! $menu_id )
                 return $new_option_value;

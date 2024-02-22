@@ -259,8 +259,8 @@ class CapabilityFilters
         $return = [];
 
         if (('read_post' == reset($pp_reqd_caps))) {
-            if (!is_admin() && presspermit_is_REQUEST('post_type', 'revision') 
-            && (!presspermit_empty_REQUEST('preview') || !presspermit_empty_REQUEST('preview_id'))) {
+            if (!is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+            && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))) {
                 $return['pp_reqd_caps'] = ['edit_post'];
             }
         }

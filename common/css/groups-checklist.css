@@ -7,6 +7,10 @@
     margin: 0.3em;
 }
 
+.pp-agents-list > li {
+    white-space: nowrap;
+}
+
 .pp-agents-list_auto {
     margin: 0.5em 0 1em 0;
     padding: 0;

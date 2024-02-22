@@ -84,7 +84,7 @@ class DashboardFiltersNonAdministrator
         global $pagenow;
 
         if (in_array($pagenow, ['edit.php', 'post.php', 'post-new.php', 'upload.php'])) {
-            if (!$_post_type = presspermit_REQUEST_key('post_type')) {
+            if (!$_post_type = PWP::REQUEST_key('post_type')) {
                 $_post_type = 'post';
             }
 

@@ -31,6 +31,8 @@ class GroupQuery
     private $query_orderby;
     private $query_limit;
 
+    public $query_vars;
+
     /**
      *
      * @param string|array $args The query variables
@@ -38,11 +40,13 @@ class GroupQuery
      */
     public function __construct($query = null)
     {
+        // phpcs Note: This exclude argument has not relation to the WP Users table
+
         if (!empty($query)) {
             $this->query_vars = wp_parse_args($query, [
                 'blog_id' => get_current_blog_id(),
                 'include' => [],
-                'exclude' => [],
+                'exclude' => [],                    // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                 'search' => '',
                 'orderby' => 'login',
                 'order' => 'ASC',
@@ -85,22 +89,25 @@ class GroupQuery
             $qv['fields'] = array_unique($qv['fields']);
 
             $this->query_fields = [];
+
             foreach ($qv['fields'] as $field) {
                 $this->query_fields[] = $groups_table . '.' . esc_sql($field);
             }
 
             $this->query_fields = implode(',', $this->query_fields);
+
         } elseif ('all' == $qv['fields']) {
-            $this->query_fields = "$groups_table.*";
+            $this->query_fields = "$groups_table.*";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         } else {
-            $this->query_fields = "$groups_table.ID";
+            $this->query_fields = "$groups_table.ID";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
 
-        $this->query_from = "FROM $groups_table";
+        $this->query_from = "FROM $groups_table";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
         $this->query_where = "WHERE 1=1";
 
         if ('wp_role' == $this->group_variant) {
-            $this->query_where .= " AND $groups_table.metagroup_type IN ('wp_role')";
+            $this->query_where .= " AND $groups_table.metagroup_type IN ('wp_role')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
 
         $skip_meta_types = [];
@@ -122,13 +129,15 @@ class GroupQuery
                 $pp_only_roles = array_merge($pp_only_roles, ['wp_anon', 'wp_all']);
             }
 
-            $pp_only_roles = implode("','", array_map('sanitize_key', $pp_only_roles));
+            $meta_id_csv = implode("','", array_map('sanitize_key', $pp_only_roles));
 
-            $this->query_where .= " AND ( ( $groups_table.metagroup_type != 'wp_role' ) OR ( $groups_table.metagroup_id NOT IN ( '$pp_only_roles' ) ) )";
+            $this->query_where .= " AND ( ( $groups_table.metagroup_type != 'wp_role' )"             // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                                . " OR ( $groups_table.metagroup_id NOT IN ( '$meta_id_csv' ) ) )";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
 
         if ($skip_meta_types) {
-            $this->query_where .= " AND $groups_table.metagroup_type NOT IN ('" . implode("','", array_map('sanitize_key', $skip_meta_types)) . "')";
+            $meta_type_csv = implode("','", array_map('sanitize_key', $skip_meta_types)) ;
+            $this->query_where .= " AND $groups_table.metagroup_type NOT IN ('$meta_type_csv')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
 
         global $wp_roles;
@@ -146,15 +155,19 @@ class GroupQuery
         }
 
         if ($admin_roles) {
-            $this->query_where .= " AND $groups_table.metagroup_id NOT IN ('" . implode("','", array_keys($admin_roles)) . "')";
+            $meta_id_csv = implode("','", array_keys($admin_roles));
+            $this->query_where .= " AND $groups_table.metagroup_id NOT IN ('$meta_id_csv')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
 
         $skip_meta_ids = [];
+
         if ((!defined('PUBLISHPRESS_REVISIONS_VERSION') && !defined('REVISIONARY_VERSION')) || defined('SCOPER_DEFAULT_MONITOR_GROUPS') || defined('PP_DEFAULT_MONITOR_GROUPS')) {
             $skip_meta_ids = array_merge($skip_meta_ids, ['rv_pending_rev_notice_ed_nr_', 'rv_scheduled_rev_notice_ed_nr_']);
         }
+
         if ($skip_meta_ids) {
-            $this->query_where .= " AND $groups_table.metagroup_id NOT IN ('" . implode("','", array_map('sanitize_key', $skip_meta_ids)) . "')";
+            $meta_id_csv = implode("','", array_map('sanitize_key', $skip_meta_ids));
+            $this->query_where .= " AND $groups_table.metagroup_id NOT IN ('$meta_id_csv')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
 
         // sorting
@@ -172,9 +185,9 @@ class GroupQuery
         }
 
         if ('ID' == $qv['orderby'] || 'id' == $qv['orderby']) {
-        	$this->query_orderby = "ORDER BY $orderby $order";
+        	$this->query_orderby = "ORDER BY $orderby $order";                      // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         } else {
-            $this->query_orderby = "ORDER BY metagroup_type ASC, $orderby $order";
+            $this->query_orderby = "ORDER BY metagroup_type ASC, $orderby $order";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
 
         // limit
@@ -226,19 +239,21 @@ class GroupQuery
                     ? $user->except['manage_' . $exc_agent_type][$exc_agent_type]['']['additional'][$exc_agent_type]['']
                     : [];
 
-                $this->query_where .= " AND $groups_table.ID IN ('" . implode("','", array_map('intval', $group_ids)) . "')";
+                $id_csv = implode("','", array_map('intval', $group_ids));
+
+                $this->query_where .= " AND $groups_table.ID IN ('$id_csv')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             }
         }
 
         $blog_id = absint($qv['blog_id']);
 
         if (!empty($qv['include'])) {
-            $ids = implode("','", wp_parse_id_list($qv['include']));
-            $this->query_where .= " AND $groups_table.ID IN ('$ids')";
+            $id_csv = implode("','", wp_parse_id_list($qv['include']));
+            $this->query_where .= " AND $groups_table.ID IN ('$id_csv')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             
         } elseif (!empty($qv['exclude'])) {
-            $ids = implode("','", wp_parse_id_list($qv['exclude']));
-            $this->query_where .= " AND $groups_table.ID NOT IN ('$ids')";
+            $id_csv = implode("','", wp_parse_id_list($qv['exclude']));
+            $this->query_where .= " AND $groups_table.ID NOT IN ('$id_csv')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
     }
 
@@ -251,12 +266,19 @@ class GroupQuery
     {
         global $wpdb;
 
+        // phpcs Note: Query clauses constructed and sanitized in prepare_query()
+
         if (is_array($this->query_vars['fields']) || 'all' == $this->query_vars['fields']) {
-            $query = "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit";
-            $this->results = $wpdb->get_results($query);
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            $this->results = $wpdb->get_results(
+                "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            );
+
         } else {
-            $query = "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit";
-            $this->results = $wpdb->get_col($query);
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            $this->results = $wpdb->get_col(
+                "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            );
         }
 
         foreach($this->results as $k => $row) {
@@ -266,8 +288,10 @@ class GroupQuery
         }
 
         if ($this->query_vars['count_total']) {
-            $query = "SELECT COUNT(*) $this->query_from $this->query_join $this->query_where";
-            $this->total_groups = $wpdb->get_var($query);
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            $this->total_groups = $wpdb->get_var(
+                "SELECT COUNT(*) $this->query_from $this->query_join $this->query_where"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            );
         }
 
         return $this->results;

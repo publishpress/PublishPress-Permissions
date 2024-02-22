@@ -34,7 +34,7 @@ class RESTInit
     function post_collection_params($params, $post_type_obj)
     {
         if (!presspermit()->isContentAdministrator()) {
-            if (presspermit_is_REQUEST('context', 'edit')) {
+            if (PWP::is_REQUEST('context', 'edit')) {
                 $params['status']['default'] = '';
             }
         }
@@ -99,7 +99,7 @@ class RESTInit
                 
                 $pages = get_pages(
                     ['post_type' => $args['post_type'], 
-                    'exclude' => (!empty($params['exclude'])) ? $params['exclude'] : [],
+                    'exclude' => (!empty($params['exclude'])) ? $params['exclude'] : [],    // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                     'parent_exclude' => (!empty($params['parent_exclude'])) ? $params['parent_exclude'] : [],
                     'required_operation' => 'associate',
                     'suppress_filters' => 0,

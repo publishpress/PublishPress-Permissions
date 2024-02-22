@@ -1,6 +1,8 @@
 <?php
 namespace PublishPress\Permissions\Import\DB;
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
 class SourceConfig
 {
     function __construct() {
@@ -97,8 +99,9 @@ class SourceConfig
                 $item_roles = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->user2role2object_rs WHERE role_type = 'rs' AND scope IN ( 'term', 'object' ) AND date_limited = '0' AND content_date_limited = '0' AND assignment_id NOT IN ( SELECT source_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d )", $importer->getTableCode($wpdb->user2role2object_rs)));
                 $site_roles = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->user2role2object_rs WHERE role_type = 'rs' AND scope = 'blog' AND date_limited = '0' AND content_date_limited = '0' AND assignment_id NOT IN ( SELECT source_id FROM $wpdb->ppi_imported WHERE run_id > 0 AND source_tbl = %d )", $importer->getTableCode($wpdb->user2role2object_rs)));
 
+                // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
                 /*
-                if (!presspermit_empty_REQUEST('show_unimported') && defined('PRESSPERMIT_DEBUG')) {
+                if (!PWP::empty_REQUEST('show_unimported') && defined('PRESSPERMIT_DEBUG')) {
                     echo 'groups:';
                     var_dump($groups);
                     echo '<br />site roles:';

@@ -5,15 +5,17 @@ namespace PublishPress\Permissions\UI\Dashboard;
 class ItemAjax
 {
     public function __construct() {
-        if (!$via_item_source = presspermit_GET_key('via_item_source')) {
+        check_ajax_referer('pp-ajax');
+
+        if (!$via_item_source = PWP::GET_key('via_item_source')) {
             exit;
 		}
         
-        if (!$pp_ajax_item = presspermit_GET_key('pp_ajax_item')) {
+        if (!$pp_ajax_item = PWP::GET_key('pp_ajax_item')) {
             exit;
         }
         
-        $item_id = presspermit_GET_int('item_id');
+        $item_id = PWP::GET_int('item_id');
 
         $html = '';
 
@@ -29,7 +31,9 @@ class ItemAjax
 					exit;	
 				}
 
-                if (!$id_sfx = presspermit_GET_var('id_sfx')) {
+                $id_sfx = (!empty($_GET['id_sfx'])) ? sanitize_text_field($_GET['id_sfx']) : '';
+
+                if (!$id_sfx) {
                     exit;
                 }
 
@@ -42,9 +46,9 @@ class ItemAjax
                 $agent_type = $arr_sfx[2];
                 $for_item_source = (taxonomy_exists($for_item_type)) ? 'term' : 'post';
 
-                $via_item_type = presspermit_GET_key('via_item_type');
+                $via_item_type = PWP::GET_key('via_item_type');
                 
-                $agent_ids = (presspermit_is_GET('agent_ids')) ? explode(',', PWP::sanitizeCSV(presspermit_GET_var('agent_ids'))) : [];
+                $agent_ids = (!empty($_GET['agent_ids'])) ? array_map('intval', explode(',', sanitize_text_field($_GET['agent_ids']))) : [];
 
                 if (('post' == $via_item_source) && $item_id && !current_user_can('edit_post', $item_id)) {
                     exit;
@@ -91,7 +95,7 @@ class ItemAjax
 
                 $echo = false;
                 $reqd_caps = false;
-                $hierarchical = (presspermit_is_GET('via_item_source', 'term'))
+                $hierarchical = (PWP::is_GET('via_item_source', 'term'))
                     ? is_taxonomy_hierarchical($via_item_type)
                     : is_post_type_hierarchical($via_item_type);
 

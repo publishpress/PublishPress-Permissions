@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 5.5
 Tested up to: 6.4
 Requires PHP: 7.2.5
-Stable tag: 3.11.6
+Stable tag: 4.0.17
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,42 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.0.15 - 30 Jan 2024 =
+* Fixed : Auto-assignment of default terms wrongly applied under some conditions
+* Fixed : Filters for Post category, Tags, Terms, Parent or Status could be applied to wrong post under certain conditions
+* Change : User search for Specific Permission assignment - use LIKE matching for user meta field searches
+
+= 4.0.14 - 25 Jan 2024 =
+* Fixed : Could not delete custom Permission Groups
+
+= 4.0.13 - 25 Jan 2024 =
+* Fixed : Front page and posts page was not protected from auto-assignment of terms
+* Change : Auto-assign a term only if no default terms are selectable and the user's editing access is modified by term-specific Permissions
+* Compat : Nested Pages - Apply pp_force_quick_edit capability to Nested Pages' Quick Edit and Contextual Add / Insert buttons
+
+= 4.0.12 - 24 Jan 2024 =
+* Fixed : Terms were not auto-assigned as needed for category-restricted / term-restricted editors
+
+= 4.0.11 - 22 Jan 2024 =
+* Fixed : Category / Term assignment restrictions were not applied
+* Fixed : Users / Groups screen - Roles column showed supplemental roles for custom statuses even if that status is disabled for the post type (or completely) 
+
+* Change : Permissions > Settings > Editing option to disable auto-assignment of terms (when default term is not selectable). Note: Auto-assignment is required for some term-restricted editing configurations.
+* Change : Never auto-assign a term to front page or posts page
+* Pro API : PublishPress Statuses - Improved Visibility Statuses integration
+
+= 4.0.7 - 9 Jan 2024 =
+* Compat : Any plugin that creates users had that sequence interrupted by Permissions Pro
+
+= 4.0.3 - 8 Jan 2024 =
+* Compat : Pro API - Post Type argument was not passed into filter for statuses query modified by PublishPress Statuses plugin 
+
+= 4.0.0 - 13 Dec 2023 =
+* Perf : Eliminated scan of users table on plugin activation (impacting sites with large number of users)
+* Perf : Eliminated recursive query of subpages (impacting sites with complex page hierarchies)
+* Perf : Improved caching of post capability checks
+* Code : Improved phpcs scan results
 
 = 3.11.6 - 13 Dec 2023 =
 * Feature : Option to require Taxonomy edit capability to assign post tags that do not already exist

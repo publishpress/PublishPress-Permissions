@@ -5,13 +5,13 @@
  * Description: Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
  * Author: PublishPress
  * Author URI:  https://publishpress.com/
- * Version:     3.11.6
+ * Version: 4.0.17
  * Text Domain: press-permit-core
  * Domain Path: /languages/
  * Requires at least: 5.5
  * Requires PHP: 7.2.5
  *
- * Copyright (c) 2023 PublishPress
+ * Copyright (c) 2024 PublishPress
  *
  * GNU General Public License, Free Software Foundation <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -28,10 +28,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package     PressPermit
- * @category    Core
+ * @package     PublishPress Permissions
  * @author      PublishPress
- * @copyright   Copyright (c) 2023 PublishPress. All rights reserved.
+ * @copyright   Copyright (c) 2024 PublishPress. All rights reserved.
+ * @license		GNU General Public License version 3
+ * @link		https://publishpress.com/
  *
  **/
 
@@ -54,7 +55,7 @@ if (is_admin() && $invalid_php_version) {
                 echo '<div class="notice notice-error"><p>';
                 printf(
                     'PublishPress Permissions Pro requires PHP version %s or higher.',
-                    $min_php_version
+                    esc_html($min_php_version)
                 );
                 echo '</p></div>';
             }
@@ -71,7 +72,7 @@ if (is_admin() && $invalid_wp_version) {
                 echo '<div class="notice notice-error"><p>';
                 printf(
                     'PublishPress Permissions Pro requires WordPress version %s or higher.',
-                    $min_wp_version
+                    esc_html($min_wp_version)
                 );
                 echo '</p></div>';
             }
@@ -201,7 +202,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
             return;
         }
 
-        define('PRESSPERMIT_VERSION', '3.11.6');
+        define('PRESSPERMIT_VERSION', '4.0.17');
 
         if (!defined('PRESSPERMIT_READ_PUBLIC_CAP')) {
             define('PRESSPERMIT_READ_PUBLIC_CAP', 'read');

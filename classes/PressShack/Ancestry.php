@@ -73,7 +73,7 @@ class Ancestry
     {
         static $ancestors;
 
-        if (!isset($ancestors) || !presspermit_empty_POST())
+        if (!isset($ancestors) || !LibWP::empty_POST())
             $ancestors = false;
 
         if (is_array($ancestors) && !$object_id)
@@ -89,8 +89,10 @@ class Ancestry
 
             $types_csv = implode("','", array_map('sanitize_key', $post_types));
 
-            if ($pages = $wpdb->get_results(
-                "SELECT ID, post_parent FROM $wpdb->posts WHERE post_type IN ('$types_csv') AND post_status != 'auto-draft'"
+            // This query is cached to a static variable to ensure just a single execution per http GET
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            if ($pages = $wpdb->get_results(                                                                                    // phpcs Note: IN clause sanitized above
+                "SELECT ID, post_parent FROM $wpdb->posts WHERE post_type IN ('$types_csv') AND post_status != 'auto-draft'"    // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             )) {
                 $parents = [];
                 foreach ($pages as $page)
@@ -139,7 +141,16 @@ class Ancestry
     {
         global $wpdb;
 
-        $defaults = ['post_type' => '', 'max_depth' => false, 'pages' => []];
+        $defaults = [
+            'post_type' => '', 
+            'max_depth' => false, 
+            'pages' => [], 
+            'post_status' => false, 
+            'exclude_autodrafts' => true,
+            'include_revisions' => false, 
+            'include_attachments' => true
+        ];
+
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -148,9 +159,47 @@ class Ancestry
         $descendants = [];
 
         if (!$pages) {
-            $post_types = ($post_type) ? (array)$post_type : get_post_types(['hierarchical' => true]);
-            $types_csv = implode("','", array_map('sanitize_key', $post_types));
-            $pages = $wpdb->get_results("SELECT ID, post_parent FROM $wpdb->posts WHERE post_type IN ('$types_csv') AND post_status != 'auto-draft'");
+            // Back compat for previous LibWP::getDescendantIds calls, which defaulted to no post_type clause
+            if (false === $post_type) {
+                $type_clause = "1=1";
+
+            } elseif ($post_type) {
+                $types_csv = implode("','", array_map('sanitize_key', (array) $post_type));
+                $type_clause = "post_type IN ('$types_csv')";
+
+            } else {
+                $post_types = get_post_types(['hierarchical' => true]);
+                $types_csv = implode("','", array_map('sanitize_key', $post_types));
+                $type_clause = "post_type IN ('$types_csv')";
+            }
+
+            if (!$include_revisions) {
+                $type_clause .= " AND post_type != 'revision'";
+            }
+
+            if (!$include_attachments) {
+                $type_clause .= " AND post_type != 'attachment'";
+            }
+
+            if ($post_status) {
+                $status_csv = implode("','", array_map('sanitize_key', (array) $post_status));
+                $status_clause = "AND post_status IN ('$status_csv')";
+
+            } elseif ($exclude_autodrafts) {
+                $status_clause = "AND post_status != 'auto-draft'";
+
+            // Back compat for previous LibWP::getDescendantIds calls, which defaulted to not excluding autodrafts
+            } else {
+                $status_clause = '';
+            }
+
+            // phpcs Note: type_clause and status_clause sanitized above due to IN clause, variable request structure
+            
+            // This function is called only for Post update and Permissions management requests
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            $pages = $wpdb->get_results(
+                "SELECT ID, post_parent FROM $wpdb->posts WHERE $type_clause $status_clause" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            );
         }
 
         if ($pages) {
@@ -181,9 +230,21 @@ class Ancestry
         $descendants = [];
 
         if (!$terms) {
-            $taxonomies = ($taxonomy) ? (array)$taxonomy : get_taxonomies(['hierarchical' => true]);
-            $taxonomies_csv = implode("','", array_map('sanitize_key', $taxonomies));
-            $terms = $wpdb->get_results("SELECT term_id, parent FROM $wpdb->term_taxonomy WHERE taxonomy IN ('$taxonomies_csv')");
+            // Back compat for previous LibWP::getDescendantIds calls, defaulting to no taxonomy clause
+            if (false === $taxonomy) {
+                // This function is called only for Term update and Permissions management requests
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+                $terms = $wpdb->get_results("SELECT term_id, parent FROM $wpdb->term_taxonomy");
+            } else {
+                $taxonomies = ($taxonomy) ? (array)$taxonomy : get_taxonomies(['hierarchical' => true]);
+                $taxonomies_csv = implode("','", array_map('sanitize_key', $taxonomies));
+
+                // This function is called only for Term update and Permissions management requests
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+                $terms = $wpdb->get_results(
+                    "SELECT term_id, parent FROM $wpdb->term_taxonomy WHERE taxonomy IN ('$taxonomies_csv')" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                );
+            }
         }
 
         if ($terms) {
@@ -204,7 +265,7 @@ class Ancestry
     {
         static $ancestors;
 
-        if (!isset($ancestors) || !presspermit_empty_POST())
+        if (!isset($ancestors) || !LibWP::empty_POST())
             $ancestors = false;
 
         if (is_array($ancestors) && !$term_id)
@@ -246,8 +307,8 @@ class Ancestry
             'orderby' => 'post_title',
             'depth' => 0,
             'remap_parents' => true,
-            'enforce_actual_depth' => true,
-            'exclude' => '',
+            'enforce_actual_depth' => true,         // phpcs Note: exclude arg used in same manner as WP core get_terms() / get_pages()
+            'exclude' => '',                        // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
             'remap_thru_excluded_parent' => false,
             'col_id' => 'ID',
             'col_parent' => 'post_parent',
@@ -368,5 +429,5 @@ class Ancestry
 
         if ($remapped_items)
             $items = array_merge($items, $remapped_items);
-    } // end function remapTree
+    }
 }

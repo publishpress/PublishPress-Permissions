@@ -48,15 +48,16 @@ class PageFilters
         // === END PP ADDITION ===
         // =================================
 
+        // phpcs Note: The exclude and meta_value args supported here are for WP API compat, passing on any such arguments supplied by the get_terms() or get_pages() function
         $defaults = [
             'child_of' => 0,
             'sort_order' => 'ASC',
             'sort_column' => 'post_title',
             'hierarchical' => 1,
-            'exclude' => [],
+            'exclude' => [],    // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude, WordPress.DB.SlowDBQuery.slow_db_query_meta_value
             'include' => [],
             'meta_key' => '',
-            'meta_value' => '',
+            'meta_value' => '', // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude, WordPress.DB.SlowDBQuery.slow_db_query_meta_value
             'authors' => '',
             'parent' => -1,
             'exclude_tree' => '',
@@ -199,7 +200,7 @@ class PageFilters
         }
 
         // $args can be whatever, only use the args defined in defaults to compute the key
-        $key = md5(serialize(compact(array_keys($defaults))));
+        $key = md5(wp_json_encode(compact(array_keys($defaults))));
         $last_changed = wp_cache_get_last_changed('posts');
 
         $cache_key = "pp_get_pages:$key:$last_changed";
@@ -350,6 +351,7 @@ class PageFilters
 
         foreach (explode(',', $sort_column) as $orderby) {
             $orderby = trim($orderby);
+            
             if (!in_array($orderby, $allowed_keys, true))
                 continue;
 
@@ -371,11 +373,14 @@ class PageFilters
                     else
                         $orderby = "$wpdb->posts.post_" . $orderby;
             }
+
             $orderby_array[] = $orderby;
         }
+
         $sort_column = !empty($orderby_array) ? implode(',', $orderby_array) : "$wpdb->posts.post_title";
 
         $sort_order = strtoupper($r['sort_order']);
+
         if ('' !== $sort_order && !in_array($sort_order, ['ASC', 'DESC'])) {
             $sort_order = 'ASC';
         }
@@ -387,6 +392,7 @@ class PageFilters
         $where_status = '';
 
         $is_front = PWP::isFront();
+
         if ($is_front && !empty($current_user->ID))
             $frontend_list_private = !defined('PP_SUPPRESS_PRIVATE_PAGES'); // currently using Page option for all hierarchical types
         else
@@ -407,8 +413,10 @@ class PageFilters
         // WP core does not include private pages in query.  Include private statuses in anticipation of user-specific filtering
         if (is_array($post_status))
             $where_status = "AND post_status IN ('" . implode("','", array_map('sanitize_key', $post_status)) . "')";
+
         elseif ($post_status && (('publish' != $post_status) || ($is_front && !$frontend_list_private)))
             $where_status = $wpdb->prepare("AND post_status = %s", $post_status);
+
         elseif ($is_front)
             $where_status = "AND post_status IN ('" . implode("','", array_map('sanitize_key', $safeguard_statuses)) . "')";
         else {
@@ -435,6 +443,9 @@ class PageFilters
             // TODO: move to Teaser
             $query = str_replace("post_status = 'publish'", " post_status IN ('" . implode("','", array_map('sanitize_key', $safeguard_statuses)) . "')", $query);
 
+            // phpcs Note: query is constructed and sanitized above
+
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
             $pages = $wpdb->get_results($query);  // execute unfiltered query
 
             // Pass results of unfiltered query through the teaser filter.
@@ -490,9 +501,13 @@ class PageFilters
 
             // Execute the filtered query
 
-            $query = "SELECT {$distinct} $_fields FROM $wpdb->posts {$clauses['join']} WHERE 1=1 {$clauses['where']} {$clauses['orderby']} {$clauses['limits']}";
+            // phpcs Note: query clauses constructed and sanitized above
 
-            $pages = $wpdb->get_results($query);
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            $pages = $wpdb->get_results(
+                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                "SELECT {$distinct} $_fields FROM $wpdb->posts {$clauses['join']} WHERE 1=1 {$clauses['where']} {$clauses['orderby']} {$clauses['limits']}"
+            );
         }
 
         if (empty($pages)) {

@@ -66,7 +66,7 @@ class PostEdit
         $type_obj = get_post_type_object($post_type);
 
         if (!in_array($post_type, $pp->getEnabledPostTypes(['layer' => 'exceptions']), true)) {
-            if (!in_array($post_type, ['revision']) && $pp->getOption('display_hints')) {
+            if (defined('PRESSPERMIT_LEGACY_POST_TYPE_ENABLE_METABOX') && !in_array($post_type, ['revision']) && $pp->getOption('display_hints')) {
                 if ($type_obj->public) {
                     $omit_types = apply_filters('presspermit_unfiltered_post_types', ['wp_block']);
 
@@ -96,9 +96,9 @@ class PostEdit
                 switch ($op) {
                     case 'associate':
                         $caption = sprintf(
-                            esc_html__('Permissions: Select this %s as Parent', 'press-permit-core'),
-                            $type_obj->labels->singular_name
-                        );
+		                    esc_html__('Permissions: Select this %s as Parent', 'press-permit-core'),
+		                    $type_obj->labels->singular_name
+		                );
                 
                         break;
 
@@ -112,10 +112,10 @@ class PostEdit
 
                     default:
                         $caption = sprintf(
-                            esc_html__('Permissions: %s this %s', 'press-permit-core'),
-                            $op_obj->label,
-                            $type_obj->labels->singular_name
-                        );
+		                    esc_html__('Permissions: %s this %s', 'press-permit-core'),
+		                    $op_obj->label,
+		                    $type_obj->labels->singular_name
+		                );
                 }
                 
                 add_meta_box(

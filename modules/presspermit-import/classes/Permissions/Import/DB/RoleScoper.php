@@ -3,6 +3,8 @@ namespace PublishPress\Permissions\Import\DB;
 
 require_once(PRESSPERMIT_IMPORT_CLASSPATH . '/Importer.php');
 
+// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+
 class RoleScoper extends \PublishPress\Permissions\Import\Importer
 {
     private $all_post_ids = [];
@@ -713,9 +715,11 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
 
                     // consider caps in PP site roles (for user or group)
                     if (!$has_caps) {
-                        if ($_user_groups = presspermit()->groups()->getGroupsForUser($data['agent_id'], $group_agent_type, ['cols' => 'ids'])) {
+                        if ($_user_groups = presspermit()->groups()->getGroupsForUser($data['agent_id'], $group_agent_type, ['cols' => 'id'])) {
+                            $id_csv = implode("','", array_map('intval', array_keys($_user_groups)));
+                            
                             $agent_clause .= $wpdb->prepare(
-                                " OR ( agent_type = %s AND agent_id IN ('" . implode("','", array_keys($_user_groups)) . "') )",
+                                " OR ( agent_type = %s AND agent_id IN ('$id_csv') )",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                                 $group_agent_type
                             );
                         }
@@ -736,6 +740,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                 }
 
                 if (!$has_caps) {
+                    // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                     $has_pp_roles = $wpdb->get_col("SELECT role_name FROM $wpdb->ppc_roles WHERE $agent_clause");
                     foreach ($has_pp_roles as $pp_role_name) {
                         if ($_role_caps = $cap_caster->getTypecastCaps($pp_role_name)) {
@@ -910,6 +915,7 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
             $this->import_option("presspermit_default_privacy", $type_default_visibility, 'scoper_default_private', $imported_options);
         }
 
+        // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
         /*
         if (isset($rs_options['scoper_do_teaser'])) {
             $this->import_option("presspermit_post_teaser_enabled", !empty($rs_options['scoper_do_teaser']['post']), 'scoper_do_teaser', $imported_options);
@@ -1292,11 +1298,19 @@ class RoleScoper extends \PublishPress\Permissions\Import\Importer
                     $query = "INSERT INTO $wpdb->ppc_exception_items (assign_for, exception_id, assigner_id, item_id, inherited_from) VALUES";
                     
                     foreach($missing_items as $e) {
-                        $query .= "('$e->assign_for', $publish_exception_id, $e->assigner_id, $e->item_id, $e->inherited_from),";
+                        $query .= $wpdb->prepare(
+                            '%s, %d, %d, %d, %d',
+                            sanitize_key($e->assign_for), 
+                            intval($publish_exception_id), 
+                            intval($e->assigner_id), 
+                            intval($e->item_id), 
+                            intval($e->inherited_from)
+                        );
                     }
 
                     $query = rtrim($query, ',');
 
+                    // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
                     $wpdb->query($query);
                 }
             }

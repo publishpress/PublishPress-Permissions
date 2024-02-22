@@ -12,9 +12,11 @@ class CapabilityFilters
 
         add_filter('presspermit_user_has_cap_params', [$this, 'fltUserHasCapParams'], 10, 3);
 
-        add_action('presspermit_has_post_cap_pre', [$this, 'actSavePostPreAssignTerms'], 10, 4);
+        if (!defined('PRESSPERMIT_DISABLE_TERM_PREASSIGN')) {
+            add_action('presspermit_has_post_cap_pre', [$this, 'actSavePostPreAssignTerms'], 10, 4);
+        }
     }
-    
+        
     function fltUserHasCapParams($params, $orig_reqd_caps, $args)
     {
         $defaults = ['orig_cap' => '', 'item_id' => 0];
@@ -159,7 +161,7 @@ class CapabilityFilters
         } else { // post_id is not a revision
             if (('read' == $required_operation) && (
                 (isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'wp-admin/revision.php')) || (defined('DOING_AJAX') && DOING_AJAX 
-                && presspermit_is_REQUEST('action', 'get-revision-diffs')))
+                && PWP::is_REQUEST('action', 'get-revision-diffs')))
             ) {
                 $return['required_operation'] = 'edit';
             }
@@ -198,7 +200,14 @@ class CapabilityFilters
     {
         // Workaround to deal with WP core's checking of publish cap prior to storing categories:
         // Store terms to DB in advance of any cap-checking query which may use those terms to qualify an operation.
-        if (('post' != $source_name) || presspermit_empty_REQUEST('action') || !in_array(presspermit_REQUEST_int('action'), ['editpost', 'autosave'])) {
+        if (('post' != $source_name) 
+        || !is_admin() 
+        || PWP::empty_REQUEST('action') 
+        || !in_array(PWP::REQUEST_key('action'), ['editpost', 'autosave'])
+
+        // Only pre-assign terms if capability check is for the original post being added or edited. But on new post creation, getPostID() could return zero
+        || (($post_id != PWP::getPostID()) && (PWP::getPostID() || !presspermit()->isInsertedPost($post_id)) && !defined('PRESSPERMIT_LEGACY_PREASSIGN_TERMS'))
+        ) {
             return;
         }
 
@@ -208,7 +217,7 @@ class CapabilityFilters
         // assign propagating exceptions in case they are needed for a cap check at post creation
         if (
             is_post_type_hierarchical($object_type) && array_intersect($pp_reqd_caps, ['edit_post', 'edit_page'])
-            && !presspermit_is_REQUEST('page', 'rvy-revisions')
+            && !PWP::is_REQUEST('page', 'rvy-revisions')
             && (!defined('DOING_AUTOSAVE') || !DOING_AUTOSAVE)
         ) {
             // PressPermit Core classes

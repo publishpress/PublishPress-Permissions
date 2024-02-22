@@ -34,7 +34,8 @@ class ItemExceptionsData
         );
 
         $force_vars = [
-            'cols' => 'e.agent_type, e.agent_id, e.operation, e.mod_type, i.eitem_id, i.assign_for',
+            // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+            'cols' => 'eitem_ids',  // causes query cols to be e.agent_type, e.agent_id, e.operation, e.mod_type, i.eitem_id, i.assign_for, e.for_item_type
             'return_raw_results' => true,
             'inherited_from' => '',
             'assign_for' => '',
@@ -59,8 +60,6 @@ class ItemExceptionsData
             unset($args['for_item_source']);
             $args['post_types'] = [''];
         }
-
-        $args['cols'] .= ', e.for_item_type';
 
         if (!empty($agent_type)) {
             $agent_type = $agent_type;
@@ -95,33 +94,47 @@ class ItemExceptionsData
             $id_csv = implode("','", array_map('intval', $ids));
 
             if ('user' == $agent_type) {
-                $this->agent_info['user'] = $wpdb->get_results(
-                    "SELECT ID, user_login as name, display_name FROM $wpdb->users"
-                    . " WHERE ID IN ('$id_csv')"
-                    . " ORDER BY user_login",
-                    OBJECT_K
+                $user_search = new \WP_User_Query(
+                    [
+                    'fields' => ['ID', 'user_login', 'display_name'],
+                    'include' => array_map('intval', $ids),
+                    'orderby' => 'user_login'
+                    ]
                 );
+    
+                $this->agent_info['user'] = [];
+
+                if ($results = $user_search->get_results()) {
+                    foreach ($results as $row) {
+                        $this->agent_info['user'][$row->ID] = $row;
+                        $this->agent_info['user'][$row->ID]->name = $row->user_login;
+                    }
+                }
+
             } elseif ('pp_group' != $agent_type) {
                 $_args = ['ids' => $ids];
                 $this->agent_info[$agent_type] = $pp->groups()->getGroups($agent_type, $_args);
             }
         }
 
-        // retrieve info for all WP roles regardless of exception storage
-        $_args = ['cols' => "ID, group_name AS name, metagroup_type, metagroup_id"];
+        $_args = [];
 
         if (!empty($agent_id)) {  // ajax usage
             $_args['ids'] = (array)$agent_id;
         } else {
-            $_where = (isset($agents_by_type['pp_group']))
-                ? "ID IN ('" . implode("','", $agents_by_type['pp_group']) . "')"
-                : "  metagroup_type != 'wp_role'";
-
-            if (!$pp_only_roles = $pp->getOption('supplemental_role_defs')) {
-                $pp_only_roles = [];
+            if (isset($agents_by_type['pp_group'])) {
+                $args['ids'] = $agents_by_type['pp_group'];
+            } else {
+                // Include all groups except wp_role metagroups. Those will be included by OR clause, possibly excluding some groups.
+                $args['skip_meta_types'] = 'wp_role';
             }
 
-            $_args['where'] = " AND ( $_where OR ( metagroup_type = 'wp_role' AND metagroup_id NOT IN ('" . implode("','", $pp_only_roles) . "') ) )";
+            // retrieve info for all WP roles regardless of exception storage
+            $args['or_meta_types'] = 'wp_role';
+
+            if ($pp_only_roles = $pp->getOption('supplemental_role_defs')) {
+                $args['or_meta_types_except'] = $pp_only_roles;
+            }
         }
 
         $this->agent_info['pp_group'] = $pp->groups()->getGroups('pp_group', $_args);
@@ -166,13 +179,6 @@ class ItemExceptionsData
             }
         }
 
-        // determine if inclusions are set for any agents
-        if ('term' == $via_item_source) {
-            $where = $wpdb->prepare(" AND e.via_item_type = %s", $via_item_type);
-        } else {
-            $where = $wpdb->prepare(" AND e.for_item_source = %s", $for_item_source);
-        }
-
         $query_users = (isset($this->agent_info['user'])) ? array_keys($this->agent_info['user']) : [];
         if (!empty($args['agent_type']) && ('user' == $args['agent_type']) && !empty($args['agent_id']))
             $query_users = array_merge($query_users, (array)$args['agent_id']);
@@ -187,16 +193,27 @@ class ItemExceptionsData
 
         $agents_clause = ($agents_clause) ? Arr::implode(' OR ', $agents_clause) : '1=1';
 
-        //$_assignment_modes = ($hierarchical) ? [ 'item', 'children' ] : [ 'item' ];  // this function is not currently used to retrieve propagation records 
+        // determine if inclusions are set for any agents
+        if ('term' == $via_item_source) {
+            $where = $wpdb->prepare(" AND e.via_item_type = %s", $via_item_type);
+        } else {
+            $where = $wpdb->prepare(" AND e.for_item_source = %s", $for_item_source);
+        }
+
+        // This function is not currently used to retrieve propagation records 
+        //$_assignment_modes = ($hierarchical) ? [ 'item', 'children' ] : [ 'item' ];   // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
         $_assignment_modes = ['item'];
 
         // Populate only for wp roles, groups and users with stored exceptions.  Will query for additional individual users as needed.
         foreach ($_assignment_modes as $_assign_for) {
+            // phpcs Note: agents_clause, where clause constructed and sanitized above
+
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $results = $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT DISTINCT e.agent_type, e.agent_id, e.operation, e.for_item_type FROM $wpdb->ppc_exceptions AS e"
                     . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
-                    . " WHERE $agents_clause AND i.assign_for = %s AND e.mod_type = 'include' $where",
+                    . " WHERE $agents_clause AND i.assign_for = %s AND e.mod_type = 'include' $where",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                     $_assign_for
                 )

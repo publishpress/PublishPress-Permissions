@@ -139,7 +139,7 @@ class Groups
 
     /**
      * Retrieve groups for a specified user
-     * @param int user_id
+     * @param int user_id or WP_User object
      * @param string agent_type
      * @param array args :
      *   - cols ('all' | 'id')
@@ -149,13 +149,16 @@ class Groups
      *   - force_refresh (default false)
      * @return array (object or storage date string, with group id as array key)
      */
-    public function getGroupsForUser($user_id, $agent_type = 'pp_group', $args = [])
+    public function getGroupsForUser($user, $agent_type = 'pp_group', $args = [])
     {
         if ('pp_group' == $agent_type) {
+            $args['agent_type'] = $agent_type;
+
             require_once(PRESSPERMIT_CLASSPATH . '/DB/Groups.php');
-            return DB\Groups::getGroupsForUser($user_id, $args);
+            return DB\Groups::getGroupsForUser($user, $args);
         }
 
+        $user_id = (is_object($user)) ? $user->ID : (int) $user;
         return apply_filters('presspermit_get_groups_for_user', [], $user_id, $agent_type, $args);
     }
 
@@ -173,6 +176,9 @@ class Groups
     {
         if ('pp_group' == $agent_type) {
             global $wpdb;
+
+            // Direct query of plugin table for this function, which supports various plugin admin operations
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             if ($result = $wpdb->get_row($wpdb->prepare(
                 "SELECT ID, group_name AS name, group_description, metagroup_type, metagroup_id FROM $wpdb->pp_groups WHERE ID = %d",
                 $agent_id
@@ -262,6 +268,8 @@ class Groups
 
         $key = $metagroup_id . ':' . $wpdb->pp_groups;  // PP setting may change to/from netwide groups after buffering
         if (!isset($buffered_groups[$key])) {
+            // Direct query of plugin table to populate the metagroup cache
+            // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             if (!$group = $wpdb->get_row(
                     $wpdb->prepare(
                         "SELECT * FROM $wpdb->pp_groups WHERE metagroup_type = %s AND metagroup_id = %s LIMIT 1",
@@ -328,6 +336,8 @@ class Groups
         global $wpdb;
         $wpdb->groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, $agent_type);
 
+        // Direct query of plugin table on plugin admin operation
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $result = $wpdb->get_row(
             $wpdb->prepare(
                 "SELECT ID, group_name AS name, group_description FROM $wpdb->groups_table WHERE group_name = %s",

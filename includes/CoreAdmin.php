@@ -56,8 +56,9 @@ class CoreAdmin {
     }
 
     function actAdminMenuPromos($pp_options_menu, $handler) {
-        
         // Disable custom status promos until PublishPress Statuses and compatible version of Permissions Pro are released
+        
+        // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
         /*
         add_submenu_page(
             $pp_options_menu, 
@@ -126,16 +127,18 @@ class CoreAdmin {
         </style>
 
 		<script type="text/javascript">
+        /* <![CDATA[ */
             jQuery(document).ready(function($) {
                 $('#toplevel_page_presspermit-groups ul li:last a').attr('href', '<?php echo esc_url($url);?>').attr('target', '_blank').css('font-weight', 'bold').css('color', '#FEB123');
             });
+        /* ]]> */
         </script>
 		<?php
     }
 
     function actProModulesUI($active_module_plugin_slugs, $inactive) {
         $pro_modules = array_diff(
-            presspermit()->getAvailableModules(['suppress_filters' => true]), 
+            presspermit()->getAvailableModules(['force_all' => true]), 
             $active_module_plugin_slugs, 
             array_keys($inactive)
         );

@@ -5,7 +5,7 @@ class PostSaveHierarchical
 {
     public static function fltPageParent($parent_id, $post_type = '')
     {
-        if (function_exists('bbp_get_version') && presspermit_is_REQUEST('action', ['bbp-new-topic', 'bbp-new-reply'])) {
+        if (function_exists('bbp_get_version') && PWP::is_REQUEST('action', ['bbp-new-topic', 'bbp-new-reply'])) {
             return $parent_id;
         }
 
@@ -20,11 +20,13 @@ class PostSaveHierarchical
         $selected_parent_id = $parent_id;
 
         // this filter is not intended to regulate attachment parent
-        if (isset($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'async-upload.php') && presspermit_is_REQUEST('action', 'upload-attachment')) {
+        if (isset($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'async-upload.php') && PWP::is_REQUEST('action', 'upload-attachment')) {
             return $parent_id;
         }
 
-        $post_id = PWP::getPostID();
+        if (!$post_id = presspermit()->getCurrentSanitizePostID()) {
+            $post_id = PWP::getPostID();
+        }
 
         if (!$post_type && presspermit()->doingREST() && \PublishPress\Permissions\REST::getPostType()) {
             if ($post_id) {
@@ -125,6 +127,9 @@ class PostSaveHierarchical
         global $wpdb;
 
         if (empty($pages)) {
+            // Single direct query for each get_pages() call or page parent update
+
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $pages = $wpdb->get_results(
                 "SELECT ID, post_parent FROM $wpdb->posts WHERE post_parent > 0 AND post_type NOT IN ( 'revision', 'attachment' )"
             );
@@ -164,8 +169,11 @@ class PostSaveHierarchical
         $statuses_csv = implode("','", array_map('sanitize_key', $valid_statuses));
 
         global $wpdb;
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $valid_parents = $wpdb->get_col(
             $wpdb->prepare(
+                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 "SELECT ID FROM $wpdb->posts WHERE post_type = %s AND post_status IN ('$statuses_csv') AND ID > 0 ORDER BY post_parent, ID ASC",
                 $post_type
             )
@@ -233,8 +241,8 @@ class PostSaveHierarchical
         global $post;
 
         // user can't associate / un-associate a page with Main page unless they have edit_pages site-wide
-        if ($post_id = presspermit_POST_int('post_ID')) {
-            $selected_parent_id = presspermit_POST_int('parent_id');
+        if ($post_id = PWP::POST_int('post_ID')) {
+            $selected_parent_id = PWP::POST_int('parent_id');
         } elseif (!empty($post)) {
             $post_id = $post->ID;
             $selected_parent_id = $post->post_parent;
@@ -265,7 +273,7 @@ class PostSaveHierarchical
             return $status;
         }
 
-        if (presspermit_empty_POST('parent_id')) {
+        if (PWP::empty_POST('parent_id')) {
             if (!$already_published) {  // This should only ever happen if the POST data is manually fudged
                 if ($post_status_object = get_post_status_object($status)) {
                     if ($post_status_object->public || $post_status_object->private) {
