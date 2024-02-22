@@ -149,7 +149,6 @@ class PostTermsSave
             }
         } else {
             $tx_obj = get_taxonomy($taxonomy);
-
             if ($tx_obj && !empty($tx_obj->object_terms_post_var)) {
                 $post_terms = (!empty($_POST[$tx_obj->object_terms_post_var]))                     // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
                 ? array_map('intval', (array) $_POST[$tx_obj->object_terms_post_var])              // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
@@ -425,10 +424,11 @@ class PostTermsSave
                         )
 					|| defined('PP_AUTO_DEFAULT_' . strtoupper($taxonomy))
 					) {
-                        if ($object_id  // Never auto-assign terms to the front page or posts
-                        && ((int) $object_id !== (int) get_option('page_on_front')) 
-                        && ((int) $object_id !== (int) get_option('page_for_posts'))
-                        ) {
+                        if (!$object_id || // Never auto-assign terms to the front page or posts
+                        (
+                        	((int) $object_id !== (int) get_option('page_on_front')) 
+                        	&& ((int) $object_id !== (int) get_option('page_for_posts'))
+                        )) {
                             $default_terms = apply_filters('presspermit_auto_assign_terms', (array) $user_terms[0], $taxonomy, $object_id, $args, $user_terms);
                         }
                     } else {
