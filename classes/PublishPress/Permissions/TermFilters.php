@@ -263,7 +263,7 @@ class TermFilters
             $args['required_operation'] = 'assign';
             
         } elseif (empty($args['required_operation']) && !defined('PP_ADMIN_TERMS_READONLY_LISTABLE') && (!defined('PP_ADMIN_READONLY_LISTABLE') || presspermit()->getOption('admin_hide_uneditable_posts'))) {
-            if ('edit-tags.php' == $pagenow) {
+            if (in_array($pagenow, ['edit-tags.php', 'nav-menus.php'])) {
                 $args['required_operation'] = 'manage';
             } else {
 	            $args['required_operation'] = apply_filters(

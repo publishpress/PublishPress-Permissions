@@ -85,7 +85,7 @@ class AdminFilters
             update_post_meta($post_id, '_pp_is_autodraft', true);
 
         } elseif (!$update) {
-            if (defined('PRESSPERMIT_LEGACY_SAVE_POST_TERM_ASSIGNMENT')) {
+            if ((PWP::isBlockEditorActive() && !defined('PRESSPERMIT_LIMIT_SAVE_POST_TERM_ASSIGNMENT')) || defined('PRESSPERMIT_LEGACY_SAVE_POST_TERM_ASSIGNMENT')) {
                 // For configurations that limit access by term selection, need to default to an allowed term
                 if (!presspermit()->isAdministrator()) {
                     require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
@@ -122,7 +122,7 @@ class AdminFilters
 
     function fltGetEnabledTaxonomies($taxonomies, $args = [])
     {
-        if (empty($args['object_type']) || ('nav_menu_item' == $args['object_type'])) {
+        if (is_admin() && (empty($args['object_type']) || ('nav_menu_item' == $args['object_type']))) {
             $taxonomies['nav_menu'] = 'nav_menu';
         }
 
@@ -278,6 +278,10 @@ class AdminFilters
     {
         if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
         || !presspermit()->filteringEnabled() || ('revision' == PWP::findPostType()) || did_action('pp_disable_page_parent_filter') || ($this->inserting_post)
+        || (
+            defined('ELEMENTOR_VERSION') && !PWP::empty_REQUEST('actions') 
+            && strpos($_REQUEST['actions'], '"action\":\"save_builder\",\"data\":{\"status\":\"autosave\"')  // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
+        )
         ) {
             return $parent_id;
         }

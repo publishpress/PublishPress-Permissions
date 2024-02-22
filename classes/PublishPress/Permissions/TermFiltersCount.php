@@ -208,7 +208,7 @@ class TermFiltersCount
         }
 
         // Replace DB-stored term counts with actual number of posts this user can read.
-        // In addition, without the pp_tallyTermCounts() call, WP will hide terms that have no public posts (even if this user can read some of the pvt posts).
+        // In addition, without the TermQuery::tallyTermCounts() call, WP will hide terms that have no public posts (even if this user can read some of the pvt posts).
         // Post counts will be incremented to include child terms only if $pad_counts is true
         if (!defined('XMLRPC_REQUEST') && (1 == count($taxonomies))) {
             if ((!is_admin() || !in_array($pagenow, ['post.php', 'post-new.php']))
@@ -230,7 +230,9 @@ class TermFiltersCount
                             }
                         }
                     }
-                } else {
+
+                // Perf: If empty terms are not being hidden and show_count is set false, there is no need to filter the term counts.
+                } elseif (!isset($args['actual_args']['show_count']) || !empty($args['actual_args']['show_count'])) {
                     TermQuery::tallyTermCounts($terms, reset($taxonomies), compact('pad_counts', 'skip_teaser', 'post_type'));
                 }
             }

@@ -149,7 +149,6 @@ class PostTermsSave
             }
         } else {
             $tx_obj = get_taxonomy($taxonomy);
-
             if ($tx_obj && !empty($tx_obj->object_terms_post_var)) {
                 $post_terms = (!empty($_POST[$tx_obj->object_terms_post_var]))                     // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
                 ? array_map('intval', (array) $_POST[$tx_obj->object_terms_post_var])              // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
@@ -291,18 +290,24 @@ class PostTermsSave
         $pp = presspermit();
 
         if (!$pp->filteringEnabled() || !$pp->isTaxonomyEnabled($taxonomy)) {
-            return $selected_terms;
+            if (empty($args['force_filtering'])) {
+                return $selected_terms;
+            }
         }
 
-        $editing_post_id = PWP::getPostID();
-        $sanitizing_post_id = presspermit()->getCurrentSanitizePostID();
+        if (!empty($args['object_id'])) {
+            $object_id = $args['object_id'];
+        } else {
+            $editing_post_id = PWP::getPostID();
+            $sanitizing_post_id = presspermit()->getCurrentSanitizePostID();
 
-        // Don't auto-assign terms if this post is not the one being edited. But new posts will be initially sanitized prior to ID assignment
-        if ($sanitizing_post_id && ($sanitizing_post_id != $editing_post_id)) {
-            return $selected_terms;
+            // Don't auto-assign terms if this post is not the one being edited. But new posts will be initially sanitized prior to ID assignment
+            if ($sanitizing_post_id && ($sanitizing_post_id != $editing_post_id)) {
+                return $selected_terms;
+            }
+
+            $object_id = ($sanitizing_post_id) ? $sanitizing_post_id : $editing_post_id;
         }
-
-        $object_id = ($sanitizing_post_id) ? $sanitizing_post_id : $editing_post_id;
 
         // strip out fake term_id -1 (if applied)
         if ($selected_terms && is_array($selected_terms)) {
@@ -320,14 +325,14 @@ class PostTermsSave
             $stored_terms = $args['stored_terms'];
         }
 
+        $post_type = (!empty($args['post_type'])) ? $args['post_type'] : PWP::findPostType();
+
         // don't filter selected terms for content administrator, but still need to apply default term as needed when none were selected
-        if ($pp->isUserUnfiltered()) {
+        if ($pp->isUserUnfiltered() && empty($args['force_filtering'])) {
             $user_terms = $selected_terms;
         } else {
             if (!is_array($selected_terms))
                 $selected_terms = [];
-
-            $post_type = PWP::findPostType();
 
             $user_terms = get_terms(
                 $taxonomy, 
@@ -381,17 +386,18 @@ class PostTermsSave
         if (empty($selected_terms) && ((is_taxonomy_hierarchical($taxonomy) 
         && ('post_tag' != $taxonomy)) || self::userHasTermLimitations($taxonomy))
         ) {
-            if (!$tx_obj = get_taxonomy($taxonomy))
-                return $selected_terms;
+            if ($tx_obj = get_taxonomy($taxonomy)) {
+                // For now, always check the DB for default terms.  todo: only if the default_term_option property is set
+                if (isset($tx_obj->default_term_option))
+                    $default_term_option = $tx_obj->default_term_option;
+                else
+                    $default_term_option = "default_{$taxonomy}";
 
-            // For now, always check the DB for default terms.  todo: only if the default_term_option property is set
-            if (isset($tx_obj->default_term_option))
-            	$default_term_option = $tx_obj->default_term_option;
-            else
-            	$default_term_option = "default_{$taxonomy}";
+                $default_terms = (array) get_option($default_term_option);
+            } else {
+                $default_terms = [];
+            }
 
-            $default_terms = (array) get_option($default_term_option);
-			
             // But if the default term is not defined or is not in user's subset of usable terms, substitute first available
             if ($user_terms) {
                 if (true === $user_terms)
@@ -406,7 +412,7 @@ class PostTermsSave
 					// This excecutes only if no default terms are user-assignable
 					
                     sort($user_terms); // default to lowest ID term
-                    
+
                     // If user has any "include" or "additional" term exceptions, substitute 1st available term, contingent on certain conditions or constant definitions. 
                     // (Previously assigned regardless of user's term exceptions)
                     // (Even earlier, always assigned regardless of $select_default_term flag or $user_terms count)
@@ -414,14 +420,15 @@ class PostTermsSave
                         presspermit()->getOption('auto_assign_available_term')
                         && (!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') || !empty($select_default_term) || (count($user_terms) == 1))
 						&& !defined('PP_NO_AUTO_DEFAULT_' . strtoupper($taxonomy))
-                        && (defined('PP_AUTO_DEFAULT_TERM_EXCEPTIONS_NOT_REQUIRED') || self::userHasTermLimitations($taxonomy, ['include', 'additional']))
+                        && (defined('PP_AUTO_DEFAULT_TERM_EXCEPTIONS_NOT_REQUIRED') || self::userHasTermLimitations($taxonomy, ['include', 'additional'], $post_type))
                         )
 					|| defined('PP_AUTO_DEFAULT_' . strtoupper($taxonomy))
 					) {
-                        if ($object_id  // Never auto-assign terms to the front page or posts
-                        && ((int) $object_id !== (int) get_option('page_on_front')) 
-                        && ((int) $object_id !== (int) get_option('page_for_posts'))
-                        ) {
+                        if (!$object_id || // Never auto-assign terms to the front page or posts
+                        (
+                        	((int) $object_id !== (int) get_option('page_on_front')) 
+                        	&& ((int) $object_id !== (int) get_option('page_for_posts'))
+                        )) {
                             $default_terms = apply_filters('presspermit_auto_assign_terms', (array) $user_terms[0], $taxonomy, $object_id, $args, $user_terms);
                         }
                     } else {

@@ -508,6 +508,8 @@ class Permissions
 
     public function supplementUserAllcaps(&$user)
     {
+        global $pagenow;
+
         if ($this->isContentAdministrator()) {
             // give content administrators (users with pp_administer_content capability in WP role) all PP-defined caps and type-specific post caps
             $user->allcaps = apply_filters('presspermit_administrator_caps', array_merge($user->allcaps, $this->cap_defs->all_type_caps));
@@ -577,6 +579,31 @@ class Permissions
                                 $list_others_cap = str_replace('edit_', 'list_', $type_obj->cap->edit_others_posts);
                                 $user->allcaps[$list_others_cap] = true;
                             }
+                        }
+                    }
+                }
+
+                if (!empty($user->ID) && !empty($pagenow) && ('async-upload.php' == $pagenow)) {
+                    if ($type_obj = get_post_type_object('attachment')) {
+                        if (!empty($type_obj->cap->create_posts) && !empty($user->allcaps[$type_obj->cap->create_posts])) {
+                            $add_caps = ['edit_posts' => true];
+							
+							if (defined('PRESSPERMIT_MEDIA_UPLOAD_GRANT_PAGE_EDIT_CAPS')) {
+								$const_val = constant('PRESSPERMIT_MEDIA_UPLOAD_GRANT_PAGE_EDIT_CAPS');
+								$post_type = (post_type_exists($const_val)) ? $const_val : 'page';
+								
+								if ($_type_obj = get_post_type_object($post_type)) {
+									$add_caps = array_merge(
+										$add_caps,
+										array_fill_keys(
+											[$_type_obj->cap->edit_posts, $_type_obj->cap->edit_others_posts, $_type_obj->cap->edit_published_posts],
+											true
+										)
+									);
+								}
+							}
+							
+                            $user->allcaps = array_merge($user->allcaps, $add_caps);
                         }
                     }
                 }
@@ -964,7 +991,7 @@ class Permissions
     }
 
     public function getUnfilteredTaxonomies() {
-    	return apply_filters('presspermit_unfiltered_taxonomies', ['post_status', 'topic-tag', 'author']);
+    	return apply_filters('presspermit_unfiltered_taxonomies', ['post_status', 'post_visibility_pp', 'post_status_core_wp_pp', 'topic-tag', 'author']);
     }
 
     public function isTaxonomyEnabled($taxonomy)

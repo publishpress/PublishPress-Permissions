@@ -270,23 +270,39 @@ class PermissionsHooks
                 $ver_history = [];
 
                 if (defined('PRESSPERMIT_PRO_VERSION') && !empty($prev_pro_version)) {
-                    $ver_history [] = (object) ['version' => $prev_pro_version, 'date' => '', 'isPro' => true];
+                    $new_entry = (object) ['version' => $prev_pro_version, 'date' => '', 'isPro' => true];
                 } 
                 
                 // In case last Pro version is an irrelevant old entry, also include last Core version if it's higher
                 if ($prev_core_version && (!defined('PRESSPERMIT_PRO_VERSION') || version_compare($prev_core_version, $prev_pro_version, '>'))) {
-                    $ver_history [] = (object) ['version' => $prev_core_version, 'date' => '', 'isPro' => false];
+                    $new_entry = (object) ['version' => $prev_core_version, 'date' => '', 'isPro' => false];
+                }
+
+                $last_entry = reset($ver_history);
+
+                if ($last_entry != $new_entry) {
+                    $ver_history []= $new_entry;
+                    $updated_log = true;
                 }
             }
 
             // In the version history, log Core version changes only if they are installed directly by Free package
             if (defined('PRESSPERMIT_PRO_VERSION')) {
-                $ver_history [] = (object) ['version' => PRESSPERMIT_PRO_VERSION, 'date' => gmdate('m/d/Y'), 'isPro' => true];
+                $new_entry = (object) ['version' => PRESSPERMIT_PRO_VERSION, 'date' => gmdate('m/d/Y'), 'isPro' => true];
             } else {
-                $ver_history [] = (object) ['version' => PRESSPERMIT_VERSION, 'date' => gmdate('m/d/Y'), 'isPro' => false];
+                $new_entry = (object) ['version' => PRESSPERMIT_VERSION, 'date' => gmdate('m/d/Y'), 'isPro' => false];
             }
 
-            update_option('ppperm_version_history', wp_json_encode($ver_history));
+            $last_entry = reset($ver_history);
+
+            if ($last_entry != $new_entry) {
+                $ver_history []= $new_entry;
+                $updated_log = true;
+            }
+
+            if (!empty($updated_log)) {
+                update_option('ppperm_version_history', wp_json_encode($ver_history));
+            }
         }
         // --- end version check ---
 

@@ -40,41 +40,23 @@ class HintsPostEdit
             <?php
         }
 
-        if (!$pp->moduleActive('status-control') || !$pp->moduleActive('collaboration')) {
-            $need_exts = [];
-            if (!$pp->moduleActive('collaboration'))
-                $need_exts[] = esc_html__('Collaborative Publishing', 'presspermit-pro');
-
-            if (!$pp->moduleActive('status-control'))
-                $need_exts[] = esc_html__('Status Control', 'presspermit-pro');
-
-            $need_exts = implode(' and ', $need_exts);
+        if (!defined('PUBLISHPRESS_STATUSES_VERSION')) {
             ?>
             <script type="text/javascript">
                 /* <![CDATA[ */
                 jQuery(document).ready(function ($) {
-                    $('a.edit-post-status').after('<a href="#" class="pp-custom-moderation-promo" style="margin-left:5px"><?php esc_html_e('Customize', 'press-permit-core'); ?></a>'
+                    $('a.edit-post-status').after('<a href="#" class="pp-statuses-promo" style="margin-left:5px"><?php esc_html_e('Customize', 'press-permit-core'); ?></a>'
                     + '<span class="pp-ext-promo" style="display:none;"><br />'
                     + '<?php
-                    if (presspermit()->isPro()) {
-                        printf(
-                            esc_html__('To define publication workflow statuses, %1$sactivate%2$s %3$s.', 'press-permit-core'),
-                            '<a href="admin.php?page=presspermit-settings&pp_tab=install">',
-                            '</a>',
-                            esc_html($need_exts)
-                        );
-                    } else {
-                        printf(
-                            esc_html__('To define publication workflow statuses, %1$supgrade to Permissions Pro%2$s. Then enable the following modules: %3$s.', 'press-permit-core'),
-                            '<a href="https://publishpress.com/pricing/">',
-                            '</a>',
-                            esc_html($need_exts)
-                        );
-                    }
+                    printf(
+                        esc_html__('To customize publication workflow, %1$sinstall PublishPress Statuses%2$s.', 'press-permit-core'),
+                        '<a href="https://wordpress.org/plugins/publishpress-statuses/" target="_blank">',
+                        '</a>'
+                    );
                     ?>'
                     + '</span>');
 
-                    $('a.pp-custom-moderation-promo').on('click', function()
+                    $('a.pp-statuses-promo').on('click', function()
                     {
                         $(this).hide().next('span').show();
                         return false;
