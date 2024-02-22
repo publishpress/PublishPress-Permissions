@@ -964,7 +964,7 @@ class Permissions
     }
 
     public function getUnfilteredTaxonomies() {
-    	return apply_filters('presspermit_unfiltered_taxonomies', ['post_status', 'topic-tag', 'author']);
+    	return apply_filters('presspermit_unfiltered_taxonomies', ['post_status', 'post_visibility_pp', 'post_status_core_wp_pp', 'topic-tag', 'author']);
     }
 
     public function isTaxonomyEnabled($taxonomy)
