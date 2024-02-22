@@ -276,9 +276,7 @@ class CollabHooks
 
     function fltRestAddEditingFilters($rest_response, $rest_server, $request) 
     {
-        if (Collab::isEditREST()) {
-            $this->actNonAdministratorEditingFilters();
-        }
+        $this->actNonAdministratorEditingFilters();
 
         return $rest_response;
     }
