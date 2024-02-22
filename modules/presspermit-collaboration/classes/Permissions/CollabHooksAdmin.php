@@ -35,6 +35,8 @@ class CollabHooksAdmin
 
         add_action('_presspermit_admin_ui', [$this, 'actLoadUIFilters']);  // fires after user load if is_admin(), not XML-RPC, and not Ajax
 
+        add_action('add_attachment', [$this, 'actAddMediaApplyDefaultTerm']);
+
         add_action('presspermit_init', [$this, 'actAdminWorkaroundFilters']);
 
         add_action('presspermit_update_item_exceptions', [$this, 'actAdminWorkaroundFilters'], 10, 3);
@@ -51,6 +53,18 @@ class CollabHooksAdmin
                 );
             } else {
                 add_action('admin_print_scripts', [$this, 'NestedPagesDisableQuickEdit']);
+            }
+        }
+    }
+
+    function actAddMediaApplyDefaultTerm($post_id) {
+        require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
+        
+        foreach(get_object_taxonomies('attachment') as $taxonomy) {
+            if (!$terms = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids'])) {
+                if ($terms = Collab\PostTermsSave::fltPreObjectTerms($terms, $taxonomy, ['object_id' => $post_id, 'post_type' => 'attachment', 'force_filtering' => true])) {
+                    wp_set_post_terms($post_id, $terms, $taxonomy);
+                }
             }
         }
     }
