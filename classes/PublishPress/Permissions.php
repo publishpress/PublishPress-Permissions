@@ -580,6 +580,31 @@ class Permissions
                         }
                     }
                 }
+
+                if (!empty($user->ID) && !empty($pagenow) && ('async-upload.php' == $pagenow)) {
+                    if ($type_obj = get_post_type_object('attachment')) {
+                        if (!empty($type_obj->cap->create_posts) && !empty($user->allcaps[$type_obj->cap->create_posts])) {
+                            $add_caps = ['edit_posts' => true];
+							
+							if (defined('PRESSPERMIT_MEDIA_UPLOAD_GRANT_PAGE_EDIT_CAPS')) {
+								$const_val = constant('PRESSPERMIT_MEDIA_UPLOAD_GRANT_PAGE_EDIT_CAPS');
+								$post_type = (post_type_exists($const_val)) ? $const_val : 'page';
+								
+								if ($_type_obj = get_post_type_object($post_type)) {
+									$add_caps = array_merge(
+										$add_caps,
+										array_fill_keys(
+											[$_type_obj->cap->edit_posts, $_type_obj->cap->edit_others_posts, $_type_obj->cap->edit_published_posts],
+											true
+										)
+									);
+								}
+							}
+							
+                            $user->allcaps = array_merge($user->allcaps, $add_caps);
+                        }
+                    }
+                }
             }
 
             // merge in caps from typecast WP role assignments (and also clear false-valued allcaps entries)
