@@ -508,6 +508,8 @@ class Permissions
 
     public function supplementUserAllcaps(&$user)
     {
+        global $pagenow;
+
         if ($this->isContentAdministrator()) {
             // give content administrators (users with pp_administer_content capability in WP role) all PP-defined caps and type-specific post caps
             $user->allcaps = apply_filters('presspermit_administrator_caps', array_merge($user->allcaps, $this->cap_defs->all_type_caps));
