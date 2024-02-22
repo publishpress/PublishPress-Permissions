@@ -40,7 +40,7 @@ class LibWP
     {
         global $current_user, $wp_version;
 
-        $defaults = ['suppress_filter' => false, 'force_refresh' => false];
+        $defaults = ['force' => false, 'suppress_filter' => false, 'force_refresh' => false];
         $args = array_merge($defaults, $args);
         $suppress_filter = $args['suppress_filter'];
 
@@ -48,6 +48,25 @@ class LibWP
         if (defined('REVISIONARY_VERSION') && version_compare(REVISIONARY_VERSION, '1.3-beta', '<')) {
             return false;
         }
+
+        if (isset($args['force'])) {
+            if ('classic' === $args['force']) {
+                return false;
+            }
+
+            if ('gutenberg' === $args['force']) {
+                return true;
+            }
+        }
+
+        // If the editor is being accessed in this request, we have an easy and reliable test
+        if ((did_action('load-post.php') || did_action('load-post-new.php')) && did_action('admin_enqueue_scripts')) {
+            if (did_action('enqueue_block_editor_assets')) {
+                return true;
+            }
+        }
+
+        // For other requests (or if the decision needs to be made prior to admin_enqueue_scripts action), proceed with other logic...
 
         static $buffer;
         if (!isset($buffer)) {
