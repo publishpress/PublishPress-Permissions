@@ -58,28 +58,6 @@ class CollabHooks
         add_action('pre_get_posts', [$this, 'actPreventTrashSuffixing']);
 
         add_action('wp_loaded', [$this, 'supplementUserAllcaps'], 18);
-
-        add_action('presspermit_pre_init', [$this, 'actOnInit']);
-        add_action('presspermit_options', [$this, 'actAdjustOptions']);
-        add_filter('presspermit_role_caps', [$this, 'fltRoleCaps'], 10, 2);
-        add_action('presspermit_roles_defined', [$this, 'actSetRoleUsage']);
-
-        add_action('presspermit_maintenance_triggers', [$this, 'actLoadFilters']); // fires early if is_admin() - at bottom of AdminUI constructor
-        add_action('presspermit_post_filters', [$this, 'actLoadPostFilters']);
-        add_action('presspermit_cap_filters', [$this, 'actLoadCapFilters']);
-        add_action('presspermit_page_filters', [$this, 'actLoadWorkaroundFilters']);
-
-        // if PPS is active, hook into its visibility forcing mechanism and UI (applied by PPS for specific pages)
-        add_filter('presspermit_getItemCondition', [$this, 'fltForceDefaultVisibility'], 10, 4);
-        add_filter('presspermit_read_own_attachments', [$this, 'fltReadOwnAttachments'], 10, 2);
-        add_filter('presspermit_ajax_edit_actions', [$this, 'fltAjaxEditActions']);
-
-        add_action('attachment_updated', [$this, 'actAttachmentEnsureParentStorage'], 10, 3);
-
-        add_action('pre_get_posts', [$this, 'actPreventTrashSuffixing']);
-
-        add_action('wp_loaded', [$this, 'supplementUserAllcaps'], 18);
-
         add_filter('presspermit_meta_caps', [$this, 'fltMetaCaps']);
         add_filter('presspermit_exclude_arbitrary_caps', [$this, 'fltExcludeArbitraryCaps']);
 
