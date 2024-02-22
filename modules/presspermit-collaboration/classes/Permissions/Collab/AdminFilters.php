@@ -122,7 +122,7 @@ class AdminFilters
 
     function fltGetEnabledTaxonomies($taxonomies, $args = [])
     {
-        if (empty($args['object_type']) || ('nav_menu_item' == $args['object_type'])) {
+        if (is_admin() && (empty($args['object_type']) || ('nav_menu_item' == $args['object_type']))) {
             $taxonomies['nav_menu'] = 'nav_menu';
         }
 
