@@ -7,7 +7,7 @@ namespace PublishPress\Permissions;
  *
  * @package PressPermit
  * @author Kevin Behrens <kevin@agapetry.net>
- * @copyright Copyright (c) 2019, PublishPress
+ * @copyright Copyright (c) 2024, PublishPress
  *
  */
 
@@ -133,7 +133,7 @@ class CapabilityCaster
             }
 
             if ($misc_caps) {
-                $this->pattern_role_arbitrary_caps[$role_name] = array_combine(array_keys($misc_caps), array_keys($misc_caps));
+               $this->pattern_role_arbitrary_caps[$role_name] = array_combine(array_keys($misc_caps), array_keys($misc_caps));
             }
         }
 

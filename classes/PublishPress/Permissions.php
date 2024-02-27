@@ -13,7 +13,7 @@ use PublishPress\Permissions\Factory;
  *
  * @package PressPermit
  * @author Kevin Behrens <kevin@agapetry.net>
- * @copyright Copyright (c) 2019, PublishPress
+ * @copyright Copyright (c) 2024, PublishPress
  *
  */
 class Permissions
@@ -75,7 +75,7 @@ class Permissions
     private function __construct()
     {
         add_filter('presspermit_unfiltered_content', [$this, 'fltPluginCompatUnfilteredContent'], 5, 1);
-        
+
         // Log the post ID field for the sanitize_post() call by wp_insert_post(), 
         // to provide context for subsequent pre_post_status, pre_post_parent, pre_post_category, pre_post_tags_input filter applications
         add_filter('pre_post_ID', 
