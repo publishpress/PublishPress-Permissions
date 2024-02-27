@@ -52,26 +52,25 @@ class PostFilters
         add_filter('presspermit_force_post_metacap_check', [$this, 'fltForcePostMetacapCheck'], 10, 2);
 
         add_filter('pre_do_shortcode_tag', function($do_tag, $tag, $attr, $m) {
+			$this->doing_unfiltered_shortcode = in_array(
+				$tag, 
+				apply_filters('presspermit_unfiltered_shortcodes', ['fl_builder_insert_layout']),
+				true
+			);
 
-          $this->doing_unfiltered_shortcode = in_array(
-            $tag, 
-            apply_filters('presspermit_unfiltered_shortcodes', ['fl_builder_insert_layout']),
-            true
-          );
-
-              if ($this->doing_unfiltered_shortcode) {
-                  $this->doing_unfiltered_shortcode = apply_filters('presspermit_is_unfiltered_shortcode', $this->doing_unfiltered_shortcode, $tag, $attr, $m);
-              }
-
-        return $do_tag;
-      }, 10, 4);
+            if ($this->doing_unfiltered_shortcode) {
+                $this->doing_unfiltered_shortcode = apply_filters('presspermit_is_unfiltered_shortcode', $this->doing_unfiltered_shortcode, $tag, $attr, $m);
+            }
 			
-      add_filter('do_shortcode_tag', function($output, $tag, $attr, $m) {
-        $this->doing_unfiltered_shortcode = false;
+			return $do_tag;
+		}, 10, 4);
+			
+		add_filter('do_shortcode_tag', function($output, $tag, $attr, $m) {
+			$this->doing_unfiltered_shortcode = false;
+			
+			return $output;
+		}, 10, 4);
 
-        return $output;
-      }, 10, 4);
-      
         do_action('presspermit_post_filters');
     }
 
@@ -163,8 +162,8 @@ class PostFilters
         global $pagenow, $current_user;
 
         if ($this->doing_unfiltered_shortcode) {
-          return $clauses;
-        }
+			return $clauses;
+		}
 
         // Gallery block in Gutenberg editor: error loading Image Size dropdown options
         if (defined('REST_REQUEST') && (0 == strpos(PWP::SERVER_url('REQUEST_URI'), "/blocks")) && !PWP::empty_REQUEST('context') && ('edit' == PWP::REQUEST_key('context'))) {
@@ -174,8 +173,8 @@ class PostFilters
         $pp = presspermit();
 
         if (defined('PUBLISHPRESS_VERSION') && did_action('publishpress_notifications_trigger_workflows')) {
-          return $clauses;
-        }
+			return $clauses;
+		}
 
         $args['query_obj'] = $_wp_query;
 
@@ -700,7 +699,7 @@ class PostFilters
 
 		// legacy support
 		if (!$caps) {
-        	$caps = class_exists('\PublishPress\Permissions\Statuses\CapabilityFilters') ? \PublishPress\Permissions\Statuses\CapabilityFilters::instance() : false;
+			$caps = class_exists('\PublishPress\Permissions\Statuses\CapabilityFilters') ? \PublishPress\Permissions\Statuses\CapabilityFilters::instance() : false;
 		}
 
         $flag_meta_caps = !empty($caps);
