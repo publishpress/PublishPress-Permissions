@@ -10,7 +10,7 @@ namespace PublishPress\Permissions;
  *
  * @package PressPermit
  * @author Kevin Behrens <kevin@agapetry.net>
- * @copyright Copyright (c) 2019, PublishPress
+ * @copyright Copyright (c) 2024, PublishPress
  *
  */
 class PageFilters

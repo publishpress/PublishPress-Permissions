@@ -10,7 +10,7 @@
  */
 
 /*
-Copyright © 2019 PublishPress.
+Copyright © 2024 PublishPress.
 
 This file is part of PressPermit Import.
 
