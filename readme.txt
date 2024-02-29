@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 5.5
 Tested up to: 6.4
 Requires PHP: 7.2.5
-Stable tag: 4.0.18
+Stable tag: 4.0.19
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -240,7 +240,12 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 4.0.18 - 22 Feb 2024 =
+= 4.0.19 - 29 Feb 2024 =
+* API : Function pp_get_groups_for_user() no longer defaulted to returning group objects
+* Compat : bbPress - Forum Role column on Users screen was hidden
+* Lang : Upate ES, FR, IT translations
+
+= 4.0.18 - 27 Feb 2024 =
 * Perf : Eliminated scan of users table on plugin activation (impacting sites with large number of users)
 * Perf : Eliminated recursive query of subpages (impacting sites with complex page hierarchies)
 * Perf : Improved caching of post capability checks
@@ -256,7 +261,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Fixed : Legacy Nav Menu Management - Limited Nav Menu editors saw uneditable menus in dropdown on Menus management screen
 * Fixed : Legacy Nav Menu Management filters interfered with front end filtering under some conditions
 * Fixed : Sanity check to prevent excessive version history logging if installed plugin's version tags or version tag storage is incorrect
-* Fixed : Terms were inappropriately auto-assigned under some conditions\
+* Fixed : Terms were inappropriately auto-assigned under some conditions
 * Change : Permissions > Settings > Editing option to disable auto-assignment of terms (when default term is not selectable). Note: Auto-assignment is required for some term-restricted editing configurations.
 * Change : Auto-assign a term only if no default terms are selectable and the user's editing access is modified by term-specific Permissions
 * Change : Never auto-assign a term to front page or posts page
