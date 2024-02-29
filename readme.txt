@@ -266,8 +266,8 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Change : Auto-assign a term only if no default terms are selectable and the user's editing access is modified by term-specific Permissions
 * Change : Never auto-assign a term to front page or posts page
 * Change : Constant definitions related to term auto-assignment to assist any potential troubleshooting or restore previous behavior
-* Change : Suppress "Enable Permissions" metaboxes in Post editor, Edit Term screens
 * Change : User search for Specific Permission assignment - use LIKE matching for user meta field searches
+* Change : Suppress "Enable Permissions" metaboxes in Post editor, Edit Term screens
 * Change : Support constant PRESSPERMIT_MEDIA_UPLOAD_GRANT_PAGE_EDIT_CAPS for front end uploading solutions that require page editing capabilities for the async upload request
 * Lib : Update wordpress-reviews library to v1.1.20
 * Lib : Update wordpress-version-notices library to v2.1.3
