@@ -254,7 +254,6 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Compat : Elementor - Could not use Elementor front end editor to save a draft of a published post
 * Compat : Nested Pages - Apply pp_force_quick_edit capability to Nested Pages' Quick Edit and Contextual Add / Insert buttons
 * Fixed : Filters for Post category, Tags, Terms, Parent or Status could be applied to wrong post under certain conditions
-* Fixed : Terms were inappropriately auto-assigned under some conditions
 * Fixed : Permissions > Settings > Core > Front End > "Performance: Don't filter category / tag counts" was not applied for Administrator
 * Fixed : Some strings on Permissions > Settings were not translated
 * Fixed : Gutenberg editor usage was not properly detected when triggered by another plugin, possibly leading to issues with category / term assignment filtering
@@ -262,11 +261,12 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Fixed : Legacy Nav Menu Management - Limited Nav Menu editors saw uneditable menus in dropdown on Menus management screen
 * Fixed : Legacy Nav Menu Management filters interfered with front end filtering under some conditions
 * Fixed : Sanity check to prevent excessive version history logging if installed plugin's version tags or version tag storage is incorrect
-* Change : Suppress "Enable Permissions" metaboxes in Post editor, Edit Term screens
+* Fixed : Terms were inappropriately auto-assigned under some conditions
 * Change : Permissions > Settings > Editing option to disable auto-assignment of terms (when default term is not selectable). Note: Auto-assignment is required for some term-restricted editing configurations.
 * Change : Auto-assign a term only if no default terms are selectable and the user's editing access is modified by term-specific Permissions
 * Change : Never auto-assign a term to front page or posts page
 * Change : Constant definitions related to term auto-assignment to assist any potential troubleshooting or restore previous behavior
+* Change : Suppress "Enable Permissions" metaboxes in Post editor, Edit Term screens
 * Change : User search for Specific Permission assignment - use LIKE matching for user meta field searches
 * Change : Support constant PRESSPERMIT_MEDIA_UPLOAD_GRANT_PAGE_EDIT_CAPS for front end uploading solutions that require page editing capabilities for the async upload request
 * Lib : Update wordpress-reviews library to v1.1.20
