@@ -421,7 +421,7 @@ class Groups
         $ckey = $user_id . $args_key;
         $return_groups = (isset($user_groups_md[$agent_type][$ckey])) ? $user_groups_md[$agent_type][$ckey] : [];
 
-        if ('all' != $cols) {
+        if ('all' != $args['cols']) {
             // Filter results
             $return_groups = apply_filters(
                 'presspermit_get_pp_groups_for_user', 
