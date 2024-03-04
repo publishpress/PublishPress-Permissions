@@ -63,7 +63,7 @@ class PermissionsUser extends \WP_User
 
         foreach ($pp_groups->getGroupTypes([], 'names') as $agent_type) {
             if ('pp_group' != $agent_type) {
-                $this->groups[$agent_type] = $pp_groups->getGroupsForUser($this->ID, $agent_type, ['cols' => 'id']);
+                $this->groups[$agent_type] = $pp_groups->getGroupsForUser($this->ID, $agent_type);
                 $custom_group_type = true;
 
                 if (is_array($this->groups[$agent_type]) && !empty($this->groups['pp_group'])) {
