@@ -276,8 +276,9 @@ class Groups
         ];
         $args = array_merge($defaults, $args);
 
-        if (is_null($args['metagroup_type']))
+        if (isset($args['metagroup_type']) && is_null($args['metagroup_type'])) {
             unset($args['metagroup_type']);
+        }
 
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
