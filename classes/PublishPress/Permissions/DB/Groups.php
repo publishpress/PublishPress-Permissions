@@ -276,13 +276,12 @@ class Groups
         ];
         $args = array_merge($defaults, $args);
 
-        if (is_null($args['metagroup_type']))
+        if (isset($args['metagroup_type']) && is_null($args['metagroup_type'])) {
             unset($args['metagroup_type']);
+        }
 
         foreach (array_keys($defaults) as $var) {
-            if (isset($args[$var])) {
-                $$var = $args[$var];
-            }
+            $$var = $args[$var];
         }
 
         if (is_object($user)) {
@@ -302,12 +301,14 @@ class Groups
         }
 
         // Build a cache key to disginguish results by user id and args, but don't consider cols, query_user_ids or force_refresh
+        
+        
         unset($args['query_user_ids']);
         unset($args['cols']);
         unset($args['force_refresh']);
         $args_key = ':' . md5(wp_json_encode($args));
         $ckey = $user_id . $args_key;
-    
+
         if (!isset($user_groups_md[$agent_type][$user_id][$ckey]) && !$force_refresh) {
             // This result was not previously cached, so proceed with query
             global $wpdb;
@@ -421,7 +422,7 @@ class Groups
         $ckey = $user_id . $args_key;
         $return_groups = (isset($user_groups_md[$agent_type][$ckey])) ? $user_groups_md[$agent_type][$ckey] : [];
 
-        if ('all' != $args['cols']) {
+        if ('all' == $cols) { // Note: $cols was previously not set unless explicitly passed in function args
             // Filter results
             $return_groups = apply_filters(
                 'presspermit_get_pp_groups_for_user', 
