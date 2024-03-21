@@ -84,6 +84,9 @@ class SettingsAdmin
         case 'anonymous_unfiltered' :
         return __('Disable Permissions filtering for users who are not logged in.', 'press-permit-core-hints');
 
+        case 'limit_front_end_term_filtering' :
+        return __('Legacy compatibility: front end term filters are not applied on some sites', 'press-permit-core-hints');
+
         case 'suppress_administrator_metagroups' :
         return __('If checked, pages blocked from the "All" or "Logged In" groups will still be listed to Administrators.', 'press-permit-core-hints');
 

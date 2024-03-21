@@ -412,7 +412,8 @@ class AdminWorkarounds
         
         // todo: use 'wp_count_posts' filter instead?
 
-        if ((strpos($query, "ELECT post_status, COUNT( * ) AS num_posts ") || (strpos($query, "ELECT COUNT( 1 )") && $pos_from && (!$pos_where || ($pos_from < $pos_where)))) 
+        if (!defined('PRESSPERMIT_DISABLE_POST_COUNT_FILTER')
+        && (strpos($query, "ELECT post_status, COUNT( * ) AS num_posts ") || (strpos($query, "ELECT COUNT( 1 )") && $pos_from && (!$pos_where || ($pos_from < $pos_where)))) 
         && preg_match("/FROM\s*{$posts}\s*WHERE post_type\s*=\s*'([^ ]+)'/", $query, $matches)
         ) {
             $_post_type = (!empty($matches[1])) ? $matches[1] : PWP::findPostType();

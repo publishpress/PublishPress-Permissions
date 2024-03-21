@@ -62,6 +62,7 @@ class SettingsTabAdvanced
             $opt = array_merge($opt, [
                 'anonymous_unfiltered' => sprintf(esc_html__('%1$sDisable%2$s all filtering for anonymous users', 'press-permit-core'), '', ''),
                 'suppress_administrator_metagroups' => sprintf(esc_html__('%1$sDo not apply%2$s metagroup permissions for Administrators', 'press-permit-core'), '', ''),
+                'limit_front_end_term_filtering' => sprintf(esc_html__('Limit front-end category / term filtering', 'press-permit-core')),
                 'user_search_by_role' => esc_html__('User Search: Filter by WP role', 'press-permit-core'),
                 'display_hints' => esc_html__('Display Administrative Hints', 'press-permit-core'),
                 'display_extension_hints' => esc_html__('Display Module Hints', 'press-permit-core'),
@@ -81,7 +82,7 @@ class SettingsTabAdvanced
 
         if ($this->enabled) {
             $new = array_merge($new, [
-                'anonymous' => ['anonymous_unfiltered', 'suppress_administrator_metagroups'],
+                'anonymous' => ['anonymous_unfiltered', 'suppress_administrator_metagroups', 'limit_front_end_term_filtering'],
                 'permissions_admin' => ['non_admins_set_read_exceptions'],
                 'user_permissions' => ['user_permissions'],
                 'role_integration' => ['pattern_roles_include_generic_rolecaps', 'dynamic_wp_roles'],
@@ -149,6 +150,8 @@ class SettingsTabAdvanced
                         $ui->optionCheckbox('anonymous_unfiltered', $tab, $section, true);
 
                         $ui->optionCheckbox('suppress_administrator_metagroups', $tab, $section, true);
+
+                        $ui->optionCheckbox('limit_front_end_term_filtering', $tab, $section, true);
 
                         do_action('presspermit_options_ui_insertion', $tab, $section);
                         ?>

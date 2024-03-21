@@ -235,6 +235,14 @@ class TermFilters
                 } else {
                 	$args['required_operation'] = ('WP_REST_Posts_Controller' == $rest->endpoint_class) ? 'assign' : 'manage';
                 }
+
+                if (!defined('PRESSPERMIT_LEGACY_TERM_FILTERS_ARGS')) {
+                    $args['hide_empty'] = false;
+                }
+            }
+
+            if (defined('PRESSPERMIT_REST_TERM_FILTER_SHOW_EMPTY')) {
+                $args['hide_empty'] = false;
             }
         }
 
@@ -273,6 +281,12 @@ class TermFilters
 	                $args
 	            );
             }
+        }
+
+        if (!empty($args['required_operation']) && in_array($args['required_operation'], ['assign', 'manage']) 
+        && !defined('PRESSPERMIT_LEGACY_TERM_FILTERS_ARGS')
+        ) {
+            $args['hide_empty'] = false;
         }
 
         if (presspermit()->isUserUnfiltered() && !defined('PRESSPERMIT_ALLOW_ADMIN_TERMS_FILTER')) {

@@ -293,6 +293,10 @@ class PermissionsHooks
                 $new_entry = (object) ['version' => PRESSPERMIT_VERSION, 'date' => gmdate('m/d/Y'), 'isPro' => false];
             }
 
+            if (count($ver_history) > 1000) {
+                $ver_history = [];
+            }
+
             $last_entry = reset($ver_history);
 
             if ($last_entry != $new_entry) {
@@ -557,7 +561,9 @@ class PermissionsHooks
 
         if (($is_front && $front_filtering) || (!$is_unfiltered && (!defined('DOING_AUTOSAVE') || !DOING_AUTOSAVE))) {
             // Work around unexplained issue with access to static methods of LibWP class failing if called before init action
-            if (did_action('init') || defined('PRESSPERMIT_TERM_FILTERS_LEGACY_LOAD')) {
+            if ((did_action('init') || defined('PRESSPERMIT_TERM_FILTERS_LEGACY_LOAD')) 
+            && !presspermit()->getOption('limit_front_end_term_filtering')
+            ) {
                 require_once(PRESSPERMIT_CLASSPATH . '/TermFilters.php');
                 new Permissions\TermFilters();
             } else {
