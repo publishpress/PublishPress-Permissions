@@ -293,6 +293,10 @@ class PermissionsHooks
                 $new_entry = (object) ['version' => PRESSPERMIT_VERSION, 'date' => gmdate('m/d/Y'), 'isPro' => false];
             }
 
+            if (count($ver_history) > 1000) {
+                $ver_history = [];
+            }
+
             $last_entry = reset($ver_history);
 
             if ($last_entry != $new_entry) {
