@@ -242,7 +242,6 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 = 4.0.21 - 21 Mar 2024 =
 * Fixed : Gutenberg Editor - empty categories were unselectable on some installations
-* Compat : Breakdance - Non-administrators could not edit revisons created by PublishPress Revisions plugin
 * Change : Option to restore previous behavior by suppressing front end term filtering under some conditions
 * Change : Remove penguins from Permissions > Settings screen header
 
