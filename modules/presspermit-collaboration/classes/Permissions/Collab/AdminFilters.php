@@ -279,8 +279,8 @@ class AdminFilters
         if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
         || !presspermit()->filteringEnabled() || ('revision' == PWP::findPostType()) || did_action('pp_disable_page_parent_filter') || ($this->inserting_post)
         || (
-            defined('ELEMENTOR_VERSION') && !PWP::empty_REQUEST('actions') 
-            && strpos($_REQUEST['actions'], '"action\":\"save_builder\",\"data\":{\"status\":\"autosave\"')  // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
+            defined('ELEMENTOR_VERSION') && !empty($_REQUEST['actions'])                                     // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
+            && strpos($_REQUEST['actions'], '"action\":\"save_builder\",\"data\":{\"status\":\"autosave\"')  // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
         )
         ) {
             return $parent_id;
