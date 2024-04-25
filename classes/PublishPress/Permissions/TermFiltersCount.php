@@ -288,7 +288,8 @@ class TermFiltersCount
         // === Standard WP post-processing for include, fields, number args ===
         //
         $_terms = [];
-        if ('id=>parent' == $fields) {
+
+        if (('id=>parent' == $fields) && apply_filters('presspermit_get_terms_filter_id_parent', true, $terms, $taxonomies, $args)) {
 			foreach ( $terms as $term ) {
                 if (is_object($term)) {
                 	$_terms[$term->term_id] = $term->parent;
