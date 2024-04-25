@@ -280,7 +280,7 @@ class PermissionsHooks
 
                 $last_entry = reset($ver_history);
 
-                if ($last_entry != $new_entry) {
+                if (!empty($new_entry) && ($last_entry != $new_entry)) {
                     $ver_history []= $new_entry;
                     $updated_log = true;
                 }
