@@ -408,7 +408,7 @@ class Groups
 
         } // End groups query sequence
 
-        if ('pp_group' == $agent_type) {
+        if (('pp_group' == $agent_type) && !defined('PRESSPERMIT_DISABLE_ROLE_GROUP_SYNC') && (!defined('REST_REQUEST') || !REST_REQUEST)) {
             // If user object was passed in, synchronize this user's role metagroups to their WP roles
             if (is_object($user)) {
                 $ckey = $user->ID . $args_key;
