@@ -349,9 +349,9 @@ class Groups
                 $wpdb->prepare(
                     "SELECT * FROM $wpdb->members_table $join"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-                    . " WHERE member_type = %s $status_clause $metagroup_clause AND user_id IN ('$user_id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                    . " WHERE member_type = %s $status_clause $metagroup_clause AND user_id IN ('$user_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-                    . " ORDER BY $wpdb->members_table.group_id",
+                    //. " ORDER BY $wpdb->members_table.group_id",
 
                     $member_type
                 )
@@ -408,7 +408,7 @@ class Groups
 
         } // End groups query sequence
 
-        if ('pp_group' == $agent_type) {
+        if (('pp_group' == $agent_type) && !defined('PRESSPERMIT_DISABLE_ROLE_GROUP_SYNC') && (!defined('REST_REQUEST') || !REST_REQUEST)) {
             // If user object was passed in, synchronize this user's role metagroups to their WP roles
             if (is_object($user)) {
                 $ckey = $user->ID . $args_key;

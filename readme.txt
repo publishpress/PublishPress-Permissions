@@ -240,10 +240,14 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 4.0.21 - 21 Mar 2024 =
+= 4.0.21 - 25 Apr 2024 =
 * Fixed : Gutenberg Editor - empty categories were unselectable on some installations
 * Change : Option to restore previous behavior by suppressing front end term filtering under some conditions
 * Change : Remove penguins from Permissions > Settings screen header
+* Fixed : PHP Warning on plugin activation
+* Perf : Improve performance of user groups retrieval query
+* Perf : Improve performance of post update query under some conditions
+* Perf : Improve performance on attachment upload / update
 
 = 4.0.20 - 4 Mar 2024 =
 * Fixed : PHP Warning on PublishPress\Permissions\Groups::getGroupsForUser() / pp_get_groups_for_user() call

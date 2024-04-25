@@ -294,6 +294,10 @@ class AdminFilters
             return $parent_id;
         }
 
+        if (did_action('wp_ajax_save_attachment')) {
+            return $parent_id;
+        }
+
         if (defined('DOING_AJAX') && DOING_AJAX && !PWP::empty_REQUEST('action') && PWP::REQUEST_key_match('action', 'woocommerce_', ['match_type' => 'contains'])) {
 			return $parent_id;
 		}
