@@ -75,8 +75,6 @@ class PostSaveHierarchical
 
             $user = presspermit()->getUser();
 
-            $descendants = self::getPageDescendantIds($post_id);
-
             $additional_ids = $user->getExceptionPosts('associate', 'additional', $post_type);
 
             if ($include_ids = $user->getExceptionPosts('associate', 'include', $post_type)) {
@@ -93,14 +91,27 @@ class PostSaveHierarchical
             }
 
             if ($parent_id) {
-                if (in_array($parent_id, $descendants) || ($post_id == $parent_id)) {
+                if (defind('PRESSPERMIT_OWN_DESCENDENT_CHECK')) {
+                    $descendants = self::getPageDescendantIds($post_id);
+
+                    if (in_array($parent_id, $descendants)) {
+                        $revert = true;
+                    }
+                }
+
+                if ($post_id == $parent_id) {
                     $revert = true;
                 }
 
                 if ($revert) {
-                    $parent_id = self::revertPageParent($post_id, $post_type, compact('descendants', 'include_ids', 'exclude_ids'));
+                    $parent_id = self::revertPageParent($post_id, $post_type, compact('include_ids', 'exclude_ids'));
                 }
             }
+
+            if (defined('PRESSPERMIT_FILTER_VALIDATE_PAGE_PARENT')) {
+                if (!isset($descendants)) {
+                    $descendants = self::getPageDescendantIds($post_id);
+                }
 
             $parent_id = apply_filters(
                 'presspermit_validate_page_parent', 
@@ -108,13 +119,14 @@ class PostSaveHierarchical
                 $post_type, 
                 compact('descendants', 'include_ids', 'exclude_ids')
             );
+            }
 
             // subsequent filtering is currently just a safeguard against invalid "no parent" posting in violation of lock_top_pages
             // if ( $parent_id || ( ! $selected_parent_id && Collab::userCanAssociateMain( $post_type ) ) )
             if ($parent_id || Collab::userCanAssociateMain($post_type))
                 return $parent_id;
 
-            return self::revertPageParent($post_id, $post_type, compact('descendants', 'include_ids', 'exclude_ids'));
+            return self::revertPageParent($post_id, $post_type, compact('include_ids', 'exclude_ids'));
         }
 
         $return[$post_id] = $parent_id;
@@ -151,7 +163,7 @@ class PostSaveHierarchical
 
     private static function revertPageParent($post_id, $post_type, $args = [])
     {
-        $defaults = ['descendants' => [], 'include_ids' => [], 'exclude_ids' => []];
+        $defaults = ['include_ids' => [], 'exclude_ids' => []];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -178,6 +190,8 @@ class PostSaveHierarchical
                 $post_type
             )
         );
+
+        $descendants = self::getPageDescendantIds($post_id);
 
         $valid_parents = array_diff($valid_parents, $descendants, (array)$post_id);
         $allowed_parents = $valid_parents;
