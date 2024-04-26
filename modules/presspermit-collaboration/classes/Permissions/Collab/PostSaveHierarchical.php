@@ -91,7 +91,7 @@ class PostSaveHierarchical
             }
 
             if ($parent_id) {
-                if (defind('PRESSPERMIT_OWN_DESCENDENT_CHECK')) {
+                if (defined('PRESSPERMIT_OWN_DESCENDENT_CHECK')) {
                     $descendants = self::getPageDescendantIds($post_id);
 
                     if (in_array($parent_id, $descendants)) {
