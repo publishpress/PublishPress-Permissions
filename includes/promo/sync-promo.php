@@ -20,7 +20,7 @@
                                 </p>
                                 <p>
                                     <a href="https://publishpress.com/links/permissions-sync-screen" target="_blank">
-                                        <?php esc_html_e('Upgrade to Pro', 'capsman-enhanced'); ?>
+                                        <?php esc_html_e('Upgrade to Pro', 'press-permit-core'); ?>
                                     </a>
                                 </p>
                             </div>
