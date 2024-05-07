@@ -760,7 +760,7 @@ class PostFilters
                     if ($reqd_caps) {  // note: this function is called only for listing query filters (not for user_has_cap filter)
                         if ($missing_caps = apply_filters(
                             'presspermit_query_missing_caps',
-                            array_diff($reqd_caps, array_keys($user->allcaps)),
+                            array_diff($reqd_caps, array_keys(array_filter($user->allcaps))),
                             $reqd_caps,
                             $post_type,
                             $meta_cap
@@ -786,7 +786,7 @@ class PostFilters
                                     }
                                 }
 
-                                if (!array_diff($reqd_caps, array_keys($user->allcaps))) {
+                                if (!array_diff($reqd_caps, array_keys(array_filter($user->allcaps)))) {
                                     $have_site_caps['user'][] = $status;
                                 }
                             }
@@ -795,7 +795,7 @@ class PostFilters
                             $owner_reqd_caps = self::getBaseCaps($reqd_caps, $post_type);
 
                             if (($owner_reqd_caps != $reqd_caps) && $user->ID) {
-                                if (!array_diff($owner_reqd_caps, array_keys($user->allcaps))) {
+                                if (!array_diff($owner_reqd_caps, array_keys(array_filter($user->allcaps)))) {
                                     $have_site_caps['owner'][] = $status;
                                 }
                             }
