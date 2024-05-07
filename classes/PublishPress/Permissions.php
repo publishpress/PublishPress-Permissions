@@ -612,7 +612,7 @@ class Permissions
 
             // merge in caps from typecast WP role assignments (and also clear false-valued allcaps entries)
             $this->capCaster();
-            $user->allcaps = array_merge(array_diff($user->allcaps, [false, 0]), $this->cap_caster->getUserTypecastCaps($user));
+            $user->allcaps = array_filter(array_merge(array_diff($user->allcaps, [false, 0]), $this->cap_caster->getUserTypecastCaps($user)));
         }
     }
 
