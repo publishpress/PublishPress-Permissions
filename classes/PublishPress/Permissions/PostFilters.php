@@ -178,6 +178,10 @@ class PostFilters
 
         $args['query_obj'] = $_wp_query;
 
+        if (!empty($args['pp_unfiltered']) && !defined('PRESSPERMIT_FORCE_POST_FILTERING')) {
+            return $clauses;
+        }
+
         if ($pp->isUserUnfiltered($current_user->ID, $args) && 
             (
             !is_admin() || 
