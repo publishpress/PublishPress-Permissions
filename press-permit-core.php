@@ -201,7 +201,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
         if (is_admin() && isset($pagenow) && ('customize.php' == $pagenow)) {
             return;
         }
-
+      
         define('PRESSPERMIT_VERSION', '4.0.23');
 
         if (!defined('PRESSPERMIT_READ_PUBLIC_CAP')) {
