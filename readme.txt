@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 5.5
 Tested up to: 6.4
 Requires PHP: 7.2.5
-Stable tag: 4.0.22
+Stable tag: 4.0.23
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,13 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.0.23 - 7 May 2024 =
+* Compat : Google Analytics by MonsterInsights - custom field error message on post update
+* Compat : PublishPress Revisions - Apply restrictive Submit Revisions permissions to limit Revision Queue listing
+* Compat : PublishPress Capabilities - Negated capabilities were not properly applied under some Permissions configurations
+* Compat : User Posts Limit - Users could not create more than one post
+* Fixed : On selection of multiple new users for group membership, if one was already a group member, none of the new selections were added
 
 = 4.0.22 - 26 Apr 2024 =
 * Fixed : Fatal error updating a subpage

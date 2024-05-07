@@ -365,8 +365,8 @@ class PermissionsUser extends \WP_User
 
         $user = presspermit()->getUser();
 
-        if ((!isset($args[1]) || $args[1] == $user->ID) && array_diff_key($user->allcaps, $current_user->allcaps)) {
-            $current_user->allcaps = array_filter(array_merge($current_user->allcaps, $user->allcaps));
+        if ((!isset($args[1]) || $args[1] == $user->ID) && array_diff_key(array_filter($user->allcaps), array_filter($current_user->allcaps))) {
+            $current_user->allcaps = array_merge(array_filter($current_user->allcaps), array_filter($user->allcaps));
         }
 
         return $wp_blogcaps;

@@ -325,8 +325,9 @@ class AdminFilters
     // filter page dropdown contents for Page Parent controls; leave others alone
     function fltDropdownPages($orig_options_html)
     {
-        if (presspermit()->isUserUnfiltered() || (!strpos($orig_options_html, 'parent_id') && !strpos($orig_options_html, 'post_parent')))
+        if (presspermit()->isUserUnfiltered() || (!empty($orig_options_html) && (!strpos($orig_options_html, 'parent_id') && !strpos($orig_options_html, 'post_parent')))) {
             return $orig_options_html;
+        }
 
         global $pagenow;
 

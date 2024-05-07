@@ -53,7 +53,7 @@ class GroupUpdate
                 $user_id
             ))) {
                 self::updateGroupUser($group_id, $user_ids, $args);
-                return;
+                continue;
             } else {
                 $data['add_date_gmt'] = current_time('mysql', 1);
 

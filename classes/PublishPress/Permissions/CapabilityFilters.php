@@ -156,7 +156,17 @@ class CapabilityFilters
             }
         }
 
-        if ((is_array($orig_cap) || !isset($this->meta_caps[$orig_cap]))	// Revisionary may pass array into args[0]
+        $meta_caps = $this->meta_caps;
+
+        // Google Analytics for WordPress by MonsterInsights
+        if (isset($args[3]) && (false !== strpos($args[3], 'monsterinsights'))) {
+            if (!apply_filters('presspermit_force_postmeta_filtering', false, $args)) {
+                unset($meta_caps['edit_post_meta']);
+                unset($meta_caps['delete_post_meta']);
+            }
+        }
+
+        if ((is_array($orig_cap) || !isset($meta_caps[$orig_cap]))	// Revisionary may pass array into args[0]
         && (('edit_posts' != reset($orig_reqd_caps)) || !presspermit()->doingEmbed())
         ) { 
             $item_type = '';
@@ -167,7 +177,7 @@ class CapabilityFilters
 
                 if ($type_caps = array_intersect($orig_reqd_caps, array_keys($pp->capDefs()->all_type_caps))) {
                     if (
-                        in_array($orig_cap, array_keys($this->meta_caps), true)
+                        in_array($orig_cap, array_keys($meta_caps), true)
                         || in_array($orig_cap, array_keys($pp->capDefs()->all_type_caps), true)
                     ) {
                         $is_post_cap = true;

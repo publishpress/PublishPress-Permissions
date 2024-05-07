@@ -54,7 +54,7 @@ class PostFilters
         if ('edit_post' == $meta_cap) {
             $user = presspermit()->getUser();
 
-            if ($missing_caps = array_diff($reqd_caps, array_keys($user->allcaps))) {
+            if ($missing_caps = array_diff($reqd_caps, array_keys(array_filter($user->allcaps)))) {
                 $type_obj = get_post_type_object($post_type);
                 $list_cap = str_replace('edit_', 'list_all_', $type_obj->cap->edit_posts);
 
