@@ -7,7 +7,7 @@ class PageHierarchyFilters
     {
         global $post;
 
-        if (!strpos($orig_options_html, 'parent_id') || !$orig_options_html || presspermit()->isUserUnfiltered())
+        if (empty($orig_options_html) || !strpos($orig_options_html, 'parent_id') || presspermit()->isUserUnfiltered())
             return $orig_options_html;
 
         $post_type = PWP::findPostType();
