@@ -1378,7 +1378,7 @@ class AgentPermissionsUI
 
         <br />
         <div>
-            <input id="pp_clone_permissions" class="button button-primary pp-primary-button" type="submit" name="pp_clone_permissions" value="<?php esc_attr_e('Do Clone'); ?>">
+            <input id="pp_clone_permissions" class="button button-primary pp-primary-button" type="submit" name="pp_clone_permissions" value="<?php esc_attr_e('Do Clone', 'press-permit-core'); ?>">
         </div>
     <?php
     }
