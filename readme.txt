@@ -240,6 +240,16 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 4.0.23 - 7 May 2024 =
+* Compat : Google Analytics by MonsterInsights - custom field error message on post update
+* Compat : PublishPress Revisions - Apply restrictive Submit Revisions permissions to limit Revision Queue listing
+* Compat : PublishPress Capabilities - Negated capabilities were not properly applied under some Permissions configurations
+* Compat : User Posts Limit - Users could not create more than one post
+* Fixed : On selection of multiple new users for group membership, if one was already a group member, none of the new selections were added
+
+= 4.0.22 - 26 Apr 2024 =
+* Fixed : Fatal error updating a subpage
+
 = 4.0.21 - 25 Apr 2024 =
 * Fixed : Gutenberg Editor - empty categories were unselectable on some installations
 * Change : Option to restore previous behavior by suppressing front end term filtering under some conditions
