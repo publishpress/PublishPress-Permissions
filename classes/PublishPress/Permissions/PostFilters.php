@@ -916,6 +916,22 @@ class PostFilters
             $pp_where = " AND ( $pp_where )";
         }
 
+        if ($extra_exception_operations = apply_filters('presspermit_posts_where_extra_exception_ops', [], $args)) {
+            foreach ($extra_exception_operations as $_op) {
+                if ($required_operation != $_op) {
+                    $_where_arr = [];
+
+                    foreach ($post_types as $post_type) {
+                        $_where_arr[$post_type] = DB\Permissions::addExceptionClauses('', $_op, $post_type, $args);
+                    }
+
+                    if ($_where = Arr::implode('OR', $_where_arr)) {
+                        $pp_where = $pp_where . " AND ($_where)";
+                    }
+                }
+            }
+        }
+
         return $pp_where;
     }
 
