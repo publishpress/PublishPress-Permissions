@@ -22,7 +22,7 @@ class CoreAdmin {
 
         add_filter(\PPVersionNotices\Module\TopNotice\Module::SETTINGS_FILTER, function ($settings) {
             $settings['press-permit-core'] = [
-                'message' => 'You\'re using PublishPress Permissions Free. The Pro version has more features and support. %sUpgrade to Pro%s',
+                'message' => esc_html__("You're using PublishPress Permissions Free. The Pro version has more features and support. %sUpgrade to Pro%s", 'press-permit-core'),
                 'link'    => 'https://publishpress.com/links/permissions-banner',
                 'screens' => [
                     ['base' => 'toplevel_page_presspermit-groups'],
