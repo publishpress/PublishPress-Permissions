@@ -322,7 +322,7 @@ class GroupsListTable extends GroupsListTableBase
                                     esc_html_e('Login State', 'press-permit-core');
                                     break;
                                 default:
-                                    esc_html_e('WordPress Role');
+                                    esc_html_e('WordPress Role', 'press-permit-core');
                             }
 
                             break;

@@ -167,7 +167,7 @@ class AgentPermissions
                             $_url = add_query_arg(['agent_type' => $agent_type], $_url);
                         }
                     ?>
-                        <a href="<?php echo esc_url($_url);?>" class="page-title-action"><?php esc_html_e('Add New');?></a>
+                        <a href="<?php echo esc_url($_url);?>" class="page-title-action"><?php esc_html_e('Add New', 'press-permit-core');?></a>
                     <?php endif;?>
     
                 </header>
