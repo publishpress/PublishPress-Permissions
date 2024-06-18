@@ -109,8 +109,8 @@ class Permissions
         return !empty($this->inserted_posts[$post_id]);
     }
 
-    public function capDefs() {
-        if (!isset($this->cap_defs)) {
+    public function capDefs($args = []) {
+        if (!isset($this->cap_defs) || !empty($args['force'])) {
             require_once(PRESSPERMIT_CLASSPATH . '/Capabilities.php');
             $this->cap_defs = new Permissions\Capabilities();
         }
