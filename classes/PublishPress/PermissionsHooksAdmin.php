@@ -14,7 +14,7 @@ class PermissionsHooksAdmin
 
         add_action('admin_menu', [$this, 'actSettingsPageMaybeRedirect'], 999);
 
-        if (defined('SSEO_VERSION')) {
+        if (defined('SSEO_VERSION') && function_exists('sseo_register_parameter')) {
             require_once(PRESSPERMIT_CLASSPATH . '/Compat/EyesOnlyAdmin.php');
             new Permissions\Compat\EyesOnlyAdmin();
         }
