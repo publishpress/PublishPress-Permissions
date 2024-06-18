@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the PublishPress Permissions plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: PublishPress Permissions 4.0.23\n"
+"Project-Id-Version: PublishPress Permissions 4.0.24\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-07T18:10:16+00:00\n"
+"POT-Creation-Date: 2024-06-18T19:13:20+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: press-permit-core\n"
@@ -470,6 +470,11 @@ msgstr ""
 msgid "Edit Permissions (%s)"
 msgstr ""
 
+#: classes/PublishPress/Permissions/UI/AgentPermissions.php:170
+#: classes/PublishPress/Permissions/UI/Groups.php:179
+msgid "Add New"
+msgstr ""
+
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:197
 msgid "User Login:"
 msgstr ""
@@ -913,6 +918,10 @@ msgstr ""
 msgid "Copy Roles and Permissions from:"
 msgstr ""
 
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1381
+msgid "Do Clone"
+msgstr ""
+
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1413
 msgid "Blocked:"
 msgstr ""
@@ -1325,6 +1334,7 @@ msgid "Permission Groups adjust user access with type-specific Roles and item-sp
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/Groups.php:197
+#: classes/PublishPress/Permissions/UI/GroupsListTable.php:325
 msgid "WordPress Role"
 msgstr ""
 
@@ -1830,8 +1840,16 @@ msgstr ""
 msgid "PublishPress Revisions integration requires the Collaborative Publishing module. Please notify your Administrator."
 msgstr ""
 
+#: includes/CoreAdmin.php:25
+msgid "You're using PublishPress Permissions Free. The Pro version has more features and support. %sUpgrade to Pro%s"
+msgstr ""
+
 #: includes/CoreAdmin.php:114
 #: includes/CoreAdmin.php:115
+#: includes/promo/posts-teaser-promo.php:23
+#: includes/promo/statuses-promo.php:23
+#: includes/promo/sync-promo.php:23
+#: includes/promo/visibility-statuses-promo.php:23
 msgid "Upgrade to Pro"
 msgstr ""
 
@@ -2266,7 +2284,7 @@ msgid "Pages can be set or removed from Top Level by:"
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:52
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:351
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:347
 msgid "Specified element IDs also require the following site-wide Role:"
 msgstr ""
 
@@ -2350,76 +2368,76 @@ msgstr ""
 msgid "Assign Publish Permissions separate from Edit Permissions"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:198
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:194
 msgid "lock"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:269
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:265
 msgid "no Page Parent filter"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:269
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:265
 msgid "Page Authors, Editors and Administrators"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:269
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:265
 msgid "Page Editors and Administrators"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:269
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:265
 msgid "Administrators"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:310
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:306
 msgid "Edit Form HTML IDs:"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:320
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:316
 msgid "%1$s sample IDs:%2$s %3$s"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:353
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:360
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:349
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:356
 msgid "Content Administrator"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:356
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:352
 msgid "no requirement"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:357
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:353
 msgid "Contributor / Author / Editor"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:358
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:354
 msgid "Author / Editor"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:361
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:357
 msgid "User Administrator"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:362
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:358
 msgid "Option Administrator"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:398
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:394
 msgid "The following settings apply to users who have the upload_files or edit_files capability:"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:452
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:446
 msgid "User editing capabilities apply for"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:455
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:449
 msgid "any user"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:455
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:449
 msgid "equal or lower role levels"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:455
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:449
 msgid "lower role levels"
 msgstr ""
 
