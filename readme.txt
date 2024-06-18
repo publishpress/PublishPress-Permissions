@@ -5,7 +5,7 @@ Tags: restrict, access, permissions, cms, user, private, category, pages, privac
 Requires at least: 5.5
 Tested up to: 6.4
 Requires PHP: 7.2.5
-Stable tag: 4.0.23
+Stable tag: 4.0.24
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,13 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.0.24 - 18 Jun 2024 =
+* Compat : Advanced Custom Fields - Custom Post Types did not have type-specific capabilities enforced unless explicitly configured in ACF settings
+* Compat : Admin Columns - Users listing inappropriately filtered under some conditions
+* Compat : Disable Gutenberg - Classic Editor mode was not detected under some configurations
+* Fixed : Settings UI - Checkbox for Permissions > Settings > Editing > Media Library > "Prevent editing uploads if attached to a non-editable post" not displayed under some conditions
+* Fixed : Fatal error if constant SSEO_VERSION is unexpectedly defined
 
 = 4.0.23 - 7 May 2024 =
 * Compat : Google Analytics by MonsterInsights - custom field error message on post update
