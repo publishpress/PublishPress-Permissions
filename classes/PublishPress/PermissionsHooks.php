@@ -134,7 +134,7 @@ class PermissionsHooks
         require_once(PRESSPERMIT_CLASSPATH . '/Roles.php');
         presspermit()->role_defs = new Permissions\Roles();
 
-        if (defined('SSEO_VERSION')) {
+        if (defined('SSEO_VERSION') && function_exists('sseo_register_parameter')) {
             require_once(PRESSPERMIT_CLASSPATH . '/Compat/EyesOnly.php');
             new Permissions\Compat\EyesOnly();
         }
