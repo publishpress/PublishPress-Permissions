@@ -282,7 +282,7 @@ class UsersListing
 
         // Filter the Users Query to support various group filtering / sorting parameters
 
-        if (PWP::is_REQUEST('orderby', 'pp_group')) {
+        if (PWP::is_REQUEST('orderby', 'pp_group') && !defined('AC_VERSION')) {  // Admin Columns plugin conflict
             $query_obj->query_where = " INNER JOIN $wpdb->pp_group_members AS gm ON gm.user_id = $wpdb->users.ID"  // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__users
                 . " INNER JOIN $wpdb->pp_groups as g ON gm.group_id = g.ID AND g.metagroup_id='' "
                 . $query_obj->query_where;
