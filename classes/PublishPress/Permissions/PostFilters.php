@@ -148,7 +148,8 @@ class PostFilters
     private function getTeaserPostTypes($post_types, $args = [])
     {
         if (
-            is_admin() || presspermit()->isContentAdministrator() || !empty($args['skip_teaser'])
+        	(is_admin() && (!defined('DOING_AJAX') || ! DOING_AJAX))
+        	|| presspermit()->isContentAdministrator() || !empty($args['skip_teaser'])
             || defined('XMLRPC_REQUEST') || (defined('REST_REQUEST') && REST_REQUEST)
         ) {
             return [];
