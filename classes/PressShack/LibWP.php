@@ -129,6 +129,11 @@ class LibWP
 			}
 		}
 
+        // Divi: Classic Editor option
+		if (function_exists('et_get_option') && ( 'on' == et_get_option( 'et_enable_classic_editor', 'off' ))) {
+			return false;
+		}
+
 		$pluginsState = array(
 			'classic-editor' => class_exists( 'Classic_Editor' ),
 			'gutenberg'      => function_exists( 'the_gutenberg_project' ),
