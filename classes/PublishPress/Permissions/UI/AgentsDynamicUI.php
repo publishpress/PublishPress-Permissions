@@ -268,7 +268,48 @@ class AgentsDynamicUI
             $arr = array_merge($args, ['agent_type' => $agent_type, 'ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax')]);
             wp_localize_script('presspermit-agent-select', 'ppException', $arr);
         } else {
-            wp_localize_script('presspermit-listbox', 'ppListbox', ['omit_admins' => '1', 'metagroups' => 0]);
+        	// @todo: API
+            $_args = ['omit_admins' => '1', 'metagroups' => 0];
+
+            if (!empty($_REQUEST['page']) && ('presspermit-edit-permissions' == $_REQUEST['page'])) {
+                if ($group = presspermit()->groups()->getGroupByName('[Pending Revision Monitors]')) {
+                    if ($group->ID == $agent_id) {
+                        $_args['omit_admins'] = 0;
+                    }
+                }
+
+                if ($group = presspermit()->groups()->getGroupByName('Pending Revision Monitors')) {
+                    if ($group->ID == $agent_id) {
+                        $_args['omit_admins'] = 0;
+                    }
+                }
+
+                if ($group = presspermit()->groups()->getGroupByName('[Change Request Notifications]')) {
+                    if ($group->ID == $agent_id) {
+                        $_args['omit_admins'] = 0;
+                    }
+                }
+
+                if ($group = presspermit()->groups()->getGroupByName('Change Request Notifications')) {
+                    if ($group->ID == $agent_id) {
+                        $_args['omit_admins'] = 0;
+                    }
+                }
+    
+                if ($group = presspermit()->groups()->getGroupByName('Scheduled Revision Monitors')) {
+                    if ($group->ID == $agent_id) {
+                        $_args['omit_admins'] = 0;
+                    }
+                }
+
+                if ($group = presspermit()->groups()->getGroupByName('[Scheduled Revision Monitors]')) {
+                    if ($group->ID == $agent_id) {
+                        $_args['omit_admins'] = 0;
+                    }
+                }
+            }
+
+            wp_localize_script('presspermit-listbox', 'ppListbox', $_args);
 
             if (!apply_filters('presspermit_override_agent_select_js', false)) {
                 wp_enqueue_script('presspermit-agent-select', PRESSPERMIT_URLPATH . "/common/js/agent-select{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
