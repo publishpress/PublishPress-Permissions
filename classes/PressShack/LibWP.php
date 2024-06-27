@@ -129,10 +129,16 @@ class LibWP
 			}
 		}
 
+        // Divi: Classic Editor option
+		if (function_exists('et_get_option') && ( 'on' == et_get_option( 'et_enable_classic_editor', 'off' ))) {
+			return false;
+		}
+
 		$pluginsState = array(
 			'classic-editor' => class_exists( 'Classic_Editor' ),
 			'gutenberg'      => function_exists( 'the_gutenberg_project' ),
 			'gutenberg-ramp' => class_exists('Gutenberg_Ramp'),
+            'disable-gutenberg' => class_exists('DisableGutenberg'),
 		);
 		
 		$conditions = [];
@@ -159,6 +165,7 @@ class LibWP
         $conditions[] = (self::isWp5() || $pluginsState['gutenberg'])
 						&& ! $pluginsState['classic-editor']
 						&& ! $pluginsState['gutenberg-ramp']
+                        && ! $pluginsState['disable-gutenberg']
                         && apply_filters('use_block_editor_for_post_type', true, $post_type, PHP_INT_MAX)
                         && apply_filters('use_block_editor_for_post', true, get_post(self::getPostID()), PHP_INT_MAX);
 
@@ -174,6 +181,9 @@ class LibWP
 
         $conditions[] = $pluginsState['gutenberg-ramp'] 
                         && apply_filters('use_block_editor_for_post', true, get_post(self::getPostID()), PHP_INT_MAX);
+
+        $conditions[] = $pluginsState['disable-gutenberg'] 
+                        && !self::disableGutenberg(self::getPostID());
 
         if (version_compare($wp_version, '5.9-beta', '>=') && !empty($has_nav_filter)) {
             add_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type', 10, 2 );
@@ -194,6 +204,34 @@ class LibWP
 
         // Returns true if at least one condition is true.
         return $result;
+    }
+
+    // Port function from Disable Gutenberg plugin due to problematic early is_plugin_active() function call
+    private static function disableGutenberg($post_id = false) {
+	
+        if (function_exists('disable_gutenberg_whitelist_id') && disable_gutenberg_whitelist_id($post_id)) return false;
+        
+        if (function_exists('disable_gutenberg_whitelist_slug') && disable_gutenberg_whitelist_slug($post_id)) return false;
+        
+        if (function_exists('disable_gutenberg_whitelist_title') && disable_gutenberg_whitelist_title($post_id)) return false;
+        
+        if (isset($_GET['block-editor'])) return false;
+        
+        if (isset($_GET['classic-editor'])) return true;
+        
+        if (isset($_POST['classic-editor'])) return true;
+        
+        if (function_exists('disable_gutenberg_disable_all') && disable_gutenberg_disable_all()) return true;
+        
+        if (function_exists('disable_gutenberg_disable_user_role') && disable_gutenberg_disable_user_role()) return true;
+        
+        if (function_exists('disable_gutenberg_disable_post_type') && disable_gutenberg_disable_post_type()) return true;
+        
+        if (function_exists('disable_gutenberg_disable_templates') && disable_gutenberg_disable_templates()) return true;
+        
+        if (function_exists('disable_gutenberg_disable_ids') && disable_gutenberg_disable_ids($post_id)) return true;
+        
+        return false;
     }
 
     public static function sanitizeWord($key)

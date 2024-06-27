@@ -99,6 +99,10 @@ class PermissionsHooks
 
     public function loadFilters()
     {
+        if (!defined('PRESSPERMIT_NO_EARLY_CAPS_INIT')) {
+            add_action('init', function() {presspermit()->capDefs(['force' => true]);}, 5);
+        }
+
         add_action('set_current_user', [$this, 'actSetCurrentUser'], 99);
         add_action('init', [$this, 'actInit'], 50);
         add_action('wp_loaded', [presspermit(), 'refreshUserAllcaps'], 18);   // account for any type / condition caps adding by late registration
@@ -130,7 +134,7 @@ class PermissionsHooks
         require_once(PRESSPERMIT_CLASSPATH . '/Roles.php');
         presspermit()->role_defs = new Permissions\Roles();
 
-        if (defined('SSEO_VERSION')) {
+        if (defined('SSEO_VERSION') && function_exists('sseo_register_parameter')) {
             require_once(PRESSPERMIT_CLASSPATH . '/Compat/EyesOnly.php');
             new Permissions\Compat\EyesOnly();
         }

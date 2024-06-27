@@ -89,10 +89,6 @@ class SettingsTabEditing
             'post_forking' => ['fork_published_only', 'fork_require_edit_others'],
         ];
 
-        if (!presspermit()->getOption('define_media_post_caps')) {
-            $new['media_library'] = array_diff($new['media_library'], ['attachment_edit_requires_parent_access']);
-        }
-
         if (!PWP::isBlockEditorActive()) {
             if (presspermit()->getOption('advanced_options'))
                 $new['limited_editing_elements'] = ['editor_hide_html_ids', 'editor_ids_sitewide_requirement'];
@@ -409,9 +405,7 @@ class SettingsTabEditing
 
                     $ret = $ui->optionCheckbox('edit_others_attached_files', $tab, $section, true, '');
 
-                    if (presspermit()->getOption('define_media_post_caps')) {
-                        $ret = $ui->optionCheckbox('attachment_edit_requires_parent_access', $tab, $section, true, '');
-                    }
+                    $ret = $ui->optionCheckbox('attachment_edit_requires_parent_access', $tab, $section, true, '');
 
                     $ret = $ui->optionCheckbox('own_attachments_always_editable', $tab, $section, true, '');
                     ?>
