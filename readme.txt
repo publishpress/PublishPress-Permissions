@@ -240,6 +240,16 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 4.0.25 - 26 Jun 2024 =
+* Compat : PublishPress Revisions - Administrators could not be added to Change Request Notification group
+
+= 4.0.24 - 18 Jun 2024 =
+* Compat : Advanced Custom Fields - Custom Post Types did not have type-specific capabilities enforced unless explicitly configured in ACF settings
+* Compat : Admin Columns - Users listing inappropriately filtered under some conditions
+* Compat : Disable Gutenberg - Classic Editor mode was not detected under some configurations
+* Fixed : Settings UI - Checkbox for Permissions > Settings > Editing > Media Library > "Prevent editing uploads if attached to a non-editable post" not displayed under some conditions
+* Fixed : Fatal error if constant SSEO_VERSION is unexpectedly defined
+
 = 4.0.23 - 7 May 2024 =
 * Compat : Google Analytics by MonsterInsights - custom field error message on post update
 * Compat : PublishPress Revisions - Apply restrictive Submit Revisions permissions to limit Revision Queue listing
