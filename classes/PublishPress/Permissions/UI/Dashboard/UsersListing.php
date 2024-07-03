@@ -5,8 +5,6 @@ namespace PublishPress\Permissions\UI\Dashboard;
 class UsersListing
 {
     public function __construct() {
-        
-
         add_filter('manage_users_columns', [$this, 'fltUsersColumns']);
         add_filter('manage_users_custom_column', [$this, 'fltUsersCustomColumn'], 99, 3); // filter late in case other plugin filters do not retain passed value
         add_filter('manage_users_sortable_columns', [$this, 'fltUsersColumnsSortable']);
@@ -106,7 +104,7 @@ class UsersListing
         unset($defaults['role']);
 
         if (defined('PRESSPERMIT_USERS_HIDE_BBP_ROLE')) {
-        	unset($defaults['bbp_user_role']);
+            unset($defaults['bbp_user_role']);
         }
 
         $title = esc_html__('Click to show only users who have specific permissions', 'press-permit-core');

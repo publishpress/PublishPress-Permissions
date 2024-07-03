@@ -57,7 +57,7 @@ class CollabHooks
 
         add_action('pre_get_posts', [$this, 'actPreventTrashSuffixing']);
 
-        add_action('wp_loaded', [$this, 'supplementUserAllcaps'], 18);
+		add_action('wp_loaded', [$this, 'supplementUserAllcaps'], 18);
         add_filter('presspermit_meta_caps', [$this, 'fltMetaCaps']);
         add_filter('presspermit_exclude_arbitrary_caps', [$this, 'fltExcludeArbitraryCaps']);
 

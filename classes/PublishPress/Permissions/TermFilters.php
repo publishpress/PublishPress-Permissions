@@ -233,7 +233,7 @@ class TermFilters
                 if (!empty($rest->operation)) {
                     $args['required_operation'] = $rest->operation;
                 } else {
-                	$args['required_operation'] = ('WP_REST_Posts_Controller' == $rest->endpoint_class) ? 'assign' : 'manage';
+                    $args['required_operation'] = ('WP_REST_Posts_Controller' == $rest->endpoint_class) ? 'assign' : 'manage';
                 }
 
                 if (!defined('PRESSPERMIT_LEGACY_TERM_FILTERS_ARGS')) {

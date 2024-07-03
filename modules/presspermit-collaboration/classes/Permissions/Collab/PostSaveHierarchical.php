@@ -113,12 +113,12 @@ class PostSaveHierarchical
                     $descendants = self::getPageDescendantIds($post_id);
                 }
 
-            $parent_id = apply_filters(
-                'presspermit_validate_page_parent', 
-                $parent_id, 
-                $post_type, 
-                compact('descendants', 'include_ids', 'exclude_ids')
-            );
+                $parent_id = apply_filters(
+                    'presspermit_validate_page_parent', 
+                    $parent_id, 
+                    $post_type, 
+                    compact('descendants', 'include_ids', 'exclude_ids')
+                );
             }
 
             // subsequent filtering is currently just a safeguard against invalid "no parent" posting in violation of lock_top_pages
