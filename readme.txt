@@ -240,6 +240,12 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 4.0.27 =
+* Change : On new installations, create pp_group_members database table with a unique key
+
+= 4.0.26 - 1 Jul 2024 =
+Re-release with incremented version to force clearance of update package caches after previous mistagging
+
 = 4.0.25 - 26 Jun 2024 =
 * Compat : PublishPress Revisions - Administrators could not be added to Change Request Notification group
 
