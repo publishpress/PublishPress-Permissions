@@ -274,6 +274,7 @@ class Groups
             'force_refresh' => false,
             'query_user_ids' => false,
         ];
+        
         $args = array_merge($defaults, $args);
 
         if (isset($args['metagroup_type']) && is_null($args['metagroup_type'])) {
@@ -301,8 +302,6 @@ class Groups
         }
 
         // Build a cache key to disginguish results by user id and args, but don't consider cols, query_user_ids or force_refresh
-        
-        
         unset($args['query_user_ids']);
         unset($args['cols']);
         unset($args['force_refresh']);

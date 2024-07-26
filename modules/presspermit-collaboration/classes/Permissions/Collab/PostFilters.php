@@ -27,7 +27,7 @@ class PostFilters
             global $pagenow, $current_user;
 
             if (in_array($pagenow, ['post-new.php', 'post.php']) && !PWP::empty_POST() && PWP::is_REQUEST('action', ['edit', 'editpost'])) {
-                if ($post_id = PWP::getPostID()) {
+                 if ($post_id = PWP::getPostID()) {
                     $_post = get_post($post_id);
 
                     if (($current_user->ID == $_post->post_author) && ($_post->post_type == $post_type) 

@@ -16,7 +16,7 @@ class CapabilityFilters
             add_action('presspermit_has_post_cap_pre', [$this, 'actSavePostPreAssignTerms'], 10, 4);
         }
     }
-        
+    
     function fltUserHasCapParams($params, $orig_reqd_caps, $args)
     {
         $defaults = ['orig_cap' => '', 'item_id' => 0];

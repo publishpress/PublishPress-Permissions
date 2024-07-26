@@ -173,7 +173,7 @@ class PermissionsUser extends \WP_User
         } else {
             // Passing user object causes this user's wp_role metagroups to be synchronized with their WP roles
             $user_groups = $pp_groups->getGroupsForUser($this, $args['agent_type'], $args);
-
+            
             if (isset($this->roles)) {
                 if ($pp->getOption('dynamic_wp_roles') || defined('PP_FORCE_DYNAMIC_ROLES')) {
                     $have_role_group_names = [];
