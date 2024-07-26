@@ -149,7 +149,7 @@ class CollabHooks
         add_filter('pre_post_tax_input', [$this, 'fltTaxInput'], 50, 1);
         add_filter('pre_post_category', [$this, 'fltPrePostTerms'], 50, 1);
         add_filter('presspermit_pre_object_terms', [$this, 'fltPrePostTerms'], 50, 3);
-        add_filter('pre_insert_term', [$this, 'fltPreInsertTerm'], 10, 3);
+        add_filter('pre_insert_term', [$this, 'fltPreInsertTerm'], 10, 2);
     }
 
     function init()
@@ -627,7 +627,7 @@ class CollabHooks
         return Collab\PostTermsSave::fltPreObjectTerms($terms, $taxonomy, $args);
     }
 
-    public function fltPreInsertTerm($term, $taxonomy, $args) {
+    public function fltPreInsertTerm($term, $taxonomy) {
         if ($tx_obj = get_taxonomy($taxonomy)) {
             if (empty($tx_obj->hierarchical) && presspermit()->getOption('create_tag_require_edit_cap') && !presspermit()->isAdministrator()) {
                 if (!current_user_can($tx_obj->cap->edit_terms)) {
