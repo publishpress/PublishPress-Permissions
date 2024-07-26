@@ -16,6 +16,8 @@ class PermissionsHooks
 
     public function __construct($args = [])
     {
+        global $pagenow;
+
         $defaults = ['load_filters' => true];
         $args = array_merge($defaults, (array)$args);
 
@@ -41,6 +43,19 @@ class PermissionsHooks
         // filter pre_option_category_children to disable/enable terms filtering
         foreach (presspermit()->getEnabledTaxonomies(['object_type' => false]) as $taxonomy) {
             add_filter("pre_option_{$taxonomy}_children", [$this, 'fltTermChildren'], 10, 3);
+        }
+
+        // Prevent Event Calendar plugin's term hierarchy array from being updated with a filtered subset
+        add_filter("pre_update_option_event-categories_children", [$this, 'fltUpdateEventCategoriesChildren'], 10, 2);
+
+        add_action("created_event-categories", function() {
+            update_option('presspermit_created_event_category', true);
+        });
+
+        if (get_option('presspermit_created_event_category')
+        || (is_admin() && !empty($pagenow) && ('edit-tags.php' == $pagenow) && !empty($_REQUEST['taxonomy']) && ('event-categories' == $_REQUEST['taxonomy']))
+        ) {
+            add_action('init', [$this, 'actCreatedEventCategory'], 50);
         }
     }
 
@@ -84,6 +99,43 @@ class PermissionsHooks
         }
 
         return $children;
+    }
+
+    function fltUpdateEventCategoriesChildren($value, $old_value) {
+        if (is_null($old_value) || empty($old_value) 
+        || (did_action('presspermit_restore_term_children_cache') && !did_action('presspermit_restored_term_children_cache'))
+        ) {
+            return $value;
+        }
+
+        if (in_array('event-categories', presspermit()->getEnabledTaxonomies(), true)) {
+            if ($this->filtering_enabled && empty(presspermit()->flags['disable_term_filtering'])) {
+                $value = $old_value;
+            }
+        }
+        
+        return $value;
+    }
+
+    function actCreatedEventCategory() {
+        if (function_exists('_get_term_hierarchy') && taxonomy_exists('event-categories')) {
+            if (!$term_children = _get_term_hierarchy('event-categories')) {
+                presspermit()->flags['disable_term_filtering'] = true;
+
+                do_action('presspermit_restore_term_children_cache');
+                delete_option("event-categories_children");
+                $term_children = _get_term_hierarchy('event-categories');
+                do_action('presspermit_restored_term_children_cache');
+
+                presspermit()->flags['disable_term_filtering'] = false;
+
+                global $wp_query;
+
+                if ($term_children || !$wpdb->get_col("SELECT term_id FROM $wpdb->term_taxonomy WHERE taxonomy = 'event-categories' AND parent > 0")) {
+                    delete_option('presspermit_created_event_category');
+                }
+            }
+        }
     }
 
     // if Advanced Options are not enabled, ignore stored settings
