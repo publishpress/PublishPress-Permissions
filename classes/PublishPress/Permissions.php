@@ -903,6 +903,10 @@ class Permissions
 
         $types = get_post_types(array_merge($args, ['public' => true, 'show_ui' => true]), 'names', 'or');
 
+        $supported_private_types = apply_filters('presspermit_supported_private_types', ['series_grouping']);
+
+        $types = array_merge($types, array_fill_keys($supported_private_types, true));
+
         $omit_types = apply_filters('presspermit_unfiltered_post_types', ['wp_block']); // todo: review wp_block filtering
 
         $object_types = array_diff_key($types, array_fill_keys($omit_types, true));
@@ -957,7 +961,9 @@ class Permissions
             $object_types = ($object_type) ? (array)$object_type : $this->getEnabledPostTypes();
 
             foreach (get_taxonomies($args, 'object') as $tx) {
-                if (array_intersect($object_types, $tx->object_type)) {
+                if (array_intersect($object_types, $tx->object_type)
+                || in_array($tx->name, apply_filters('presspermit_universal_taxonomies', ['series_group']))
+                ) {
                     $taxonomies[] = $tx->name;
                 }
             }
