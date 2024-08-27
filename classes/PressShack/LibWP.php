@@ -215,11 +215,11 @@ class LibWP
         
         if (function_exists('disable_gutenberg_whitelist_title') && disable_gutenberg_whitelist_title($post_id)) return false;
         
-        if (isset($_GET['block-editor'])) return false;
+        if (self::is_GET('block-editor')) return false;
         
-        if (isset($_GET['classic-editor'])) return true;
+        if (self::is_GET('classic-editor')) return true;
         
-        if (isset($_POST['classic-editor'])) return true;
+        if (self::is_POST('classic-editor')) return true;
         
         if (function_exists('disable_gutenberg_disable_all') && disable_gutenberg_disable_all()) return true;
         

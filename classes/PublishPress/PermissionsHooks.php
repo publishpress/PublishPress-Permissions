@@ -53,7 +53,7 @@ class PermissionsHooks
         });
 
         if (get_option('presspermit_created_event_category')
-        || (is_admin() && !empty($pagenow) && ('edit-tags.php' == $pagenow) && !empty($_REQUEST['taxonomy']) && ('event-categories' == $_REQUEST['taxonomy']))
+        || (is_admin() && !empty($pagenow) && ('edit-tags.php' == $pagenow) && !PWP::empty_REQUEST('taxonomy') && PWP::REQUEST_key_match('taxonomy', 'event-categories'))
         ) {
             add_action('init', [$this, 'actCreatedEventCategory'], 50);
         }
@@ -131,7 +131,9 @@ class PermissionsHooks
 
                 global $wp_query;
 
-                if ($term_children || !$wpdb->get_col("SELECT term_id FROM $wpdb->term_taxonomy WHERE taxonomy = 'event-categories' AND parent > 0")) {
+                if ($term_children 
+                || !$wpdb->get_col("SELECT term_id FROM $wpdb->term_taxonomy WHERE taxonomy = 'event-categories' AND parent > 0")   // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+                ) {
                     delete_option('presspermit_created_event_category');
                 }
             }
