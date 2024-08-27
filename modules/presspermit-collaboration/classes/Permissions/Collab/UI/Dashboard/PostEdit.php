@@ -47,8 +47,10 @@ class PostEdit
         if (!current_user_can('pp_associate_any_page')) {
             require_once(PRESSPERMIT_CLASSPATH . '/PageFilters.php');
             
+            $required_operation = (presspermit()->getOption('page_parent_editable_only')) ? 'edit' : 'associate';
+
             if ($restriction_where = \PublishPress\Permissions\PageFilters::getRestrictionClause(
-                'associate', 
+                $required_operation, 
                 $post_type, 
                 compact('col_id'))
             ) {
@@ -58,14 +60,14 @@ class PostEdit
             $user = presspermit()->getUser();
 
             // If all included parent IDs are descendants (or the page itself), avoid treating it as unrestricted
-            if ($include_ids = $user->getExceptionPosts('associate', 'include', $post_type)) {
+            if ($include_ids = $user->getExceptionPosts($required_operation, 'include', $post_type)) {
                 if (!array_diff($include_ids, $descendants)) {
                     $clauses['where'] .= " AND 1=2";
                 }
             }
         }
 
-        if ($additional_ids = presspermit()->getUser()->getExceptionPosts('associate', 'additional', $post_type)) {
+        if ($additional_ids = presspermit()->getUser()->getExceptionPosts($required_operation, 'additional', $post_type)) {
             if (empty($clauses['where'])) {
                 $clauses['where'] = 'AND 1=1';
             }

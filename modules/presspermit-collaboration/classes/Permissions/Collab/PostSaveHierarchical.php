@@ -75,15 +75,17 @@ class PostSaveHierarchical
 
             $user = presspermit()->getUser();
 
-            $additional_ids = $user->getExceptionPosts('associate', 'additional', $post_type);
+            $required_operation = (presspermit()->getOption('page_parent_editable_only')) ? 'edit' : 'associate';
 
-            if ($include_ids = $user->getExceptionPosts('associate', 'include', $post_type)) {
+            $additional_ids = $user->getExceptionPosts($required_operation, 'additional', $post_type);
+
+            if ($include_ids = $user->getExceptionPosts($required_operation, 'include', $post_type)) {
                 $exclude_ids = false;
                 $include_ids = array_merge($include_ids, $additional_ids);
                 if (!in_array($parent_id, $include_ids))
                     $revert = true;
 
-            } elseif ($exclude_ids = array_diff($user->getExceptionPosts('associate', 'exclude', $post_type), $additional_ids)) {
+            } elseif ($exclude_ids = array_diff($user->getExceptionPosts($required_operation, 'exclude', $post_type), $additional_ids)) {
                 $exclude_ids []= $post_id;
 
                 if (in_array($parent_id, $exclude_ids))
