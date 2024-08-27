@@ -244,7 +244,7 @@ class AgentPermissions
                                         <?php elseif ($agent_id) : ?>
                                             <tr>
                                                 <th>
-                                                    <label for="description"><?php echo esc_html(PWP::__wp('Description:', 'press-permit-core')); ?></label>
+                                                    <label for="description"><?php echo esc_html__('Description:', 'press-permit-core'); ?></label>
                                                 </th>
                                                 <td>
                                                     <textarea name="description" id="description" rows="3" cols="40" class="regular-text <?php echo esc_attr($disabled); ?>"><?php echo esc_html($agent->group_description) ?></textarea>
