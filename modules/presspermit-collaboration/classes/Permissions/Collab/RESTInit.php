@@ -101,7 +101,7 @@ class RESTInit
                     ['post_type' => $args['post_type'], 
                     'exclude' => (!empty($params['exclude'])) ? $params['exclude'] : [],    // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                     'parent_exclude' => (!empty($params['parent_exclude'])) ? $params['parent_exclude'] : [],
-                    'required_operation' => 'associate',
+                    'required_operation' => (presspermit()->getOption('page_parent_editable_only')) ? 'edit' : 'associate',
                     'suppress_filters' => 0,
                     'name' => 'parent_id',
                     'post_status' => $post_statuses,
@@ -141,16 +141,11 @@ class RESTInit
 
             // results are already filtered, no further PressPermit filtering
             do_action('presspermit_refresh_administrator_check');
-            add_filter('presspermit_unfiltered_content', [$this, 'fltUnfilteredContent'], 50);
 
             add_filter('posts_results', [$this, 'page_parent_results'], 50, 3);
         }
 
         return $args;
-    }
-
-    function fltUnfilteredContent($unfiltered) {
-        return true;
     }
 
     function page_parent_results($results, $query_obj) {

@@ -828,8 +828,7 @@ class Permissions
     public function isUserUnfiltered($user_id = false, $args = [])
     {
         // todo: any other Gutenberg Administrator requests to filter?
-        $is_unfiltered = $this->isAdministrator($user_id, 'unfiltered', $args) 
-        && (!defined('REST_REQUEST') || ! REST_REQUEST || (PWP::empty_REQUEST('parent_exclude') || did_action('presspermit_refresh_administrator_check'))); // page parent dropdown
+        $is_unfiltered = $this->isAdministrator($user_id, 'unfiltered', $args);
 
         $args['user_id'] = $user_id;
 

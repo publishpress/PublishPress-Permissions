@@ -63,6 +63,7 @@ class SettingsTabEditing
             'default_privacy' => esc_html__('Default visibility for new posts:', 'press-permit-core'),
             'list_others_uneditable_posts' => esc_html__('List other user\'s uneditable posts', 'press-permit-core'),
             'page_parent_order' => esc_html__('Order Page Parent dropdown by Title', 'press-permit-core'),
+            'page_parent_editable_only' => esc_html__('Page Parent selection for editable pages only', 'press-permit-core'),
             'auto_assign_available_term' => esc_html__("Auto-assign available term if default term is unavailable", 'press-permit-core'),
             'add_author_pages' => esc_html__('Bulk-Add Author Pages (on Users screen)', 'press-permit-core'),
             'publish_author_pages' => esc_html__('Publish Author Pages at bulk creation', 'press-permit-core'),
@@ -82,7 +83,7 @@ class SettingsTabEditing
         $new = [
             'page_structure' => ['lock_top_pages'],
             'user_management' => ['limit_user_edit_by_level', 'add_author_pages', 'publish_author_pages'],
-            'post_editor' => ['default_privacy', 'force_default_privacy', 'page_parent_order', 'auto_assign_available_term'],
+            'post_editor' => ['default_privacy', 'force_default_privacy', 'page_parent_order', 'page_parent_editable_only', 'auto_assign_available_term'],
             'content_management' => ['list_others_uneditable_posts', 'force_taxonomy_cols'],
             'media_library' => ['admin_others_attached_files', 'admin_others_attached_to_readable', 'admin_others_unattached_files', 'edit_others_attached_files', 'attachment_edit_requires_parent_access', 'own_attachments_always_editable'],
             'nav_menu_management' => ['admin_nav_menu_filter_items', 'admin_nav_menu_partial_editing', 'admin_nav_menu_lock_custom'],
@@ -218,6 +219,8 @@ class SettingsTabEditing
 
                     <br/>
                     <?php
+                    $ui->optionCheckbox('page_parent_editable_only', $tab, $section);
+
                     $ui->optionCheckbox('page_parent_order', $tab, $section);
                     ?>
 

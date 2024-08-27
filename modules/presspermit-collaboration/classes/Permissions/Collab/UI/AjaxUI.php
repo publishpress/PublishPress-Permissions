@@ -82,7 +82,7 @@ class AjaxUI
                 $ops['revise'] = $op_obj->label;
             }
 
-            if ($for_item_type && is_post_type_hierarchical($for_item_type)) {
+            if ($for_item_type && is_post_type_hierarchical($for_item_type) && !presspermit()->getOption('page_parent_editable_only')) {
                 $op_obj = $pp->admin()->getOperationObject('associate', $for_item_type);
                 $ops['associate'] = $op_obj->agent_label;
             }
