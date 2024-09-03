@@ -486,7 +486,7 @@ class PageFilters
                 || ('associate' == $alternate_operation)
                 ) {  // workaround for CMS Page View
                     if (!presspermit()->getOption('page_parent_editable_only')) {
-                    $_args['alternate_required_ops'] = ['associate'];
+                        $_args['alternate_required_ops'] = ['associate'];
                     }
                 }
 

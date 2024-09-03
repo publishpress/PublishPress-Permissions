@@ -23,7 +23,7 @@ class TermEdit
 	        if ($taxonomy = PWP::REQUEST_key('taxonomy')) {
 	            if (presspermit()->isTaxonomyEnabled($taxonomy)) {
 	                add_action('admin_head', [$this, 'actScriptsWP']);
-	
+
 	                add_action("{$taxonomy}_edit_form", [$this, 'actExceptionEditUI']);
 
 	            } elseif (defined('PRESSPERMIT_LEGACY_TAXONOMY_ENABLE_METABOX')) {
