@@ -166,8 +166,17 @@ class PostFilters
 			return $clauses;
 		}
 
+        if (defined('REST_REQUEST')) {
+        	if (class_exists('PublishPress\Permissions\REST') && !empty(\PublishPress\Permissions\REST::instance()->params['getpages_filtering'])) {
+        		$rest_getpages_filtering = true;	
+        	}
+        }
+
         // Gallery block in Gutenberg editor: error loading Image Size dropdown options
-        if (defined('REST_REQUEST') && (0 === strpos(PWP::SERVER_url('REQUEST_URI'), "/blocks")) && !PWP::empty_REQUEST('context') && ('edit' == PWP::REQUEST_key('context'))) {
+        if (defined('REST_REQUEST') && empty($rest_getpages_filtering)
+        && empty($_POST) && (!isset($_SERVER['REQUEST_METHOD']) || ('GET' == $_SERVER['REQUEST_METHOD']))
+        && !PWP::empty_REQUEST('context') && ('edit' == PWP::REQUEST_key('context'))
+        ) {
             return $clauses;
         }
 
@@ -292,7 +301,7 @@ class PostFilters
 
         $args['post_types'] = $post_types;
 
-        if (isset($_wp_query->query_vars['required_operation'])) {
+        if (empty($args['required_operation']) && isset($_wp_query->query_vars['required_operation'])) {
             $args['required_operation'] = $_wp_query->query_vars['required_operation'];
         }
 
