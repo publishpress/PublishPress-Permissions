@@ -130,10 +130,6 @@ class Permissions
             $operations = $pp->getOperations();
         }
 
-        if ($page_parent_editable_only) {
-            $operations = array_diff($operations, ['associate']);
-        }
-
         if (!$operations) {
             return [];
         }

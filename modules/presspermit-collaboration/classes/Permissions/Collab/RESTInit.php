@@ -143,6 +143,10 @@ class RESTInit
             do_action('presspermit_refresh_administrator_check');
 
             add_filter('posts_results', [$this, 'page_parent_results'], 50, 3);
+
+            if (presspermit()->getOption('page_parent_editable_only')) {
+                \PublishPress\Permissions\REST::instance()->params['getpages_filtering'] = true;
+            }
         }
 
         return $args;

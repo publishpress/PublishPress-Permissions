@@ -460,7 +460,6 @@ class PageFilters
             $groupby = $distinct = '';
 
             if ((in_array($pagenow, ['post.php', 'post-new.php']) || (defined('REST_REQUEST') && REST_REQUEST))
-            && !presspermit()->getOption('page_parent_editable_only')
             ) {
                 $clauses = apply_filters(
                     'presspermit_get_pages_clauses',
