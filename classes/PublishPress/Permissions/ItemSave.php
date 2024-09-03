@@ -187,13 +187,16 @@ class ItemSave
         if ($inherit_exceptions) {
 	        // don't execute this action handler more than one per post save (may be called directly on pre-save cap check)
 	        static $did_items;
+	        
 	        if ('post' == $via_item_source) {
 	            if (!isset($did_items)) {
 	                $did_items = [];
 	            }
+				
 	            if (isset($did_items[$item_id])) {
 	                return;
 	            }
+				
 	            $did_items[$item_id] = 1;
 	        }
 

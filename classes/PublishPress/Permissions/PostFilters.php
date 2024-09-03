@@ -166,8 +166,17 @@ class PostFilters
 			return $clauses;
 		}
 
+        if (defined('REST_REQUEST')) {
+        	if (class_exists('PublishPress\Permissions\REST') && !empty(\PublishPress\Permissions\REST::instance()->params['getpages_filtering'])) {
+        		$rest_getpages_filtering = true;	
+        	}
+        }
+
         // Gallery block in Gutenberg editor: error loading Image Size dropdown options
-        if (defined('REST_REQUEST') && (0 === strpos(PWP::SERVER_url('REQUEST_URI'), "/blocks")) && !PWP::empty_REQUEST('context') && ('edit' == PWP::REQUEST_key('context'))) {
+        if (defined('REST_REQUEST') && empty($rest_getpages_filtering)
+        && empty($_POST) && (!isset($_SERVER['REQUEST_METHOD']) || ('GET' == $_SERVER['REQUEST_METHOD']))
+        && !PWP::empty_REQUEST('context') && ('edit' == PWP::REQUEST_key('context'))
+        ) {
             return $clauses;
         }
 
@@ -292,11 +301,28 @@ class PostFilters
 
         $args['post_types'] = $post_types;
 
-        if (isset($_wp_query->query_vars['required_operation'])) {
+        if (empty($args['required_operation']) && isset($_wp_query->query_vars['required_operation'])) {
             $args['required_operation'] = $_wp_query->query_vars['required_operation'];
         }
 
         $clauses = $this->fltDoPostsClauses($clauses, $args);
+
+        // On one test site, WP 6.6 stripped unpublished pages out of Gutenberg Page Parent selection results.
+        // This only occurred with "Page Parent selection for Editable Pages only" enabled.
+        // It may have been a quirk with the test site, but this workaround is left for activation by constant if needed.
+        if (!empty($rest_getpages_filtering) 
+        && defined('PP_PARENT_SELECTION_STATUS_WORKAROUND')
+        ) {
+            add_filter('posts_results', function($results) {
+                foreach ($results as $k => $row) {
+                    if (!in_array($results[$k]->post_status, ['publish'])) {
+                        $results[$k]->post_status = 'publish';
+                    }
+                }
+
+                return $results;
+            }, 999);
+        }
 
         return $clauses;
     }

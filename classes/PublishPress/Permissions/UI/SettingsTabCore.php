@@ -148,7 +148,7 @@ class SettingsTabCore
                         esc_html_e('Modify permissions for these Post Types:', 'press-permit-core');
                         $types = get_post_types(['public' => true, 'show_ui' => true], 'object', 'or');
                                                                                                                 // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-                        $supported_private_types = apply_filters('presspermit_supported_private_types', []); // ['series_grouping']);
+                        $supported_private_types = apply_filters('presspermit_supported_private_types', []);    // ['series_grouping']);
 
                         $types = array_merge($types, array_fill_keys($supported_private_types, true));
 
