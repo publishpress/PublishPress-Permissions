@@ -307,6 +307,23 @@ class PostFilters
 
         $clauses = $this->fltDoPostsClauses($clauses, $args);
 
+        // On one test site, WP 6.6 stripped unpublished pages out of Gutenberg Page Parent selection results.
+        // This only occurred with "Page Parent selection for Editable Pages only" enabled.
+        // It may have been a quirk with the test site, but this workaround is left for activation by constant if needed.
+        if (!empty($rest_getpages_filtering) 
+        && defined('PP_PARENT_SELECTION_STATUS_WORKAROUND')
+        ) {
+            add_filter('posts_results', function($results) {
+                foreach ($results as $k => $row) {
+                    if (!in_array($results[$k]->post_status, ['publish'])) {
+                        $results[$k]->post_status = 'publish';
+                    }
+                }
+
+                return $results;
+            }, 999);
+        }
+
         return $clauses;
     }
 
