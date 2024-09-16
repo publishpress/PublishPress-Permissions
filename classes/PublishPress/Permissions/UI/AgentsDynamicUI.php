@@ -271,7 +271,7 @@ class AgentsDynamicUI
         	// @todo: API
             $_args = ['omit_admins' => '1', 'metagroups' => 0];
 
-            if (!empty($_REQUEST['page']) && ('presspermit-edit-permissions' == $_REQUEST['page'])) {
+            if (!PWP::empty_REQUEST('page') && PWP::REQUEST_key_match('page', 'presspermit-edit-permissions')) {   
                 if ($group = presspermit()->groups()->getGroupByName('[Pending Revision Monitors]')) {
                     if ($group->ID == $agent_id) {
                         $_args['omit_admins'] = 0;

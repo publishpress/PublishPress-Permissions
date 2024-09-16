@@ -66,12 +66,14 @@ class PostEdit
 
         $user = presspermit()->getUser();
 
+        $required_operation = (presspermit()->getOption('page_parent_editable_only')) ? 'edit' : 'associate';
+
         // apply manually assigned associate exceptions even if lock_top_pages filtering is disabled
-        $post_ids = $user->getExceptionPosts('associate', 'exclude', $post_type);
+        $post_ids = $user->getExceptionPosts($required_operation, 'exclude', $post_type);
         if (in_array(0, $post_ids))
             return false;
 
-        $post_ids = $user->getExceptionPosts('associate', 'include', $post_type);
+        $post_ids = $user->getExceptionPosts($required_operation, 'include', $post_type);
         if ($post_ids && !in_array(0, $post_ids))
             return false;
 

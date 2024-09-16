@@ -459,7 +459,8 @@ class PageFilters
 
             $groupby = $distinct = '';
 
-            if (in_array($pagenow, ['post.php', 'post-new.php']) || (defined('REST_REQUEST') && REST_REQUEST)) {
+            if ((in_array($pagenow, ['post.php', 'post-new.php']) || (defined('REST_REQUEST') && REST_REQUEST))
+            ) {
                 $clauses = apply_filters(
                     'presspermit_get_pages_clauses',
                     compact('distinct', 'fields', 'join', 'where', 'groupby', 'orderby', 'limits'),
@@ -475,12 +476,18 @@ class PageFilters
                 else
                     $_args['required_operation'] = (PWP::isFront() && !presspermit_is_preview()) ? 'read' : 'edit';
 
+                if (('associate' == $_args['required_operation']) && presspermit()->getOption('page_parent_editable_only')) {
+                    $_args['required_operation'] = 'edit';
+                }
+
                 $rest_params = (defined('REST_REQUEST') && REST_REQUEST) ? \PublishPress\Permissions\REST::instance()->params : [];
 
                 if (((('edit' == $_args['required_operation']) && (isset($args['post_parent']) || !empty($rest_params['exclude']) || !empty($rest_params['parent_exclude']))))
                 || ('associate' == $alternate_operation)
                 ) {  // workaround for CMS Page View
-                    $_args['alternate_required_ops'] = ['associate'];
+                    if (!presspermit()->getOption('page_parent_editable_only')) {
+                        $_args['alternate_required_ops'] = ['associate'];
+                    }
                 }
 
                 $clauses = apply_filters(

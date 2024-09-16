@@ -3,9 +3,9 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
 Requires at least: 5.5
-Tested up to: 6.5
+Tested up to: 6.6
 Requires PHP: 7.2.5
-Stable tag: 4.0.25
+Stable tag: 4.0.29
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,24 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.0.29 - 16 Sep 2024 =
+* Fixed : WP 6.6 - Post Visibility settings did not correctly refresh Save As caption under some configurations
+* Compat : PublishPress Statuses - Improved button captioning with Statuses 1.0.7 
+
+= 4.0.28 - 3 Sep 2024 (unreleased) =
+* Fixed : WP 6.6 - Specific Permissions were not propagated to new subpages
+* Fixed : WP 6.6 - Page Parent selection was not properly filtered under some configurations
+* Feature : New setting, Permissions > Editing > "Page Parent selection for editable pages only", causes Page Parent availability to follow page editing access
+
+= 4.0.27 - 27 Aug 2024 (unreleased) =
+* Compat : WordPress 6.0 and earlier - Fatal error on category / term insertion
+* Compat : Events Manager - If a restricted user adds an Event Category, the term hierarchy cache is updated to an empty array, breaking subsequent Event Category requests
+* Compat : PublishPress Series - Specific Permissions could not be assigned for Series Categories
+* Change : On new installations, create pp_group_members database table with a unique key
+
+= 4.0.26 - 1 Jul 2024 =
+Re-release with incremented version to force clearance of update package caches after previous mistagging
 
 = 4.0.25 - 26 Jun 2024 =
 * Compat : PublishPress Revisions - Administrators could not be added to Change Request Notification group

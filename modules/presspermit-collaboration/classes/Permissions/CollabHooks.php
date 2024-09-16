@@ -57,7 +57,7 @@ class CollabHooks
 
         add_action('pre_get_posts', [$this, 'actPreventTrashSuffixing']);
 
-        add_action('wp_loaded', [$this, 'supplementUserAllcaps'], 18);
+		add_action('wp_loaded', [$this, 'supplementUserAllcaps'], 18);
         add_filter('presspermit_meta_caps', [$this, 'fltMetaCaps']);
         add_filter('presspermit_exclude_arbitrary_caps', [$this, 'fltExcludeArbitraryCaps']);
 
@@ -149,7 +149,7 @@ class CollabHooks
         add_filter('pre_post_tax_input', [$this, 'fltTaxInput'], 50, 1);
         add_filter('pre_post_category', [$this, 'fltPrePostTerms'], 50, 1);
         add_filter('presspermit_pre_object_terms', [$this, 'fltPrePostTerms'], 50, 3);
-        add_filter('pre_insert_term', [$this, 'fltPreInsertTerm'], 10, 3);
+        add_filter('pre_insert_term', [$this, 'fltPreInsertTerm'], 10, 2);
     }
 
     function init()
@@ -182,6 +182,7 @@ class CollabHooks
             'default_privacy' => [],
             'force_default_privacy' => [],
             'page_parent_order' => '',
+            'page_parent_editable_only' => 0,
 
             // For legacy compat, default to auto-assigning a default term unless constant PP_NO_AUTO_DEFAULT_TERM is defined (and not overruled by constant PP_AUTO_DEFAULT_TERM)
             'auto_assign_available_term' => !defined('PP_NO_AUTO_DEFAULT_TERM') || defined('PP_AUTO_DEFAULT_TERM'), 
@@ -222,6 +223,10 @@ class CollabHooks
     {
         if ('post' == $for_item_source) {
             foreach (['edit', 'fork', 'copy', 'revise', 'associate', 'assign'] as $op) {
+                if (('associate' == $op) && presspermit()->getOption('page_parent_editable_only')) {
+                    continue;
+                }
+                
                 if (presspermit()->admin()->canSetExceptions($op, $for_item_type, ['for_item_source' => $for_item_source])) {
                     $operations[$op] = true;
                 }
@@ -627,7 +632,7 @@ class CollabHooks
         return Collab\PostTermsSave::fltPreObjectTerms($terms, $taxonomy, $args);
     }
 
-    public function fltPreInsertTerm($term, $taxonomy, $args) {
+    public function fltPreInsertTerm($term, $taxonomy) {
         if ($tx_obj = get_taxonomy($taxonomy)) {
             if (empty($tx_obj->hierarchical) && presspermit()->getOption('create_tag_require_edit_cap') && !presspermit()->isAdministrator()) {
                 if (!current_user_can($tx_obj->cap->edit_terms)) {

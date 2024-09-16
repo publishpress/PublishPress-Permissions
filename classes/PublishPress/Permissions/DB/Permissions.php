@@ -117,7 +117,13 @@ class Permissions
 
         $operations = (array)$operations;
 
+        $page_parent_editable_only = $pp->getOption('page_parent_editable_only');
+
         if ($operations) {
+            if ($page_parent_editable_only && in_array('associate', $operations)) {
+                $operations = array_merge($operations, ['edit']);
+            }
+
             // avoid application of exceptions which are disabled due to plugin deactivation
             $operations = array_intersect($operations, $pp->getOperations());
         } else {
@@ -284,6 +290,11 @@ class Permissions
         foreach ($results as $row) {
             // note: currently only additional access can be status-specific
             $except["{$row->operation}_{$row->for_item_source}"][$row->via_item_source][$row->via_item_type][$row->mod_type][$row->for_item_type][$row->for_item_status][] = $row->item_id;
+        
+            // Mirror Edit exceptions for page parent association
+            if ($page_parent_editable_only && ('edit' == $row->operation)) {
+                $except["associate_{$row->for_item_source}"][$row->via_item_source][$row->via_item_type][$row->mod_type][$row->for_item_type][$row->for_item_status][] = $row->item_id;
+            }
         }
 
         return $except;

@@ -274,6 +274,7 @@ class Groups
             'force_refresh' => false,
             'query_user_ids' => false,
         ];
+        
         $args = array_merge($defaults, $args);
 
         if (isset($args['metagroup_type']) && is_null($args['metagroup_type'])) {
@@ -301,8 +302,6 @@ class Groups
         }
 
         // Build a cache key to disginguish results by user id and args, but don't consider cols, query_user_ids or force_refresh
-        
-        
         unset($args['query_user_ids']);
         unset($args['cols']);
         unset($args['force_refresh']);
@@ -350,8 +349,6 @@ class Groups
                     "SELECT * FROM $wpdb->members_table $join"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                     . " WHERE member_type = %s $status_clause $metagroup_clause AND user_id IN ('$user_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
-                    //. " ORDER BY $wpdb->members_table.group_id",
 
                     $member_type
                 )
