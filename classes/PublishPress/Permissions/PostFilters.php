@@ -174,7 +174,7 @@ class PostFilters
 
         // Gallery block in Gutenberg editor: error loading Image Size dropdown options
         if (defined('REST_REQUEST') && empty($rest_getpages_filtering)
-        && empty($_POST) && (!isset($_SERVER['REQUEST_METHOD']) || ('GET' == $_SERVER['REQUEST_METHOD']))
+        && empty($_POST) && (!isset($_SERVER['REQUEST_METHOD']) || ('GET' == $_SERVER['REQUEST_METHOD']))  // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
         && !PWP::empty_REQUEST('context') && ('edit' == PWP::REQUEST_key('context'))
         ) {
             return $clauses;
