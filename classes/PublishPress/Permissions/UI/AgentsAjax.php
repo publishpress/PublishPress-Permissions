@@ -171,7 +171,7 @@ class AgentsAjax
             $args = [
                 'fields' => ['ID', 'user_login', 'display_name'],
                 'search' => $search_str,
-                'search_columns' => ['user_login', 'user_nicename', 'display_name'],
+                'search_columns' => ['user_login', 'user_nicename', 'display_name', 'user_email'],
                 'include' => $include_ids,
                 'role' => $role_filter,
                 'orderby' => $orderby,
