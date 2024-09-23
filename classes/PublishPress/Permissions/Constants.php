@@ -40,8 +40,22 @@ $consts = [
     'PP_FUTURE_POSTS_BLOGROLL' => esc_html__("Include scheduled posts in the posts query if user can edit them", 'press-permit-core-hints'),
     'PP_UNFILTERED_TERM_COUNTS' => esc_html__("Don't filter term post counts in get_terms() call", 'press-permit-core-hints'),
     'PP_DISABLE_NAV_MENU_FILTER' => esc_html__("Leave unreadable posts on WP Navigation Menus", 'press-permit-core-hints'),
+    'PRESSPERMIT_NO_NAV_MENU_SCRIPTS' => esc_html__("Don't apply CSS to hide empty Nav Menus", 'press-permit-core-hints'),
+    'PRESSPERMIT_HIDE_EMPTY_NAV_MENU_DIV' => esc_html__("For legacy Nav Menus, hide empty nav menu div", 'press-permit-core-hints'),
     'PP_NAV_MENU_SHOW_EMPTY_TERMS' => esc_html__("Leave terms with no readable posts on WP Navigation Menus", 'press-permit-core-hints'),
 ];
+
+if (defined('PRESSPERMIT_TEASER_VERSION')) {
+    $consts = array_merge(
+        $consts,
+        [
+        'PRESSPERMIT_TEASER_REDIRECT_ARG' => esc_html__("When Teaser is applied with Redirect enabled, append original url as redirect_to argument", 'press-permit-core-hints'),
+        'PRESSPERMIT_TEASER_REDIRECT_VAR' => esc_html__("For Teaser compatibility, specify a redirect argument to use instead of redirect_to", 'press-permit-core-hints'),
+        'PRESSPERMIT_TEASER_REDIRECT_ALTERNATE' => esc_html__("For Teaser compatibility, specify an additional redirect argument other than redirect_to", 'press-permit-core-hints'),
+        'PRESSPERMIT_TEASER_LOGIN_REDIRECT_NO_PP_ARG' => esc_html__("For Teaser compatibility, prevent the pp_permissions argument from being appended to redirects", 'press-permit-core-hints'),
+        ]
+    );
+}
 foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 'type' => $type];
 
 $type = 'get-pages';
@@ -51,8 +65,16 @@ $consts = [
     'PPC_FORCE_PAGE_REMAP' => esc_html__("If some pages have been suppressed from get_pages() results, change child pages' corresponding post_parent values to a visible ancestor", 'press-permit-core-hints'),
     'PPC_NO_PAGE_REMAP' => esc_html__("Never modify the post_parent value in the get_pages() result set, even if some pages have been suppressed", 'press-permit-core-hints'),
     'PP_GET_PAGES_LEAN' => esc_html__("For performance, change the get_pages() database query to return only a subset of fields, excluding post_content", 'press-permit-core-hints'),
-    'PP_TEASER_HIDE_PAGE_LISTING' => esc_html__("PRO: Don't apply content teaser to get_pages() results (leave unreadable posts hidden)", 'press-permit-core-hints'),
 ];
+
+if (defined('PRESSPERMIT_TEASER_VERSION')) {
+    $consts = array_merge(
+        $consts,
+        [
+    'PP_TEASER_HIDE_PAGE_LISTING' => esc_html__("PRO: Don't apply content teaser to get_pages() results (leave unreadable posts hidden)", 'press-permit-core-hints'),
+        ]
+    );
+}
 foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 'type' => $type];
 
 $type = 'get-terms';
@@ -73,7 +95,22 @@ foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 
 $type = 'media';
 $consts = [
     'PP_MEDIA_LIB_UNFILTERED' => esc_html__("Leave Media Library with normal access criteria based on user's role capabilities ", 'press-permit-core-hints'),
+    'PRESSPERMIT_MEDIA_UPLOAD_GRANT_PAGE_EDIT_CAPS' => esc_html__("Accommodate front end uploading solutions that require page editing capabilities for the async upload request", 'press-permit-core-hints'),
+    'PRESSPERMIT_MEDIA_IGNORE_UNREGISTERED_PARENT_TYPES' => esc_html__('Treat media attached to unregistered post types as unattached, to avoid improper and confusing filtering', 'press-permit-core-hints'),
 ];
+
+if (defined('PRESSPERMIT_FILE_ACCESS_VERSION')) {
+    $consts = array_merge(
+        $consts, 
+        [
+        'PP_ATTACHED_FILE_AUTOPRIVACY' => esc_html__("Attached Files Private setting available", 'press-permit-core-hints'),
+        'PPFF_EXCLUDE_MIME_TYPES' => esc_html__("Comma-separated list of mime types to exclude from File Access filtering", 'press-permit-core-hints'),
+        'PPFF_INCLUDE_MIME_TYPES' => esc_html__("Comma-separated list of mime types to include in File Access filtering (bypassing others)", 'press-permit-core-hints'),
+        'PP_QUIET_FILE_404' => esc_html__("When file access is blocked, do not set the WP_Query 404 / 403 property", 'press-permit-core-hints'),
+        'PPFF_STATUS_CODE' => esc_html__("HTTP status code to send when file access is blocked", 'press-permit-core-hints'),
+        ]
+    );
+}
 foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 'type' => $type];
 
 $type = 'admin';
