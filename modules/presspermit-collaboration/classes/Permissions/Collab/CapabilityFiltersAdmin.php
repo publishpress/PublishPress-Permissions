@@ -103,6 +103,23 @@ class CapabilityFiltersAdmin
 
         $orig_reqd_caps = (array)$reqd_caps;
 
+        if (in_array($orig_cap, ['edit_post', 'delete_post'])) {
+            if (!empty($args[0]) && !presspermit()->getOption('own_attachments_always_editable') && !defined('PRESSPERMIT_MEDIA_LEGACY_EDIT_DELETE')) {
+                $post = (is_object($args[0])) ? $args[0] : get_post($args[0]);
+
+                if ('attachment' == $post->post_type) {
+                    if ($post->post_parent) {
+                        if ('attachment' != get_post_field('post_type', $post->post_parent)) {
+                            if (!current_user_can('edit_post', $post->post_parent)) {
+                                $reqd_caps []= 'do_not_allow';
+                                return $reqd_caps;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         // for scoped menu management roles, satisfy edit_theme_options cap requirement
         if (('nav-menus.php' == $pagenow)
             || (('edit_theme_options' == reset($reqd_caps)) && ('edit_theme_options' == $orig_cap) && (PWP::doingAdminMenus() || (defined('DOING_AJAX') && DOING_AJAX)))
