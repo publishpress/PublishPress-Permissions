@@ -1,7 +1,7 @@
 === PublishPress Permissions: Control User Access for Posts, Pages, Categories, Tags ===
 
 Contributors: publishpress, kevinB, stevejburge, andergmartins
-Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
+Tags: restrict, access, user, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.6
 Requires PHP: 7.2.5
