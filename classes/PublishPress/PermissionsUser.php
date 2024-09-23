@@ -357,7 +357,6 @@ class PermissionsUser extends \WP_User
     public function reinstateCaps($wp_blogcaps, $orig_reqd_caps, $args)
     {
         global $current_user;
-
         							// todo: review (Add New Media)
         if (empty($current_user) || !did_action('presspermit_init') || did_action('presspermit_user_reload')) {
             return $wp_blogcaps;
@@ -365,8 +364,10 @@ class PermissionsUser extends \WP_User
 
         $user = presspermit()->getUser();
 
-        if ((!isset($args[1]) || $args[1] == $user->ID) && array_diff_key(array_filter($user->allcaps), array_filter($current_user->allcaps))) {
-            $current_user->allcaps = array_merge(array_filter($current_user->allcaps), array_filter($user->allcaps));
+        if ($user->ID == $current_user->ID) {
+            if ((!isset($args[1]) || $args[1] == $user->ID) && array_diff_key(array_filter($user->allcaps), array_filter($current_user->allcaps))) {
+                $current_user->allcaps = array_merge(array_filter($current_user->allcaps), array_filter($user->allcaps, function ($x) {return $x === true;}));
+            }
         }
 
         return $wp_blogcaps;
