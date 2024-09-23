@@ -373,14 +373,14 @@ class SettingsTabAdvanced
 
             // Unless debugging, only list defined constants and available constants in the same section
             
-                ?>
-                <tr>
-                    <td scope="row" colspan="2">
+            ?>
+            <tr>
+                <td scope="row" colspan="2">
                         <span style="font-weight:bold"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></span>
-						<br /><br />
-	                    <?php
-	                    $ui->optionCheckbox('list_all_constants', $tab, $section, true, '');
-	                    ?>
+                    <br /><br />
+                    <?php
+                    $ui->optionCheckbox('list_all_constants', $tab, $section, true, '');
+                    ?>
 
                     <?php if ($defined_constant_types || presspermit()->getOption('list_all_constants') || (defined('PRESSPERMIT_DEBUG') && PRESSPERMIT_DEBUG)) :?>
 
@@ -481,8 +481,8 @@ class SettingsTabAdvanced
                             </tbody>
                         </table>
                     <?php endif;?>
-                    </td>
-                </tr>
+                </td>
+            </tr>
             <?php
 
         } // endif advanced options enabled

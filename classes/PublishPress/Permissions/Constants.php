@@ -71,7 +71,7 @@ if (defined('PRESSPERMIT_TEASER_VERSION')) {
     $consts = array_merge(
         $consts,
         [
-    'PP_TEASER_HIDE_PAGE_LISTING' => esc_html__("PRO: Don't apply content teaser to get_pages() results (leave unreadable posts hidden)", 'press-permit-core-hints'),
+        'PP_TEASER_HIDE_PAGE_LISTING' => esc_html__("PRO: Don't apply content teaser to get_pages() results (leave unreadable posts hidden)", 'press-permit-core-hints'),
         ]
     );
 }
