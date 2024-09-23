@@ -9,7 +9,7 @@ Stable tag: 4.0.28
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-With PublishPress Permissions you can enable or deny access to posts, pages, categories, tags and more. You can apply these permissions for user roles, individual users, and even custom groups.
+Enable or deny access to posts, pages, categories, tags and more. You can apply these permissions for roles, individual users, and even custom groups.
 
 == Description ==
 
