@@ -21,7 +21,6 @@ class Constants
 
         $type = 'editing';
         $consts = [
-            'PP_DISABLE_FORKING_SUPPORT',
             'PP_LOCK_OPTION_PAGES_ONLY',
             'PPCE_LIMITED_EDITORS_TOP_LEVEL_PUBLISH',
             'PPC_ASSOCIATION_NOFILTER',
@@ -35,7 +34,6 @@ class Constants
             'PP_NO_AUTO_DEFAULT_CUSTOM_TAXOMY_NAME_HERE',
             'PPCE_DISABLE_CATEGORY_RETENTION',
             'PPCE_DISABLE_POST_TAG_RETENTION',
-            'PPCE_DISABLE_CUSTOM_TAXOMY_NAME_HERE_RETENTION',
             'PP_NO_MODERATION',
         ];
         foreach ($consts as $k) $pp_constants[$k] = (object)['descript' => SettingsAdmin::getConstantString($k), 'type' => $type];

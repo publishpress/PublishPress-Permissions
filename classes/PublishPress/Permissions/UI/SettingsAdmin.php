@@ -188,9 +188,6 @@ class SettingsAdmin
 		return esc_html__("Enable post contributors or authors with pp_set_edit_exceptions capability to set editing Permissions on posts authored by others", 'press-permit-core-hints');
 
         // 'editing'
-        case 'PP_DISABLE_FORKING_SUPPORT' :
-		return esc_html__("Don't try to integrate with the Post Forking plugin", 'press-permit-core-hints');
-
         case 'PP_LOCK_OPTION_PAGES_ONLY' :
 		return esc_html__("Permissions setting 'Pages can be set or removed from Top Level by' applies to 'page' type only", 'press-permit-core-hints');
 
@@ -223,9 +220,6 @@ class SettingsAdmin
 
         case 'PP_NO_AUTO_DEFAULT_CUSTOM_TAXOMY_NAME_HERE' :
 		return esc_html__("When saving a post, never auto-assign a term (of specified taxonomy), even if it is the user's only assignable term", 'press-permit-core-hints');
-
-        case 'PPCE_DISABLE_CATEGORY_RETENTION' :
-		return esc_html__("When a limited user updates a post, strip out currently stored categories they don't have permission to assign", 'press-permit-core-hints');
 
         case 'PPCE_DISABLE_POST_TAG_RETENTION' :
 		return esc_html__("When a limited user updates a post, strip out currently stored tags they don't have permission to assign", 'press-permit-core-hints');
