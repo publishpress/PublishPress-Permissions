@@ -24,6 +24,16 @@ class Constants
             'PP_LOCK_OPTION_PAGES_ONLY',
             'PPCE_LIMITED_EDITORS_TOP_LEVEL_PUBLISH',
             //'PP_NO_MODERATION',
+        ];
+
+        if (defined('PRESSPERMIT_CIRCLES_VERSION')) {
+            $consts[] = 'PPC_ASSOCIATION_NOFILTER';
+        }
+        foreach ($consts as $k) $pp_constants[$k] = (object)['descript' => \PublishPress\Permissions\UI\SettingsAdmin::getConstantStr($k), 'type' => $type];
+
+
+        $type = 'auto-default-term-setting-override';
+        $consts = [
             'PP_AUTO_DEFAULT_TERM',
             'PP_AUTO_DEFAULT_CATEGORY',
             'PP_AUTO_DEFAULT_POST_TAG',
