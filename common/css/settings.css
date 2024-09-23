@@ -325,9 +325,11 @@ table.pp-options-table .pp-optionhint {
 
 .pp_cap_descripts tr.const-section td {
     font-style: italic;
-    text-align: right;
+    text-align: left;
     vertical-align: bottom;
-    padding-bottom: 0
+    padding-bottom: 0;
+    color: #8b8b8b;
+    font-weight: bold;
 }
 
 .pp_cap_descripts td.defined {
