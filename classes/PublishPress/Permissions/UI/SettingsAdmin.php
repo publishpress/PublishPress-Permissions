@@ -188,9 +188,6 @@ class SettingsAdmin
 		return esc_html__("Enable post contributors or authors with pp_set_edit_exceptions capability to set editing Permissions on posts authored by others", 'press-permit-core-hints');
 
         // 'editing'
-        case 'PP_DISABLE_FORKING_SUPPORT' :
-		return esc_html__("Don't try to integrate with the Post Forking plugin", 'press-permit-core-hints');
-
         case 'PP_LOCK_OPTION_PAGES_ONLY' :
 		return esc_html__("Permissions setting 'Pages can be set or removed from Top Level by' applies to 'page' type only", 'press-permit-core-hints');
 
@@ -200,38 +197,36 @@ class SettingsAdmin
         case 'PPC_ASSOCIATION_NOFILTER' :
 		return esc_html__("Circle membership does not limit page association (page parent setting) ability", 'press-permit-core-hints');
 
+        // auto-default-term-setting-override
         case 'PP_AUTO_DEFAULT_TERM' :
 		return esc_html__("Determines the default value of Permissions > Settings > Editing > Auto-assign default term", 'press-permit-core-hints');
 
         case 'PP_AUTO_DEFAULT_CATEGORY' :
-		return esc_html__("When saving a post, if default category is not in user's subset of assignable categories, substitute first available", 'press-permit-core-hints');
+        return esc_html__("Always auto-assign a category if none are selected and user lacks permission for default category", 'press-permit-core-hints');
 
         case 'PP_AUTO_DEFAULT_POST_TAG' :
-		return esc_html__("When saving a post, if default tag is not in user's subset of assignable tags, substitute first available", 'press-permit-core-hints');
+        return esc_html__("Always auto-assign a post tag if none are selected", 'press-permit-core-hints');
 
         case 'PP_AUTO_DEFAULT_CUSTOM_TAXOMY_NAME_HERE' :
-		return esc_html__("When saving a post, if default term (of specified taxonomy) is not in user's subset of assignable tags, substitute first available", 'press-permit-core-hints');
+        return esc_html__("Always auto-assign a term of this taxonomy if none are selected", 'press-permit-core-hints');
 
         case 'PP_NO_AUTO_DEFAULT_TERM' :
 		return esc_html__("Determines the default setting of Permissions > Settings > Editing > Auto-assign default terms", 'press-permit-core-hints');
 
-        case 'PP_AUTO_DEFAULT_CATEGORY' :
-		return esc_html__("When saving a post, never auto-assign a category, even if it is the user's only assignable category", 'press-permit-core-hints');
+        case 'PP_NO_AUTO_DEFAULT_CATEGORY' :
+        return esc_html__("Do not auto-assign a category (except standard default category if user has permission)", 'press-permit-core-hints');
 
         case 'PP_NO_AUTO_DEFAULT_POST_TAG' :
-		return esc_html__("When saving a post, never auto-assign a tag, even if it is the user's only assignable tag", 'press-permit-core-hints');
+        return esc_html__("Do not auto-assign a post tag", 'press-permit-core-hints');
 
         case 'PP_NO_AUTO_DEFAULT_CUSTOM_TAXOMY_NAME_HERE' :
-		return esc_html__("When saving a post, never auto-assign a term (of specified taxonomy), even if it is the user's only assignable term", 'press-permit-core-hints');
+        return esc_html__("Do not auto-assign a term of this taxonomy", 'press-permit-core-hints');
 
-        case 'PPCE_DISABLE_CATEGORY_RETENTION' :
-		return esc_html__("When a limited user updates a post, strip out currently stored categories they don't have permission to assign", 'press-permit-core-hints');
+        case 'PP_AUTO_DEFAULT_SINGLE_TERM_ONLY' :
+        return esc_html__("Do not auto-assign a term if the user has permission for more than one term in the taxonomy", 'press-permit-core-hints');
 
-        case 'PPCE_DISABLE_POST_TAG_RETENTION' :
-		return esc_html__("When a limited user updates a post, strip out currently stored tags they don't have permission to assign", 'press-permit-core-hints');
-
-        case 'PPCE_DISABLE_CUSTOM_TAXOMY_NAME_HERE_RETENTION' :
-		return esc_html__("When a limited user updates a post, strip out currently stored terms (of specified taxonomy) they don't have permission to assign", 'press-permit-core-hints');
+        case 'PP_AUTO_DEFAULT_TERM_EXCEPTIONS_NOT_REQUIRED' :
+        return esc_html__("If auto-assign term setting is enabled, apply it even if user does not have term assignment limitations", 'press-permit-core-hints');
 
         case 'PP_NO_MODERATION' :
 		return esc_html__("Don't define an 'Approved' status, even if Status Control module is active", 'press-permit-core-hints');
