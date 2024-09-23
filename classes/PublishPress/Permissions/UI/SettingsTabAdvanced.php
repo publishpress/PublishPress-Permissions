@@ -393,6 +393,13 @@ class SettingsTabAdvanced
                                 <th><?php echo esc_html__('Description', 'press-permit-core'); ?></th>
                             </tr>
                             </thead>
+
+                            <colgroup>
+                                <col span="1" style="width: 30%;">
+                                <col span="1" style="width: 5%;">
+                                <col span="1" style="width: 65%;">
+                            </colgroup>
+
                             <tbody>
 
                             <?php
@@ -428,11 +435,18 @@ class SettingsTabAdvanced
                         <table id="pp_available_constants" class="pp_cap_descripts<?php if (!presspermit()->getOption('list_all_constants') && (!defined('PRESSPERMIT_DEBUG') || ! PRESSPERMIT_DEBUG)) echo ' pp-hint';?>" style="width: 99%">
                             <thead>
                             <tr>
-                                <th class="cap-name"><?php esc_html_e('Available Constant', 'press-permit-core'); ?></th>
+                                <th class="cap-name" style="width:40%"><?php esc_html_e('Available Constant', 'press-permit-core'); ?></th>
                                 <th class="const-value"><?php echo esc_html__('Setting', 'press-permit-core'); ?></th>
-                                <th><?php echo esc_html__('Description', 'press-permit-core'); ?></th>
+                                <th style="width:55%"><?php echo esc_html__('Description', 'press-permit-core'); ?></th>
                             </tr>
                             </thead>
+
+                            <colgroup>
+                                <col span="1" style="width: 30%;">
+                                <col span="1" style="width: 5%;">
+                                <col span="1" style="width: 65%;">
+                            </colgroup>
+
                             <tbody>
 
                             <?php
