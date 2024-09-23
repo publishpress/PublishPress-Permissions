@@ -9,6 +9,8 @@ class Constants
     public $constants_by_type = [];
 
     public function __construct() {
+        do_action('presspermit_load_constants');
+
         $this->loadConstants();
         $this->loadConstantTypes();
     }
