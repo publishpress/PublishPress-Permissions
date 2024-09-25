@@ -366,7 +366,11 @@ class PermissionsUser extends \WP_User
 
         if ($user->ID == $current_user->ID) {
             if ((!isset($args[1]) || $args[1] == $user->ID) && array_diff_key(array_filter($user->allcaps), array_filter($current_user->allcaps))) {
-                $current_user->allcaps = array_merge(array_filter($current_user->allcaps), array_filter($user->allcaps, function ($x) {return $x === true;}));
+            	if (defined('PRESSPERMIT_LEGACY_USER_CAPS')) {
+            		$current_user->allcaps = array_merge(array_filter($current_user->allcaps), array_filter($user->allcaps));
+            	} else {
+            		$current_user->allcaps = array_merge(array_filter($current_user->allcaps), array_filter($user->allcaps, function ($x) {return $x === true;}));
+            	}
             }
         }
 

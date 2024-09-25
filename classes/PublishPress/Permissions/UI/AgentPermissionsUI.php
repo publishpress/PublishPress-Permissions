@@ -45,6 +45,7 @@ class AgentPermissionsUI
             'submissionMsg' => esc_html__('Permissions submission in progress...', 'press-permit-core'),
             'reloadRequired' => esc_html__('Reload form for further changes to this permission', 'press-permit-core'),
             'mirrorDone' => esc_html__('Permissions mirrored. Reload form to view newly saved permissions.', 'press-permit-core'),
+            'convertDone' => esc_html__('Permissions converted. Reload form to view newly saved permissions.', 'press-permit-core'),
             'noMode' => esc_html__('No Qualification selected!', 'press-permit-core'),
             'ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax'),
         ];
@@ -1093,6 +1094,12 @@ class AgentPermissionsUI
                             $_op = $operation;
                         }
 
+                        $convert_caption = [
+                            'additional' => __('Convert to "Enabled"', 'press-permit-core'),
+                            'exclude' => __('Convert to "Blocked"', 'press-permit-core'),
+                            'include' => __('Convert to "Limit to"', 'press-permit-core'),
+                        ];
+
                         if (in_array($via_src, ['post', 'term'])) {
                             switch ($_op) {
                                 case 'read':
@@ -1158,6 +1165,12 @@ class AgentPermissionsUI
 
                                 echo "<option value='mirror_" . esc_attr($op) . "'>"
                                     . esc_html($caption)
+                                    . '</option>';
+                            }
+
+                            foreach (['additional', 'exclude', 'include'] as $_mod_type) {
+                                echo "<option value='convert_" . esc_attr($_mod_type) . "'>"
+                                    . $convert_caption[$_mod_type]
                                     . '</option>';
                             }
                         }
