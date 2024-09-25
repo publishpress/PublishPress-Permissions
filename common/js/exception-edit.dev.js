@@ -711,6 +711,11 @@ jQuery(document).ready(function ($) {
                 break;
             case 'exceptions_mirror':
                 set_class = 'exc-copied';
+                set_message = ppRestrict.mirrorDone;
+                break;
+            case 'exceptions_convert':
+                set_class = 'exc-copied';
+                set_message = ppRestrict.convertDone;
                 break;
             default:
                 return;
@@ -721,10 +726,10 @@ jQuery(document).ready(function ($) {
         $.each(edited_eitem_ids, function (index, value) {
             cbid = $('#pp_current_exceptions input[name="pp_edit_exception[]"][value="' + value + '"]').attr('id');
             
-            if ('exceptions_mirror' == operation) {
+            if (('exceptions_mirror' == operation) || ('exceptions_convert' == operation)) {
                 $('#' + cbid).closest('div').find('label input').attr('class', set_class);
                 $('#' + cbid).prop('checked', false);
-                $('#' + cbid).closest('div.pp-current-type-roles').find('div.pp-exception-bulk-edit div.mirror-confirm').html(ppRestrict.mirrorDone).show();
+                $('#' + cbid).closest('div.pp-current-type-roles').find('div.pp-exception-bulk-edit div.mirror-confirm').html(set_message).show();
             } else {
                 $('#' + cbid).closest('div').find('label').attr('class', set_class);
 
