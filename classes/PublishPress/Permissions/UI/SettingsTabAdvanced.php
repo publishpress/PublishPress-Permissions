@@ -422,7 +422,18 @@ class SettingsTabAdvanced
                                     ?>
                                     <tr>
                                         <td class="cap-name"><?php echo esc_html($const_name); ?></td>
-                                        <td><?php echo esc_html(strval(constant($const_name))); ?></td>
+                                        <td><?php 
+                                        $const_val = constant($const_name);
+                                        
+                                        if (false === $const_val) {
+                                            $const_val = 'false';
+                                        } elseif (true === $const_val ) {
+                                            $const_val = 'true';
+                                        }
+
+                                        echo esc_html(strval($const_val)); 
+                                        ?>
+                                        </td>
                                         <td><?php echo esc_html($ppc->constants[$const_name]->descript); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -473,7 +484,23 @@ class SettingsTabAdvanced
                                     ?>
                                     <tr>
                                         <td class="cap-name<?php echo esc_attr($class); ?>"><?php echo esc_html($const_name); ?></td>
-                                        <td class="<?php echo esc_attr($class); ?>"><?php echo (defined($const_name)) ? esc_html(strval(constant($const_name))) : ''; ?></td>
+
+                                        <td class="<?php echo esc_attr($class); ?>">
+                                        <?php 
+                                        if (defined($const_name)) {
+                                            $const_val = constant($const_name);
+                                            
+                                            if (false === $const_val) {
+                                                $const_val = 'false';
+                                            } elseif (true === $const_val ) {
+                                                $const_val = 'true';
+                                            }
+
+                                            echo esc_html(strval($const_val)); 
+                                        }
+                                        ?>
+                                        </td>
+
                                         <td class="<?php echo esc_attr($class); ?>"><?php echo esc_html($ppc->constants[$const_name]->descript); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
