@@ -282,6 +282,64 @@ class AgentPermissionsAjax
 
                     echo '<!--ppResponse-->' . 'exceptions_mirror' . '~' . esc_attr(implode('|', $edited_input_ids)) . '<--ppResponse-->';
                     break;
+                } elseif (0 === strpos($action, 'exceptions_convert_')) {
+                    
+                    $arr = explode('_', $action);
+
+                    if (count($arr) < 3) {
+                        break;
+                    }
+
+                    $modification = $arr[2];
+
+                    if (!in_array($modification, ['include', 'exclude', 'additional'])) {
+                        break;
+                    }
+
+                    $edited_input_ids = [];
+                    $all_eitem_ids = [];
+
+                    $input_vals = (!empty($_GET['pp_eitem_ids'])) ? explode('|', PWP::sanitizeCSV(sanitize_text_field($_GET['pp_eitem_ids']))) : [];
+                    
+                    if (!$input_vals) {
+                        exit;
+                    }
+
+                    foreach ($input_vals as $id_csv) {
+                        $eitem_ids = $this->editableEitemIDs(explode(',', $id_csv));
+
+                        if ($agent_type && $agent_id) {
+                            $agent_clause = "e.agent_type = '$agent_type' AND e.agent_id = '$agent_id' AND";
+                        } else {
+                            $agent_clause = '';
+                        }
+
+                        $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
+
+                        $mod_type_clause = $wpdb->prepare("AND e.mod_type != %s", $modification); // don't change exceptions that already have requested mod_type
+
+                        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+                        foreach ($results = $wpdb->get_results(
+                            "SELECT * FROM $wpdb->ppc_exception_items AS i"
+                            . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
+                            . " WHERE $agent_clause eitem_id IN ('$eitem_id_csv') $mod_type_clause"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                        ) as $row) {
+                            $args = (array)$row;
+                            $args['mod_type'] = $modification;
+                            $agents = [$row->assign_for => [$agent_id => true]];
+                            $pp->assignExceptions($agents, $agent_type, $args);
+
+                            $edited_input_ids[] = $id_csv;
+                            $all_eitem_ids[] = $row->eitem_id;
+                        }
+                    }
+
+                    \PublishPress\Permissions\DB\PermissionsUpdate::removeExceptionItemsById($all_eitem_ids);
+
+                    do_action('presspermit_exception_items_converted', $all_eitem_ids, $agent_type, $agent_id);
+
+                    echo '<!--ppResponse-->' . 'exceptions_convert' . '~' . esc_attr(implode('|', $edited_input_ids)) . '<--ppResponse-->';
+                    break;
                 }
 
         } // end switch
