@@ -55,6 +55,11 @@ class CollabHooksAdmin
                 add_action('admin_print_scripts', [$this, 'NestedPagesDisableQuickEdit']);
             }
         }
+
+        add_action('presspermit_load_constants', function() {
+            require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Constants.php');
+            new \PublishPress\Permissions\Collab\Constants();
+        });
     }
 
     function actAddMediaApplyDefaultTerm($post_id) {

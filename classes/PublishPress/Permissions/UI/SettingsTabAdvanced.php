@@ -70,6 +70,7 @@ class SettingsTabAdvanced
                 'dynamic_wp_roles' => esc_html__('Detect Dynamically Mapped WP Roles', 'press-permit-core'),
                 'non_admins_set_read_exceptions' => esc_html__('Non-Administrators can set Reading Permissions for their editable posts', 'press-permit-core'),
                 'users_bulk_groups' => esc_html__('Bulk Add / Remove Groups on Users Screen', 'press-permit-core'),
+                'list_all_constants' => esc_html('Display all available constant definitions'),
             ]);
         }
 
@@ -87,6 +88,7 @@ class SettingsTabAdvanced
                 'user_permissions' => ['user_permissions'],
                 'role_integration' => ['pattern_roles_include_generic_rolecaps', 'dynamic_wp_roles'],
                 'misc' => ['users_bulk_groups', 'user_search_by_role', 'display_hints', 'display_extension_hints'],
+                'constants' => ['list_all_constants'],
             ]);
         }
 
@@ -354,7 +356,7 @@ class SettingsTabAdvanced
 
             $section = 'constants'; // --- CONSTANTS SECTION ---
 
-            // don't display the section unless constants are defined or WP_DEBUG set
+            // don't display the section unless constants are defined or debug / constant display option enabled
             require_once(PRESSPERMIT_CLASSPATH . '/Constants.php');
             $ppc = new \PublishPress\Permissions\Constants();
 
@@ -370,13 +372,20 @@ class SettingsTabAdvanced
             }
 
             // Unless debugging, only list defined constants and available constants in the same section
-            if ($defined_constant_types || (defined('PRESSPERMIT_DEBUG') && PRESSPERMIT_DEBUG)) :
-                ?>
-                <tr>
-                    <td scope="row" colspan="2">
+            
+            ?>
+            <tr>
+                <td scope="row" colspan="2">
                         <span style="font-weight:bold"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></span>
+                    <br /><br />
+                    <?php
+                    $ui->optionCheckbox('list_all_constants', $tab, $section, true, '');
+                    ?>
 
-                        <table id="pp_defined_constants" class="pp_cap_descripts">
+                    <?php if ($defined_constant_types || presspermit()->getOption('list_all_constants') || (defined('PRESSPERMIT_DEBUG') && PRESSPERMIT_DEBUG)) :?>
+
+                        <?php if ($defined_constant_types):?>
+                        <table id="pp_defined_constants" class="pp_cap_descripts" style="width: 99%">
                             <thead>
                             <tr>
                                 <th class="cap-name"><?php esc_html_e('Defined Constant', 'press-permit-core'); ?></th>
@@ -384,6 +393,13 @@ class SettingsTabAdvanced
                                 <th><?php echo esc_html__('Description', 'press-permit-core'); ?></th>
                             </tr>
                             </thead>
+
+                            <colgroup>
+                                <col span="1" style="width: 30%;">
+                                <col span="1" style="width: 5%;">
+                                <col span="1" style="width: 65%;">
+                            </colgroup>
+
                             <tbody>
 
                             <?php
@@ -406,29 +422,48 @@ class SettingsTabAdvanced
                                     ?>
                                     <tr>
                                         <td class="cap-name"><?php echo esc_html($const_name); ?></td>
-                                        <td><?php echo esc_html(strval(constant($const_name))); ?></td>
+                                        <td><?php 
+                                        $const_val = constant($const_name);
+                                        
+                                        if (false === $const_val) {
+                                            $const_val = 'false';
+                                        } elseif (true === $const_val ) {
+                                            $const_val = 'true';
+                                        }
+
+                                        echo esc_html(strval($const_val)); 
+                                        ?>
+                                        </td>
                                         <td><?php echo esc_html($ppc->constants[$const_name]->descript); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endforeach; ?>
                             </tbody>
                         </table>
+                        <?php endif;?>
 
                         <br/>
-                        <table id="pp_available_constants" class="pp_cap_descripts pp-hint">
+                        <table id="pp_available_constants" class="pp_cap_descripts<?php if (!presspermit()->getOption('list_all_constants') && (!defined('PRESSPERMIT_DEBUG') || ! PRESSPERMIT_DEBUG)) echo ' pp-hint';?>" style="width: 99%">
                             <thead>
                             <tr>
-                                <th class="cap-name"><?php esc_html_e('Available Constant', 'press-permit-core'); ?></th>
+                                <th class="cap-name" style="width:40%"><?php esc_html_e('Available Constant', 'press-permit-core'); ?></th>
                                 <th class="const-value"><?php echo esc_html__('Setting', 'press-permit-core'); ?></th>
-                                <th><?php echo esc_html__('Description', 'press-permit-core'); ?></th>
+                                <th style="width:55%"><?php echo esc_html__('Description', 'press-permit-core'); ?></th>
                             </tr>
                             </thead>
+
+                            <colgroup>
+                                <col span="1" style="width: 30%;">
+                                <col span="1" style="width: 5%;">
+                                <col span="1" style="width: 65%;">
+                            </colgroup>
+
                             <tbody>
 
                             <?php
                             foreach ($ppc->constants_by_type as $const_type => $constants) :
                                 // Unless debugging, only list constants in sections which already have a constant defined
-                                if (!isset($defined_constant_types[$const_type]) && (!defined('PRESSPERMIT_DEBUG') || !PRESSPERMIT_DEBUG)) {
+                                if (!isset($defined_constant_types[$const_type]) && (!presspermit()->getOption('list_all_constants') && (!defined('PRESSPERMIT_DEBUG') || ! PRESSPERMIT_DEBUG))) {
                                     continue;
                                 }
                                 ?>
@@ -449,17 +484,33 @@ class SettingsTabAdvanced
                                     ?>
                                     <tr>
                                         <td class="cap-name<?php echo esc_attr($class); ?>"><?php echo esc_html($const_name); ?></td>
-                                        <td class="<?php echo esc_attr($class); ?>"><?php echo (defined($const_name)) ? esc_html(strval(constant($const_name))) : ''; ?></td>
+
+                                        <td class="<?php echo esc_attr($class); ?>">
+                                        <?php 
+                                        if (defined($const_name)) {
+                                            $const_val = constant($const_name);
+                                            
+                                            if (false === $const_val) {
+                                                $const_val = 'false';
+                                            } elseif (true === $const_val ) {
+                                                $const_val = 'true';
+                                            }
+
+                                            echo esc_html(strval($const_val)); 
+                                        }
+                                        ?>
+                                        </td>
+
                                         <td class="<?php echo esc_attr($class); ?>"><?php echo esc_html($ppc->constants[$const_name]->descript); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endforeach; ?>
                             </tbody>
                         </table>
-
-                    </td>
-                </tr>
-            <?php endif; // display constants section
+                    <?php endif;?>
+                </td>
+            </tr>
+            <?php
 
         } // endif advanced options enabled
 

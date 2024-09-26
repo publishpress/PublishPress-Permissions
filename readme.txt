@@ -1,15 +1,15 @@
 === PublishPress Permissions: Control User Access for Posts, Pages, Categories, Tags ===
 
 Contributors: publishpress, kevinB, stevejburge, andergmartins
-Tags: restrict, access, permissions, cms, user, private, category, pages, privacy, capabilities, role, scoper
+Tags: restrict, access, user, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.6
 Requires PHP: 7.2.5
-Stable tag: 4.0.29
+Stable tag: 4.0.30
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-With PublishPress Permissions you can enable or deny access to posts, pages, categories, tags and more. You can apply these permissions for user roles, individual users, and even custom groups.
+Enable or deny access to posts, pages, categories, tags and more. You can apply these permissions for roles, individual users, and even custom groups.
 
 == Description ==
 
@@ -239,6 +239,15 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.0.30 - 25 Sep 2024 =
+* Compat : PublishPress Authors - Default author was inappropriately applied for Contributors / Authors under some configurations
+* Change : Permissions metaboxes - include user_email as a User search field
+* Change : Media cannot be edited or deleted if attached to an uneditable post (unless "Users can always edit their own attachments" setting is enabled)
+* Change : Settings > Advanced > Constants - Setting checkbox to enable listing of all available constants (previously required constant definition)
+* Change : Settings > Advanced > Constants - Improved formatting
+* Fixed : Settings > Advanced > Constants - Add missing constant definitions, remove obsolete, list module-specific constants only if applicable
+* Feature : Edit Permission Group - Bulk edit supports conversion of Adjustment to Enabled / Blocked / Limit to
 
 = 4.0.29 - 16 Sep 2024 =
 * Fixed : WP 6.6 - Post Visibility settings did not correctly refresh Save As caption under some configurations
