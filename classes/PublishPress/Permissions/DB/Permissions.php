@@ -386,7 +386,7 @@ class Permissions
             );
         }
 
-        if (!$additions_only) {
+        if (!$additions_only && !did_action('presspermit_bypass_term_restrictions')) {
             if ($where) {  // where clause already indicates sitewide caps for one or more statuses (or just want the exceptions clause generated)
                 if ($append_clause = apply_filters('presspermit_append_query_clause', '', $post_type, $required_operation, $args)) {
                     $where .= $append_clause;
