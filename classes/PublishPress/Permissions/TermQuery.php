@@ -23,7 +23,7 @@ class TermQuery
 
         if ($terms) {
             if (!is_object(reset($terms))) {
-                return $terms;
+                return;
             }
 
             foreach ((array)$terms as $key => $term) {
