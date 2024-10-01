@@ -909,7 +909,7 @@ class PostFilters
             $pp_where = '1=1';
 
         // term restrictions which apply to any post type
-        if ($apply_term_restrictions) {
+        if ($apply_term_restrictions && !did_action('presspermit_bypass_term_restrictions')) {
 
             // account for term additions which apply to any post type (possibly based on a different taxonomy than restrictions)
             $additional_ttids = [];
