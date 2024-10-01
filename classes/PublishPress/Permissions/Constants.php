@@ -22,8 +22,8 @@ $consts = [
     'PP_GROUP_RESTRICTIONS' => esc_html__("Specific Permissions: restrictions ('Blocked') can be applied to custom-defined groups", 'press-permit-core-hints'),
     'PP_ALL_ANON_ROLES' => esc_html__("Supplemental roles assignment available for {All} and {Anonymous} metagroups", 'press-permit-core-hints'),
     'PP_ALL_ANON_FULL_EXCEPTIONS' => esc_html__("Allow the {All} and {Anonymous} metagroups to be granted specific reading permissions for private content", 'press-permit-core-hints'),
-    'PP_EDIT_EXCEPTIONS_ALLOW_DELETION' => esc_html__("PRO: Users who have specific editing permissions for a post or attachment can also delete it", 'press-permit-core-hints'),
-    'PP_EDIT_EXCEPTIONS_ALLOW_ATTACHMENT_DELETION' => esc_html__("PRO: Users who have custom editing permissions for an attachment can also delete it", 'press-permit-core-hints'),
+    'PP_EDIT_EXCEPTIONS_ALLOW_DELETION' => esc_html__("Users who have specific editing permissions for a post or attachment can also delete it", 'press-permit-core-hints'),
+    'PP_EDIT_EXCEPTIONS_ALLOW_ATTACHMENT_DELETION' => esc_html__("Users who have custom editing permissions for an attachment can also delete it", 'press-permit-core-hints'),
     'PP_ALLOW_UNFILTERED_FRONT' => esc_html__("Disable front end filtering if logged user is a content administrator (normally filter to force inclusion of readable private posts in get_pages() listing, post counts, etc.", 'press-permit-core-hints'),
     'PP_UNFILTERED_FRONT' => esc_html__("Disable front end filtering for all users (subject to limitation by PP_UNFILTERED_FRONT_TYPES)", 'press-permit-core-hints'),
     'PP_UNFILTERED_FRONT_TYPES' => esc_html__("Comma-separated list of post types to limit the effect of PP_UNFILTERED_FRONT and apply_filters( 'presspermit_skip_cap_filtering' )", 'press-permit-core-hints'),
@@ -71,7 +71,7 @@ if (defined('PRESSPERMIT_TEASER_VERSION')) {
     $consts = array_merge(
         $consts,
         [
-        'PP_TEASER_HIDE_PAGE_LISTING' => esc_html__("PRO: Don't apply content teaser to get_pages() results (leave unreadable posts hidden)", 'press-permit-core-hints'),
+        'PP_TEASER_HIDE_PAGE_LISTING' => esc_html__("Don't apply content teaser to get_pages() results (leave unreadable posts hidden)", 'press-permit-core-hints'),
         ]
     );
 }
