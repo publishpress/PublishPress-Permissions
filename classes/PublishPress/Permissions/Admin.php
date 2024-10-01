@@ -197,7 +197,7 @@ class Admin
         $blurb = [
             'circles' => esc_html__('Visibility Circles and Editorial Circles block access to content not authored by other group members.', 'press-permit-core'),
             'collaboration' => esc_html__('Post-specific and category-specific permissions for creation and editing.', 'press-permit-core'),
-            'compatibility' => esc_html__('Integration with bbPress, BuddyPress, Relevanssi, WPML and other plugins; enhanced Multisite support.', 'press-permit-core'),
+            'compatibility' => esc_html__('Integration with ACF, bbPress, BuddyPress, Relevanssi, WPML and other plugins; enhanced Multisite support.', 'press-permit-core'),
             'teaser' => esc_html__('On the site front end, display teaser text for unreadable posts instead of hiding them.', 'press-permit-core'),
             'status-control' => esc_html__('Customize access to custom publication workflow statuses or visibility statuses.', 'press-permit-core'),
             'file-access' => esc_html__("Restrict direct file requests based on user's access to the page a file is attached to.", 'press-permit-core'),
@@ -210,7 +210,7 @@ class Admin
         $descript = [
             'circles' => esc_html__('Visibility Circles and Editorial Circles block access to content not authored by other group members. Any WP Role, BuddyPress Group or custom Group can be marked as a Circle for specified post types.', 'press-permit-core'),
             'collaboration' => esc_html__('Supports content-specific permissions for editing, term assignment and page parent selection. In combination with other modules, supports workflow statuses, PublishPress and PublishPress Revisions.', 'press-permit-core'),
-            'compatibility' => esc_html__('Adds compatibility or integration with bbPress, Relevanssi, CMS Tree Page View, Custom Post Type UI, Subscribe2, WPML, various other plugins. Configure any BuddyPress Group as a Permissions Group. For multisite, provides network-wide Permission Groups.', 'press-permit-core'),
+            'compatibility' => esc_html__('Adds compatibility or integration with ACF, bbPress, Relevanssi, CMS Tree Page View, Custom Post Type UI, Subscribe2, WPML, various other plugins. Configure any BuddyPress Group as a Permissions Group. For multisite, provides network-wide Permission Groups.', 'press-permit-core'),
             'teaser' => esc_html__('On the site front end, replace non-readable content with placeholder text. Can be enabled for any post type. Custom filters are provided but no programming is required for basic usage.', 'press-permit-core'),
             'status-control' => esc_html__('Custom post statuses: Workflow statuses allow unlimited orderable steps between pending and published, each with distinct capability requirements and role assignments. Statuses can be type-specific.', 'press-permit-core'),
             'file-access' => esc_html__("Filters direct file access, based on user's access to post(s) which the file is attached to. No additional configuration required. Creates/modifies .htaccess file in uploads folder (and in main folder for multisite).", 'press-permit-core'),
