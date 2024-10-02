@@ -241,7 +241,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 == Changelog ==
 
 = 4.0.31 - 1 Oct 2024 =
-* Compat : The Events Calendar - Error on event category creation if not other event categories exist
+* Compat : Events Manager - Error on event category creation if no other event categories exist
 * Fixed : PHP Notice "Attempt to read property object_type on bool" under some configurations
 
 = 4.0.30 - 25 Sep 2024 =
