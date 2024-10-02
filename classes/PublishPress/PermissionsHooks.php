@@ -129,7 +129,7 @@ class PermissionsHooks
 
                 presspermit()->flags['disable_term_filtering'] = false;
 
-                global $wp_query;
+                global $wp_query, $wpdb;
 
                 if ($term_children 
                 || !$wpdb->get_col("SELECT term_id FROM $wpdb->term_taxonomy WHERE taxonomy = 'event-categories' AND parent > 0")   // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
