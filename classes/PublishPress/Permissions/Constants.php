@@ -180,6 +180,7 @@ $consts = [
 foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 'type' => $type];
 
 
+// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 /*
 if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined("REVISIONARY_VERSION")) {
     $type = 'third-party';
@@ -222,7 +223,10 @@ $consts = [
     'PRESSPERMIT_GET_PAGES_DISABLE_IN_CLAUSE' => '',
     'PRESSPERMIT_GET_PAGES_IGNORE_EXCLUDE_ARGS' => '',
     'PP_LEGACY_PAGE_URI_FILTER' => '',
-    //'PRESSPERMIT_READ_PUBLIC_CAP' => '',
+
+    // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+    //'PRESSPERMIT_READ_PUBLIC_CAP' => '', 
+    
     'PRESSPERMIT_STRICT_READ_CAP' => '',
     'PRESSPERMIT_SIMPLIFY_READ_PERMISSIONS' => '',
     'PRESSPERMIT_LEGACY_HOOKS' => '',
