@@ -1170,7 +1170,7 @@ class AgentPermissionsUI
 
                             foreach (['additional', 'exclude', 'include'] as $_mod_type) {
                                 echo "<option value='convert_" . esc_attr($_mod_type) . "'>"
-                                    . $convert_caption[$_mod_type]
+                                    . esc_html($convert_caption[$_mod_type])
                                     . '</option>';
                             }
                         }
