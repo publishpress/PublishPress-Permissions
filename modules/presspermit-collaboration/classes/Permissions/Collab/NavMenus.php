@@ -344,7 +344,7 @@ class NavMenus
                     if (isset($posted_vals['classes']))
                         $posted_vals['classes'] = array_map('sanitize_html_class', explode(' ', $posted_vals['classes']));
 
-                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
                     $menu_data = (!empty($_REQUEST['nav-menu-data'])) ? json_decode(stripslashes($_REQUEST['nav-menu-data'])) : [];
 
                     foreach($menu_data as $data_obj) {

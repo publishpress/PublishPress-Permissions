@@ -313,24 +313,24 @@ class AdminWorkarounds
                 if (presspermit()->getOption('admin_nav_menu_filter_items')) {
                     $object_id = PWP::REQUEST_int('menu-item-object-id');
 
-                    if (!empty($_REQUEST['menu'])) {              // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-                        if (is_object($_REQUEST['menu'])) {       // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-                            $menu = (!empty($_REQUEST['menu']->term_id)) ? intval($_REQUEST['menu']->term_id) : 0;  // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                    if (!empty($_REQUEST['menu'])) {              // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                        if (is_object($_REQUEST['menu'])) {       // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                            $menu = (!empty($_REQUEST['menu']->term_id)) ? intval($_REQUEST['menu']->term_id) : 0;  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                         } else {
-                            $menu = intval($_REQUEST['menu']);    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                            $menu = intval($_REQUEST['menu']);    // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                         }
                     } else {
                         $menu = 0;
                     }
 
-                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                     if (defined('PPCE_RESTRICT_MENU_TOP_LEVEL') && empty($_REQUEST['menu_item']['menu-item-parent-id'])) {
                         // prevent new menu items from going to top level
                         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');
                         new NavMenus();
 
                         if ($parent_id = NavMenus::flt_menu_item_parent(0, $object_id, $menu)) {
-                            $_REQUEST['menu_item']['menu-item-parent-id'] = $parent_id;  // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                            $_REQUEST['menu_item']['menu-item-parent-id'] = $parent_id;  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                         } else {
                             // if no editable item is found, block the new item addition
                             die(-1);
