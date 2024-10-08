@@ -1096,7 +1096,7 @@ class AgentPermissionsUI
 
                         $convert_caption = [
                             'additional' => __('Convert to "Enabled"', 'press-permit-core'),
-                            'exclude' => __('Convert to "Blocked"', 'press-permit-core'),
+                            'exclude' => __('Convert to "Blocked"', 'press-permit-core'),   // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                             'include' => __('Convert to "Limit to"', 'press-permit-core'),
                         ];
 
