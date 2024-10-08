@@ -204,7 +204,7 @@ class PostTermsSave
         return $tax_input;
     }
 
-    public static function fltTermsInput($terms, $taxonomy)
+    public static function fltTermsInput($terms, $taxonomy, $args = [])
     {
         $pp = presspermit();
 
@@ -255,7 +255,7 @@ class PostTermsSave
                 $new_terms = [];
             }
 
-            $filtered_terms = self::fltPreObjectTerms($terms, $taxonomy);
+            $filtered_terms = self::fltPreObjectTerms($terms, $taxonomy, $args);
 
             // names_by_id returned from parseTermNames() includes only selected terms, not default or alternate terms which may have been filtered in
             foreach ($filtered_terms as $term_id) {
@@ -267,7 +267,30 @@ class PostTermsSave
 
             $terms = implode(",", array_merge(array_intersect_key($names_by_id, array_flip($filtered_terms)), $new_terms));
         } else {
-            $terms = self::fltPreObjectTerms($terms, $taxonomy);
+            $term_ids = [];
+
+            foreach ($terms as $_term) {
+                if (is_object($_term)) {
+                    $term_ids[] = $_term->term_id;
+                    $pass_objects = true;
+                } else {
+                    $term_ids[] = $_term;
+                }
+            }
+
+            $term_ids = self::fltPreObjectTerms($term_ids, $taxonomy);
+
+            if (!empty($pass_objects)) {
+                $_terms = [];
+
+                foreach($term_ids as $term_id) {
+                    $_terms []= get_term($term_id, $taxonomy);
+                }
+
+                return $_terms;
+            } else {
+                $terms = $term_ids;
+            }
         }
 
         return $terms;
@@ -426,7 +449,7 @@ class PostTermsSave
                     // (Even earlier, always assigned regardless of $select_default_term flag or $user_terms count)
                     if ((
                         presspermit()->getOption('auto_assign_available_term')
-                        && (!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') || !empty($select_default_term) || (count($user_terms) == 1))
+                        && ((!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') && empty($args['is_auto_draft'])) || (!empty($select_default_term) && empty($args['is_auto_draft'])) || (count($user_terms) == 1))
 						&& !defined('PP_NO_AUTO_DEFAULT_' . strtoupper($taxonomy))
                         && (defined('PP_AUTO_DEFAULT_TERM_EXCEPTIONS_NOT_REQUIRED') || self::userHasTermLimitations($taxonomy, ['include', 'additional'], $post_type))
                         )
