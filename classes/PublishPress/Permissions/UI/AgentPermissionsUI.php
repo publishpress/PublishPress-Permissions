@@ -1220,17 +1220,19 @@ class AgentPermissionsUI
 
                     endif;
 
-                    if ((PWP::empty_REQUEST('show_propagated') || !empty($fix_child_exceptions_link)) && !empty($_SERVER['REQUEST_URI'])) {
+                    if (!empty($_SERVER['REQUEST_URI'])) {
                         $show_all_url = add_query_arg('show_propagated', '1', esc_url_raw($_SERVER['REQUEST_URI']));
 
                         if ('term' == $via_src) {
-                            echo '<div class="pp-current-roles-note">'
-                                . sprintf(
-                                    esc_html__('Note: Permissions inherited from parent %1$s are not displayed. %2$sshow all%3$s', 'press-permit-core'), 
-                                    esc_html($_caption), "&nbsp;&nbsp;<a href='" . esc_url($show_all_url) . "'>", 
-                                    '</a>'
-                                )
-                                . '</div>';
+                            if (PWP::empty_REQUEST('show_propagated')) {
+	                            echo '<div class="pp-current-roles-note">'
+	                                . sprintf(
+	                                    esc_html__('Note: Permissions inherited from parent %1$s are not displayed. %2$sshow all%3$s', 'press-permit-core'), 
+	                                    esc_html($_caption), "&nbsp;&nbsp;<a href='" . esc_url($show_all_url) . "'>", 
+	                                    '</a>'
+	                                )
+	                                . '</div>';
+                            }
                         } else {
                             echo '<div class="pp-current-roles-note">';
 
@@ -1240,12 +1242,17 @@ class AgentPermissionsUI
                                     esc_html($_caption), "&nbsp;&nbsp;<a href='" . esc_url($show_all_url) . "'>", 
                                     '</a>'
                                 );
-                            }
+                            } else {
+                            	echo '<br />';	
+                        	}
 
                             if (defined('WP_DEBUG')) {
                                 $fix_child_url = add_query_arg('pp_fix_child_exceptions', '1', esc_url_raw($_SERVER['REQUEST_URI']));
 
-                                echo '&nbsp;&nbsp;&bull;';
+								if (PWP::empty_REQUEST('show_propagated')) {
+                                	echo '&nbsp;&nbsp;&bull;';
+                            	}
+                            
                                 printf(
                                     esc_html__(' %1$sfix sub-%2$s permissions %3$s', 'press-permit-core'), 
                                     "&nbsp;&nbsp;<a href='" . esc_url($fix_child_url) . "'>",
