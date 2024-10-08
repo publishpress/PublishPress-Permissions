@@ -62,9 +62,9 @@ class Groups
                 
                 // group IDs processing is only to report number of groups that were updated
 
-                // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 if (!empty($_REQUEST['groups'])) {
-                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                     $groupids = array_map('intval', (array) $_REQUEST['groups']);
                 } else {
                     $groupids = (PWP::is_REQUEST('group')) ? [PWP::REQUEST_int('group')] : [];

@@ -57,7 +57,7 @@ class GroupsListTable extends GroupsListTableBase
 
         // phpcs Note: nonce verification unnecessary for groups listing search / orderby / order parameters
 
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $groupsearch = (!empty($_REQUEST['s'])) ? sanitize_text_field($_REQUEST['s']) : '';
 
         $groups_per_page = $this->get_items_per_page('groups_per_page');
@@ -72,12 +72,12 @@ class GroupsListTable extends GroupsListTableBase
 
         $args['search'] = '*' . $args['search'] . '*';
 
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if ($orderby = (!empty($_REQUEST['orderby'])) ? sanitize_sql_orderby($_REQUEST['orderby']) : '') {
             $args['orderby'] = $orderby;
         }
 
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if ($order = (!empty($_REQUEST['order'])) ? sanitize_sql_orderby($_REQUEST['order']) : '') {
             $args['order'] = $order;
         }
@@ -419,7 +419,7 @@ class GroupsListTable extends GroupsListTableBase
         // Remove empty items, remove duplicate items, and finally build a string.
         $class = implode(' ', array_unique(array_filter($classes)));
 
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if ($orderby = (!empty($_REQUEST['orderby'])) ? sanitize_sql_orderby($_REQUEST['orderby']) : '') {
             echo '<input type="hidden" name="orderby" value="' . esc_attr($orderby) . '" />';
         }

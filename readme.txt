@@ -5,7 +5,7 @@ Tags: restrict, access, user, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.6
 Requires PHP: 7.2.5
-Stable tag: 4.0.30
+Stable tag: 4.0.31
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -240,6 +240,10 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 4.0.31 - 8 Oct 2024 =
+* Fixed : PHP Notice "Attempt to read property object_type on bool" under some configurations
+* Compat : Events Manager - Error on event category creation if no other event categories exist
+
 = 4.0.30 - 25 Sep 2024 =
 * Compat : PublishPress Authors - Default author was inappropriately applied for Contributors / Authors under some configurations
 * Change : Permissions metaboxes - include user_email as a User search field
@@ -247,7 +251,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Change : Settings > Advanced > Constants - Setting checkbox to enable listing of all available constants (previously required constant definition)
 * Change : Settings > Advanced > Constants - Improved formatting
 * Fixed : Settings > Advanced > Constants - Add missing constant definitions, remove obsolete, list module-specific constants only if applicable
-* Feature : Edit Permission Group - Bulk edit supports conversion of Adjustment to Enabled / Blocked / Limit to
+* Feature : Edit Permission Group - Bulk edit supports conversion of existing Permissions' adjustment (Enabled / Blocked / Limit to)
 
 = 4.0.29 - 16 Sep 2024 =
 * Fixed : WP 6.6 - Post Visibility settings did not correctly refresh Save As caption under some configurations

@@ -23,7 +23,7 @@ class TermQuery
 
         if ($terms) {
             if (!is_object(reset($terms))) {
-                return $terms;
+                return;
             }
 
             foreach ((array)$terms as $key => $term) {
@@ -34,8 +34,12 @@ class TermQuery
 
         // Get the object and term ids and stick them in a lookup table
         $tax_obj = get_taxonomy($taxonomy);
-
-        $object_types = ($post_type) ? (array)$post_type : (array)esc_sql($tax_obj->object_type);
+        
+        if ($post_type || $tax_obj) {
+            $object_types = ($post_type) ? (array) $post_type : (array) esc_sql($tax_obj->object_type);
+        } else {
+            return;
+        }
 
         if ( class_exists('\PublishPress\Permissions\PostFilters') && ! presspermit()->isUserUnfiltered() ) {
             // will default to src_table $wpdb->posts

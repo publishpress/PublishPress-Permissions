@@ -277,35 +277,35 @@ class LibWP
 
     public static function empty_REQUEST($var = false) {
         if (false === $var) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return empty($_REQUEST);
         } else {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return empty($_REQUEST[$var]);
         }
     }
 
     public static function is_REQUEST($var, $match = false) {
         if (false === $match) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return isset($_REQUEST[$var]);
             
         } elseif (is_array($match)) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return (isset($_REQUEST[$var]) && in_array($_REQUEST[$var], $match));
         } else {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return (isset($_REQUEST[$var]) && ($_REQUEST[$var] == $match));
         }
     }
 
     public static function REQUEST_key($var) {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (empty($_REQUEST[$var])) {
             return '';
         }
 
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         return (is_array($_REQUEST[$var])) ? array_map('sanitize_key', $_REQUEST[$var]) : sanitize_key($_REQUEST[$var]);
     }
 
@@ -316,7 +316,7 @@ class LibWP
 
         $matched = false;
         
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $request_key = self::REQUEST_key($var);
 
         if (is_array($request_key)) {
@@ -336,12 +336,12 @@ class LibWP
     }
 
     public static function REQUEST_int($var) {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         return (!empty($_REQUEST[$var])) ? intval($_REQUEST[$var]) : 0;
     }
 
     public static function REQUEST_url($var) {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         return (!empty($_REQUEST) && !empty($_REQUEST[$var])) ? sanitize_url(sanitize_text_field($_REQUEST[$var])) : '';
     }
 
@@ -396,50 +396,50 @@ class LibWP
 
     public static function empty_GET($var = false) {
         if (false === $var) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return empty($_GET);
         } else {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return empty($_GET[$var]);
         }
     }
 
     public static function is_GET($var, $match = false) {
         if (false === $match) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return isset($_GET[$var]);
 
         } elseif (is_array($match)) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return (isset($_GET[$var]) && in_array($_GET[$var], $match));
         } else {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return (!empty($_GET[$var]) && ($_GET[$var] == $match));
         }
     }
 
     public static function GET_key($var) {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (empty($_GET[$var])) {
             return '';
         }
 
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         return (is_array($_GET[$var])) ? array_map('sanitize_key', $_GET[$var]) : sanitize_key($_GET[$var]);
     }
 
     public static function GET_int($var) {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         return (!empty($_GET[$var])) ? intval($_GET[$var]) : 0;
     }
 
     public static function GET_url($var) {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         return (!empty($_GET[$var])) ? sanitize_url(sanitize_text_field($_GET[$var])) : '';
     }
 
     public static function SERVER_url($var) {
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         return (!empty($_SERVER[$var])) ? sanitize_url(sanitize_text_field($_SERVER[$var])) : '';
     }
 

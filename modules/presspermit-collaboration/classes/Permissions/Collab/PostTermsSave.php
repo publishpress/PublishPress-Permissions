@@ -197,72 +197,103 @@ class PostTermsSave
 
     public static function fltTaxInput($tax_input)
     {
-        $pp = presspermit();
-
         foreach ((array)$tax_input as $taxonomy => $terms) {
-            $enabled_taxonomies = $pp->getEnabledTaxonomies();
-
-            if (!in_array($taxonomy, $enabled_taxonomies, true))
-                continue;
-
-            if (is_string($terms) || (!is_taxonomy_hierarchical($taxonomy))) {  // non-hierarchical taxonomy (tags)
-                if (is_string($terms)) {
-                    $term_info = self::parseTermNames($terms, $taxonomy);
-                    foreach (['terms', 'names_by_id', 'new_terms'] as $var) {
-                        $$var = $term_info[$var];
-                    }
-                } else {
-                    // WP tax_input['post_tag'] is an array, but with existing terms as numeric IDs and new terms as submitted names
-                    $term_ids = [];
-                    $names_by_id = [];
-                    $new_terms = [];
-                    foreach ($terms as $_term) {
-                        if (is_string($_term)) {
-                            $term_info = self::parseTermNames((array)$_term, $taxonomy);
-
-                            if (!empty($term_info['terms'])) {
-                                $term_id = reset($term_info['terms']);
-                                $term_ids[] = $term_id;
-
-                                if (!empty($term_info['names_by_id']))
-                                    $names_by_id[$term_id] = reset($term_info['names_by_id']);
-                            } else {
-                                $new_terms [] = reset($term_info['new_terms']);
-                            }
-                        } else {
-                            $term_ids[] = $_term;
-                        }
-                    }
-
-                    $terms = $term_ids;
-                }
-
-                $user = presspermit()->getUser();
-
-                // if term assignment is limited to a fixed set, ignore any attempt to assign a newly created term
-                if ($user->getExceptionTerms('assign', 'include', PWP::findPostType(), $taxonomy) 
-                || $user->getExceptionTerms('assign', 'include', '', $taxonomy)
-                ) {
-                    $new_terms = [];
-                }
-
-                $filtered_terms = self::fltPreObjectTerms($terms, $taxonomy);
-
-                // names_by_id returned from parseTermNames() includes only selected terms, not default or alternate terms which may have been filtered in
-                foreach ($filtered_terms as $term_id) {
-                    if (!isset($names_by_id[$term_id])) {
-                        if ($term = get_term_by('id', $term_id, $taxonomy))
-                            $names_by_id[$term->term_id] = $term->name;
-                    }
-                }
-
-                $tax_input[$taxonomy] = implode(",", array_merge(array_intersect_key($names_by_id, array_flip($filtered_terms)), $new_terms));
-            } else {
-                $tax_input[$taxonomy] = self::fltPreObjectTerms($terms, $taxonomy);
-            }
+            $tax_input[$taxonomy] = self::fltTermsInput($terms, $taxonomy);
         }
 
         return $tax_input;
+    }
+
+    public static function fltTermsInput($terms, $taxonomy, $args = [])
+    {
+        $pp = presspermit();
+
+        $enabled_taxonomies = $pp->getEnabledTaxonomies();
+
+        if (!in_array($taxonomy, $enabled_taxonomies, true)) {
+            return $terms;
+        }
+
+        if (is_string($terms) || (!is_taxonomy_hierarchical($taxonomy))) {  // non-hierarchical taxonomy (tags)
+            if (is_string($terms)) {
+                $term_info = self::parseTermNames($terms, $taxonomy);
+                foreach (['terms', 'names_by_id', 'new_terms'] as $var) {
+                    $$var = $term_info[$var];
+                }
+            } else {
+                // WP tax_input['post_tag'] is an array, but with existing terms as numeric IDs and new terms as submitted names
+                $term_ids = [];
+                $names_by_id = [];
+                $new_terms = [];
+                foreach ($terms as $_term) {
+                    if (is_string($_term)) {
+                        $term_info = self::parseTermNames((array)$_term, $taxonomy);
+
+                        if (!empty($term_info['terms'])) {
+                            $term_id = reset($term_info['terms']);
+                            $term_ids[] = $term_id;
+
+                            if (!empty($term_info['names_by_id']))
+                                $names_by_id[$term_id] = reset($term_info['names_by_id']);
+                        } else {
+                            $new_terms [] = reset($term_info['new_terms']);
+                        }
+                    } else {
+                        $term_ids[] = $_term;
+                    }
+                }
+
+                $terms = $term_ids;
+            }
+
+            $user = presspermit()->getUser();
+
+            // if term assignment is limited to a fixed set, ignore any attempt to assign a newly created term
+            if ($user->getExceptionTerms('assign', 'include', PWP::findPostType(), $taxonomy) 
+            || $user->getExceptionTerms('assign', 'include', '', $taxonomy)
+            ) {
+                $new_terms = [];
+            }
+
+            $filtered_terms = self::fltPreObjectTerms($terms, $taxonomy, $args);
+
+            // names_by_id returned from parseTermNames() includes only selected terms, not default or alternate terms which may have been filtered in
+            foreach ($filtered_terms as $term_id) {
+                if (!isset($names_by_id[$term_id])) {
+                    if ($term = get_term_by('id', $term_id, $taxonomy))
+                        $names_by_id[$term->term_id] = $term->name;
+                }
+            }
+
+            $terms = implode(",", array_merge(array_intersect_key($names_by_id, array_flip($filtered_terms)), $new_terms));
+        } else {
+            $term_ids = [];
+
+            foreach ($terms as $_term) {
+                if (is_object($_term)) {
+                    $term_ids[] = $_term->term_id;
+                    $pass_objects = true;
+                } else {
+                    $term_ids[] = $_term;
+                }
+            }
+
+            $term_ids = self::fltPreObjectTerms($term_ids, $taxonomy);
+
+            if (!empty($pass_objects)) {
+                $_terms = [];
+
+                foreach($term_ids as $term_id) {
+                    $_terms []= get_term($term_id, $taxonomy);
+                }
+
+                return $_terms;
+            } else {
+                $terms = $term_ids;
+            }
+        }
+
+        return $terms;
     }
 
     private static function parseTermNames($names, $taxonomy)
@@ -418,7 +449,7 @@ class PostTermsSave
                     // (Even earlier, always assigned regardless of $select_default_term flag or $user_terms count)
                     if ((
                         presspermit()->getOption('auto_assign_available_term')
-                        && (!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') || !empty($select_default_term) || (count($user_terms) == 1))
+                        && ((!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') && empty($args['is_auto_draft'])) || (!empty($select_default_term) && empty($args['is_auto_draft'])) || (count($user_terms) == 1))
 						&& !defined('PP_NO_AUTO_DEFAULT_' . strtoupper($taxonomy))
                         && (defined('PP_AUTO_DEFAULT_TERM_EXCEPTIONS_NOT_REQUIRED') || self::userHasTermLimitations($taxonomy, ['include', 'additional'], $post_type))
                         )
