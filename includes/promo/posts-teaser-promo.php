@@ -1,9 +1,8 @@
 <div class="wrap publishpress-caps-manage pressshack-admin-wrapper pp-conditions pp-permissions-menus-wrapper-promo">
     <header>
-    <div class="pp-icon"><?php echo '<img src="' . esc_url(PRESSPERMIT_URLPATH . '/common/img/publishpress-logo-icon.png') . '" alt="" />';?></div>
-    <h1>
-    <?php esc_html_e('Posts Teaser', 'press-permit-core');?>
-    </h1>
+        <h1>
+            <?php esc_html_e('Posts Teaser', 'press-permit-core'); ?>
+        </h1>
     </header>
 
     <table id="akmin">
@@ -12,8 +11,8 @@
                 <div id="pp-permissions-menu-wrapper" class="postbox" style="box-shadow: none; background: none;">
                     <div class="pp-permissions-menus-promo">
                         <div class="pp-permissions-menus-promo-inner">
-                            <img src="<?php echo esc_url(PRESSPERMIT_URLPATH . '/includes/promo/permissions-teaser-desktop.jpg');?>" class="pp-permissions-desktop" />
-                            <img src="<?php echo esc_url(PRESSPERMIT_URLPATH . '/includes/promo/permissions-teaser-mobile.jpg');?>" class="pp-permissions-mobile" />
+                            <img src="<?php echo esc_url(PRESSPERMIT_URLPATH . '/includes/promo/permissions-teaser-desktop.jpg'); ?>" class="pp-permissions-desktop" />
+                            <img src="<?php echo esc_url(PRESSPERMIT_URLPATH . '/includes/promo/permissions-teaser-mobile.jpg'); ?>" class="pp-permissions-mobile" />
                             <div class="pp-permissions-menus-promo-content">
                                 <p>
                                     <?php esc_html_e('Show a teaser message or login prompt for protected content. Available in PublishPress Permissions Pro.', 'press-permit-core'); ?>
