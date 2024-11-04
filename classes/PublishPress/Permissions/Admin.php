@@ -11,27 +11,30 @@ class Admin
     private $last_post_status = [];
     public $errors;
 
-    public function __construct() {
+    public function __construct()
+    {
         add_action('admin_notices', [$this, 'rsMigrationNotice']);
     }
 
     public function rsMigrationNotice()
     {
-        if (!presspermit()->getOption('offer_rs_migration') 
-        || !presspermit()->isAdministrator() 
-        || (apply_filters('presspermit_import_count', 0, 'rs') && PWP::empty_REQUEST('rs-not-imported'))
+        if (
+            !presspermit()->getOption('offer_rs_migration')
+            || !presspermit()->isAdministrator()
+            || (apply_filters('presspermit_import_count', 0, 'rs') && PWP::empty_REQUEST('rs-not-imported'))
         ) {
             return;
         }
 
         $url = admin_url('admin.php?page=presspermit-settings&pp_tab=import');
-        
+
         $this->notice(
             sprintf(
                 esc_html__('Role Scoper installation detected. To migrate your groups, roles, restrictions and options to PublishPress Permissions, run the %sImport tool%s.', 'press-permit-core'),
                 '',
                 ''
-            ), 'rs-migration'
+            ),
+            'rs-migration'
         );
     }
 
@@ -72,7 +75,7 @@ class Admin
     public function bulkRolesEnabled()
     {
         return (current_user_can('pp_assign_roles') && (current_user_can('pp_administer_content') || current_user_can('pp_assign_bulk_roles'))
-                && !defined('PP_DISABLE_BULK_ROLES')) || (current_user_can('edit_users'));
+            && !defined('PP_DISABLE_BULK_ROLES')) || (current_user_can('edit_users'));
     }
 
     public function userCanAdminRole($role_name, $post_type, $item_id = 0)
@@ -179,7 +182,7 @@ class Admin
         return $ordered_types;
     }
 
-    public function getModuleInfo($args=[])
+    public function getModuleInfo($args = [])
     {
         $title = [
             'circles' =>        esc_html__('Access Circles', 'press-permit-core'),
@@ -193,7 +196,7 @@ class Admin
             'sync' =>           esc_html__('Sync Posts', 'press-permit-core'),
             'role-scoper-migration-advisor' => esc_html__('Role Scoper Migration Advisor', 'press-permit-core'),
         ];
-        
+
         $blurb = [
             'circles' => esc_html__('Visibility Circles and Editorial Circles block access to content not authored by other group members.', 'press-permit-core'),
             'collaboration' => esc_html__('Post-specific and category-specific permissions for creation and editing.', 'press-permit-core'),
@@ -204,9 +207,9 @@ class Admin
             'import' => esc_html__('Import Role Scoper groups, roles, restrictions and settings.', 'press-permit-core'),
             'membership' => esc_html__('Time-limit access customizations by delaying or expiring Permission Group membership.', 'press-permit-core'),
             'sync' => esc_html__('Auto-create a page for each user of specified roles. Compatible with several Team / Staff plugins.', 'press-permit-core'),
-            'role-scoper-migration-advisor' => esc_html__('Analyzes your Role Scoper installation, identifying Permissions migration readiness or issues.', 'press-permit-core'), 
+            'role-scoper-migration-advisor' => esc_html__('Analyzes your Role Scoper installation, identifying Permissions migration readiness or issues.', 'press-permit-core'),
         ];
-        
+
         $descript = [
             'circles' => esc_html__('Visibility Circles and Editorial Circles block access to content not authored by other group members. Any WP Role, BuddyPress Group or custom Group can be marked as a Circle for specified post types.', 'press-permit-core'),
             'collaboration' => esc_html__('Supports content-specific permissions for editing, term assignment and page parent selection. In combination with other modules, supports workflow statuses, PublishPress and PublishPress Revisions.', 'press-permit-core'),
@@ -225,8 +228,8 @@ class Admin
 
     public function isPluginAction()
     {
-        return (!empty($_SERVER['REQUEST_URI']) && (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'plugin-install.php' )))
-        || PWP::is_REQUEST('action', ['activate', 'deactivate']);
+        return (!empty($_SERVER['REQUEST_URI']) && (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'plugin-install.php')))
+            || PWP::is_REQUEST('action', ['activate', 'deactivate']);
     }
 
     public function errorNotice($err_slug, $args)
@@ -237,58 +240,55 @@ class Admin
 
     public function notice($notice, $msg_id = '')
     {
-		$dismissals = (array) pp_get_option('dismissals');
+        $dismissals = (array) pp_get_option('dismissals');
 
-		if ($msg_id && isset($dismissals[$msg_id]) && !PWP::is_REQUEST('pp_ignore_dismissal', $msg_id)) {
-			return;
+        if ($msg_id && isset($dismissals[$msg_id]) && !PWP::is_REQUEST('pp_ignore_dismissal', $msg_id)) {
+            return;
         }
-		
+
         require_once(PRESSPERMIT_CLASSPATH . '/ErrorNotice.php');
         $err = new \PublishPress\Permissions\ErrorNotice();
         $err->addNotice($notice, ['id' => $msg_id]);
     }
 
-    function publishpressFooter() {
+    function publishpressFooter()
+    {
         if (presspermit()->isPro() && !presspermit()->getOption('display_branding')) {
             return;
         }
-    ?>
+?>
         <footer>
 
-        <div class="pp-rating">
-        <a href="https://wordpress.org/support/plugin/press-permit-core/reviews/#new-post" target="_blank" rel="noopener noreferrer">
-        <?php printf( 
-            esc_html__('If you like %s, please leave us a %s rating. Thank you!', 'press-permit-core'),
-            '<strong>PublishPress Permissions</strong>',
-            '<span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>'
-            );
-        ?>
-        </a>
-        </div>
+            <div class="pp-rating">
+                <a href="https://wordpress.org/support/plugin/press-permit-core/reviews/#new-post" target="_blank" rel="noopener noreferrer">
+                    <?php printf(
+                        esc_html__('If you like %s, please leave us a %s rating. Thank you!', 'press-permit-core'),
+                        '<strong>PublishPress Permissions</strong>',
+                        '<span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>'
+                    );
+                    ?>
+                </a>
+            </div>
 
-        <hr>
-        <nav>
-        <ul>
-        <li><a href="https://publishpress.com/permissions" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e('About PublishPress Permissions', 'press-permit-core');?>"><?php esc_html_e('About', 'press-permit-core');?>
-        </a></li>
-        <li><a href="https://publishpress.com/documentation/permissions-start/" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e('Permissions Documentation', 'press-permit-core');?>"><?php esc_html_e('Documentation', 'press-permit-core');?>
-        </a></li>
-        <li><a href="https://publishpress.com/contact" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e('Contact the PublishPress team', 'press-permit-core');?>"><?php esc_html_e('Contact', 'press-permit-core');?>
-        </a></li>
-        <li><a href="https://twitter.com/publishpresscom" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-twitter"></span>
-        </a></li>
-        <li><a href="https://facebook.com/publishpress" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-facebook"></span>
-        </a></li>
-        </ul>
-        </nav>
+            <hr>
+            <nav>
+                <ul>
+                    <li><a href="https://publishpress.com/permissions" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e('About PublishPress Permissions', 'press-permit-core'); ?>"><?php esc_html_e('About', 'press-permit-core'); ?>
+                        </a></li>
+                    <li><a href="https://publishpress.com/documentation/permissions-start/" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e('Permissions Documentation', 'press-permit-core'); ?>"><?php esc_html_e('Documentation', 'press-permit-core'); ?>
+                        </a></li>
+                    <li><a href="https://publishpress.com/contact" target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e('Contact the PublishPress team', 'press-permit-core'); ?>"><?php esc_html_e('Contact', 'press-permit-core'); ?>
+                        </a></li>
+                </ul>
+            </nav>
 
-        <div class="pp-pressshack-logo">
-        <a href="//publishpress.com" target="_blank" rel="noopener noreferrer">
-        <img src="<?php echo esc_url(plugins_url('', PRESSPERMIT_FILE)) . '/common/img/publishpress-logo.png';?>" />
-        </a>
-        </div>
+            <div class="pp-pressshack-logo">
+                <a href="//publishpress.com" target="_blank" rel="noopener noreferrer">
+                    <img src="<?php echo esc_url(plugins_url('', PRESSPERMIT_FILE)) . '/common/img/publishpress-logo.png'; ?>" />
+                </a>
+            </div>
 
         </footer>
-    <?php
+<?php
     }
 }
