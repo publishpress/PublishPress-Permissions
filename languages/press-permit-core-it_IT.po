@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Plugins - PublishPress Permissions: Control User Access "
 "for Posts, Pages, Categories, Tags - Stable (latest release)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
-"POT-Creation-Date: 2024-09-25T17:53:44+00:00\n"
-"PO-Revision-Date: 2024-09-27 15:45+0200\n"
+"POT-Creation-Date: 2024-10-08T16:41:32+00:00\n"
+"PO-Revision-Date: 2024-10-09 10:31+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: it\n"
@@ -122,10 +122,10 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/Admin.php:200
 msgid ""
-"Integration with bbPress, BuddyPress, Relevanssi, WPML and other plugins; "
-"enhanced Multisite support."
+"Integration with ACF, bbPress, BuddyPress, Relevanssi, WPML and other "
+"plugins; enhanced Multisite support."
 msgstr ""
-"Integrazione con bbPress, BuddyPress, Relevanssi, WPML e altri plugin; "
+"Integrazione con ACF, bbPress, BuddyPress, Relevanssi, WPML e altri plugin; "
 "compatibilità migliorata per i multisiti."
 
 #: classes/PublishPress/Permissions/Admin.php:201
@@ -205,15 +205,15 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/Admin.php:213
 msgid ""
-"Adds compatibility or integration with bbPress, Relevanssi, CMS Tree Page "
-"View, Custom Post Type UI, Subscribe2, WPML, various other plugins. "
+"Adds compatibility or integration with ACF, bbPress, Relevanssi, CMS Tree "
+"Page View, Custom Post Type UI, Subscribe2, WPML, various other plugins. "
 "Configure any BuddyPress Group as a Permissions Group. For multisite, "
 "provides network-wide Permission Groups."
 msgstr ""
-"Aggiunge compatibilità o integrazione con bbPress, Relevanssi, CMS Tree Page "
-"View, Custom Post Type UI, Subscribe2, WPML e molti altri plugin. Configura "
-"qualsiasi gruppo BuddyPress come gruppo di autorizzazioni. Per i siti "
-"multipli, fornisce gruppi di autorizzazioni a livello di rete."
+"Aggiunge compatibilità o integrazione con ACF, bbPress, Relevanssi, CMS Tree "
+"Page View, Custom Post Type UI, Subscribe2, WPML e molti altri plugin. "
+"Configura qualsiasi gruppo BuddyPress come gruppo di autorizzazioni. Per i "
+"siti multipli, fornisce gruppi di autorizzazioni a livello di rete."
 
 #: classes/PublishPress/Permissions/Admin.php:214
 msgid ""
@@ -463,7 +463,7 @@ msgid "Block:"
 msgstr "Bloccare:"
 
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:115
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1423
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1430
 msgid "Limit to:"
 msgstr "Limitato a:"
 
@@ -1120,7 +1120,7 @@ msgstr "* = assegnato a %1$s e sub-%1$s"
 msgid "* = assigned for sub-%s only"
 msgstr "* = assegnato solo a sub-%s"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1229
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1230
 msgid ""
 "Note: Permissions inherited from parent %1$s are not displayed. %2$sshow "
 "all%3$s"
@@ -1128,7 +1128,7 @@ msgstr ""
 "Nota: le autorizzazioni ereditate dal genitore %1$s non vengono "
 "visualizzate. %2$smostra tutto%3$s"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1239
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1241
 msgid ""
 "Note: Permissions inherited from parent %1$s or terms are not displayed. "
 "%2$sshow all%3$s"
@@ -1136,28 +1136,28 @@ msgstr ""
 "Nota: le autorizzazioni ereditate dal genitore %1$s o i termini non vengono "
 "visualizzate. %2$smostra tutto%3$s"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1250
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1257
 msgid " %1$sfix sub-%2$s permissions %3$s"
 msgstr " %1$sfix sub-%2$s autorizzazioni %3$s"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1322
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1329
 #: modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:27
 msgid "Group Members"
 msgstr "Membri del gruppo"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1371
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1378
 msgid "Copy Roles and Permissions from:"
 msgstr "Copia i ruoli e le autorizzazioni da:"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1394
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1401
 msgid "Do Clone"
 msgstr "Fai clone"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1426
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1433
 msgid "Blocked:"
 msgstr "Bloccato:"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1430
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1437
 msgid "Enabled:"
 msgstr "Abilitato:"
 
