@@ -6,7 +6,7 @@ msgstr ""
 "for Posts, Pages, Categories, Tags - Stable (latest release)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
 "POT-Creation-Date: 2024-10-08T16:41:32+00:00\n"
-"PO-Revision-Date: 2024-11-05 12:14+0000\n"
+"PO-Revision-Date: 2024-11-06 15:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: French (France)\n"
 "Language: fr_FR\n"
@@ -154,7 +154,7 @@ msgid "%1$sDo not apply%2$s metagroup permissions for Administrators"
 msgstr ""
 "%1$sNe pas appliquer%2$s les droits du métagroupe pour les administrateurs"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:204
+#: classes/PublishPress/Permissions/UI/Groups.php:214
 #, php-format
 msgid "%1$sGroup Type:%2$s %3$s"
 msgstr "%1$sType de groupe : %2$s %3$s"
@@ -293,7 +293,7 @@ msgid_plural "%s author pages added"
 msgstr[0] "%s page d’auteur/autrice ajoutée"
 msgstr[1] "%s pages d’auteurs/autrices ajoutées"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:127
+#: classes/PublishPress/Permissions/UI/Groups.php:137
 #, php-format
 msgid "%s group deleted"
 msgid_plural "%s groups deleted"
@@ -539,7 +539,7 @@ msgstr "Ajouter page de l’auteur/autrice&hellip;"
 msgid "Add New"
 msgstr "Ajouter"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:178
+#: classes/PublishPress/Permissions/UI/Groups.php:188
 msgid "Add New Group"
 msgstr "Ajouter un nouveau groupe"
 
@@ -625,7 +625,7 @@ msgstr ""
 "contenu. Activez ou bloquez l’accès à des publications ou des termes "
 "spécifiques."
 
-#: classes/PublishPress/Permissions/UI/Groups.php:208
+#: classes/PublishPress/Permissions/UI/Groups.php:218
 msgid "All"
 msgstr "Tous"
 
@@ -667,12 +667,12 @@ msgstr "Tous les réglages ont été réinitialisés à la valeur par défaut."
 msgid "All settings were updated."
 msgstr "Tous les réglages ont été mis à jour."
 
-#: classes/PublishPress/Permissions/DB/Groups.php:496
+#: classes/PublishPress/Permissions/DB/Groups.php:490
 msgid "All users (including anonymous)"
 msgstr ""
 "Tous les utilisateurs et toutes les utilisatrices (y compris les anonymes)"
 
-#: classes/PublishPress/Permissions/DB/Groups.php:502
+#: classes/PublishPress/Permissions/DB/Groups.php:495
 #, php-format
 msgid "All users with the WordPress role of %s"
 msgstr ""
@@ -717,7 +717,7 @@ msgstr ""
 "Analyse votre installation Role Scoper, identifie la préparation ou les "
 "problèmes liés à la migration des droits."
 
-#: classes/PublishPress/Permissions/DB/Groups.php:493
+#: classes/PublishPress/Permissions/DB/Groups.php:488
 msgid "Anonymous users (not logged in)"
 msgstr "Utilisateurs/utilisatrices anonymes (déconnectés)"
 
@@ -778,11 +778,11 @@ msgstr "Assigner le terme"
 msgid "Assignment"
 msgstr "Assignation"
 
-#: classes/PublishPress/Permissions/DB/Groups.php:490
+#: classes/PublishPress/Permissions/DB/Groups.php:486
 msgid "Authenticated site users (logged in)"
 msgstr "Utilisateurs/utilisatrices authentifiés du site (connectés)"
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:191
+#: classes/PublishPress/PermissionsHooksAdmin.php:200
 msgid "Author"
 msgstr "Auteur/autrice"
 
@@ -790,11 +790,11 @@ msgstr "Auteur/autrice"
 msgid "Author / Editor"
 msgstr "Auteur/autrice / éditeur/éditrice"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:293
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:290
 msgid "Author Search / Select"
 msgstr "Recherche/sélection des auteurs/autrices"
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:191
+#: classes/PublishPress/PermissionsHooksAdmin.php:200
 msgid "Authors"
 msgstr "Auteurs/autrices"
 
@@ -881,8 +881,8 @@ msgstr ""
 msgid "Capability Name"
 msgstr "Nom de la permisssion"
 
-#: classes/PublishPress/Permissions/DB/Groups.php:458
-#: classes/PublishPress/Permissions/DB/Groups.php:473
+#: classes/PublishPress/Permissions/DB/Groups.php:454
+#: classes/PublishPress/Permissions/DB/Groups.php:469
 msgid "Change Request Notifications"
 msgstr "Notifications de demande de modification"
 
@@ -922,7 +922,7 @@ msgid "Clone"
 msgstr "Cloner"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:267
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:320
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:317
 msgid "close"
 msgstr "fermer"
 
@@ -960,7 +960,7 @@ msgstr "Administrateur/administratrice de contenu"
 msgid "Content Filtering"
 msgstr "Filtrage du contenu"
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:190
+#: classes/PublishPress/PermissionsHooksAdmin.php:199
 msgid "Contributor"
 msgstr "Contributeur/contributrice"
 
@@ -968,7 +968,7 @@ msgstr "Contributeur/contributrice"
 msgid "Contributor / Author / Editor"
 msgstr "Contributeur/contributrice / auteur/autrices / éditeur/éditrice"
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:190
+#: classes/PublishPress/PermissionsHooksAdmin.php:199
 msgid "Contributors"
 msgstr "Contributeurs/contributrices"
 
@@ -1064,13 +1064,13 @@ msgid "Current Selections:"
 msgstr "Sélections actuelles :"
 
 #: classes/PublishPress/Permissions/Groups.php:54
-#: classes/PublishPress/Permissions/UI/Groups.php:198
-#: classes/PublishPress/Permissions/UI/GroupsListTable.php:330
+#: classes/PublishPress/Permissions/UI/Groups.php:208
+#: classes/PublishPress/Permissions/UI/GroupsListTable.php:331
 msgid "Custom Group"
 msgstr "Groupe personnalisé"
 
 #: classes/PublishPress/Permissions/Groups.php:55
-#: classes/PublishPress/Permissions/UI/Groups.php:198
+#: classes/PublishPress/Permissions/UI/Groups.php:208
 msgid "Custom Groups"
 msgstr "Groupes personnalisés"
 
@@ -1088,6 +1088,10 @@ msgstr ""
 #: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:369
 msgid "Custom User Permissions"
 msgstr "Droits d’utilisateur/utilisatrice personnalisés"
+
+#: classes/PublishPress/Permissions/UI/Groups.php:22
+msgid "Customer"
+msgstr "Client"
 
 #: classes/PublishPress/Permissions/UI/HintsPostEdit.php:48
 msgid "Customize"
@@ -1249,7 +1253,7 @@ msgstr "Modifier les droits d’utilisateur/utilisatrice"
 msgid "Editing"
 msgstr "Modification"
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:192
+#: classes/PublishPress/PermissionsHooksAdmin.php:201
 msgid "Editor"
 msgstr "Éditeur/éditrice"
 
@@ -1257,7 +1261,7 @@ msgstr "Éditeur/éditrice"
 msgid "Editor Options"
 msgstr "Options de l’éditeur"
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:192
+#: classes/PublishPress/PermissionsHooksAdmin.php:201
 msgid "Editors"
 msgstr "Éditeurs/éditrices"
 
@@ -1301,7 +1305,7 @@ msgstr "entrez l’identifiant et le slug de la publication"
 msgid "equal or lower role levels"
 msgstr "niveaux de rôle égaux ou inférieurs"
 
-#: classes/PublishPress/Permissions/DB/Groups.php:453
+#: classes/PublishPress/Permissions/DB/Groups.php:450
 msgid "Everyone"
 msgstr "Tout le monde"
 
@@ -1583,11 +1587,11 @@ msgstr "bloquer"
 msgid "Lock custom menu items"
 msgstr "Bloquer les éléments de menu personnalisés"
 
-#: classes/PublishPress/Permissions/DB/Groups.php:447
+#: classes/PublishPress/Permissions/DB/Groups.php:446
 msgid "Logged In"
 msgstr "Connecté"
 
-#: classes/PublishPress/Permissions/UI/GroupsListTable.php:322
+#: classes/PublishPress/Permissions/UI/GroupsListTable.php:323
 msgid "Login State"
 msgstr "État de connexion"
 
@@ -1692,7 +1696,7 @@ msgstr "Menus de navigation (ancien)"
 msgid "Network-Wide Settings"
 msgstr "Réglages à l’échelle du réseau"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:132
+#: classes/PublishPress/Permissions/UI/Groups.php:142
 msgid "New group created."
 msgstr "Nouveau groupe créé."
 
@@ -1766,7 +1770,7 @@ msgstr ""
 "Les non-administrateurs/non-administratrices peuvent définir des droits de "
 "lecture pour leurs publications modifiables"
 
-#: classes/PublishPress/Permissions/DB/Groups.php:450
+#: classes/PublishPress/Permissions/DB/Groups.php:448
 msgid "Not Logged In"
 msgstr "Déconnecté"
 
@@ -1878,7 +1882,7 @@ msgstr ""
 "Lister par défaut des téléchargements non attachés des autres "
 "utilisateurs/utilisatrices"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:89
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:90
 msgid "Page Approved"
 msgstr "Page approuvée"
 
@@ -1948,8 +1952,8 @@ msgstr "basé sur&hellip;"
 msgid "patterned on..."
 msgstr "basé sur…"
 
-#: classes/PublishPress/Permissions/DB/Groups.php:458
-#: classes/PublishPress/Permissions/DB/Groups.php:473
+#: classes/PublishPress/Permissions/DB/Groups.php:454
+#: classes/PublishPress/Permissions/DB/Groups.php:469
 msgid "Pending Revision Monitors"
 msgstr "Moniteurs de révision en attente"
 
@@ -1966,13 +1970,13 @@ msgstr "Le droit est déjà sélectionné !"
 msgid "Permission Group"
 msgstr "Groupe de droits"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:162
+#: classes/PublishPress/Permissions/UI/Groups.php:172
 #: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:160
 #: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:186
 msgid "Permission Groups"
 msgstr "Groupes de droits"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:187
+#: classes/PublishPress/Permissions/UI/Groups.php:197
 msgid ""
 "Permission Groups adjust user access with type-specific Roles and item-"
 "specific Permissions. To customize permissions for a single user instead, "
@@ -2096,7 +2100,7 @@ msgstr "Droits : Sélectionnez cette %s comme parent"
 msgid "PHP Version: %s"
 msgstr "Version de PHP : %s"
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:208
+#: classes/PublishPress/PermissionsHooksAdmin.php:218
 #, php-format
 msgid ""
 "Please %senable the Collaborative Publishing module%s for PublishPress "
@@ -2113,7 +2117,7 @@ msgstr ""
 "Veuillez mettre à niveau PublishPress Authors vers la version 3.8.0 ou "
 "ultérieure pour l’intégration de Permissions."
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:88
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:89
 msgid "Post Approved"
 msgstr "Publication approuvée"
 
@@ -2202,7 +2206,7 @@ msgstr ""
 msgid "PublishPress Permissions Version: %1$s %2$s"
 msgstr "PublishPress Permissions version : %1$s %2$s"
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:212
+#: classes/PublishPress/PermissionsHooksAdmin.php:222
 msgid ""
 "PublishPress Revisions integration requires the Collaborative Publishing "
 "module. Please notify your Administrator."
@@ -2382,13 +2386,13 @@ msgstr "Enregistrer les droits"
 msgid "Save Roles"
 msgstr "Enregistrer les rôles"
 
-#: classes/PublishPress/Permissions/DB/Groups.php:462
-#: classes/PublishPress/Permissions/DB/Groups.php:477
+#: classes/PublishPress/Permissions/DB/Groups.php:458
+#: classes/PublishPress/Permissions/DB/Groups.php:473
 msgid "Scheduled Change Notifications"
 msgstr "Notifications de modification planifiées"
 
-#: classes/PublishPress/Permissions/DB/Groups.php:462
-#: classes/PublishPress/Permissions/DB/Groups.php:477
+#: classes/PublishPress/Permissions/DB/Groups.php:458
+#: classes/PublishPress/Permissions/DB/Groups.php:473
 msgid "Scheduled Revision Monitors"
 msgstr "Moniteurs de révision planifiée"
 
@@ -2396,11 +2400,11 @@ msgstr "Moniteurs de révision planifiée"
 msgid "Search Custom Groups"
 msgstr "Rechercher de groupes personnalisés"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:242
+#: classes/PublishPress/Permissions/UI/Groups.php:252
 msgid "Search Groups"
 msgstr "Rechercher de groupes"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:232
+#: classes/PublishPress/Permissions/UI/Groups.php:242
 #, php-format
 msgid "Search Results for &#8220;%s&#8221;"
 msgstr "Résultats de la recherche pour &#8220;%s&#8221;"
@@ -2426,7 +2430,7 @@ msgstr "Sélectionner %s"
 msgid "select groups"
 msgstr "sélectionner groupes"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:319
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:316
 msgid "select other"
 msgstr "sélectionnez autre"
 
@@ -2479,6 +2483,10 @@ msgstr "Réglages"
 #: classes/PublishPress/Permissions/UI/SettingsTabModules.php:40
 msgid "settings"
 msgstr "réglages"
+
+#: classes/PublishPress/Permissions/UI/Groups.php:20
+msgid "Shop manager"
+msgstr "Responsable de magasin"
 
 #: includes/promo/posts-teaser-promo.php:18
 msgid ""
@@ -2584,11 +2592,11 @@ msgstr "sub-%s :"
 msgid "Submitted Revision"
 msgstr "Révision envoyée"
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:189
+#: classes/PublishPress/PermissionsHooksAdmin.php:198
 msgid "Subscriber"
 msgstr "Abonné/abonnée"
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:189
+#: classes/PublishPress/PermissionsHooksAdmin.php:198
 msgid "Subscribers"
 msgstr "Abonnés/abonnées"
 
@@ -2729,7 +2737,7 @@ msgstr ""
 "La modification demandée a été traitée, mais vous ne pouvez plus modifier la "
 "publication."
 
-#: classes/PublishPress/Permissions/UI/Groups.php:108
+#: classes/PublishPress/Permissions/UI/Groups.php:118
 msgid "There are no valid groups selected for deletion."
 msgstr "Il n’y a pas de groupes valides sélectionnés pour la suppression."
 
@@ -2833,7 +2841,7 @@ msgstr ""
 "Pour assigner des rôles pour les états de publication personnalisés, activez "
 "le module Status Control."
 
-#: classes/PublishPress/Permissions/UI/Groups.php:262
+#: classes/PublishPress/Permissions/UI/Groups.php:272
 #, php-format
 msgid ""
 "To assign roles or permissions to BuddyPress groups, %1$supgrade to "
@@ -2842,7 +2850,7 @@ msgstr ""
 "Pour assigner des rôles ou droits aux groupes bbPress, %1$spassez à "
 "Permissions Pro%2$s et activez le module Compatibility Pack."
 
-#: classes/PublishPress/Permissions/UI/Groups.php:259
+#: classes/PublishPress/Permissions/UI/Groups.php:269
 msgid ""
 "To assign roles or permissions to BuddyPress groups, activate the "
 "Compatibility Pack module"
@@ -2958,6 +2966,10 @@ msgstr ""
 "<strong>copiez</strong> le code suivant dans le fichier <strong>functions."
 "php</strong> de votre thème (ou un autre fichier qui est toujours exécuté et "
 "non mis à jour automatiquement) et modifiez-le comme vous le souhaitez :"
+
+#: classes/PublishPress/Permissions/UI/Groups.php:21
+msgid "Translator"
+msgstr "Traducteur"
 
 #: classes/PublishPress/Permissions/UI/GroupsListTable.php:169
 msgid "Type"
@@ -3119,12 +3131,12 @@ msgstr ""
 "modification (ce qui vous laissez la responsabilité d’ajouter des limites de "
 "type personnalisé aux définitions de rôle WP)."
 
-#: classes/PublishPress/Permissions/UI/Groups.php:196
-#: classes/PublishPress/Permissions/UI/GroupsListTable.php:325
+#: classes/PublishPress/Permissions/UI/Groups.php:206
+#: classes/PublishPress/Permissions/UI/GroupsListTable.php:326
 msgid "WordPress Role"
 msgstr "Rôle WordPress"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:196
+#: classes/PublishPress/Permissions/UI/Groups.php:206
 msgid "WordPress Roles"
 msgstr "Rôles WordPress"
 
@@ -3133,7 +3145,7 @@ msgstr "Rôles WordPress"
 msgid "WordPress Version: %s"
 msgstr "Version de WordPress : %s"
 
-#: classes/PublishPress/Permissions/UI/GroupsListTable.php:333
+#: classes/PublishPress/Permissions/UI/GroupsListTable.php:334
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/DashboardFilters.php:191
 msgid "Workflow"
 msgstr "Flux de travail"
@@ -3201,7 +3213,7 @@ msgstr "Vous n’avez pas le droit de sélectionner ce parent"
 msgid "You do not have permission to update that Navigation Menu"
 msgstr "Vous n’avez pas le droit de mettre à jour le menu de navigation"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:79
+#: classes/PublishPress/Permissions/UI/Groups.php:89
 msgid "You have specified this group for deletion:"
 msgid_plural "You have specified these groups for deletion:"
 msgstr[0] "Vous avez spécifié ce groupe pour la supression :"

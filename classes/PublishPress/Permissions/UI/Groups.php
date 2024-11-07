@@ -12,6 +12,16 @@ class Groups
         $pp_admin = $pp->admin();
         $pp_groups = $pp->groups();
 
+        /**
+         * Need to add dummy constants because this data dynamically comes from the database
+         * and we want to use sync tool from loco translate to get this data automatically
+         */
+        $dummy_const = [
+            'PP_GROUP_SHOP_MANAGER' => esc_html__("Shop manager", 'press-permit-core'),
+            'PP_GROUP_TRANSLATOR' => esc_html__("Translator", 'press-permit-core'),
+            'PP_GROUP_CUSTOMER' => esc_html__("Customer", 'press-permit-core'),
+        ];
+
         // Nonce verification is not needed here because this is either:
         // (a) Confirming an update that already happened
         //  - or -
