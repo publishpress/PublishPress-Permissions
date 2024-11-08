@@ -1,14 +1,17 @@
 <?php
+
 namespace PublishPress\Permissions;
 
-class CoreAdmin {
-    function __construct() {
+class CoreAdmin
+{
+    function __construct()
+    {
         add_action('presspermit_permissions_menu', [$this, 'actAdminMenuPromos'], 12, 2);
         add_action('presspermit_menu_handler', [$this, 'menuHandler']);
 
         add_action('presspermit_admin_menu', [$this, 'actAdminMenu'], 999);
 
-        add_action('admin_enqueue_scripts', function() {
+        add_action('admin_enqueue_scripts', function () {
             if (presspermitPluginPage()) {
                 wp_enqueue_style('presspermit-settings-free', plugins_url('', PRESSPERMIT_FILE) . '/includes/css/settings.css', [], PRESSPERMIT_VERSION);
             }
@@ -37,17 +40,18 @@ class CoreAdmin {
 
         add_action('presspermit_modules_ui', [$this, 'actProModulesUI'], 10, 2);
 
-        add_filter("presspermit_unavailable_modules", 
-            function($modules){
+        add_filter(
+            "presspermit_unavailable_modules",
+            function ($modules) {
                 return array_merge(
-                    $modules, 
+                    $modules,
                     [
-                        'presspermit-circles', 
-                        'presspermit-compatibility', 
-                        'presspermit-file-access', 
-                        'presspermit-membership', 
-                        'presspermit-sync', 
-                        'presspermit-status-control', 
+                        'presspermit-circles',
+                        'presspermit-compatibility',
+                        'presspermit-file-access',
+                        'presspermit-membership',
+                        'presspermit-sync',
+                        'presspermit-status-control',
                         'presspermit-teaser'
                     ]
                 );
@@ -55,9 +59,10 @@ class CoreAdmin {
         );
     }
 
-    function actAdminMenuPromos($pp_options_menu, $handler) {
+    function actAdminMenuPromos($pp_options_menu, $handler)
+    {
         // Disable custom status promos until PublishPress Statuses and compatible version of Permissions Pro are released
-        
+
         // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
         /*
         add_submenu_page(
@@ -80,20 +85,20 @@ class CoreAdmin {
         */
 
         add_submenu_page(
-            $pp_options_menu, 
-            esc_html__('Sync Posts', 'press-permit-core'), 
-            esc_html__('Sync Posts', 'press-permit-core'), 
-            'read', 
-            'presspermit-sync', 
+            $pp_options_menu,
+            esc_html__('Sync Posts', 'press-permit-core'),
+            esc_html__('Sync Posts', 'press-permit-core'),
+            'read',
+            'presspermit-sync',
             $handler
         );
 
         add_submenu_page(
-            $pp_options_menu, 
-            esc_html__('Teaser', 'press-permit-core'), 
-            esc_html__('Teaser', 'press-permit-core'), 
-            'read', 
-            'presspermit-posts-teaser', 
+            $pp_options_menu,
+            esc_html__('Teaser', 'press-permit-core'),
+            esc_html__('Teaser', 'press-permit-core'),
+            'read',
+            'presspermit-posts-teaser',
             $handler
         );
     }
@@ -106,64 +111,73 @@ class CoreAdmin {
         }
     }
 
-    function actAdminMenu() {
+    function actAdminMenu()
+    {
         $pp_cred_menu = presspermit()->admin()->getMenuParams('permits');
 
         add_submenu_page(
-            $pp_cred_menu, 
-            esc_html__('Upgrade to Pro', 'press-permit-core'), 
-            esc_html__('Upgrade to Pro', 'press-permit-core'), 
-            'read', 
-            'permissions-pro', 
+            $pp_cred_menu,
+            esc_html__('Upgrade to Pro', 'press-permit-core'),
+            esc_html__('Upgrade to Pro', 'press-permit-core'),
+            'read',
+            'permissions-pro',
             ['PublishPress\Permissions\UI\Dashboard\DashboardFilters', 'actMenuHandler']
         );
     }
 
-    function setUpgradeMenuLink() {
+    function setUpgradeMenuLink()
+    {
         $url = 'https://publishpress.com/links/permissions-menu';
-        ?>
+?>
         <style type="text/css">
-        #toplevel_page_presspermit-groups ul li:last-of-type a {font-weight: bold !important; color: #FEB123 !important;}
+            #toplevel_page_presspermit-groups ul li:last-of-type a {
+                font-weight: bold !important;
+                color: #FEB123 !important;
+            }
         </style>
 
-		<script type="text/javascript">
-        /* <![CDATA[ */
+        <script type="text/javascript">
+            /* <![CDATA[ */
             jQuery(document).ready(function($) {
-                $('#toplevel_page_presspermit-groups ul li:last a').attr('href', '<?php echo esc_url($url);?>').attr('target', '_blank').css('font-weight', 'bold').css('color', '#FEB123');
+                $('#toplevel_page_presspermit-groups ul li:last a').attr('href', '<?php echo esc_url($url); ?>').attr('target', '_blank').css('font-weight', 'bold').css('color', '#FEB123');
             });
-        /* ]]> */
+            /* ]]> */
         </script>
-		<?php
+        <?php
     }
 
-    function actProModulesUI($active_module_plugin_slugs, $inactive) {
+    function actProModulesUI($active_module_plugin_slugs, $inactive)
+    {
         $pro_modules = array_diff(
-            presspermit()->getAvailableModules(['force_all' => true]), 
-            $active_module_plugin_slugs, 
+            presspermit()->getAvailableModules(['force_all' => true]),
+            $active_module_plugin_slugs,
             array_keys($inactive)
         );
 
         sort($pro_modules);
         if ($pro_modules) :
             $ext_info = presspermit()->admin()->getModuleInfo();
-            ?>
+        ?>
             <h4 style="margin:20px 0 5px 0"><?php esc_html_e('Pro Modules:', 'press-permit-core'); ?></h4>
             <table class="pp-extensions">
                 <?php foreach ($pro_modules as $plugin_slug) :
                     $slug = str_replace('presspermit-', '', $plugin_slug);
-                    ?>
+                ?>
                     <tr>
                         <td>
-                        
-                        <?php $id = "module_deactivated_{$slug}";?>
 
-                        <label for="<?php echo esc_attr($id); ?>">
-                            <input type="checkbox" id="<?php echo esc_attr($id); ?>" disabled 
-                                    name="presspermit_deactivated_modules[<?php echo esc_attr($plugin_slug);?>]"
+                            <?php $id = "module_deactivated_{$slug}"; ?>
+
+                            <label for="<?php echo esc_attr($id); ?>">
+                                <input type="checkbox" id="<?php echo esc_attr($id); ?>" disabled
+                                    name="presspermit_deactivated_modules[<?php echo esc_attr($plugin_slug); ?>]"
                                     value="1" />
 
-                            <?php echo esc_html($this->prettySlug($slug));?>
-                        </label>
+                                <?php
+                                if (!empty($ext_info->title[$slug])) echo esc_html__($ext_info->title[$slug], 'press-permit-core');
+                                else echo esc_html__($this->prettySlug($slug), 'press-permit-core');
+                                ?>
+                            </label>
                         </td>
 
                         <?php if (!empty($ext_info)) : ?>
@@ -171,18 +185,18 @@ class CoreAdmin {
                                 <?php if (isset($ext_info->blurb[$slug])) : ?>
                                     <span class="pp-ext-info"
                                         title="<?php if (isset($ext_info->descript[$slug])) {
-                                            echo esc_attr($ext_info->descript[$slug]);
-                                        }
-                                        ?>">
-                                    <?php echo esc_html($ext_info->blurb[$slug]); ?>
-                                </span>
+                                                    echo esc_attr($ext_info->descript[$slug]);
+                                                }
+                                                ?>">
+                                        <?php echo esc_html__($ext_info->blurb[$slug],  'press-permit-core'); ?>
+                                    </span>
                                 <?php endif; ?>
                             </td>
                         <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
             </table>
-        <?php
+<?php
         endif;
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\UI\Dashboard;
 
 require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/ItemEdit.php');
@@ -96,10 +97,10 @@ class PostEdit
                 switch ($op) {
                     case 'associate':
                         $caption = sprintf(
-		                    esc_html__('Permissions: Select this %s as Parent', 'press-permit-core'),
-		                    $type_obj->labels->singular_name
-		                );
-                
+                            esc_html__('Permissions: Select this %s as Parent', 'press-permit-core'),
+                            $type_obj->labels->singular_name
+                        );
+
                         break;
 
                     case 'assign':
@@ -112,12 +113,12 @@ class PostEdit
 
                     default:
                         $caption = sprintf(
-		                    esc_html__('Permissions: %s this %s', 'press-permit-core'),
-		                    $op_obj->label,
-		                    $type_obj->labels->singular_name
-		                );
+                            esc_html__('Permissions: %s this %s', 'press-permit-core'),
+                            esc_html__($op_obj->label, 'press-permit-core'),
+                            $type_obj->labels->singular_name
+                        );
                 }
-                
+
                 add_meta_box(
                     "pp_{$op}_{$post_type}_exceptions",
                     $caption,
@@ -158,9 +159,9 @@ class PostEdit
     public function drawSettingsUI($object, $box)
     {
         if ($type_obj = get_post_type_object($object->post_type)) :
-            ?>
+?>
             <label for="pp_enable_post_type"><input type="checkbox" name="pp_enable_post_type"
-                                                    id="pp_enable_post_type"/>
+                    id="pp_enable_post_type" />
                 <?php printf(esc_html__('enable custom permissions for %s', 'press-permit-core'), esc_html($type_obj->labels->name)); ?>
             </label>
         <?php
@@ -201,7 +202,7 @@ class PostEdit
         ?>
         <script type="text/javascript">
             /* <![CDATA[ */
-            jQuery(document).ready(function ($) {
+            jQuery(document).ready(function($) {
                 $('#pageparentdiv div.inside p').first().wrapInner('<a href="post.php?post=<?php echo esc_attr($post->post_parent); ?>&amp;action=edit">');
             });
             /* ]]> */
@@ -214,9 +215,8 @@ class PostEdit
         if (!presspermit()->isUserUnfiltered()) : ?>
             <script type="text/javascript">
                 /* <![CDATA[ */
-                jQuery(document).ready(function ($) {
-                    $('#wp-content-media-buttons a').on('click', function()
-                    {
+                jQuery(document).ready(function($) {
+                    $('#wp-content-media-buttons a').on('click', function() {
                         if ($('#post-status-info span.autosave-message').html() == '&nbsp;') {
                             autosave();
                         }
@@ -224,7 +224,7 @@ class PostEdit
                 });
                 /* ]]> */
             </script>
-        <?php
+<?php
         endif;
     } // end function
 }

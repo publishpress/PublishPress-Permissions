@@ -95,12 +95,12 @@ class GroupsListTable extends GroupsListTableBase
         }
 
         $this->role_info = \PublishPress\Permissions\DB\PermissionsMeta::countRoles(
-            $this->agent_type, 
+            $this->agent_type,
             ['query_agent_ids' => $this->listed_ids]
         );
-        
+
         $this->exception_info = \PublishPress\Permissions\DB\PermissionsMeta::countExceptions(
-            $this->agent_type, 
+            $this->agent_type,
             ['query_agent_ids' => $this->listed_ids]
         );
 
@@ -127,7 +127,7 @@ class GroupsListTable extends GroupsListTableBase
         if (empty($this->items)) {
             return false;
         }
-        
+
         foreach ($this->items as $group) {
             if (('wp_role' == $group->metagroup_type)) {
                 $role_name = $group->metagroup_id;
@@ -160,8 +160,8 @@ class GroupsListTable extends GroupsListTableBase
     public function get_columns()
     {
         $bulk_check_all = !PWP::is_REQUEST('group_variant', 'wp_role') || $this->deleted_roles_listed()
-        ? '<input type="checkbox" />' 
-        : '';
+            ? '<input type="checkbox" />'
+            : '';
 
         $c = [
             'cb' => $bulk_check_all,
@@ -223,16 +223,16 @@ class GroupsListTable extends GroupsListTableBase
             if (('rvy_notice' == $group->metagroup_type) && !defined('PUBLISHPRESS_REVISIONS_VERSION') && !defined('REVISIONARY_VERSION')) {
                 return;
             }
-            
+
             $group->group_name = \PublishPress\Permissions\DB\Groups::getMetagroupName(
-                $group->metagroup_type, 
-                $group->metagroup_id, 
+                $group->metagroup_type,
+                $group->metagroup_id,
                 $group->group_name
             );
-            
+
             $group->group_description = \PublishPress\Permissions\DB\Groups::getMetagroupDescript(
-                $group->metagroup_type, 
-                $group->metagroup_id, 
+                $group->metagroup_type,
+                $group->metagroup_id,
                 $group->group_description
             );
         }
@@ -244,10 +244,10 @@ class GroupsListTable extends GroupsListTableBase
         $actions = [];
 
         $can_manage_group = $is_administrator || $pp_groups->userCan('pp_edit_groups', $group_id, $this->agent_type);
-        
-        $agent_type_clause = (($this->agent_type) && ('pp_group' != $this->agent_type)) 
-        ? "&amp;agent_type=$this->agent_type" 
-        : '';
+
+        $agent_type_clause = (($this->agent_type) && ('pp_group' != $this->agent_type))
+            ? "&amp;agent_type=$this->agent_type"
+            : '';
 
         // Check if the group for this row is editable
         if ($can_manage_group) {
@@ -262,8 +262,8 @@ class GroupsListTable extends GroupsListTableBase
         // allow metagroups for deleted / inactive wp roles to be deleted
         if (
             $can_delete_group
-            && (!$group->metagroup_id 
-            || ('wp_role' == $group->metagroup_type && \PublishPress\Permissions\DB\Groups::isDeletedRole($group->metagroup_id)))
+            && (!$group->metagroup_id
+                || ('wp_role' == $group->metagroup_type && \PublishPress\Permissions\DB\Groups::isDeletedRole($group->metagroup_id)))
         ) {
             $actions['delete'] = "<a class='submitdelete' href='"
                 . esc_url(wp_nonce_url($base_url . "?page=presspermit-groups&amp;pp_action=delete{$agent_type_clause}&amp;group=$group_id", 'pp-bulk-groups'))
@@ -284,10 +284,11 @@ class GroupsListTable extends GroupsListTableBase
             switch ($column_name) {
                 case 'cb':
                     echo "<th scope='row' class='check-column'>";
-                    
+
                     // Set up the checkbox ( because the group or group members are editable, otherwise it's empty )
-                    if ($actions && (!$group->metagroup_id || (('wp_role' == $group->metagroup_type)
-                    && \PublishPress\Permissions\DB\Groups::isDeletedRole($group->metagroup_id)))
+                    if (
+                        $actions && (!$group->metagroup_id || (('wp_role' == $group->metagroup_type)
+                            && \PublishPress\Permissions\DB\Groups::isDeletedRole($group->metagroup_id)))
                     ) {
                         echo "<input type='checkbox' name='groups[]' id='group_" . (int) $group_id . "' value='" . (int) $group_id . "' />";
                     }
@@ -297,24 +298,24 @@ class GroupsListTable extends GroupsListTableBase
 
                 case 'group_name':
                     echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
-                    
+
                     // Check if the group for this row is editable
                     if ($can_manage_group) {
-                        echo "<strong><a href='" . esc_url($edit_link) . "'>" . esc_html($group->group_name) . "</a></strong><br />";
+                        echo "<strong><a href='" . esc_url($edit_link) . "'>" . esc_html__($group->group_name, 'press-permit-core') . "</a></strong><br />";
                     } else {
-                        echo '<strong>' . esc_html($group->group_name) . '</strong>';
+                        echo '<strong>' . esc_html__($group->group_name, 'press-permit-core') . '</strong>';
                     }
 
                     $this->row_actions($actions);
 
                     echo '</td>';
                     break;
-                    
+
                 case 'group_type':
                     echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
 
                     switch ($group->metagroup_type) {
-                        case 'wp_role' :
+                        case 'wp_role':
                             switch ($group->metagroup_id) {
                                 case 'wp_anon':
                                 case 'wp_auth':
@@ -326,7 +327,7 @@ class GroupsListTable extends GroupsListTableBase
                             }
 
                             break;
-                        case '' :
+                        case '':
                             esc_html_e('Custom Group', 'press-permit-core');
                             break;
                         case 'rvy_notice':
@@ -373,7 +374,7 @@ class GroupsListTable extends GroupsListTableBase
                     echo esc_html($group->group_description);
                     echo '</td>';
                     break;
-                    
+
                 default:
                     echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
                     do_action('presspermit_manage_groups_custom_column', $column_name, $group_id, $this);
@@ -435,41 +436,42 @@ class GroupsListTable extends GroupsListTableBase
         if ($detached = PWP::REQUEST_int('detached')) {
             echo '<input type="hidden" name="detached" value="' . esc_attr($detached) . '" />';
         }
-        ?>
+?>
         <p class="search-box">
             <label class="screen-reader-text" for="<?php echo esc_attr($input_id); ?>"><?php echo esc_html($text); ?>:</label>
-            
-            <input type="search" id="<?php echo esc_attr($input_id); ?>" name="s" value="<?php _admin_search_query(); ?>" 
-            class="<?php echo esc_attr($class);?>" <?php if ($tabindex) echo ' tabindex="' . (int) $tabindex . '"'; ?> />
+
+            <input type="search" id="<?php echo esc_attr($input_id); ?>" name="s" value="<?php _admin_search_query(); ?>"
+                class="<?php echo esc_attr($class); ?>" <?php if ($tabindex) echo ' tabindex="' . (int) $tabindex . '"'; ?> />
 
             <?php
             $attribs = ($tabindex) ? ['id' => 'search-submit', 'tabindex' => $tabindex + 1] : ['id' => 'search-submit'];
             submit_button($text, '', '', false, $attribs);
             ?>
         </p>
-        <?php
+    <?php
     }
 
-    protected function display_tablenav( $which ) {
+    protected function display_tablenav($which)
+    {
         wp_nonce_field('pp-bulk-groups');
-		?>
-	<div class="tablenav <?php echo esc_attr( $which ); ?>">
+    ?>
+        <div class="tablenav <?php echo esc_attr($which); ?>">
 
-		<?php if ( $this->has_items() ) : ?>
-		<div class="alignleft actions bulkactions">
-			<?php $this->bulk_actions( $which ); ?>
-		</div>
-			<?php
-		endif;
-		$this->extra_tablenav( $which );
-		$this->pagination( $which );
-		?>
+            <?php if ($this->has_items()) : ?>
+                <div class="alignleft actions bulkactions">
+                    <?php $this->bulk_actions($which); ?>
+                </div>
+            <?php
+            endif;
+            $this->extra_tablenav($which);
+            $this->pagination($which);
+            ?>
 
-		<br class="clear" />
-	</div>
-		<?php
+            <br class="clear" />
+        </div>
+<?php
     }
-    
+
     private function countRoleUsers($role_name)
     {
         static $role_count = [];

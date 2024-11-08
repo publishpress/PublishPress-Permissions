@@ -91,8 +91,8 @@ class ItemExceptionsRenderUI
                 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $results = $wpdb->get_results(
                     "SELECT g.metagroup_id AS wp_rolename, r.role_name AS supplemental_role FROM $wpdb->ppc_roles AS r"
-                    . " INNER JOIN $wpdb->pp_groups AS g ON g.ID = r.agent_id AND r.agent_type = 'pp_group'"
-                    . " WHERE g.metagroup_type = 'wp_role'"
+                        . " INNER JOIN $wpdb->pp_groups AS g ON g.ID = r.agent_id AND r.agent_type = 'pp_group'"
+                        . " WHERE g.metagroup_type = 'wp_role'"
                 );
 
                 foreach ($results as $row) {
@@ -156,12 +156,12 @@ class ItemExceptionsRenderUI
             $title = $agent_info->display_name;
         } else {
             $title = '';
-        }
-        ?>
+        } ?>
         <tr>
-            <td class='pp-exc-agent'><input type='hidden' value='<?php echo esc_attr($agent_id); ?>'/>
+            <td class='pp-exc-agent'><input type='hidden' value='<?php echo esc_attr($agent_id); ?>' />
                 <a href='<?php echo esc_url("{$this->base_url}$agent_id"); ?>' title='<?php echo esc_attr($title); ?>'
-                   target='_blank'><?php echo esc_html($_name); ?></a></td>
+                    target='_blank'><?php echo esc_html__($_name, 'press-permit-core'); ?></a>
+            </td>
             <?php
             foreach ($assignment_modes as $assign_for) {
                 if (!empty($agent_exceptions[$assign_for]['additional'])) {
@@ -201,37 +201,37 @@ class ItemExceptionsRenderUI
                 }
 
                 $for_type = ($for_item_type) ? $for_item_type : '(all)';
-                ?>
+            ?>
                 <td class="<?php echo ('children' == $assign_for) ? 'pp-exc-children' : 'pp-exc-item'; ?>">
                     <select name='pp_exceptions<?php echo esc_attr("[$for_type][$op][$agent_type][$assign_for][$agent_id]") . "' class='" . esc_attr($this->opt_class[$current_val]) . "'"; ?><?php echo esc_attr($disabled); ?> autocomplete="off">
                     <?php
                     foreach ($this->options[$option_set] as $val => $lbl) :
-                    if (('wp_role' == $agent_type) 
-                        && in_array($agent_info->metagroup_id, ['wp_anon', 'wp_all'], true)
-                        && (!$pp->moduleActive('file-access') || 'attachment' != $for_type) 
-                        && !defined('PP_ALL_ANON_FULL_EXCEPTIONS')
-                        && (2 == $val)
-                    ) {
-                        continue;
-                    }
+                        if (('wp_role' == $agent_type)
+                            && in_array($agent_info->metagroup_id, ['wp_anon', 'wp_all'], true)
+                            && (!$pp->moduleActive('file-access') || 'attachment' != $for_type)
+                            && !defined('PP_ALL_ANON_FULL_EXCEPTIONS')
+                            && (2 == $val)
+                        ) {
+                            continue;
+                        }
                     ?>
-                    <option value='<?php echo esc_attr("$val") . "' class='" . esc_attr($this->opt_class[$val]) . "' ";
-                    selected($val, $current_val); ?>>
-                    <?php echo esc_html($lbl); ?>
-                    </option>
-                        <?php endforeach; ?>
+                    <option value=' <?php echo esc_attr("$val") . "' class='" . esc_attr($this->opt_class[$val]) . "' ";
+                                    selected($val, $current_val); ?>>
+                        <?php echo esc_html($lbl); ?>
+                        </option>
+                    <?php endforeach; ?>
                     </select>
                     <?php if ($disabled) : ?>
                         <input type="hidden"
-                               name='pp_exceptions<?php echo esc_attr("[$for_type][$op][$agent_type][$assign_for][$agent_id]"); ?>'
-                               value="<?php echo esc_attr($current_val); ?>"/>
+                            name='pp_exceptions<?php echo esc_attr("[$for_type][$op][$agent_type][$assign_for][$agent_id]"); ?>'
+                            value="<?php echo esc_attr($current_val); ?>" />
                     <?php endif; ?>
 
                 </td>
-                <?php
+            <?php
             }
             ?>
         </tr>
-        <?php
-    } // end function
+<?php
+    } // end function 
 }

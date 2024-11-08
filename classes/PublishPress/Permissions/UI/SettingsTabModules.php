@@ -71,7 +71,7 @@ class SettingsTabModules
                     $inactive = [];
 
                     $ext_info = $pp->admin()->getModuleInfo();
-                    
+
                     $pp_modules = presspermit()->getActiveModules();
                     $active_module_plugin_slugs = [];
 
@@ -84,22 +84,21 @@ class SettingsTabModules
                         <h4 style="margin:0 0 5px 0"><?php esc_html_e('Active Modules:', 'press-permit-core'); ?></h4>
                         <table class="pp-extensions">
                             <?php foreach ($pp_modules as $slug => $plugin_info) :
-                                ?>
+                            ?>
                                 <tr>
                                     <td>
-                                        <?php $id = "module_active_{$slug}";?>
+                                        <?php $id = "module_active_{$slug}"; ?>
 
                                         <label for="<?php echo esc_attr($id); ?>">
                                             <input type="checkbox" id="<?php echo esc_attr($id); ?>"
-                                                name="presspermit_active_modules[<?php echo esc_attr($plugin_info->plugin_slug);?>]"
+                                                name="presspermit_active_modules[<?php echo esc_attr($plugin_info->plugin_slug); ?>]"
                                                 value="1" checked="checked" />
 
-                                            <?php echo esc_html__($plugin_info->label);?>
+                                            <?php echo esc_html__($plugin_info->label); ?>
                                         </label>
 
                                         <?php
-                                            echo ' <span class="pp-gray">'
-                                                . "</span>"
+                                        echo ' <span class="pp-gray">' . '</span>';
                                         ?>
                                     </td>
 
@@ -108,17 +107,17 @@ class SettingsTabModules
                                             <?php if (isset($ext_info->blurb[$slug])) : ?>
                                                 <span class="pp-ext-info"
                                                     title="<?php if (isset($ext_info->descript[$slug])) {
-                                                        echo esc_attr($ext_info->descript[$slug]);
-                                                    }
-                                                    ?>">
-                                                <?php echo esc_html($ext_info->blurb[$slug]); ?>
-                                            </span>
+                                                                echo esc_attr($ext_info->descript[$slug]);
+                                                            }
+                                                            ?>">
+                                                    <?php echo esc_html($ext_info->blurb[$slug]); ?>
+                                                </span>
                                             <?php endif; ?>
                                         </td>
                                     <?php endif; ?>
                                 </tr>
-                            <?php 
-                                $active_module_plugin_slugs[]= $plugin_info->plugin_slug;
+                            <?php
+                                $active_module_plugin_slugs[] = $plugin_info->plugin_slug;
                             endforeach; ?>
                         </table>
                     <?php
@@ -141,19 +140,21 @@ class SettingsTabModules
 
                         <table class="pp-extensions">
                             <?php foreach ($inactive as $plugin_slug => $module_info) :
-                                $slug = str_replace('presspermit-', '', $plugin_slug);
-                                ?>
+                                $slug = str_replace('presspermit-', '', $plugin_slug); ?>
                                 <tr>
                                     <td>
-                                    
-                                    <?php $id = "module_deactivated_{$slug}";?>
 
-                                    <label for="<?php echo esc_attr($id); ?>">
-                                        <input type="checkbox" id="<?php echo esc_attr($id); ?>"
-                                                name="presspermit_deactivated_modules[<?php echo esc_attr($plugin_slug);?>]"
+                                        <?php $id = "module_deactivated_{$slug}"; ?>
+
+                                        <label for="<?php echo esc_attr($id); ?>">
+                                            <input type="checkbox" id="<?php echo esc_attr($id); ?>"
+                                                name="presspermit_deactivated_modules[<?php echo esc_attr($plugin_slug); ?>]"
                                                 value="1" />
 
-                                        <?php if (!empty($ext_info->title[$slug])) echo esc_html($ext_info->title[$slug]); else echo esc_html($this->prettySlug($slug));?></td>
+                                            <?php
+                                            if (!empty($ext_info->title[$slug])) echo esc_html__($ext_info->title[$slug], 'press-permit-core');
+                                            else echo esc_html__($this->prettySlug($slug), 'press-permit-core'); ?>
+                                    </td>
                                     </label>
 
                                     <?php if (!empty($ext_info)) : ?>
@@ -161,11 +162,11 @@ class SettingsTabModules
                                             <?php if (isset($ext_info->blurb[$slug])) : ?>
                                                 <span class="pp-ext-info"
                                                     title="<?php if (isset($ext_info->descript[$slug])) {
-                                                        echo esc_attr($ext_info->descript[$slug]);
-                                                    }
-                                                    ?>">
-                                                <?php echo esc_html($ext_info->blurb[$slug]); ?>
-                                            </span>
+                                                                echo esc_attr($ext_info->descript[$slug]);
+                                                            }
+                                                            ?>">
+                                                    <?php echo esc_html($ext_info->blurb[$slug]); ?>
+                                                </span>
                                             <?php endif; ?>
                                         </td>
                                     <?php endif; ?>
@@ -179,7 +180,7 @@ class SettingsTabModules
                     ?>
                 </td>
             </tr>
-        <?php
+<?php
         endif; // any options accessable in this section
     }
 
