@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PublishPress Permissions\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-06 19:15-0400\n"
-"PO-Revision-Date: 2024-11-11 17:43+0000\n"
+"PO-Revision-Date: 2024-11-11 18:12+0000\n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: English (United States)\n"
 "Language: en_US\n"
@@ -1982,8 +1982,7 @@ msgid ""
 "Settings%2$s and indicate which Post Types and Taxonomies should be filtered."
 msgstr ""
 
-#: includes/SettingsTabInstall.php:200
-#: includes/SettingsTabInstall.php:210
+#: includes/SettingsTabInstall.php:200 includes/SettingsTabInstall.php:210
 #, php-format
 msgid "PublishPress Permissions Version: %1$s %2$s"
 msgstr ""
@@ -2255,8 +2254,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/SettingsTabInstall.php:42
-#: includes/SettingsTabInstall.php:43
+#: includes/SettingsTabInstall.php:42 includes/SettingsTabInstall.php:43
 #: classes/PublishPress/Permissions/UI/SettingsTabModules.php:40
 msgid "settings"
 msgstr ""
@@ -2419,8 +2417,7 @@ msgstr ""
 msgid "Suppress \"Private:\" Caption"
 msgstr ""
 
-#: includes/CoreAdmin.php:89
-#: includes/CoreAdmin.php:90
+#: includes/CoreAdmin.php:89 includes/CoreAdmin.php:90
 #: classes/PublishPress/Permissions/Admin.php:196
 msgid "Sync Posts"
 msgstr ""
@@ -2433,8 +2430,7 @@ msgstr ""
 msgid "Tag creation requires Tag edit capability"
 msgstr ""
 
-#: includes/CoreAdmin.php:98
-#: includes/CoreAdmin.php:99
+#: includes/CoreAdmin.php:98 includes/CoreAdmin.php:99
 #: classes/PublishPress/Permissions/Admin.php:191
 msgid "Teaser"
 msgstr ""
@@ -2696,10 +2692,8 @@ msgstr ""
 msgid "Update Group"
 msgstr ""
 
-#: includes/CoreAdmin.php:120
-#: includes/CoreAdmin.php:121
-#: includes/promo/sync-promo.php:22
-#: includes/promo/statuses-promo.php:23
+#: includes/CoreAdmin.php:120 includes/CoreAdmin.php:121
+#: includes/promo/sync-promo.php:22 includes/promo/statuses-promo.php:23
 #: includes/promo/posts-teaser-promo.php:22
 #: includes/promo/visibility-statuses-promo.php:23
 msgid "Upgrade to Pro"

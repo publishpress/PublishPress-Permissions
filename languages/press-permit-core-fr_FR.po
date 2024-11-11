@@ -6,7 +6,7 @@ msgstr ""
 "for Posts, Pages, Categories, Tags - Stable (latest release)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
 "POT-Creation-Date: 2024-10-08T16:41:32+00:00\n"
-"PO-Revision-Date: 2024-11-11 17:42+0000\n"
+"PO-Revision-Date: 2024-11-11 18:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: French (France)\n"
 "Language: fr_FR\n"
@@ -14,7 +14,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Loco https://localise.biz/"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.11; wp-6.6.2"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1252
 #, php-format
@@ -2194,8 +2195,7 @@ msgstr ""
 "%1$sDroits > Réglages%2$s et indiquer quels types de publications et "
 "taxonomies doivent être filtrés."
 
-#: includes/SettingsTabInstall.php:200
-#: includes/SettingsTabInstall.php:210
+#: includes/SettingsTabInstall.php:200 includes/SettingsTabInstall.php:210
 #, php-format
 msgid "PublishPress Permissions Version: %1$s %2$s"
 msgstr "PublishPress Permissions version : %1$s %2$s"
@@ -2478,8 +2478,7 @@ msgstr "Réglage"
 msgid "Settings"
 msgstr "Réglages"
 
-#: includes/SettingsTabInstall.php:42
-#: includes/SettingsTabInstall.php:43
+#: includes/SettingsTabInstall.php:42 includes/SettingsTabInstall.php:43
 #: classes/PublishPress/Permissions/UI/SettingsTabModules.php:40
 msgid "settings"
 msgstr "réglages"
@@ -2665,8 +2664,7 @@ msgstr ""
 msgid "Suppress \"Private:\" Caption"
 msgstr "Supprimer la légende « Privé : »"
 
-#: includes/CoreAdmin.php:89
-#: includes/CoreAdmin.php:90
+#: includes/CoreAdmin.php:89 includes/CoreAdmin.php:90
 #: classes/PublishPress/Permissions/Admin.php:196
 msgid "Sync Posts"
 msgstr "Synchroniser les publications"
@@ -2681,8 +2679,7 @@ msgstr ""
 "La création d’une étiquette nécessite une permisssion de modification de "
 "l’étiquette"
 
-#: includes/CoreAdmin.php:98
-#: includes/CoreAdmin.php:99
+#: includes/CoreAdmin.php:98 includes/CoreAdmin.php:99
 #: classes/PublishPress/Permissions/Admin.php:191
 msgid "Teaser"
 msgstr "Présentation"
@@ -3018,10 +3015,8 @@ msgstr "Mettre à jour"
 msgid "Update Group"
 msgstr "Mettre à jour le groupe"
 
-#: includes/CoreAdmin.php:120
-#: includes/CoreAdmin.php:121
-#: includes/promo/sync-promo.php:22
-#: includes/promo/statuses-promo.php:23
+#: includes/CoreAdmin.php:120 includes/CoreAdmin.php:121
+#: includes/promo/sync-promo.php:22 includes/promo/statuses-promo.php:23
 #: includes/promo/posts-teaser-promo.php:22
 #: includes/promo/visibility-statuses-promo.php:23
 msgid "Upgrade to Pro"

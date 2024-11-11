@@ -6,7 +6,7 @@ msgstr ""
 "for Posts, Pages, Categories, Tags - Stable (latest release)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
 "POT-Creation-Date: 2024-10-08T16:41:32+00:00\n"
-"PO-Revision-Date: 2024-11-11 17:43+0000\n"
+"PO-Revision-Date: 2024-11-11 18:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: Spanish (Spain)\n"
 "Language: es_ES\n"
@@ -2159,8 +2159,7 @@ msgstr ""
 "> Ajustes%2$s e indica qué tipos de contenido y taxonomías deben ser "
 "filtrados."
 
-#: includes/SettingsTabInstall.php:200
-#: includes/SettingsTabInstall.php:210
+#: includes/SettingsTabInstall.php:200 includes/SettingsTabInstall.php:210
 #, php-format
 msgid "PublishPress Permissions Version: %1$s %2$s"
 msgstr "PublishPress Permissions versión: %1$s %2$s"
@@ -2442,8 +2441,7 @@ msgstr "Ajustes"
 msgid "Settings"
 msgstr "Ajustes"
 
-#: includes/SettingsTabInstall.php:42
-#: includes/SettingsTabInstall.php:43
+#: includes/SettingsTabInstall.php:42 includes/SettingsTabInstall.php:43
 #: classes/PublishPress/Permissions/UI/SettingsTabModules.php:40
 msgid "settings"
 msgstr "ajustes"
@@ -2626,8 +2624,7 @@ msgstr ""
 msgid "Suppress \"Private:\" Caption"
 msgstr "Suprimir la leyenda «Privado:»"
 
-#: includes/CoreAdmin.php:89
-#: includes/CoreAdmin.php:90
+#: includes/CoreAdmin.php:89 includes/CoreAdmin.php:90
 #: classes/PublishPress/Permissions/Admin.php:196
 msgid "Sync Posts"
 msgstr "Sincronizar entradas"
@@ -2640,8 +2637,7 @@ msgstr "Sincronizar publicaciones de usuarios"
 msgid "Tag creation requires Tag edit capability"
 msgstr "La creación de etiquetas requiere la capacidad de edición de etiquetas"
 
-#: includes/CoreAdmin.php:98
-#: includes/CoreAdmin.php:99
+#: includes/CoreAdmin.php:98 includes/CoreAdmin.php:99
 #: classes/PublishPress/Permissions/Admin.php:191
 msgid "Teaser"
 msgstr "El avance"
@@ -2974,10 +2970,8 @@ msgstr "Actualizar"
 msgid "Update Group"
 msgstr "Actualizar el grupo"
 
-#: includes/CoreAdmin.php:120
-#: includes/CoreAdmin.php:121
-#: includes/promo/sync-promo.php:22
-#: includes/promo/statuses-promo.php:23
+#: includes/CoreAdmin.php:120 includes/CoreAdmin.php:121
+#: includes/promo/sync-promo.php:22 includes/promo/statuses-promo.php:23
 #: includes/promo/posts-teaser-promo.php:22
 #: includes/promo/visibility-statuses-promo.php:23
 msgid "Upgrade to Pro"
