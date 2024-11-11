@@ -6,7 +6,7 @@ msgstr ""
 "for Posts, Pages, Categories, Tags - Stable (latest release)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
 "POT-Creation-Date: 2024-10-08T16:41:32+00:00\n"
-"PO-Revision-Date: 2024-11-11 18:11+0000\n"
+"PO-Revision-Date: 2024-11-11 18:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: French (France)\n"
 "Language: fr_FR\n"
@@ -1031,7 +1031,7 @@ msgctxt "count"
 msgid "Users"
 msgstr "Comptes"
 
-#: classes/PublishPress/Permissions/UI/GroupNew.php:118
+#: classes/PublishPress/Permissions/UI/GroupNew.php:122
 msgid "Create Group"
 msgstr "Créer un groupe"
 
@@ -1783,6 +1783,15 @@ msgid ""
 msgstr ""
 "Note : Les groupes BuddyPress et autres groupes définis en externe ne sont "
 "pas listés ici, même s’ils modifient les droits"
+
+#: classes/PublishPress/Permissions/UI/GroupNew.php:115
+msgid ""
+"Note: Groups are a more flexible alternative to user roles. You can create "
+"groups of users and give or deny them access to areas of your site."
+msgstr ""
+"Remarque : les groupes constituent une alternative plus flexible aux rôles "
+"d'utilisateur. Vous pouvez créer des groupes d'utilisateurs et leur accorder "
+"ou leur refuser l'accès à certaines zones de votre site."
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1223
 #, php-format

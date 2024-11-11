@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2024-11-05 18:26+0000\n"
-"PO-Revision-Date: 2024-11-11 18:11+0000\n"
+"PO-Revision-Date: 2024-11-11 18:40+0000\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Domain: press-permit-core\n"
 "Language: pt_BR\n"
@@ -1004,7 +1004,7 @@ msgctxt "count"
 msgid "Users"
 msgstr "Usuários"
 
-#: classes/PublishPress/Permissions/UI/GroupNew.php:118
+#: classes/PublishPress/Permissions/UI/GroupNew.php:122
 msgid "Create Group"
 msgstr "Criar grupo"
 
@@ -1741,6 +1741,15 @@ msgid ""
 msgstr ""
 "Nota: Grupos BuddyPress e outros grupos definidos externamente não são "
 "listados aqui, mesmo que modifiquem permissões"
+
+#: classes/PublishPress/Permissions/UI/GroupNew.php:115
+msgid ""
+"Note: Groups are a more flexible alternative to user roles. You can create "
+"groups of users and give or deny them access to areas of your site."
+msgstr ""
+"Nota: Grupos são uma alternativa mais flexível para funções de usuário. Você "
+"pode criar grupos de usuários e dar ou negar a eles acesso a áreas do seu "
+"site."
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1223
 #, php-format

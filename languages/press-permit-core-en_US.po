@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PublishPress Permissions\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-06 19:15-0400\n"
-"PO-Revision-Date: 2024-11-11 18:12+0000\n"
+"PO-Revision-Date: 2024-11-11 18:41+0000\n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: English (United States)\n"
 "Language: en_US\n"
@@ -918,7 +918,7 @@ msgctxt "count"
 msgid "Users"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/GroupNew.php:118
+#: classes/PublishPress/Permissions/UI/GroupNew.php:122
 msgid "Create Group"
 msgstr ""
 
@@ -1614,6 +1614,12 @@ msgstr ""
 msgid ""
 "Note: BuddyPress Groups and other externally defined groups are not listed "
 "here, even if they modify permissions"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/GroupNew.php:115
+msgid ""
+"Note: Groups are a more flexible alternative to user roles. You can create "
+"groups of users and give or deny them access to areas of your site."
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1223
