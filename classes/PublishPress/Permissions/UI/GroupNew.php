@@ -111,6 +111,10 @@ class GroupNew
                     AgentPermissionsUI::drawMemberChecklists(0, $agent_type);
                 }
 
+                echo '<div class="pp-settings-caption" style="clear:both;"><br />';
+                esc_html_e('Note: Groups are a more flexible alternative to user roles. You can create groups of users and give or deny them access to areas of your site.', 'press-permit-core');
+                echo '</div>';
+
                 do_action('presspermit_new_group_ui');
                 ?>
 
