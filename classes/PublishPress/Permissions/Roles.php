@@ -14,6 +14,7 @@ class Roles
         $this->pattern_roles = ['subscriber' => (object)[], 'contributor' => (object)[], 'author' => (object)[], 'editor' => (object)[]];
 
         add_action('plugins_loaded', [$this, 'actPluginsLoaded'], 15);
+        add_action('init', [$this, 'actLoadPatternRoleLabels'], 5);
     }
 
     public function defineRoles()
@@ -45,7 +46,11 @@ class Roles
         } else {
             add_filter('presspermit_unfiltered_post_types', [$this, 'fltPostTypesBBpressForumOnly'], 1);  // requires additional code, avoid appearance of support
         }
+        
+        $this->pattern_roles = apply_filters('presspermit_pattern_roles_raw', $this->pattern_roles);
+    }
 
+    public function actLoadPatternRoleLabels() {
         $this->pattern_roles = apply_filters('presspermit_pattern_roles', $this->pattern_roles);
     }
 
