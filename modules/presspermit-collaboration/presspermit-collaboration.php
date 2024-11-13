@@ -45,11 +45,7 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
 
             $ext_version = PRESSPERMIT_VERSION;
 
-            if (is_admin()) {
-                $title = esc_html__('Collaborative Publishing', 'press-permit-core');
-            } else {
-                $title = 'Collaborative Publishing';
-            }
+            $title = 'Collaborative Publishing'; // @todo: review removing this, as it is separately set with translation downstream
 
             if (presspermit()->registerModule(
                 'collaboration', $title, dirname(plugin_basename(__FILE__)), $ext_version, ['min_pp_version' => '2.7-beta']

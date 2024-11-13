@@ -166,39 +166,24 @@ class ItemSave
 
         $is_new_term = ('term' != $via_item_source) ? false : PWP::is_REQUEST('action', 'add-tag');
 
+        // don't execute this action handler more than one per post save (may be called directly on pre-save cap check)
+        static $did_items;
+        if ('post' == $via_item_source) {
+            if (!isset($did_items)) {
+                $did_items = [];
+            }
+            if (isset($did_items[$item_id])) {
+                return;
+            }
+            $did_items[$item_id] = 1;
+        }
+
         if (!apply_filters('presspermit_do_inherit_parent_exceptions', true, $item_id, $args)) {
             return;
         }
 
-        global $wp_version;
-
-        $is_wp_66 = version_compare($wp_version, '6.6', '>=');
-        $is_block_editor = PWP::isBlockEditorActive();
-
-        if (!$is_block_editor || !$is_wp_66) {
-            // legacy condition to avoid disturbing existing installs
-            $inherit_exceptions = (intval($set_parent) != intval($last_parent)) || $is_new_term || $is_new;
-        } else {
-            // new condition to fix 6.6 Block Editor integration (also moved static $did_items check inside inherit_exceptions block)
-            $inherit_exceptions = $set_parent;
-        }
-
         // Inherit exceptions from new parent post/term, but only for new items or if parent is changed
-        if ($inherit_exceptions) {
-	        // don't execute this action handler more than one per post save (may be called directly on pre-save cap check)
-	        static $did_items;
-	        
-	        if ('post' == $via_item_source) {
-	            if (!isset($did_items)) {
-	                $did_items = [];
-	            }
-				
-	            if (isset($did_items[$item_id])) {
-	                return;
-	            }
-				
-	            $did_items[$item_id] = 1;
-	        }
+        if ((intval($set_parent) != intval($last_parent)) || $is_new_term || $is_new) {
 
             // retain all explicitly selected exceptions
             global $wpdb;                               // any_type_or_taxonomy arg retains previous query construction (no post_type or taxonomy clause)

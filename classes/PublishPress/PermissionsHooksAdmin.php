@@ -10,7 +10,8 @@ class PermissionsHooksAdmin
     {
         add_action('presspermit_duplicate_module', [$this, 'duplicateModule'], 10, 2);
 
-        add_filter('presspermit_pattern_roles', [$this, 'fltPatternRoles']);
+        add_filter('presspermit_pattern_roles_raw', [$this, 'fltPatternRolesRaw']);
+        add_filter('presspermit_pattern_roles', [$this, 'fltPatternRoles'], 20);
 
         add_action('admin_menu', [$this, 'actSettingsPageMaybeRedirect'], 999);
 
@@ -184,12 +185,31 @@ class PermissionsHooksAdmin
         presspermit()->admin()->errorNotice('duplicate_module', ['module_slug' => $ext_slug, 'module_folder' => $ext_folder]);
     }
 
-    public function fltPatternRoles($roles)
+    public function fltPatternRolesRaw($roles) {
+        return $this->fltPatternRoles($roles, false);
+    }
+
+    public function fltPatternRoles($roles, $set_labels = true)
     {
-        $roles['subscriber']->labels = (object)['name' => esc_html__('Subscribers', 'press-permit-core'), 'singular_name' => esc_html__('Subscriber', 'press-permit-core')];
-        $roles['contributor']->labels = (object)['name' => esc_html__('Contributors', 'press-permit-core'), 'singular_name' => esc_html__('Contributor', 'press-permit-core')];
-        $roles['author']->labels = (object)['name' => esc_html__('Authors', 'press-permit-core'), 'singular_name' => esc_html__('Author', 'press-permit-core')];
-        $roles['editor']->labels = (object)['name' => esc_html__('Editors', 'press-permit-core'), 'singular_name' => esc_html__('Editor', 'press-permit-core')];
+        foreach (['subscriber', 'contributor', 'author', 'editor'] as $role_name) {
+            if (!isset($roles[$role_name])) {
+                $roles[$role_name] = (object) [];
+            }
+        }
+
+        if ($set_labels) {
+            $roles['subscriber']->labels = (object)['name' => esc_html__('Subscribers', 'press-permit-core'), 'singular_name' => esc_html__('Subscriber')];
+            $roles['contributor']->labels = (object)['name' => esc_html__('Contributors', 'press-permit-core'), 'singular_name' => esc_html__('Contributor')];
+            $roles['author']->labels = (object)['name' => esc_html__('Authors', 'press-permit-core'), 'singular_name' => esc_html__('Author')];
+            $roles['editor']->labels = (object)['name' => esc_html__('Editors', 'press-permit-core'), 'singular_name' => esc_html__('Editor')];
+        } else {
+            foreach (['subscriber', 'contributor', 'author', 'editor'] as $role_name) {
+                if (!isset($roles[$role_name]->labels)) {
+                    $display_name = ucwords(str_replace(['-', '_'], ' ', $role_name));
+                    $roles[$role_name]->labels = (object)['name' => $display_name, 'singular_name' => $display_name];
+                }
+            }
+        }
 
         return $roles;
     }
