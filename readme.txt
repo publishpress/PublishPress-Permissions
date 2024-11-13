@@ -241,9 +241,25 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 == Changelog ==
 
 = 4.0.32 - 13 Nov 2023 =
-* Fixed : Specific Permissions for page editing caused incorrect page permalink to be output on Posts / Pages screen, under some configurations
-* Fixed : WP 6.6 - Updating a page caused propagated permissions to be cleared under some configurations
-* Compat : Custom Post Type UI - Specific Permissions for editing did not grant access under some configurations
+* Fixed: Warning for early execution of load_plugin_textdomain() in WP 6.7 #1227
+* Fixed: WP 6.6 - Updating a page caused propagated permissions to be cleared under some configurations
+* Fixed: Specific Permissions for page editing caused incorrect page permalink to be output on Posts / Pages screen, under some configurations
+* Fixed: Updating a page could clear propagated permissions in specific configurations #1223
+* Fixed: Updated wording for "Add Group" button #1195
+* Fixed: Updated reference language strings #1195
+* Fixed: Removed note from "Add Group" option #1195
+* Fixed: Added Portuguese language hints #1202
+* Fixed: Added missing translation strings in permissions (free version) #1202
+* Fixed: Removed outdated message about status updates #1200
+* Fixed: Changed wording of "Add New" button to "Add New Group" #1194
+* Fixed: Removed social links from footer #1193
+* Fixed: Removed penguin logo from headers #1191
+* Compat: Experimental fix for Custom Post Type UI editing permissions #1221
+* Updated: Translation files #1190
+* Updated: Symfony Process library from 5.4.28 to 5.4.46
+* Updated: Tested compatibility with WordPress 6.7 #527
+* Improved: Translation handling by removing translation functions on variables where unnecessary
+* Refined: Code formatting and normalized whitespace
 
 = 4.0.31 - 8 Oct 2024 =
 * Fixed : PHP Notice "Attempt to read property object_type on bool" under some configurations
