@@ -153,7 +153,11 @@ class PermissionsHooks
 
     public function loadFilters()
     {
-        if (!defined('PRESSPERMIT_NO_EARLY_CAPS_INIT')) {
+        if (apply_filters(
+    		'presspermit_early_caps_init',
+    		!defined('PRESSPERMIT_NO_EARLY_CAPS_INIT') 
+            && (class_exists('ACF') || !defined('CPTUI_VERSION'))
+    	)) {
             add_action('init', function() {presspermit()->capDefs(['force' => true]);}, 5);
         }
 
