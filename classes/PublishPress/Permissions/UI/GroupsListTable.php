@@ -301,9 +301,9 @@ class GroupsListTable extends GroupsListTableBase
 
                     // Check if the group for this row is editable
                     if ($can_manage_group) {
-                        echo "<strong><a href='" . esc_url($edit_link) . "'>" . esc_html__($group->group_name, 'press-permit-core') . "</a></strong><br />";
+                        echo "<strong><a href='" . esc_url($edit_link) . "'>" . esc_html($group->group_name) . "</a></strong><br />";
                     } else {
-                        echo '<strong>' . esc_html__($group->group_name, 'press-permit-core') . '</strong>';
+                        echo '<strong>' . esc_html($group->group_name) . '</strong>';
                     }
 
                     $this->row_actions($actions);

@@ -152,8 +152,8 @@ class SettingsTabModules
                                                 value="1" />
 
                                             <?php
-                                            if (!empty($ext_info->title[$slug])) echo esc_html__($ext_info->title[$slug], 'press-permit-core');
-                                            else echo esc_html__($this->prettySlug($slug), 'press-permit-core'); ?>
+                                            if (!empty($ext_info->title[$slug])) echo esc_html($ext_info->title[$slug]);
+                                            else echo esc_html($this->prettySlug($slug)); ?>
                                     </td>
                                     </label>
 

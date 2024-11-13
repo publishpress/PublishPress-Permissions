@@ -492,7 +492,7 @@ class Groups
             $role_display_name = self::getMetagroupName($metagroup_type, $meta_id);
             $role_display_name = str_replace('[WP ', '', $role_display_name);
             $role_display_name = str_replace(']', '', $role_display_name);
-            return sprintf(esc_html__('All users with the WordPress role of %s', 'press-permit-core'), esc_html__($role_display_name, 'press-permit-core'));
+            return sprintf(esc_html__('All users with the WordPress role of %s', 'press-permit-core'), esc_html($role_display_name));
         } else {
             return $default_descript;
         }

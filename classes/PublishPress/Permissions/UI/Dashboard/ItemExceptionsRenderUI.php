@@ -160,7 +160,7 @@ class ItemExceptionsRenderUI
         <tr>
             <td class='pp-exc-agent'><input type='hidden' value='<?php echo esc_attr($agent_id); ?>' />
                 <a href='<?php echo esc_url("{$this->base_url}$agent_id"); ?>' title='<?php echo esc_attr($title); ?>'
-                    target='_blank'><?php echo esc_html__($_name, 'press-permit-core'); ?></a>
+                    target='_blank'><?php echo esc_html($_name); ?></a>
             </td>
             <?php
             foreach ($assignment_modes as $assign_for) {

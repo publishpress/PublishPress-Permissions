@@ -174,8 +174,8 @@ class CoreAdmin
                                     value="1" />
 
                                 <?php
-                                if (!empty($ext_info->title[$slug])) echo esc_html__($ext_info->title[$slug], 'press-permit-core');
-                                else echo esc_html__($this->prettySlug($slug), 'press-permit-core');
+                                if (!empty($ext_info->title[$slug])) echo esc_html($ext_info->title[$slug]);
+                                else echo esc_html($this->prettySlug($slug));
                                 ?>
                             </label>
                         </td>
@@ -188,7 +188,7 @@ class CoreAdmin
                                                     echo esc_attr($ext_info->descript[$slug]);
                                                 }
                                                 ?>">
-                                        <?php echo esc_html__($ext_info->blurb[$slug],  'press-permit-core'); ?>
+                                        <?php echo esc_html($ext_info->blurb[$slug]); ?>
                                     </span>
                                 <?php endif; ?>
                             </td>
