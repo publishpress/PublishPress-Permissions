@@ -240,6 +240,11 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 4.0.32 - 13 Nov 2023 =
+* Fixed : Specific Permissions for page editing caused incorrect page permalink to be output on Posts / Pages screen, under some configurations
+* Fixed : WP 6.6 - Updating a page caused propagated permissions to be cleared under some configurations
+* Compat : Custom Post Type UI - Specific Permissions for editing did not grant access under some configurations
+
 = 4.0.31 - 8 Oct 2024 =
 * Fixed : PHP Notice "Attempt to read property object_type on bool" under some configurations
 * Compat : Events Manager - Error on event category creation if no other event categories exist
