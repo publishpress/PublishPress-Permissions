@@ -45,7 +45,7 @@ if (!defined('PRESSPERMIT_IMPORT_FILE')) {
 
             $ext_version = PRESSPERMIT_VERSION;
 
-            $title = esc_html__('Import', 'press-permit-core');
+            $title = 'Import'; // @todo: review removing this, as it is separately set with translation downstream
 
             if (presspermit()->registerModule(
                 'import', $title, dirname(plugin_basename(__FILE__)), $ext_version, ['min_pp_version' => '2.7-beta']
