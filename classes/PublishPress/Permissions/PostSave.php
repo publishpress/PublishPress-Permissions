@@ -44,6 +44,16 @@ class PostSave
         if (isset($saved_items[$post_id])) {
             return;
         }
+
+        global $current_user;
+        $transient_name = "_saving_post_{$post_id}_{$current_user->ID}";
+        
+        if (get_transient($transient_name)) {
+            return;
+        } else {
+            set_transient($transient_name, true, 5);
+        }
+
         $saved_items[$post_id] = 1;
 
         $is_new = self::isNewPost($post_id, $post);
