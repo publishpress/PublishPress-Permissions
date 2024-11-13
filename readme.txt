@@ -3,7 +3,7 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, user, privacy, capabilities
 Requires at least: 5.5
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 7.2.5
 Stable tag: 4.0.31
 License: GPLv3
