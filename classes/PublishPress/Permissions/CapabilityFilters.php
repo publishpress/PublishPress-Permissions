@@ -615,6 +615,14 @@ class CapabilityFilters
             if (!$memcache_disabled) {
                 foreach ($listed_ids as $_id) {
                     $this->memcache['tested_ids'][$post_type][$capreqs_key][$_id] = in_array($_id, $okay_ids);
+
+                    // @todo: review, follow up with reporting user
+                    // Custom Post Type UI: Specific Permissions for editing do not grant access under some configurations
+                    if (is_admin()) {
+                        if (defined('PRESSPERMIT_EXTRA_POST_CACHE_DELETE')) {
+                            wp_cache_delete( $_id, 'posts' );
+                        }
+                    }
                 }
             }
 
