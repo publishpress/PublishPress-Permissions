@@ -256,7 +256,6 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Fixed: Removed penguin logo from headers #1191
 * Compat: Experimental fix for Custom Post Type UI editing permissions #1221
 * Updated: Translation files #1190
-* Updated: Symfony Process library from 5.4.28 to 5.4.46
 * Updated: Tested compatibility with WordPress 6.7 #527
 * Improved: Translation handling by removing translation functions on variables where unnecessary
 * Refined: Code formatting and normalized whitespace
