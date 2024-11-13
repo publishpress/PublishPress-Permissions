@@ -94,7 +94,10 @@ class SettingsTabModules
                                                 name="presspermit_active_modules[<?php echo esc_attr($plugin_info->plugin_slug); ?>]"
                                                 value="1" checked="checked" />
 
-                                            <?php echo esc_html__($plugin_info->label); ?>
+                                            <?php 
+                                            $title = (!empty($ext_info->title[$slug])) ? $ext_info->title[$slug] : $plugin_info->label;
+                                            echo esc_html($title); 
+                                            ?>
                                         </label>
 
                                         <?php
