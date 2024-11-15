@@ -5,7 +5,7 @@ Tags: restrict, access, user, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.7
 Requires PHP: 7.2.5
-Stable tag: 4.0.33
+Stable tag: 4.0.34
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,9 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.0.34 - 14 Nov 2024 =
+* Fixed : Changes to Permissions metaboxes in Post editor were not saved
 
 = 4.0.33 - 13 Nov 2023 =
 * Fixed: Warning for early execution of load_plugin_textdomain() in WP 6.7 #1227
