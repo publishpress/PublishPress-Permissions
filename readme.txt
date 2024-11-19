@@ -240,6 +240,10 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 4.0.35 =
+* Fixed : Fatal error under some conditions if a post type is registered abnormally
+* Compat : miniOrange SSO - Fatal error when adding a new post
+
 = 4.0.34 - 14 Nov 2024 =
 * Fixed : Changes to Permissions metaboxes in Post editor were not saved
 
