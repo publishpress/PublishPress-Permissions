@@ -118,7 +118,7 @@ class LibWP
                     	}
                     }
 
-                    $use_block = $use_block && apply_filters('use_block_editor_for_post_type', $use_block, $post_type, PHP_INT_MAX);
+                    $use_block = $use_block && apply_filters('use_block_editor_for_post_type', $use_block, $post_type);
 
                     if (version_compare($wp_version, '5.9-beta', '>=') && !empty($has_nav_filter)) {
                         add_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type', 10, 2 );
@@ -162,12 +162,14 @@ class LibWP
         	}
         }
 
+        $_post = get_post(self::getPostID());
+
         $conditions[] = (self::isWp5() || $pluginsState['gutenberg'])
 						&& ! $pluginsState['classic-editor']
 						&& ! $pluginsState['gutenberg-ramp']
                         && ! $pluginsState['disable-gutenberg']
-                        && apply_filters('use_block_editor_for_post_type', true, $post_type, PHP_INT_MAX)
-                        && apply_filters('use_block_editor_for_post', true, get_post(self::getPostID()), PHP_INT_MAX);
+                        && apply_filters('use_block_editor_for_post_type', true, $post_type)
+                        && (empty($_post) || apply_filters('use_block_editor_for_post', true, $_post));
 
 		$conditions[] = self::isWp5()
                         && $pluginsState['classic-editor']
@@ -180,7 +182,7 @@ class LibWP
                             && self::is_GET('classic-editor__forget'));
 
         $conditions[] = $pluginsState['gutenberg-ramp'] 
-                        && apply_filters('use_block_editor_for_post', true, get_post(self::getPostID()), PHP_INT_MAX);
+                        && (empty($_post) || apply_filters('use_block_editor_for_post', true, $_post));
 
         $conditions[] = $pluginsState['disable-gutenberg'] 
                         && !self::disableGutenberg(self::getPostID());
