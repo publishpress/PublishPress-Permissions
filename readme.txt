@@ -242,8 +242,10 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 = 4.0.35 =
 * Fixed : Fatal error under some conditions if a post type is registered abnormally
-* Compat : miniOrange SSO - Fatal error when adding a new post
 * Fixed : PHP Warning in post editor under some site configurations
+* Fixed : Multisite - Database error in posts query on installations with abnormal site switching / caching
+* Compat : miniOrange SSO - Fatal error when adding a new post
+* Compat : PublishPress Authors - poor front end query performance on highly populated sites
 
 = 4.0.34 - 14 Nov 2024 =
 * Fixed : Changes to Permissions metaboxes in Post editor were not saved
