@@ -839,7 +839,12 @@ class LibWP
             'join' => '',
         ];
 
-        if ($ppma_active = defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') && version_compare(PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION, '3.8.0', '>=') && !empty($args['join']) && strpos($args['join'], 'ppma_t')) {
+        if ($ppma_active = defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') 
+        && version_compare(PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION, '3.8.0', '>=') 
+        && !empty($args['join']) 
+        && strpos($args['join'], 'ppma_t')
+        && (empty($args['context'] || ('tally_term_counts' != $args['context'])))
+        ) {
             $defaults['join_table'] = 'ppma_t';
         }
 

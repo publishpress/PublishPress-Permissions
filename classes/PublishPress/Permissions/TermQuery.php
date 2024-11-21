@@ -43,11 +43,11 @@ class TermQuery
 
         if ( class_exists('\PublishPress\Permissions\PostFilters') && ! presspermit()->isUserUnfiltered() ) {
             // will default to src_table $wpdb->posts
-            $join = \PublishPress\Permissions\PostFilters::instance()->fltPostsJoin('', []);
+            $join = \PublishPress\Permissions\PostFilters::instance()->fltPostsJoin('', ['context' => 'tally_term_counts']);
 
             // need to apply term restrictions in case post is restricted by another taxonomy
             $type_status_clause = \PublishPress\Permissions\PostFilters::instance()->getPostsWhere(
-                ['post_types' => $object_types, 'required_operation' => $required_operation, 'join' => $join]
+                ['post_types' => $object_types, 'required_operation' => $required_operation, 'join' => $join, 'context' => 'tally_term_counts']
             );
         } else {
             $join = '';
