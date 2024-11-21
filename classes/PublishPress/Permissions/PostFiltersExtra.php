@@ -50,7 +50,8 @@ class PostFiltersExtra
                 //       Other plugins need to use switch_to_blog() rather than just executing a query on a non-main site.
                 $matches = [];
                 if (preg_match('/SELECT .* FROM [^ ]+posts AS ([^ ]) .*/', $request, $matches)) {
-                    $args['source_alias'] = $matches[2];
+                    $args['source_alias'] = $matches[1];
+                
                 } elseif ($return = preg_match('/SELECT .* FROM ([^ ]+)posts .*/', $request, $matches)) {
                     $args['source_alias'] = $matches[1] . 'posts';
                 }
