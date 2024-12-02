@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class PostEdit
@@ -44,16 +45,17 @@ class PostEdit
             $descendants = [];
         }
 
+        $required_operation = null;
         if (!current_user_can('pp_associate_any_page')) {
             require_once(PRESSPERMIT_CLASSPATH . '/PageFilters.php');
-            
+
             $required_operation = (presspermit()->getOption('page_parent_editable_only')) ? 'edit' : 'associate';
 
             if ($restriction_where = \PublishPress\Permissions\PageFilters::getRestrictionClause(
-                $required_operation, 
-                $post_type, 
-                compact('col_id'))
-            ) {
+                $required_operation,
+                $post_type,
+                compact('col_id')
+            )) {
                 $clauses['where'] .= $restriction_where;
             }
 
@@ -73,8 +75,8 @@ class PostEdit
             }
 
             $clauses['where'] = " AND ( ( 1=1 {$clauses['where']} ) OR ("
-            . " $col_id IN ('" . implode("','", array_unique($additional_ids)) . "')" 
-            . " AND $col_status NOT IN ('" . implode("','", get_post_stati(['internal' => true])) . "') ) )";
+                . " $col_id IN ('" . implode("','", array_unique($additional_ids)) . "')"
+                . " AND $col_status NOT IN ('" . implode("','", get_post_stati(['internal' => true])) . "') ) )";
         }
 
         return $clauses;
@@ -148,14 +150,14 @@ class PostEdit
         if (is_numeric($set_visibility) || !get_post_status_object($set_visibility)) {
             $set_visibility = 'private';
         }
-        ?>
+?>
         <script type="text/javascript">
             /* <![CDATA[ */
-            jQuery(document).ready(function ($) {
+            jQuery(document).ready(function($) {
                 $('#visibility-radio-<?php echo esc_attr($set_visibility); ?>').prop('selected', 'selected');
 
                 if (typeof(postL10n) != 'undefined') {
-					var vis = $('#post-visibility-select input:radio:checked').val();
+                    var vis = $('#post-visibility-select input:radio:checked').val();
                     var str = '';
 
                     if ('public' == vis) {
@@ -165,9 +167,9 @@ class PostEdit
                     }
 
                     if (str) {
-		                $('#post-visibility-display').html(
-		                    postL10n[$('#post-visibility-select input:radio:checked').val()]
-		                );
+                        $('#post-visibility-display').html(
+                            postL10n[$('#post-visibility-select input:radio:checked').val()]
+                        );
                     }
                 } else {
                     $('#post-visibility-display').html(
@@ -187,14 +189,12 @@ class PostEdit
         if (empty($user->allcaps['upload_files']) && !empty($user->allcaps['edit_files'])) : ?>
             <script type="text/javascript">
                 /* <![CDATA[ */
-                jQuery(document).ready(function ($) {
-                    $(document).on('focus', 'div.supports-drag-drop', function()
-                    {
+                jQuery(document).ready(function($) {
+                    $(document).on('focus', 'div.supports-drag-drop', function() {
                         $('div.media-router a:first').hide();
                         $('div.media-router a:nth-child(2)').click();
                     });
-                    $(document).on('mouseover', 'div.supports-drag-drop', function()
-                    {
+                    $(document).on('mouseover', 'div.supports-drag-drop', function() {
                         $('div.media-menu a:nth-child(2)').hide();
                         $('div.media-menu a:nth-child(5)').hide();
                     });
@@ -207,21 +207,19 @@ class PostEdit
         if (empty($user->allcaps['upload_files']) && !empty($user->allcaps['edit_files'])) : ?>
             <script type="text/javascript">
                 /* <![CDATA[ */
-                jQuery(document).ready(function ($) {
-                    $(document).on('focus', 'div.supports-drag-drop', function()
-                    {
+                jQuery(document).ready(function($) {
+                    $(document).on('focus', 'div.supports-drag-drop', function() {
                         $('div.media-router a:first').hide();
                         $('div.media-router a:nth-child(2)').click();
                     });
-                    $(document).on('mouseover', 'div.supports-drag-drop', function()
-                    {
+                    $(document).on('mouseover', 'div.supports-drag-drop', function() {
                         $('div.media-menu a:nth-child(2)').hide();
                         $('div.media-menu a:nth-child(5)').hide();
                     });
                 });
                 //]]>
             </script>
-        <?php
+            <?php
         endif;
     }
 
@@ -239,19 +237,19 @@ class PostEdit
         foreach (get_taxonomies(['hierarchical' => true], 'object') as $taxonomy => $tx) {
             $disallow_add_term = false;
             $additional_tt_ids = array_merge(
-                $user->getExceptionTerms('assign', 'additional', $post_type, $taxonomy, ['merge_universals' => true]), 
+                $user->getExceptionTerms('assign', 'additional', $post_type, $taxonomy, ['merge_universals' => true]),
                 $user->getExceptionTerms('edit', 'additional', $post_type, $taxonomy, ['merge_universals' => true])
             );
 
-            if ($user->getExceptionTerms('assign', 'include', $post_type, $taxonomy, ['merge_universals' => true]) 
-            || $user->getExceptionTerms('edit', 'include', $post_type, $taxonomy, ['merge_universals' => true])
+            if (
+                $user->getExceptionTerms('assign', 'include', $post_type, $taxonomy, ['merge_universals' => true])
+                || $user->getExceptionTerms('edit', 'include', $post_type, $taxonomy, ['merge_universals' => true])
             ) {
                 $disallow_add_term = true;
-
             } elseif ($tt_ids = array_merge(
-                $user->getExceptionTerms('assign', 'exclude', $post_type, $taxonomy, ['merge_universals' => true]), 
-                $user->getExceptionTerms('edit', 'exclude', $post_type, $taxonomy, ['merge_universals' => true]))
-            ) {
+                $user->getExceptionTerms('assign', 'exclude', $post_type, $taxonomy, ['merge_universals' => true]),
+                $user->getExceptionTerms('edit', 'exclude', $post_type, $taxonomy, ['merge_universals' => true])
+            )) {
                 $tt_ids = array_diff($tt_ids, $additional_tt_ids);
                 if (count($tt_ids)) {
                     $disallow_add_term = true;
@@ -265,9 +263,9 @@ class PostEdit
             }
 
             if ($disallow_add_term) :
-                ?>
+            ?>
                 <style type="text/css">
-                    #<?php echo esc_attr($taxonomy);?>-adder {
+                    #<?php echo esc_attr($taxonomy); ?>-adder {
                         display: none;
                     }
                 </style>
@@ -311,18 +309,18 @@ class PostEdit
 
             <script type="text/javascript">
                 /* <![CDATA[ */
-                jQuery(document).ready(function ($) {
+                jQuery(document).ready(function($) {
                     $("#post_author_override").after(
-                        '<div id="pp_author_search" class="pp-select-author" style="display:none">' 
-                        + $('#pp_author_search_ui_base').attr('id', 'pp_author_search_ui').html() 
-                        + '</div>&nbsp;'
-                        + '<a href="#" class="pp-add-author" style="margin-left:8px" title="<?php echo esc_attr($title); ?>"><?php esc_html_e('select other', 'press-permit-core'); ?></a>'
-                        + '<a class="pp-close-add-author" href="#" style="display:none;"><?php esc_html_e('close', 'press-permit-core'); ?></a>'
-                        );
+                        '<div id="pp_author_search" class="pp-select-author" style="display:none">' +
+                        $('#pp_author_search_ui_base').attr('id', 'pp_author_search_ui').html() +
+                        '</div>&nbsp;' +
+                        '<a href="#" class="pp-add-author" style="margin-left:8px" title="<?php echo esc_attr($title); ?>"><?php esc_html_e('select other', 'press-permit-core'); ?></a>' +
+                        '<a class="pp-close-add-author" href="#" style="display:none;"><?php esc_html_e('close', 'press-permit-core'); ?></a>'
+                    );
                 });
                 /* ]]> */
             </script>
-        <?php
+<?php
         endif;
     }
 }
