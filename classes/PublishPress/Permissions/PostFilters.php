@@ -49,13 +49,6 @@ class PostFilters
         
         add_filter('posts_distinct', [$this, 'fltPostsDistinct'], 10, 2);
 
-        if (
-        is_multisite() && !defined('PRESSPERMIT_QUERY_NO_MS_PREFIX_SAFEGUARD')
-        && (!is_admin() || !defined('PRESSPERMIT_ADMIN_QUERY_MS_PREFIX_SAFEGUARD'))
-        ) {
-            add_filter('posts_clauses_request', [$this, 'fltPostsClausesSafeguard'], 999, 2);
-        }
-
         add_filter('presspermit_force_post_metacap_check', [$this, 'fltForcePostMetacapCheck'], 10, 2);
 
         add_filter('pre_do_shortcode_tag', function($do_tag, $tag, $attr, $m) {
@@ -971,25 +964,6 @@ class PostFilters
         }
 
         return $pp_where;
-    }
-
-    // Sanity check for posts_clauses query on Multisite: force posts table name in WHERE, ORDERBY clause to match name in SELECT fields
-    public function fltPostsClausesSafeguard($clauses, $_wp_query = false, $args = [])
-    {
-        global $wpdb;
-
-        $matches = [];
-        if ($match = preg_match('/' . $wpdb->base_prefix . '([^\s\r\n]*)posts./', $clauses['fields'], $matches)) {
-            $posts_table = $wpdb->base_prefix . $matches[1] . 'posts';
-
-            // Bypass the safeguard if join clause includes any other posts table
-            if (!preg_match("/(?!{$posts_table})(" . $wpdb->base_prefix . '[^\s\r\n]*posts)/', $clauses['join'])) {
-                $clauses['where'] = preg_replace("/$wpdb->base_prefix([^\s\r\n]*)posts\./", $posts_table . '.', $clauses['where']);
-                $clauses['orderby'] = preg_replace("/$wpdb->base_prefix([^\s\r\n]*)posts\./", $posts_table . '.', $clauses['orderby']);
-            }
-        }
-
-        return $clauses;
     }
 
     public function appendAttachmentClause($where, $clauses, $args)
