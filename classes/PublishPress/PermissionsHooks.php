@@ -34,6 +34,12 @@ class PermissionsHooks
             $this->loadFilters();
         }
 
+        if (
+        is_multisite() && defined('PRESSPERMIT_ADMIN_QUERY_MS_PREFIX_SAFEGUARD')
+        ) {
+            add_filter('query', [$this, 'fltQuerySafeguard'], 99999);
+        }
+
 		if (presspermit()->isPro()) {
         	add_action('admin_init', [$this, 'loadUpdater']);
         }
@@ -669,6 +675,27 @@ class PermissionsHooks
         if (defined('DOING_AJAX') && DOING_AJAX) {
             delete_option($option_name);
         }
+    }
+
+    // Sanity check for posts_clauses query on Multisite: force posts table name in WHERE, ORDERBY clause to match name in SELECT fields
+    public function fltQuerySafeguard($query)
+    {
+        global $wpdb;
+
+        $matches = [];
+
+        // @todo: require an Advanced setting to be enabled
+		
+        if (preg_match('/SELECT[\s\r\n]+' . $wpdb->base_prefix . '([^\s\r\n]*)posts./', $query, $matches)) {
+            $posts_table = $wpdb->base_prefix . $matches[1] . 'posts';
+
+            // Bypass the safeguard if join clause includes any other posts table
+            if (defined('ADMIN_QUERY_SAFEGUARD_JOIN_PRECAUTION') && !preg_match("/(?!{$posts_table})(" . $wpdb->base_prefix . '[^\s\r\n]*posts)/', $query)) {
+                $query = preg_replace("/$wpdb->base_prefix([^\s\r\n]*)posts\./", $posts_table . '.', $query);
+            }
+        }
+
+        return $query;
     }
 
 } // end class
