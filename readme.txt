@@ -240,7 +240,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 4.0.35 =
+= 4.1.0 =
 * Fixed : Fatal error under some conditions if a post type is registered abnormally
 * Fixed : PHP Warning in post editor under some site configurations
 * Fixed : Multisite - Database error in posts query on installations with abnormal site switching / caching
