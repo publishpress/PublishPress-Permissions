@@ -8,17 +8,15 @@ class PluginAdmin
     {
         add_filter('plugin_action_links_' . plugin_basename(PRESSPERMIT_FILE), [$this, 'fltPluginActionLinks'], 10, 2);
 
-        add_action('after_plugin_row_' . plugin_basename(PRESSPERMIT_FILE), [$this, 'actCorePluginStatus'], 10, 3);
-
         if (defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') && !version_compare(PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION, '3.8.0', '>=')) {
             self::authorsVersionNotice();
         }
     }
 
+    // Deprecated in 4.0.35
     public function actCorePluginStatus($plugin_file, $plugin_data, $status)
     {
         $message = '';
-
         if (!$this->typeUsageStored()) {
             if (get_post_types(['public' => true, '_builtin' => false])) {
                 $do_message = true;
@@ -30,7 +28,7 @@ class PluginAdmin
 
             echo '<tr class="plugin-update-tr"><td colspan="' . esc_attr($wp_list_table->get_column_count())
                 . '" class="plugin-update"><div class="update-message">';
-                
+
             $url = admin_url('admin.php?page=presspermit-settings');
 
             printf(
@@ -42,12 +40,12 @@ class PluginAdmin
             if (presspermit()->isPro() && (is_network_admin() || !is_multisite())) {
                 $key = presspermit()->getOption('edd_key');
                 $keyStatus = isset($key['license_status']) ? $key['license_status'] : 'invalid';
-    
+
                 if (in_array($keyStatus, ['invalid', 'expired'])) {
                     require_once PRESSPERMIT_CLASSPATH . '/PluginStatus.php';
-                    
+
                     echo '<br /><br />';
-                    
+
                     if ('expired' == $keyStatus) {
                         \PublishPress\Permissions\PluginStatus::renewalMsg();
                     } else {
@@ -55,7 +53,7 @@ class PluginAdmin
                     }
                 }
             }
-            
+
             echo '</div></td></tr>';
         }
     }
