@@ -43,6 +43,8 @@ class SettingsTabAdvanced
                 'capabilities'      => esc_html__('Permissions Capabilities', 'press-permit-core'),
                 'role_integration'  => esc_html__('Role Integration', 'press-permit-core'),
                 'constants'         => esc_html__('Constants', 'press-permit-core'),
+                'front_end'         => esc_html__('Front End', 'press-permit-core'),
+                'user_profile'      => esc_html__('User Management', 'press-permit-core'),
                 'misc'              => esc_html__('Miscellaneous', 'press-permit-core'),
             ]);
         }
@@ -64,7 +66,7 @@ class SettingsTabAdvanced
                 'anonymous_unfiltered'                   => sprintf(esc_html__('%1$sDisable%2$s all filtering for anonymous users', 'press-permit-core'), '', ''),
                 'suppress_administrator_metagroups'      => sprintf(esc_html__('%1$sDo not apply%2$s metagroup permissions for Administrators', 'press-permit-core'), '', ''),
                 'limit_front_end_term_filtering'         => sprintf(esc_html__('Limit front-end category / term filtering', 'press-permit-core')),
-                'user_search_by_role'                    => esc_html__('User Search: Filter by WP role', 'press-permit-core'),
+                'user_search_by_role'                    => esc_html__('User Search      : Filter by WP role', 'press-permit-core'),
                 'display_hints'                          => esc_html__('Display Administrative Hints', 'press-permit-core'),
                 'display_extension_hints'                => esc_html__('Display Module Hints', 'press-permit-core'),
                 'pattern_roles_include_generic_rolecaps' => esc_html__('Type-specific Supplemental Roles also provide all general capabilities in Pattern Role', 'press-permit-core'),
@@ -73,6 +75,13 @@ class SettingsTabAdvanced
                 'users_bulk_groups'                      => esc_html__('Bulk Add / Remove Groups on Users Screen', 'press-permit-core'),
                 'list_all_constants'                     => esc_html('Display all available constant definitions'),
                 'post_blockage_priority'                 => esc_html__('Post-specific Permissions take priority', 'press-permit-core'),
+                'media_search_results'                   => esc_html__('Search Results include Media', 'press-permit-core'),
+                'term_counts_unfiltered'                 => esc_html__("Performance      : Don't filter category / tag counts", 'press-permit-core'),
+                'strip_private_caption'                  => esc_html__('Suppress "Private: " Caption', 'press-permit-core'),
+                'force_nav_menu_filter'                  => esc_html__('Filter Menu Items', 'press-permit-core'),
+                'display_user_profile_groups'            => esc_html__('Permission Groups on User Profile', 'press-permit-core'),
+                'display_user_profile_roles'             => esc_html__('Supplemental Roles on User Profile', 'press-permit-core'),
+                'new_user_groups_ui'                     => esc_html__('Select Permission Groups at User creation', 'press-permit-core'),
             ]);
         }
 
@@ -90,6 +99,8 @@ class SettingsTabAdvanced
                 'permissions_admin' => ['non_admins_set_read_exceptions'],
                 'user_permissions'  => ['user_permissions'],
                 'role_integration'  => ['pattern_roles_include_generic_rolecaps', 'dynamic_wp_roles'],
+                'front_end'         => ['media_search_results', 'term_counts_unfiltered', 'strip_private_caption', 'force_nav_menu_filter'],
+                'user_profile'      => ['new_user_groups_ui', 'display_user_profile_groups', 'display_user_profile_roles'],
                 'misc'              => ['users_bulk_groups', 'user_search_by_role', 'display_hints', 'display_extension_hints'],
                 'constants'         => ['list_all_constants'],
             ]);
@@ -264,6 +275,52 @@ class SettingsTabAdvanced
             </tr>
             <?php
 
+            $section = 'front_end'; // --- FRONT END SECTION ---
+            if (!empty($ui->form_options[$tab][$section])) :
+            ?>
+                <tr>
+                    <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
+                    <td>
+                        <?php
+                        $ui->optionCheckbox('media_search_results', $tab, $section, '');
+
+                        $ui->optionCheckbox('term_counts_unfiltered', $tab, $section, '');
+
+                        $hint = SettingsAdmin::getStr('strip_private_caption');
+                        $ui->optionCheckbox('strip_private_caption', $tab, $section, $hint);
+
+                        if (defined('UBERMENU_VERSION')) {
+                            $hint = SettingsAdmin::getStr('force_nav_menu_filter');
+                            $ui->optionCheckbox('force_nav_menu_filter', $tab, $section, $hint);
+                        }
+                        ?>
+                    </td>
+                </tr>
+            <?php
+            endif; // any options accessable in this section
+
+            $section = 'user_profile'; // --- USER PROFILE SECTION ---
+            if (!empty($ui->form_options[$tab][$section])) :
+            ?>
+                <tr>
+                    <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
+                    <td>
+                        <?php
+                        $hint = '';
+
+                        if (!defined('is_multisite()')) {
+                            $ui->optionCheckbox('new_user_groups_ui', $tab, $section, $hint, '<br />');
+                        }
+
+                        $hint = SettingsAdmin::getStr('display_user_profile_roles');
+                        $ui->optionCheckbox('display_user_profile_groups', $tab, $section);
+                        $ui->optionCheckbox('display_user_profile_roles', $tab, $section, $hint);
+                        ?>
+
+                    </td>
+                </tr>
+            <?php
+            endif; // any options accessable in this section
 
             $section = 'misc'; // --- MISC SECTION ---
             if (!empty($ui->form_options[$tab][$section])) : ?>
