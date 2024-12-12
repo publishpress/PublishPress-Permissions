@@ -36,16 +36,20 @@ class SettingsTabAdvanced
 
         if ($this->enabled) {
             $new = array_merge($new, [
-                'anonymous'         => esc_html__('Content Filtering', 'press-permit-core'),
-                'permissions'       => esc_html__('Permissions', 'press-permit-core'),
-                'permissions_admin' => esc_html__('Permissions Admin', 'press-permit-core'),
-                'user_permissions'  => esc_html__('User Permissions', 'press-permit-core'),
-                'capabilities'      => esc_html__('Permissions Capabilities', 'press-permit-core'),
-                'role_integration'  => esc_html__('Role Integration', 'press-permit-core'),
-                'constants'         => esc_html__('Constants', 'press-permit-core'),
-                'front_end'         => esc_html__('Front End', 'press-permit-core'),
-                'user_profile'      => esc_html__('User Management', 'press-permit-core'),
-                'misc'              => esc_html__('Miscellaneous', 'press-permit-core'),
+                'anonymous'           => esc_html__('Content Filtering', 'press-permit-core'),
+                'post_editor'         => esc_html__('Editor Options', 'press-permit-core'),
+                'page_structure'      => esc_html__('Page Structure', 'press-permit-core'),
+                'permissions'         => esc_html__('Permissions', 'press-permit-core'),
+                'permissions_admin'   => esc_html__('Permissions Admin', 'press-permit-core'),
+                'user_permissions'    => esc_html__('User Permissions', 'press-permit-core'),
+                'capabilities'        => esc_html__('Permissions Capabilities', 'press-permit-core'),
+                'role_integration'    => esc_html__('Role Integration', 'press-permit-core'),
+                'constants'           => esc_html__('Constants', 'press-permit-core'),
+                'front_end'           => esc_html__('Front End', 'press-permit-core'),
+                'nav_menu_management' => esc_html__('Nav Menu Editing', 'press-permit-core'),
+                'user_management'     => esc_html__('User Management', 'press-permit-core'),
+                'user_profile'        => esc_html__('User Profile', 'press-permit-core'),
+                'misc'                => esc_html__('Miscellaneous', 'press-permit-core'),
             ]);
         }
 
@@ -66,7 +70,7 @@ class SettingsTabAdvanced
                 'anonymous_unfiltered'                   => sprintf(esc_html__('%1$sDisable%2$s all filtering for anonymous users', 'press-permit-core'), '', ''),
                 'suppress_administrator_metagroups'      => sprintf(esc_html__('%1$sDo not apply%2$s metagroup permissions for Administrators', 'press-permit-core'), '', ''),
                 'limit_front_end_term_filtering'         => sprintf(esc_html__('Limit front-end category / term filtering', 'press-permit-core')),
-                'user_search_by_role'                    => esc_html__('User Search      : Filter by WP role', 'press-permit-core'),
+                'user_search_by_role'                    => esc_html__('User Search                                  : Filter by WP role', 'press-permit-core'),
                 'display_hints'                          => esc_html__('Display Administrative Hints', 'press-permit-core'),
                 'display_extension_hints'                => esc_html__('Display Module Hints', 'press-permit-core'),
                 'pattern_roles_include_generic_rolecaps' => esc_html__('Type-specific Supplemental Roles also provide all general capabilities in Pattern Role', 'press-permit-core'),
@@ -76,12 +80,22 @@ class SettingsTabAdvanced
                 'list_all_constants'                     => esc_html('Display all available constant definitions'),
                 'post_blockage_priority'                 => esc_html__('Post-specific Permissions take priority', 'press-permit-core'),
                 'media_search_results'                   => esc_html__('Search Results include Media', 'press-permit-core'),
-                'term_counts_unfiltered'                 => esc_html__("Performance      : Don't filter category / tag counts", 'press-permit-core'),
-                'strip_private_caption'                  => esc_html__('Suppress "Private: " Caption', 'press-permit-core'),
+                'term_counts_unfiltered'                 => esc_html__("Performance                                  : Don't filter category / tag counts", 'press-permit-core'),
+                'strip_private_caption'                  => esc_html__('Suppress "Private                            : " Caption', 'press-permit-core'),
                 'force_nav_menu_filter'                  => esc_html__('Filter Menu Items', 'press-permit-core'),
                 'display_user_profile_groups'            => esc_html__('Permission Groups on User Profile', 'press-permit-core'),
                 'display_user_profile_roles'             => esc_html__('Supplemental Roles on User Profile', 'press-permit-core'),
                 'new_user_groups_ui'                     => esc_html__('Select Permission Groups at User creation', 'press-permit-core'),
+                'page_parent_editable_only'              => esc_html__('Page Parent selection for editable pages only', 'press-permit-core'),
+                'page_parent_order'                      => esc_html__('Order Page Parent dropdown by Title', 'press-permit-core'),
+                'auto_assign_available_term'             => esc_html__("Auto-assign available term if default term is unavailable", 'press-permit-core'),
+                'list_others_uneditable_posts'           => esc_html__('List other user\'s uneditable posts', 'press-permit-core'),
+                'force_taxonomy_cols'                    => esc_html__('Add taxonomy columns to Edit Posts screen', 'press-permit-core'),
+                'admin_nav_menu_filter_items'            => esc_html__('List only user-editable content as available items', 'press-permit-core'),
+                'admin_nav_menu_partial_editing'         => esc_html__('Allow Renaming of Uneditable Items', 'press-permit-core'),
+                'admin_nav_menu_lock_custom'             => esc_html__('Lock custom menu items', 'press-permit-core'),
+                'add_author_pages'                       => esc_html__('Bulk-Add Author Pages (on Users screen)', 'press-permit-core'),
+                'lock_top_pages'                         => esc_html__('Pages can be set or removed from Top Level by: ', 'press-permit-core'),
             ]);
         }
 
@@ -95,11 +109,14 @@ class SettingsTabAdvanced
         if ($this->enabled) {
             $new = array_merge($new, [
                 'anonymous'         => ['anonymous_unfiltered', 'suppress_administrator_metagroups', 'limit_front_end_term_filtering'],
+                'page_structure'    => ['lock_top_pages'],
+                'user_management'   => ['limit_user_edit_by_level', 'add_author_pages', 'publish_author_pages'],
+                'post_editor'       => ['page_parent_order', 'page_parent_editable_only', 'auto_assign_available_term'],
                 'permissions'       => ['post_blockage_priority'],
+                'front_end'         => ['media_search_results', 'term_counts_unfiltered', 'strip_private_caption', 'force_nav_menu_filter'],
                 'permissions_admin' => ['non_admins_set_read_exceptions'],
                 'user_permissions'  => ['user_permissions'],
                 'role_integration'  => ['pattern_roles_include_generic_rolecaps', 'dynamic_wp_roles'],
-                'front_end'         => ['media_search_results', 'term_counts_unfiltered', 'strip_private_caption', 'force_nav_menu_filter'],
                 'user_profile'      => ['new_user_groups_ui', 'display_user_profile_groups', 'display_user_profile_roles'],
                 'misc'              => ['users_bulk_groups', 'user_search_by_role', 'display_hints', 'display_extension_hints'],
                 'constants'         => ['list_all_constants'],
@@ -150,6 +167,29 @@ class SettingsTabAdvanced
                         $ui->optionCheckbox('delete_settings_on_uninstall', $tab, $section, $hint, '', ['hint_class' => 'pp-subtext-show']);
                         ?>
                     </div>
+                </td>
+            </tr>
+        <?php endif; // any options accessable in this section
+
+        $section = 'post_editor';                        // --- EDITOR OPTIONS SECTION ---
+        if (!empty($ui->form_options[$tab][$section])) :
+        ?>
+            <tr>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
+                <td>
+                    <?php
+                    $ui->optionCheckbox('page_parent_editable_only', $tab, $section);
+
+                    $ui->optionCheckbox('page_parent_order', $tab, $section);
+                    ?>
+
+                    <br />
+                    <?php
+                    $hint = esc_html__("When saving a post, if the default term is not selectable, substitute first available.", 'presspermit-pro')
+                        . ' ' . esc_html__('Some term-limited editing configurations require this.', 'presspermit=pro');
+
+                    $ui->optionCheckbox('auto_assign_available_term', $tab, $section, $hint, '', ['hint_class' => 'pp-subtext-show']);
+                    ?>
                 </td>
             </tr>
         <?php endif; // any options accessable in this section
@@ -321,6 +361,64 @@ class SettingsTabAdvanced
                 </tr>
             <?php
             endif; // any options accessable in this section
+
+            $section = 'nav_menu_management';                                // --- NAV MENU MANAGEMENT SECTION ---
+            if (!empty($ui->form_options[$tab][$section])) : ?>
+                <tr>
+                    <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
+                    <td>
+                        <?php
+                        $ui->optionCheckbox('admin_nav_menu_filter_items', $tab, $section, '', '', ['val' => true, 'disabled' => true]);
+
+                        $ui->optionCheckbox('admin_nav_menu_partial_editing', $tab, $section, true, '');
+
+                        $ui->optionCheckbox('admin_nav_menu_lock_custom', $tab, $section, true, '');
+                        ?>
+                    </td>
+                </tr>
+            <?php endif; // any options accessable in this section
+
+
+            $section = 'user_management';                                    // --- USER MANAGEMENT SECTION ---
+            if (!empty($ui->form_options[$tab][$section])) : ?>
+                <tr>
+                    <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
+                    <td>
+                        <?php
+                        $option_name = 'limit_user_edit_by_level';
+                        $ui->all_options[] = $option_name;
+                        if (!$option_val = $ui->getOption($option_name)) {
+                            $option_val = '0';
+                        }
+
+                        esc_html_e('User editing capabilities apply for', 'press-permit-core');
+                        echo "&nbsp;<select name='" . esc_attr($option_name) . "' id='" . esc_attr($option_name) . "' autocomplete='off'>";
+
+                        $captions = ['0' => esc_html__("any user", 'press-permit-core'), '1' => esc_html__("equal or lower role levels", 'press-permit-core'), 'lower_levels' => esc_html__("lower role levels", 'press-permit-core')];
+                        foreach ($captions as $key => $value) {
+                            $selected = ($option_val == $key) ? 'selected="' : '';
+                            echo "\n\t<option value='" . esc_attr($key) . "' " . esc_attr($selected) . ">" . esc_html($captions[$key]) . "</option>";
+                        }
+                        ?>
+                        </select>&nbsp;
+
+                        <div class='pp-subtext'>
+                            <?php
+                            SettingsAdmin::echoStr('limit_user_edit_by_level');
+                            ?>
+                        </div>
+
+                        <div style="margin-top:20px">
+                            <?php
+                            $ui->optionCheckbox('add_author_pages', $tab, $section, true, '');
+
+                            $div_style = ($pp->getOption('add_author_pages')) ? '' : 'display:none';
+                            $ui->optionCheckbox('publish_author_pages', $tab, $section, '', '', compact('div_style'));
+                            ?>
+                        </div>
+                    </td>
+                </tr>
+            <?php endif; // any options accessable in this section
 
             $section = 'misc'; // --- MISC SECTION ---
             if (!empty($ui->form_options[$tab][$section])) : ?>
