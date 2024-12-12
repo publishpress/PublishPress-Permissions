@@ -16,11 +16,11 @@ class TermsListing
 
         if (PWP::empty_REQUEST('tag_ID')) {
             if ($taxonomy = PWP::REQUEST_key('taxonomy')) {
-	            add_filter("manage_edit-{$taxonomy}_columns", [$this, 'fltDefineColumns']);
-	            add_filter("manage_{$taxonomy}_columns", [$this, 'fltDefineColumns']);
+                add_filter("manage_edit-{$taxonomy}_columns", [$this, 'fltDefineColumns']);
+                add_filter("manage_{$taxonomy}_columns", [$this, 'fltDefineColumns']);
                 add_action("manage_{$taxonomy}_custom_column", [$this, 'fltCustomColumn'], 10, 3);
-	
-	            add_action('after-' . $taxonomy . '-table', [$this, 'actShowNotes']);
+
+                add_action('after-' . $taxonomy . '-table', [$this, 'actShowNotes']);
             }
         }
     }
@@ -34,7 +34,7 @@ class TermsListing
             $tx_obj = get_taxonomy($taxonomy);
             $type_obj = get_post_type_object($typenow);
             $url = "edit-tags.php?taxonomy=$taxonomy&pp_universal=1";
-            ?>
+?>
             <div class="form-wrap">
                 <p>
                     <?php
@@ -48,7 +48,7 @@ class TermsListing
                     ?>
                 </p>
             </div>
-            <?php
+        <?php
         }
     }
 
@@ -64,10 +64,6 @@ class TermsListing
             $caption = sprintf(esc_html__('%1$s Permissions %2$s*%3$s', 'press-permit-core'), $lbl, "<a href='edit-tags.php?taxonomy=$taxonomy&pp_universal=1' title='$title'>", '</a>');
         } else {
             $caption = esc_html__('Universal Permissions', 'press-permit-core');
-        }
-
-        if (defined('PRESSPERMIT_DEBUG')) {
-            $columns = array_merge($columns, ['pp_ttid' => 'ID (ttid)']);
         }
 
         return array_merge($columns, ['pp_exceptions' => $caption]);
@@ -116,7 +112,7 @@ class TermsListing
         ?>
         <script type="text/javascript">
             /* <![CDATA[ */
-            jQuery(document).ready(function ($) {
+            jQuery(document).ready(function($) {
                 $('#col-left').css('width', '25%');
                 $('#col-right').css('width', '75%');
                 $('.column-slug').css('width', '15%');
@@ -124,7 +120,7 @@ class TermsListing
             });
             /* ]]> */
         </script>
-        <?php
+    <?php
     }
 
     public function actScriptUniversalExceptions()
@@ -134,7 +130,7 @@ class TermsListing
         if (PWP::empty_REQUEST('pp_universal')) {
             return;
         }
-        ?>
+    ?>
         <script type="text/javascript">
             /* <![CDATA[ */
             function updateQueryStringParameterPP(uri, key, value) {
@@ -148,9 +144,9 @@ class TermsListing
                 }
             }
 
-            jQuery(document).ready(function ($) {
-                $('#the-list tr').each(function (i, e) {
-                    $(e).find("a.row-title,span.edit a").each(function (ii, ee) {
+            jQuery(document).ready(function($) {
+                $('#the-list tr').each(function(i, e) {
+                    $(e).find("a.row-title,span.edit a").each(function(ii, ee) {
                         var u = $(ee).attr('href').replace('&post_type=<?php echo esc_attr($post_type); ?>', '');
                         $(ee).attr('href', u + '&pp_universal=1');
                     });
@@ -158,7 +154,7 @@ class TermsListing
             });
             /* ]]> */
         </script>
-        <?php
+    <?php
     }
 
     // In "Add New Term" form, hide the "Main" option from Parent dropdown if the logged user doesn't have manage_terms cap site-wide
@@ -178,23 +174,22 @@ class TermsListing
             $cap_name = 'manage_categories';
         }
 
-        if (!empty(presspermit()->getUser()->allcaps[$cap_name])
-        ) {
+        if (!empty(presspermit()->getUser()->allcaps[$cap_name])) {
             $taxonomy = PWP::REQUEST_key('taxonomy');
 
             if (!presspermit()->getUser()->getExceptionTerms('manage', 'include', sanitize_key($taxonomy), sanitize_key($taxonomy), ['merge_universals' => true])) {
-            	return;
+                return;
             }
         }
-        ?>
+    ?>
         <script type="text/javascript">
             /* <![CDATA[ */
-            jQuery(document).ready(function ($) {
+            jQuery(document).ready(function($) {
                 $('#parent option[value="-1"]').remove();
             });
             /* ]]> */
         </script>
-        <?php
+<?php
     }
 
     private function logTermData()
@@ -256,9 +251,9 @@ class TermsListing
             $results = $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT DISTINCT i.item_id, e.operation FROM $wpdb->ppc_exceptions AS e"
-                    . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
-                    . " WHERE e.for_item_type IN ('$for_type_csv') AND e.via_item_source = 'term'"                      // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                    . " AND e.via_item_type = %s AND e.agent_type IN ('$agent_type_csv') AND i.item_id IN ('$id_csv')", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                        . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
+                        . " WHERE e.for_item_type IN ('$for_type_csv') AND e.via_item_source = 'term'"                      // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                        . " AND e.via_item_type = %s AND e.agent_type IN ('$agent_type_csv') AND i.item_id IN ('$id_csv')", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                     $taxonomy
                 )
