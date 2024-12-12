@@ -379,7 +379,7 @@ class AgentPermissionsUI
 
         <div id="pp_review_roles" class="pp-save-roles" style="display:none">
 
-            <table id="pp_tbl_role_selections">
+            <table id="pp_tbl_role_selections" class="table table-responsive">
                 <thead>
                     <tr>
                         <th><?php esc_html_e('Post Type', 'press-permit-core'); ?></th>
@@ -409,8 +409,7 @@ class AgentPermissionsUI
         <div id="pp_item_selection_msg" class="pp-error-note pp-edit-msg" style="display:none"></div>
 
         <div id="pp_review_exceptions" class="pp-save-exceptions" style="display:none">
-
-            <table id="pp_tbl_exception_selections">
+            <table id="pp_tbl_exception_selections" class="table table-responsive">
                 <thead>
                     <tr>
                         <th><?php esc_html_e('Post Type', 'press-permit-core'); ?></th>
