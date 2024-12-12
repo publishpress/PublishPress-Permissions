@@ -12,7 +12,6 @@ class SettingsTabCore
         add_filter('presspermit_option_sections', [$this, 'optionSections']);
 
         add_action('presspermit_core_options_pre_ui', [$this, 'optionsPreUI']);
-
         add_action('presspermit_core_options_ui', [$this, 'optionsUI']);
     }
 
@@ -27,10 +26,7 @@ class SettingsTabCore
         $new = [
             'taxonomies' => esc_html__('Filtered Taxonomies', 'press-permit-core'),
             'post_types' => esc_html__('Filtered Post Types', 'press-permit-core'),
-            'permissions' => esc_html__('Permissions', 'press-permit-core'),
-            'front_end' => esc_html__('Front End', 'press-permit-core'),
             'admin' => esc_html__('Admin Back End', 'press-permit-core'),
-            'user_profile' => esc_html__('User Management', 'press-permit-core'),
             'db_maint' => esc_html__('Database Maintenance', 'press-permit-core'),
         ];
 
@@ -48,13 +44,6 @@ class SettingsTabCore
             'enabled_post_types' => esc_html__('Filtered Post Types', 'press-permit-core'),
             'define_media_post_caps' => esc_html__('Enforce distinct edit, delete capability requirements for Media', 'press-permit-core'),
             'define_create_posts_cap' => esc_html__('Use create_posts capability', 'press-permit-core'),
-            'media_search_results' => esc_html__('Search Results include Media', 'press-permit-core'),
-            'term_counts_unfiltered' => esc_html__("Performance: Don't filter category / tag counts", 'press-permit-core'),
-            'strip_private_caption' => esc_html__('Suppress "Private:" Caption', 'press-permit-core'),
-            'force_nav_menu_filter' => esc_html__('Filter Menu Items', 'press-permit-core'),
-            'display_user_profile_groups' => esc_html__('Permission Groups on User Profile', 'press-permit-core'),
-            'display_user_profile_roles' => esc_html__('Supplemental Roles on User Profile', 'press-permit-core'),
-            'new_user_groups_ui' => esc_html__('Select Permission Groups at User creation', 'press-permit-core'),
         ];
 
         return array_merge($captions, $opt);
@@ -65,9 +54,7 @@ class SettingsTabCore
         $new = [
             'taxonomies' => ['enabled_taxonomies', 'create_tag_require_edit_cap'],
             'post_types' => ['enabled_post_types', 'define_media_post_caps', 'define_create_posts_cap'],
-            'front_end' => ['media_search_results', 'term_counts_unfiltered', 'strip_private_caption', 'force_nav_menu_filter'],
             'admin' => ['admin_hide_uneditable_posts'],
-            'user_profile' => ['new_user_groups_ui', 'display_user_profile_groups', 'display_user_profile_roles'],
         ];
 
         $key = 'core';
@@ -338,30 +325,6 @@ class SettingsTabCore
         <?php
         } // end foreach scope
 
-        $section = 'front_end'; // --- FRONT END SECTION ---
-        if (!empty($ui->form_options[$tab][$section])) :
-        ?>
-            <tr>
-                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
-                <td>
-                    <?php
-                    $ui->optionCheckbox('media_search_results', $tab, $section, '');
-
-                    $ui->optionCheckbox('term_counts_unfiltered', $tab, $section, '');
-
-                    $hint = SettingsAdmin::getStr('strip_private_caption');
-                    $ui->optionCheckbox('strip_private_caption', $tab, $section, $hint);
-
-                    if (defined('UBERMENU_VERSION')) {
-                        $hint = SettingsAdmin::getStr('force_nav_menu_filter');
-                        $ui->optionCheckbox('force_nav_menu_filter', $tab, $section, $hint);
-                    }
-                    ?>
-                </td>
-            </tr>
-        <?php
-        endif; // any options accessable in this section
-
         $section = 'admin'; // --- BACK END SECTION ---
         if (!empty($ui->form_options[$tab][$section])) :
         ?>
@@ -388,29 +351,6 @@ class SettingsTabCore
                             ?>
                         </div>
                     <?php endif; ?>
-                </td>
-            </tr>
-        <?php
-        endif; // any options accessable in this section
-
-        $section = 'user_profile'; // --- USER PROFILE SECTION ---
-        if (!empty($ui->form_options[$tab][$section])) :
-        ?>
-            <tr>
-                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
-                <td>
-                    <?php
-                    $hint = '';
-
-                    if (!defined('is_multisite()')) {
-                        $ui->optionCheckbox('new_user_groups_ui', $tab, $section, $hint, '<br />');
-                    }
-
-                    $hint = SettingsAdmin::getStr('display_user_profile_roles');
-                    $ui->optionCheckbox('display_user_profile_groups', $tab, $section);
-                    $ui->optionCheckbox('display_user_profile_roles', $tab, $section, $hint);
-                    ?>
-
                 </td>
             </tr>
 <?php
