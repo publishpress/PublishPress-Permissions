@@ -122,7 +122,7 @@ class Settings
             $default_tab = PWP::REQUEST_key('pp_tab');
 
             if (!isset($ui->tab_captions[$default_tab])) {
-                $default_tab = 'modules';
+                $default_tab = 'core';
             }
 
             $default_tab = apply_filters('presspermit_options_default_tab', $default_tab);
