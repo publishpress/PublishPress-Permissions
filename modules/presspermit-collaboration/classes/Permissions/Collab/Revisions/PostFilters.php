@@ -21,10 +21,12 @@ class PostFilters
     }
 
     function fltQueryPostStatuses($use_statuses, $args) {
-        // Don't include revision statuses in post_status clause of Posts query
-        $statuses = array_diff_key($use_statuses, array_fill_keys(rvy_revision_statuses(), true));
+        if (!function_exists('rvy_get_option') || !rvy_get_option('permissions_compat_mode')) {
+            // Don't include revision statuses in post_status clause of Posts query
+            $use_statuses = array_diff_key($use_statuses, array_fill_keys(rvy_revision_statuses(), true));
+        }
 
-        return $statuses;
+        return $use_statuses;
     }
 
     public function fltHaveSiteCaps($have_site_caps, $post_type, $args) {
