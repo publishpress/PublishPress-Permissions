@@ -164,7 +164,7 @@ class SettingsTabAdvanced
                     <div>
                         <?php
                         $hint = esc_html__('note: Plugin settings and configuration data will be deleted, but only after the last copy of Permissions / Permissions Pro is deleted.', 'press-permit-core');
-                        $ui->optionCheckbox('delete_settings_on_uninstall', $tab, $section, $hint, '', ['hint_class' => 'pp-subtext-show']);
+                        $ui->optionCheckbox('delete_settings_on_uninstall', $tab, $section, $hint);
                         ?>
                     </div>
                 </td>
@@ -188,7 +188,7 @@ class SettingsTabAdvanced
                     $hint = esc_html__("When saving a post, if the default term is not selectable, substitute first available.", 'presspermit-pro')
                         . ' ' . esc_html__('Some term-limited editing configurations require this.', 'presspermit=pro');
 
-                    $ui->optionCheckbox('auto_assign_available_term', $tab, $section, $hint, '', ['hint_class' => 'pp-subtext-show']);
+                    $ui->optionCheckbox('auto_assign_available_term', $tab, $section, $hint);
                     ?>
                 </td>
             </tr>
