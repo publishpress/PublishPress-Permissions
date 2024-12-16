@@ -218,16 +218,10 @@ class SettingsTabEditing
                         });
                         /* ]]> */
                     </script>
-
-                    <br />
                     <?php
                     $ui->optionCheckbox('page_parent_editable_only', $tab, $section);
-
                     $ui->optionCheckbox('page_parent_order', $tab, $section);
-                    ?>
 
-                    <br />
-                    <?php
                     $hint = esc_html__("When saving a post, if the default term is not selectable, substitute first available.", 'presspermit-pro')
                         . ' ' . esc_html__('Some term-limited editing configurations require this.', 'presspermit=pro');
 
