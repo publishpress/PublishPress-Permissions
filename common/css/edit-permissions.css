@@ -4,6 +4,57 @@
 /* Tabs */
 /* Tables */
 /* Alert boxes */
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+  border-collapse: collapse;
+}
+.table th,
+.table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+}
+.table tbody + tbody {
+  border-top: 2px solid #dee2e6;
+}
+.table-sm th,
+.table-sm td {
+  padding: 0.3rem;
+}
+.table-bordered {
+  border: 1px solid #dee2e6;
+}
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #dee2e6;
+}
+.table-bordered thead th,
+.table-bordered thead td {
+  border-bottom-width: 2px;
+}
+.table-striped tbody tr:nth-of-type(odd) td {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+.table-hover tbody tr:hover td {
+  background-color: rgba(0, 0, 0, 0.075) !important;
+}
+@media (max-width: 768px) {
+  .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .table-responsive > .table-bordered {
+    border: 0;
+  }
+}
 #pp_cred_wrap h3 {
   font-size: 15px;
 }
@@ -18,7 +69,6 @@
   line-height: 1.5em;
   padding: 0.2em;
 }
-
 #agent-profile .form-table th {
   width: 100px;
 }
@@ -28,21 +78,18 @@
 #pp-permissions-wrapper h1 a:hover {
   text-decoration: underline;
 }
-
 table.pp-agent-profile {
   width: 96%;
   margin-bottom: 20px;
 }
 .pp-group_post-types,
 .pp-group-roles {
-  background-color: #e1f0f4;
+  background-color: #E1F0F4;
   border-color: #6eaebf;
 }
-
 div.pp-group_members {
   margin: 0 0 20px;
 }
-
 #agent-profile div.pp-group_members span {
   border: none;
   border-bottom: none;
@@ -67,7 +114,6 @@ div.pp-group_members {
   margin-top: 2px;
   margin-bottom: 10px;
 }
-
 #pp_select_x_assign_for .pp-checkbox label {
   vertical-align: baseline;
 }
@@ -93,7 +139,6 @@ div.pp-add-exceptions {
   padding-left: 15px;
   padding-right: 15px;
 }
-
 #pp_add_exception .pp-select-x-via-type {
   padding-right: 10px;
 }
@@ -102,38 +147,30 @@ div.pp-add-exceptions {
   padding-bottom: 20px;
   white-space: nowrap;
 }
-
 #pp_add_exception div.pp-checkbox {
   margin-bottom: 10px;
 }
-
 #pp_add_exception #select-role-item {
   margin-bottom: 0;
 }
-
 #pp_add_exception #nav-menus-frame {
   margin-top: -2.35em;
 }
-
 #pp_add_exception #nav-menus-frame h3 {
   padding-top: 8px;
 }
-
 #pp_add_exception #nav-menus-frame h3 span {
   font-family: sans-serif;
   font-size: 13px;
   font-weight: bold;
 }
-
 #pp_add_exception .nav-tabs-nav,
 #pp_add_exception button.handlediv {
   display: none;
 }
-
 #pp_add_exception .pp-select-items {
   padding-left: 15px;
 }
-
 span.nav-tab {
   display: none;
 }
@@ -142,7 +179,7 @@ span.nav-tab {
   margin-bottom: 0;
 }
 .pp-edit-msg {
-  background-color: #ffffe0;
+  background-color: #FFFFE0;
   border: 1px solid #ccc;
   padding: 5px;
   margin-top: 0;
@@ -168,11 +205,9 @@ span.nav-tab {
   margin-left: 10px;
   margin-right: 10px;
 }
-
 #pp_review_exceptions div.mirror-label {
   font-weight: bold;
 }
-
 div.mirror-confirm {
   border-left-color: #46b450 !important;
   background: #fff;
@@ -184,7 +219,6 @@ div.mirror-confirm {
   margin: 5px 15px 2px 0;
   padding: 1px 12px;
 }
-
 /*---- Bulk Edit Exceptions ----*/
 .pp-role-bulk-edit,
 .pp-exception-bulk-edit {
@@ -194,18 +228,15 @@ div.mirror-confirm {
 .pp-exception-bulk-edit select {
   min-width: 12em;
 }
-
 input.submit-edit-item-role {
   margin-left: 1em;
 }
 #pp_current_roles a:hover {
   text-decoration: underline;
 }
-
 .pp-current-site-roles input {
   margin-left: 1em;
 }
-
 .pp-current-site-roles label {
   margin-right: 2em;
   white-space: nowrap;
@@ -219,32 +250,27 @@ div.pp-current-roles h4,
 div.pp-current-exceptions h4 {
   margin-bottom: 0.2em;
 }
-
 /* ?? */
 .pp-current-site-roles label,
 .pp_item_role_caption {
-  color: #21759b;
+  color: #21759B;
   font-weight: bold;
 }
 label span.pp_nolink,
 .pp_item_role_caption span.pp_nolink {
-  color: #000000;
+  color: black;
 }
-
 .pp-taxonomy-caption {
   font-weight: bold;
   margin-bottom: 0.4em;
 }
-
 .pp-role-terms div {
   margin-bottom: 0.4em;
-  color: #000000;
+  color: black;
 }
-
 .pp-readonly .pp-current-site-roles label {
   margin: 0 0 0 6px;
 }
-
 .pp-current-exceptions table tbody tr td {
   text-align: left;
   background-color: white;
@@ -254,73 +280,58 @@ label span.pp_nolink,
   border-bottom: 1px solid #777;
   border-top: 1px solid white;
 }
-
 .pp-current-exceptions table tbody tr th {
   border-top: 1px solid #f2f2f2;
 }
 div.pp-current-type-roles {
   padding-left: 0.5em;
 }
-
 .pp-current-roles-tbl-wrapper {
   padding-left: 1em;
 }
-
 #pp_current_exceptions .pp-current-roles-tbl-wrapper td {
   border-right: 1px solid #777;
 }
-
 #pp_current_exceptions td.pp_item_role_caption {
   padding-top: 0.2em;
   text-align: right;
   background-color: #f2f2f2;
   border-right: 1px solid #777;
 }
-
 .pp-role-terms-wrapper {
   padding-top: 0.2em;
 }
-
 .pp-taxonomy-caption {
   text-align: center;
 }
-
 div.pp-current-type-roles a {
   margin-left: 5px;
   display: none;
 }
-
 #pp_current_exceptions .pp_check_all {
   margin-left: 1.5em;
 }
-
 .role_both {
   font-weight: bold;
-  color: #120faf;
+  color: #120FAF;
 }
-
 span.role_both {
   padding-right: 20px;
 }
-
 label.role_both:after {
-  content: " ...";
+  content: ' ...';
 }
-
 .role_ch {
   font-weight: bold;
   color: #777;
 }
-
 input.exc-copied {
   background-color: #afa !important;
   border: 1px solid black !important;
 }
-
 #pp_current_exceptions input.submit-edit-item-exception {
   margin-top: 5px;
 }
-
 label.role_ch:after {
   content: " *";
 }
@@ -328,27 +339,22 @@ tr.pp_faded td,
 label.pp_faded {
   color: #aaa;
 }
-
 #pp_current_exceptions .inherited {
   font-style: italic;
 }
-
 #pp_current_exceptions table td.pp_item_role_caption {
   padding-top: 5px;
 }
-
 .pp_exceptions_notes {
   margin: 0 0 20px;
   padding: 20px;
-  background-color: #ffffe0;
-  border: 1px solid #e6db55;
+  background-color: #FFFFE0;
+  border: 1px solid #E6DB55;
 }
-
 .pp_exceptions_notes ul {
   list-style-type: circle;
   margin-left: 16px;
 }
-
 .pp-group_members h4 {
   margin-bottom: 0.2em;
 }
@@ -357,11 +363,9 @@ label.pp_faded {
 .pp-members-current h4 {
   margin-left: 8px;
 }
-
 #pp_find_users_field {
   margin-left: 0;
 }
-
 #pp-agent-selection_member-wrapper td {
   min-width: 230px;
 }
@@ -373,7 +377,6 @@ label.pp_faded {
 #pp_add_exception td.pp-select-x-status p {
   white-space: nowrap;
 }
-
 #pp_add_exception td.pp-select-x-via-type label {
   padding-right: 10px;
 }
@@ -382,27 +385,22 @@ label.pp_faded {
 #nav-menus-frame #menu-settings-column.pp-menu-settings-column {
   width: 100% !important;
 }
-
 ul.categorychecklist label {
   vertical-align: top;
 }
-
 ul.categorychecklist span {
   font-weight: bold;
   font-size: 120%;
   cursor: cell;
 }
-
 .tabs-panel-view-all ul.categorychecklist span {
   display: inline-block;
   width: 12px;
 }
-
 #nav-menus-frame .add-to-menu {
   float: none;
   margin-left: 15px;
 }
-
 td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   vertical-align: baseline;
 }
