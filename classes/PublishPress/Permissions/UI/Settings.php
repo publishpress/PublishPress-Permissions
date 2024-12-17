@@ -153,7 +153,16 @@ class Settings
 
                 echo '</table></div>';
             }
-
+            echo "<input type='hidden' name='all_options' value='" . esc_attr(implode(',', $ui->all_options)) . "' />";
+            echo "<input type='hidden' name='all_otype_options' value='" . esc_attr(implode(',', $ui->all_otype_options)) . "' />";
+            echo "<input type='hidden' name='pp_submission_topic' value='options' />";
+            ?>
+            <span class="submit pp-submit" style="border:none;display:block!important;">
+                <input type="submit" name="presspermit_submit" class="button-primary" value="<?php esc_attr_e('Save Changes', 'press-permit-core'); ?>" />
+                <input type="hidden" name="pp_tab"
+                    value="<?php if ($pp_tab = PWP::REQUEST_key('pp_tab')) echo esc_attr($pp_tab); ?>" />
+            </span>
+            <?php
             echo '</div>'; // pp-options-wrapper
             if (!presspermit()->isPro()) {
                 require_once(PRESSPERMIT_CLASSPATH . '/UI/PromoBanner.php');
@@ -179,18 +188,7 @@ class Settings
             echo '</div>'; // pp-group-wrapper
 
             $ui->filterNetworkOptions();
-
-            echo "<input type='hidden' name='all_options' value='" . esc_attr(implode(',', $ui->all_options)) . "' />";
-            echo "<input type='hidden' name='all_otype_options' value='" . esc_attr(implode(',', $ui->all_otype_options)) . "' />";
-
-            echo "<input type='hidden' name='pp_submission_topic' value='options' />";
             ?>
-
-            <div class="submit pp-submit" style="border:none;">
-                <input type="submit" name="presspermit_submit" class="button-primary" value="<?php esc_attr_e('Save Changes', 'press-permit-core'); ?>" />
-                <input type="hidden" name="pp_tab"
-                    value="<?php if ($pp_tab = PWP::REQUEST_key('pp_tab')) echo esc_attr($pp_tab); ?>" />
-            </div>
             </form>
             <p style='clear:both'></p>
 
