@@ -16,7 +16,7 @@ class AgentPermissionsUI
             'addRoles' => esc_html__('Add Roles', 'press-permit-core'),
             'clearRole' => esc_html__('clear', 'press-permit-core'),
             'noConditions' => esc_html__('No statuses selected!', 'press-permit-core'),
-            'pleaseReview' => esc_html__('Review selection(s) below, then click Save.', 'press-permit-core'),
+            'pleaseReview' => esc_html__('Review the selection below, and then click <strong>Save Roles</strong>.', 'press-permit-core'),
             'alreadyRole' => esc_html__('Role already selected!', 'press-permit-core'),
             'noAction' => esc_html__('No Action selected!', 'press-permit-core'),
             'submissionMsg' => esc_html__('Role submission in progress...', 'press-permit-core'),
@@ -39,7 +39,7 @@ class AgentPermissionsUI
         $vars = [
             'addExceptions' => esc_html__('Set Specific Permissions', 'press-permit-core'),
             'clearException' => esc_html__('clear', 'press-permit-core'),
-            'pleaseReview' => esc_html__('Review selection(s) below, then click Save. Saved permissions can be mirrored to other operations by bulk edit.', 'press-permit-core'),
+            'pleaseReview' => esc_html__('Review the selection below, and then click <strong>Save Permissions</strong>. Saved permissions can be mirrored to other operations by bulk edit.', 'press-permit-core'),
             'alreadyException' => esc_html__('Permission already selected!', 'press-permit-core'),
             'noAction' => esc_html__('No Action selected!', 'press-permit-core'),
             'submissionMsg' => esc_html__('Permissions submission in progress...', 'press-permit-core'),
