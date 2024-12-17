@@ -24,25 +24,6 @@ class Settings
         require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabInstall.php');
         new SettingsTabInstall();
 
-        require_once(PRESSPERMIT_CLASSPATH . '/UI/PromoBanner.php');
-        $promoBanner = new PromoBanner(array(
-            'pluginDocsUrl' => 'https://publishpress.com/docs-category/presspermit/',
-            'pluginSupportUrl' => 'https://wordpress.org/plugins/press-permit-core/',
-            'features'         => [
-                'Custom viewing permissions for Posts and Pages',
-                'Custom editing permissions for Posts and Pages',
-                'Create custom user groups',
-                'Create your own publishing statuses',
-                'Create personal pages for each user',
-                'Manage Media Library access',
-                'Control your content teasers',
-                'Synchronize content to users',
-                'Create your own Privacy Statuses',
-                'Remove PublishPress ads and branding',
-                'Priority, personal support',
-            ]
-        ));
-
         // enqueue JS for footer
         global $wp_scripts;
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
@@ -174,7 +155,27 @@ class Settings
             }
 
             echo '</div>'; // pp-options-wrapper
-            $promoBanner->displayBanner();
+            if (!presspermit()->isPro()) {
+                require_once(PRESSPERMIT_CLASSPATH . '/UI/PromoBanner.php');
+                $promoBanner = new PromoBanner(array(
+                    'pluginDocsUrl' => 'https://publishpress.com/docs-category/presspermit/',
+                    'pluginSupportUrl' => 'https://wordpress.org/plugins/press-permit-core/',
+                    'features'         => [
+                        'Custom viewing permissions for Posts and Pages',
+                        'Custom editing permissions for Posts and Pages',
+                        'Create custom user groups',
+                        'Create your own publishing statuses',
+                        'Create personal pages for each user',
+                        'Manage Media Library access',
+                        'Control your content teasers',
+                        'Synchronize content to users',
+                        'Create your own Privacy Statuses',
+                        'Remove PublishPress ads and branding',
+                        'Priority, personal support',
+                    ]
+                ));
+                $promoBanner->displayBanner();
+            }
             echo '</div>'; // pp-group-wrapper
 
             $ui->filterNetworkOptions();
