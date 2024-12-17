@@ -1,35 +1,104 @@
 #pp-install_table th {
-width: auto;
+  width: auto;
 }
 
 #pp-install_table .pp-extensions th {
-font-weight: normal;
-white-space: nowrap;
-background-color: white;
-padding-top: 8px;
-padding-bottom: 8px;
+  font-weight: normal;
+  white-space: nowrap;
+  background-color: white;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 #presspermit-pro-notice {
-max-height: 100px;
-width: 102%;
-padding: 7px;
-margin-left: -20px;
-margin-bottom: -5px;
-text-align: center;
-overflow: hidden;
-background-color:#ddd;
-color: #555;
-position: relative;
+  max-height: 100px;
+  width: 102%;
+  padding: 7px;
+  margin-left: -20px;
+  margin-bottom: -5px;
+  text-align: center;
+  overflow: hidden;
+  background-color: #ddd;
+  color: #555;
+  position: relative;
 }
 
-#presspermit-pro-notice a, #presspermit-pro-notice a:visited, #presspermit-pro-notice a:link, #presspermit-pro-notice a:hover {
-color:#655997;
-font-weight: bold;
+#presspermit-pro-notice a,
+#presspermit-pro-notice a:visited,
+#presspermit-pro-notice a:link,
+#presspermit-pro-notice a:hover {
+  color: #655997;
+  font-weight: bold;
 }
 
-body.toplevel_page_presspermit-groups #show-settings-link, body.permissions_page_presspermit-role-usage #show-settings-link {
-position: absolute;
-left: -138px;
-top: 6px;
+body.toplevel_page_presspermit-groups #show-settings-link,
+body.permissions_page_presspermit-role-usage #show-settings-link {
+  position: absolute;
+  left: -138px;
+  top: 6px;
+}
+
+/* Basic table styling */
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody + tbody {
+  border-top: 2px solid #dee2e6;
+}
+
+.table-sm th,
+.table-sm td {
+  padding: 0.3rem;
+}
+
+.table-bordered {
+  border: 1px solid #dee2e6;
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #dee2e6;
+}
+
+.table-bordered thead th,
+.table-bordered thead td {
+  border-bottom-width: 2px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) td {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.table-hover tbody tr:hover td {
+  background-color: rgba(0, 0, 0, 0.075) !important;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+  .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-responsive > .table-bordered {
+    border: 0;
+  }
 }
