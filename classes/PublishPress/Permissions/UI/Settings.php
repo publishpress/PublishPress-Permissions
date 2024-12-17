@@ -87,9 +87,7 @@ class Settings
                 foreach (array_keys($ui->form_options[$tab]) as $section)
                     $ui->form_options[$tab][$section] = array_diff($ui->form_options[$tab][$section], $hidden);
             }
-        }
-
-?>
+        } ?>
         <div class="pressshack-admin-wrapper wrap" id="pp-permissions-wrapper">
             <?php
             echo '<form id="pp_settings_form" action="" method="post">';
@@ -122,7 +120,7 @@ class Settings
             $default_tab = PWP::REQUEST_key('pp_tab');
 
             if (!isset($ui->tab_captions[$default_tab])) {
-                $default_tab = 'modules';
+                $default_tab = 'core';
             }
 
             $default_tab = apply_filters('presspermit_options_default_tab', $default_tab);
