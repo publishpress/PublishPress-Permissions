@@ -219,21 +219,6 @@ div.mirror-confirm {
   margin: 5px 15px 2px 0;
   padding: 1px 12px;
 }
-/* @todo?
-#pp_review_exceptions div.pp_mirror_to_operations {
-    padding-left: 10px;
-    padding-top: 4px;
-}
-
-#pp_review_exceptions div.pp_mirror_to_operations label {
-    margin-left: 10px;
-    margin-right: 10px;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-*/
 /*---- Bulk Edit Exceptions ----*/
 .pp-role-bulk-edit,
 .pp-exception-bulk-edit {
