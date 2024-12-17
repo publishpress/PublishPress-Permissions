@@ -244,6 +244,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Fixed : Fatal error under some conditions if a post type is registered abnormally
 * Fixed : PHP Warning in post editor under some site configurations
 * Fixed : Multisite - Database error in posts query on installations with abnormal site switching / caching
+* Fixed : Multisite + PHP 8.2 - Fatal error on sub-sites created prior to Permissions install
 * Compat : miniOrange SSO - Fatal error when adding a new post
 * Compat : PublishPress Authors - poor front end query performance on highly populated sites
 
