@@ -480,12 +480,19 @@ class CollabHooks
 
     function actAdjustOptions($options)
     {
-        if (isset($options['presspermit_enabled_taxonomies']))
-            $options['presspermit_enabled_taxonomies'] = array_merge(
-                maybe_unserialize($options['presspermit_enabled_taxonomies']), 
-                []
-            );
-
+        if (isset($options['presspermit_enabled_taxonomies'])) {
+            $opt_val = maybe_unserialize($options['presspermit_enabled_taxonomies']);
+            
+            if (is_array($opt_val)) {
+                $options['presspermit_enabled_taxonomies'] = array_merge(
+                    $opt_val, 
+                    []
+                );
+            } else {
+                $options['presspermit_enabled_taxonomies'] = [];
+            }
+        }
+    	
         if (!empty($options['presspermit_default_privacy'])) {
             $disabled_types = (class_exists('bbPress', false)) ? ['forum', 'topic', 'reply'] : [];
             if ($disabled_types = apply_filters('presspermit_disabled_default_privacy_types', $disabled_types)) {
