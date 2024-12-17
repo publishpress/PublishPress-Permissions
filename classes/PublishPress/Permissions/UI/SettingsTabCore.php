@@ -54,7 +54,7 @@ class SettingsTabCore
         $new = [
             'taxonomies' => ['enabled_taxonomies', 'create_tag_require_edit_cap'],
             'post_types' => ['enabled_post_types', 'define_media_post_caps', 'define_create_posts_cap'],
-            'admin' => ['admin_hide_uneditable_posts'],
+            'admin' => [],
         ];
 
         $key = 'core';
@@ -333,24 +333,7 @@ class SettingsTabCore
                 <td>
                     <?php
                     $ui->optionCheckbox('display_branding', $tab, $section);
-
-                    if (defined('PP_ADMIN_READONLY_LISTABLE') && (!$pp->getOption('admin_hide_uneditable_posts') || defined('PP_ADMIN_POSTS_NO_FILTER'))) {
-                        $hint = SettingsAdmin::getStr('posts_listing_unmodified');
-                    } else {
-                        $hint = ($pp->moduleActive('collaboration'))
-                            ? ''
-                            : SettingsAdmin::getStr('posts_listing_editable_only_collab_prompt');
-                    }
                     ?>
-
-                    <?php if ($hint): ?>
-                        <br />
-                        <div class="pp-subtext pp-subtext-show">
-                            <?php
-                            printf(esc_html__('%sPosts / Pages Listing:%s %s', 'press-permit-core'), '<b>', '</b>', esc_html($hint));
-                            ?>
-                        </div>
-                    <?php endif; ?>
                 </td>
             </tr>
 <?php
