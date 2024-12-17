@@ -169,7 +169,7 @@ class LibWP
 						&& ! $pluginsState['gutenberg-ramp']
                         && ! $pluginsState['disable-gutenberg']
                         && apply_filters('use_block_editor_for_post_type', true, $post_type)
-                        && (empty($_post) || apply_filters('use_block_editor_for_post', true, $_post));
+                        && (empty($_post) || !is_a($_post, 'WP_Post') || apply_filters('use_block_editor_for_post', true, $_post));
 
 		$conditions[] = self::isWp5()
                         && $pluginsState['classic-editor']
@@ -182,7 +182,7 @@ class LibWP
                             && self::is_GET('classic-editor__forget'));
 
         $conditions[] = $pluginsState['gutenberg-ramp'] 
-                        && (empty($_post) || apply_filters('use_block_editor_for_post', true, $_post));
+                        && (empty($_post) || !is_a($_post, 'WP_Post') || apply_filters('use_block_editor_for_post', true, $_post));
 
         $conditions[] = $pluginsState['disable-gutenberg'] 
                         && !self::disableGutenberg(self::getPostID());
