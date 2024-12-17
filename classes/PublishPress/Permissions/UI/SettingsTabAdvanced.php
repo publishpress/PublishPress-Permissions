@@ -225,7 +225,24 @@ class SettingsTabAdvanced
                         $ui->optionCheckbox('limit_front_end_term_filtering', $tab, $section, true);
 
                         do_action('presspermit_options_ui_insertion', $tab, $section);
+
+                        if (defined('PP_ADMIN_READONLY_LISTABLE') && (!$pp->getOption('admin_hide_uneditable_posts') || defined('PP_ADMIN_POSTS_NO_FILTER'))) {
+                            $hint = SettingsAdmin::getStr('posts_listing_unmodified');
+                        } else {
+                            $hint = ($pp->moduleActive('collaboration'))
+                                ? ''
+                                : SettingsAdmin::getStr('posts_listing_editable_only_collab_prompt');
+                        }
                         ?>
+                        
+                        <?php if ($hint):?>
+                        <br />
+                        <div class="pp-subtext pp-subtext-show">
+                        <?php
+                        printf(esc_html__('%sPosts / Pages Listing:%s %s', 'press-permit-core'), '<b>', '</b>', esc_html($hint));
+                        ?>
+                        </div>
+                        <?php endif;?>
                     </td>
                 </tr>
             <?php endif; // any options accessable in this section
