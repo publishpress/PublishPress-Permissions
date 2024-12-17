@@ -48,7 +48,9 @@ class REST
 
             if ($type_obj = get_post_type_object($post_type)) {
                 if ($orig_cap == $type_obj->cap->read_post) {
-                    $orig_cap = $type_obj->cap->edit_post;
+                    if ('auto-draft' != get_post_field('post_status', $item_id)) {
+                        $orig_cap = $type_obj->cap->edit_post;
+                    }
                 }
             }
         }
