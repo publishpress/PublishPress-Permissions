@@ -472,7 +472,7 @@ class AgentPermissionsUI
                     $current_tab = (isset($perms['roles'])) ? 'pp-add-roles' : 'pp-add-exceptions';
 
                 if (($args['agent']->metagroup_type != 'wp_role') || !in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all'])) {
-                    $perms['clone'] = esc_html__('Clone', 'press-permit-core');
+                    $perms['clone'] = esc_html__('Copy', 'press-permit-core');
                 }
 
                 // --- add permission tabs ---
@@ -1392,7 +1392,7 @@ class AgentPermissionsUI
 
             <br />
             <div>
-                <input id="pp_clone_permissions" class="button button-primary pp-primary-button" type="submit" name="pp_clone_permissions" value="<?php esc_attr_e('Do Clone', 'press-permit-core'); ?>">
+                <input id="pp_clone_permissions" class="button button-primary pp-primary-button" type="submit" name="pp_clone_permissions" value="<?php esc_attr_e('Copy Roles and Permissions', 'press-permit-core'); ?>">
             </div>
         <?php
             }
