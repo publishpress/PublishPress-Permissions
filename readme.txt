@@ -5,7 +5,7 @@ Tags: restrict, access, user, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.7
 Requires PHP: 7.2.5
-Stable tag: 4.0.34
+Stable tag: 4.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -240,13 +240,32 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 4.1.0 =
-* Fixed : Fatal error under some conditions if a post type is registered abnormally
-* Fixed : PHP Warning in post editor under some site configurations
+= 4.1.0 - 19 Dec 2024 =
+* Added: New Sidebar promotion area in the interface. #944
+* Fixed: Upcoming integration for Revision Statuses in Statuses Pro. #1286
+* Fixed: Improved design for editing groups. #1257
+* Fixed: White space removed from group list screen. #1245
+* Fixed: Updated text for the "Clone" button. #1258
+* Fixed: Permissions options moved to the "Advanced" settings area. #1247
+* Fixed: Tab "Modules" moved to the end and renamed to "Features." #1246
+* Fixed: Hide the "ID" column by default. #1244
+* Fixed: Poor query performance on highly populated sites using PublishPress Authors. #1269
+* Fixed: Posts query errors on multisite installs with abnormal site switching/caching. #1271
+* Fixed: PHP warning in the post editor under specific site configurations. #1265
+* Fixed: Fatal error with miniOrange SSO during new post creation. #1263
+* Fixed: Fatal error under some conditions when post types are abnormally registered. #1242
+* Fixed: Spam warning message removed. #1201
+* Fixed: Non-Administrators cannot add new post on some sites #1303
 * Fixed : Multisite - Database error in posts query on installations with abnormal site switching / caching
 * Fixed : Multisite + PHP 8.2 - Fatal error on sub-sites created prior to Permissions install
 * Compat : miniOrange SSO - Fatal error when adding a new post
 * Compat : PublishPress Authors - poor front end query performance on highly populated sites
+* Improved: Design updates on the posts screen. #1218
+* Improved: Design for posts with enhanced group UI. #1257
+* Improved: Removed redundant text from the plugin screen. #1214
+* Improved: Updated and refined translations. #1239, #1246
+* Improved: Normalized whitespace for cleaner codebase.
+* Updated: .pot and .mo files with new and improved translations.
 
 = 4.0.34 - 14 Nov 2024 =
 * Fixed : Changes to Permissions metaboxes in Post editor were not saved
