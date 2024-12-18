@@ -114,7 +114,7 @@ if (false === $presspermit_loaded_by_pro) {
             'plugin_row_meta',
             function ($links, $file) {
                 if ($file == plugin_basename(__FILE__)) {
-                    $links[] = __('<strong>This plugin can be deleted.</strong>', 'revisionary');
+                    $links[] = __('<strong>This plugin can be deleted.</strong>', 'press-permit-core');
                 }
 
                 return $links;
