@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Plugin Name: PublishPress Permissions
  * Plugin URI:  https://publishpress.com/presspermit
  * Description: Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
  * Author: PublishPress
  * Author URI:  https://publishpress.com/
- * Version: 4.0.34
+ * Version: 4.1.0
  * Text Domain: press-permit-core
  * Domain Path: /languages/
  * Requires at least: 5.5
@@ -111,15 +112,15 @@ if (false === $presspermit_loaded_by_pro) {
     if ($pro_active) {
         add_filter(
             'plugin_row_meta',
-            function($links, $file)
-            {
+            function ($links, $file) {
                 if ($file == plugin_basename(__FILE__)) {
-                    $links[]= __('<strong>This plugin can be deleted.</strong>', 'revisionary');
+                    $links[] = __('<strong>This plugin can be deleted.</strong>', 'press-permit-core');
                 }
 
                 return $links;
             },
-            10, 2
+            10,
+            2
         );
         return;
     }
@@ -144,7 +145,8 @@ if (! $presspermit_loaded_by_pro) {
         $pluginChecker = new PublishPressInstanceProtection\InstanceChecker($pluginCheckerConfig);
     }
 
-    if (! class_exists('ComposerAutoloaderInitPressPermit')
+    if (
+        ! class_exists('ComposerAutoloaderInitPressPermit')
         && file_exists(PRESSPERMIT_INTERNAL_VENDORPATH . '/autoload.php')
     ) {
         require_once PRESSPERMIT_INTERNAL_VENDORPATH . '/autoload.php';
@@ -178,7 +180,8 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
         }
     }
 
-    function presspermit_load() {
+    function presspermit_load()
+    {
         global $presspermit_loaded_by_pro;
 
         $presspermit_loaded_by_pro = strpos(str_replace('\\', '/', __FILE__), 'vendor/publishpress/');
@@ -202,7 +205,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
             return;
         }
 
-        define('PRESSPERMIT_VERSION', '4.0.34');
+        define('PRESSPERMIT_VERSION', '4.1.0');
 
         if (!defined('PRESSPERMIT_READ_PUBLIC_CAP')) {
             define('PRESSPERMIT_READ_PUBLIC_CAP', 'read');
@@ -245,6 +248,7 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
         require_once(PRESSPERMIT_CLASSPATH . '/API.php');
 
         require_once(__DIR__ . '/db-config.php');
+
         require_once(__DIR__ . '/classes/PublishPress/Permissions.php');
 
         presspermit();
@@ -252,16 +256,15 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
 
     // negative priority to precede any default WP action handlers
     if ($presspermit_loaded_by_pro) {
-        presspermit_load();	// Pro support
+        presspermit_load();    // Pro support
     } else {
         add_action('plugins_loaded', 'presspermit_load', -10);
     }
 
     register_activation_hook(
         __FILE__,
-        function()
-        {
-            require_once( __DIR__.'/activation.php' );
+        function () {
+            require_once(__DIR__ . '/activation.php');
         }
     );
 }

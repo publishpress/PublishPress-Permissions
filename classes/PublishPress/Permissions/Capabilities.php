@@ -73,6 +73,10 @@ class Capabilities
 
         // post types which are enabled for PP filtering must have distinct type-related cap definitions
         foreach ($enabled_types as $post_type) {
+			if (empty($wp_post_types[$post_type]) || empty($wp_post_types[$post_type]->cap)) {
+				continue;
+			}
+			
 			if (('attachment' == $post_type) && !$pp->getOption('define_media_post_caps')) {
 				if (isset($wp_post_types['attachment']) && is_object($wp_post_types['attachment']->cap)) {
 					foreach(['edit_posts', 'edit_others_posts', 'delete_posts', 'delete_others_posts'] as $_post_cap) {

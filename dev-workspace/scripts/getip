@@ -25,7 +25,8 @@ function print_usage()
 /**
  * Function to check if we are online.
  */
-function is_online(): bool {
+function is_online(): bool
+{
     return (bool) @fsockopen("www.google.com", 80);
 }
 
@@ -41,7 +42,7 @@ function get_docker_host_ip()
     }
 
     if (php_uname('s') === 'Linux') {
-        $output = shell_exec("ip addr show | grep 'inet ' | grep -v '127.0.0.1' | awk '{print \$2}' | cut -f1 -d'/'");
+        $output = shell_exec("ip addr show | grep 'inet ' | grep 'docker' | grep -v '127.0.0.1' | awk '{print \$2}' | cut -f1 -d'/'");
     } elseif (php_uname('s') === 'Darwin') {
         $output = shell_exec("ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print \$2}'");
     } else {

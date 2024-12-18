@@ -1,0 +1,79 @@
+@table-color: #212529;
+@border-color: #dee2e6;
+@odd-bg-color: rgba(0, 0, 0, 0.05);
+@hover-bg-color: rgba(0, 0, 0, 0.075);
+@small-padding: 0.3rem;
+@default-padding: 0.75rem;
+
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: @table-color;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: @default-padding;
+    vertical-align: top;
+    border-top: 1px solid @border-color;
+  }
+
+  thead {
+    th {
+      vertical-align: bottom;
+      border-bottom: 2px solid @border-color;
+    }
+  }
+
+  tbody + tbody {
+    border-top: 2px solid @border-color;
+  }
+
+  &-sm {
+    th,
+    td {
+      padding: @small-padding;
+    }
+  }
+
+  &-bordered {
+    border: 1px solid @border-color;
+
+    th,
+    td {
+      border: 1px solid @border-color;
+    }
+
+    thead {
+      th,
+      td {
+        border-bottom-width: 2px;
+      }
+    }
+  }
+
+  &-striped {
+    tbody tr:nth-of-type(odd) td {
+      background-color: @odd-bg-color !important;
+    }
+  }
+
+  &-hover {
+    tbody tr:hover td {
+      background-color: @hover-bg-color !important;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+
+    > .table-bordered {
+      border: 0;
+    }
+  }
+}

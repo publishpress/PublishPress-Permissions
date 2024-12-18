@@ -4,7 +4,8 @@ namespace PublishPress\Permissions\UI;
 
 class Settings
 {
-    public function __construct() {
+    public function __construct()
+    {
         // called by Dashboard\DashboardFilters::actMenuHandler
 
         @load_plugin_textdomain('press-permit-core-hints', false, dirname(plugin_basename(PRESSPERMIT_FILE)) . '/languages');
@@ -30,7 +31,7 @@ class Settings
         $wp_scripts->in_footer[] = 'presspermit-settings';  // otherwise it will not be printed in footer  todo: review
 
         $vars = [
-            'displayHints' => presspermit()->getOption('display_hints'), 
+            'displayHints' => presspermit()->getOption('display_hints'),
             'hintImg' => plugins_url('', PRESSPERMIT_FILE) . "/common/img/comment-grey-bubble.png"
         ];
         wp_localize_script('presspermit-settings', 'ppCoreSettings', $vars);
@@ -67,9 +68,7 @@ class Settings
                 foreach (array_keys($ui->form_options[$tab]) as $section)
                     $ui->form_options[$tab][$section] = array_diff($ui->form_options[$tab][$section], $hidden);
             }
-        }
-
-        ?>
+        } ?>
         <div class="pressshack-admin-wrapper wrap" id="pp-permissions-wrapper">
             <?php
             echo '<form id="pp_settings_form" action="" method="post">';
@@ -77,38 +76,38 @@ class Settings
 
             do_action('presspermit_options_form');
             ?>
-        <header>
-            <?php PluginPage::icon(); ?>
-            <h1>
+            <header>
+                <?php PluginPage::icon(); ?>
+                <h1>
+                    <?php
+                    echo esc_html(apply_filters('presspermit_options_form_title', __('Permissions Settings', 'press-permit-core')));
+                    ?>
+                </h1>
+
                 <?php
-                echo esc_html(apply_filters('presspermit_options_form_title', __('Permissions Settings', 'press-permit-core')));
+
+                if ($subheading = apply_filters('presspermit_options_form_subheading', '')) {
+                    echo esc_html($subheading);
+                }
+
+                $class_selected = "nav-tab nav-tab-active";
+                $class_unselected = "nav-tab";
                 ?>
-            </h1>
-
-            <?php
-
-            if ($subheading = apply_filters('presspermit_options_form_subheading', '')) {
-                echo esc_html($subheading);
-            }
-
-            $class_selected = "nav-tab nav-tab-active";
-            $class_unselected = "nav-tab";
-            ?>
 
 
-        </header>
-        
+            </header>
+
             <?php
             $default_tab = PWP::REQUEST_key('pp_tab');
 
             if (!isset($ui->tab_captions[$default_tab])) {
-                $default_tab = 'modules';
+                $default_tab = 'core';
             }
 
             $default_tab = apply_filters('presspermit_options_default_tab', $default_tab);
 
             // todo: prevent line breaks in these links
-            echo "<ul class='nav-tab-wrapper' style='margin-bottom:-0.1em'>";
+            echo "<ul class='nav-tab-wrapper' style='margin-bottom:-0.1em;border-bottom:unset;'>";
 
             foreach ($ui->tab_captions as $tab => $caption) {
                 if (!empty($ui->form_options[$tab])) {
@@ -120,11 +119,12 @@ class Settings
             }
             echo '</ul>';
 
-            echo '<div class="pp-options-wrapper">';
+            echo '<div class="pp-group-wrapper" style="display: flex;width: 100%;flex-wrap: wrap;">';
+            echo '<div class="pp-options-wrapper" style="flex-basis: calc(80% - 40px);">';
             $table_class = 'form-table pp-form-table pp-options-table';
 
             if (PWP::is_REQUEST('presspermit_submit') || PWP::is_REQUEST('presspermit_submit_redirect')) :
-                ?>
+            ?>
                 <div id="message" class="updated">
                     <p>
                         <strong><?php esc_html_e('All settings were updated.', 'press-permit-core'); ?>&nbsp;</strong>
@@ -132,7 +132,7 @@ class Settings
                 </div>
             <?php
             elseif (PWP::is_REQUEST('presspermit_defaults')) :
-                ?>
+            ?>
                 <div id="message" class="updated">
                     <p>
                         <strong><?php esc_html_e('All settings were reset to defaults.', 'press-permit-core'); ?>&nbsp;</strong>
@@ -153,31 +153,51 @@ class Settings
 
                 echo '</table></div>';
             }
-
-            echo '</div>'; // pp-options-wrapper
-
-            $ui->filterNetworkOptions();
-
             echo "<input type='hidden' name='all_options' value='" . esc_attr(implode(',', $ui->all_options)) . "' />";
             echo "<input type='hidden' name='all_otype_options' value='" . esc_attr(implode(',', $ui->all_otype_options)) . "' />";
-
             echo "<input type='hidden' name='pp_submission_topic' value='options' />";
             ?>
-
-            <div class="submit pp-submit" style="border:none;">
-                <input type="submit" name="presspermit_submit" class="button-primary" value="<?php esc_attr_e('Save Changes', 'press-permit-core'); ?>"/>
+            <span class="submit pp-submit" style="border:none;display:block!important;">
+                <input type="submit" name="presspermit_submit" class="button-primary" value="<?php esc_attr_e('Save Changes', 'press-permit-core'); ?>" />
                 <input type="hidden" name="pp_tab"
-                        value="<?php if ($pp_tab = PWP::REQUEST_key('pp_tab')) echo esc_attr($pp_tab); ?>"/>
-            </div>
+                    value="<?php if ($pp_tab = PWP::REQUEST_key('pp_tab')) echo esc_attr($pp_tab); ?>" />
+            </span>
+            <?php
+            echo '</div>'; // pp-options-wrapper
+            if (!presspermit()->isPro()) {
+                require_once(PRESSPERMIT_CLASSPATH . '/UI/PromoBanner.php');
+                $promoBanner = new PromoBanner(array(
+                    'pluginDocsUrl' => 'https://publishpress.com/docs-category/presspermit/',
+                    'pluginSupportUrl' => 'https://wordpress.org/plugins/press-permit-core/',
+                    'features'         => [
+                        'Custom viewing permissions for Posts and Pages',
+                        'Custom editing permissions for Posts and Pages',
+                        'Create custom user groups',
+                        'Create your own publishing statuses',
+                        'Create personal pages for each user',
+                        'Manage Media Library access',
+                        'Control your content teasers',
+                        'Synchronize content to users',
+                        'Create your own Privacy Statuses',
+                        'Remove PublishPress ads and branding',
+                        'Priority, personal support',
+                    ]
+                ));
+                $promoBanner->displayBanner();
+            }
+            echo '</div>'; // pp-group-wrapper
+
+            $ui->filterNetworkOptions();
+            ?>
             </form>
             <p style='clear:both'></p>
 
-            <?php 
+            <?php
             presspermit()->admin()->publishpressFooter();
             ?>
         </div>
 
-        <?php
+<?php
     }
 
     public static function pluginInfoURL($plugin_slug)

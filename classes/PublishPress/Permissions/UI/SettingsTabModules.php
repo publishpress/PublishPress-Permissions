@@ -8,7 +8,7 @@ class SettingsTabModules
 {
     public function __construct()
     {
-        add_filter('presspermit_option_tabs', [$this, 'optionTabs'], 0);
+        add_filter('presspermit_option_tabs', [$this, 'optionTabs'], 80);
         add_filter('presspermit_section_captions', [$this, 'sectionCaptions']);
         add_filter('presspermit_option_captions', [$this, 'optionCaptions']);
         add_filter('presspermit_option_sections', [$this, 'optionSections']);
@@ -18,7 +18,7 @@ class SettingsTabModules
 
     public function optionTabs($tabs)
     {
-        $tabs['modules'] = esc_html__('Modules', 'press-permit-core');
+        $tabs['modules'] = esc_html__('Features', 'press-permit-core');
         return $tabs;
     }
 
@@ -94,9 +94,9 @@ class SettingsTabModules
                                                 name="presspermit_active_modules[<?php echo esc_attr($plugin_info->plugin_slug); ?>]"
                                                 value="1" checked="checked" />
 
-                                            <?php 
+                                            <?php
                                             $title = (!empty($ext_info->title[$slug])) ? $ext_info->title[$slug] : $plugin_info->label;
-                                            echo esc_html($title); 
+                                            echo esc_html($title);
                                             ?>
                                         </label>
 

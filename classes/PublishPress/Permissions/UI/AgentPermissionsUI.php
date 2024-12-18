@@ -16,7 +16,7 @@ class AgentPermissionsUI
             'addRoles' => esc_html__('Add Roles', 'press-permit-core'),
             'clearRole' => esc_html__('clear', 'press-permit-core'),
             'noConditions' => esc_html__('No statuses selected!', 'press-permit-core'),
-            'pleaseReview' => esc_html__('Review selection(s) below, then click Save.', 'press-permit-core'),
+            'pleaseReview' => esc_html__('Review the selection below, and then click <strong>Save Roles</strong>.', 'press-permit-core'),
             'alreadyRole' => esc_html__('Role already selected!', 'press-permit-core'),
             'noAction' => esc_html__('No Action selected!', 'press-permit-core'),
             'submissionMsg' => esc_html__('Role submission in progress...', 'press-permit-core'),
@@ -39,7 +39,7 @@ class AgentPermissionsUI
         $vars = [
             'addExceptions' => esc_html__('Set Specific Permissions', 'press-permit-core'),
             'clearException' => esc_html__('clear', 'press-permit-core'),
-            'pleaseReview' => esc_html__('Review selection(s) below, then click Save. Saved permissions can be mirrored to other operations by bulk edit.', 'press-permit-core'),
+            'pleaseReview' => esc_html__('Review the selection below, and then click <strong>Save Permissions</strong>. Saved permissions can be mirrored to other operations by bulk edit.', 'press-permit-core'),
             'alreadyException' => esc_html__('Permission already selected!', 'press-permit-core'),
             'noAction' => esc_html__('No Action selected!', 'press-permit-core'),
             'submissionMsg' => esc_html__('Permissions submission in progress...', 'press-permit-core'),
@@ -379,7 +379,7 @@ class AgentPermissionsUI
 
         <div id="pp_review_roles" class="pp-save-roles" style="display:none">
 
-            <table id="pp_tbl_role_selections">
+            <table id="pp_tbl_role_selections" class="table table-responsive">
                 <thead>
                     <tr>
                         <th><?php esc_html_e('Post Type', 'press-permit-core'); ?></th>
@@ -409,8 +409,7 @@ class AgentPermissionsUI
         <div id="pp_item_selection_msg" class="pp-error-note pp-edit-msg" style="display:none"></div>
 
         <div id="pp_review_exceptions" class="pp-save-exceptions" style="display:none">
-
-            <table id="pp_tbl_exception_selections">
+            <table id="pp_tbl_exception_selections" class="table table-responsive">
                 <thead>
                     <tr>
                         <th><?php esc_html_e('Post Type', 'press-permit-core'); ?></th>
@@ -473,7 +472,7 @@ class AgentPermissionsUI
                     $current_tab = (isset($perms['roles'])) ? 'pp-add-roles' : 'pp-add-exceptions';
 
                 if (($args['agent']->metagroup_type != 'wp_role') || !in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all'])) {
-                    $perms['clone'] = esc_html__('Clone', 'press-permit-core');
+                    $perms['clone'] = esc_html__('Copy', 'press-permit-core');
                 }
 
                 // --- add permission tabs ---
@@ -1393,7 +1392,7 @@ class AgentPermissionsUI
 
             <br />
             <div>
-                <input id="pp_clone_permissions" class="button button-primary pp-primary-button" type="submit" name="pp_clone_permissions" value="<?php esc_attr_e('Do Clone', 'press-permit-core'); ?>">
+                <input id="pp_clone_permissions" class="button button-primary pp-primary-button" type="submit" name="pp_clone_permissions" value="<?php esc_attr_e('Copy Roles and Permissions', 'press-permit-core'); ?>">
             </div>
         <?php
             }

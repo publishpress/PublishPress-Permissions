@@ -265,7 +265,9 @@ class PostTermsSave
                 }
             }
 
-            $terms = implode(",", array_merge(array_intersect_key($names_by_id, array_flip($filtered_terms)), $new_terms));
+            $_terms = array_merge(array_intersect_key($names_by_id, array_flip($filtered_terms)), $new_terms);
+
+            $terms = (is_string($terms)) ? implode(",", $_terms) : $_terms;
         } else {
             $term_ids = [];
 
