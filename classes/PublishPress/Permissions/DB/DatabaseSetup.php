@@ -40,7 +40,7 @@ class DatabaseSetup
         ";
 
         // For existing installations, don't risk existing data violating unique key requirement
-        $unique = ($last_db_ver) ? '' : 'UNIQUE ';
+        $unique = ($last_db_ver && defined('PRESSPERMIT_LEGACY_DB_SETUP')) ? '' : 'UNIQUE ';
 
         // User2Group table def
         $tabledefs .= "CREATE TABLE $wpdb->pp_group_members (
