@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Plugins - PublishPress Permissions: Control User Access "
 "for Posts, Pages, Categories, Tags - Stable (latest release)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
-"POT-Creation-Date: 2024-11-13T21:04:26+00:00\n"
-"PO-Revision-Date: 2024-12-17 16:35+0000\n"
+"POT-Creation-Date: 2024-12-17 16:31+0000\n"
+"PO-Revision-Date: 2025-01-10 18:18+0000\n"
 "Last-Translator: \n"
 "Language-Team: Spanish (Spain)\n"
 "Language: es_ES\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.6.14; wp-6.7.1"
+"X-Loco-Version: 2.6.11; wp-6.6.2\n"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1251
 #, php-format
@@ -1090,7 +1090,9 @@ msgstr "todos por defecto"
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:64
 msgid "Default visibility for new posts                               : "
-msgstr "Visibilidad predeterminada para nuevas publicaciones:"
+msgstr ""
+"Visibilidad por defecto para las nuevas entradas                             "
+"  : "
 
 #: classes/PublishPress/Permissions/UI/HintsPostEdit.php:16
 msgid "define custom privacy"
@@ -1124,7 +1126,7 @@ msgstr "Descripción:"
 msgid "Detailed documentation is also available on the plugin website."
 msgstr ""
 "La documentación detallada también está disponible en el sitio web del "
-"complemento."
+"plugin."
 
 #: classes/PublishPress/Permissions/UI/HintsPro.php:168
 msgid "Detailed Feature Grid"
@@ -1438,8 +1440,8 @@ msgstr "Si te gusta %s, por favor déjanos una valoración de %s. ¡Gracias!"
 #: classes/PublishPress/Permissions/UI/PromoBanner.php:68
 msgid "If you need help or have a new feature request, let us know."
 msgstr ""
-"Si necesita ayuda o tiene alguna solicitud sobre alguna nueva función, "
-"háganoslo saber."
+"Si necesitas ayuda o tienes alguna nueva característica que solicitar, "
+"háznoslo saber."
 
 #: classes/PublishPress/Permissions/Admin.php:194
 #: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:25
@@ -1882,12 +1884,13 @@ msgstr "Estructura de la página"
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:51
 msgid "Pages can be set or removed from Top Level by                  : "
 msgstr ""
-"Las páginas se pueden configurar o eliminar del nivel superior mediante:"
+"Las páginas pueden ser establecidas o eliminadas del nivel superior por      "
+"            : "
 
 #: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:98
 msgid "Pages can be set or removed from Top Level by: "
 msgstr ""
-"Las páginas se pueden configurar o eliminar del nivel superior mediante:"
+"Las páginas pueden ser establecidas o eliminadas del nivel superior por: "
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/Users.php:108
 msgid "Pattern ID:"
@@ -1942,7 +1945,9 @@ msgstr "Monitores de revisión pendientes"
 msgid ""
 "Performance                                  : Don't filter category / tag "
 "counts"
-msgstr "Rendimiento: no filtrar cantidades de categorías o etiquetas"
+msgstr ""
+"Rendimiento                                  : No filtrar los recuentos de "
+"categorías/etiquetas"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:43
 msgid "Permission already selected!"
@@ -2262,15 +2267,15 @@ msgid ""
 "Review the selection below, and then click <strong>Save Permissions</strong>."
 " Saved permissions can be mirrored to other operations by bulk edit."
 msgstr ""
-"Revise la selección a continuación y luego haga clic en <strong>Guardar "
+"Revisa la selección a continuación y luego haz clic en <strong>Guardar "
 "permisos</strong>. Los permisos guardados se pueden reflejar en otras "
-"operaciones mediante una edición masiva."
+"operaciones mediante una edición por lotes."
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:19
 msgid "Review the selection below, and then click <strong>Save Roles</strong>."
 msgstr ""
-"Revise la selección a continuación y luego haga clic en <strong>Guardar "
-"roles</strong>."
+"Revisa la selección a continuación y luego haz clic en <strong>Guardar "
+"perfiles</strong>."
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:27
 msgid "Revision"
@@ -2359,7 +2364,7 @@ msgstr "Perfiles %1$s*%2$s"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:95
 msgid "Roles and Permissions copied."
-msgstr "Roles y permisos copiados."
+msgstr "Perfiles y permisos copiados."
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:89
 msgid "Roles updated."
@@ -2546,8 +2551,8 @@ msgstr ""
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:53
 msgid "Specified element IDs also require the following site-wide Role: "
 msgstr ""
-"Los identificadores de elementos especificados también requieren el "
-"siguiente rol en todo el sitio:"
+"Los IDs de elementos especificados también requieren el siguiente perfil a "
+"nivel de sitio: "
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:272
 #: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:78
@@ -2652,7 +2657,7 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:84
 msgid "Suppress \"Private                            : \" Caption"
-msgstr "Suprimir el título \"Privado:\""
+msgstr "Suprimir la leyenda «Privado                            : »"
 
 #: includes/CoreAdmin.php:89 includes/CoreAdmin.php:90
 #: classes/PublishPress/Permissions/Admin.php:196
@@ -3058,7 +3063,9 @@ msgstr "Perfil de usuario"
 
 #: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:73
 msgid "User Search                                  : Filter by WP role"
-msgstr "Búsqueda de usuarios: Filtrar por rol de WP"
+msgstr ""
+"Búsqueda de usuarios                                  : Filtrar por perfil "
+"de WP"
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:59
 msgid "Users can always edit their own attachments"
@@ -3082,7 +3089,7 @@ msgstr "Ver los permisos de usuario almacenados actualmente:"
 
 #: classes/PublishPress/Permissions/UI/PromoBanner.php:240
 msgid "View Knowledge Base"
-msgstr "Ver la base de conocimientos"
+msgstr "Ver la base de conocimiento"
 
 #: classes/PublishPress/Permissions/Admin.php:201
 msgid ""
