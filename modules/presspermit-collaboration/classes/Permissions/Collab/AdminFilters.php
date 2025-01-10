@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class AdminFilters
@@ -57,7 +58,8 @@ class AdminFilters
         add_filter('option_show_on_front', [$this, 'fltEditNavMenusIgnoreImportantPages']);
     }
 
-    public function actNavMenuQueryArgs($query_obj) {
+    public function actNavMenuQueryArgs($query_obj)
+    {
         if (did_action('wp_ajax_menu-quick-search')) {
             // @todo: confirm this Nav Menu Editor workaround is still needed
 
@@ -67,7 +69,8 @@ class AdminFilters
     }
 
     // If Pages metabox results are paged, prevent custom Front Page and Privacy Policy from being forced to the top of every page
-    public function fltEditNavMenusIgnoreImportantPages($option_val) {
+    public function fltEditNavMenusIgnoreImportantPages($option_val)
+    {
         if (did_action('wp_ajax_menu-get-metabox') && (PWP::REQUEST_int('paged') > 1)) {
             $option_val = 0;
         }
@@ -83,14 +86,13 @@ class AdminFilters
 
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             update_post_meta($post_id, '_pp_is_autodraft', true);
-
         } elseif (!$update) {
             if ((PWP::isBlockEditorActive() && !defined('PRESSPERMIT_LIMIT_SAVE_POST_TERM_ASSIGNMENT')) || defined('PRESSPERMIT_LEGACY_SAVE_POST_TERM_ASSIGNMENT')) {
                 // For configurations that limit access by term selection, need to default to an allowed term
                 if (!presspermit()->isAdministrator()) {
                     require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
-            
-                    foreach(get_object_taxonomies($post->post_type) as $taxonomy) {
+
+                    foreach (get_object_taxonomies($post->post_type) as $taxonomy) {
                         if (!$terms = wp_get_object_terms($post->ID, $taxonomy, ['fields' => 'ids'])) {
                             if ($terms = PostTermsSave::fltPreObjectTerms($terms, $taxonomy)) {
                                 wp_set_post_terms($post->ID, $terms, $taxonomy);
@@ -115,7 +117,7 @@ class AdminFilters
     {
         $pp = presspermit();
         $pp->role_defs->disabled_pattern_role_types = array_merge(
-            $pp->role_defs->disabled_pattern_role_types, 
+            $pp->role_defs->disabled_pattern_role_types,
             array_fill_keys(['forum', 'topic', 'reply'], true)
         );
     }
@@ -129,7 +131,8 @@ class AdminFilters
         return $taxonomies;
     }
 
-    function fltGetEnabledTaxonomiesByKey($taxonomies, $args = []) {
+    function fltGetEnabledTaxonomiesByKey($taxonomies, $args = [])
+    {
         $forced_taxonomies = $this->fltGetEnabledTaxonomies(array_keys($taxonomies), $args);
         return array_merge($taxonomies, $forced_taxonomies);
     }
@@ -145,7 +148,7 @@ class AdminFilters
 
     function fltExceptionTypes($types)
     {
-        if (!isset($types['attachment']))
+        if (isset($types['attachment']))
             $types['attachment'] = get_post_type_object('attachment');
 
         return $types;
@@ -154,21 +157,22 @@ class AdminFilters
     function fltAppendExceptionTypes($types)
     {
         $types['pp_group'] = (object)[
-            'name' => 'pp_group', 
+            'name' => 'pp_group',
             'labels' => (object)[
-                'singular_name' => esc_html__('Permission Group', 'press-permit-core'), 
+                'singular_name' => esc_html__('Permission Group', 'press-permit-core'),
                 'name' => esc_html__('Permission Groups', 'press-permit-core')
-                ]
-            ];
-        
+            ]
+        ];
+
         return $types;
     }
 
     function actDropdownTaxonomyTypes($args = [])
     {
-        if (empty($args['agent']) || empty($args['agent']->metagroup_id) 
-        || !in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all'], true)) 
-        {
+        if (
+            empty($args['agent']) || empty($args['agent']->metagroup_id)
+            || !in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all'], true)
+        ) {
             echo "<option value='_term_'>" . esc_html__('term (manage)', 'press-permit-core') . '</option>';
         }
     }
@@ -248,9 +252,10 @@ class AdminFilters
     // Optionally, prevent anyone from editing or deleting a user whose level is higher than their own
     function fltHasEditUserCap($wp_sitecaps, $orig_reqd_caps, $args)
     {
-        if (presspermit()->filteringEnabled() && (
-            in_array('edit_users', $orig_reqd_caps, true) || in_array('delete_users', $orig_reqd_caps, true) 
-            || in_array('remove_users', $orig_reqd_caps, true) || in_array('promote_users', $orig_reqd_caps, true)
+        if (
+            presspermit()->filteringEnabled() && (
+                in_array('edit_users', $orig_reqd_caps, true) || in_array('delete_users', $orig_reqd_caps, true)
+                || in_array('remove_users', $orig_reqd_caps, true) || in_array('promote_users', $orig_reqd_caps, true)
             ) && !empty($args[2])
         ) {
             global $current_user;
@@ -277,19 +282,20 @@ class AdminFilters
     function fltPageParent($parent_id, $args = [])
     {
         if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
-        || !presspermit()->filteringEnabled() || ('revision' == PWP::findPostType()) || did_action('pp_disable_page_parent_filter') || ($this->inserting_post)
-        || (
-            defined('ELEMENTOR_VERSION') && !empty($_REQUEST['actions'])                                     // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
-            && strpos($_REQUEST['actions'], '"action\":\"save_builder\",\"data\":{\"status\":\"autosave\"')  // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-        )
+            || !presspermit()->filteringEnabled() || ('revision' == PWP::findPostType()) || did_action('pp_disable_page_parent_filter') || ($this->inserting_post)
+            || (
+                defined('ELEMENTOR_VERSION') && !empty($_REQUEST['actions'])                                     // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
+                && strpos($_REQUEST['actions'], '"action\":\"save_builder\",\"data\":{\"status\":\"autosave\"')  // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+            )
         ) {
             return $parent_id;
         }
 
         // Avoid preview failure with ACF active
-        if (PWP::is_REQUEST('wp-preview', 'dopreview') 
-        && PWP::is_REQUEST('action', 'editpost')
-        && PWP::is_REQUEST('post_ID', $parent_id)
+        if (
+            PWP::is_REQUEST('wp-preview', 'dopreview')
+            && PWP::is_REQUEST('action', 'editpost')
+            && PWP::is_REQUEST('post_ID', $parent_id)
         ) {
             return $parent_id;
         }
@@ -299,19 +305,20 @@ class AdminFilters
         }
 
         if (defined('DOING_AJAX') && DOING_AJAX && !PWP::empty_REQUEST('action') && PWP::REQUEST_key_match('action', 'woocommerce_', ['match_type' => 'contains'])) {
-			return $parent_id;
-		}
+            return $parent_id;
+        }
 
         $orig_parent_id = $parent_id;
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostSaveHierarchical.php');
         $parent_id = PostSaveHierarchical::fltPageParent($parent_id);
-        
+
         // Don't allow media attachment page to be cleared if user has editing capability (conflict with Image Source Control plugin)
-        if (!$parent_id && $orig_parent_id 
-        && (
-            (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'async-upload.php'))
-            || ('attachment' == PWP::findPostType())
-            || (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'admin-ajax.php') && PWP::is_REQUEST('action', ['save-attachment', 'save-attachment-compat']))
+        if (
+            !$parent_id && $orig_parent_id
+            && (
+                (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'async-upload.php'))
+                || ('attachment' == PWP::findPostType())
+                || (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'admin-ajax.php') && PWP::is_REQUEST('action', ['save-attachment', 'save-attachment-compat']))
             )
         ) {
             if (current_user_can('edit_post', $orig_parent_id)) {
