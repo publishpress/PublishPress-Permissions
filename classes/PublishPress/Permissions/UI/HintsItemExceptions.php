@@ -26,7 +26,7 @@ class HintsItemExceptions
 
         if (!$pp->moduleActive('collaboration')) {
             echo "<div class='pp-ext-promo' style='padding:0.5em;margin-top:0'>";
-            esc_html_e('To customize editing permissions, enable the Collaborative Publishing module.', 'press-permit-core');
+            esc_html_e('To customize editing permissions, enable the Editing Permissions module.', 'press-permit-core');
             echo "</div>";
         }
     }

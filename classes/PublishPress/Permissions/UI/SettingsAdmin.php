@@ -50,7 +50,7 @@ class SettingsAdmin
         return __("For most installations, leave this disabled. See Editing tab for specialized Media Library permissions.", 'press-permit-core-hints');
 
         case 'define_media_post_caps_collab_prompt' :
-        return  __("For most installations, leave this disabled. For specialized Media Library permissions, install the Collaborative Publishing module.", 'press-permit-core-hints');
+        return  __("For most installations, leave this disabled. For specialized Media Library permissions, install the Editing Permissions module.", 'press-permit-core-hints');
 
         case 'bbp_compat_prompt' :
         return __('To customize bbPress forum permissions, activate the Compatibility Pack module.', 'press-permit-core-hints');
@@ -68,7 +68,7 @@ class SettingsAdmin
         return __('Unmodified from WordPress default behavior. To enable filtering, remove constant definition PP_ADMIN_READONLY_LISTABLE.', 'press-permit-core-hints');
 
         case 'posts_listing_editable_only_collab_prompt' :
-        return __('To customize editing permissions, enable the Collaborative Publishing module.', 'press-permit-core-hints');
+        return __('To customize editing permissions, enable the Editing Permissions module.', 'press-permit-core-hints');
 
         case 'display_user_profile_roles' :
         return __('Note: Groups and Roles are always displayed in "Edit User"', 'press-permit-core-hints');
@@ -117,7 +117,7 @@ class SettingsAdmin
 
         // Editing
         case 'collaborative-publishing' :
-        return sprintf(__('Settings related to content editing permissions, provided by the %s module.', 'press-permit-core-hints'), __('Collaborative Publishing', 'press-permit-core-hints'));
+        return sprintf(__('Settings related to content editing permissions, provided by the %s module.', 'press-permit-core-hints'), __('Editing Permissions', 'press-permit-core-hints'));
 
         case 'list_others_uneditable_posts' :
         return __('If this setting is disabled, a specific role can be given capabilities: list_others_posts, list_others_pages, etc.', 'press-permit-core-hints');
