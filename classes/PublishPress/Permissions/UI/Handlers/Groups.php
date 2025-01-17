@@ -24,7 +24,7 @@ class Groups
         } elseif (!PWP::empty_REQUEST('action')) {
             $action = PWP::REQUEST_key('action');
 
-        } elseif (!$pp_action = PWP::REQUEST_key('pp_action')) {
+        } elseif (!$action = PWP::REQUEST_key('pp_action')) {
             $action = '';
         }
 
