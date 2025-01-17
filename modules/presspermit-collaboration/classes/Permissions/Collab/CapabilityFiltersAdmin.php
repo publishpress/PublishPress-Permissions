@@ -171,7 +171,11 @@ class CapabilityFiltersAdmin
 
                 if (array_intersect($reqd_caps, $replace_post_caps)) {
                     if (!empty($args[0]))
-                        $item_id = (is_object($args[0])) ? $args[0]->ID : (int) $args[0];
+                        if (is_object($args[0])) {
+                            $item_id = (property_exists($args[0]->ID)) ? $args[0]->ID : 0;
+                        } else {
+                            $item_id = (int) $args[0];
+                        }
                     else
                         $item_id = 0;
 
