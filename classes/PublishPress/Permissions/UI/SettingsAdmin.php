@@ -362,7 +362,7 @@ class SettingsAdmin
                 . "<label for='" . esc_attr($option_name) . "' title='" . esc_attr($title) . "'>"
                 . "<input name='" . esc_attr($option_name) . "' type='checkbox' " . esc_attr($disabled) . " style='" . esc_attr($style) . "' id='" . esc_attr($option_name) . "' value='1' " . esc_attr(checked('1', $return['val'], false)) . " autocomplete='off' /> ";
                 
-            if ($display_label) {
+            if ($display_label && isset($this->option_captions[$option_name])) {
                 esc_html_e($this->option_captions[$option_name]);
             }
             
