@@ -197,8 +197,14 @@ class PostTermsSave
 
     public static function fltTaxInput($tax_input)
     {
+        if (!is_array($tax_input)) {
+            return $tax_input;
+        }
+
         foreach ((array)$tax_input as $taxonomy => $terms) {
-            $tax_input[$taxonomy] = self::fltTermsInput($terms, $taxonomy);
+            if (is_string($taxonomy) && !is_numeric($taxonomy)) {
+            	$tax_input[$taxonomy] = self::fltTermsInput($terms, $taxonomy);
+            }
         }
 
         return $tax_input;
