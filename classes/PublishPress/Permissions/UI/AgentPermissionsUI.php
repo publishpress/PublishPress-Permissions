@@ -139,7 +139,6 @@ class AgentPermissionsUI
 
                         <select name="pp_select_x_for_type" autocomplete="off">
                             <?php
-                            unset($type_objects['attachment']); // may be re-added by module
                             $type_objects = apply_filters('presspermit_append_exception_types', $pp->admin()->orderTypes(apply_filters('presspermit_exception_types', $type_objects)));
 
                             if (!empty($args['external']))
