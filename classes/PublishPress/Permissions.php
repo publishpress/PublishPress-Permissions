@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress;
 
 use PublishPress\Permissions\Factory;
@@ -40,7 +41,7 @@ class Permissions
 
     // status / memcache
     private $current_user;
-    public $doing_rest = false; 
+    public $doing_rest = false;
     public $flags = [];
     public $listed_ids = [];               // $listed_ids[object_type][object_id] = true : avoid separate capability query for each listed item
     public $meta_cap_post = false;
@@ -60,10 +61,11 @@ class Permissions
         return self::$instance;
     }
 
-    public function getCurrentSanitizePostID() {
+    public function getCurrentSanitizePostID()
+    {
         if (defined('PRESSPERMIT_LEGACY_POST_ID_DETECT')) {
-        	return 0;	
-    	}
+            return 0;
+        }
 
         if (!empty($this->sanitizing_post_id)) {
             $post_id = $this->sanitizing_post_id;
@@ -78,38 +80,47 @@ class Permissions
 
         // Log the post ID field for the sanitize_post() call by wp_insert_post(), 
         // to provide context for subsequent pre_post_status, pre_post_parent, pre_post_category, pre_post_tags_input filter applications
-        add_filter('pre_post_ID', 
-            function($post_id) {
+        add_filter(
+            'pre_post_ID',
+            function ($post_id) {
                 $this->sanitizing_post_id = $post_id;
                 return $post_id;
             }
         );
 
         // Use the next filter called by wp_insert_post() too mark the end of sanitize_text_field() calls for this post
-        add_filter('wp_insert_post_empty_content',
-            function($maybe_empty, $postarr) {
+        add_filter(
+            'wp_insert_post_empty_content',
+            function ($maybe_empty, $postarr) {
                 if ($this->sanitizing_post_id && !empty($postarr['ID']) && ($postarr['ID'] == $this->sanitizing_post_id)) {
                     $this->sanitizing_post_id = false;
                 }
 
                 return $maybe_empty;
-            }, 1, 2
+            },
+            1,
+            2
         );
 
-        add_action('wp_insert_post',
+        add_action(
+            'wp_insert_post',
             function ($post_id, $post, $update) {
                 if (empty($update)) {
                     $this->inserted_posts[$post_id] = true;
                 }
-            }, 10, 3
+            },
+            10,
+            3
         );
     }
 
-    public function isInsertedPost($post_id) {
+    public function isInsertedPost($post_id)
+    {
         return !empty($this->inserted_posts[$post_id]);
     }
 
-    public function capDefs($args = []) {
+    public function capDefs($args = [])
+    {
         if (!isset($this->cap_defs) || !empty($args['force'])) {
             require_once(PRESSPERMIT_CLASSPATH . '/Capabilities.php');
             $this->cap_defs = new Permissions\Capabilities();
@@ -117,13 +128,14 @@ class Permissions
 
         return $this->cap_defs;
     }
-  
+
     public static function doingREST()
     {
         return self::instance()->doing_rest;
     }
 
-    public function doingEmbed() {
+    public function doingEmbed()
+    {
         static $arr_url;
 
         if (!isset($_SERVER['REQUEST_URI'])) {
@@ -145,7 +157,8 @@ class Permissions
         return false;
     }
 
-    public function isRESTurl() {
+    public function isRESTurl()
+    {
         static $arr_url;
 
         if (!isset($_SERVER['REQUEST_URI'])) {
@@ -159,9 +172,9 @@ class Permissions
         if ($arr_url) {
             $path = isset($arr_url['path']) ? $arr_url['path'] : '';
 
-			if (0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), $path . '/wp-json/oembed/')) {
-				return false;	
-			}
+            if (0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), $path . '/wp-json/oembed/')) {
+                return false;
+            }
 
             if (0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), $path . '/wp-json/')) {
                 return true;
@@ -171,13 +184,14 @@ class Permissions
         return false;
     }
 
-    public function checkInitInterrupt() {
+    public function checkInitInterrupt()
+    {
         // Image Source Control plugin compat
         if (defined('ISCVERSION') || defined('PRESSPERMIT_LIMIT_ASYNC_UPLOAD_FILTERING')) {
-            if ( is_admin() && isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'async-upload.php') && !PWP::empty_POST('attachment_id') && PWP::is_POST('fetch', 3)) {
+            if (is_admin() && isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'async-upload.php') && !PWP::empty_POST('attachment_id') && PWP::is_POST('fetch', 3)) {
                 if ($att = get_post(PWP::POST_int('attachment_id'))) {
                     global $current_user;
-                    if ( $att->post_author == $current_user->ID && ! defined( 'PP_UPLOADS_FORCE_FILTERING' ) ) {
+                    if ($att->post_author == $current_user->ID && ! defined('PP_UPLOADS_FORCE_FILTERING')) {
                         return true;
                     }
                 }
@@ -189,19 +203,20 @@ class Permissions
         }
 
         // Divi Page Builder editor init
-        if (!defined('PRESSPERMIT_DISABLE_DIVI_CLEARANCE') && !PWP::empty_REQUEST('et_fb') && !PWP::empty_REQUEST('et_bfb') 
-		&& 0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/?page_id') 
-        && !is_admin() && !defined('DOING_AJAX') && PWP::empty_REQUEST('action') 
+        if (
+            !defined('PRESSPERMIT_DISABLE_DIVI_CLEARANCE') && !PWP::empty_REQUEST('et_fb') && !PWP::empty_REQUEST('et_bfb')
+            && 0 === strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/?page_id')
+            && !is_admin() && !defined('DOING_AJAX') && PWP::empty_REQUEST('action')
             && PWP::empty_REQUEST('post') && PWP::empty_REQUEST('post_id') && PWP::empty_REQUEST('post_ID') && PWP::empty_REQUEST('p')
         ) {
-          return true;
+            return true;
         }
     }
 
     private function load($args = [])
     {
-        if ($this->checkInitInterrupt()) { 
-            return; 
+        if ($this->checkInitInterrupt()) {
+            return;
         }
 
         $this->dbMaint();
@@ -303,8 +318,8 @@ class Permissions
     private function dbMaint()
     {
         // On first-time installation and version change, early assurance that DB tables are present and role capabilities populated
-        if ( ! $ver = get_option('presspermitpro_version') ) {
-            if ( ! $ver = get_option('presspermit_version') ) {
+        if (! $ver = get_option('presspermitpro_version')) {
+            if (! $ver = get_option('presspermit_version')) {
                 $check_for_rs_migration = true;
 
                 $ver = get_option('pp_c_version');
@@ -313,8 +328,8 @@ class Permissions
 
         if (!$ver || !is_array($ver) || empty($ver['db_version']) || version_compare(PRESSPERMIT_DB_VERSION, $ver['db_version'], '!=')) {
             require_once(PRESSPERMIT_ABSPATH . '/db-config.php');
-            
-            $db_ver = (is_array($ver) && isset( $ver['db_version'] ) ) ? $ver['db_version'] : '';
+
+            $db_ver = (is_array($ver) && isset($ver['db_version'])) ? $ver['db_version'] : '';
             require_once(PRESSPERMIT_CLASSPATH . '/DB/DatabaseSetup.php');
             new Permissions\DB\DatabaseSetup($db_ver);
         }
@@ -326,7 +341,7 @@ class Permissions
 
                 // Set default module deactivations, but leave Import module activated
                 require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
-                Permissions\PluginUpdated::deactivateModules(['activate' => ['presspermit-import']]);  
+                Permissions\PluginUpdated::deactivateModules(['activate' => ['presspermit-import']]);
             }
         }
 
@@ -367,7 +382,7 @@ class Permissions
 
         $available_modules = $this->getAvailableModules();
 
-        foreach($available_modules as $module) {
+        foreach ($available_modules as $module) {
             if (empty($inactive_modules[$module]) && file_exists("$dir/$module/$module.php")) {
                 include_once("$dir/$module/$module.php");
             }
@@ -383,7 +398,6 @@ class Permissions
             'presspermit-collaboration',
             'presspermit-compatibility',
             'presspermit-file-access',
-            'presspermit-import',
             'presspermit-membership',
             'presspermit-status-control',
             'presspermit-sync',
@@ -407,9 +421,9 @@ class Permissions
     public function getActiveModules()
     {
         $available = array_map(
-            function($k) {
+            function ($k) {
                 return str_replace('presspermit-', '', $k);
-            }, 
+            },
             $this->getAvailableModules()
         );
 
@@ -433,7 +447,8 @@ class Permissions
         return $this->admin;
     }
 
-    public function groups() {
+    public function groups()
+    {
         if (!isset($this->groups)) {
             require_once(PRESSPERMIT_CLASSPATH . '/Groups.php');
             $this->groups = new Permissions\Groups();
@@ -565,19 +580,21 @@ class Permissions
                 }
 
                 if (
-					(
-						(is_multisite() && !is_user_member_of_blog()) 
-						|| (!is_admin() && !defined('PRESSPERMIT_STRICT_READ_CAP'))
-					)
-				) {
+                    (
+                        (is_multisite() && !is_user_member_of_blog())
+                        || (!is_admin() && !defined('PRESSPERMIT_STRICT_READ_CAP'))
+                    )
+                ) {
                     $user->allcaps[PRESSPERMIT_READ_PUBLIC_CAP] = true;
                 }
 
                 if ($this->getOption('list_others_uneditable_posts')) {
                     foreach ($this->getEnabledPostTypes() as $post_type) {
                         if ($type_obj = get_post_type_object($post_type)) {
-                            if (isset($type_obj->cap->edit_posts) && !empty($user->allcaps[$type_obj->cap->edit_posts])
-                            && isset($type_obj->cap->edit_others_posts) && empty($user->allcaps[$type_obj->cap->edit_others_posts])) {
+                            if (
+                                isset($type_obj->cap->edit_posts) && !empty($user->allcaps[$type_obj->cap->edit_posts])
+                                && isset($type_obj->cap->edit_others_posts) && empty($user->allcaps[$type_obj->cap->edit_others_posts])
+                            ) {
                                 $list_others_cap = str_replace('edit_', 'list_', $type_obj->cap->edit_others_posts);
                                 $user->allcaps[$list_others_cap] = true;
                             }
@@ -589,22 +606,22 @@ class Permissions
                     if ($type_obj = get_post_type_object('attachment')) {
                         if (!empty($type_obj->cap->create_posts) && !empty($user->allcaps[$type_obj->cap->create_posts])) {
                             $add_caps = ['edit_posts' => true];
-							
-							if (defined('PRESSPERMIT_MEDIA_UPLOAD_GRANT_PAGE_EDIT_CAPS')) {
-								$const_val = constant('PRESSPERMIT_MEDIA_UPLOAD_GRANT_PAGE_EDIT_CAPS');
-								$post_type = (post_type_exists($const_val)) ? $const_val : 'page';
-								
-								if ($_type_obj = get_post_type_object($post_type)) {
-									$add_caps = array_merge(
-										$add_caps,
-										array_fill_keys(
-											[$_type_obj->cap->edit_posts, $_type_obj->cap->edit_others_posts, $_type_obj->cap->edit_published_posts],
-											true
-										)
-									);
-								}
-							}
-							
+
+                            if (defined('PRESSPERMIT_MEDIA_UPLOAD_GRANT_PAGE_EDIT_CAPS')) {
+                                $const_val = constant('PRESSPERMIT_MEDIA_UPLOAD_GRANT_PAGE_EDIT_CAPS');
+                                $post_type = (post_type_exists($const_val)) ? $const_val : 'page';
+
+                                if ($_type_obj = get_post_type_object($post_type)) {
+                                    $add_caps = array_merge(
+                                        $add_caps,
+                                        array_fill_keys(
+                                            [$_type_obj->cap->edit_posts, $_type_obj->cap->edit_others_posts, $_type_obj->cap->edit_published_posts],
+                                            true
+                                        )
+                                    );
+                                }
+                            }
+
                             $user->allcaps = array_merge($user->allcaps, $add_caps);
                         }
                     }
@@ -703,7 +720,7 @@ class Permissions
         $this->site_options = apply_filters('presspermit_options', $site_options);
     }
 
-    
+
     public function getOption($option_basename)
     {
         static $is_multisite = null;
@@ -723,13 +740,17 @@ class Permissions
 
                 if (isset($this->net_options["presspermit_$option_basename"])) {
                     $val = maybe_unserialize($this->net_options["presspermit_$option_basename"]);
-                    if (is_string($val)) {$val = stripslashes($val);}
+                    if (is_string($val)) {
+                        $val = stripslashes($val);
+                    }
                     return $val;
                 }
 
                 if (isset($this->default_options[$option_basename])) {
                     $val = maybe_unserialize($this->default_options[$option_basename]);
-                    if (is_string($val)) {$val = stripslashes($val);}
+                    if (is_string($val)) {
+                        $val = stripslashes($val);
+                    }
                     return $val;
                 }
             }
@@ -737,13 +758,17 @@ class Permissions
 
         if (isset($this->site_options["presspermit_$option_basename"])) {
             $val = maybe_unserialize($this->site_options["presspermit_$option_basename"]);
-            if (is_string($val)) {$val = stripslashes($val);}
+            if (is_string($val)) {
+                $val = stripslashes($val);
+            }
             return $val;
         }
 
         if (isset($this->default_options[$option_basename])) {
             $val = maybe_unserialize($this->default_options[$option_basename]);
-            if (is_string($val)) {$val = stripslashes($val);}
+            if (is_string($val)) {
+                $val = stripslashes($val);
+            }
             return $val;
         }
 
@@ -797,9 +822,10 @@ class Permissions
         $this->site_options[$option_basename] = $value;
     }
 
-    public function checkUserRoleSync($user_id) {
+    public function checkUserRoleSync($user_id)
+    {
         global $current_user;
-        
+
         if (!$user = $this->getUser($user_id)) {
             return;
         }
@@ -815,10 +841,12 @@ class Permissions
         return $this->isAdministrator($user_id, 'content', $args);
     }
 
-    public function fltPluginCompatUnfilteredContent($unfiltered) {
+    public function fltPluginCompatUnfilteredContent($unfiltered)
+    {
         // Public Post Preview: Preserve compat by dropping all Permissions filtering, unless integration is enabled through Pro plugin
-        if (!PWP::empty_REQUEST('_ppp') && !is_admin() && PWP::empty_POST() && class_exists('DS_Public_Post_Preview') && !defined('PRESSPERMIT_DISABLE_PPP_PASSTHROUGH')
-        && (!defined('PRESSPERMIT_PRO_VERSION') || !presspermit()->moduleActive('compatibility'))
+        if (
+            !PWP::empty_REQUEST('_ppp') && !is_admin() && PWP::empty_POST() && class_exists('DS_Public_Post_Preview') && !defined('PRESSPERMIT_DISABLE_PPP_PASSTHROUGH')
+            && (!defined('PRESSPERMIT_PRO_VERSION') || !presspermit()->moduleActive('compatibility'))
         ) {
             $unfiltered = true;
         }
@@ -952,7 +980,7 @@ class Permissions
         }
 
         if (!defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) {
-        	$args['public'] = true;
+            $args['public'] = true;
         }
 
         if (false === $object_type) {
@@ -961,8 +989,9 @@ class Permissions
             $object_types = ($object_type) ? (array)$object_type : $this->getEnabledPostTypes();
 
             foreach (get_taxonomies($args, 'object') as $tx) {
-                if (array_intersect($object_types, $tx->object_type)
-                || in_array($tx->name, apply_filters('presspermit_universal_taxonomies', ['series_group']))
+                if (
+                    array_intersect($object_types, $tx->object_type)
+                    || in_array($tx->name, apply_filters('presspermit_universal_taxonomies', ['series_group']))
                 ) {
                     $taxonomies[] = $tx->name;
                 }
@@ -997,8 +1026,9 @@ class Permissions
         return $taxonomies;
     }
 
-    public function getUnfilteredTaxonomies() {
-    	return apply_filters('presspermit_unfiltered_taxonomies', ['post_status', 'post_visibility_pp', 'post_status_core_wp_pp', 'topic-tag', 'author']);
+    public function getUnfilteredTaxonomies()
+    {
+        return apply_filters('presspermit_unfiltered_taxonomies', ['post_status', 'post_visibility_pp', 'post_status_core_wp_pp', 'topic-tag', 'author']);
     }
 
     public function isTaxonomyEnabled($taxonomy)
@@ -1110,14 +1140,14 @@ class Permissions
     public function registerModule($slug, $label, $basename, $version, $args = [])
     {
         $defaults = [
-            'min_pp_version' => '0', 
-            'min_php_version' => '0', 
+            'min_pp_version' => '0',
+            'min_php_version' => '0',
             'package' => 'presspermit',
-            'plugin_slug' => '', 
+            'plugin_slug' => '',
         ];
-        
+
         $args = array_merge($defaults, (array)$args);
-        foreach( array_keys($defaults) as $var) {
+        foreach (array_keys($defaults) as $var) {
             $$var = (isset($args[$var])) ? $args[$var] : $defaults[$var];
         }
 
@@ -1137,7 +1167,6 @@ class Permissions
                 ['module_title' => $label, 'min_version' => $min_pp_version]
             );
             $register = false;
-
         } elseif (!empty($this->min_module_version[$slug]) && version_compare($version, $this->min_module_version[$slug], '<')) {
             if (is_admin()) {
                 $error = presspermit()->admin()->errorNotice(
@@ -1162,7 +1191,8 @@ class Permissions
         return !$error;
     }
 
-    public function isPro() {
+    public function isPro()
+    {
         return defined('PRESSPERMIT_PRO_VERSION') && !class_exists('PublishPress\Permissions\Core');
     }
 
@@ -1171,18 +1201,18 @@ class Permissions
      */
     public function load_updater()
     {
-		if ($this->isPro()) {
-        	require_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/library/Factory.php');
-        	$container = \PublishPress\Permissions\Factory::get_container();
-			
-			if (!empty($container['edd_container'])) {
+        if ($this->isPro()) {
+            require_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/library/Factory.php');
+            $container = \PublishPress\Permissions\Factory::get_container();
+
+            if (!empty($container['edd_container'])) {
                 return $container['edd_container']['update_manager'];
             } else {
                 return false;
             }
-		}
+        }
     }
-    
+
     public function keyStatus($refresh = false)
     {
         if ($this->isPro()) {
@@ -1196,10 +1226,10 @@ class Permissions
 
     public function keyActive($refresh = false)
     {
-        return in_array($this->keyStatus($refresh), [true, 'valid', 'expired'], true);                
+        return in_array($this->keyStatus($refresh), [true, 'valid', 'expired'], true);
     }
 
-    public function addMaintenanceTriggers() 
+    public function addMaintenanceTriggers()
     {
         $this->hooks->addMaintenanceTriggers();
     }
