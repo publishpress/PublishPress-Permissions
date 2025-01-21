@@ -213,7 +213,7 @@ class AgentPermissionsUI
             if (!$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) : ?>
                 <div>
                     <?php
-                    esc_html_e('To assign page-specific Permissions for editing, parent selection or term assignment, enable the Collaborative Publishing module.', 'press-permit-core');
+                    esc_html_e('To assign page-specific Permissions for editing, parent selection or term assignment, enable the Editing Permissions module.', 'press-permit-core');
                     ?>
                 </div>
             <?php endif;
@@ -315,7 +315,7 @@ class AgentPermissionsUI
 
                 if ((defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) && !$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) : ?>
                 <div>
-                    <?php esc_html_e('To assign page-specific PublishPress Revision permissions, enable the Collaborative Publishing module.', 'press-permit-core'); ?>
+                    <?php esc_html_e('To assign page-specific PublishPress Revision permissions, enable the Editing Permissions module.', 'press-permit-core'); ?>
                 </div>
             <?php endif; ?>
         </div><?php

@@ -8,7 +8,7 @@ class MultipleAuthors
         // Note: Some filters will be required even if PPMA is inactive, to deal with orphaned posts
 
         if (defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION')) {
-            // Disable Force Empty Author setting until Collaborative Publishing filters can support it
+            // Disable Force Empty Author setting until Editing Permissions filters can support it
             add_filter('pp_multiple_authors_default_options', [$this, 'fltDefaultOptions'], 20);
             add_filter('pre_option_multiple_authors_multiple_authors_options', [$this, 'fltAuthorsOptions'], 20);
         }
