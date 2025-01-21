@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class CapabilityFiltersAdmin
@@ -46,8 +47,9 @@ class CapabilityFiltersAdmin
     {
         $required_operation = (isset($args['required_operation'])) ? $args['required_operation'] : '';
 
-        if (in_array($required_operation, ['', 'read'], true) 
-        && empty($args['pp_context']) && strpos($orig_clauses['where'], "post_type = 'attachment'")
+        if (
+            in_array($required_operation, ['', 'read'], true)
+            && empty($args['pp_context']) && strpos($orig_clauses['where'], "post_type = 'attachment'")
         ) {
             if (!empty(presspermit()->getUser()->allcaps['pp_list_all_files'])) { // disable attachment filtering?
                 $post_types = (isset($args['post_types'])) ? (array)$args['post_types'] : [];
@@ -63,8 +65,10 @@ class CapabilityFiltersAdmin
     function fltAdjustPostsWhereClause($adjust, $type_where_clause, $post_type, $args)
     {
         if ('attachment' == $post_type) {
-            if (!empty($args['has_cap_check']) && !presspermit()->getOption('own_attachments_always_editable') 
-            && empty(presspermit()->getUser()->allcaps['edit_own_attachments'])) {  // PP setting eliminates cap requirement
+            if (
+                !empty($args['has_cap_check']) && !presspermit()->getOption('own_attachments_always_editable')
+                && empty(presspermit()->getUser()->allcaps['edit_own_attachments'])
+            ) {  // PP setting eliminates cap requirement
                 $adjust = ($adjust) ? $adjust : $type_where_clause;
                 $adjust .= " AND {$args['src_table']}.post_parent = '0'";
             }
@@ -111,7 +115,7 @@ class CapabilityFiltersAdmin
                     if ($post->post_parent) {
                         if ('attachment' != get_post_field('post_type', $post->post_parent)) {
                             if (!current_user_can('edit_post', $post->post_parent)) {
-                                $reqd_caps []= 'do_not_allow';
+                                $reqd_caps[] = 'do_not_allow';
                                 return $reqd_caps;
                             }
                         }
@@ -129,34 +133,37 @@ class CapabilityFiltersAdmin
                 $reqd_caps = NavMenuCapabilities::adjustCapRequirement($reqd_caps);
             }
         } else {
-        	// Work around Divi Page Builder requiring excessive or off-type capabilities
-	        if (defined('ET_BUILDER_PLUGIN_VERSION') && !empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'admin-ajax.php')) {
-	            $alt_caps = ['edit_posts' => ['edit_pages']];
-	            
-	            if (did_action('wp_ajax_et_fb_ajax_save') 
-	            || (PWP::is_REQUEST('action', 'heartbeat') && !PWP::empty_REQUEST('et_fb_autosave'))
-                || (PWP::is_REQUEST('action', 'et_pb_get_backbone_template'))
-	            ) {
-	                $alt_caps = array_merge($alt_caps, ['publish_posts' => ['edit_published_posts', 'edit_published_pages'], 'publish_pages' => ['edit_published_pages'], 'edit_published_posts' => ['edit_published_pages']]);
-	            }
-	
-	            foreach($alt_caps as $divi_requirement => $alt_requirements) {
-	                if ($divi_requirement == $orig_cap) {
-	
-	                	foreach ($alt_requirements as $require_cap) {
-	                    	if (!empty($current_user->allcaps[$require_cap])) {
-	                            return [$require_cap];
-	                        } 
-	                	}
-	                }
-	            }
-	        }
+            // Work around Divi Page Builder requiring excessive or off-type capabilities
+            if (defined('ET_BUILDER_PLUGIN_VERSION') && !empty($_SERVER['REQUEST_URI']) && strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'admin-ajax.php')) {
+                $alt_caps = ['edit_posts' => ['edit_pages']];
+
+                if (
+                    did_action('wp_ajax_et_fb_ajax_save')
+                    || (PWP::is_REQUEST('action', 'heartbeat') && !PWP::empty_REQUEST('et_fb_autosave'))
+                    || (PWP::is_REQUEST('action', 'et_pb_get_backbone_template'))
+                ) {
+                    $alt_caps = array_merge($alt_caps, ['publish_posts' => ['edit_published_posts', 'edit_published_pages'], 'publish_pages' => ['edit_published_pages'], 'edit_published_posts' => ['edit_published_pages']]);
+                }
+
+                foreach ($alt_caps as $divi_requirement => $alt_requirements) {
+                    if ($divi_requirement == $orig_cap) {
+
+                        foreach ($alt_requirements as $require_cap) {
+                            if (!empty($current_user->allcaps[$require_cap])) {
+                                return [$require_cap];
+                            }
+                        }
+                    }
+                }
+            }
 
             // Work around WP's occasional use of literal 'cap_name' instead of $post_type_object->cap->$cap_name  todo: review
             // note: cap names for "post" type may be customized too
             //
-            if (in_array($pagenow, ['edit.php', 'post.php', 'post-new.php', 'press-this.php', 'admin-ajax.php', 'upload.php', 'media.php']) 
-            && !PWP::doingAdminMenus()) {
+            if (
+                in_array($pagenow, ['edit.php', 'post.php', 'post-new.php', 'press-this.php', 'admin-ajax.php', 'upload.php', 'media.php'])
+                && !PWP::doingAdminMenus()
+            ) {
                 $replace_post_caps = ['publish_posts', 'edit_others_posts', 'edit_published_posts'];
 
                 static $did_admin_init = false;
@@ -170,10 +177,23 @@ class CapabilityFiltersAdmin
                     $replace_post_caps = array_merge($replace_post_caps, ['delete_posts', 'delete_others_posts']);
 
                 if (array_intersect($reqd_caps, $replace_post_caps)) {
-                    if (!empty($args[0]))
-                        $item_id = (is_object($args[0])) ? $args[0]->ID : (int) $args[0];
-                    else
+                    if (!empty($args[0])) {
+                        if (is_object($args[0])) {
+                            if (property_exists($args[0], 'ID')) {
+                                $item_id = $args[0]->ID;
+                            } elseif (property_exists($args[0], 'post') && is_object($args[0]->post) && property_exists($args[0]->post, 'ID')) {
+                                $item_id = $args[0]->post->ID;
+                            } else {
+                                $item_id = 0;
+                            }
+                        } elseif (is_numeric($args[0])) {
+                            $item_id = (int) $args[0];
+                        } else {
+                            $item_id = 0;
+                        }
+                    } else {
                         $item_id = 0;
+                    }
 
                     if ($type_obj = get_post_type_object(PWP::findPostType($item_id))) {
                         foreach ($replace_post_caps as $post_cap_name) {
@@ -189,8 +209,9 @@ class CapabilityFiltersAdmin
             // accept edit_files capability instead of upload_files in some contexts
             $key = array_search('upload_files', $reqd_caps);
 
-            if (false !== $key && (PWP::doingAdminMenus() || in_array($pagenow, ['upload.php', 'post.php', 'post-new.php']) 
-            || (defined('DOING_AJAX') && DOING_AJAX && PWP::is_REQUEST('action', ['query-attachments', 'mla-query-attachments'])))
+            if (
+                false !== $key && (PWP::doingAdminMenus() || in_array($pagenow, ['upload.php', 'post.php', 'post-new.php'])
+                    || (defined('DOING_AJAX') && DOING_AJAX && PWP::is_REQUEST('action', ['query-attachments', 'mla-query-attachments'])))
             ) {
                 if (empty($current_user->allcaps['upload_files']) && !empty($current_user->allcaps['edit_files']))
                     $reqd_caps[$key] = 'edit_files';
@@ -208,9 +229,10 @@ class CapabilityFiltersAdmin
             }
         }
 
-        if (presspermit()->isTaxonomyEnabled('post_tag') 
-        && in_array($orig_cap, ['manage_post_tags', 'edit_post_tags', 'delete_post_tags'], true) 
-        && in_array('manage_categories', $reqd_caps, true) && !defined('PP_LEGACY_POST_TAG_CAPS')
+        if (
+            presspermit()->isTaxonomyEnabled('post_tag')
+            && in_array($orig_cap, ['manage_post_tags', 'edit_post_tags', 'delete_post_tags'], true)
+            && in_array('manage_categories', $reqd_caps, true) && !defined('PP_LEGACY_POST_TAG_CAPS')
         ) {
             $reqd_caps = array_diff($reqd_caps, ['manage_categories']);
             $reqd_caps[] = 'manage_post_tags';
@@ -295,7 +317,7 @@ class CapabilityFiltersAdmin
             }
 
             $return = compact('type_caps', 'item_type', 'is_term_cap', 'op', 'taxonomy');
-            
+
             if (!empty($return_taxonomy)) {
                 $return['taxonomy'] = $return_taxonomy;
             }
@@ -436,35 +458,35 @@ class CapabilityFiltersAdmin
         if (!current_user_can('edit_post', $post_id)) {
             if ($type_obj = get_post_type_object(get_post_field('post_type', $post_id))) {
                 if (PWP::is_POST('save') || PWP::is_POST('publish')) {
-                
-                	if (!defined('PRESSPERMIT_NO_PROCESS_BEFORE_REDIRECT')) {
-	                    require_once(PRESSPERMIT_CLASSPATH . '/PostSave.php');
-	
-	                    if ($is_new = \PublishPress\Permissions\PostSave::isNewPost($post_id)) {
-	                        if ($post = get_post($post_id)) {
-	                            require_once(PRESSPERMIT_CLASSPATH . '/ItemSave.php');
-	                            
-	                            $via_item_source = 'post';
-	                            $set_parent = $post->post_parent;
-	                            $_args = compact('via_item_source', 'set_parent', 'is_new');
-	
-	                            \PublishPress\Permissions\ItemSave::inheritParentExceptions($post_id, $_args);
-	
-	                            return $location;
-	                        }
-	                    }
-                	}
-                  
+
+                    if (!defined('PRESSPERMIT_NO_PROCESS_BEFORE_REDIRECT')) {
+                        require_once(PRESSPERMIT_CLASSPATH . '/PostSave.php');
+
+                        if ($is_new = \PublishPress\Permissions\PostSave::isNewPost($post_id)) {
+                            if ($post = get_post($post_id)) {
+                                require_once(PRESSPERMIT_CLASSPATH . '/ItemSave.php');
+
+                                $via_item_source = 'post';
+                                $set_parent = $post->post_parent;
+                                $_args = compact('via_item_source', 'set_parent', 'is_new');
+
+                                \PublishPress\Permissions\ItemSave::inheritParentExceptions($post_id, $_args);
+
+                                return $location;
+                            }
+                        }
+                    }
+
                     wp_die(
-                        '<p>' 
-                        . sprintf(
-                            esc_html__('The %s was saved, but you can no longer edit it.', 'press-permit-core'), 
-                            esc_html(strtolower($type_obj->labels->singular_name))
-                        )
-                        . '</p><p>'
-                        . "<a href='" . esc_url(admin_url("edit.php?post_type=$type_obj->name")) . "'>" 
-                        . sprintf(esc_html__('Go to %s', 'press-permit-core'), esc_html($type_obj->labels->name)) 
-                        . '</a></p>'
+                        '<p>'
+                            . sprintf(
+                                esc_html__('The %s was saved, but you can no longer edit it.', 'press-permit-core'),
+                                esc_html(strtolower($type_obj->labels->singular_name))
+                            )
+                            . '</p><p>'
+                            . "<a href='" . esc_url(admin_url("edit.php?post_type=$type_obj->name")) . "'>"
+                            . sprintf(esc_html__('Go to %s', 'press-permit-core'), esc_html($type_obj->labels->name))
+                            . '</a></p>'
                     );
                 }
             } else {
@@ -472,10 +494,10 @@ class CapabilityFiltersAdmin
             }
 
             wp_die(
-                '<p>' 
-                . esc_html__('The requested modification was processed, but you can no longer edit the post.', 'press-permit-core')
-                . '</p><p>'
-                . "<a href='" . esc_url(admin_url('index.php')) . "'>" . esc_html__('Dashboard') . '</a></p>'
+                '<p>'
+                    . esc_html__('The requested modification was processed, but you can no longer edit the post.', 'press-permit-core')
+                    . '</p><p>'
+                    . "<a href='" . esc_url(admin_url('index.php')) . "'>" . esc_html__('Dashboard') . '</a></p>'
             );
         }
 
