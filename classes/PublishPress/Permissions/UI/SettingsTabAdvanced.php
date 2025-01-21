@@ -171,6 +171,8 @@ class SettingsTabAdvanced
             </tr>
         <?php endif; // any options accessable in this section
 
+        do_action('presspermit_custom_advanced_options_ui', $tab);
+
         $section = 'post_editor';                        // --- EDITOR OPTIONS SECTION ---
         if (!empty($ui->form_options[$tab][$section])) :
         ?>
