@@ -6,7 +6,7 @@ msgstr ""
 "for Posts, Pages, Categories, Tags - Stable (latest release)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-06 19:16-0400\n"
-"PO-Revision-Date: 2024-11-04 13:07+0000\n"
+"PO-Revision-Date: 2025-01-23 02:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: French (France)\n"
 "Language: fr_FR\n"
@@ -14,7 +14,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Loco https://localise.biz/"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.14; wp-6.7.1"
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:312
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:313
@@ -120,10 +121,6 @@ msgid ""
 msgstr ""
 "L’appartenance à un cercle ne limite pas la capacité d’association de pages "
 "(réglage de la page parent)"
-
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:120
-msgid "Collaborative Publishing"
-msgstr "Collaborative Publishing"
 
 #: classes/PublishPress/Permissions/Constants.php:107
 msgid ""
@@ -440,6 +437,10 @@ msgstr ""
 "Modifiez vos propres téléversements de fichiers, même s’ils sont joints à "
 "une publication non modifiable"
 
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:120
+msgid "Editing Permissions"
+msgstr "Modifications des droits"
+
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:252
 msgid ""
 "Eliminate extra filtering queries on Nav Menu update, even for non-"
@@ -478,11 +479,11 @@ msgstr ""
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:53
 msgid ""
 "For most installations, leave this disabled. For specialized Media Library "
-"permissions, install the Collaborative Publishing module."
+"permissions, install the Editing Permissions module."
 msgstr ""
-"Pour la plupart des installations, laissez cette option désactivée. Pour "
-"obtenir des droits spécialisés sur la médiathèque, installez le module "
-"Collaborative Publishing."
+"Pour la plupart des installations, laissez ceci désactivé. Pour des "
+"permissions spécialisées dans la Médiathèque, installez le module "
+"Modifications des droits."
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:47
 msgid ""
@@ -783,15 +784,6 @@ msgstr ""
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:274
 msgid "Modify these Permissions settings"
 msgstr "Modifier ces réglages de permissions"
-
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:82
-msgid ""
-"Most sites don't need advanced settings. But enable them if you need to work "
-"with custom WP Roles or apply performance tweaks."
-msgstr ""
-"La plupart des sites n’ont pas besoin de paramètres avancés. Mais activez-"
-"les si vous avez besoin de travailler avec des WP Roles personnalisés ou "
-"d’appliquer des réglages de performance."
 
 #: classes/PublishPress/Permissions/Constants.php:83
 msgid ""
@@ -1159,6 +1151,15 @@ msgstr ""
 "L’importation peut être exécutée plusieurs fois si les valeurs de la source "
 "changent."
 
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:82
+msgid ""
+"These Advanced settings are useful for some sites. However, we recommend "
+"using these only when guided to by PublishPress support."
+msgstr ""
+"Ces réglages avancés sont utiles pour certains sites. Cependant, nous "
+"recommandons de les utiliser uniquement sur les conseils du support "
+"PublishPress."
+
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:141
 msgid ""
 "To allow a role to view all media regardless of this setting, give it the "
@@ -1185,10 +1186,10 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:71
 msgid ""
-"To customize editing permissions, enable the Collaborative Publishing module."
+"To customize editing permissions, enable the Editing Permissions module."
 msgstr ""
-"Pour personnaliser la modification des droits, activez le module "
-"Collaborative Publishing."
+"Pour personnaliser les droits de modification, activez le module "
+"Modifications des droits."
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:147
 msgid ""

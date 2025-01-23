@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PublishPress Permissions Hints\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-30 10:47+0000\n"
+"POT-Creation-Date: 2025-01-23 00:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Kevin Behrens <kevin@publishpress.com>\n"
 "Language-Team: PublishPress <help@publishpress.com>\n"
@@ -21,7 +21,6 @@ msgstr ""
 "X-Poedit-SearchPath-2: modules/presspermit-"
 "import/classes/Permissions/Import/UI/SettingsTabImportNotes.php\n"
 "X-Poedit-SearchPathExcluded-0: vendor\n"
-"\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;"
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:312
@@ -102,10 +101,6 @@ msgstr ""
 msgid ""
 "Circle membership does not limit page association (page parent setting) "
 "ability"
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:120
-msgid "Collaborative Publishing"
 msgstr ""
 
 #: classes/PublishPress/Permissions/Constants.php:107
@@ -336,6 +331,10 @@ msgid ""
 "Edit own file uploads, even if they become attached to an uneditable post"
 msgstr ""
 
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:120
+msgid "Editing Permissions"
+msgstr ""
+
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:252
 msgid ""
 "Eliminate extra filtering queries on Nav Menu update, even for non-"
@@ -365,7 +364,7 @@ msgstr ""
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:53
 msgid ""
 "For most installations, leave this disabled. For specialized Media Library "
-"permissions, install the Collaborative Publishing module."
+"permissions, install the Editing Permissions module."
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:47
@@ -581,12 +580,6 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:274
 msgid "Modify these Permissions settings"
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:82
-msgid ""
-"Most sites don't need advanced settings. But enable them if you need to work "
-"with custom WP Roles or apply performance tweaks."
 msgstr ""
 
 #: classes/PublishPress/Permissions/Constants.php:83
@@ -850,6 +843,12 @@ msgstr ""
 msgid "The import can be run multiple times if source values change."
 msgstr ""
 
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:82
+msgid ""
+"These Advanced settings are useful for some sites. However, we recommend "
+"using these only when guided to by PublishPress support."
+msgstr ""
+
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:141
 msgid ""
 "To allow a role to view all media regardless of this setting, give it the "
@@ -870,7 +869,7 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:71
 msgid ""
-"To customize editing permissions, enable the Collaborative Publishing module."
+"To customize editing permissions, enable the Editing Permissions module."
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:147

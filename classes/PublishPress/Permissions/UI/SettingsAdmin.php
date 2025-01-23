@@ -72,6 +72,12 @@ class SettingsAdmin
 
 
         // Advanced
+        case 'advanced_options_enabled' :
+        return __("Note: if you disable these settings, the stored values (including Role Usage adjustments) are retained but ignored.", 'press-permit-core-hints');
+
+        case 'advanced_options_disabled' :
+        return __("These Advanced settings are useful for some sites. However, we recommend using these only when guided to by PublishPress support.", 'press-permit-core-hints');
+
         case 'anonymous_unfiltered' :
         return __('Disable Permissions filtering for users who are not logged in.', 'press-permit-core-hints');
 

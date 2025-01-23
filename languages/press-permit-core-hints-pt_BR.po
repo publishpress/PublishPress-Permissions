@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PublishPress Permissions Hints\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-30 10:47+0000\n"
-"PO-Revision-Date: 2024-11-11 16:39+0000\n"
+"PO-Revision-Date: 2025-01-23 03:22+0000\n"
 "Last-Translator: \n"
 "Language-Team: Portuguese (Brazil)\n"
 "Language: pt_BR\n"
@@ -21,7 +21,7 @@ msgstr ""
 "import/classes/Permissions/Import/UI/SettingsTabImportNotes.php\n"
 "X-Poedit-SearchPathExcluded-0: vendor\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Loco-Version: 2.6.11; wp-6.6.2"
+"X-Loco-Version: 2.6.14; wp-6.7.1"
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:312
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:313
@@ -123,10 +123,6 @@ msgid ""
 msgstr ""
 "A associação ao círculo não limita a capacidade de associação de páginas "
 "(configuração da página pai)"
-
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:120
-msgid "Collaborative Publishing"
-msgstr "Publicação colaborativa"
 
 #: classes/PublishPress/Permissions/Constants.php:107
 msgid ""
@@ -425,6 +421,10 @@ msgstr ""
 "Editar seus próprios uploads de arquivo, mesmo que eles sejam anexados a uma "
 "postagem não editável"
 
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:120
+msgid "Editing Permissions"
+msgstr "Permissões de Edição"
+
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:252
 msgid ""
 "Eliminate extra filtering queries on Nav Menu update, even for non-"
@@ -463,10 +463,10 @@ msgstr ""
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:53
 msgid ""
 "For most installations, leave this disabled. For specialized Media Library "
-"permissions, install the Collaborative Publishing module."
+"permissions, install the Editing Permissions module."
 msgstr ""
-"Para a maioria das instalações, deixe isso desabilitado. Para permissões "
-"especializadas da Media Library, instale o módulo Collaborative Publishing."
+"Para a maioria das instalações, deixe esta opção desativada. Para permissões "
+"especializadas na Biblioteca de Mídia, instale o módulo Permissões de Edição."
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:47
 msgid ""
@@ -756,15 +756,6 @@ msgstr ""
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:274
 msgid "Modify these Permissions settings"
 msgstr "Modifique estas configurações de permissões"
-
-#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:82
-msgid ""
-"Most sites don't need advanced settings. But enable them if you need to work "
-"with custom WP Roles or apply performance tweaks."
-msgstr ""
-"A maioria dos sites não precisa de configurações avançadas. Mas habilite-as "
-"se precisar trabalhar com WP Roles personalizadas ou aplicar ajustes de "
-"desempenho."
 
 #: classes/PublishPress/Permissions/Constants.php:83
 msgid ""
@@ -1125,6 +1116,14 @@ msgstr ""
 "A importação pode ser executada várias vezes se os valores de origem forem "
 "alterados."
 
+#: classes/PublishPress/Permissions/UI/SettingsAdmin.php:82
+msgid ""
+"These Advanced settings are useful for some sites. However, we recommend "
+"using these only when guided to by PublishPress support."
+msgstr ""
+"Estas configurações avançadas são úteis para alguns sites. No entanto, "
+"recomendamos usá-las apenas quando orientado pelo suporte do PublishPress."
+
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:141
 msgid ""
 "To allow a role to view all media regardless of this setting, give it the "
@@ -1151,10 +1150,10 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:71
 msgid ""
-"To customize editing permissions, enable the Collaborative Publishing module."
+"To customize editing permissions, enable the Editing Permissions module."
 msgstr ""
-"Para personalizar as permissões de edição, ative o módulo Publicação "
-"Colaborativa."
+"Para personalizar as permissões de edição, ative o módulo Permissões de "
+"Edição."
 
 #: classes/PublishPress/Permissions/UI/SettingsAdmin.php:147
 msgid ""
