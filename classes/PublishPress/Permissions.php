@@ -255,7 +255,7 @@ class Permissions
             'non_admins_set_read_exceptions' => 1,
             'user_search_by_role' => 0,
             'anonymous_unfiltered' => 0,
-            'suppress_administrator_metagroups' => 0,
+            //'suppress_administrator_metagroups' => 0,
             'users_bulk_groups' => 1,
             'limit_front_end_term_filtering' => 0,
             'list_all_constants' => 0,

@@ -288,12 +288,13 @@ table.pp-options-table .pp-optionhint {
 
 /* --- Advanced tab --- */
 .pp-capabilities-caption {
-    margin-left: 50px;
+    margin-left: 10px;
 }
 
 .pp_cap_descripts {
     margin-left: 10px;
-    margin-right: 10px
+    margin-right: 10px;
+    margin-top: 20px;
 }
 
 .pp_cap_descripts tr {
@@ -342,6 +343,10 @@ div.pp-settings-code {
 
 div.pp-settings-code textarea {
     margin-top: 5px;
+}
+
+div.pp-user-permissions-help {
+    margin-top: 20px;
 }
 
 div.pp-user-permissions-help p {
