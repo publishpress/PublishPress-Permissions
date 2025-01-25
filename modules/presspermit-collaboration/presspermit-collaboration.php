@@ -1,23 +1,15 @@
 <?php
-/**
- * Plugin Name: PressPermit Collaborative Publishing
- * Plugin URI:  https://publishpress.com/press-permit
- * Description: Supports content-specific editing permissions, term assignment and page parent limitations. In combination with other modules, supports custom moderation statuses, PublishPress, Revisionary and Post Forking.
- * Author:      PublishPress
- * Author URI:  https://publishpress.com/
- */
-
 /*
-Copyright © 2024 PublishPress
+Copyright © 2025 PublishPress
 
-This file is part of PressPermit Collaborative Publishing.
+This file is part of PublishPress Permissions.
 
-PressPermit Collaborative Publishing is free software: you can redistribute it and/or modify
+PublishPress Permissions is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-PressPermit Collaborative Publishing is distributed in the hope that it will be useful,
+PublishPress Permissions is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
@@ -45,7 +37,7 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
 
             $ext_version = PRESSPERMIT_VERSION;
 
-            $title = 'Collaborative Publishing'; // @todo: review removing this, as it is separately set with translation downstream
+            $title = 'Editing Permissions'; // @todo: review removing this, as it is separately set with translation downstream
 
             if (presspermit()->registerModule(
                 'collaboration', $title, dirname(plugin_basename(__FILE__)), $ext_version, ['min_pp_version' => '2.7-beta']
