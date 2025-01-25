@@ -213,36 +213,44 @@ table.pp-options-table .pp-optionhint {
     margin-bottom: 10px
 }
 
+#pp-modules table.pp-extensions th {
+    width: initial !important;
+    min-width: 150px;
+    padding-right: 20px;
+    font-weight: normal;
+}
+
 #pp-modules table.pp-extensions tr th, #pp-modules table.pp-extensions tr td, #pp-modules table.pp-extensions tr {
     margin-bottom: 1px;
-    vertical-align: top;
+    vertical-align: middle;
     border-bottom: none;
 }
 
 #pp-modules table.pp-extensions {
-    margin-right: 20px;
     margin-top: 2px;
     margin-left: 0;
 }
 
+#pp-modules table.pp-extensions tr th, #pp-modules table.pp-extensions tr td {
+    background-color: #fff;
+}
+
+#pp-modules table.pp-extensions tr th, #pp-modules table.pp-extensions tr td {
+    padding: 8px;
+}
+
 #pp-modules table.pp-extensions tr th {
-    line-height: 8px
+    line-height: 8px;
+    white-space: nowrap;
 }
 
 #pp-modules table.pp-extensions tr td {
     line-height: 15px;
     padding-left: 5px;
-    background-color: #fff;
-    padding: 8px;
-    min-width: 200px;
 }
 
 #pp-modules span.pp-ext-info {
     color: #777;
-}
-
-#pp-modules table.pp-extensions tr td:nth-child(2) {
-    min-width: 640px !important;
 }
 
 #pp_config_upload_caption {
@@ -288,12 +296,13 @@ table.pp-options-table .pp-optionhint {
 
 /* --- Advanced tab --- */
 .pp-capabilities-caption {
-    margin-left: 50px;
+    margin-left: 10px;
 }
 
 .pp_cap_descripts {
     margin-left: 10px;
-    margin-right: 10px
+    margin-right: 10px;
+    margin-top: 20px;
 }
 
 .pp_cap_descripts tr {
@@ -342,6 +351,10 @@ div.pp-settings-code {
 
 div.pp-settings-code textarea {
     margin-top: 5px;
+}
+
+div.pp-user-permissions-help {
+    margin-top: 20px;
 }
 
 div.pp-user-permissions-help p {
