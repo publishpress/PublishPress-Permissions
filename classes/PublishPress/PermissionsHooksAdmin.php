@@ -31,8 +31,6 @@ class PermissionsHooksAdmin
             add_action('save_post', [$this, 'actAuthorsPreventPostUpdateLockout'], 1, 3);
         }
 
-        add_action('presspermit_admin_ui', [$this, 'act_revisions_dependency']);
-
         add_filter('presspermit_exception_item_update_hooks', function($var) {return true;});
         add_filter('presspermit_exception_item_insertion_hooks', function($var) {return true;});
         add_filter('presspermit_exception_item_deletion_hooks', function($var) {return true;});
@@ -212,28 +210,6 @@ class PermissionsHooksAdmin
         }
 
         return $roles;
-    }
-
-    function act_revisions_dependency() {
-        global $pagenow;
-
-        if (defined("PUBLISHPRESS_REVISIONS_VERSION") || defined('REVISIONARY_VERSION')) {
-            if (!defined('PRESSPERMIT_COLLAB_VERSION')) {
-                if (!presspermitPluginPage() && PWP::is_REQUEST('page', ['revisionary-q', 'revisionary-settings']) && ('edit.php' !== $pagenow)) {
-                    return;
-                }
-
-                $msg = current_user_can('pp_manage_settings')
-                ? sprintf(
-                    esc_html__('Please %senable the Editing Permissions module%s for PublishPress Revisions integration.', 'press-permit-core'),
-                    '',
-                    ''
-                )
-                : esc_html__('PublishPress Revisions integration requires the Editing Permissions module. Please notify your Administrator.', 'press-permit-core');
-
-                presspermit()->admin()->notice($msg);
-            }
-        }
     }
 
     // For old extensions linking to page=pp-settings.php, redirect to page=presspermit-settings, preserving other request args

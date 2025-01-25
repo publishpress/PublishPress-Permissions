@@ -34,7 +34,6 @@ class Migration
                 'presspermit-collaboration' => 'pp-collaborative-editing',
                 'presspermit-compatibility' => 'pp-compatibility',
                 'presspermit-file-access'   => 'pp-file-url-filter',
-                'presspermit-import'        => 'pp-import',
                 'presspermit-membership'    => 'pp-membership',
                 'presspermit-status-control'=> 'pp-custom-post-statuses',      
                 'presspermit-teaser'        => 'pp-content-teaser',
@@ -45,7 +44,6 @@ class Migration
                 'pp-collaborative-editing'  => 'ppce_version',
                 'pp-compatibility'          => 'ppp_version',
                 'pp-file-url-filter'        => 'pp_unattached_files_private',
-                'pp-import'                 => 'ppi_version',
                 'pp-membership'             => 'ppm_version',
                 'pp-custom-post-statuses'   => 'pps_version',
                 'pp-content-teaser'         => 'pp_tease_post_types',
@@ -73,7 +71,7 @@ class Migration
 
             if (!$any_activated) {
                 $deactivate_modules = array_fill_keys(
-                    ['presspermit-circles', 'presspermit-file-access', 'presspermit-import', 'presspermit-membership'], 
+                    ['presspermit-circles', 'presspermit-file-access', 'presspermit-membership'], 
                     (object)[]
                 );
             }

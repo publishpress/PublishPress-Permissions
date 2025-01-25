@@ -648,7 +648,7 @@ class AgentPermissionsUI
                         if ($type_obj = $pp->getTypeObject($source_name, $object_type)) {
                             $type_caption = $type_obj->labels->singular_name;
                         } elseif ('term' == $source_name) {
-                            // term management roles will not be applied without collaborative editing module, so do not display
+                            // term management roles will not be applied without editing permissions module, so do not display
                             if (!$pp->moduleActive('collaboration')) {
                                 continue;
                             }

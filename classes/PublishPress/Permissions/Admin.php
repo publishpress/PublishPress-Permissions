@@ -13,29 +13,6 @@ class Admin
 
     public function __construct()
     {
-        add_action('admin_notices', [$this, 'rsMigrationNotice']);
-    }
-
-    public function rsMigrationNotice()
-    {
-        if (
-            !presspermit()->getOption('offer_rs_migration')
-            || !presspermit()->isAdministrator()
-            || (apply_filters('presspermit_import_count', 0, 'rs') && PWP::empty_REQUEST('rs-not-imported'))
-        ) {
-            return;
-        }
-
-        $url = admin_url('admin.php?page=presspermit-settings&pp_tab=import');
-
-        $this->notice(
-            sprintf(
-                esc_html__('Role Scoper installation detected. To migrate your groups, roles, restrictions and options to PublishPress Permissions, run the %sImport tool%s.', 'press-permit-core'),
-                '',
-                ''
-            ),
-            'rs-migration'
-        );
     }
 
     public function getLastPostStatus($post_id)
@@ -186,14 +163,13 @@ class Admin
     {
         $title = [
             'circles'                       => esc_html__('Access Circles', 'press-permit-core'),
-            'collaboration'                 => esc_html__('Collaborative Publishing', 'press-permit-core'),
+            'collaboration'                 => esc_html__('Editing Permissions', 'press-permit-core'),
             'compatibility'                 => esc_html__('Compatibility Pack', 'press-permit-core'),
             'teaser'                        => esc_html__('Teaser', 'press-permit-core'),
             'status-control'                => esc_html__('Status Control', 'press-permit-core'),
             'file-access'                   => esc_html__('File Access', 'press-permit-core'),
             'membership'                    => esc_html__('Membership', 'press-permit-core'),
             'sync'                          => esc_html__('Sync Posts', 'press-permit-core'),
-            'role-scoper-migration-advisor' => esc_html__('Role Scoper Migration Advisor', 'press-permit-core'),
         ];
 
         $blurb = [
@@ -205,7 +181,6 @@ class Admin
             'file-access'                   => esc_html__("Restrict direct file requests based on user's access to the page a file is attached to.", 'press-permit-core'),
             'membership'                    => esc_html__('Time-limit access customizations by delaying or expiring Permission Group membership.', 'press-permit-core'),
             'sync'                          => esc_html__('Auto-create a page for each user of specified roles. Compatible with several Team / Staff plugins.', 'press-permit-core'),
-            'role-scoper-migration-advisor' => esc_html__('Analyzes your Role Scoper installation, identifying Permissions migration readiness or issues.', 'press-permit-core'),
         ];
 
         $descript = [
@@ -217,7 +192,6 @@ class Admin
             'file-access'                   => esc_html__("Filters direct file access, based on user's access to post(s) which the file is attached to. No additional configuration required. Creates/modifies .htaccess file in uploads folder (and in main folder for multisite).", 'press-permit-core'),
             'membership'                    => esc_html__('Allows Permission Group membership to be date-limited (delayed and/or scheduled for expiration). Simple date picker UI alongside group membership selection.', 'press-permit-core'),
             'sync'                          => esc_html__('Create or synchronize posts to match users. Designed for Team / Staff plugins, but with broad usage potential.', 'press-permit-core'),
-            'role-scoper-migration-advisor' => esc_html__('Analyzes your Role Scoper installation, identifying groups, roles, restrictions and options which can (or cannot) be automatically imported by the Import module.', 'press-permit-core'),
         ];
 
         return (object) compact('title', 'blurb', 'descript');
