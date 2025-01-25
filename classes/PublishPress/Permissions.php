@@ -334,17 +334,6 @@ class Permissions
             new Permissions\DB\DatabaseSetup($db_ver);
         }
 
-        if (!empty($check_for_rs_migration) || !PWP::empty_REQUEST('rs-migration-check')) { // support http arg for test / troubleshooting
-            // This is a first-time activation. If Role Scoper was previously installed, enable Import module by default
-            if (get_option('scoper_version')) {
-                update_option('presspermit_offer_rs_migration', true);
-
-                // Set default module deactivations, but leave Import module activated
-                require_once(PRESSPERMIT_CLASSPATH . '/PluginUpdated.php');
-                Permissions\PluginUpdated::deactivateModules(['activate' => ['presspermit-import']]);
-            }
-        }
-
         if ($ver) {
             if ($role = @get_role('administrator')) {
                 if (empty($role->capabilities['pp_manage_settings'])) {
