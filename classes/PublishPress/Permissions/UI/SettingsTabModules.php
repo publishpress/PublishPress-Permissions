@@ -82,11 +82,11 @@ class SettingsTabModules
 
                         ?>
                         <h4 style="margin:0 0 5px 0"><?php esc_html_e('Active Modules:', 'press-permit-core'); ?></h4>
-                        <table class="pp-extensions">
+                        <table class="pp-extensions pp-enabled">
                             <?php foreach ($pp_modules as $slug => $plugin_info) :
                             ?>
                                 <tr>
-                                    <td>
+                                    <th>
                                         <?php $id = "module_active_{$slug}"; ?>
 
                                         <label for="<?php echo esc_attr($id); ?>">
@@ -103,7 +103,7 @@ class SettingsTabModules
                                         <?php
                                         echo ' <span class="pp-gray">' . '</span>';
                                         ?>
-                                    </td>
+                                    </th>
 
                                     <?php if (!empty($ext_info)) : ?>
                                         <td>
@@ -141,12 +141,11 @@ class SettingsTabModules
                             ?>
                         </h4>
 
-                        <table class="pp-extensions">
+                        <table class="pp-extensions pp-disabled">
                             <?php foreach ($inactive as $plugin_slug => $module_info) :
                                 $slug = str_replace('presspermit-', '', $plugin_slug); ?>
                                 <tr>
-                                    <td>
-
+                                    <th>
                                         <?php $id = "module_deactivated_{$slug}"; ?>
 
                                         <label for="<?php echo esc_attr($id); ?>">
@@ -157,7 +156,7 @@ class SettingsTabModules
                                             <?php
                                             if (!empty($ext_info->title[$slug])) echo esc_html($ext_info->title[$slug]);
                                             else echo esc_html($this->prettySlug($slug)); ?>
-                                    </td>
+                                    </th>
                                     </label>
 
                                     <?php if (!empty($ext_info)) : ?>
