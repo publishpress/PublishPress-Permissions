@@ -164,7 +164,7 @@ class CoreAdmin
                     $slug = str_replace('presspermit-', '', $plugin_slug);
                 ?>
                     <tr>
-                        <td>
+                        <th>
 
                             <?php $id = "module_deactivated_{$slug}"; ?>
 
@@ -178,7 +178,7 @@ class CoreAdmin
                                 else echo esc_html($this->prettySlug($slug));
                                 ?>
                             </label>
-                        </td>
+                        </th>
 
                         <?php if (!empty($ext_info)) : ?>
                             <td>
