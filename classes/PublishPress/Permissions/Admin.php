@@ -163,7 +163,7 @@ class Admin
     {
         $title = [
             'circles'                       => esc_html__('Access Circles', 'press-permit-core'),
-            'collaboration'                 => esc_html__('Collaborative Publishing', 'press-permit-core'),
+            'collaboration'                 => esc_html__('Editing Permissions', 'press-permit-core'),
             'compatibility'                 => esc_html__('Compatibility Pack', 'press-permit-core'),
             'teaser'                        => esc_html__('Teaser', 'press-permit-core'),
             'status-control'                => esc_html__('Status Control', 'press-permit-core'),

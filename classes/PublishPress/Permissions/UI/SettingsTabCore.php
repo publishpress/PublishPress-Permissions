@@ -103,7 +103,7 @@ class SettingsTabCore
 
                         $hidden_types = apply_filters('presspermit_hidden_taxonomies', array_fill_keys(['nav_menu', 'post_status_core_wp_pp', 'pseudo_status_pp', 'post_visibility_pp'], true));
 
-                        // Legacy Nav Menu filtering is currently locked on by a filter in the Collaborative Editing module, so reflect that in option storage
+                        // Legacy Nav Menu filtering is currently locked on by a filter in the Editing Permissions module, so reflect that in option storage
                         $locked_types = apply_filters('presspermit_locked_taxonomies', defined('PRESSPERMIT_COLLAB_VERSION') ? ['nav_menu' => true] : []);
 
                         if (defined('PRESSPERMIT_FILTER_PRIVATE_TAXONOMIES')) {
