@@ -120,7 +120,7 @@ class Settings
             echo '</ul>';
 
             echo '<div class="pp-group-wrapper" style="display: flex;width: 100%;flex-wrap: wrap;">';
-            echo '<div class="pp-options-wrapper" style="flex-basis: calc(80% - 40px);">';
+            echo '<div class="pp-options-wrapper" style="flex-basis: calc(99% - 270px);">';
             $table_class = 'form-table pp-form-table pp-options-table';
 
             if (PWP::is_REQUEST('presspermit_submit') || PWP::is_REQUEST('presspermit_submit_redirect')) :
@@ -183,6 +183,10 @@ class Settings
                         'Priority, personal support',
                     ]
                 ));
+
+                $promoBanner->setTitle(esc_html__('Upgrade to Permissions Pro', 'press-permit-core'));
+                $promoBanner->setSupportTitle(esc_html__('Need Permissions Support?', 'press-permit-core'));
+
                 $promoBanner->displayBanner();
             }
             echo '</div>'; // pp-group-wrapper
