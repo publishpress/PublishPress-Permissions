@@ -179,6 +179,11 @@ $consts = [
 ];
 foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 'type' => $type];
 
+$type = 'workarounds';
+$consts = [
+    'PRESSPERMIT_LEGACY_DB_SETUP' => esc_html__('Work around database setup warnings (at plugin activation) on some servers', 'press-permit-core-hints')
+];
+foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 'type' => $type];
 
 // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 /*
