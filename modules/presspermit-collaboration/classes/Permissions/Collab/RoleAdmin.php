@@ -138,12 +138,6 @@ class RoleAdmin
                 $can = $is_administrator || $can_assign_edit_exceptions;
                 break;
 
-            case 'fork':
-                $can = class_exists('Fork', false) && !defined('PP_DISABLE_FORKING_SUPPORT') 
-                && ($is_administrator || $can_assign_edit_exceptions || ($can_edit_published && current_user_can('pp_set_fork_exceptions')));
-                
-                break;
-
             case 'copy':
                 $can = defined('PUBLISHPRESS_REVISIONS_VERSION') && ($is_administrator || $can_assign_edit_exceptions || (
                     $can_edit_published && current_user_can('pp_set_copy_exceptions'))

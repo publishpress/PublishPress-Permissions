@@ -27,9 +27,6 @@ class AjaxUI
             $op_captions['revise'] = (object)['label' => esc_html__('Revise'), 'noun_label' => esc_html__('Revision', 'press-permit-core')];
         }
 
-        if (class_exists('Fork', false) && !defined('PP_DISABLE_FORKING_SUPPORT'))
-            $op_captions['fork'] = (object)['label' => esc_html__('Fork'), 'noun_label' => esc_html__('Fork', 'press-permit-core')];
-
         $op_captions = array_merge($op_captions, [
             'associate' => (object)[
                 'label' => esc_html__('Set as Parent', 'press-permit-core'), 
@@ -62,11 +59,6 @@ class AjaxUI
             if (presspermit()->getOption('publish_exceptions')) {
                 $op_obj = $pp->admin()->getOperationObject('publish', $for_item_type);
                 $ops['publish'] = $op_obj->label;
-            }
-
-            if (class_exists('Fork', false) && !defined('PP_DISABLE_FORKING_SUPPORT') && !in_array($for_item_type, ['forum'], true)) {
-                $op_obj = $pp->admin()->getOperationObject('fork', $for_item_type);
-                $ops['fork'] = $op_obj->label;
             }
 
             if (defined('PUBLISHPRESS_REVISIONS_VERSION') && !in_array($for_item_type, ['forum'], true)) {

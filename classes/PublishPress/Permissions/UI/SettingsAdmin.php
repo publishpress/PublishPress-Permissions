@@ -157,12 +157,6 @@ class SettingsAdmin
         case 'limit_user_edit_by_level' :
         return __('Prevent non-Administrators with user editing permissions from editing a higher-level user or assigning a role higher than their own.', 'press-permit-core-hints');
 
-        case 'fork_published_only' :
-        return __('Fork published posts only.', 'press-permit-core-hints');
-
-        case 'fork_require_edit_others' :
-        return __("If a user lacks the edit_others_posts capability for the post type, they cannot fork other's posts either.", 'press-permit-core-hints');
-
         case 'non_admins_set_edit_exceptions' :
         return __('If enabled, the capabilities pp_set_edit_exceptions, pp_set_associate_exceptions, etc. will be honored. See list of capabilities below.', 'press-permit-core-hints');
 
@@ -280,11 +274,7 @@ class SettingsAdmin
 		if (presspermit()->moduleActive('collaboration')) {
             $pp_caps['pp_set_edit_exceptions'] =            esc_html__('Set Editing Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
 
-	        if (class_exists('Fork', false)) {
-	            $pp_caps['pp_set_fork_exceptions'] = esc_html__('Set Forking Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
-	        }
-	
-	        if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) {
+            if ((defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION'))) {
 	            $pp_caps['pp_set_revise_exceptions'] = esc_html__('Set Revision Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
 	        }
 	

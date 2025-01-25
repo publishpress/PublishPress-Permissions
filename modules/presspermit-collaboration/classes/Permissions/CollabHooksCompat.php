@@ -47,10 +47,6 @@ class CollabHooksCompat
             $ops[] = 'publish';
         }
 
-        if (class_exists('Fork', false) && !defined('PP_DISABLE_FORKING_SUPPORT')) {
-            $ops[] = 'fork';
-        }
-
         if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
             $ops[] = 'copy';
         }
