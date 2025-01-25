@@ -143,10 +143,6 @@ class CapabilityFilters
 
                     $return['post_type'] = $post_type;
                     $return['post_id'] = $post_id;
-
-                    if (('fork' == $post_type) && (empty($required_operation) || ('read' == $required_operation))) {
-                        $return['required_operation'] = 'edit';
-                    }
                 }
 
                 $user = presspermit()->getUser();

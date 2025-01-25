@@ -496,7 +496,7 @@ class PostTermsSave
         $user = presspermit()->getUser();
 
         foreach (array_keys($user->except) as $for_op) {
-            // only concerned about edit_post, revise_post, fork_post, etc.
+            // only concerned about edit_post, revise_post, etc.
             if (in_array($for_op, ['read_post', 'edit_term', 'manage_term'], true))
                 continue;
 
