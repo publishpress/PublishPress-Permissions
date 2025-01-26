@@ -240,7 +240,11 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 4.1.1 - 22 January 2025 =
+= 4.1.1 - 27 January 2025 =
+* Enhancement: Cleaner, better organized plugin settings tabs
+* Enhancement: Sync Posts UI fits 1080px screens
+* Fixed: Sizing of Settings tabs for smaller screns
+* Fixed: Sizing, positioning for Settings screen right sidebar
 * Fixed: Fatal error if other code filters pre_tax_input incorrectly. #1348
 * Fixed: PHP Notice when deleting a group. #1338
 * Fixed: PHP error under certain configurations. #1318

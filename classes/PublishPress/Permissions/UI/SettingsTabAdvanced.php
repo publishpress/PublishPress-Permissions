@@ -41,7 +41,6 @@ class SettingsTabAdvanced
             'user_management'     => esc_html__('User Management', 'press-permit-core'),
             'constants'           => esc_html__('Constants', 'press-permit-core'),
             'role_integration'    => esc_html__('Role Integration', 'press-permit-core'),
-            'user_permissions'    => esc_html__('User Permissions', 'press-permit-core'),
             'nav_menu_management' => esc_html__('Nav Menu Editing', 'press-permit-core'),
             'misc'                => esc_html__('Miscellaneous', 'press-permit-core'),
         ];
@@ -229,7 +228,7 @@ class SettingsTabAdvanced
                     </div>
 
                     <?php
-                    do_action('presspermit_advanced_options_top_ui', $tab);
+                    do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
                     ?>
                 </td>
             </tr>
@@ -284,6 +283,8 @@ class SettingsTabAdvanced
                         . ' ' . esc_html__('Some term-limited editing configurations require this.', 'presspermit=pro');
 
                     $ui->optionCheckbox('auto_assign_available_term', $tab, $section, $hint);
+
+                    do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
                     ?>
                 </td>
             </tr>
@@ -311,9 +312,9 @@ class SettingsTabAdvanced
                     $ui->optionCheckbox('non_admins_set_edit_exceptions', $tab, $section, true);
                     ?>
                     </div>
-                    <?php
 
-                    do_action('presspermit_options_ui_insertion', $tab, $section);
+                    <?php
+                    do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
 
                     if (defined('PP_ADMIN_READONLY_LISTABLE') && (!$pp->getOption('admin_hide_uneditable_posts') || defined('PP_ADMIN_POSTS_NO_FILTER'))) {
                         $hint = SettingsAdmin::getStr('posts_listing_unmodified');
@@ -359,6 +360,8 @@ class SettingsTabAdvanced
                         $hint = SettingsAdmin::getStr('force_nav_menu_filter');
                         $ui->optionCheckbox('force_nav_menu_filter', $tab, $section, $hint);
                     }
+
+                    do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
                     ?>
                     </div>
                 </td>
@@ -470,7 +473,10 @@ class SettingsTabAdvanced
                         );
                         ?>
                     </span>
-                    <?php endif; ?>
+                    <?php endif; 
+                    
+                    do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
+                    ?>
                 </td>
             </tr>
         <?php endif;
@@ -499,7 +505,7 @@ class SettingsTabAdvanced
                     <?php
                     $ui->optionCheckbox('pattern_roles_include_generic_rolecaps', $tab, $section, true, '');
 
-                    do_action('presspermit_options_ui_insertion', $tab, $section);
+                    do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
                     ?>
 
                     <div style="font-style: italic">
@@ -533,6 +539,8 @@ class SettingsTabAdvanced
                     if (presspermit()->isPro()) {
                         $ui->optionCheckbox('display_extension_hints', $tab, $section, true);
                     }
+
+                    do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
                     ?>
                 </td>
             </tr>
