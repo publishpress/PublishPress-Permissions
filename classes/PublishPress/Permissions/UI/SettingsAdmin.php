@@ -160,10 +160,9 @@ class SettingsAdmin
         case 'non_admins_set_edit_exceptions' :
         return __('If enabled, the capabilities pp_set_edit_exceptions, pp_set_associate_exceptions, etc. will be honored. See list of capabilities below.', 'press-permit-core-hints');
 
-
-        // Import
-        case 'pp-import-disable' :
-        return sprintf(__('Once your import task is complete, you can eliminate this tab by disabling the %s module.', 'press-permit-core-hints'), __('Import', 'press-permit-core-hints'));
+        // Circles
+        case 'access_circles_limit_revisions':
+        return __('Circle members will be blocked from accessing Revisions authored by non-members.', 'presspermit-pro-hints');
 
         default:
         }
