@@ -1,4 +1,3 @@
-# Copyright (C) 2024 PublishPress
 # This file is distributed under the same license as the PublishPress Permissions plugin.
 msgid ""
 msgstr ""
@@ -10,12 +9,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2024-11-05 18:26+0000\n"
-"PO-Revision-Date: 2025-01-21 17:46+0000\n"
+"PO-Revision-Date: 2025-01-29 18:22+0000\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Domain: press-permit-core\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Loco-Version: 2.6.14; wp-6.7.1"
+"X-Loco-Version: 2.7.1; wp-6.7.1"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1251
 #, php-format
