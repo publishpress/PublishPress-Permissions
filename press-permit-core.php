@@ -12,7 +12,7 @@
  * Requires at least: 5.5
  * Requires PHP: 7.2.5
  *
- * Copyright (c) 2024 PublishPress
+ * Copyright (c) 2025 PublishPress
  *
  * GNU General Public License, Free Software Foundation <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -31,7 +31,7 @@
  *
  * @package     PublishPress Permissions
  * @author      PublishPress
- * @copyright   Copyright (c) 2024 PublishPress. All rights reserved.
+ * @copyright   Copyright (c) 2025 PublishPress. All rights reserved.
  * @license		GNU General Public License version 3
  * @link		https://publishpress.com/
  *
