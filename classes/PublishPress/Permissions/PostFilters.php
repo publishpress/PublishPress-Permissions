@@ -1028,7 +1028,7 @@ class PostFilters
             'query_contexts' => $query_contexts
         ];
 
-        wp_cache_add(-1, $_post, 'posts');  // prevent querying for fake post
+        wp_cache_set(-1, $_post, 'posts');  // prevent querying for fake post
         presspermit()->meta_cap_post = $_post;
         
         // Avoid conflict with the combination of PublishPress Authors and WP_Privacy_Policy_Content check

@@ -274,7 +274,7 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups:h
 
 #toplevel_page_presspermit-groups > a.wp-menu-open,
 body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > a {
-  background: @main_color !important;
+  background: @menu_color !important;
 }
 
 body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > a > div,
@@ -288,20 +288,12 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   display: none;
 }
 
-.publishpress-extended-post-status select {
-  width: 120px;
-}
-
 .pressshack-admin-wrapper p.submit {
   padding-bottom:0;
 }
 
 .pressshack-admin-wrapper .button-primary {
   text-shadow: none !important;
-}
-
-#wpbody-content .pressshack-admin-wrapper p.pp-submit {
-  float:right;
 }
 
 #wpbody-content .pressshack-admin-wrapper > footer > div.pp-rating {
@@ -357,9 +349,13 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
 
 // Design consistency
 .wp-core-ui {
-
   .ppButtons();
   .ppFormFields();
   .ppTabs();
+}
 
+/* Edit User screen */
+div#profile-page.wrap div.pp-group-box h3:first-of-type,
+#pp_current_user_exceptions_ui {
+  margin-top: 5px !important;
 }

@@ -139,7 +139,6 @@ class AgentPermissionsUI
 
                         <select name="pp_select_x_for_type" autocomplete="off">
                             <?php
-                            unset($type_objects['attachment']); // may be re-added by module
                             $type_objects = apply_filters('presspermit_append_exception_types', $pp->admin()->orderTypes(apply_filters('presspermit_exception_types', $type_objects)));
 
                             if (!empty($args['external']))
@@ -214,7 +213,7 @@ class AgentPermissionsUI
             if (!$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) : ?>
                 <div>
                     <?php
-                    esc_html_e('To assign page-specific Permissions for editing, parent selection or term assignment, enable the Collaborative Publishing module.', 'press-permit-core');
+                    esc_html_e('To assign page-specific Permissions for editing, parent selection or term assignment, enable the Editing Permissions module.', 'press-permit-core');
                     ?>
                 </div>
             <?php endif;
@@ -316,7 +315,7 @@ class AgentPermissionsUI
 
                 if ((defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) && !$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) : ?>
                 <div>
-                    <?php esc_html_e('To assign page-specific PublishPress Revision permissions, enable the Collaborative Publishing module.', 'press-permit-core'); ?>
+                    <?php esc_html_e('To assign page-specific PublishPress Revision permissions, enable the Editing Permissions module.', 'press-permit-core'); ?>
                 </div>
             <?php endif; ?>
         </div><?php
@@ -649,7 +648,7 @@ class AgentPermissionsUI
                         if ($type_obj = $pp->getTypeObject($source_name, $object_type)) {
                             $type_caption = $type_obj->labels->singular_name;
                         } elseif ('term' == $source_name) {
-                            // term management roles will not be applied without collaborative editing module, so do not display
+                            // term management roles will not be applied without editing permissions module, so do not display
                             if (!$pp->moduleActive('collaboration')) {
                                 continue;
                             }

@@ -129,11 +129,6 @@ class CollabHooks
             }
         }
 
-        if (class_exists('Fork', false) && !defined('PP_DISABLE_FORKING_SUPPORT')) {
-            require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Compat/PostForking.php'); // load this early to block rolecap addition if necessary
-            new Collab\Compat\PostForking();
-        }
-
         if (defined('WPB_VC_VERSION')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Compat/BakeryPageBuilder.php');
             new Collab\Compat\BakeryPageBuilder();
@@ -176,8 +171,6 @@ class CollabHooks
             'publish_author_pages' => 0,
             'editor_hide_html_ids' => '',
             'editor_ids_sitewide_requirement' => 0,
-            'fork_published_only' => 0,
-            'fork_require_edit_others' => 0,
             'force_taxonomy_cols' => 0,
             'default_privacy' => [],
             'force_default_privacy' => [],
@@ -222,7 +215,7 @@ class CollabHooks
     function fltItemEditExceptionOps($operations, $for_item_source, $for_item_type, $via_item_type = '')
     {
         if ('post' == $for_item_source) {
-            foreach (['edit', 'fork', 'copy', 'revise', 'associate', 'assign'] as $op) {
+            foreach (['edit', 'copy', 'revise', 'associate', 'assign'] as $op) {
                 if (('associate' == $op) && presspermit()->getOption('page_parent_editable_only')) {
                     continue;
                 }
@@ -236,7 +229,7 @@ class CollabHooks
                 }
             }
         } elseif ('term' == $for_item_source) {
-            foreach (['edit', 'fork', 'copy', 'revise', 'assign'] as $op) {
+            foreach (['edit', 'copy', 'revise', 'assign'] as $op) {
                 if (presspermit()->admin()->canSetExceptions(
                     $op, 
                     $for_item_type, 

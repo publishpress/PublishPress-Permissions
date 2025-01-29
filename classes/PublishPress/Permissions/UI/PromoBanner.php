@@ -123,8 +123,8 @@ class PromoBanner
   { ?>
     <style>
       .pp-ads-right-sidebar {
-        padding: 0 20px;
-        flex-basis: 20%;
+        padding: 0 5px 0 20px;
+        width: 240px;
       }
 
       .pp-ads-right-sidebar .upgrade-btn a {
@@ -185,11 +185,22 @@ class PromoBanner
         border: 1px solid #655897;
       }
 
-      /* Media query for small screens */
-      @media (max-width: 1024px) {
+      @media (max-width: 1079px) {
         .pp-ads-right-sidebar {
           padding: 20px 0;
           flex-basis: auto;
+        }
+      }
+
+      /* Media query for small screens */
+      @media (max-width: 1079px) {
+        .pp-ads-right-sidebar {
+          padding: 20px 0;
+          flex-basis: auto;
+        }
+
+        #pp-permissions-wrapper div.pp-options-wrapper {
+          flex-basis: 100% !important;
         }
       }
     </style>

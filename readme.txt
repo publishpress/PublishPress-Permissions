@@ -5,7 +5,7 @@ Tags: restrict, access, user, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.7
 Requires PHP: 7.2.5
-Stable tag: 4.1.0
+Stable tag: 4.1.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,23 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.1.1 - 30 January 2025 =
+* Enhancement: Cleaner, better organized plugin settings tabs
+* Enhancement: Sync Posts UI fits 1080px screens
+* Fixed: Sizing of Settings tabs for smaller screns
+* Fixed: Sizing, positioning for Settings screen right sidebar
+* Fixed: Fatal error if other code filters pre_tax_input incorrectly. #1348
+* Fixed: PHP Notice when deleting a group. #1338
+* Fixed: PHP error under certain configurations. #1318
+* Fixed: PHP warning for undefined array index in Permissions settings under some conditions. #1340
+* Fixed: Media items were selectable even when media permissions were not enabled. #1323
+* Updated: Renamed "Collaborative Editing" to align with updated terminology. #1307
+* Updated: Translations for Spanish, French, and Italian text strings. #1316
+* Updated: Moved "Statuses" to the Advanced area for better organization. #1255
+* Updated: Updated project dependencies for improved compatibility and security.
+* Removed: Purple color from the menu for a cleaner design. #1306
+* Removed: "Import" option from the interface. #1295
 
 = 4.1.0 - 19 Dec 2024 =
 * Added: New Sidebar promotion area in the interface. #944

@@ -50,7 +50,7 @@ class SettingsAdmin
         return __("For most installations, leave this disabled. See Editing tab for specialized Media Library permissions.", 'press-permit-core-hints');
 
         case 'define_media_post_caps_collab_prompt' :
-        return  __("For most installations, leave this disabled. For specialized Media Library permissions, install the Collaborative Publishing module.", 'press-permit-core-hints');
+        return  __("For most installations, leave this disabled. For specialized Media Library permissions, install the Editing Permissions module.", 'press-permit-core-hints');
 
         case 'bbp_compat_prompt' :
         return __('To customize bbPress forum permissions, activate the Compatibility Pack module.', 'press-permit-core-hints');
@@ -67,20 +67,11 @@ class SettingsAdmin
         case 'posts_listing_unmodified' :
         return __('Unmodified from WordPress default behavior. To enable filtering, remove constant definition PP_ADMIN_READONLY_LISTABLE.', 'press-permit-core-hints');
 
-        case 'posts_listing_editable_only_collab_prompt' :
-        return __('To customize editing permissions, enable the Collaborative Publishing module.', 'press-permit-core-hints');
-
         case 'display_user_profile_roles' :
         return __('Note: Groups and Roles are always displayed in "Edit User"', 'press-permit-core-hints');
 
 
         // Advanced
-        case 'advanced_options_enabled' :
-        return __("Note: if you disable these settings, the stored values (including Role Usage adjustments) are retained but ignored.", 'press-permit-core-hints');
-
-        case 'advanced_options_disabled' :
-        return __("Most sites don't need advanced settings. But enable them if you need to work with custom WP Roles or apply performance tweaks.", 'press-permit-core-hints');
-
         case 'anonymous_unfiltered' :
         return __('Disable Permissions filtering for users who are not logged in.', 'press-permit-core-hints');
 
@@ -97,10 +88,10 @@ class SettingsAdmin
         return __('Display a role dropdown alongside the user search input box to narrow results.', 'press-permit-core-hints');
 
         case 'display_hints' :
-        return __('Display additional descriptions in role assignment and options UI.', 'press-permit-core-hints');
+        return __('Display descriptive captions on Permissions screens.', 'press-permit-core-hints');
 
         case 'display_extension_hints' :
-        return  __('Display descriptive captions for additional functionality provided by missing or deactivated modules (Permissions Pro package).', 'press-permit-core-hints');
+        return  __('Display descriptive captions for features available in missing or deactivated modules.', 'press-permit-core-hints');
 
         case 'pattern_roles_include_generic_rolecaps':
         return __('Supplemental roles assigned for a specific post type will always apply "_posts" capabilities in the Pattern Role (Author, Editor, etc.) for the selected post type. This setting pertains to other capabilities in the Pattern Role. For the most consistent permissions model, capabilities unrelated to a specific type should not normally be granted by a type-specific role, but some installations may require it. Enable this setting to restore previous plugin behavior; leave it disabled for more narrowly targeted Supplemental Roles.', 'press-permit-core-hints');
@@ -112,12 +103,17 @@ class SettingsAdmin
         return  __('You can also %1$s add Permissions administration capabilities to a WordPress role%2$s:', 'press-permit-core-hints');
 
         case 'pp_capabilities_install_prompt' :
-        return __('You can add Permissions administration capabilities to a WordPress role using %1$s:', 'press-permit-core-hints');
+        return __('You can add Permissions capabilities to a role using %1$s:', 'press-permit-core-hints');
 
+        case 'non_admins_set_read_exceptions' :
+        return __('Users also need the pp_set_read_exceptions capability in their WordPress role.', 'press-permit-core-hints');
+
+        case 'non_admins_set_edit_exceptions' :
+        return __('Users also need the pp_set_edit_exceptions capability in their WordPress role.', 'press-permit-core-hints');
 
         // Editing
         case 'collaborative-publishing' :
-        return sprintf(__('Settings related to content editing permissions, provided by the %s module.', 'press-permit-core-hints'), __('Collaborative Publishing', 'press-permit-core-hints'));
+        return sprintf(__('Settings related to content editing permissions, provided by the %s module.', 'press-permit-core-hints'), __('Editing Permissions', 'press-permit-core-hints'));
 
         case 'list_others_uneditable_posts' :
         return __('If this setting is disabled, a specific role can be given capabilities: list_others_posts, list_others_pages, etc.', 'press-permit-core-hints');
@@ -161,19 +157,12 @@ class SettingsAdmin
         case 'limit_user_edit_by_level' :
         return __('Prevent non-Administrators with user editing permissions from editing a higher-level user or assigning a role higher than their own.', 'press-permit-core-hints');
 
-        case 'fork_published_only' :
-        return __('Fork published posts only.', 'press-permit-core-hints');
-
-        case 'fork_require_edit_others' :
-        return __("If a user lacks the edit_others_posts capability for the post type, they cannot fork other's posts either.", 'press-permit-core-hints');
-
         case 'non_admins_set_edit_exceptions' :
         return __('If enabled, the capabilities pp_set_edit_exceptions, pp_set_associate_exceptions, etc. will be honored. See list of capabilities below.', 'press-permit-core-hints');
 
-
-        // Import
-        case 'pp-import-disable' :
-        return sprintf(__('Once your import task is complete, you can eliminate this tab by disabling the %s module.', 'press-permit-core-hints'), __('Import', 'press-permit-core-hints'));
+        // Circles
+        case 'access_circles_limit_revisions':
+        return __('Circle members will be blocked from accessing Revisions authored by non-members.', 'presspermit-pro-hints');
 
         default:
         }
@@ -281,29 +270,28 @@ class SettingsAdmin
         $pp_caps['pp_assign_roles'] = esc_html__('Assign Supplemental Roles or Specific Permissions. Other capabilities may also be required.', 'press-permit-core-hints');
         $pp_caps['pp_set_read_exceptions'] = esc_html__('Set Read Permissions for specific posts on Edit Post/Term screen (for non-Administrators lacking edit_users capability; may be disabled by Permissions Settings)', 'press-permit-core-hints');
 
-        if (class_exists('Fork', false)) {
-            $pp_caps['pp_set_fork_exceptions'] = esc_html__('Set Forking Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
-        }
+		if (presspermit()->moduleActive('collaboration')) {
+            $pp_caps['pp_set_edit_exceptions'] =            esc_html__('Set Editing Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
 
-        if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) {
-            $pp_caps['pp_set_revise_exceptions'] = esc_html__('Set Revision Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
-        }
-
-        $pp_caps['pp_set_edit_exceptions'] =            esc_html__('Set Editing Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
-        $pp_caps['pp_set_associate_exceptions'] =       esc_html__('Set Association (Parent) Permissions on Edit Post screen (where applicable)', 'press-permit-core-hints');
-        $pp_caps['pp_set_term_assign_exceptions'] =     esc_html__('Set Term Assignment Permissions on Edit Term screen (in relation to an editable post type)', 'press-permit-core-hints');
-        $pp_caps['pp_set_term_manage_exceptions'] =     esc_html__('Set Term Management Permissions on Edit Term screen', 'press-permit-core-hints');
-        $pp_caps['pp_set_term_associate_exceptions'] =  esc_html__('Set Term Association (Parent) Permissions on Edit Term screen', 'press-permit-core-hints');
-
-        $pp_caps['edit_own_attachments'] =          esc_html__('Edit own file uploads, even if they become attached to an uneditable post', 'press-permit-core-hints');
-        $pp_caps['list_others_unattached_files'] =  esc_html__("See other user's unattached file uploads in Media Library", 'press-permit-core-hints');
-        $pp_caps['pp_associate_any_page'] =         esc_html__('Disregard association permissions (for all hierarchical post types)', 'press-permit-core-hints');
-
-        $pp_caps['pp_list_all_files'] =     esc_html__('Do not alter the Media Library listing provided by WordPress', 'press-permit-core-hints');
-        $pp_caps['list_posts'] =            esc_html__('On the Posts screen, satisfy a missing edit_posts capability by listing uneditable drafts', 'press-permit-core-hints');
-        $pp_caps['list_others_posts'] =     esc_html__("On the Posts screen, satisfy a missing edit_others_posts capability by listing other user's uneditable posts", 'press-permit-core-hints');
-        $pp_caps['list_private_pages'] =    esc_html__('On the Pages screen, satisfy a missing edit_private_pages capability by listing uneditable private pages', 'press-permit-core-hints');
-        $pp_caps['pp_force_quick_edit'] =   esc_html__('Make Quick Edit and Bulk Edit available to non-Administrators even though some inappropriate selections may be possible', 'press-permit-core-hints');
+            if ((defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION'))) {
+	            $pp_caps['pp_set_revise_exceptions'] = esc_html__('Set Revision Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
+	        }
+	
+	        $pp_caps['pp_set_associate_exceptions'] =       esc_html__('Set Association (Parent) Permissions on Edit Post screen (where applicable)', 'press-permit-core-hints');
+	        $pp_caps['pp_set_term_assign_exceptions'] =     esc_html__('Set Term Assignment Permissions on Edit Term screen (in relation to an editable post type)', 'press-permit-core-hints');
+	        $pp_caps['pp_set_term_manage_exceptions'] =     esc_html__('Set Term Management Permissions on Edit Term screen', 'press-permit-core-hints');
+	        $pp_caps['pp_set_term_associate_exceptions'] =  esc_html__('Set Term Association (Parent) Permissions on Edit Term screen', 'press-permit-core-hints');
+	
+	        $pp_caps['edit_own_attachments'] =          esc_html__('Edit own file uploads, even if they become attached to an uneditable post', 'press-permit-core-hints');
+	        $pp_caps['list_others_unattached_files'] =  esc_html__("See other user's unattached file uploads in Media Library", 'press-permit-core-hints');
+	        $pp_caps['pp_associate_any_page'] =         esc_html__('Disregard association permissions (for all hierarchical post types)', 'press-permit-core-hints');
+	
+	        $pp_caps['pp_list_all_files'] =     esc_html__('Do not alter the Media Library listing provided by WordPress', 'press-permit-core-hints');
+	        $pp_caps['list_posts'] =            esc_html__('On the Posts screen, satisfy a missing edit_posts capability by listing uneditable drafts', 'press-permit-core-hints');
+	        $pp_caps['list_others_posts'] =     esc_html__("On the Posts screen, satisfy a missing edit_others_posts capability by listing other user's uneditable posts", 'press-permit-core-hints');
+	        $pp_caps['list_private_pages'] =    esc_html__('On the Pages screen, satisfy a missing edit_private_pages capability by listing uneditable private pages', 'press-permit-core-hints');
+	        $pp_caps['pp_force_quick_edit'] =   esc_html__('Make Quick Edit and Bulk Edit available to non-Administrators even though some inappropriate selections may be possible', 'press-permit-core-hints');
+		}
 
         if (!defined('PRESSPERMIT_PRO_VERSION') && !presspermit()->moduleActive('status-control') && !presspermit()->keyActive()) {
             $pp_caps = array_merge(
@@ -341,7 +329,10 @@ class SettingsAdmin
     {
         $return = ['in_scope' => false, 'no_storage' => false, 'disabled' => false, 'title' => '', 'style' => '', 'div_style' => ''];
 
-        if (in_array($option_name, $this->form_options[$tab_name][$section_name], true)) {
+        if (isset($this->form_options[$tab_name][$section_name]) 
+        && in_array($option_name, $this->form_options[$tab_name][$section_name], true) 
+        && isset($this->option_captions[$option_name])
+        ) {
             $display_label = (!isset($args['display_label'])) ? true : $args['display_label'];
             
             if (empty($args['no_storage']))
@@ -362,7 +353,7 @@ class SettingsAdmin
                 . "<label for='" . esc_attr($option_name) . "' title='" . esc_attr($title) . "'>"
                 . "<input name='" . esc_attr($option_name) . "' type='checkbox' " . esc_attr($disabled) . " style='" . esc_attr($style) . "' id='" . esc_attr($option_name) . "' value='1' " . esc_attr(checked('1', $return['val'], false)) . " autocomplete='off' /> ";
                 
-            if ($display_label) {
+            if ($display_label && isset($this->option_captions[$option_name])) {
                 esc_html_e($this->option_captions[$option_name]);
             }
             

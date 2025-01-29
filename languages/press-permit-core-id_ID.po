@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - PublishPress Permissions: Control User Access for Posts, Pages, Categories, Tags - Development (trunk) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-12-17 16:36+0000\n"
+"PO-Revision-Date: 2025-01-21 17:43+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -60,10 +60,10 @@ msgstr "%1$s %2$s"
 msgid "%1$s %2$s %3$s"
 msgstr "%1$s %2$s %3$s"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:945
 #: classes/PublishPress/Permissions/UI/GroupsListTableBase.php:76
-#: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:87
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:945
 #: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:281
+#: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:87
 #, php-format
 msgid "%1$s (%2$s)"
 msgstr "%1$s (%2$s)"
@@ -221,37 +221,37 @@ msgstr ""
 "WordPress seperti %3$sPublishPress Capabilities%4$s untuk menambahkan "
 "kapabilitas ini ke peran mana pun yang membutuhkannya."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:287
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:304
 #, php-format
 msgid "%1$sUsers who have no custom Permission Group membership%2$s"
 msgstr "%1$sPengguna yang tidak memiliki keanggotaan Grup Izin kustom%2$s"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:298
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:315
 #, php-format
 msgid "%1$sUsers who have Specific Permissions (directly or via group)%2$s"
 msgstr ""
 "%1$sPengguna yang memiliki Izin Khusus (langsung atau melalui grup)%2$s"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:292
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:382
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:309
 #, php-format
 msgid "%1$sUsers who have Specific Permissions assigned directly%2$s"
 msgstr ""
 "%1$sPengguna yang memiliki Izin Khusus yang ditugaskan secara langsung%2$s"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:297
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:314
 #, php-format
 msgid "%1$sUsers who have Supplemental Roles (directly or via group)%2$s"
 msgstr ""
 "%1$sPengguna yang memiliki Peran Tambahan (langsung atau melalui grup)%2$s"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:291
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:381
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:308
 #, php-format
 msgid "%1$sUsers who have Supplemental Roles assigned directly%2$s"
 msgstr "%1$sPengguna yang memiliki Peran Tambahan secara langsung%2$s"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:299
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:316
 #, php-format
 msgid ""
 "%1$sUsers who have Supplemental Roles or Specific Permissions (directly or "
@@ -260,8 +260,8 @@ msgstr ""
 "%1$sPengguna yang memiliki Peran Tambahan atau Izin Khusus (langsung atau "
 "melalui grup)%2$s"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:293
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:383
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:310
 #, php-format
 msgid ""
 "%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s"
@@ -308,8 +308,8 @@ msgstr "Izin %s belum ditambahkan atau diblokir untuk %s apa pun."
 msgid "%s Roles"
 msgstr "%s Peran"
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:260
 #: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:110
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:260
 #, php-format
 msgid "%s Visibility"
 msgstr "%s Visibilitas"
@@ -334,7 +334,7 @@ msgstr "%s, lebih..."
 msgid "%s:"
 msgstr "%s:"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:307
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:324
 #, php-format
 msgid ""
 "%sNote%s: If you don't see the Roles column on the Users screen, make sure "
@@ -343,7 +343,7 @@ msgstr ""
 "%sCatatan%s: Jika Anda tidak melihat kolom Peran di layar Pengguna, pastikan "
 "itu diaktifkan dalam Opsi Layar. "
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:350
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:242
 #, php-format
 msgid "%sPosts / Pages Listing:%s %s"
 msgstr "%sDaftar Artikel / Halaman:%s %s"
@@ -383,13 +383,13 @@ msgstr "(default: Iya)"
 msgid "(invalid role definition)"
 msgstr "(definisi peran tidak valid)"
 
+#: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:44
+#: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:66
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:64
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:91
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:132
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:194
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:236
-#: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:44
-#: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:66
 #: classes/PublishPress/Permissions/UI/Dashboard/ItemAjax.php:26
 msgid "(login timed out)"
 msgstr "(login habis waktu)"
@@ -403,14 +403,13 @@ msgstr "(tanpa induk)"
 msgid "(no setting)"
 msgstr "(tidak ada pengaturan)"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:64
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:757
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:295
 #: classes/PublishPress/Permissions/UI/ItemsMetabox.php:295
 #: classes/PublishPress/Permissions/UI/ItemsMetabox.php:297
 #: classes/PublishPress/Permissions/UI/ItemsMetabox.php:576
 #: classes/PublishPress/Permissions/UI/ItemsMetabox.php:578
 #: classes/PublishPress/Permissions/UI/ItemsMetabox.php:584
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:64
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:757
 msgid "(none)"
 msgstr "(tidak ada)"
 
@@ -475,6 +474,10 @@ msgid ""
 msgstr ""
 "<strong>ERROR</strong>: Nama grup ini sudah terdaftar. Silakan pilih yang "
 "lain."
+
+#: press-permit-core.php:117
+msgid "<strong>This plugin can be deleted.</strong>"
+msgstr "<strong>Plugin ini dapat dihapus.</strong>"
 
 #: includes/SettingsTabInstall.php:141
 #, php-format
@@ -634,7 +637,7 @@ msgstr ""
 "Semua pengaturan Penggunaan Peran akan diatur ulang ke DEFAULT. Apakah Anda "
 "yakin?"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:755
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:772
 msgid ""
 "All settings in this form (including those on undisplayed tabs) will be "
 "reset to DEFAULTS.  Are you sure?"
@@ -642,11 +645,11 @@ msgstr ""
 "Semua pengaturan dalam formulir ini (termasuk yang ada di tab yang tidak "
 "ditampilkan) akan diatur ulang ke DEFAULT. Apakah Anda yakin?"
 
-#: classes/PublishPress/Permissions/UI/Settings.php:157
+#: classes/PublishPress/Permissions/UI/Settings.php:138
 msgid "All settings were reset to defaults."
 msgstr "Semua pengaturan telah diatur ulang ke default."
 
-#: classes/PublishPress/Permissions/UI/Settings.php:149
+#: classes/PublishPress/Permissions/UI/Settings.php:130
 msgid "All settings were updated."
 msgstr "Semua pengaturan telah diperbarui."
 
@@ -702,7 +705,7 @@ msgstr ""
 msgid "Anonymous users (not logged in)"
 msgstr "Pengguna anonim (tidak masuk)"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:397
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:414
 msgid "any user"
 msgstr "semua pengguna"
 
@@ -797,13 +800,13 @@ msgstr ""
 "Secara otomatis menghasilkan halaman pribadi untuk setiap pengguna. Fitur "
 "ini tersedia di PublishPress Permissions Pro"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:622
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:639
 msgid "Available Constant"
 msgstr "Konstan Tersedia"
 
-#: classes/PublishPress/Permissions/UI/GroupNew.php:50
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:102
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:116
+#: classes/PublishPress/Permissions/UI/GroupNew.php:50
 msgid "Back to groups list"
 msgstr "Kembali ke daftar grup"
 
@@ -811,9 +814,9 @@ msgstr "Kembali ke daftar grup"
 msgid "Back to Role Usage List"
 msgstr "Kembali ke Daftar Penggunaan Peran"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:178
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:99
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:861
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:178
 msgid "Block"
 msgstr "Blok"
 
@@ -853,7 +856,7 @@ msgstr ""
 "dan penugasan langsung tambahan, tetapi tidak berlaku untuk penugasan peran "
 "pola."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:506
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:523
 msgid "Capability Name"
 msgstr "Nama Kemampuan"
 
@@ -892,10 +895,6 @@ msgstr "Klik untuk hanya menampilkan pengguna yang memiliki peran tambahan"
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:318
 msgid "close"
 msgstr "tutup"
-
-#: classes/PublishPress/Permissions/Admin.php:189
-msgid "Collaborative Publishing"
-msgstr "Publikasi Kolaboratif"
 
 #: classes/PublishPress/Permissions/Admin.php:190
 msgid "Compatibility Pack"
@@ -1028,8 +1027,8 @@ msgid "Current Selections:"
 msgstr "Pilihan Saat Ini:"
 
 #: classes/PublishPress/Permissions/Groups.php:54
-#: classes/PublishPress/Permissions/UI/GroupsListTable.php:331
 #: classes/PublishPress/Permissions/UI/Groups.php:209
+#: classes/PublishPress/Permissions/UI/GroupsListTable.php:331
 msgid "Custom Group"
 msgstr "Grup Khusus"
 
@@ -1085,7 +1084,7 @@ msgstr "Visibilitas default untuk posting baru:"
 msgid "define custom privacy"
 msgstr "definisikan privasi khusus"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:564
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:581
 msgid "Defined Constant"
 msgstr "Konstan Didefinisikan"
 
@@ -1097,11 +1096,11 @@ msgstr "Hapus"
 msgid "Delete settings on plugin deletion"
 msgstr "Hapus semua pengaturan dalam penghapusan plugin"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:507
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:566
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:624
-#: classes/PublishPress/Permissions/UI/GroupNew.php:103
 #: classes/PublishPress/Permissions/UI/GroupsListTable.php:173
+#: classes/PublishPress/Permissions/UI/GroupNew.php:103
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:524
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:583
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:641
 msgid "Description"
 msgstr "Deskripsi"
 
@@ -1217,6 +1216,10 @@ msgstr "Edit Izin Pengguna"
 msgid "Editing"
 msgstr "Editing"
 
+#: classes/PublishPress/Permissions/Admin.php:189
+msgid "Editing Permissions"
+msgstr "Izin Pengeditan"
+
 #: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:40
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:32
 msgid "Editor Options"
@@ -1234,8 +1237,8 @@ msgstr "layak (%d):"
 msgid "Enable advanced settings"
 msgstr "Aktifkan pengaturan lanjutan"
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:338
 #: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:165
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:338
 #, php-format
 msgid "enable custom permissions for %s"
 msgstr "aktifkan izin kustom untuk %s"
@@ -1261,7 +1264,7 @@ msgstr ""
 msgid "enter post ID/slug"
 msgstr "masukkan ID/slug artikel"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:397
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:414
 msgid "equal or lower role levels"
 msgstr "level peran yang sama atau lebih rendah"
 
@@ -1327,7 +1330,7 @@ msgstr "untuk item"
 msgid "For Statuses"
 msgstr "Untuk Status"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:271
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:288
 #, php-format
 msgid ""
 "For user-specific Supplemental Roles and Permissions, click a \"Roles\" cell "
@@ -1365,8 +1368,8 @@ msgstr "Peran Umum"
 msgid "Go to %s"
 msgstr "Buka %s"
 
-#: classes/PublishPress/Permissions/UI/GroupNew.php:39
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:113
+#: classes/PublishPress/Permissions/UI/GroupNew.php:39
 msgid "Group created."
 msgstr "Grup dibuat."
 
@@ -1380,9 +1383,9 @@ msgid "Group updated."
 msgstr "Perbarui Grup."
 
 #: classes/PublishPress/Permissions/Groups.php:56
+#: classes/PublishPress/Permissions/UI/Dashboard/DashboardFilters.php:265
+#: classes/PublishPress/Permissions/UI/Dashboard/DashboardFilters.php:265
 #: classes/PublishPress/Permissions/UI/Dashboard/UsersListing.php:93
-#: classes/PublishPress/Permissions/UI/Dashboard/DashboardFilters.php:265
-#: classes/PublishPress/Permissions/UI/Dashboard/DashboardFilters.php:265
 #: modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:27
 msgid "Groups"
 msgstr "Kelompok"
@@ -1480,8 +1483,8 @@ msgstr "Pengetahuan Dasar"
 msgid "Last Name"
 msgstr "Nama Belakang"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:172
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:867
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:172
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:156
 #: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:213
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:135
@@ -1558,7 +1561,7 @@ msgstr "Sudah Login"
 msgid "Login State"
 msgstr "Status Login"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:397
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:414
 msgid "lower role levels"
 msgstr "level peran lebih rendah"
 
@@ -1616,8 +1619,8 @@ msgstr "Modifikasi izin untuk Taksonomi ini:"
 msgid "n/a"
 msgstr "n/a"
 
-#: classes/PublishPress/Permissions/UI/GroupNew.php:97
 #: classes/PublishPress/Permissions/UI/GroupsListTable.php:168
+#: classes/PublishPress/Permissions/UI/GroupNew.php:97
 msgid "Name"
 msgstr "Nama"
 
@@ -1928,8 +1931,8 @@ msgid "Permission Group"
 msgstr "Kelompok Izin"
 
 #: classes/PublishPress/Permissions/UI/Groups.php:171
-#: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:186
 #: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:160
+#: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:186
 msgid "Permission Groups"
 msgstr "Grup Izin"
 
@@ -1983,9 +1986,9 @@ msgstr ""
 "Permissions Pro sebelumnya aktif. Sekarang Anda menggunakan versi gratis, "
 "dengan fitur yang lebih sedikit."
 
-#: classes/PublishPress/Permissions/UI/Settings.php:102
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:314
+#: classes/PublishPress/Permissions/UI/Settings.php:83
 #: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:77
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:314
 msgid "Permissions Settings"
 msgstr "Pengaturan Permissions"
 
@@ -2052,11 +2055,14 @@ msgstr "Versi PHP: %s"
 
 #: classes/PublishPress/PermissionsHooksAdmin.php:228
 #, php-format
+#| msgid ""
+#| "Please %senable the Collaborative Publishing module%s for PublishPress "
+#| "Revisions integration."
 msgid ""
-"Please %senable the Collaborative Publishing module%s for PublishPress "
-"Revisions integration."
+"Please %senable the Editing Permissions module%s for PublishPress Revisions "
+"integration."
 msgstr ""
-"Harap %saktifkan modul Publikasi Kolaboratif%s untuk integrasi PublishPress "
+"Harap %saktifkan modul Izin Pengeditan%s untuk integrasi PublishPress "
 "Revisions."
 
 #: classes/PublishPress/Permissions/UI/Dashboard/PluginAdmin.php:88
@@ -2157,9 +2163,12 @@ msgid "PublishPress Permissions Version: %1$s %2$s"
 msgstr "Versi PublishPress Permissions: %1$s %2$s"
 
 #: classes/PublishPress/PermissionsHooksAdmin.php:232
+#| msgid ""
+#| "PublishPress Revisions integration requires the Collaborative Publishing "
+#| "module. Please notify your Administrator."
 msgid ""
-"PublishPress Revisions integration requires the Collaborative Publishing "
-"module. Please notify your Administrator."
+"PublishPress Revisions integration requires the Editing Permissions module. "
+"Please notify your Administrator."
 msgstr ""
 "Integrasi PublishPress Revisions memerlukan modul Collaborative Publishing. "
 "Harap beri tahu Administrator Anda."
@@ -2224,7 +2233,7 @@ msgstr "Batasan"
 msgid "Return to Menu Editor"
 msgstr "Kembali ke menu editor"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:758
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:775
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsage.php:95
 msgid "Revert to Defaults"
 msgstr "Kembalikan ke Default"
@@ -2334,7 +2343,7 @@ msgstr "Peran dan Izin disalin."
 msgid "Roles updated."
 msgstr "Peran diperbarui."
 
-#: classes/PublishPress/Permissions/UI/Settings.php:189
+#: classes/PublishPress/Permissions/UI/Settings.php:161
 msgid "Save Changes"
 msgstr "Simpan Perubahan"
 
@@ -2430,8 +2439,8 @@ msgstr "Atur Sebagai Induk"
 msgid "Set Specific Permissions"
 msgstr "Atur Izin Khusus"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:565
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:623
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:582
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:640
 msgid "Setting"
 msgstr "Pengaturan"
 
@@ -2510,9 +2519,9 @@ msgstr "ID elemen yang ditentukan juga memerlukan Peran seluruh situs berikut:"
 msgid "Specified element IDs also require the following site-wide Role: "
 msgstr "ID elemen tertentu juga memerlukan Peran di seluruh situs berikut:"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:272
 #: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:78
 #: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:100
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:272
 msgid "Standard statuses"
 msgstr "Status standar"
 
@@ -2739,20 +2748,26 @@ msgstr ""
 "Kompatibilitas."
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:217
+#| msgid ""
+#| "To assign page-specific Permissions for editing, parent selection or term "
+#| "assignment, enable the Collaborative Publishing module."
 msgid ""
 "To assign page-specific Permissions for editing, parent selection or term "
-"assignment, enable the Collaborative Publishing module."
+"assignment, enable the Editing Permissions module."
 msgstr ""
 "Untuk menetapkan Izin khusus halaman untuk pengeditan, pemilihan induk, atau "
-"penugasan istilah, aktifkan modul Publikasi Kolaboratif."
+"penugasan istilah, aktifkan modul Izin Pengeditan."
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:319
+#| msgid ""
+#| "To assign page-specific PublishPress Revision permissions, enable the "
+#| "Collaborative Publishing module."
 msgid ""
 "To assign page-specific PublishPress Revision permissions, enable the "
-"Collaborative Publishing module."
+"Editing Permissions module."
 msgstr ""
 "Untuk menetapkan izin Revisi PublishPress yang khusus untuk halaman, "
-"aktifkan modul Penerbitan Kolaboratif."
+"aktifkan modul Izin Pengeditan."
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:307
 #, php-format
@@ -2827,7 +2842,7 @@ msgstr ""
 "Untuk memblokir akses URL langsung ke lampiran dari posting yang tidak dapat "
 "dibaca, aktifkan modul Akses Berkas."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:456
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:473
 #, php-format
 msgid "To control the makeup of Supplemental Roles, see %1$sRole Usage%2$s."
 msgstr ""
@@ -2835,9 +2850,8 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/HintsItemExceptions.php:29
 msgid ""
-"To customize editing permissions, enable the Collaborative Publishing module."
-msgstr ""
-"Untuk menyesuaikan izin penyuntingan, aktifkan modul Publikasi Kolaboratif."
+"To customize editing permissions, enable the Editing Permissions module."
+msgstr "Untuk menyesuaikan izin pengeditan, aktifkan modul Izin Pengeditan."
 
 #: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:298
 msgid ""
@@ -2868,12 +2882,12 @@ msgstr ""
 msgid "To define custom privacy statuses, activate the Status Control module."
 msgstr "Untuk menentukan status privasi kustom, aktifkan modul Kontrol Status."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:282
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:299
 msgid "To filter the Users list by Permissions, follow a link below:"
 msgstr ""
 "Untuk menyaring daftar Pengguna berdasarkan Izin, ikuti tautan di bawah ini:"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:720
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:737
 msgid ""
 "To force the value of one or more settings network-wide, <strong>"
 "copy</strong> the following code into your theme's <strong>functions."
@@ -2885,7 +2899,7 @@ msgstr ""
 "(atau file lain yang selalu dieksekusi dan tidak diperbarui otomatis) dan "
 "modifikasi sesuai keinginan:"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:699
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:716
 msgid ""
 "To modify one or more default settings network-wide, <strong>copy</strong> "
 "the following code into your theme's <strong>functions.php</strong> file (or "
@@ -2947,8 +2961,8 @@ msgid "Update Group"
 msgstr "Perbarui Grup"
 
 #: includes/CoreAdmin.php:120 includes/CoreAdmin.php:121
-#: includes/promo/sync-promo.php:22 includes/promo/statuses-promo.php:23
 #: includes/promo/posts-teaser-promo.php:22
+#: includes/promo/statuses-promo.php:23 includes/promo/sync-promo.php:22
 #: includes/promo/visibility-statuses-promo.php:23
 #: classes/PublishPress/Permissions/UI/PromoBanner.php:214
 msgid "Upgrade to Pro"
@@ -2981,7 +2995,7 @@ msgstr "Pilih &gt;"
 msgid "User Administrator"
 msgstr "Pengguna Administrator"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:394
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:411
 msgid "User editing capabilities apply for"
 msgstr "Kemampuan edit pengguna diterapkan untuk"
 
@@ -3068,8 +3082,8 @@ msgstr ""
 "tanggung jawab pada Anda untuk menambahkan kemampuan tipe kustom ke Definisi "
 "Peran WP)."
 
-#: classes/PublishPress/Permissions/UI/GroupsListTable.php:326
 #: classes/PublishPress/Permissions/UI/Groups.php:207
+#: classes/PublishPress/Permissions/UI/GroupsListTable.php:326
 msgid "WordPress Role"
 msgstr "Peran WordPress"
 
@@ -3087,7 +3101,7 @@ msgstr "Versi WordPress: %s"
 msgid "Workflow"
 msgstr "Alur Kerja"
 
-#: modules/presspermit-collaboration/classes/Permissions/CollabHooks.php:640
+#: modules/presspermit-collaboration/classes/Permissions/CollabHooks.php:647
 #, php-format
 msgid "You are not allowed to create new %s"
 msgstr "Anda tidak diizinkan membuat %s baru"
@@ -3097,14 +3111,14 @@ msgstr "Anda tidak diizinkan membuat %s baru"
 msgid "You are not allowed to manage Permissions settings"
 msgstr "Anda tidak diizinkan untuk mengelola pengaturan Izin"
 
-#: classes/PublishPress/Permissions/UI/GroupNew.php:29
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:43
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:49
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:52
-#: classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:29
-#: classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:112
+#: classes/PublishPress/Permissions/UI/GroupNew.php:29
 #: classes/PublishPress/Permissions/UI/Handlers/Groups.php:37
 #: classes/PublishPress/Permissions/UI/Handlers/Groups.php:92
+#: classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:29
+#: classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:112
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageEdit.php:36
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsage.php:21
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Handlers/RoleUsage.php:14

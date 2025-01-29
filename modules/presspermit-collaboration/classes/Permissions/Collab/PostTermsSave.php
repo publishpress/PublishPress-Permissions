@@ -197,8 +197,14 @@ class PostTermsSave
 
     public static function fltTaxInput($tax_input)
     {
+        if (!is_array($tax_input)) {
+            return $tax_input;
+        }
+
         foreach ((array)$tax_input as $taxonomy => $terms) {
-            $tax_input[$taxonomy] = self::fltTermsInput($terms, $taxonomy);
+            if (is_string($taxonomy) && !is_numeric($taxonomy)) {
+            	$tax_input[$taxonomy] = self::fltTermsInput($terms, $taxonomy);
+            }
         }
 
         return $tax_input;
@@ -490,7 +496,7 @@ class PostTermsSave
         $user = presspermit()->getUser();
 
         foreach (array_keys($user->except) as $for_op) {
-            // only concerned about edit_post, revise_post, fork_post, etc.
+            // only concerned about edit_post, revise_post, etc.
             if (in_array($for_op, ['read_post', 'edit_term', 'manage_term'], true))
                 continue;
 

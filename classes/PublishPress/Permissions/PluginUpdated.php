@@ -87,18 +87,6 @@ class PluginUpdated
                 }
             } else break;
 
-            if ((presspermit()->isPro() && version_compare($prev_version, '2.7.11', '<')) || (!presspermit()->isPro() && version_compare($prev_version, '2.7.3', '<'))) {
-                // 2.7 and 2.7.1 incorrectly defaulted this array to ['pp-import'] instead of ['presspermit-import']
-                // PressPermit Core 2.7.2 fixed the bug, but did not apply this database patch.
-                // Beginning with 2.7.12, PressPermit Pro applies the database patch on first-time Pro execution
-                $deactivated = (array) get_option('presspermit_deactivated_modules');
-
-                if (isset($deactivated['pp-import'])) {
-                    $deactivated = array_diff_key($deactivated, ['pp-import' => true]);
-                    update_option('presspermit_deactivated_modules', $deactivated);
-                }
-            } else break;
-
             if (version_compare($prev_version, '2.7-beta', '<')) {
                 require_once(PRESSPERMIT_CLASSPATH . '/DB/Migration.php');
                 DB\Migration::migrateOptions();
@@ -162,7 +150,6 @@ class PluginUpdated
             $new_deactivations = [
                 'presspermit-circles', 
                 'presspermit-file-access', 
-                'presspermit-import', 
                 'presspermit-membership'
             ];
         }

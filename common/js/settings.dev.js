@@ -30,7 +30,7 @@ jQuery(document).ready(function ($) {
         });
 
         $('.pp-options-table tr img.pp-show-hints').click(function() {
-            $(this).closest('tr').find('td .pp-subtext, td .pp-hint').show();
+            $(this).closest('tr').find('td .pp-subtext, td .pp-hint, table.pp-hint, div.pp-hint').show();
             $(this).hide();
         });
     }
