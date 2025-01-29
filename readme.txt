@@ -240,7 +240,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 4.1.1 - 27 January 2025 =
+= 4.1.1 - 30 January 2025 =
 * Enhancement: Cleaner, better organized plugin settings tabs
 * Enhancement: Sync Posts UI fits 1080px screens
 * Fixed: Sizing of Settings tabs for smaller screns
