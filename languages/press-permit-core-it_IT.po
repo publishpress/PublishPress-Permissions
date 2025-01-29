@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Plugins - PublishPress Permissions: Control User Access "
 "for Posts, Pages, Categories, Tags - Stable (latest release)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
-"POT-Creation-Date: 2025-01-15 16:49+0000\n"
-"PO-Revision-Date: 2025-01-21 18:33+0000\n"
+"POT-Creation-Date: 2025-01-25T22:31:20+00:00\n"
+"PO-Revision-Date: 2025-01-29 15:41+0000\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
@@ -15,10 +15,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.6.14; wp-6.7.1"
+"X-Loco-Version: 2.6.14; wp-6.7.1\n"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1251
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1250
 msgid " %1$sfix sub-%2$s permissions %3$s"
 msgstr " %1$sfix sub-%2$s autorizzazioni %3$s"
 
@@ -51,63 +50,48 @@ msgstr ""
 #: classes/PublishPress/Permissions/DB/PermissionsMeta.php:129
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/DashboardWidgetsFilters.php:47
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/DashboardWidgetsFilters.php:49
-#, php-format
 msgid "%1$s %2$s"
 msgstr "%1$s %2$s"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:901
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:900
 msgid "%1$s %2$s %3$s"
 msgstr "%1$s %2$s %3$s"
 
-#: classes/PublishPress/Permissions/UI/GroupsListTableBase.php:76
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:945
-#: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:281
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:944
 #: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:87
-#, php-format
+#: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:281
+#: classes/PublishPress/Permissions/UI/GroupsListTableBase.php:76
 msgid "%1$s (%2$s)"
 msgstr "%1$s (%2$s)"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:900
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:899
 msgid "%1$s (%2$s: %3$s)"
 msgstr "%1$s (%2$s: %3$s)"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:903
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:905
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:907
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:902
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:904
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:906
 msgid "%1$s - %2$s"
 msgstr "%1$s - %2$s"
 
-#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:74
-#, php-format
-msgid "%1$s imported: %2$s"
-msgstr "%1$s importati: %2$s"
-
 #: classes/PublishPress/Permissions/UI/Dashboard/TermsListing.php:64
-#, php-format
 msgid "%1$s Permissions %2$s*%3$s"
 msgstr "%1$s Autorizzazioni %2$s*%3$s"
 
 #: library/debug.php:17
-#, php-format
 msgid "%1$s queries in %2$s seconds. %3$s MB used."
 msgstr "%1$s query in %2$s secondi. %3$s MB usati."
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:315
-#, php-format
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:265
 msgid "%1$s sample IDs:%2$s %3$s"
 msgstr "%1$s ID campione:%2$s %3$s"
 
 #: classes/PublishPress/Permissions/ErrorNotice.php:101
-#, php-format
 msgid "%1$s won&#39;t work until you upgrade %2$s to version %3$s or later."
 msgstr ""
 "%1$s non funzionerà finché non aggiorni %2$s alla versione %3$s o successiva."
 
 #: classes/PublishPress/Permissions/ErrorNotice.php:90
-#, php-format
 msgid ""
 "%1$s won&#39;t work until you upgrade PHP to version %2$s or later. Current "
 "version: %3$s"
@@ -116,7 +100,6 @@ msgstr ""
 "successiva. Versione corrente: %3$s"
 
 #: classes/PublishPress/Permissions/ErrorNotice.php:112
-#, php-format
 msgid ""
 "%1$s won&#39;t work until you upgrade WordPress to version %2$s or later."
 msgstr ""
@@ -125,39 +108,32 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/PermissionsAdmin.php:179
 #: classes/PublishPress/Permissions/PermissionsAdmin.php:198
-#, php-format
 msgid "%1$s&nbsp;%2$s%3$s"
 msgstr "%1$s&nbsp;%2$s%3$s"
 
 #: classes/PublishPress/Permissions/PermissionsAdmin.php:142
 #: classes/PublishPress/Permissions/PermissionsAdmin.php:166
-#, php-format
 msgid "%1$s&nbsp;%2$s&nbsp;%3$s-&nbsp;%4$s%5$s%6$s"
 msgstr "%1$s&nbsp;%2$s&nbsp;%3$s-&nbsp;%4$s%5$s%6$s"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/UsersListing.php:88
-#, php-format
 msgid "%1$s(x)%2$s"
 msgstr "%1$s(x)%2$s"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:70
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:106
 msgid "%1$sDisable%2$s all filtering for anonymous users"
 msgstr "%1$sDisabilita%2$s tutti i filtri per gli utenti anonimi"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:71
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:107
 msgid "%1$sDo not apply%2$s metagroup permissions for Administrators"
 msgstr ""
 "%1$sNon applicare le autorizzazioni del metagroup%2$s per gli amministratori"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:215
-#, php-format
+#: classes/PublishPress/Permissions/UI/Groups.php:213
 msgid "%1$sGroup Type:%2$s %3$s"
 msgstr "%1$stipo gruppo:%2$s %3$s"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:209
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:211
 msgid ""
 "%1$sNote%2$s: This causes type-specific capabilities to be required for "
 "editing (\"edit_things\" instead of \"edit_posts\"). You can %3$sassign "
@@ -169,8 +145,7 @@ msgstr ""
 "Puoi %3$sassegnare ruoli supplementari%4$s per il tipo di contenuto oppure "
 "aggiungere direttamente delle capacità a un ruolo WordPress."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:258
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:260
 msgid ""
 "%1$sNote:%2$s If enabled, the create_posts, create_pages, etc. capabilities "
 "will be enforced for all Filtered Post Types. You can %3$sadd these "
@@ -180,8 +155,7 @@ msgstr ""
 "verranno aumentate le capacità di tutti i tipi di contenuto filtrati. Puoi "
 "%3$saggiungere queste capacità a ciascun ruolo%4$s che desideri."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:271
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:273
 msgid ""
 "%1$sNote:%2$s If enabled, the create_posts, create_pages, etc. capabilities "
 "will be enforced for all Filtered Post Types. You can use a WordPress role "
@@ -193,8 +167,7 @@ msgstr ""
 "utilizzare un editor di ruoli come %3$sPublishPress Capabilities%4$s  per "
 "aggiungere queste capacità a ciascun ruolo che desideri."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:295
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:297
 msgid ""
 "%1$sNote:%2$s If enabled, users cannot add previously non-existant tags to a "
 "post unless their role includes the Edit capability for its taxonomy. You "
@@ -206,8 +179,7 @@ msgstr ""
 "includa la capacità di modifica della tassonomia. Puoi %3$saggiungere queste "
 "capacità Capacità > Capacità > Tassonomie%4$s per ciascun ruolo che desideri."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:308
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:310
 msgid ""
 "%1$sNote:%2$s If enabled, users cannot add previously non-existent tags to a "
 "post unless their role includes the Edit capability for its taxonomy. You "
@@ -220,42 +192,36 @@ msgstr ""
 "di ruoli di WordPress come %3$sPublishPress Capabilities%4$s per aggiungere "
 "queste capacità a ciascun ruolo che desideri."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:304
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:450
 msgid "%1$sUsers who have no custom Permission Group membership%2$s"
 msgstr ""
 "%1$sUtenti che non hanno nessuna appartenenza al gruppo di autorizzazioni "
 "personalizzato%2$s"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:315
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:461
 msgid "%1$sUsers who have Specific Permissions (directly or via group)%2$s"
 msgstr ""
 "%1$sUtenti che dispongono di autorizzazioni specifiche (direttamente o "
 "tramite gruppo)%2$s"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:382
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:309
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:455
 msgid "%1$sUsers who have Specific Permissions assigned directly%2$s"
 msgstr ""
 "%1$sUtenti che dispongono di autorizzazioni specifiche assegnate "
 "direttamente%2$s"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:314
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:460
 msgid "%1$sUsers who have Supplemental Roles (directly or via group)%2$s"
 msgstr ""
 "%1$sUtenti che hanno ruoli supplementari (direttamente o tramite gruppo)%2$s"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:381
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:308
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:454
 msgid "%1$sUsers who have Supplemental Roles assigned directly%2$s"
 msgstr "%1$sUtenti che hanno ruoli supplementari assegnati direttamente%2$s"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:316
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:462
 msgid ""
 "%1$sUsers who have Supplemental Roles or Specific Permissions (directly or "
 "via group)%2$s"
@@ -264,8 +230,7 @@ msgstr ""
 "(direttamente o tramite gruppo)%2$s"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:383
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:310
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:456
 msgid ""
 "%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s"
 msgstr ""
@@ -273,73 +238,61 @@ msgstr ""
 "direttamente%2$s"
 
 #: includes/SettingsTabInstall.php:248
-#, php-format
 msgid "%s (previous install)"
 msgstr "%s (installazione precedente)"
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/Users.php:24
-#, php-format
 msgid "%s author page added"
 msgid_plural "%s author pages added"
 msgstr[0] "%s pagina autore aggiunta"
 msgstr[1] "%s pagine autore aggiunte"
 
 #: classes/PublishPress/Permissions/UI/Groups.php:137
-#, php-format
 msgid "%s group deleted"
 msgid_plural "%s groups deleted"
 msgstr[0] "%s gruppo eliminato"
 msgstr[1] "%s gruppi eliminati"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:217
-#, php-format
+#: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:221
 msgid "%s Manager"
 msgstr "%s Gestore"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/UsersListing.php:253
-#, php-format
 msgid "%s more"
 msgstr "%s altro"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:251
-#, php-format
 msgid "%s permissions have not been added or blocked for any %s."
 msgstr ""
 "le autorizzazioni di %s non sono stati aggiunti o bloccati per nessun %s."
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:670
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:669
 msgid "%s Roles"
 msgstr "Ruoli %s"
 
-#: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:110
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:260
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:110
 msgid "%s Visibility"
 msgstr "Visibilità %s"
 
 #: includes/SettingsTabInstall.php:205
-#, php-format
 msgid "%s&nbsp;details"
 msgstr "%s&nbsp;dettagli"
 
+#: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:290
 #: classes/PublishPress/Permissions/UI/GroupsListTableBase.php:45
 #: classes/PublishPress/Permissions/UI/GroupsListTableBase.php:89
-#: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:290
-#, php-format
 msgid "%s, more..."
 msgstr "%s, altro..."
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:970
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:160
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:173
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:179
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:969
 msgid "%s:"
 msgstr "%s:"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:324
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:470
 msgid ""
 "%sNote%s: If you don't see the Roles column on the Users screen, make sure "
 "it is enabled in Screen Options. "
@@ -347,19 +300,18 @@ msgstr ""
 "%sNota%s: se non dovessi vedere la colonna \"Ruoli\" nella schermata "
 "\"Utenti\", assicurati che l'hai abilitata nelle impostazioni schermata. "
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:242
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:329
 msgid "%sPosts / Pages Listing:%s %s"
 msgstr "%sElenco di articoli/pagine:%s %s"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:886
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:885
 msgid "(all post types)"
 msgstr "(tutti i tipi di articoli)"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:107
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:171
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1040
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:247
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:107
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:170
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1039
 msgid "(all)"
 msgstr "(tutto)"
 
@@ -387,19 +339,19 @@ msgstr "(predefinito: Sì)"
 msgid "(invalid role definition)"
 msgstr "(definizione del ruolo non valida)"
 
-#: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:44
-#: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:66
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:64
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:91
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:132
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:194
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:236
+#: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:44
+#: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:66
 #: classes/PublishPress/Permissions/UI/Dashboard/ItemAjax.php:26
 msgid "(login timed out)"
 msgstr "(tempo di accesso scaduto)"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:63
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:981
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:980
 msgid "(no parent)"
 msgstr "(senza genitore)"
 
@@ -407,13 +359,13 @@ msgstr "(senza genitore)"
 msgid "(no setting)"
 msgstr "(non impostato)"
 
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:64
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:756
 #: classes/PublishPress/Permissions/UI/ItemsMetabox.php:295
 #: classes/PublishPress/Permissions/UI/ItemsMetabox.php:297
 #: classes/PublishPress/Permissions/UI/ItemsMetabox.php:576
 #: classes/PublishPress/Permissions/UI/ItemsMetabox.php:578
 #: classes/PublishPress/Permissions/UI/ItemsMetabox.php:584
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:64
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:757
 msgid "(none)"
 msgstr "(nessuno)"
 
@@ -421,7 +373,7 @@ msgstr "(nessuno)"
 msgid "(select...)"
 msgstr "(seleziona...)"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:122
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:114
 msgid "(unpublished)"
 msgstr "(non pubblicato)"
 
@@ -432,39 +384,28 @@ msgstr "(campo utente)"
 #: classes/PublishPress/Permissions/PermissionsAdmin.php:95
 #: classes/PublishPress/Permissions/PermissionsAdmin.php:156
 #: classes/PublishPress/Permissions/PermissionsAdmin.php:188
-#, php-format
 msgid "(using default capabilities due to invalid %s definition)"
 msgstr ""
 "(usando le capacità predefinite a causa della definizione %s non valida)"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:952
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:951
 msgid "* %s"
 msgstr "* %s"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1208
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1207
 msgid "* = assigned for sub-%s only"
 msgstr "* = assegnato solo a sub-%s"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1191
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1190
 msgid ""
 "* = Permissions redundant due to a corresponding &quot;only these&quot; entry"
 msgstr ""
 "* = autorizzazioni ridondanti a causa della voce &quot;solo queste&quot; "
 "corrispondente"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1204
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1203
 msgid "... = assigned for %1$s and sub-%1$s"
 msgstr "* = assegnato a %1$s e sub-%1$s"
-
-#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:63
-#, php-format
-msgid "1 site examined:"
-msgid_plural "%1$s sites examined:"
-msgstr[0] "1 sito esaminato:"
-msgstr[1] "%1$s siti esaminati:"
 
 #: classes/PublishPress/Permissions/UI/SettingsTabModules.php:81
 msgid "<strong>Change Log</strong> (since your current version)"
@@ -487,7 +428,6 @@ msgid "<strong>This plugin can be deleted.</strong>"
 msgstr "<strong>Questo plugin può essere eliminato.</strong>"
 
 #: includes/SettingsTabInstall.php:141
-#, php-format
 msgid ""
 "A presspermit.com key appears to be active. <a href=\"%s\" target=\"_blank\">"
 "Contact us</a> for assistance in migrating your account to publishpress.com."
@@ -496,15 +436,15 @@ msgstr ""
 "target=\"_blank\">Contattaci</a> per assisterti nel migrare il tuo account a "
 "publishpress.com."
 
-#: classes/PublishPress/Permissions/Admin.php:276
+#: classes/PublishPress/Permissions/Admin.php:247
 msgid "About"
 msgstr "Chi siamo"
 
-#: classes/PublishPress/Permissions/Admin.php:276
+#: classes/PublishPress/Permissions/Admin.php:247
 msgid "About PublishPress Permissions"
 msgstr "Informazioni su PublishPress Permissions"
 
-#: classes/PublishPress/Permissions/Admin.php:188
+#: classes/PublishPress/Permissions/Admin.php:165
 msgid "Access Circles"
 msgstr "Accesso ai circoli"
 
@@ -545,7 +485,7 @@ msgstr "Aggiungi nuovo gruppo di autorizzazioni"
 msgid "Add Pages"
 msgstr "Aggiungi pagine"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:282
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:281
 msgid "Add Role"
 msgstr "Aggiungi ruolo"
 
@@ -563,12 +503,11 @@ msgstr "Aggiungi selezionato"
 msgid "Add selected users to Permission Group"
 msgstr "Aggiungi gli utenti selezionati al gruppo di autorizzazioni"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:463
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:462
 msgid "Add Supplemental Roles"
 msgstr "Aggiungi ruoli supplementari"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:93
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:73
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:79
 msgid "Add taxonomy columns to Edit Posts screen"
 msgstr ""
 "Aggiungere delle colonne di tassonomie nella schermata modifica articoli"
@@ -577,7 +516,7 @@ msgstr ""
 msgid "Add User Permissions"
 msgstr "Aggiungi autorizzazioni utente"
 
-#: classes/PublishPress/Permissions/Admin.php:216
+#: classes/PublishPress/Permissions/Admin.php:189
 msgid ""
 "Adds compatibility or integration with ACF, bbPress, Relevanssi, CMS Tree "
 "Page View, Custom Post Type UI, Subscribe2, WPML, various other plugins. "
@@ -590,15 +529,15 @@ msgstr ""
 "siti multipli, fornisce gruppi di autorizzazioni a livello di rete."
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:130
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:417
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:416
 msgid "Adjustment"
 msgstr "Regolazione"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:29
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:31
 msgid "Admin Back End"
 msgstr "Admin backend"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:264
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:254
 msgid "Administrators"
 msgstr "Amministratori"
 
@@ -611,6 +550,7 @@ msgid "Advanced Settings"
 msgstr "Impostazioni avanzate"
 
 #. Description of the plugin
+#: press-permit-core.php
 msgid ""
 "Advanced yet accessible content permissions. Give users or groups type-"
 "specific roles. Enable or block access for specific posts or terms."
@@ -619,7 +559,7 @@ msgstr ""
 "gruppi ruoli specifici per tipo. Abilita o blocca l'accesso per articoli o "
 "termini specifici."
 
-#: classes/PublishPress/Permissions/UI/Groups.php:219
+#: classes/PublishPress/Permissions/UI/Groups.php:217
 msgid "All"
 msgstr "Tutti"
 
@@ -631,21 +571,13 @@ msgstr ""
 "Tutte le capacità definite per questo ruolo WordPress verranno applicate in "
 "assegnazioni supplementari:"
 
-#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:183
-msgid ""
-"All imported groups, roles, permissions and options will be deleted. Are you "
-"sure?"
-msgstr ""
-"Tutti i gruppi, ruoli, permessi e opzioni importati saranno cancellati. Sei "
-"veramente sicuro?"
-
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsage.php:92
 msgid "All Role Usage settings will be reset to DEFAULTS.  Are you sure?"
 msgstr ""
 "Tutte le impostazioni dell'uso di ruolo verranno ripristinate ai VALORI "
 "PREDEFINITI.  Sei sicuro?"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:772
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:828
 msgid ""
 "All settings in this form (including those on undisplayed tabs) will be "
 "reset to DEFAULTS.  Are you sure?"
@@ -667,22 +599,20 @@ msgid "All users (including anonymous)"
 msgstr "Tutti gli utenti (incluso gli anonimi)"
 
 #: classes/PublishPress/Permissions/DB/Groups.php:495
-#, php-format
 msgid "All users with the WordPress role of %s"
 msgstr "Tutti gli utenti con il ruolo in WordPress di %s"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:57
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:48
 msgid "Allow editing other users' uploads if attached to an editable post"
 msgstr ""
 "Consente di modificare i caricamenti degli altri utenti se allegati a un "
 "articolo modificabile"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:95
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:61
-msgid "Allow Renaming of Uneditable Items"
-msgstr "Consenti la ridenominazione di elementi non modificabili"
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:81
+msgid "Allow Renaming of uneditable Items"
+msgstr "Consenti la rinominazione di elementi non modificabili"
 
-#: classes/PublishPress/Permissions/Admin.php:221
+#: classes/PublishPress/Permissions/Admin.php:193
 msgid ""
 "Allows Permission Group membership to be date-limited (delayed and/or "
 "scheduled for expiration). Simple date picker UI alongside group membership "
@@ -692,24 +622,6 @@ msgstr ""
 "(ritardando e/o programmando la scadenza). Semplice interfaccia utente di "
 "selezione della data accanto alla selezione dell'appartenenza al gruppo."
 
-#: classes/PublishPress/Permissions/Admin.php:223
-msgid ""
-"Analyzes your Role Scoper installation, identifying groups, roles, "
-"restrictions and options which can (or cannot) be automatically imported by "
-"the Import module."
-msgstr ""
-"Analizza l'installazione di Role Scoper, identificando gruppi, ruoli, "
-"restrizioni e opzioni che possono (o non possono) essere importati "
-"automaticamente dal modulo di importazione."
-
-#: classes/PublishPress/Permissions/Admin.php:210
-msgid ""
-"Analyzes your Role Scoper installation, identifying Permissions migration "
-"readiness or issues."
-msgstr ""
-"Analizza l'installazione di Role Scoper, identificando i problemi o la "
-"preparazione alla migrazione delle autorizzazioni."
-
 #: classes/PublishPress/Permissions/DB/Groups.php:488
 msgid "Anonymous users (not logged in)"
 msgstr "Utenti anonimi (disconnessi)"
@@ -718,12 +630,12 @@ msgstr "Utenti anonimi (disconnessi)"
 msgid "any user"
 msgstr "qualsiasi utente"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:709
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1173
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:708
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1172
 msgid "Apply"
 msgstr "Applica"
 
-#: modules/presspermit-collaboration/classes/Permissions/CollabHooksCompat.php:132
+#: modules/presspermit-collaboration/classes/Permissions/CollabHooksCompat.php:128
 msgid "Approve"
 msgstr "Approva"
 
@@ -731,42 +643,39 @@ msgstr "Approva"
 msgid "Arbitrary Capabilities"
 msgstr "Capacità arbitrarie"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1063
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1062
 msgid "Assign for selected %s only"
 msgstr "Assegnare solo a %s selezionati"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1059
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1058
 msgid "Assign for selected and sub-%s"
 msgstr "Assegnare ai selezionati e sub-%s"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1071
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1070
 msgid "Assign for selected and sub-terms"
 msgstr "Assegnare ai selezionati e sottotermini"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1075
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1074
 msgid "Assign for selected term only"
 msgstr "Assegnare solo ai termini"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1067
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1066
 msgid "Assign for sub-%s only"
 msgstr "Assegnare solo a sub-%s"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1079
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1078
 msgid "Assign for sub-terms only"
 msgstr "Assegnare solo ai sottotermini"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:75
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:117
 msgid "Assign Publish Permissions separate from Edit Permissions"
 msgstr "Assegna pubblicazione separate dalle autorizzazioni di modifica"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:41
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:38
 msgid "Assign Term"
 msgstr "Termine assegna"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:42
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:39
 msgid "Assignment"
 msgstr "Assegnazione"
 
@@ -774,7 +683,7 @@ msgstr "Assegnazione"
 msgid "Authenticated site users (logged in)"
 msgstr "Utenti autenticati del sito (connessi)"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:353
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:303
 msgid "Author / Editor"
 msgstr "Autore/Editore"
 
@@ -782,18 +691,17 @@ msgstr "Autore/Editore"
 msgid "Author Search / Select"
 msgstr "Ricerca/seleziona autore"
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:203
+#: classes/PublishPress/PermissionsHooksAdmin.php:201
 msgid "Authors"
 msgstr "Autori"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:91
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:68
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:66
 msgid "Auto-assign available term if default term is unavailable"
 msgstr ""
 "Assegnazione automatica di un termine disponibile se il termine predefinito "
 "non è disponibile"
 
-#: classes/PublishPress/Permissions/Admin.php:209
+#: classes/PublishPress/Permissions/Admin.php:183
 msgid ""
 "Auto-create a page for each user of specified roles. Compatible with several "
 "Team / Staff plugins."
@@ -809,7 +717,7 @@ msgstr ""
 "Crea automaticamente una pagina personale per ciascun utente. Questa "
 "caratteristica è disponibile in PublishPress Permissions Pro."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:639
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:696
 msgid "Available Constant"
 msgstr "Costante disponibile"
 
@@ -824,8 +732,8 @@ msgid "Back to Role Usage List"
 msgstr "Torna all'elenco di utilizzo dei ruoli"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:99
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:861
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:178
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:860
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:180
 msgid "Block"
 msgstr "Blocco"
 
@@ -841,18 +749,17 @@ msgstr "Bloccare:"
 msgid "Blocked"
 msgstr "Bloccato"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1427
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1426
 msgid "Blocked:"
 msgstr "Bloccato:"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:79
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:114
 msgid "Bulk Add / Remove Groups on Users Screen"
 msgstr "Aggiungi/rimuovi gruppi in blocco nella schermata degli utenti"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:97
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:69
-msgid "Bulk-Add Author Pages (on Users screen)"
-msgstr "Aggiunta in blocco di pagine autore (nella schermata Utenti)"
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:83
+msgid "Bulk Add Author Pages on Users screen"
+msgstr "Aggiunta in massa di pagine autore nella schermata \"Utenti\""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageHelper.php:40
 msgid ""
@@ -865,7 +772,7 @@ msgstr ""
 "ruolo principale e all'assegnazione diretta supplementare, ma non "
 "all'assegnazione del ruolo del modello."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:523
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:582
 msgid "Capability Name"
 msgstr "Nome competenza"
 
@@ -876,7 +783,7 @@ msgstr "Notifiche di richieste di cambiamento"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:17
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:41
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:421
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:420
 msgid "clear"
 msgstr "pulisci"
 
@@ -907,19 +814,19 @@ msgstr ""
 msgid "close"
 msgstr "chiudi"
 
-#: classes/PublishPress/Permissions/Admin.php:190
+#: classes/PublishPress/Permissions/Admin.php:167
 msgid "Compatibility Pack"
 msgstr "Pacchetto compatibilità"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:47
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:42
 msgid "Constants"
 msgstr "Costanti"
 
-#: classes/PublishPress/Permissions/Admin.php:280
+#: classes/PublishPress/Permissions/Admin.php:251
 msgid "Contact"
 msgstr "Contatto"
 
-#: classes/PublishPress/Permissions/Admin.php:280
+#: classes/PublishPress/Permissions/Admin.php:251
 msgid "Contact the PublishPress team"
 msgstr "Contatta il team di PublishPress"
 
@@ -927,20 +834,16 @@ msgstr "Contatta il team di PublishPress"
 msgid "Contact Us"
 msgstr "Contattaci"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:348
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:355
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:298
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:305
 msgid "Content Administrator"
 msgstr "Amministratore dei contenuti"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:39
-msgid "Content Filtering"
-msgstr "Filtraggio contenuti"
-
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:352
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:302
 msgid "Contributor / Author / Editor"
 msgstr "Collaboratore/Autore/Editore"
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:202
+#: classes/PublishPress/PermissionsHooksAdmin.php:200
 msgid "Contributors"
 msgstr "Collaboratori"
 
@@ -962,32 +865,32 @@ msgstr ""
 "caratteristica del flusso di lavoro è disponibile in PublishPress "
 "Permissions Pro."
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1091
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1090
 msgid "Convert to \"Blocked\""
 msgstr "Converti in “Bloccato”"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1090
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1089
 msgid "Convert to \"Enabled\""
 msgstr "Converti in “Abilitato”"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1092
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1091
 msgid "Convert to \"Limit to\""
 msgstr "Converti in “Limitare a”"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:475
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:474
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:15
 msgid "Copy"
 msgstr "Copia"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1395
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1394
 msgid "Copy Roles and Permissions"
 msgstr "Copia ruoli e autorizzazioni"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1372
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1371
 msgid "Copy Roles and Permissions from:"
 msgstr "Copia i ruoli e le autorizzazioni da:"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:20
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:22
 msgid "Core"
 msgstr "Core"
 
@@ -1015,7 +918,6 @@ msgid "create group"
 msgstr "crea gruppo"
 
 #: classes/PublishPress/Permissions/UI/GroupNew.php:81
-#, php-format
 msgid "Create New %s"
 msgstr "Crea nuovo %s"
 
@@ -1023,7 +925,7 @@ msgstr "Crea nuovo %s"
 msgid "Create New Permission Group"
 msgstr "Crea nuovo gruppo di autorizzazioni"
 
-#: classes/PublishPress/Permissions/Admin.php:222
+#: classes/PublishPress/Permissions/Admin.php:194
 msgid ""
 "Create or synchronize posts to match users. Designed for Team / Staff "
 "plugins, but with broad usage potential."
@@ -1040,17 +942,17 @@ msgid "Current Selections:"
 msgstr "Selezioni correnti:"
 
 #: classes/PublishPress/Permissions/Groups.php:54
-#: classes/PublishPress/Permissions/UI/Groups.php:209
+#: classes/PublishPress/Permissions/UI/Groups.php:207
 #: classes/PublishPress/Permissions/UI/GroupsListTable.php:331
 msgid "Custom Group"
 msgstr "Gruppo personalizzato"
 
 #: classes/PublishPress/Permissions/Groups.php:55
-#: classes/PublishPress/Permissions/UI/Groups.php:209
+#: classes/PublishPress/Permissions/UI/Groups.php:207
 msgid "Custom Groups"
 msgstr "Gruppi personalizzati"
 
-#: classes/PublishPress/Permissions/Admin.php:218
+#: classes/PublishPress/Permissions/Admin.php:191
 msgid ""
 "Custom post statuses: Workflow statuses allow unlimited orderable steps "
 "between pending and published, each with distinct capability requirements "
@@ -1073,7 +975,7 @@ msgstr "Cliente"
 msgid "Customize"
 msgstr "Personalizza"
 
-#: classes/PublishPress/Permissions/Admin.php:205
+#: classes/PublishPress/Permissions/Admin.php:180
 msgid ""
 "Customize access to custom publication workflow statuses or visibility "
 "statuses."
@@ -1081,7 +983,7 @@ msgstr ""
 "Personalizza l'accesso agli stati del flusso di lavoro della pubblicazione o "
 "agli stati di visibilità."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:30
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:32
 msgid "Database Maintenance"
 msgstr "Database della manutenzione"
 
@@ -1089,7 +991,7 @@ msgstr "Database della manutenzione"
 msgid "default all"
 msgstr "predefinito tutto"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:64
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:51
 msgid "Default visibility for new posts                               : "
 msgstr ""
 "Visibilità predefinita per i nuovi articoli                               : "
@@ -1098,7 +1000,7 @@ msgstr ""
 msgid "define custom privacy"
 msgstr "definisci la privacy personalizzata"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:581
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:643
 msgid "Defined Constant"
 msgstr "Costante definita"
 
@@ -1106,15 +1008,15 @@ msgstr "Costante definita"
 msgid "Delete"
 msgstr "Elimina"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:65
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:60
 msgid "Delete settings on plugin deletion"
 msgstr "Elimina le impostazioni quando si elimina il plugin"
 
-#: classes/PublishPress/Permissions/UI/GroupsListTable.php:173
 #: classes/PublishPress/Permissions/UI/GroupNew.php:103
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:524
+#: classes/PublishPress/Permissions/UI/GroupsListTable.php:173
 #: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:583
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:641
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:645
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:698
 msgid "Description"
 msgstr "Descrizione"
 
@@ -1122,7 +1024,7 @@ msgstr "Descrizione"
 msgid "Description:"
 msgstr "Descrizione:"
 
-#: classes/PublishPress/Permissions/UI/PromoBanner.php:237
+#: classes/PublishPress/Permissions/UI/PromoBanner.php:248
 msgid "Detailed documentation is also available on the plugin website."
 msgstr ""
 "Una documentazione dettagliata è disponibile anche sul sito web del plugin."
@@ -1131,33 +1033,36 @@ msgstr ""
 msgid "Detailed Feature Grid"
 msgstr "Griglia dettagliata delle funzionalità"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:77
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:112
 msgid "Detect Dynamically Mapped WP Roles"
 msgstr "Rileva ruoli WP mappati dinamicamente"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageListTable.php:161
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageEdit.php:102
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageListTable.php:161
 msgid "Direct Assignment"
 msgstr "Assegnazione diretta"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:662
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:661
 msgid "Direct-Assigned"
 msgstr "Assegnati direttamente"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:665
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:664
 msgid "Disabled Type"
 msgstr "Tipi disabilitati"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:74
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:110
 msgid "Display Administrative Hints"
 msgstr "Visualizza suggerimenti amministrativi"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:75
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:59
+msgid "Display all advanced settings"
+msgstr "Visualizza tutte le impostazioni avanzate"
+
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:111
 msgid "Display Module Hints"
 msgstr "Suggerimenti per il modulo di visualizzazione"
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:373
-#, php-format
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:371
 msgid ""
 "Displayed permissions are those assigned for the \"%1$s\" type. You can also "
 "%2$sdefine universal %3$s permissions which apply to all related post "
@@ -1167,12 +1072,11 @@ msgstr ""
 " Puoi anche %2$sdefinire le autorizzazioni universali %3$s che si applicano "
 "a tutti i tipi di contenuto correlati%4$s."
 
-#: classes/PublishPress/Permissions/Admin.php:278
+#: classes/PublishPress/Permissions/Admin.php:249
 msgid "Documentation"
 msgstr "Documentazione"
 
 #: classes/PublishPress/Permissions/ErrorNotice.php:133
-#, php-format
 msgid "Duplicate %1$s module activated (%2$s in folder %3$s)."
 msgstr "Duplicare %1$s modulo attivato (%2$s nella cartella %3$s)."
 
@@ -1180,7 +1084,7 @@ msgstr "Duplicare %1$s modulo attivato (%2$s nella cartella %3$s)."
 msgid "edit"
 msgstr "modifica"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:305
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:255
 msgid "Edit Form HTML IDs:"
 msgstr "Modifica ID HTML modulo:"
 
@@ -1189,7 +1093,6 @@ msgid "Edit Permission Group"
 msgstr "Modifica gruppo di autorizzazioni"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:144
-#, php-format
 msgid "Edit Permission Group (%sWordPress Role%s)"
 msgstr "Modifica gruppo di autorizzazioni (%sruolo WordPress%s)"
 
@@ -1202,7 +1105,6 @@ msgid "Edit Permissions"
 msgstr "Modifica autorizzazioni"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:154
-#, php-format
 msgid "Edit Permissions (%s)"
 msgstr "Modifica autorizzazioni (%s)"
 
@@ -1212,9 +1114,9 @@ msgstr "Modifica direttamente le capacità di ruolo"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/DashboardFilters.php:296
 #: classes/PublishPress/Permissions/UI/Dashboard/DashboardFilters.php:297
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsage.php:64
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/DashboardFilters.php:107
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/DashboardFilters.php:108
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsage.php:64
 msgid "Edit Role Usage"
 msgstr "Modifica uso di ruolo"
 
@@ -1227,20 +1129,20 @@ msgid "Edit User Permissions"
 msgstr "Modifica autorizzazioni utente"
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:8
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:25
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:21
 msgid "Editing"
 msgstr "Modifica"
 
-#: classes/PublishPress/Permissions/Admin.php:189
+#: classes/PublishPress/Permissions/Admin.php:166
 msgid "Editing Permissions"
 msgstr "Modifica autorizzazioni"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:40
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:32
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:35
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:28
 msgid "Editor Options"
 msgstr "Opzioni dell'editor"
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:204
+#: classes/PublishPress/PermissionsHooksAdmin.php:202
 msgid "Editors"
 msgstr "Editori"
 
@@ -1248,13 +1150,8 @@ msgstr "Editori"
 msgid "eligible (%d):"
 msgstr "idoneo (%d):"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:64
-msgid "Enable advanced settings"
-msgstr "Abilita impostazioni avanzate"
-
 #: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:165
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:338
-#, php-format
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:336
 msgid "enable custom permissions for %s"
 msgstr "abilita autorizzazioni personalizzate per %s"
 
@@ -1266,11 +1163,11 @@ msgstr "Abilitare:"
 msgid "Enabled"
 msgstr "Abilitato"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1431
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1430
 msgid "Enabled:"
 msgstr "Abilitato:"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:45
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:47
 msgid "Enforce distinct edit, delete capability requirements for Media"
 msgstr "Applica modifica distinta, elimina requisiti di capacità per i media"
 
@@ -1290,7 +1187,7 @@ msgstr "Ognuno"
 msgid "Features"
 msgstr "Caratteristiche"
 
-#: classes/PublishPress/Permissions/Admin.php:193
+#: classes/PublishPress/Permissions/Admin.php:170
 msgid "File Access"
 msgstr "Accesso ai file"
 
@@ -1298,21 +1195,21 @@ msgstr "Accesso ai file"
 msgid "File Filtering"
 msgstr "Filtraggio file"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:85
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:64
 msgid "Filter Menu Items"
 msgstr "Filtra voci di menu"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:28
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:44
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:30
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:46
 msgid "Filtered Post Types"
 msgstr "Tipi di articoli filtrati"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:27
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:42
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:29
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:44
 msgid "Filtered Taxonomies"
 msgstr "Tassonomie filtrate"
 
-#: classes/PublishPress/Permissions/Admin.php:219
+#: classes/PublishPress/Permissions/Admin.php:192
 msgid ""
 "Filters direct file access, based on user's access to post(s) which the file "
 "is attached to. No additional configuration required. Creates/modifies ."
@@ -1324,7 +1221,6 @@ msgstr ""
 "cartella principale per i siti multipli)."
 
 #: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:59
-#, php-format
 msgid "Find Users by %s"
 msgstr "Trova utenti per %s"
 
@@ -1336,16 +1232,15 @@ msgstr "Nome"
 msgid "For additional fields, define constant PP_USER_SEARCH_META_FIELDS"
 msgstr "Per campi aggiuntivi, definisci la costante PP_USER_SEARCH_META_FIELDS"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:162
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:161
 msgid "for item"
 msgstr "per elemento"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:253
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:252
 msgid "For Statuses"
 msgstr "Per stati"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:288
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:434
 msgid ""
 "For user-specific Supplemental Roles and Permissions, click a \"Roles\" cell "
 "on the %1$sUsers%2$s screen."
@@ -1353,19 +1248,7 @@ msgstr ""
 "Per i ruoli supplementari e le autorizzazioni specifiche per l'utente, fai "
 "clic nella cella dei singoli \"ruoli\" della schermata %1$sUtenti%2$s."
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:31
-msgid "Fork"
-msgstr "Clona"
-
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:71
-msgid "Fork published posts only"
-msgstr "Clona soltanto gli articoli pubblicati"
-
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:72
-msgid "Forking enforces edit_others_posts capability"
-msgstr "La clonazione impone la capacità edit_others_posts"
-
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:48
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:40
 msgid "Front End"
 msgstr "Frontend"
 
@@ -1373,12 +1256,7 @@ msgstr "Frontend"
 msgid "Further details for your installation:"
 msgstr "Maggiori dettagli per la tua installazione:"
 
-#: modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:27
-msgid "General Roles"
-msgstr "Ruoli generali"
-
-#: modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:466
-#, php-format
+#: modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:488
 msgid "Go to %s"
 msgstr "Vai a %s"
 
@@ -1387,8 +1265,7 @@ msgstr "Vai a %s"
 msgid "Group created."
 msgstr "Gruppo creato."
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1323
-#: modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:27
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1322
 msgid "Group Members"
 msgstr "Membri del gruppo"
 
@@ -1398,9 +1275,7 @@ msgstr "Gruppo aggiornato."
 
 #: classes/PublishPress/Permissions/Groups.php:56
 #: classes/PublishPress/Permissions/UI/Dashboard/DashboardFilters.php:265
-#: classes/PublishPress/Permissions/UI/Dashboard/DashboardFilters.php:265
 #: classes/PublishPress/Permissions/UI/Dashboard/UsersListing.php:93
-#: modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:27
 msgid "Groups"
 msgstr "Gruppi"
 
@@ -1414,10 +1289,12 @@ msgid "Hide"
 msgstr "Nascondi"
 
 #. Author URI of the plugin
+#: press-permit-core.php
 msgid "https://publishpress.com/"
 msgstr "https://publishpress.com/"
 
-#. URI of the plugin
+#. Plugin URI of the plugin
+#: press-permit-core.php
 msgid "https://publishpress.com/presspermit"
 msgstr "https://publishpress.com/presspermit"
 
@@ -1431,8 +1308,7 @@ msgstr ""
 "comunque disponibile come ruolo modello con capacità WP predefinite (ma può "
 "essere disabilitato qui)."
 
-#: classes/PublishPress/Permissions/Admin.php:265
-#, php-format
+#: classes/PublishPress/Permissions/Admin.php:236
 msgid "If you like %s, please leave us a %s rating. Thank you!"
 msgstr "Se %s ti soddisfa, lasciaci una valutazione di %s!"
 
@@ -1442,16 +1318,6 @@ msgstr ""
 "Se hai bisogno di aiuto o hai richieste per nuove funzionalità, faccelo "
 "sapere."
 
-#: classes/PublishPress/Permissions/Admin.php:194
-#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:25
-msgid "Import"
-msgstr "Importa"
-
-#: classes/PublishPress/Permissions/Admin.php:207
-#: classes/PublishPress/Permissions/Admin.php:220
-msgid "Import Role Scoper groups, roles, restrictions and settings."
-msgstr "Importa gruppi, ruoli, restrizioni e impostazioni di Role Scoper."
-
 #: classes/PublishPress/Permissions/UI/SettingsTabModules.php:140
 msgid "Inactive Modules:"
 msgstr "Moduli inattivi:"
@@ -1460,7 +1326,7 @@ msgstr "Moduli inattivi:"
 msgid "Installation History"
 msgstr "Cronologia installazioni"
 
-#: classes/PublishPress/Permissions/Admin.php:203
+#: classes/PublishPress/Permissions/Admin.php:178
 msgid ""
 "Integration with ACF, bbPress, BuddyPress, Relevanssi, WPML and other "
 "plugins; enhanced Multisite support."
@@ -1495,11 +1361,11 @@ msgstr "Conoscenze di base"
 msgid "Last Name"
 msgstr "Cognome"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:867
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:172
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:156
-#: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:213
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:135
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:866
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:174
+#: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:217
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:127
 msgid "Legacy"
 msgstr "Legacy"
 
@@ -1507,46 +1373,35 @@ msgstr "Legacy"
 msgid "License"
 msgstr "Licenza"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:72
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:108
 msgid "Limit front-end category / term filtering"
 msgstr "Limita il filtraggio di categorie/termini nel frontend"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1424
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:115
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1423
 msgid "Limit to:"
 msgstr "Limitato a:"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:63
-msgid "Limit User Edit by Level"
-msgstr "Limita modifica utente per livello"
-
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:35
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:52
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:30
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:43
 msgid "Limited Editing Elements"
 msgstr "Elementi di modifica limitati"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:94
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:60
-msgid "List only user-editable content as available items"
-msgstr ""
-"Elenca solo i contenuti modificabili dall'utente come elementi disponibili"
-
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:92
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:65
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:67
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:52
 msgid "List other user's uneditable posts"
 msgstr "Elenco degli articoli non modificabili di altri utenti"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:55
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:46
 msgid "List other users' uploads if attached to a readable post"
 msgstr "Elenca gli upload di altri utenti se allegati a un articolo leggibile"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:54
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:45
 msgid "List other users' uploads if attached to an editable post"
 msgstr ""
 "Elenca gli upload di altri utenti se allegati a un articolo modificabile"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/TermsListing.php:42
-#, php-format
 msgid ""
 "Listed permissions are those assigned for the \"%1$s\" type. You can also "
 "%2$sdefine universal %3$s permissions which apply to all related post "
@@ -1556,12 +1411,11 @@ msgstr ""
 "anche %2$sdefinire autorizzazioni universali %3$s che si applicano a tutti i "
 "tipi di articoli correlati%4$s."
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:197
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:149
 msgid "lock"
 msgstr "bloccare"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:96
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:62
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:82
 msgid "Lock custom menu items"
 msgstr "Blocca le voci di menu personalizzate"
 
@@ -1581,49 +1435,39 @@ msgstr "livelli di ruolo inferiori"
 msgid "make each selected user the author of a new page"
 msgstr "rendi ogni utente selezionato l'autore di una nuova pagina"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:47
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:44
 msgid "Management"
 msgstr "Gestione"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:36
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:31
 msgid "Media Library"
 msgstr "Libreria dei media"
 
-#: classes/PublishPress/Permissions/Admin.php:195
+#: classes/PublishPress/Permissions/Admin.php:171
 msgid "Membership"
 msgstr "Appartenenza"
 
-#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:117
-msgid ""
-"Migrates Role Scoper Options, Role Groups, Roles and Restrictions to "
-"PublishPress Permissions."
-msgstr ""
-"Migra le opzioni di Role Scoper, i gruppi di ruoli, i ruoli e le restrizioni "
-"alle autorizzazioni di PublishPress."
-
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:433
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:432
 msgid "Mirror all selections to other operation(s)"
 msgstr "Esegui il mirroring di tutte le selezioni su altre operazioni"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1149
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1148
 msgid "Mirror to %s"
 msgstr "Esegui il mirroring su %s"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1153
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1152
 msgid "Mirror to %s %s"
 msgstr "Esegui il mirroring su %s %s"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:52
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:45
 msgid "Miscellaneous"
 msgstr "Varie"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:114
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:116
 msgid "Modify permissions for these Post Types:"
 msgstr "Modifica le autorizzazioni per questi tipi di articoli:"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:85
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:87
 msgid "Modify permissions for these Taxonomies:"
 msgstr "Modifica le autorizzazioni per queste tassonomie:"
 
@@ -1631,8 +1475,8 @@ msgstr "Modifica le autorizzazioni per queste tassonomie:"
 msgid "n/a"
 msgstr "n/d"
 
-#: classes/PublishPress/Permissions/UI/GroupsListTable.php:168
 #: classes/PublishPress/Permissions/UI/GroupNew.php:97
+#: classes/PublishPress/Permissions/UI/GroupsListTable.php:168
 msgid "Name"
 msgstr "Nome"
 
@@ -1641,29 +1485,32 @@ msgid "Name:"
 msgstr "Nome:"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:97
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:859
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:858
 msgid "Nav Menu (Block)"
 msgstr "Menu navigazione (blocco)"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:865
-#: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:211
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:864
+#: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:215
 msgid "Nav Menu (Legacy)"
 msgstr "Menu di navigazione (legacy)"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:49
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:37
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:44
 msgid "Nav Menu Editing"
 msgstr "Modifica del menu di navigazione"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:176
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:178
 msgid "Nav Menus (Block)"
 msgstr "Menu di navigazione (blocco)"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:170
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:154
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:133
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:172
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:125
 msgid "Nav Menus (Legacy)"
 msgstr "Menu di navigaazione (legacy)"
+
+#: classes/PublishPress/Permissions/UI/Settings.php:188
+msgid "Need Permissions Support?"
+msgstr "Hai bisogno del supporto di Permissions?"
 
 #: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:34
 msgid "Network-Wide Settings"
@@ -1698,7 +1545,7 @@ msgstr "Non è stato trovato alcun gruppo corrispondente."
 msgid "No matching roles were found."
 msgstr "No sono stati trovati suoli corrispondenti."
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:264
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:254
 msgid "no Page Parent filter"
 msgstr "nessun filtro pagina genitore"
 
@@ -1706,7 +1553,7 @@ msgstr "nessun filtro pagina genitore"
 msgid "No Qualification selected!"
 msgstr "Nessuna qualifica selezionata!"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:351
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:301
 msgid "no requirement"
 msgstr "nessun requisito"
 
@@ -1718,8 +1565,8 @@ msgstr "Nessun risultato trovato."
 msgid "No statuses selected!"
 msgstr "Nessuno degli stati è selezionato!"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageListTable.php:166
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageEdit.php:100
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageListTable.php:166
 msgid "no supplemental assignment"
 msgstr "nessun assegnazione supplementare"
 
@@ -1731,13 +1578,13 @@ msgstr "Nessun utente/gruppo specificato."
 msgid "No users selected"
 msgstr "Nessun utente selezionato"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:74
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:116
 msgid "Non-Administrators can set Editing Permissions for their editable posts"
 msgstr ""
 "I non amministratori possono impostare le autorizzazioni di modifica per i "
 "loro articoli modificabili"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:78
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:113
 msgid "Non-Administrators can set Reading Permissions for their editable posts"
 msgstr ""
 "I non amministratori possono impostare autorizzazioni di lettura per i loro "
@@ -1764,8 +1611,7 @@ msgstr ""
 "creare gruppi di utenti e concedere o negare loro l'accesso ad aree del tuo "
 "sito."
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1222
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1221
 msgid ""
 "Note: Permissions inherited from parent %1$s are not displayed. %2$sshow "
 "all%3$s"
@@ -1773,8 +1619,7 @@ msgstr ""
 "Nota: le autorizzazioni ereditate dal genitore %1$s non vengono visualizzate."
 " %2$smostra tutto%3$s"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1234
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1233
 msgid ""
 "Note: Permissions inherited from parent %1$s or terms are not displayed. "
 "%2$sshow all%3$s"
@@ -1782,7 +1627,7 @@ msgstr ""
 "Nota: le autorizzazioni ereditate dal genitore %1$s o i termini non vengono "
 "visualizzate. %2$smostra tutto%3$s"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:166
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:225
 msgid ""
 "note: Plugin settings and configuration data will be deleted, but only after "
 "the last copy of Permissions / Permissions Pro is deleted."
@@ -1799,22 +1644,12 @@ msgstr "Note"
 msgid "Notes regarding Pattern Roles"
 msgstr "Note relative ai ruoli modello"
 
-#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:137
-msgid "Notes:"
-msgstr "Note:"
-
-#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:69
-#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:148
-msgid "Nothing to import!"
-msgstr "Nulla da importare!"
-
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:661
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:664
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:664
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:660
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:663
 msgid "objects"
 msgstr "soggetti"
 
-#: classes/PublishPress/Permissions/Admin.php:204
+#: classes/PublishPress/Permissions/Admin.php:179
 msgid ""
 "On the site front end, display teaser text for unreadable posts instead of "
 "hiding them."
@@ -1822,7 +1657,7 @@ msgstr ""
 "Nel frontend del sito, visualizza un testo promozionale per gli articoli "
 "illeggibili invece di nasconderli."
 
-#: classes/PublishPress/Permissions/Admin.php:217
+#: classes/PublishPress/Permissions/Admin.php:190
 msgid ""
 "On the site front end, replace non-readable content with placeholder text. "
 "Can be enabled for any post type. Custom filters are provided but no "
@@ -1834,24 +1669,19 @@ msgstr ""
 "l'uso di base."
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:129
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:416
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:415
 msgid "Operation"
 msgstr "Operazione"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:357
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:307
 msgid "Option Administrator"
 msgstr "Opzione amministratore"
 
-#: modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:27
-msgid "Options"
-msgstr "Opzioni"
-
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:90
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:66
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:78
 msgid "Order Page Parent dropdown by Title"
 msgstr "Ordina menu a discesa delle pagine genitore per titolo"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:56
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:47
 msgid "Other users' unattached uploads listed by default"
 msgstr ""
 "Gli upload non allegati di altri utenti vengono elencati per impostazione "
@@ -1861,31 +1691,23 @@ msgstr ""
 msgid "Page Approved"
 msgstr "Pagina approvata"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:264
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:254
 msgid "Page Authors, Editors and Administrators"
 msgstr "Autori, editor di pagine e amministratori"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:264
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:254
 msgid "Page Editors and Administrators"
 msgstr "Editor di pagine e amministratori"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:89
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:67
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:65
 msgid "Page Parent selection for editable pages only"
 msgstr "Selezione della pagina genitore solo per le pagine modificabili"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:41
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:34
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:37
 msgid "Page Structure"
 msgstr "Struttura pagina"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:51
-msgid "Pages can be set or removed from Top Level by                  : "
-msgstr ""
-"Le pagine possono essere impostate o rimosse dal livello superiore da        "
-"          : "
-
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:98
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:68
 msgid "Pages can be set or removed from Top Level by: "
 msgstr ""
 "Le pagine possono essere impostate o rimosse dal livello superiore da: "
@@ -1912,8 +1734,8 @@ msgstr ""
 "il modello articolo imposta contenuto genitore, contenuto predefinito e "
 "template per la pagina dell'autore"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageListTable.php:167
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageEdit.php:101
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageListTable.php:167
 msgid "Pattern Role"
 msgstr "Ruolo modello"
 
@@ -1939,55 +1761,36 @@ msgstr "modellato su..."
 msgid "Pending Revision Monitors"
 msgstr "Monitoraggio delle revisioni in sospeso"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:83
-msgid ""
-"Performance                                  : Don't filter category / tag "
-"counts"
-msgstr ""
-"Prestazioni                                  : non filtrare i conteggi di "
-"categorie/tag"
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:63
+msgid "Performance: Don't filter category / tag counts"
+msgstr "Prestazioni: non filtrare i conteggi di categorie/tag"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:43
 msgid "Permission already selected!"
 msgstr "Autorizzazione già selezionata!"
 
 #: classes/PublishPress/Permissions/Compat/EyesOnly.php:14
-#: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:159
+#: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:162
 msgid "Permission Group"
 msgstr "Gruppo di autorizzazioni"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:171
-#: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:160
 #: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:186
+#: classes/PublishPress/Permissions/UI/Groups.php:171
+#: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:163
 msgid "Permission Groups"
 msgstr "Gruppi di autorizzazioni"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:198
-msgid ""
-"Permission Groups adjust user access with type-specific Roles and item-"
-"specific Permissions. To customize permissions for a single user instead, "
-"click their Role in the Users listing."
-msgstr ""
-"I gruppi di autorizzazioni servono a regolare l'accesso degli utenti con "
-"ruoli specifici del tipo e autorizzazioni specifiche dell'elemento. Per "
-"personalizzare invece le autorizzazioni per un singolo utente, fare clic sul "
-"suo ruolo nell'elenco utenti."
-
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:86
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:76
 msgid "Permission Groups on User Profile"
 msgstr "Gruppi di autorizzazioni sul profilo utente"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:42
 #: classes/PublishPress/Permissions/UI/Dashboard/DashboardFilters.php:239
 #: classes/PublishPress/Permissions/UI/Dashboard/PostsListing.php:82
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:38
 msgid "Permissions"
 msgstr "Autorizzazioni"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:43
-msgid "Permissions Admin"
-msgstr "Amministratore autorizzazioni"
-
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:45
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:39
 msgid "Permissions Capabilities"
 msgstr "Competenze delle autorizzazioni"
 
@@ -1997,7 +1800,7 @@ msgstr ""
 "Autorizzazioni convertite. Ricaricare il modulo per visualizzare le nuove "
 "autorizzazioni salvate."
 
-#: classes/PublishPress/Permissions/Admin.php:278
+#: classes/PublishPress/Permissions/Admin.php:249
 msgid "Permissions Documentation"
 msgstr "Documentazione delle autorizzazioni"
 
@@ -2015,9 +1818,9 @@ msgstr ""
 "Permissions Pro era stato attivato in precedenza. Adesso stai utilizzando la "
 "versione free con minori funzionalità."
 
-#: classes/PublishPress/Permissions/UI/Settings.php:83
 #: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:77
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:314
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:312
+#: classes/PublishPress/Permissions/UI/Settings.php:83
 msgid "Permissions Settings"
 msgstr "Impostazioni delle autorizzazioni"
 
@@ -2032,64 +1835,45 @@ msgstr "Autorizzazioni&hellip;"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:158
 #: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:171
-#, php-format
 msgid "Permissions: %1$s %2$s in this %3$s"
 msgstr "Autorizzazioni: %1$s %2$s in questo %3$s"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:164
-#, php-format
 msgid "Permissions: %1$s all content in this %2$s"
 msgstr "Autorizzazioni: %1$s tutto il contenuto in questo %2$s"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:177
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/TermEdit.php:46
-#, php-format
 msgid "Permissions: %1$s this %2$s"
 msgstr "Autorizzazioni: %1$s questo %2$s"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:116
-#, php-format
 msgid "Permissions: %s this %s"
 msgstr "Autorizzazioni: %s questo %s"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:108
-#, php-format
 msgid "Permissions: Assign Terms to this %s"
 msgstr "Autorizzazioni: Assegna termini a questo %s"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:151
-#, php-format
 msgid "Permissions: Assign this %2$s"
 msgstr "Autorizzazioni: Assegna questo %2$s"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:145
-#, php-format
 msgid "Permissions: Assign this %2$s to %3$s"
 msgstr "Autorizzazioni: Assegna questo %2$s a %3$s"
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/TermEdit.php:42
-#, php-format
 msgid "Permissions: Select this %1$s as Parent"
 msgstr "Autorizzazioni: Seleziona questo %1$s come genitore"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:100
-#, php-format
 msgid "Permissions: Select this %s as Parent"
 msgstr "Autorizzazioni: Seleziona questo %s come genitore"
 
 #: includes/SettingsTabInstall.php:269
-#, php-format
 msgid "PHP Version: %s"
 msgstr "PHP versione: %s"
-
-#: classes/PublishPress/PermissionsHooksAdmin.php:228
-#, php-format
-msgid ""
-"Please %senable the Editing Permissions module%s for PublishPress Revisions "
-"integration."
-msgstr ""
-"%sabilita il modulo \"Modifica autorizzazioni\"%s per l'integrazione con "
-"PublishPress Revisions."
 
 #: classes/PublishPress/Permissions/UI/Dashboard/PluginAdmin.php:88
 msgid ""
@@ -2107,18 +1891,14 @@ msgstr "Articolo approvato"
 msgid "Post Capabilities"
 msgstr "Competenze articolo"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:39
-msgid "Post Forking"
-msgstr "Clonazione articolo"
-
 #: includes/promo/statuses-promo.php:5
 msgid "Post Statuses for Editorial Workflow"
 msgstr "Stati degli articoli per il flusso editoriale"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:128
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:251
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:385
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:415
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:250
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:384
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:414
 msgid "Post Type"
 msgstr "Tipo articolo"
 
@@ -2126,18 +1906,18 @@ msgstr "Tipo articolo"
 msgid "Post Visibility Statuses"
 msgstr "Stati di visibilità degli articoli"
 
-#: classes/PublishPress/Permissions/Admin.php:202
+#: classes/PublishPress/Permissions/Admin.php:177
 msgid ""
 "Post-specific and category-specific permissions for creation and editing."
 msgstr ""
 "Autorizzazioni specifiche per la creazione e la modifica di articoli e "
 "categorie."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:81
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:61
 msgid "Post-specific Permissions take priority"
 msgstr "Le autorizzazioni specifiche dell'articolo hanno la priorità"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:33
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:29
 msgid "Posts / Pages Listing"
 msgstr "Elenco articoli/pagine"
 
@@ -2145,9 +1925,11 @@ msgstr "Elenco articoli/pagine"
 msgid "Posts Teaser"
 msgstr "Promo articoli"
 
-#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:92
-msgid "Previous import values have been deleted"
-msgstr "I valori precedentemente importati sono stati eliminati"
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:49
+msgid "Prevent editing uploads if attached to a non-editable post"
+msgstr ""
+"Impedisce la modifica dei caricamenti se allegati a un articolo non "
+"modificabile"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:226
 msgid "Primary Role:"
@@ -2157,24 +1939,21 @@ msgstr "Ruolo primario:"
 msgid "Pro Modules:"
 msgstr "Moduli Pro:"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:70
-msgid "Publish Author Pages at bulk creation"
-msgstr "Pubblica pagine autore durante la creazione di massa"
-
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:11
 msgid "Publishing"
 msgstr "Pubblicazione"
 
 #. Author of the plugin
+#: press-permit-core.php
 msgid "PublishPress"
 msgstr "PublishPress"
 
-#. Name of the plugin
+#. Plugin Name of the plugin
+#: press-permit-core.php
 msgid "PublishPress Permissions"
 msgstr "PublishPress Permissions"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/PluginAdmin.php:35
-#, php-format
 msgid ""
 "PublishPress Permissions needs directions. Please go to %1$sPermissions > "
 "Settings%2$s and indicate which Post Types and Taxonomies should be filtered."
@@ -2184,24 +1963,15 @@ msgstr ""
 "tassonomie devono essere filtrate."
 
 #: includes/SettingsTabInstall.php:200 includes/SettingsTabInstall.php:210
-#, php-format
 msgid "PublishPress Permissions Version: %1$s %2$s"
 msgstr "PublishPress Permissions versione: %1$s %2$s"
-
-#: classes/PublishPress/PermissionsHooksAdmin.php:232
-msgid ""
-"PublishPress Revisions integration requires the Editing Permissions module. "
-"Please notify your Administrator."
-msgstr ""
-"Per l'integrazione con PublishPress Revisions è obbligatorio il modulo "
-"\"Modifica autorizzazioni\". Fallo presente al tuo amministratore."
 
 #: classes/PublishPress/Permissions/UI/HintsPro.php:172
 msgid "Purchase"
 msgstr "Acquista"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:131
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:418
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:417
 msgid "Qualification"
 msgstr "Qualifica"
 
@@ -2209,7 +1979,7 @@ msgstr "Qualifica"
 msgid "Read"
 msgstr "Leggere"
 
-#: classes/PublishPress/Permissions/Admin.php:123
+#: classes/PublishPress/Permissions/Admin.php:100
 msgid "Reading"
 msgstr "Leggendo"
 
@@ -2221,7 +1991,7 @@ msgstr "Ricarica il modulo per modificare ulteriormente questa autorizzazione"
 msgid "Reload form for further changes to this role"
 msgstr "Ricarica il modulo per modificare ulteriormente questo ruolo"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1055
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1054
 #: classes/PublishPress/Permissions/UI/Dashboard/UsersListing.php:69
 msgid "Remove"
 msgstr "Rimuovi"
@@ -2234,11 +2004,11 @@ msgstr "Rimuovi gli utenti selezionati dal gruppo di autorizzazioni"
 msgid "Request"
 msgstr "Richiesta"
 
-#: classes/PublishPress/Permissions/UI/PromoBanner.php:230
+#: classes/PublishPress/Permissions/UI/PromoBanner.php:241
 msgid "Request Support"
 msgstr "Richiedi supporto"
 
-#: classes/PublishPress/Permissions/Admin.php:206
+#: classes/PublishPress/Permissions/Admin.php:181
 msgid ""
 "Restrict direct file requests based on user's access to the page a file is "
 "attached to."
@@ -2246,17 +2016,13 @@ msgstr ""
 "Limita le richieste dirette di file in base all'accesso dell'utente alla "
 "pagina a cui il file è allegato."
 
-#: modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:27
-msgid "Restrictions"
-msgstr "Restrizioni"
-
 #: modules/presspermit-collaboration/classes/Permissions/Collab/NavMenus.php:433
 #: modules/presspermit-collaboration/classes/Permissions/Collab/NavMenus.php:443
 #: modules/presspermit-collaboration/classes/Permissions/Collab/NavMenus.php:453
 msgid "Return to Menu Editor"
 msgstr "Torna all'editor del menu"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:775
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:831
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsage.php:95
 msgid "Revert to Defaults"
 msgstr "Ripristina ai valori predefiniti"
@@ -2280,16 +2046,16 @@ msgstr ""
 msgid "Revision"
 msgstr "Revisione"
 
-#: modules/presspermit-collaboration/classes/Permissions/CollabHooksCompat.php:150
+#: modules/presspermit-collaboration/classes/Permissions/CollabHooksCompat.php:146
 msgid "Revisor"
 msgstr "Revisore"
 
-#: modules/presspermit-collaboration/classes/Permissions/CollabHooksCompat.php:149
+#: modules/presspermit-collaboration/classes/Permissions/CollabHooksCompat.php:145
 msgid "Revisors"
 msgstr "Revisori"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:252
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:386
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:251
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:385
 msgid "Role"
 msgstr "Ruolo"
 
@@ -2301,32 +2067,9 @@ msgstr "Ruolo già selezionato!"
 msgid "Role Capabilities"
 msgstr "Capacità di ruolo"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:46
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:43
 msgid "Role Integration"
 msgstr "Integrazione ruolo"
-
-#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:113
-msgid "Role Scoper Import"
-msgstr "Importazione da Role Scoper"
-
-#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:45
-msgid "Role Scoper Import Results:"
-msgstr "Risultati dell'importazione da Role Scoper:"
-
-#: classes/PublishPress/Permissions/Admin.php:33
-#, php-format
-msgid ""
-"Role Scoper installation detected. To migrate your groups, roles, "
-"restrictions and options to PublishPress Permissions, run the %sImport "
-"tool%s."
-msgstr ""
-"È stata rilevata un'installazione di Role Scoper. Per migrare i tuoi gruppi, "
-"ruoli, restrizioni e opzioni in PublishPress Permissions, avvia lo "
-"%sstrumento d'importazione%s."
-
-#: classes/PublishPress/Permissions/Admin.php:197
-msgid "Role Scoper Migration Advisor"
-msgstr "Consigliere per la migrazione da Role Scoper"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:22
 msgid "Role submission in progress..."
@@ -2348,7 +2091,6 @@ msgid "Role Usage updated."
 msgstr "Uso del ruolo aggiornato."
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageEdit.php:78
-#, php-format
 msgid "Role Usage: %s"
 msgstr "Uso del ruolo: %s"
 
@@ -2357,7 +2099,6 @@ msgid "Roles"
 msgstr "Ruoli"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/UsersListing.php:99
-#, php-format
 msgid "Roles %1$s*%2$s"
 msgstr "Ruoli %1$s*%2$s"
 
@@ -2373,11 +2114,11 @@ msgstr "Ruoli aggiornati."
 msgid "Save Changes"
 msgstr "Salva modifiche"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:441
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:440
 msgid "Save Permissions"
 msgstr "Salva autorizzazioni"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:397
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:396
 msgid "Save Roles"
 msgstr "Salva ruoli"
 
@@ -2395,16 +2136,15 @@ msgstr "Monitoraggio delle revisioni programmate"
 msgid "Search Custom Groups"
 msgstr "Cerca gruppi personalizzati"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:249
+#: classes/PublishPress/Permissions/UI/Groups.php:247
 msgid "Search Groups"
 msgstr "Cerca gruppi"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:243
-#, php-format
+#: classes/PublishPress/Permissions/UI/Groups.php:241
 msgid "Search Results for &#8220;%s&#8221;"
 msgstr "Risultati della ricerca per &#8220;%s&#8221;"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:82
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:62
 msgid "Search Results include Media"
 msgstr "I risultati della ricerca includono i media"
 
@@ -2416,8 +2156,7 @@ msgstr "Risultati della ricerca:"
 msgid "Search Users"
 msgstr "Cerca utenti"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:351
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:350
 msgid "Select %s"
 msgstr "Seleziona %s"
 
@@ -2429,7 +2168,7 @@ msgstr "seleziona gruppi"
 msgid "select other"
 msgstr "seleziona un altro"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:88
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:75
 msgid "Select Permission Groups at User creation"
 msgstr "Seleziona gruppi di autorizzazioni durante la creazione dell'utente"
 
@@ -2442,7 +2181,6 @@ msgid "select..."
 msgstr "seleziona..."
 
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:207
-#, php-format
 msgid "selected %s:"
 msgstr "%s selezionato:"
 
@@ -2454,19 +2192,19 @@ msgstr "Gli utenti selezionati hanno già una pagina autore specifica"
 msgid "selected:"
 msgstr "selezionato:"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:35
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:36
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:37
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:32
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:33
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:34
 msgid "Set as Parent"
 msgstr "Imposta come genitore"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:40
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:465
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:464
 msgid "Set Specific Permissions"
 msgstr "Imposta le autorizzazioni specifiche"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:582
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:640
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:644
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:697
 msgid "Setting"
 msgstr "Impostazioni"
 
@@ -2474,8 +2212,8 @@ msgstr "Impostazioni"
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: includes/SettingsTabInstall.php:44 includes/SettingsTabInstall.php:45
 #: classes/PublishPress/Permissions/UI/SettingsTabModules.php:40
+#: includes/SettingsTabInstall.php:44 includes/SettingsTabInstall.php:45
 msgid "settings"
 msgstr "impostazioni"
 
@@ -2492,8 +2230,8 @@ msgstr ""
 "protetti. Questa caratteristica è disponibile in PublishPress Permissions "
 "Pro."
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:620
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:828
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:619
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:827
 msgid "Show Groups"
 msgstr "Mostra gruppi"
 
@@ -2502,22 +2240,16 @@ msgid "Show list of Permissions Pro features and screencasts"
 msgstr ""
 "Mostra un elenco delle funzionalità e alcune schermate di Permissions Pro"
 
-#: modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:27
-msgid "Sites"
-msgstr "Siti"
-
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:749
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:748
 msgid "Specific Permissions"
 msgstr "Autorizzazioni specifiche"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:748
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:747
 #: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:37
-#, php-format
 msgid "Specific Permissions %1$s(for user)%2$s"
 msgstr "Autorizzazioni specifiche %1$s(per utente)%2$s"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:364
-#, php-format
 msgid ""
 "Specific Permissions %1$s(from primary role or %2$sgroup membership%3$s)%4$s"
 msgstr ""
@@ -2525,7 +2257,6 @@ msgstr ""
 "gruppo%3$s)%4$s"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/UsersListing.php:114
-#, php-format
 msgid "Specific Permissions %1$s*%2$s"
 msgstr "Autorizzazioni specifiche %1$s*%2$s"
 
@@ -2543,48 +2274,47 @@ msgstr "Spiegazione delle autorizzazioni specifiche:"
 msgid "Specific Permissions updated."
 msgstr "Autorizzazioni specifiche aggiornate."
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:346
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:296
 msgid "Specified element IDs also require the following site-wide Role:"
 msgstr ""
 "Gli ID degli elementi specificati richiedono anche il seguente ruolo a "
 "livello di sito: "
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:53
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:44
 msgid "Specified element IDs also require the following site-wide Role: "
 msgstr ""
 "Gli ID degli elementi specificati richiedono anche il seguente ruolo a "
 "livello di sito: "
 
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:271
 #: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:78
 #: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:100
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:272
 msgid "Standard statuses"
 msgstr "Stati standard"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:387
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:420
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:386
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:419
 msgid "Status"
 msgstr "Stato"
 
-#: classes/PublishPress/Permissions/Admin.php:192
+#: classes/PublishPress/Permissions/Admin.php:169
 msgid "Status Control"
 msgstr "Controllo dello stato"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:277
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:276
 msgid "Status: Private"
 msgstr "Stato: Privato"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:132
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:36
 msgid "Statuses"
 msgstr "Stati"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:187
-#, php-format
 msgid "Sub-%s"
 msgstr "Sub-%s"
 
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:214
-#, php-format
 msgid "sub-%s:"
 msgstr "sub-%s:"
 
@@ -2592,39 +2322,34 @@ msgstr "sub-%s:"
 msgid "Submitted Revision"
 msgstr "Revisione inviata"
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:201
+#: classes/PublishPress/PermissionsHooksAdmin.php:199
 msgid "Subscribers"
 msgstr "Sottoscrittori"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:588
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:587
 msgid "Supplemental Roles"
 msgstr "Ruoli supplementari"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:31
-#, php-format
 msgid "Supplemental Roles %1$s(for this user)%2$s"
 msgstr "Ruoli supplementari %1$s(per questo utente)%2$s"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:587
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:586
 msgid "Supplemental Roles %1$s(for user)%2$s"
 msgstr "Ruoli supplementari %1$s(per utente)%2$s"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:340
-#, php-format
 msgid ""
 "Supplemental Roles %1$s(from primary role or %2$sgroup membership%3$s)%4$s"
 msgstr ""
 "Ruoli supplementari %1$s(da ruolo primario o %2$sappartenenza gruppo%3$s)%4$s"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:80
-#, php-format
 msgid "Supplemental Roles %1$s(from primary role or group membership)%2$s"
 msgstr ""
 "Ruoli supplementari %1$s(da ruolo primario o gruppo di affiliazione)%2$s"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/Profile.php:375
-#, php-format
 msgid ""
 "Supplemental roles and specific permissions assigned to a user's primary "
 "role or other Permission Groups are usually the cleanest way to customize "
@@ -2635,7 +2360,7 @@ msgstr ""
 "modo più pulito per personalizzare le autorizzazioni.  Puoi anche "
 "%1$spersonalizzare questo utente direttamente%2$s."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:87
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:77
 msgid "Supplemental Roles on User Profile"
 msgstr "Ruoli supplementari sul profilo utente"
 
@@ -2643,7 +2368,7 @@ msgstr "Ruoli supplementari sul profilo utente"
 msgid "supported tags are [username] and [userid]"
 msgstr "i tag supportati sono [username] e [userid]"
 
-#: classes/PublishPress/Permissions/Admin.php:215
+#: classes/PublishPress/Permissions/Admin.php:188
 msgid ""
 "Supports content-specific permissions for editing, term assignment and page "
 "parent selection. In combination with other modules, supports workflow "
@@ -2654,12 +2379,12 @@ msgstr ""
 "combinazione con altri moduli, supporta gli stati del flusso di lavoro, "
 "PublishPress e PublishPress Revisions."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:84
-msgid "Suppress \"Private                            : \" Caption"
-msgstr "Elimina la didascalia \"Privato                            : \""
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:74
+msgid "Suppress \"Private: \" Caption"
+msgstr "Elimina la didascalia \"Privato: \""
 
-#: includes/CoreAdmin.php:89 includes/CoreAdmin.php:90
-#: classes/PublishPress/Permissions/Admin.php:196
+#: classes/PublishPress/Permissions/Admin.php:172 includes/CoreAdmin.php:89
+#: includes/CoreAdmin.php:90
 msgid "Sync Posts"
 msgstr "Sincronizzazione articoli"
 
@@ -2667,29 +2392,24 @@ msgstr "Sincronizzazione articoli"
 msgid "Sync User Posts"
 msgstr "Sincronizzazione articoli degli utenti"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:43
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:45
 msgid "Tag creation requires Tag edit capability"
 msgstr "La creazione di tag richiede la capacità di modifica dei tag"
 
-#: includes/CoreAdmin.php:98 includes/CoreAdmin.php:99
-#: classes/PublishPress/Permissions/Admin.php:191
+#: classes/PublishPress/Permissions/Admin.php:168 includes/CoreAdmin.php:98
+#: includes/CoreAdmin.php:99
 msgid "Teaser"
 msgstr "Promo"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:172
+#: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:176
 msgid "term (manage)"
 msgstr "termine (gestisci)"
 
-#: modules/presspermit-import/classes/Permissions/Import/DB/RoleScoper.php:27
-msgid "Term / Object Roles"
-msgstr "Ruoli termine/oggetto"
-
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:657
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:656
 msgid "Term Management"
 msgstr "Gestione dei termini"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:461
-#, php-format
+#: modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:483
 msgid "The %s was saved, but you can no longer edit it."
 msgstr "L' %s è stato salvato, ma non puoi più modificarlo."
 
@@ -2706,11 +2426,10 @@ msgstr ""
 "edit_published_posts diventano edit_pages e edit_published_pages."
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageEdit.php:140
-#, php-format
 msgid "The following capabilities are included in supplemental %s roles:"
 msgstr "Le seguenti capacità sono incluse nei ruoli %s supplementari:"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:393
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:216
 msgid ""
 "The following settings apply to users who have the upload_files or "
 "edit_files capability:"
@@ -2718,7 +2437,7 @@ msgstr ""
 "Le impostazioni seguenti si applicano agli utenti che hanno la competenza "
 "upload_files oppure edit_files:"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:476
+#: modules/presspermit-collaboration/classes/Permissions/Collab/CapabilityFiltersAdmin.php:498
 msgid ""
 "The requested modification was processed, but you can no longer edit the "
 "post."
@@ -2732,17 +2451,15 @@ msgstr "Non ci sono gruppi validi selezionati per l'eliminazione."
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsage.php:71
 msgid ""
-"These <strong>optional</strong> settings customize how PublishPress "
-"Permissions applies <strong>supplemental roles</strong>. Your existing WP "
-"Role Definitions can be applied in two different ways:"
+"These optional settings customize how PublishPress Permissions applies "
+"supplemental roles. Your existing WP Role Definitions can be applied in two "
+"different ways:"
 msgstr ""
-"Queste impostazioni <strong>facoltative</strong> personalizzano il modo in "
-"cui le autorizzazioni di PublishPress applicano i <strong>ruoli "
-"supplementari</strong>. Le definizioni dei ruoli WP esistenti possono essere "
-"applicate in due modi diversi:"
+"Queste impostazioni facoltative personalizzano il modo in cui PublishPress "
+"Permissions applica i ruoli supplementari. Le definizioni dei ruoli WP "
+"esistenti possono essere applicate in due modi diversi:"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:182
-#, php-format
 msgid "This %s"
 msgstr "Questo %s"
 
@@ -2753,7 +2470,6 @@ msgstr ""
 "personalizzato."
 
 #: classes/PublishPress/Permissions/ErrorNotice.php:122
-#, php-format
 msgid ""
 "This version of %1$s cannot work with your current %2$s version. Please "
 "upgrade it to %3$s or later."
@@ -2761,7 +2477,7 @@ msgstr ""
 "Questa versione di %1$s non può funzionare con la tua versione corrente di "
 "%2$s. Effettua l'aggiornamento a %3$s o successiva."
 
-#: classes/PublishPress/Permissions/Admin.php:208
+#: classes/PublishPress/Permissions/Admin.php:182
 msgid ""
 "Time-limit access customizations by delaying or expiring Permission Group "
 "membership."
@@ -2773,8 +2489,7 @@ msgstr ""
 msgid "Title:"
 msgstr "Titolo:"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:232
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:231
 msgid ""
 "To assign forum-specific Permissions for bbPress, %1$supgrade to Permissions "
 "Pro%2$s and enable the Compatibility Pack module."
@@ -2782,7 +2497,7 @@ msgstr ""
 "Per assegnare le autorizzazioni specifice per il forum di bbPress, "
 "%1$saggiorna a Permissions Pro%2$s e abilita il modulo compatibility pack."
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:229
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:228
 msgid ""
 "To assign forum-specific Permissions for bbPress, activate the Compatibility "
 "Pack module."
@@ -2790,7 +2505,7 @@ msgstr ""
 "Per assegnare le autorizzazioni specifice per il forum di bbPress, devi "
 "abilitare il modulo del pacchetto di compatibilità."
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:217
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:216
 msgid ""
 "To assign page-specific Permissions for editing, parent selection or term "
 "assignment, enable the Editing Permissions module."
@@ -2799,7 +2514,7 @@ msgstr ""
 "selezione del genitore o l'assegnazione dei termini, abilita il modulo "
 "\"Modifica autorizzazioni\"."
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:319
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:318
 msgid ""
 "To assign page-specific PublishPress Revision permissions, enable the "
 "Editing Permissions module."
@@ -2807,8 +2522,7 @@ msgstr ""
 "Per assegnare le autorizzazioni di PublishPress Revision specifiche per le "
 "pagine, abilita il modulo \"Modifica autorizzazioni\"."
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:307
-#, php-format
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:306
 msgid ""
 "To assign roles for bbPress forums, %1$supgrade to Permissions Pro%2$s and "
 "enable the Compatibility Pack module."
@@ -2816,22 +2530,21 @@ msgstr ""
 "Per assegnare ruoli ai forum bbPress, %1$sesegui l'upgrade a Permissions "
 "Pro%2$s e abilita il modulo compatibility pack."
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:304
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:303
 msgid ""
 "To assign roles for bbPress forums, activate the Compatibility Pack module."
 msgstr ""
 "Per assegnare ruoli per i forum bbPress, attivare il modulo compatibility "
 "pack."
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:295
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:294
 msgid ""
 "To assign roles for custom post statuses, activate the Status Control module."
 msgstr ""
 "Per assegnare i ruoli per gli stati degli articoli personalizzati, devi "
 "attivare il modulo controllo dello stato."
 
-#: classes/PublishPress/Permissions/UI/Groups.php:269
-#, php-format
+#: classes/PublishPress/Permissions/UI/Groups.php:267
 msgid ""
 "To assign roles or permissions to BuddyPress groups, %1$supgrade to "
 "Permissions Pro%2$s and enable the Compatibility Pack module."
@@ -2839,7 +2552,7 @@ msgstr ""
 "Per assegnare ruoli o autorizzazioni ai gruppi di bbPress, %1$sesegui "
 "l'upgrade a Permissions Pro%2$s e abilita il modulo compatibility pack."
 
-#: classes/PublishPress/Permissions/UI/Groups.php:266
+#: classes/PublishPress/Permissions/UI/Groups.php:264
 msgid ""
 "To assign roles or permissions to BuddyPress groups, activate the "
 "Compatibility Pack module"
@@ -2848,7 +2561,6 @@ msgstr ""
 "modulo compatibility pack"
 
 #: classes/PublishPress/Permissions/UI/HintsItemExceptions.php:18
-#, php-format
 msgid ""
 "To block direct access to unreadable files, %1$supgrade to Permissions "
 "Pro%2$s and install the File Access module."
@@ -2864,7 +2576,6 @@ msgstr ""
 "accesso ai file."
 
 #: classes/PublishPress/Permissions/UI/HintsMedia.php:19
-#, php-format
 msgid ""
 "To block direct URL access to attachments of unreadable posts, %1$supgrade "
 "to Permissions Pro%2$s and enable the File Access module."
@@ -2881,8 +2592,7 @@ msgstr ""
 "Per bloccare l'accesso URL diretto agli allegati di articoli illeggibili, "
 "attivare il modulo accesso ai file."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:473
-#, php-format
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:513
 msgid "To control the makeup of Supplemental Roles, see %1$sRole Usage%2$s."
 msgstr ""
 "Per controllare la configurazione dei ruoli supplementari, vedi %1$sUso dei "
@@ -2905,7 +2615,6 @@ msgstr ""
 "(Autorizzazioni > Gruppi o utenti)"
 
 #: classes/PublishPress/Permissions/UI/HintsPostEdit.php:52
-#, php-format
 msgid ""
 "To customize publication workflow, %1$sinstall PublishPress Statuses%2$s."
 msgstr ""
@@ -2913,7 +2622,6 @@ msgstr ""
 "PublishPress Statuses%2$s."
 
 #: classes/PublishPress/Permissions/UI/HintsPostEdit.php:23
-#, php-format
 msgid ""
 "To define custom privacy statuses, %1$supgrade to Permissions Pro%2$s and "
 "enable the Status Control module."
@@ -2927,12 +2635,12 @@ msgstr ""
 "Per definire stati di privacy personalizzati, attivare il modulo controllo "
 "dello stato."
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:299
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:445
 msgid "To filter the Users list by Permissions, follow a link below:"
 msgstr ""
 "Per filtrare la lista utenti per autorizzazioni, usa un dei link sottostanti:"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:737
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:793
 msgid ""
 "To force the value of one or more settings network-wide, <strong>"
 "copy</strong> the following code into your theme's <strong>functions."
@@ -2944,7 +2652,7 @@ msgstr ""
 "del tuo tema (o qualche altro file che viene sempre eseguito e non "
 "aggiornato automaticamente) e modificalo come desiderato:"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:716
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:772
 msgid ""
 "To modify one or more default settings network-wide, <strong>copy</strong> "
 "the following code into your theme's <strong>functions.php</strong> file (or "
@@ -2965,7 +2673,6 @@ msgid "Type"
 msgstr "Tipo"
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageEdit.php:116
-#, php-format
 msgid ""
 "Type-specific and/or status-specific equivalents of the following "
 "capabilities are included in supplemental %s roles:"
@@ -2973,27 +2680,23 @@ msgstr ""
 "Gli equivalenti specifici del tipo e/o dello stato delle seguenti capacità "
 "sono inclusi nei ruoli %s supplementari:"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:76
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:73
 msgid ""
-"Type-specific Supplemental Roles also provide all general capabilities in "
-"Pattern Role"
+"Type-specific Supplemental Roles grant all general capabilities in Pattern "
+"Role"
 msgstr ""
-"I ruoli supplementari specifici per tipo forniscono anche tutte le capacità "
-"generali dei ruoli modello"
+"I ruoli supplementari specifici per tipo concedono tutte le capacità "
+"generali del ruolo modello"
 
 #: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsRenderUI.php:22
 msgid "Unblocked"
 msgstr "Sbloccato"
 
-#: modules/presspermit-import/classes/Permissions/Import/UI/SettingsTabImport.php:186
-msgid "Undo All Imports"
-msgstr "Annulla tutte le importazioni"
-
 #: classes/PublishPress/Permissions/UI/Dashboard/TermsListing.php:66
 msgid "Universal Permissions"
 msgstr "Autorizzazioni universali"
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:938
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:937
 msgid "unpublished"
 msgstr "non pubblicato"
 
@@ -3005,20 +2708,24 @@ msgstr "Aggiorna"
 msgid "Update Group"
 msgstr "Aggiorna gruppo"
 
+#: classes/PublishPress/Permissions/UI/Settings.php:187
+msgid "Upgrade to Permissions Pro"
+msgstr "Aggiorna a Permissions Pro"
+
+#: classes/PublishPress/Permissions/UI/PromoBanner.php:225
 #: includes/CoreAdmin.php:120 includes/CoreAdmin.php:121
 #: includes/promo/posts-teaser-promo.php:22
 #: includes/promo/statuses-promo.php:23 includes/promo/sync-promo.php:22
 #: includes/promo/visibility-statuses-promo.php:23
-#: classes/PublishPress/Permissions/UI/PromoBanner.php:214
 msgid "Upgrade to Pro"
 msgstr "Aggiorna a Pro"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageListTable.php:72
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageEdit.php:92
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageListTable.php:72
 msgid "Usage"
 msgstr "Uso"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:46
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:48
 msgid "Use create_posts capability"
 msgstr "Usa competenza create_posts"
 
@@ -3036,7 +2743,7 @@ msgctxt "user"
 msgid "Select &gt;"
 msgstr "Seleziona &gt;"
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:356
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:306
 msgid "User Administrator"
 msgstr "Utente amministratore"
 
@@ -3048,24 +2755,15 @@ msgstr "Le capacità di modifica utente si applicano per"
 msgid "User Login:"
 msgstr "Accesso utente:"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:50
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:38
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:41
 msgid "User Management"
 msgstr "Gestione utente"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:44
-msgid "User Permissions"
-msgstr "Autorizzazioni utente"
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:109
+msgid "User Search: Filter by WP role"
+msgstr "Ricerca utente: filtra per ruolo WP"
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:51
-msgid "User Profile"
-msgstr "Profilo utente"
-
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:73
-msgid "User Search                                  : Filter by WP role"
-msgstr "Ricerca utente                                  : filtra per ruolo WP"
-
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:59
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:50
 msgid "Users can always edit their own attachments"
 msgstr "Gli utenti possono sempre modificare i propri allegati"
 
@@ -3085,11 +2783,11 @@ msgstr "visualizza/modifica gruppo"
 msgid "View currently stored user permissions:"
 msgstr "Visualizza le autorizzazioni utente attualmente memorizzate:"
 
-#: classes/PublishPress/Permissions/UI/PromoBanner.php:240
+#: classes/PublishPress/Permissions/UI/PromoBanner.php:251
 msgid "View Knowledge Base"
 msgstr "Visualizza la documentazione"
 
-#: classes/PublishPress/Permissions/Admin.php:201
+#: classes/PublishPress/Permissions/Admin.php:176
 msgid ""
 "Visibility Circles and Editorial Circles block access to content not "
 "authored by other group members."
@@ -3097,7 +2795,7 @@ msgstr ""
 "I circoli di visibilità e i circoli editoriali bloccano l'accesso ai "
 "contenuti non scritti da altri membri del gruppo."
 
-#: classes/PublishPress/Permissions/Admin.php:214
+#: classes/PublishPress/Permissions/Admin.php:187
 msgid ""
 "Visibility Circles and Editorial Circles block access to content not "
 "authored by other group members. Any WP Role, BuddyPress Group or custom "
@@ -3108,7 +2806,7 @@ msgstr ""
 "BuddyPress o gruppo personalizzato può essere contrassegnato come cerchio "
 "per specifici tipi di contenuto."
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:185
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:184
 msgid ""
 "Warning: Content hidden by these Permissions will be displayed if PP is "
 "deactivated. Consider setting a private Visibility on Edit Post screen "
@@ -3127,17 +2825,16 @@ msgstr ""
 "(lasciando all'utente la responsabilità di aggiungere limiti di tipo "
 "personalizzati alle definizioni dei ruoli WP)."
 
-#: classes/PublishPress/Permissions/UI/Groups.php:207
+#: classes/PublishPress/Permissions/UI/Groups.php:205
 #: classes/PublishPress/Permissions/UI/GroupsListTable.php:326
 msgid "WordPress Role"
 msgstr "Ruolo WordPress"
 
-#: classes/PublishPress/Permissions/UI/Groups.php:207
+#: classes/PublishPress/Permissions/UI/Groups.php:205
 msgid "WordPress Roles"
 msgstr "Ruoli WordPress"
 
 #: includes/SettingsTabInstall.php:265
-#, php-format
 msgid "WordPress Version: %s"
 msgstr "WordPress versione: %s"
 
@@ -3146,27 +2843,21 @@ msgstr "WordPress versione: %s"
 msgid "Workflow"
 msgstr "Workflow"
 
-#: modules/presspermit-collaboration/classes/Permissions/CollabHooks.php:647
-#, php-format
+#: modules/presspermit-collaboration/classes/Permissions/CollabHooks.php:640
 msgid "You are not allowed to create new %s"
 msgstr "Non hai i permessi per creare nuove %s"
-
-#: modules/presspermit-import/classes/Permissions/Import/Importer.php:40
-#: modules/presspermit-import/classes/Permissions/Import/Importer.php:50
-msgid "You are not allowed to manage Permissions settings"
-msgstr "Non sei autorizzato a gestire le impostazioni delle autorizzazioni"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:43
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:49
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:52
 #: classes/PublishPress/Permissions/UI/GroupNew.php:29
-#: classes/PublishPress/Permissions/UI/Handlers/Groups.php:37
-#: classes/PublishPress/Permissions/UI/Handlers/Groups.php:92
 #: classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:29
 #: classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:112
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageEdit.php:36
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsage.php:21
+#: classes/PublishPress/Permissions/UI/Handlers/Groups.php:37
+#: classes/PublishPress/Permissions/UI/Handlers/Groups.php:92
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Handlers/RoleUsage.php:14
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsage.php:21
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsageEdit.php:36
 msgid "You are not permitted to do that."
 msgstr "Non sei autorizzato a fare ciò."
 
@@ -3188,17 +2879,14 @@ msgstr ""
 "Non disponi dell'autorizzazione per eliminare quel menu di navigazione."
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/NavMenus.php:439
-#, php-format
 msgid "You do not have permission to delete the menu item \"%1$s\""
 msgstr "Non hai i permessi per eliminare l'elemento \"%1$s\" del menu"
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/NavMenus.php:449
-#, php-format
 msgid "You do not have permission to edit the menu item \"%1$s\""
 msgstr "Non hai i permessi per modificare l'elemento \"%1$s\" del menu"
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/NavMenus.php:429
-#, php-format
 msgid "You do not have permission to move the menu item \"%1$s\""
 msgstr "Non hai i permessi per spostare l'elemento \"%1$s\" del menu"
 
@@ -3218,7 +2906,6 @@ msgstr[0] "Hai specificato questo gruppo per l'eliminazione:"
 msgstr[1] "Hai specificato questi gruppi per l'eliminazione:"
 
 #: includes/CoreAdmin.php:28
-#, php-format
 msgid ""
 "You're using PublishPress Permissions Free. The Pro version has more "
 "features and support. %sUpgrade to Pro%s"
@@ -3227,7 +2914,6 @@ msgstr ""
 "caratteristiche e supporto. %sAggiorna a Pro%s"
 
 #: classes/PublishPress/Permissions/PluginStatus.php:12
-#, php-format
 msgid ""
 "Your license key has expired. For updates to PublishPress Permissions Pro "
 "and priority support, %splease renew%s."
@@ -3237,7 +2923,6 @@ msgstr ""
 "prioritario."
 
 #: includes/SettingsTabInstall.php:131
-#, php-format
 msgid ""
 "Your presspermit.com key has expired, but a <a href=\"%s\">PublishPress "
 "renewal</a> discount may be available."
