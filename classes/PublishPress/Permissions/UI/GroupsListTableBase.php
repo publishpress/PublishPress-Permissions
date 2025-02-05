@@ -7,7 +7,8 @@ class GroupsListTableBase extends \WP_List_Table
     public $role_info;
     public $exception_info;
 
-    public function __construct($args) {
+    public function __construct($args)
+    {
         parent::__construct();
     }
 
@@ -107,33 +108,34 @@ class GroupsListTableBase extends \WP_List_Table
         }
     }
 
-    protected function row_actions( $actions, $always_visible = false ) {
-		$action_count = count( $actions );
+    protected function row_actions($actions, $always_visible = false)
+    {
+        $action_count = count($actions);
 
-		if ( ! $action_count ) {
-			return '';
-		}
+        if (! $action_count) {
+            return '';
+        }
 
-		$mode = get_user_setting( 'posts_list_mode', 'list' );
+        $mode = get_user_setting('posts_list_mode', 'list');
 
-		if ( 'excerpt' === $mode ) {
-			$always_visible = true;
-		}
+        if ('excerpt' === $mode) {
+            $always_visible = true;
+        }
 
-		echo '<div class="' . ( $always_visible ? 'row-actions visible' : 'row-actions' ) . '">';
+        echo '<div class="' . ( $always_visible ? 'row-actions visible' : 'row-actions' ) . '">';
 
-		$i = 0;
+        $i = 0;
 
-		foreach ( $actions as $action => $link ) {
+        foreach ($actions as $action => $link) {
             // phpcs Note: row action link is escaped upstream
 
-			++$i;
-			$sep = ( $i < $action_count ) ? ' | ' : '';
-			echo "<span class='" . esc_attr($action) . "'>" . $link . esc_html($sep) . "</span>";  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		}
+            ++$i;
+            $sep = ( $i < $action_count ) ? ' | ' : '';
+            echo "<span class='" . esc_attr($action) . "'>" . $link . esc_html($sep) . "</span>";  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        }
 
-		echo '</div>';
+        echo '</div>';
 
-		echo '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__( 'Show more details' ) . '</span></button>';
+        echo '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__('Show more details') . '</span></button>';
     }
 }

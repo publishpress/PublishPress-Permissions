@@ -30,8 +30,9 @@ class CapabilityCaster
 
             $type_obj = get_post_type_object('post');
             return isset($wp_roles->role_objects[$wp_role_name]) && !empty($role_caps[$type_obj->cap->edit_posts]);
-        } else
+        } else {
             return true;
+        }
     }
 
     // If one of the standard WP roles is missing, define it for use as a template for type-specific role assignments
@@ -133,7 +134,7 @@ class CapabilityCaster
             }
 
             if ($misc_caps) {
-               $this->pattern_role_arbitrary_caps[$role_name] = array_combine(array_keys($misc_caps), array_keys($misc_caps));
+                $this->pattern_role_arbitrary_caps[$role_name] = array_combine(array_keys($misc_caps), array_keys($misc_caps));
             }
         }
 
@@ -145,8 +146,9 @@ class CapabilityCaster
     public function getTypecastCaps($role_name)
     {
         $arr_name = explode(':', $role_name);
-        if (empty($arr_name[2]))
+        if (empty($arr_name[2])) {
             return [];
+        }
 
         $pp = presspermit();
 
@@ -156,8 +158,9 @@ class CapabilityCaster
         $object_type = $arr_name[2];
 
         // typecast role assignment stored, but undefined source name or object_type
-        if (!$type_obj = $pp->getTypeObject($source_name, $object_type))
+        if (!$type_obj = $pp->getTypeObject($source_name, $object_type)) {
             return [];
+        }
 
         if (!empty($type_obj->cap->read) && ('read' == $type_obj->cap->read)) {
             $type_obj->cap->read = PRESSPERMIT_READ_PUBLIC_CAP;
@@ -167,16 +170,18 @@ class CapabilityCaster
         if (('attachment' == $object_type)) {
             static $media_filtering_enabled;
 
-            if (!isset($media_filtering_enabled))
+            if (!isset($media_filtering_enabled)) {
                 $media_filtering_enabled = $pp->getEnabledPostTypes(['name' => 'attachment']);
+            }
 
             if (!$media_filtering_enabled) {
                 return [];
             }
         }
 
-        if (empty($this->pattern_role_type_caps))
+        if (empty($this->pattern_role_type_caps)) {
             $this->definePatternCaps();
+        }
 
         $pattern_role_caps = ('term' == $source_name) ? $this->pattern_role_taxonomy_caps : $this->pattern_role_type_caps;
 
@@ -185,8 +190,9 @@ class CapabilityCaster
             return [];
         }
 
-        if (!$pp->moduleActive('status-control') && strpos($role_name, 'post_status:private')
-        && (isset($pattern_role_caps[$base_role_name]['read']) || isset($pattern_role_caps[$base_role_name][PRESSPERMIT_READ_PUBLIC_CAP]))
+        if (
+            !$pp->moduleActive('status-control') && strpos($role_name, 'post_status:private')
+            && (isset($pattern_role_caps[$base_role_name]['read']) || isset($pattern_role_caps[$base_role_name][PRESSPERMIT_READ_PUBLIC_CAP]))
         ) {
             $pattern_role_caps[$base_role_name]['read_private_posts'] = true;
         }
@@ -195,8 +201,9 @@ class CapabilityCaster
             if (empty($arr_name[4])) { // disregard stored roles with invalid status
                 return [];
             } elseif ('post_status' == $arr_name[3]) {  // ignore supplemental roles for statuses which are no longer active for this post type
-                if (!PWP::getPostStatuses(['name' => $arr_name[4], 'post_type' => $object_type]))
+                if (!PWP::getPostStatuses(['name' => $arr_name[4], 'post_type' => $object_type])) {
                     return [];
+                }
             }
         }
 

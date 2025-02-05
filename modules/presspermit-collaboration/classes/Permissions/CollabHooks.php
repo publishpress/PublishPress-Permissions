@@ -1,9 +1,11 @@
 <?php
+
 namespace PublishPress\Permissions;
 
 class CollabHooks
 {
-    function __construct() {
+    function __construct()
+    {
         global $pagenow;
 
         // Divi Page Builder
@@ -15,18 +17,21 @@ class CollabHooks
 
         // Divi Page Builder  todo: test whether these can be implemented with 'presspermit_unfiltered_ajax' filter in PostFilters::fltPostsClauses instead
         if (PWP::SERVER_url('REQUEST_URI') && strpos(esc_url_raw(PWP::SERVER_url('REQUEST_URI')), 'admin-ajax.php')) {
-            if (in_array(
-                PWP::REQUEST_key('action'), 
-                apply_filters('presspermit_unfiltered_ajax_actions',
-                    ['et_fb_ajax_drop_autosave',
-                    'et_builder_resolve_post_content',
-                    'et_fb_get_shortcode_from_fb_object',
-                    'et_builder_library_get_layout',
-                    'et_builder_library_get_layouts_data',
-                    'et_fb_update_builder_assets',
-                    ]
+            if (
+                in_array(
+                    PWP::REQUEST_key('action'), 
+                    apply_filters(
+                        'presspermit_unfiltered_ajax_actions',
+                        ['et_fb_ajax_drop_autosave',
+                        'et_builder_resolve_post_content',
+                        'et_fb_get_shortcode_from_fb_object',
+                        'et_builder_library_get_layout',
+                        'et_builder_library_get_layouts_data',
+                        'et_fb_update_builder_assets',
+                        ]
+                    )
                 )
-            )) {
+            ) {
                 return;
             }
         }
@@ -57,7 +62,7 @@ class CollabHooks
 
         add_action('pre_get_posts', [$this, 'actPreventTrashSuffixing']);
 
-		add_action('wp_loaded', [$this, 'supplementUserAllcaps'], 18);
+        add_action('wp_loaded', [$this, 'supplementUserAllcaps'], 18);
         add_filter('presspermit_meta_caps', [$this, 'fltMetaCaps']);
         add_filter('presspermit_exclude_arbitrary_caps', [$this, 'fltExcludeArbitraryCaps']);
 
@@ -66,7 +71,7 @@ class CollabHooks
 
         add_action('presspermit_version_updated', [$this, 'actPluginUpdated']);
 
-        if ( is_admin() ) {
+        if (is_admin()) {
             add_action('presspermit_init', [$this, 'actNonAdministratorEditingFilters']);  // fires after user load
         } else {
             // Also filter for Administrator, to include private and unpublished pages in Page Parent dropdown
@@ -86,13 +91,13 @@ class CollabHooks
             }
 
             if (is_admin() || presspermit()->isRESTurl()) {
-	            if (!presspermit()->isContentAdministrator()) {
-	                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisions/AdminNonAdministrator.php");
-	                new Collab\Revisions\AdminNonAdministrator();
+                if (!presspermit()->isContentAdministrator()) {
+                    require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisions/AdminNonAdministrator.php");
+                    new Collab\Revisions\AdminNonAdministrator();
                 }
                 
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisions/PostFilters.php");
-	            new Collab\Revisions\PostFilters();
+                new Collab\Revisions\PostFilters();
 
                 if (did_action('init')) {
                     $this->init_rvy_interface();
@@ -100,7 +105,6 @@ class CollabHooks
                     add_action('init', [$this, 'init_rvy_interface'], 2);
                 }
             }
-
         } elseif (defined('REVISIONARY_VERSION')) {
             add_action('presspermit_init_rvy_interface', [$this, 'init_rvy_interface']);
     
@@ -113,13 +117,13 @@ class CollabHooks
             }
 
             if (is_admin() || presspermit()->isRESTurl()) {
-	            if (!presspermit()->isContentAdministrator()) {
-	                require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/AdminNonAdministrator{$legacy_suffix}.php");
-	                ($legacy_suffix) ? new Collab\Revisionary\AdminNonAdministratorLegacy() : new Collab\Revisionary\AdminNonAdministrator();
+                if (!presspermit()->isContentAdministrator()) {
+                    require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/AdminNonAdministrator{$legacy_suffix}.php");
+                    ($legacy_suffix) ? new Collab\Revisionary\AdminNonAdministratorLegacy() : new Collab\Revisionary\AdminNonAdministrator();
                 }
                 
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/PostFilters{$legacy_suffix}.php");
-	            ($legacy_suffix) ? new Collab\Revisionary\PostFiltersLegacy() : new Collab\Revisionary\PostFilters();
+                ($legacy_suffix) ? new Collab\Revisionary\PostFiltersLegacy() : new Collab\Revisionary\PostFilters();
 
                 if (did_action('init')) {
                     $this->init_rvy_interface();
@@ -196,14 +200,17 @@ class CollabHooks
         return array_merge($def, $new);
     }
 
-    function supplementUserAllcaps() {
+    function supplementUserAllcaps()
+    {
         $pp = presspermit();
 
         if ($pp->getOption('list_others_uneditable_posts')) {
             foreach ($pp->getEnabledPostTypes() as $post_type) {
                 if ($type_obj = get_post_type_object($post_type)) {
-                    if (isset($type_obj->cap->edit_posts) && !empty($user->allcaps[$type_obj->cap->edit_posts])
-                    && isset($type_obj->cap->edit_others_posts) && empty($user->allcaps[$type_obj->cap->edit_others_posts])) {
+                    if (
+                        isset($type_obj->cap->edit_posts) && !empty($user->allcaps[$type_obj->cap->edit_posts])
+                        && isset($type_obj->cap->edit_others_posts) && empty($user->allcaps[$type_obj->cap->edit_others_posts])
+                    ) {
                         $list_others_cap = str_replace('edit_', 'list_', $type_obj->cap->edit_others_posts);
                         $user->allcaps[$list_others_cap] = true;
                     }
@@ -230,11 +237,13 @@ class CollabHooks
             }
         } elseif ('term' == $for_item_source) {
             foreach (['edit', 'copy', 'revise', 'assign'] as $op) {
-                if (presspermit()->admin()->canSetExceptions(
-                    $op, 
-                    $for_item_type, 
-                    ['via_item_source' => 'term', 'via_type_name' => $via_item_type, 'for_item_source' => $for_item_source]
-                )) {
+                if (
+                    presspermit()->admin()->canSetExceptions(
+                        $op, 
+                        $for_item_type, 
+                        ['via_item_source' => 'term', 'via_type_name' => $via_item_type, 'for_item_source' => $for_item_source]
+                    )
+                ) {
                     $operations[$op] = true;
                 }
             }
@@ -263,7 +272,6 @@ class CollabHooks
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisions/ContentRoles.php');
                 $revisionary->set_content_roles(new Collab\Revisions\ContentRoles());
             }
-
         } elseif (class_exists('RevisionaryContentRoles')) {
             if (!empty($revisionary) && method_exists($revisionary, 'set_content_roles')) {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisionary/ContentRoles.php');
@@ -280,7 +288,8 @@ class CollabHooks
     }
 
     // Safeguard against improper filtering (to zero) of post_parent value. Forces mirroring of postmeta _thumbnail_id <> post_id relationship 
-    function actAttachmentEnsureParentStorage($post_id, $post_after, $post_before) {
+    function actAttachmentEnsureParentStorage($post_id, $post_after, $post_before)
+    {
         if ($post_before->post_parent && !$post_after->post_parent) {
             if ($post_id == get_post_meta($post_before->post_parent, '_thumbnail_id', true)) {
                 global $wpdb;
@@ -295,8 +304,9 @@ class CollabHooks
 
     function actPreventTrashSuffixing($wp_query)
     {
-        if (!empty($_SERVER['REQUEST_URI']) && false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), PWP::admin_rel_url('nav-menus.php')) 
-        && PWP::is_POST('action', 'update')
+        if (
+            !empty($_SERVER['REQUEST_URI']) && false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), PWP::admin_rel_url('nav-menus.php')) 
+            && PWP::is_POST('action', 'update')
         ) {
             // Workaround for Nav Menu deletion (@todo: still needed?)
 
@@ -366,8 +376,8 @@ class CollabHooks
     function fltMetaCaps($meta_caps)
     {
         // Divi Page Builder
-		if (defined('ET_BUILDER_THEME')) {
-			if (PWP::is_REQUEST('action', 'edit')) {
+        if (defined('ET_BUILDER_THEME')) {
+            if (PWP::is_REQUEST('action', 'edit')) {
                 if ($post_id = PWP::REQUEST_int('post')) {
                     if ($_post = get_post($post_id)) {
                         global $current_user;
@@ -376,8 +386,8 @@ class CollabHooks
                         }
                     }
                 }
-			}
-		}
+            }
+        }
 
         return array_merge(
             $meta_caps, 
@@ -420,10 +430,11 @@ class CollabHooks
                     if ($force = presspermit()->getTypeOption('force_default_privacy', $args['post_type']) || PWP::isBlockEditorActive($args['post_type'])) {
                         // only apply if status is currently registered and PP-enabled for the post type
                         if (PWP::getPostStatuses(['name' => $default_privacy, 'post_type' => $args['post_type']])) {
-                            if (!empty($args['return_meta']))
+                            if (!empty($args['return_meta'])) {
                                 return (object)['force_status' => $default_privacy, 'force_basis' => 'default'];
-                            else
+                            } else {
                                 return $default_privacy;
+                            }
                         }
                     }
                 }
@@ -466,7 +477,8 @@ class CollabHooks
         }
     }
 
-    function actPluginUpdated($prev_pp_version) {
+    function actPluginUpdated($prev_pp_version)
+    {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Updated.php');
         new Collab\Updated($prev_pp_version);
     }
@@ -485,12 +497,13 @@ class CollabHooks
                 $options['presspermit_enabled_taxonomies'] = [];
             }
         }
-    	
+        
         if (!empty($options['presspermit_default_privacy'])) {
             $disabled_types = (class_exists('bbPress', false)) ? ['forum', 'topic', 'reply'] : [];
             if ($disabled_types = apply_filters('presspermit_disabled_default_privacy_types', $disabled_types)) {
-                if ($_default_privacy = maybe_unserialize($options['presspermit_default_privacy']))
+                if ($_default_privacy = maybe_unserialize($options['presspermit_default_privacy'])) {
                     $options['presspermit_default_privacy'] = array_diff_key($_default_privacy, array_fill_keys($disabled_types, true));
+                }
             }
         }
 
@@ -506,8 +519,9 @@ class CollabHooks
     {
         global $wp_roles;
 
-        if (empty($wp_roles))
+        if (empty($wp_roles)) {
             return;
+        }
 
         $pp = presspermit();
 
@@ -530,7 +544,7 @@ class CollabHooks
             $additional_pattern_roles = array_diff_key($enabled_pattern_roles, $pp->role_defs->pattern_roles);
 
             foreach (array_keys($additional_pattern_roles) as $role_name) {
-                if (isset($wp_roles->role_names[$role_name]))
+                if (isset($wp_roles->role_names[$role_name])) {
                     $pp->role_defs->pattern_roles[$role_name] = (object)[
                         'is_additional' => true, 
                         'labels' => (object)[
@@ -538,6 +552,7 @@ class CollabHooks
                             'singular_name' => $wp_roles->role_names[$role_name]
                             ]
                         ];
+                }
             }
 
             // Direct Role Usage
@@ -583,7 +598,6 @@ class CollabHooks
         if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisions/CapabilityFilters.php');
             new Collab\Revisions\CapabilityFilters();
-        
         } elseif (defined('REVISIONARY_VERSION')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisionary/CapabilityFilters.php');
             new Collab\Revisionary\CapabilityFilters();
@@ -610,8 +624,7 @@ class CollabHooks
             'list_others_unattached_files', 
             'admin_others_unattached_files', 
             'pp_list_all_files'
-            ]
-        );
+            ]);
     }
 
     function fltTagsInput($tags_input)
@@ -632,7 +645,8 @@ class CollabHooks
         return Collab\PostTermsSave::fltPreObjectTerms($terms, $taxonomy, $args);
     }
 
-    public function fltPreInsertTerm($term, $taxonomy) {
+    public function fltPreInsertTerm($term, $taxonomy)
+    {
         if ($tx_obj = get_taxonomy($taxonomy)) {
             if (empty($tx_obj->hierarchical) && presspermit()->getOption('create_tag_require_edit_cap') && !presspermit()->isAdministrator()) {
                 if (!current_user_can($tx_obj->cap->edit_terms)) {

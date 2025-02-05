@@ -53,7 +53,7 @@ class HintsPostEdit
                         '<a href="https://wordpress.org/plugins/publishpress-statuses/" target="_blank">',
                         '</a>'
                     );
-                    ?>'
+                        ?>'
                     + '</span>');
 
                     $('a.pp-statuses-promo').on('click', function()

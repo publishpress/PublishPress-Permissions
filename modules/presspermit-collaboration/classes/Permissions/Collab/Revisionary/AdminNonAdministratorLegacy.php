@@ -1,17 +1,20 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\Revisionary;
 
 class AdminNonAdministratorLegacy
 {
-    function __construct() {
+    function __construct()
+    {
         add_filter('presspermit_generate_where_clause_force_vars', [$this, 'fltWhereClauseRevisionary'], 10, 3);
     }
 
     function fltWhereClauseRevisionary($force_vars, $source_name, $args)
     {
         // accomodate editing of published posts/pages to revision
-        if (!defined('REVISIONARY_VERSION'))
+        if (!defined('REVISIONARY_VERSION')) {
             return $force_vars;
+        }
 
         global $revisionary;
         if (!empty($revisionary->skip_revision_allowance)) {
@@ -27,12 +30,13 @@ class AdminNonAdministratorLegacy
 
             if (!empty($args['user']->ID)) {
                 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-                if ($owner_object_ids = $wpdb->get_col(
-                    $wpdb->prepare(
-                        "SELECT ID FROM $wpdb->posts WHERE post_type IN (%s,%s) AND post_author = %d", 
-                        'revision', 
-                        $args['object_type'], 
-                        $args['user']->ID
+                if (
+                    $owner_object_ids = $wpdb->get_col(
+                        $wpdb->prepare(
+                            "SELECT ID FROM $wpdb->posts WHERE post_type IN (%s,%s) AND post_author = %d", 
+                            'revision', 
+                            $args['object_type'], 
+                            $args['user']->ID
                         )
                     )
                 ) {

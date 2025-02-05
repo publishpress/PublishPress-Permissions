@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class PageHierarchyFilters
@@ -7,8 +8,9 @@ class PageHierarchyFilters
     {
         global $post;
 
-        if (empty($orig_options_html) || !strpos($orig_options_html, 'parent_id') || presspermit()->isUserUnfiltered())
+        if (empty($orig_options_html) || !strpos($orig_options_html, 'parent_id') || presspermit()->isUserUnfiltered()) {
             return $orig_options_html;
+        }
 
         $post_type = PWP::findPostType();
 
@@ -27,8 +29,9 @@ class PageHierarchyFilters
                 $mat = [];
                 preg_match('/<option[^v]* value="">[^<]*<\/option>/', $orig_options_html, $mat);
 
-                if (!empty($mat[0]))
+                if (!empty($mat[0])) {
                     return str_replace($mat[0], '', $orig_options_html);
+                }
             }
         }
 

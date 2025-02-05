@@ -29,8 +29,9 @@ class PostFiltersFront
 
     public function fltAttsGallery($out, $pairs, $atts)
     {
-        if (!empty($atts['include'])) // force subsequent get_posts() query to be filtered for PP exceptions
+        if (!empty($atts['include'])) { // force subsequent get_posts() query to be filtered for PP exceptions
             add_action('pre_get_posts', [$this, 'actGetGalleryPosts']);
+        }
 
         return $out;
     }

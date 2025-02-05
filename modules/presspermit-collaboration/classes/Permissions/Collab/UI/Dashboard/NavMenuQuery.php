@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 /**

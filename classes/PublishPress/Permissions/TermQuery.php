@@ -41,7 +41,7 @@ class TermQuery
             return;
         }
 
-        if ( class_exists('\PublishPress\Permissions\PostFilters') && ! presspermit()->isUserUnfiltered() ) {
+        if (class_exists('\PublishPress\Permissions\PostFilters') && ! presspermit()->isUserUnfiltered()) {
             // will default to src_table $wpdb->posts
             $join = \PublishPress\Permissions\PostFilters::instance()->fltPostsJoin('', ['context' => 'tally_term_counts']);
 

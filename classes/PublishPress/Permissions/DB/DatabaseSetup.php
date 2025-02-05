@@ -18,11 +18,13 @@ class DatabaseSetup
 
         $charset_collate = '';
 
-        if (!empty($wpdb->charset))
+        if (!empty($wpdb->charset)) {
             $charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
+        }
 
-        if (!empty($wpdb->collate))
+        if (!empty($wpdb->collate)) {
             $charset_collate .= " COLLATE $wpdb->collate";
+        }
 
         // note: dbDelta requires two spaces after PRIMARY KEY, no spaces between KEY columns
 
@@ -142,13 +144,16 @@ class DatabaseSetup
     } //end updateSchema function
 
     public static function dbDelta($queries, $execute = true)
-    {  // lifted from WP because forced inclusion of schema.php interferes with site creation
+    {
+  // lifted from WP because forced inclusion of schema.php interferes with site creation
         global $wpdb;
 
         // Separate individual queries into an array
         if (!is_array($queries)) {
             $queries = explode(';', $queries);
-            if ('' == $queries[count($queries) - 1]) array_pop($queries);
+            if ('' == $queries[count($queries) - 1]) {
+                array_pop($queries);
+            }
         }
 
         $cqueries = []; // Creation Queries
@@ -160,11 +165,11 @@ class DatabaseSetup
             if (preg_match("|CREATE TABLE (?:IF NOT EXISTS )?([^ ]*)|", $qry, $matches)) {
                 $cqueries[trim(strtolower($matches[1]), '`')] = $qry;
                 $for_update[$matches[1]] = 'Created table ' . $matches[1];
-            } else if (preg_match("|CREATE DATABASE ([^ ]*)|", $qry, $matches)) {
+            } elseif (preg_match("|CREATE DATABASE ([^ ]*)|", $qry, $matches)) {
                 array_unshift($cqueries, $qry);
-            } else if (preg_match("|INSERT INTO ([^ ]*)|", $qry, $matches)) {
+            } elseif (preg_match("|INSERT INTO ([^ ]*)|", $qry, $matches)) {
                 $iqueries[] = $qry;
-            } else if (preg_match("|UPDATE ([^ ]*)|", $qry, $matches)) {
+            } elseif (preg_match("|UPDATE ([^ ]*)|", $qry, $matches)) {
                 $iqueries[] = $qry;
             } else {
                 // Unrecognized query type
@@ -285,7 +290,7 @@ class DatabaseSetup
                             $index_string = '';
                             if ($index_name == 'PRIMARY') {
                                 $index_string .= 'PRIMARY ';
-                            } else if ($index_data['unique']) {
+                            } elseif ($index_data['unique']) {
                                 $index_string .= 'UNIQUE ';
                             }
                             $index_string .= 'KEY ';
@@ -295,7 +300,9 @@ class DatabaseSetup
                             $index_columns = '';
                             // For each column in the index
                             foreach ($index_data['columns'] as $column_data) {
-                                if ($index_columns != '') $index_columns .= ',';
+                                if ($index_columns != '') {
+                                    $index_columns .= ',';
+                                }
                                 // Add the field to the column list string
                                 $index_columns .= $column_data['fieldname'];
                                 if ($column_data['subpart'] != '') {

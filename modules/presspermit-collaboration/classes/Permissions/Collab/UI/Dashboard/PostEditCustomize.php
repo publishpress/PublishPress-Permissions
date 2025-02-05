@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class PostEditCustomize
@@ -26,29 +27,25 @@ class PostEditCustomize
         $sitewide_requirement = $pp->getOption('editor_ids_sitewide_requirement');
         $sitewide_requirement_met = false;
 
-        if ('admin_option' == $sitewide_requirement)
+        if ('admin_option' == $sitewide_requirement) {
             $sitewide_requirement_met = current_user_can('pp_manage_settings');
-
-        elseif ('admin_user' == $sitewide_requirement)
+        } elseif ('admin_user' == $sitewide_requirement) {
             $sitewide_requirement_met = $pp->isUserAdministrator();
-
-        elseif ('admin_content' == $sitewide_requirement)
+        } elseif ('admin_content' == $sitewide_requirement) {
             $sitewide_requirement_met = $pp->isContentAdministrator();
-
-        elseif ('editor' == $sitewide_requirement)
+        } elseif ('editor' == $sitewide_requirement) {
             $reqd_caps = (isset($type_obj->cap->edit_published_posts)) 
             ? [$type_obj->cap->edit_published_posts, $type_obj->cap->edit_others_posts]
             : [$type_obj->cap->edit_posts, $type_obj->cap->edit_others_posts];
-
-        elseif ('author' == $sitewide_requirement)
+        } elseif ('author' == $sitewide_requirement) {
             $reqd_caps = (isset($type_obj->cap->edit_published_posts)) 
             ? [$type_obj->cap->edit_published_posts]
             : [$type_obj->cap->edit_posts];
-
-        elseif ($sitewide_requirement)
+        } elseif ($sitewide_requirement) {
             $reqd_caps = [$type_obj->cap->edit_posts];
-        else
+        } else {
             $sitewide_requirement_met = true;
+        }
 
         if ($reqd_caps) {
             $sitewide_requirement_met = !array_diff($reqd_caps, array_keys(array_filter(presspermit()->getUser()->allcaps)));
@@ -56,14 +53,17 @@ class PostEditCustomize
 
         if ($sitewide_requirement_met) {
             // don't hide anything if a user with sufficient site-wide role is creating a new object
-            if (!$object_id)
+            if (!$object_id) {
                 return;
+            }
 
-            if (!$object = get_post($object_id))
+            if (!$object = get_post($object_id)) {
                 return;
+            }
 
-            if (empty($object->post_date)) // don't prevent the full editing of new posts/pages
+            if (empty($object->post_date)) { // don't prevent the full editing of new posts/pages
                 return;
+            }
         }
 
 

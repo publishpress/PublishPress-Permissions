@@ -100,44 +100,47 @@ class PermissionsMeta
                     . " WHERE i.inherited_from = '0' AND e.agent_type = %s AND operation IN ('$ops_csv')"           // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                     . " AND e.for_item_type IN ('$types_csv') AND e.via_item_type IN ('$types_csv') $agent_clause"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                     . " GROUP BY e.agent_id, e.for_item_source, e.for_item_type, e.operation",
-    
                     $agent_type
                 )
             );
         }
 
         foreach ($results as $row) {
-            if (!$row->for_item_type)
+            if (!$row->for_item_type) {
                 $type_label = '';
-            else {
-                if (!$type_obj = $pp->getTypeObject($row->for_item_source, $row->for_item_type))
+            } else {
+                if (!$type_obj = $pp->getTypeObject($row->for_item_source, $row->for_item_type)) {
                     continue;
+                }
 
                 $type_label = $type_obj->labels->singular_name;
             }
 
             if ($op_obj = $pp->admin()->getOperationObject($row->operation, $row->for_item_type)) {
                 if ('assign' == $row->operation) {
-                    if ($tx_obj = get_taxonomy($row->via_item_type))
+                    if ($tx_obj = get_taxonomy($row->via_item_type)) {
                         $lbl = str_replace('Term', $tx_obj->labels->singular_name, $op_obj->label);  // todo: better i8n
-                    else
+                    } else {
                         $lbl = $op_obj->label;
-
-                } elseif (isset($op_obj->abbrev))
+                    }
+                } elseif (isset($op_obj->abbrev)) {
                     $lbl = $op_obj->abbrev;
-                else
+                } else {
                     $lbl = sprintf(esc_html__('%1$s %2$s', 'press-permit-core'), $op_obj->label, $type_label);
+                }
             } else {
                 $lbl = $type_label;
             }
 
-            if (!isset($count[$row->qry_agent_id]['exceptions'][$lbl]))
+            if (!isset($count[$row->qry_agent_id]['exceptions'][$lbl])) {
                 $count[$row->qry_agent_id]['exceptions'][$lbl] = 0;
+            }
 
             $count[$row->qry_agent_id]['exceptions'][$lbl] += $row->exc_count;
 
-            if (!isset($count[$row->qry_agent_id]['exc_count']))
+            if (!isset($count[$row->qry_agent_id]['exc_count'])) {
                 $count[$row->qry_agent_id]['exc_count'] = 0;
+            }
 
             $count[$row->qry_agent_id]['exc_count'] += $row->exc_count;
         }
@@ -187,11 +190,9 @@ class PermissionsMeta
                         "SELECT agent_id, role_name, COUNT(*) AS rolecount FROM $wpdb->ppc_roles"
                         . " WHERE agent_type = %s AND agent_id IN ('$agent_id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                         . " GROUP BY agent_id, role_name",
-    
                         $agent_type
                     )
                 );
-
             } else {
                 // Direct query of plugin tables for admin query
                 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
@@ -199,7 +200,6 @@ class PermissionsMeta
                     $wpdb->prepare(
                         "SELECT agent_id, role_name, COUNT(*) AS rolecount FROM $wpdb->ppc_roles WHERE agent_type = %s"
                         . " GROUP BY agent_id, role_name",
-    
                         $agent_type
                     )
                 );

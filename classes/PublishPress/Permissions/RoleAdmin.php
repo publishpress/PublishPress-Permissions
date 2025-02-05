@@ -33,7 +33,6 @@ class RoleAdmin
         // but only if they have at least one type-defined capability and are not disabled for the object type
         static $wp_type_roles = [];
         if (!isset($wp_type_roles[$for_item_source]) || !isset($wp_type_roles[$for_item_source][$for_item_type])) {
-
             $wp_type_roles[$for_item_source][$for_item_type] = [];
 
             if ($pp->role_defs->direct_roles) {

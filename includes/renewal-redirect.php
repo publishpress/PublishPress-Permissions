@@ -1,4 +1,5 @@
 <?php
+
 $opt_val = is_multisite() ? get_site_meta('pp_support_key') : get_option('pp_support_key');
 $renewal_token = (!is_array($opt_val) || count($opt_val) < 2) ? '' : $opt_val[1];
 

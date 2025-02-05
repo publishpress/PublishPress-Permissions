@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI;
 
 /**
@@ -8,7 +9,7 @@ namespace PublishPress\Permissions\Collab\UI;
  * @subpackage Administration
  */
 
-class RoleUsage 
+class RoleUsage
 {
     function __construct() 
     {
@@ -16,9 +17,11 @@ class RoleUsage
         $this->display();
     }
 
-    private function display() {
-        if (!current_user_can('pp_manage_settings'))
+    private function display()
+    {
+        if (!current_user_can('pp_manage_settings')) {
             wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
+        }
 
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/RoleUsageListTable.php');
         $role_usage_table = RoleUsageListTable::instance();
@@ -47,12 +50,13 @@ class RoleUsage
             <div class="error">
                 <ul>
                     <?php
-                    foreach ($admin->errors->get_error_messages() as $err)
+                    foreach ($admin->errors->get_error_messages() as $err) {
                         echo "<li>" . esc_html($err) . "</li>\n";
+                    }
                     ?>
                 </ul>
             </div>
-        <?php
+            <?php
         endif;
         ?>
 
@@ -106,6 +110,6 @@ class RoleUsage
             presspermit()->admin()->publishpressFooter();
             ?>
         </div>
-    <?php
+        <?php
     }
 }

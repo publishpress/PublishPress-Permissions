@@ -4,10 +4,12 @@ namespace PublishPress\Permissions;
 
 class PostFiltersFrontNonAdministrator
 {
-    public function __construct() { // Ubermenu: intermittant failure to display top level menu items
+    public function __construct()
+    {
+ // Ubermenu: intermittant failure to display top level menu items
         if (!defined('PP_DISABLE_NAV_MENU_FILTER') && !defined('SHORTCODE_IN_MENUS_RES') && (!defined('UBERMENU_VERSION') || presspermit()->getOption('force_nav_menu_filter'))) {
             if (is_user_logged_in() || !presspermit()->getOption('anonymous_unfiltered')) {
-            	add_filter('wp_get_nav_menu_items', [$this, 'fltNavMenuItems'], 50, 3);
+                add_filter('wp_get_nav_menu_items', [$this, 'fltNavMenuItems'], 50, 3);
             }
         }
 
@@ -26,14 +28,17 @@ class PostFiltersFrontNonAdministrator
     {
         if (is_array($instance) && isset($instance['slidedeck_id'])) {
             foreach (array_keys($instance) as $key) {
-                if (!strpos($key, 'slidedeck'))
+                if (!strpos($key, 'slidedeck')) {
                     continue;
+                }
 
-                if (strpos($key, 'deploy_as_iframe'))
+                if (strpos($key, 'deploy_as_iframe')) {
                     unset($instance[$key]);
+                }
 
-                if (strpos($key, 'use_ress'))
+                if (strpos($key, 'use_ress')) {
                     unset($instance[$key]);
+                }
             }
         }
 
@@ -56,8 +61,9 @@ class PostFiltersFrontNonAdministrator
         $item_types = [];
 
         foreach ($items as $key => $item) {
-            if (!is_scalar($item->type) || !is_scalar($item->object))
+            if (!is_scalar($item->type) || !is_scalar($item->object)) {
                 continue;
+            }
 
             $item_types[$item->type][$item->object][$key] = $item->object_id;
         }
@@ -72,8 +78,8 @@ class PostFiltersFrontNonAdministrator
                 $terms = get_terms($taxonomy, "hide_empty=$hide_empty");
 
                 $okay_ids = [];
-                foreach($terms as $term) {
-                    $okay_ids []= $term->term_id;
+                foreach ($terms as $term) {
+                    $okay_ids [] = $term->term_id;
                 }
 
                 if ($remove_ids = apply_filters('presspermit_nav_menu_hide_terms', array_diff($item_ids, $okay_ids), $taxonomy)) {
@@ -99,7 +105,7 @@ class PostFiltersFrontNonAdministrator
             $post_types = $post_ids = [];
         }
 
-		$post_types = array_diff($post_types, apply_filters('presspermit_nav_menu_ignore_post_types', []));
+        $post_types = array_diff($post_types, apply_filters('presspermit_nav_menu_ignore_post_types', []));
 
         $pub_stati = PWP::getPostStatuses(['public' => true, 'post_type' => $post_types]);
         $pvt_stati = PWP::getPostStatuses(['private' => true, 'post_type' => $post_types]);

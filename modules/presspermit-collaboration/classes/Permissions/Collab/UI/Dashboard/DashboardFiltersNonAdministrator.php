@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class DashboardFiltersNonAdministrator
@@ -31,7 +32,7 @@ class DashboardFiltersNonAdministrator
                     display: none;
                 }
             </style>
-        <?php
+            <?php
         endif;
 
 
@@ -42,7 +43,7 @@ class DashboardFiltersNonAdministrator
                     display: none;
                 }
             </style>
-        <?php
+            <?php
         endif;
     }
 
@@ -57,15 +58,15 @@ class DashboardFiltersNonAdministrator
                 jQuery(document).ready(function ($) {
                     $('#menu-appearance .wp-submenu-wrap a[href!="nav-menus.php"]').not('[class*="wp-has-submenu"]').parent().remove();
 
-                    <?php if ( defined('PP_SUPPRESS_APPEARANCE_LINK') ): ?>
+                    <?php if (defined('PP_SUPPRESS_APPEARANCE_LINK')) : ?>
                     $('#menu-appearance .wp-submenu-wrap a[href="nav-menus.php"]').closest('li.menu-top').find('a.menu-top').attr('href', 'javascript:blank()');
-                    <?php else: ?>
+                    <?php else : ?>
                     $('#menu-appearance .wp-submenu-wrap a[href="nav-menus.php"]').closest('li.menu-top').find('a.menu-top').attr('href', 'nav-menus.php');
                     <?php endif;?>
                 });
                 /* ]]> */
             </script>
-        <?php
+            <?php
         endif;  // limited nav menu manager?
     } // end function footer_scripts
 
@@ -101,7 +102,7 @@ class DashboardFiltersNonAdministrator
                             display: none;
                         }
                     </style>
-                <?php
+                    <?php
                 endif;
             }
         }

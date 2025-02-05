@@ -15,112 +15,113 @@ class PromoBanner
   /**
    * @var array $features List of features for the plugin.
    */
-  private $features = [];
+    private $features = [];
 
   /**
    * @var string $pluginDocsUrl URL to the plugin documentation.
    */
-  private $pluginDocsUrl;
+    private $pluginDocsUrl;
 
   /**
    * @var string $pluginName Name of the plugin.
    */
-  private $pluginName;
+    private $pluginName;
 
   /**
    * @var string $pluginSupportUrl URL to the plugin support page.
    */
-  private $pluginSupportUrl;
+    private $pluginSupportUrl;
 
   /**
    * @var string $pluginUrl URL to the plugin homepage.
    */
-  private $pluginUrl;
+    private $pluginUrl;
 
   /**
    * @var string $title Title of the promo banner.
    */
-  private $title;
+    private $title;
 
   /**
    * @var string $subtitle Subtitle of the promo banner.
    */
-  private $subtitle;
+    private $subtitle;
 
   /**
    * @var string $supportTitle Title for the support section in the promo banner.
    */
-  private $supportTitle;
+    private $supportTitle;
 
   /**
    * @var string $supportSubtitle Subtitle for the support section in the promo banner.
    */
-  private $supportSubtitle;
+    private $supportSubtitle;
 
-  public function __construct($args = [])
-  {
-    $pluginData = get_file_data(PRESSPERMIT_FILE, ['PluginURI' => 'Plugin URI', 'Name' => 'Plugin Name']);
-    $this->pluginUrl = $pluginData['PluginURI'];
-    $this->pluginName = $pluginData['Name'];
-    $this->title = esc_html__("Upgrade to {$this->pluginName} Pro", 'press-permit-core');
-    $this->subtitle = esc_html__("Enhance the power of {$this->pluginName} with the Pro version:", 'press-permit-core');
-    $this->supportTitle = esc_html__("Need {$this->pluginName} Support?", 'press-permit-core');
-    $this->supportSubtitle = esc_html__('If you need help or have a new feature request, let us know.', 'press-permit-core');
+    public function __construct($args = [])
+    {
+        $pluginData = get_file_data(PRESSPERMIT_FILE, ['PluginURI' => 'Plugin URI', 'Name' => 'Plugin Name']);
+        $this->pluginUrl = $pluginData['PluginURI'];
+        $this->pluginName = $pluginData['Name'];
+        $this->title = esc_html__("Upgrade to {$this->pluginName} Pro", 'press-permit-core');
+        $this->subtitle = esc_html__("Enhance the power of {$this->pluginName} with the Pro version:", 'press-permit-core');
+        $this->supportTitle = esc_html__("Need {$this->pluginName} Support?", 'press-permit-core');
+        $this->supportSubtitle = esc_html__('If you need help or have a new feature request, let us know.', 'press-permit-core');
 
-    foreach ($args as $key => $val) {
-      if (property_exists($this, $key)) {
-        $this->{$key} = $val;
-      }
+        foreach ($args as $key => $val) {
+            if (property_exists($this, $key)) {
+                $this->{$key} = $val;
+            }
+        }
     }
-  }
 
-  public function setTitle($title)
-  {
-    $this->title = $title;
-  }
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
 
-  public function setSubtitle($subtitle)
-  {
-    $this->subtitle = $subtitle;
-  }
+    public function setSubtitle($subtitle)
+    {
+        $this->subtitle = $subtitle;
+    }
 
-  public function setPluginName($name)
-  {
-    $this->pluginName = $name;
-  }
+    public function setPluginName($name)
+    {
+        $this->pluginName = $name;
+    }
 
-  public function setFeatures(array $features)
-  {
-    $this->features = $features;
-  }
+    public function setFeatures(array $features)
+    {
+        $this->features = $features;
+    }
 
-  public function setPluginDocsUrl($url)
-  {
-    $this->pluginDocsUrl = $url;
-  }
+    public function setPluginDocsUrl($url)
+    {
+        $this->pluginDocsUrl = $url;
+    }
 
-  public function setPluginSupportUrl($url)
-  {
-    $this->pluginSupportUrl = $url;
-  }
+    public function setPluginSupportUrl($url)
+    {
+        $this->pluginSupportUrl = $url;
+    }
 
-  public function setPluginUrl($url)
-  {
-    $this->pluginUrl = $url;
-  }
+    public function setPluginUrl($url)
+    {
+        $this->pluginUrl = $url;
+    }
 
-  public function setSupportTitle($supportTitle)
-  {
-    $this->supportTitle = $supportTitle;
-  }
+    public function setSupportTitle($supportTitle)
+    {
+        $this->supportTitle = $supportTitle;
+    }
 
-  public function setSupportSubtitle($supportSubtitle)
-  {
-    $this->supportSubtitle = $supportSubtitle;
-  }
+    public function setSupportSubtitle($supportSubtitle)
+    {
+        $this->supportSubtitle = $supportSubtitle;
+    }
 
-  public function displayBanner()
-  { ?>
+    public function displayBanner()
+    {
+        ?>
     <style>
       .pp-ads-right-sidebar {
         padding: 0 5px 0 20px;
@@ -257,6 +258,6 @@ class PromoBanner
         </div>
       </div>
     </div>
-<?php
-  }
+        <?php
+    }
 }

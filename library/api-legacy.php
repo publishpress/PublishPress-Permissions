@@ -1,4 +1,5 @@
 <?php
+
 // =========================== Capabilities API (Legacy Wrappers) ===========================
 
 if (!function_exists('pp_get_user')) {
@@ -147,42 +148,48 @@ if (!function_exists('pp_load_admin_api')) {
 
 // called by CME < 1.8
 if (!function_exists('pp_get_enabled_types')) {
-    function pp_get_enabled_types( $src_name, $args = [], $output = 'names' ) {
-        return ( 'post' == $src_name ) ? presspermit()->getEnabledPostTypes( $args, $output ) : [];
+    function pp_get_enabled_types($src_name, $args = [], $output = 'names')
+    {
+        return ( 'post' == $src_name ) ? presspermit()->getEnabledPostTypes($args, $output) : [];
     }
 }
 
 // called by CME < 1.8
 if (!function_exists('pp_get_option')) {
-    function pp_get_option($option_basename) {
+    function pp_get_option($option_basename)
+    {
         return presspermit()->getOption($option_basename);
     }
 }
 
 // called by CME < 1.8
 if (!function_exists('pp_update_option')) {
-    function pp_update_option($option_basename, $val) {
+    function pp_update_option($option_basename, $val)
+    {
         return presspermit()->updateOption($option_basename, $val);
     }
 }
 
 // called by CME < 1.8
 if (!function_exists('pp_refresh_options')) {
-    function pp_refresh_options() {
+    function pp_refresh_options()
+    {
         return presspermit()->refreshOptions();
     }
 }
 
 // called by CME < 1.8
 if (!function_exists('pp_init_cap_caster')) {
-    function pp_init_cap_caster() {
+    function pp_init_cap_caster()
+    {
         return presspermit()->capCaster();
     }
 }
 
 // called by CME < 1.8
 if (!function_exists('pp_icon')) {
-    function pp_icon() {
+    function pp_icon()
+    {
         require_once(PRESSPERMIT_CLASSPATH . '/UI/PluginPage.php');
         return \PublishPress\Permissions\UI\PluginPage::icon();
     }

@@ -1,9 +1,11 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\Revisions;
 
 class Admin
 {
-    function __construct() {
+    function __construct()
+    {
         add_filter('map_meta_cap', [$this, 'flt_mapMetaCap'], 3, 4);
 
         add_filter('presspermit_get_exception_items', [$this, 'flt_get_exception_items'], 10, 5);
@@ -29,11 +31,13 @@ class Admin
     {
         global $current_user;
 
-        if ($user_id && in_array($meta_cap, ['edit_post', 'edit_page'], true) && !empty($wp_args[0]) 
-			&& function_exists('rvy_get_option') && function_exists('rvy_default_options') // Revisions plugin does not initialize on plugins.php URL
-		) {
-            if ($user_id != $current_user->ID)
+        if (
+            $user_id && in_array($meta_cap, ['edit_post', 'edit_page'], true) && !empty($wp_args[0]) 
+            && function_exists('rvy_get_option') && function_exists('rvy_default_options') // Revisions plugin does not initialize on plugins.php URL
+        ) {
+            if ($user_id != $current_user->ID) {
                 return $caps;
+            }
 
             if (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'update.php')) { // Revisionary does not load on update.php
                 return $caps;
@@ -71,25 +75,25 @@ class Admin
                         $revise_cap = str_replace('edit_', 'revise_', $post_type_obj->cap->edit_others_posts);
                         
                         if (!empty($current_user->allcaps[$revise_cap])) {
-                            $caps[]= $revise_cap;
+                            $caps[] = $revise_cap;
                         } else {
-                            $caps []= str_replace('edit_', 'list_', $post_type_obj->cap->edit_others_posts);
+                            $caps [] = str_replace('edit_', 'list_', $post_type_obj->cap->edit_others_posts);
                         }
 
                         if (rvy_get_option('copy_posts_capability')) {
                             $copy_cap = str_replace('edit_', 'copy_', $post_type_obj->cap->edit_others_posts);
                             
                             if (!empty($current_user->allcaps[$copy_cap])) {
-                                $caps[]= $copy_cap;
+                                $caps[] = $copy_cap;
                             } else { 
-                                $caps []= str_replace('edit_', 'copy_', $post_type_obj->cap->edit_others_posts);
+                                $caps [] = str_replace('edit_', 'copy_', $post_type_obj->cap->edit_others_posts);
                             }
                         }
                     }
                 }
 
                 if (empty($current_user->allcaps['edit_others_drafts'])) {
-                	$caps[] = "edit_others_drafts";
+                    $caps[] = "edit_others_drafts";
                 }
             }
         }
@@ -102,8 +106,9 @@ class Admin
     {
         global $revisionary;
 
-        if ('edit' != $operation)
+        if ('edit' != $operation) {
             return $exception_items;
+        }
 
         // Modify Posts listing, but not 'edit_post' capability check
         if ((presspermit()->doing_cap_check && empty($args['merge_related_operations'])) || (!empty($args['has_cap_check']) && !defined('PRESSPERMIT_NO_REVISIONS_EXCEPTION_BYPASS'))) {
@@ -131,8 +136,9 @@ class Admin
             $user->retrieveExceptions('copy', 'post');
         }
 
-        if (!isset($user->except['revise_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type])
-        && !isset($user->except['copy_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type])
+        if (
+            !isset($user->except['revise_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type])
+            && !isset($user->except['copy_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type])
         ) {
             return $exception_items;
         }
@@ -169,7 +175,8 @@ class Admin
     }
 
     // Apply term revision restrictions separately with status clause to avoid removing unpublished posts from the listing 
-    function fltTermRestrictionsClause($where, $args) {
+    function fltTermRestrictionsClause($where, $args)
+    {
         global $wpdb;
 
         // Modify Posts listing, but not 'edit_post' capability check
@@ -190,7 +197,8 @@ class Admin
             'term_additions_clause', 
             'post_additions_clause', 
             'type_exemption_clause'
-            ], ''
+            ],
+            ''
         );
 
         $args = array_merge($defaults, $args);
@@ -199,8 +207,8 @@ class Admin
         }
 
         if ('read' == $required_operation) {
-			return $where;
-		}
+            return $where;
+        }
 
         $user = presspermit()->getUser();
 
@@ -217,7 +225,7 @@ class Admin
                         $tx_additional_ids = [];
                     }
                     
-                    $published_stati_csv = implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'OR' ));
+                    $published_stati_csv = implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'OR'));
 
                     if ('include' == $mod) {
                         if ($tx_additional_ids) {
@@ -234,7 +242,6 @@ class Admin
 
                         $where .= " AND ( $term_include_clause $term_additions_clause $post_additions_clause $type_exemption_clause )";
                         continue 2;
-
                     } else {
                         if ($tx_additional_ids) {
                             $tt_ids = array_diff($tt_ids, $tx_additional_ids);
@@ -257,7 +264,7 @@ class Admin
                         $tx_additional_ids = [];
                     }
                     
-                    $published_stati_csv = implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'OR' ));
+                    $published_stati_csv = implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'OR'));
 
                     if ('include' == $mod) {
                         if ($tx_additional_ids) {
@@ -274,7 +281,6 @@ class Admin
                 
                         $where .= " AND ( $term_include_clause $term_additions_clause $post_additions_clause $type_exemption_clause )";
                         continue 2;
-
                     } else {
                         if ($tx_additional_ids) {
                             $tt_ids = array_diff($tt_ids, $tx_additional_ids);

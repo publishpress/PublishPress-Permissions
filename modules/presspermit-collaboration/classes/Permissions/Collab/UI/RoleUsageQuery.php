@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI;
 
 class RoleUsageQuery
@@ -86,13 +87,13 @@ class RoleUsageQuery
     {
         $pp = presspermit();
 
-        if (isset($pp->role_defs->pattern_roles[$role_name]))
+        if (isset($pp->role_defs->pattern_roles[$role_name])) {
             return 'pattern';
-
-        elseif (isset($pp->role_defs->direct_roles[$role_name]))
+        } elseif (isset($pp->role_defs->direct_roles[$role_name])) {
             return 'direct';
-        else
+        } else {
             return false;
+        }
     }
 
     // obsolete

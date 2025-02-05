@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI;
 
 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/RoleUsageQuery.php');
@@ -10,8 +11,9 @@ class RoleUsageListTable extends \WP_List_Table
 
     private static $instance = null;
 
-    public static function instance() {
-        if ( is_null(self::$instance) ) {
+    public static function instance()
+    {
+        if (is_null(self::$instance)) {
             self::$instance = new RoleUsageListTable();
         }
 
@@ -24,8 +26,9 @@ class RoleUsageListTable extends \WP_List_Table
 
         // clear out empty entry from initial admin_header.php execution
         global $_wp_column_headers;
-        if (isset($_wp_column_headers[$screen->id]))
+        if (isset($_wp_column_headers[$screen->id])) {
             unset($_wp_column_headers[$screen->id]);
+        }
 
         parent::__construct([
             'singular' => 'role',
@@ -91,7 +94,6 @@ class RoleUsageListTable extends \WP_List_Table
 
     function display_tablenav($which)
     {
-        
     }
 
     /**
@@ -137,8 +139,8 @@ class RoleUsageListTable extends \WP_List_Table
                         echo '<strong>' . esc_html($role_obj->labels->name) . '</strong>';
                     }
                 
-                	$mode = get_user_setting( 'posts_list_mode', 'list' );
-                	$class = ('excerpt' === $mode) ? 'row-actions visible' : 'row-actions';
+                    $mode = get_user_setting('posts_list_mode', 'list');
+                    $class = ('excerpt' === $mode) ? 'row-actions visible' : 'row-actions';
 
                     echo '<div class="' . esc_attr($class) . '">';
 
@@ -179,7 +181,7 @@ class RoleUsageListTable extends \WP_List_Table
         echo '</tr>';
     }
 
-    function row_actions( $actions, $always_visible = false ) {
-
-	}
+    function row_actions($actions, $always_visible = false)
+    {
+    }
 }

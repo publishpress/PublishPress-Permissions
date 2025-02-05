@@ -239,7 +239,7 @@ class Profile
                     ?>
                 </span>
                 </p>
-            <?php
+                <?php
             endif;
 
             echo '</div>';
@@ -350,7 +350,11 @@ class Profile
         <div id='ppcurrentExceptionsUI' class='pp-group-box <?php echo esc_attr($class); ?>'>
             <h3>
                 <?php
-                if ($edit_url) echo "<a href='" . esc_url($edit_url) . "'>" . esc_html($caption) . "</a>"; else echo esc_html($caption);
+                if ($edit_url) {
+                    echo "<a href='" . esc_url($edit_url) . "'>" . esc_html($caption) . "</a>";
+                } else {
+                    echo esc_html($caption);
+                }
                 ?>
             </h3>
         <?php 
@@ -380,7 +384,7 @@ class Profile
                         ?>
                     </p>
                 </div>
-            <?php
+                <?php
             endif;
         }
     }

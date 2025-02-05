@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class PostSaveHierarchical
@@ -34,12 +35,13 @@ class PostSaveHierarchical
                     $post_type = $_post->post_type;
                 }
             } else {
-            	$post_type = \PublishPress\Permissions\REST::getPostType();
-        	}
+                $post_type = \PublishPress\Permissions\REST::getPostType();
+            }
         }
 
-        if (!$post_id && !$post_type)  // allow post type to be passed in for pre-filtering of new page creation
+        if (!$post_id && !$post_type) {  // allow post type to be passed in for pre-filtering of new page creation
             return $parent_id;
+        }
 
         if (($parent_id == $post_id) && $post_id) {  // normal revision save
             $_post = get_post($post_id);
@@ -51,25 +53,32 @@ class PostSaveHierarchical
 
         if ($parent_id) {
             if ($parent_post = get_post($parent_id)) {
-                if (!in_array($parent_post->post_type, presspermit()->getEnabledPostTypes(), true))
+                if (!in_array($parent_post->post_type, presspermit()->getEnabledPostTypes(), true)) {
                     return $parent_id;
+                }
             }
         }
 
         if ($post_id && !$post_type) {
-            if ($post = get_post($post_id))
+            if ($post = get_post($post_id)) {
                 $post_type = $post->post_type;
+            }
         }
 
         // If a newly selected parent is invalid due to exceptions or because it's a descendant, revert to last stored setting
 
         if ($post_type) {
-            if (!in_array($post_type, presspermit()->getEnabledPostTypes(), true))
+            if (!in_array($post_type, presspermit()->getEnabledPostTypes(), true)) {
                 return $parent_id;
+            }
 
             static $return;
-            if (!isset($return)) $return = [];
-            if (isset($return[$post_id])) return $return[$post_id];
+            if (!isset($return)) {
+                $return = [];
+            }
+            if (isset($return[$post_id])) {
+                return $return[$post_id];
+            }
 
             $revert = false;
 
@@ -82,14 +91,15 @@ class PostSaveHierarchical
             if ($include_ids = $user->getExceptionPosts($required_operation, 'include', $post_type)) {
                 $exclude_ids = false;
                 $include_ids = array_merge($include_ids, $additional_ids);
-                if (!in_array($parent_id, $include_ids))
+                if (!in_array($parent_id, $include_ids)) {
                     $revert = true;
-
+                }
             } elseif ($exclude_ids = array_diff($user->getExceptionPosts($required_operation, 'exclude', $post_type), $additional_ids)) {
-                $exclude_ids []= $post_id;
+                $exclude_ids [] = $post_id;
 
-                if (in_array($parent_id, $exclude_ids))
+                if (in_array($parent_id, $exclude_ids)) {
                     $revert = true;
+                }
             }
 
             if ($parent_id) {
@@ -125,8 +135,9 @@ class PostSaveHierarchical
 
             // subsequent filtering is currently just a safeguard against invalid "no parent" posting in violation of lock_top_pages
             // if ( $parent_id || ( ! $selected_parent_id && Collab::userCanAssociateMain( $post_type ) ) )
-            if ($parent_id || Collab::userCanAssociateMain($post_type))
+            if ($parent_id || Collab::userCanAssociateMain($post_type)) {
                 return $parent_id;
+            }
 
             return self::revertPageParent($post_id, $post_type, compact('include_ids', 'exclude_ids'));
         }
@@ -154,8 +165,9 @@ class PostSaveHierarchical
             if ($page->post_parent == $page_id) {
                 $descendant_ids[] = $page->ID;
                 if ($children = get_page_children($page->ID, $pages)) { // Okay to use unfiltered WP function here since it's only used for excluding
-                    foreach ($children as $_page)
+                    foreach ($children as $_page) {
                         $descendant_ids [] = $_page->ID;
+                    }
                 }
             }
         }
@@ -209,10 +221,11 @@ class PostSaveHierarchical
             }
         }
 
-        if ($post 
-        && ((!$post->post_parent && ($post->post_status != 'auto-draft' || Collab::userCanAssociateMain($post_type)))
-        || in_array($post->post_parent, $allowed_parents)
-		|| in_array($post->post_parent, $valid_parents) && ($post->post_status != 'auto-draft'))
+        if (
+            $post 
+            && ((!$post->post_parent && ($post->post_status != 'auto-draft' || Collab::userCanAssociateMain($post_type)))
+            || in_array($post->post_parent, $allowed_parents)
+            || in_array($post->post_parent, $valid_parents) && ($post->post_status != 'auto-draft'))
         ) {
             $parent_id = $post->post_parent;
         } else {
@@ -225,19 +238,19 @@ class PostSaveHierarchical
             } else {
                 $parent_id = 0;
             }
-			
-			if (!defined('PRESSPERMIT_NO_PROCESS_BEFORE_PARENT_REVERT')) {
-	            require_once(PRESSPERMIT_CLASSPATH . '/PostSave.php');
-	
-	            if ($parent_id) {
-	                $is_new = true;
-	                require_once(PRESSPERMIT_CLASSPATH . '/ItemSave.php');
-	                $via_item_source = 'post';
-	                $set_parent = $parent_id;
-	                $_args = compact('via_item_source', 'set_parent', 'is_new');
-	                \PublishPress\Permissions\ItemSave::inheritParentExceptions($post_id, $_args);
-	            }
-	    	}
+            
+            if (!defined('PRESSPERMIT_NO_PROCESS_BEFORE_PARENT_REVERT')) {
+                require_once(PRESSPERMIT_CLASSPATH . '/PostSave.php');
+    
+                if ($parent_id) {
+                    $is_new = true;
+                    require_once(PRESSPERMIT_CLASSPATH . '/ItemSave.php');
+                    $via_item_source = 'post';
+                    $set_parent = $parent_id;
+                    $_args = compact('via_item_source', 'set_parent', 'is_new');
+                    \PublishPress\Permissions\ItemSave::inheritParentExceptions($post_id, $_args);
+                }
+            }
         }
 
         $_POST['parent_id'] = $parent_id; // for subsequent post_status filter
@@ -262,8 +275,9 @@ class PostSaveHierarchical
         } elseif (!empty($post)) {
             $post_id = $post->ID;
             $selected_parent_id = $post->post_parent;
-        } else
+        } else {
             return $status;
+        }
 
         if (!$_post = get_post($post_id)) {
             return $status;
@@ -273,18 +287,21 @@ class PostSaveHierarchical
             return $status;
         }
 
-        if ($saved_status_object = get_post_status_object($_post->post_status))
+        if ($saved_status_object = get_post_status_object($_post->post_status)) {
             $already_published = ($saved_status_object->public || $saved_status_object->private);
-        else
+        } else {
             $already_published = false;
+        }
 
         // if neither the stored nor selected parent is Main, we have no beef with it
-        if (!empty($selected_parent_id) && (!empty($_post->post_parent) || !$already_published))
+        if (!empty($selected_parent_id) && (!empty($_post->post_parent) || !$already_published)) {
             return $status;
+        }
 
         // if the page is and was associated with Main Page, don't mess
-        if (empty($selected_parent_id) && empty($_post->post_parent) 
-        && ($already_published || defined('PPCE_LIMITED_EDITORS_TOP_LEVEL_PUBLISH'))
+        if (
+            empty($selected_parent_id) && empty($_post->post_parent) 
+            && ($already_published || defined('PPCE_LIMITED_EDITORS_TOP_LEVEL_PUBLISH'))
         ) {
             return $status;
         }

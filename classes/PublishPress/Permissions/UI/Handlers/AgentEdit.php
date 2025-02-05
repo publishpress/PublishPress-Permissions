@@ -4,7 +4,8 @@ namespace PublishPress\Permissions\UI\Handlers;
 
 class AgentEdit
 {
-    public function __construct() {
+    public function __construct()
+    {
         global $current_user;
         
         require_once(PRESSPERMIT_CLASSPATH . '/DB/GroupUpdate.php');
@@ -25,8 +26,9 @@ class AgentEdit
                 $agent_id = PWP::REQUEST_int('agent_id');
                 check_admin_referer('pp-update-group_' . $agent_id);
 
-                if (!$pp->groups()->userCan('pp_edit_groups', $agent_id, $agent_type))
+                if (!$pp->groups()->userCan('pp_edit_groups', $agent_id, $agent_type)) {
                     wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
+                }
 
                 if ($pp->groups()->groupTypeEditable($agent_type)) {
                     $group = $pp->groups()->getGroup($agent_id, $agent_type);
@@ -108,13 +110,15 @@ class AgentEdit
             case 'creategroup':
                 check_admin_referer('pp-create-group', '_wpnonce_pp-create-group');
 
-                if (!current_user_can('pp_create_groups'))
+                if (!current_user_can('pp_create_groups')) {
                     wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
+                }
 
                 $agent_type = PWP::REQUEST_key('agent_type');
 
-                if (!$agent_type = apply_filters('presspermit_query_group_type', $agent_type))
+                if (!$agent_type = apply_filters('presspermit_query_group_type', $agent_type)) {
                     $agent_type = 'pp_group';
+                }
 
                 $retval = $this->addGroup($agent_type);
 
@@ -147,25 +151,28 @@ class AgentEdit
 
     private function triggerGroupEdit($group_id, $agent_type, $members_only = false)
     {
-        if (!in_array($agent_type, ['pp_group', 'pp_net_group'], true))
+        if (!in_array($agent_type, ['pp_group', 'pp_net_group'], true)) {
             return true;
+        }
 
         $group = presspermit()->groups()->getGroup($group_id, $agent_type);
 
-        if (isset($group->metagroup_type) && in_array($group->metagroup_type, ['wp_role', 'meta_role'], true))
+        if (isset($group->metagroup_type) && in_array($group->metagroup_type, ['wp_role', 'meta_role'], true)) {
             $retval = true;
-        elseif ($group)
+        } elseif ($group) {
             $retval = $this->editGroup($group_id, $agent_type, $members_only);
-        else
+        } else {
             $retval = false;
+        }
 
         return $retval;
     }
 
     private function editGroupRoles($agent_id, $agent_type)
     {
-        if (!current_user_can('pp_assign_roles') || !presspermit()->admin()->bulkRolesEnabled())
+        if (!current_user_can('pp_assign_roles') || !presspermit()->admin()->bulkRolesEnabled()) {
             return;
+        }
 
         check_admin_referer('pp-update-roles_' . $agent_id, '_pp_nonce_roles');
 
@@ -195,8 +202,9 @@ class AgentEdit
 
     private function editAgentExceptions($agent_id, $agent_type)
     {
-        if (!current_user_can('pp_assign_roles') || !presspermit()->admin()->bulkRolesEnabled())
+        if (!current_user_can('pp_assign_roles') || !presspermit()->admin()->bulkRolesEnabled()) {
             return;
+        }
 
         check_admin_referer('pp-update-exceptions_' . $agent_id, '_pp_nonce_exceptions');
 
@@ -208,7 +216,7 @@ class AgentEdit
             // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
             /* @todo - possible future implementation of mirroring new selections to other op(s)
             $mirror_to_ops = (!empty($_REQUEST['pp_add_exceptions_mirror_ops'])) ? $_REQUEST['pp_add_exceptions_mirror_ops'] : [];
-			*/
+            */
 
             // phpcs Note: sanitized per-element below
 
@@ -237,11 +245,9 @@ class AgentEdit
                     $args['via_item_source'] = 'term';
                     $args['via_item_type'] = $via_type;
                     $args['item_id'] = PWP::termidToTtid($item_id, $via_type);
-
                 } elseif ((!$via_type && post_type_exists($for_type)) || post_type_exists($via_type)) {
                     $args['via_item_source'] = 'post';
                     $args['via_item_type'] = '';
-
                 } else {
                     $args['via_item_source'] = $via_type;
                     $args['via_item_type'] = '';
@@ -267,8 +273,9 @@ class AgentEdit
                 foreach ($agent_ids as $_agent_id) {
                     if ($_agent_id) {
                         foreach (['item' => $for_item, 'children' => $for_children] as $assign_for => $is_assigned) {
-                            if ($is_assigned)
+                            if ($is_assigned) {
                                 $agents[$assign_for][$_agent_id] = true;
+                            }
                         }
                     }
                 }
@@ -319,7 +326,6 @@ class AgentEdit
             /* checking that username has been typed */
             if (!$group->group_name) {
                 $errors->add('group_name', esc_html__('<strong>ERROR</strong>: Please enter a group name.', 'press-permit-core'));
-
             } elseif (!$update && !\PublishPress\Permissions\DB\GroupUpdate::groupNameAvailable($group->group_name, $agent_type)) {
                 $errors->add(
                     'user_login', 
@@ -327,8 +333,9 @@ class AgentEdit
                 );
             }
 
-            if ($errors->get_error_codes())
+            if ($errors->get_error_codes()) {
                 return $errors;
+            }
 
             if ($update) {
                 \PublishPress\Permissions\DB\GroupUpdate::updateGroup($group_id, $group, $agent_type);
@@ -340,8 +347,9 @@ class AgentEdit
         if ($group_id) {
             $member_types = [];
 
-            if ($pp->groups()->userCan('pp_manage_members', $group_id, $agent_type))
+            if ($pp->groups()->userCan('pp_manage_members', $group_id, $agent_type)) {
                 $member_types[] = 'member';
+            }
 
             foreach ($member_types as $member_type) {
                 if (isset($_REQUEST["{$member_type}_csv"]) && ($_REQUEST["{$member_type}_csv"] != -1)) {
@@ -350,7 +358,8 @@ class AgentEdit
 
                     $selected = explode(",", sanitize_text_field($_REQUEST["{$member_type}_csv"]));
 
-                    if (('member' != $member_type)
+                    if (
+                        ('member' != $member_type)
                         || !apply_filters('presspermit_custom_agent_update', false, $agent_type, $group_id, $selected)
                     ) {
                         if ($add_users = array_diff($selected, $current)) {

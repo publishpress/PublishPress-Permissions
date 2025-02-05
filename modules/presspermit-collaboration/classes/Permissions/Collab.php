@@ -1,11 +1,14 @@
 <?php
+
 namespace PublishPress\Permissions;
 
-class Collab {
+class Collab
+{
     private static $instance = null;
 
-    public static function instance() {
-        if ( is_null(self::$instance) ) {
+    public static function instance()
+    {
+        if (is_null(self::$instance)) {
             self::$instance = new Collab();
         }
 
@@ -14,7 +17,6 @@ class Collab {
 
     private function __construct()
     {
-        
     }
 
     public static function populateRoles()
@@ -39,8 +41,9 @@ class Collab {
 
     public static function isLimitedEditor()
     {
-        if (presspermit()->isContentAdministrator())
+        if (presspermit()->isContentAdministrator()) {
             return false;
+        }
 
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UserLimitation.php');
         return Collab\UserLimitation::isLimitedEditor();
@@ -50,14 +53,17 @@ class Collab {
     {
         global $current_user;
 
-        if (presspermit()->isUserUnfiltered($current_user->ID, compact('post_type')))
+        if (presspermit()->isUserUnfiltered($current_user->ID, compact('post_type'))) {
             return true;
+        }
 
-        if (!$post_type_obj = get_post_type_object($post_type))
+        if (!$post_type_obj = get_post_type_object($post_type)) {
             return true;
+        }
 
-        if (!$post_type_obj->hierarchical)
+        if (!$post_type_obj->hierarchical) {
             return true;
+        }
 
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostEdit.php');
         return Collab\PostEdit::userCanAssociateMain($post_type);
@@ -65,7 +71,7 @@ class Collab {
 
     public static function isEditREST()
     {
-        if (!defined('REST_REQUEST') || ! REST_REQUEST || ! presspermit()->doingREST() ) {
+        if (!defined('REST_REQUEST') || ! REST_REQUEST || ! presspermit()->doingREST()) {
             return false;
         }
 

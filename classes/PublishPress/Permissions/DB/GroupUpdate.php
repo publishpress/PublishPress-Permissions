@@ -47,11 +47,13 @@ class GroupUpdate
 
             // Direct query of plugin table on plugin admin operation
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-            if ($already_member = $wpdb->get_col($wpdb->prepare(
-                "SELECT user_id FROM $wpdb->members_table WHERE group_id = %d AND user_id = %d",
-                $group_id,
-                $user_id
-            ))) {
+            if (
+                $already_member = $wpdb->get_col($wpdb->prepare(
+                    "SELECT user_id FROM $wpdb->members_table WHERE group_id = %d AND user_id = %d",
+                    $group_id,
+                    $user_id
+                ))
+            ) {
                 self::updateGroupUser($group_id, $user_ids, $args);
                 continue;
             } else {
@@ -267,12 +269,14 @@ class GroupUpdate
         // Direct query of plugin table on plugin admin operations
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
-        if ($prev = $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT * FROM $wpdb->groups_table WHERE ID = %d", 
-                $group_id
+        if (
+            $prev = $wpdb->get_row(
+                $wpdb->prepare(
+                    "SELECT * FROM $wpdb->groups_table WHERE ID = %d", 
+                    $group_id
+                )
             )
-        )) {
+        ) {
             if (($prev->group_name != $groupdata['group_name']) && !self::groupNameAvailable($groupdata['group_name'], $agent_type)) {
                 return false;
             }
@@ -296,12 +300,14 @@ class GroupUpdate
 
         // Direct query of plugin table on plugin admin operation
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        if ($string && !$wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT ID FROM $wpdb->groups_table WHERE group_name = %s LIMIT 1", 
-                $string
+        if (
+            $string && !$wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT ID FROM $wpdb->groups_table WHERE group_name = %s LIMIT 1", 
+                    $string
+                )
             )
-        )) {
+        ) {
             return true;
         }
     }

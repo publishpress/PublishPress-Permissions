@@ -1,14 +1,16 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class REST_Workarounds
 {
     var $buffer_taxonomies = [];
 
-    function __construct() {
+    function __construct()
+    {
         add_action('presspermit_user_init', [$this, 'actHandleRestTermAssignment'], 50);
 
-        add_action('plugins_loaded', function() {
+        add_action('plugins_loaded', function () {
             foreach (presspermit()->getEnabledPostTypes() as $post_type) { 
                 add_action("rest_insert_{$post_type}", [$this, 'actRestDisableDirectTermAssignment']);
                 add_action("rest_after_insert_{$post_type}", [$this, 'actRestorePostTypeTaxonomies'], 1);  // early execution
@@ -16,22 +18,24 @@ class REST_Workarounds
         });
     }
 
-    function actRestDisableDirectTermAssignment($post) {
+    function actRestDisableDirectTermAssignment($post)
+    {
         global $wp_taxonomies;
 
-		// Prevent WP_REST_Posts_Controller::handle_terms from making a redundant, unfilterable wp_set_object_terms() call
-		// todo: WP Trac ticket
+        // Prevent WP_REST_Posts_Controller::handle_terms from making a redundant, unfilterable wp_set_object_terms() call
+        // todo: WP Trac ticket
 
         if ($type_obj = get_post_type_object($post->post_type)) {
             $this->buffer_taxonomies = $wp_taxonomies;
 
-            foreach((array) $wp_taxonomies as $tax_name => $tax_obj) {
+            foreach ((array) $wp_taxonomies as $tax_name => $tax_obj) {
                 $wp_taxonomies[$tax_name]->object_type = array_diff((array) $wp_taxonomies[$tax_name]->object_type, [$post->post_type]);
             }
         }
     }
 
-    function actRestorePostTypeTaxonomies($post) {
+    function actRestorePostTypeTaxonomies($post)
+    {
         global $wp_taxonomies;
 
         // @todo: alternate method to regulate term assignment
@@ -46,8 +50,9 @@ class REST_Workarounds
             return;
         }
 
-        if (false === strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/wp-json/wp/v2'))
+        if (false === strpos(esc_url_raw($_SERVER['REQUEST_URI']), '/wp-json/wp/v2')) {
             return;
+        }
 
         $request_uri = esc_url_raw($_SERVER['REQUEST_URI']);
 
@@ -56,8 +61,9 @@ class REST_Workarounds
         foreach ($pp->getEnabledPostTypes([], 'object') as $type_obj) {
             $type_rest_base = (!empty($type_obj->rest_base)) ? $type_obj->rest_base : $type_obj->name;
 
-            if (false === strpos($request_uri, "/wp-json/wp/v2/$type_rest_base/"))
+            if (false === strpos($request_uri, "/wp-json/wp/v2/$type_rest_base/")) {
                 continue;
+            }
 
             $matches = [];
             preg_match("/wp-json\/wp\/v2\/" . $type_rest_base . "\/([0-9]+)/", $request_uri, $matches);
@@ -90,7 +96,6 @@ class REST_Workarounds
 
                 // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 } elseif (!empty($_REQUEST[$rest_base])) { // legacy Gutenberg versions
-                    
                     // No nonce verification because we need to deal with the term assignment attempt in any case
 
                     // phpcs:ignore WordPress.Security.NonceVerification.Recommended

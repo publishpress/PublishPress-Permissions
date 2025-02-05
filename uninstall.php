@@ -1,4 +1,5 @@
 <?php
+
 if (get_option('presspermit_delete_settings_on_uninstall')) {
     global $wpdb;
 
@@ -6,13 +7,13 @@ if (get_option('presspermit_delete_settings_on_uninstall')) {
     // all copies of the plugin (both Pro and Free) need to be deleted (not just deactivated) before deleting any settings.
     $permissions_plugin_count = 0;
 
-    if ( ! function_exists( 'get_plugins' ) ) {
+    if (! function_exists('get_plugins')) {
         require_once ABSPATH . 'wp-admin/includes/plugin.php';
     }
     
     $_plugins = get_plugins();
     
-    foreach($_plugins as $_plugin) {
+    foreach ($_plugins as $_plugin) {
         if (!empty($_plugin['Title']) && in_array($_plugin['Title'], ['PublishPress Permissions', 'PublishPress Permissions Pro'])) {
             $permissions_plugin_count++;
         }
@@ -27,7 +28,7 @@ if (get_option('presspermit_delete_settings_on_uninstall')) {
 
         foreach ($site_ids as $_blog_id) {
             if (is_multisite()) {
-            	switch_to_blog($_blog_id);
+                switch_to_blog($_blog_id);
             }
 
             if (!empty($wpdb->options)) {
@@ -90,7 +91,7 @@ if (get_option('presspermit_delete_settings_on_uninstall')) {
         }
 
         if (is_multisite()) {
-        	switch_to_blog($orig_site_id);
+            switch_to_blog($orig_site_id);
         }
     }
 }

@@ -128,7 +128,7 @@ class CoreAdmin
     function setUpgradeMenuLink()
     {
         $url = 'https://publishpress.com/links/permissions-menu';
-?>
+        ?>
         <style type="text/css">
             #toplevel_page_presspermit-groups ul li:last-of-type a {
                 font-weight: bold !important;
@@ -157,12 +157,12 @@ class CoreAdmin
         sort($pro_modules);
         if ($pro_modules) :
             $ext_info = presspermit()->admin()->getModuleInfo();
-        ?>
+            ?>
             <h4 style="margin:20px 0 5px 0"><?php esc_html_e('Pro Modules:', 'press-permit-core'); ?></h4>
             <table class="pp-extensions">
                 <?php foreach ($pro_modules as $plugin_slug) :
                     $slug = str_replace('presspermit-', '', $plugin_slug);
-                ?>
+                    ?>
                     <tr>
                         <th>
 
@@ -174,8 +174,11 @@ class CoreAdmin
                                     value="1" />
 
                                 <?php
-                                if (!empty($ext_info->title[$slug])) echo esc_html($ext_info->title[$slug]);
-                                else echo esc_html($this->prettySlug($slug));
+                                if (!empty($ext_info->title[$slug])) {
+                                    echo esc_html($ext_info->title[$slug]);
+                                } else {
+                                    echo esc_html($this->prettySlug($slug));
+                                }
                                 ?>
                             </label>
                         </th>
@@ -186,7 +189,7 @@ class CoreAdmin
                                     <span class="pp-ext-info"
                                         title="<?php if (isset($ext_info->descript[$slug])) {
                                                     echo esc_attr($ext_info->descript[$slug]);
-                                                }
+                                               }
                                                 ?>">
                                         <?php echo esc_html($ext_info->blurb[$slug]); ?>
                                     </span>
@@ -196,7 +199,7 @@ class CoreAdmin
                     </tr>
                 <?php endforeach; ?>
             </table>
-<?php
+            <?php
         endif;
     }
 

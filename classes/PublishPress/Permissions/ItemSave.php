@@ -2,7 +2,7 @@
 
 namespace PublishPress\Permissions;
 
-add_filter('presspermit_do_inherit_parent_exceptions', [__NAMESPACE__.'\ItemSave', 'fltDefaultDisableParentExceptions'], 5, 3);
+add_filter('presspermit_do_inherit_parent_exceptions', [__NAMESPACE__ . '\ItemSave', 'fltDefaultDisableParentExceptions'], 5, 3);
 
 class ItemSave
 {
@@ -40,8 +40,9 @@ class ItemSave
         do_action("presspermit_process_exceptions_{$via_item_source}_{$item_id}");
 
         if ($can_assign_roles = current_user_can('pp_assign_roles')) {
-            if (apply_filters('presspermit_disable_exception_edit', false, $via_item_source, $item_id) 
-            || apply_filters('presspermit_disable_exception_ui', false, $via_item_source, $item_id, '') 
+            if (
+                apply_filters('presspermit_disable_exception_edit', false, $via_item_source, $item_id) 
+                || apply_filters('presspermit_disable_exception_ui', false, $via_item_source, $item_id, '') 
             ) {
                 $can_assign_roles = false;
             }
@@ -54,7 +55,6 @@ class ItemSave
         // This function is triggered by the save_post hook, no nonce needed
         // phpcs:disable WordPress.Security.NonceVerification.Missing
         if (!empty($_POST['pp_exceptions']) && !$disallow_manual_entry && $can_assign_roles) {
-
             // validate posted exceptions array
 
             // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -64,31 +64,31 @@ class ItemSave
                 $pe[''] = $pe['(all)'];
             }
 
-            foreach(array_keys($pe) as $item_type) {
+            foreach (array_keys($pe) as $item_type) {
                 if (!is_array($pe[$item_type]) || ($item_type != sanitize_key($item_type))) {
                     unset($pe[$item_type]);
                     continue;
                 }
 
-                foreach(array_keys($pe[$item_type]) as $operation) {
+                foreach (array_keys($pe[$item_type]) as $operation) {
                     if (!is_array($pe[$item_type][$operation]) || ($operation != sanitize_key($operation))) {
                         unset($pe[$item_type][$operation]);
                         continue;
                     }
 
-                    foreach(array_keys($pe[$item_type][$operation]) as $agent_type) {
+                    foreach (array_keys($pe[$item_type][$operation]) as $agent_type) {
                         if (!is_array($pe[$item_type][$operation][$agent_type]) || ($agent_type != sanitize_key($agent_type))) {
                             unset($pe[$item_type][$operation][$agent_type]);
                             continue;
                         }
 
-                        foreach(array_keys($pe[$item_type][$operation][$agent_type]) as $assign_for) {
+                        foreach (array_keys($pe[$item_type][$operation][$agent_type]) as $assign_for) {
                             if (!is_array($pe[$item_type][$operation][$agent_type][$assign_for]) || ($assign_for != sanitize_key($assign_for))) {
                                 unset($pe[$item_type][$operation][$agent_type][$assign_for]);
                                 continue;
                             }
 
-                            foreach(array_keys($pe[$item_type][$operation][$agent_type][$assign_for]) as $agent_id) {
+                            foreach (array_keys($pe[$item_type][$operation][$agent_type][$assign_for]) as $agent_id) {
                                 if ($agent_id != (int) $agent_id) {
                                     unset($pe[$item_type][$operation][$agent_type][$assign_for][$agent_id]);
                                     continue;
@@ -110,7 +110,7 @@ class ItemSave
                     $op = sanitize_key($op);
                     $_for_item_source = $for_item_source;
                     
-                    if (('term' == $for_item_source) || (('term' == $via_item_source) && in_array($op, ['manage', 'associate'] ) ) ) {
+                    if (('term' == $for_item_source) || (('term' == $via_item_source) && in_array($op, ['manage', 'associate']) )) {
                         $_for_item_source = 'term';
                         
                         if (!taxonomy_exists($_for_type)) {
@@ -184,7 +184,6 @@ class ItemSave
 
         // Inherit exceptions from new parent post/term, but only for new items or if parent is changed
         if ((intval($set_parent) != intval($last_parent)) || $is_new_term || $is_new) {
-
             // retain all explicitly selected exceptions
             global $wpdb;                               // any_type_or_taxonomy arg retains previous query construction (no post_type or taxonomy clause)
             $descendant_ids = PWP::getDescendantIds($via_item_source, $item_id, ['any_type_or_taxonomy' => true, 'exclude_autodrafts' => false]);  
@@ -195,7 +194,7 @@ class ItemSave
             // clear previously propagated role assignments for this item and its branch of sub-items
 
             if (!$is_new) {
-                require_once(PRESSPERMIT_CLASSPATH.'/DB/PermissionsUpdate.php');
+                require_once(PRESSPERMIT_CLASSPATH . '/DB/PermissionsUpdate.php');
 
                 DB\PermissionsUpdate::clearItemExceptions($via_item_source, $item_id, ['inherited_only' => true]);
                 DB\PermissionsUpdate::clearItemExceptions($via_item_source, $descendant_ids, ['inherited_only' => true]);
@@ -222,7 +221,7 @@ class ItemSave
                 }
 
                 // propagate exception from new parent to this item and its branch of sub-items
-                require_once(PRESSPERMIT_CLASSPATH.'/DB/PermissionsUpdate.php');
+                require_once(PRESSPERMIT_CLASSPATH . '/DB/PermissionsUpdate.php');
                 
                 $force_for_item_type = (isset($args['force_for_item_type'])) ? $args['force_for_item_type'] : false; // todo: why is this variable not already set?
                 $_args = compact('retain_exceptions', 'force_for_item_type');

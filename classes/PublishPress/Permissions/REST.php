@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions;
 
 class REST
@@ -18,7 +19,8 @@ class REST
 
     private static $instance = null;
 
-    public static function instance() {
+    public static function instance()
+    {
         if (is_null(self::$instance)) {
             self::$instance = new REST();
             presspermit()->doing_rest = true;
@@ -69,14 +71,14 @@ class REST
         
         $extra_route_endpoints = array_replace($post_endpoints, $term_endpoints);
         $endpoint_post_types = [];
-		
-        foreach($extra_route_endpoints as $route => $endpoint) {
+        
+        foreach ($extra_route_endpoints as $route => $endpoint) {
             if ($route && !is_numeric($route)) {
-                $set_routes []= $route;
-                $set_routes []= $route . '/(?P<id>[\d]+)';
+                $set_routes [] = $route;
+                $set_routes [] = $route . '/(?P<id>[\d]+)';
 
-                foreach($set_routes as $route) {
-					if (is_array($endpoint)) {
+                foreach ($set_routes as $route) {
+                    if (is_array($endpoint)) {
                         $_endpoint = $endpoint;
                         $endpoint = reset($_endpoint);
                         $post_type = key($_endpoint);
@@ -84,18 +86,18 @@ class REST
                         if ($post_type) {
                             $endpoint_post_types[$endpoint] = $post_type;
                         }
-						
+                        
                         if (isset($post_endpoints[$route]) && is_array($post_endpoints[$route])) {
                             $post_endpoints[$route] = $endpoint;
                         }
-						
+                        
                         if (isset($term_endpoints[$route]) && is_array($term_endpoints[$route])) {
                             $term_endpoints[$route] = $endpoint;
                         }
                     }
-					
+                    
                     if (!empty($routes[$route])) {
-                        $routes[$route] []= ['callback' => [0 => $endpoint]];
+                        $routes[$route] [] = ['callback' => [0 => $endpoint]];
                     } else {
                         $routes[$route] = ['callback' => [0 => $endpoint]];
                     }
@@ -103,43 +105,43 @@ class REST
             }
         }
 
-        $post_endpoints[]= 'WP_REST_Posts_Controller';
-        $post_endpoints[]= 'WP_REST_Autosaves_Controller';
-        $term_endpoints[]= 'WP_REST_Terms_Controller';
-		
-		foreach ( $routes as $route => $handlers ) {
-			$match = preg_match( '@^' . $route . '$@i', $path, $matches );
+        $post_endpoints[] = 'WP_REST_Posts_Controller';
+        $post_endpoints[] = 'WP_REST_Autosaves_Controller';
+        $term_endpoints[] = 'WP_REST_Terms_Controller';
+        
+        foreach ($routes as $route => $handlers) {
+            $match = preg_match('@^' . $route . '$@i', $path, $matches);
 
-			if ( ! $match ) {
-				continue;
-			}
+            if (! $match) {
+                continue;
+            }
 
-			$args = [];
-			foreach ( $matches as $param => $value ) {
-				if ( ! is_int( $param ) ) {
-					$args[ $param ] = $value;
-				}
-			}
+            $args = [];
+            foreach ($matches as $param => $value) {
+                if (! is_int($param)) {
+                    $args[ $param ] = $value;
+                }
+            }
 
-			foreach ( $handlers as $handler ) {
+            foreach ($handlers as $handler) {
                 if (!is_array($handler['callback']) || !isset($handler['callback'][0])) {
                     continue;
                 }
 
                 if (is_object($handler['callback'][0])) {
-					$this->endpoint_class = get_class($handler['callback'][0]);
-
+                    $this->endpoint_class = get_class($handler['callback'][0]);
                 } elseif (is_string($handler['callback'][0])) {
                     $this->endpoint_class = $handler['callback'][0];
                 } else {
                     continue;
                 }
-				
-                if (!in_array($this->endpoint_class, $post_endpoints, true) && !in_array($this->endpoint_class, $term_endpoints, true)
+                
+                if (
+                    !in_array($this->endpoint_class, $post_endpoints, true) && !in_array($this->endpoint_class, $term_endpoints, true)
                 ) {
                     continue;
                 }
-				
+                
                 $this->route = $route;
 
                 $this->is_view_method = in_array($method, [\WP_REST_Server::READABLE, 'GET']);
@@ -156,11 +158,11 @@ class REST
                     $this->operation = 'read';
                 }
 
-			  // voluntary filtering of get_items (for WYSIWY can edit, etc.)
+              // voluntary filtering of get_items (for WYSIWY can edit, etc.)
                 if ($this->is_view_method && ('read' == $this->operation) && !PWP::empty_REQUEST('operation')) {
                     $this->operation = PWP::REQUEST_key('operation');
                 }
-			
+            
                 // NOTE: setting or default may be adapted downstream
                 if (!in_array($this->operation, ['edit', 'assign', 'manage', 'delete'], true)) {
                     if ($this->is_view_method) {
@@ -178,7 +180,7 @@ class REST
                         $this->params['post_type'] = $this->post_type;
                     }
                 
-                    if ( ! $this->post_id = (!empty($args['id'])) ? $args['id'] : 0 ) {
+                    if (! $this->post_id = (!empty($args['id'])) ? $args['id'] : 0) {
                         $this->post_id = (!empty($this->params['id'])) ? $this->params['id'] : 0;
                     }
 
@@ -189,12 +191,14 @@ class REST
                             // phpcs Note: When imposing a default privacy, ensure retrieval of stored original status, not newly updated value
 
                             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-                            if ( $post_status = $wpdb->get_var( 
-                                $wpdb->prepare(
-                                    "SELECT post_status FROM $wpdb->posts WHERE ID = %s", 
-                                    $this->post_id
+                            if (
+                                $post_status = $wpdb->get_var( 
+                                    $wpdb->prepare(
+                                        "SELECT post_status FROM $wpdb->posts WHERE ID = %s", 
+                                        $this->post_id
+                                    )
                                 )
-                            )) {
+                            ) {
                                 update_post_meta($this->post_id, '_pp_original_status', $this->post_status);
                             }
                         }
@@ -220,7 +224,9 @@ class REST
                                 }
 
                                 // Prevent Gutenberg from triggering revisions retrieval for each item in Page Parent dropdown
-                                add_filter('wp_revisions_to_keep', function($num, $post) {return 0;}, 10, 2);
+                                add_filter('wp_revisions_to_keep', function ($num, $post) {
+                                    return 0;
+                                }, 10, 2);
                             }
                         }
                     }
@@ -241,21 +247,20 @@ class REST
                             if ('read' == $this->operation) {
                                 $post_status_obj = get_post_status_object(get_post_field('post_status', $this->post_id));
                                 $check_cap = ($post_status_obj->public) ? 'read_post' : '';
-
-                            } elseif(in_array($this->operation, ['edit','delete'], true)) {
+                            } elseif (in_array($this->operation, ['edit','delete'], true)) {
                                 $check_cap = "{$this->operation}_post";
                             } else {
                                 $check_cap = false;
                             }
 
-                            if ($check_cap && ! current_user_can($check_cap, $this->post_id) 
-                            && (('edit' != $this->operation) || ('trash' != get_post_field('post_status', $this->post_id)))
+                            if (
+                                $check_cap && ! current_user_can($check_cap, $this->post_id) 
+                                && (('edit' != $this->operation) || ('trash' != get_post_field('post_status', $this->post_id)))
                             ) { // Avoid conflicts with WP trashing. WP will still prevent editing of trashed posts
                                 return self::rest_denied();
                             }
                         }
                     }
-
                 } elseif (in_array($this->endpoint_class, $term_endpoints)) { 
                     if (!empty($this->referer) && strpos($this->referer, 'post-new.php') && !empty($this->endpoint_class) && ('WP_REST_Terms_Controller' == $this->endpoint_class)) {
                         $this->operation = 'assign';
@@ -268,7 +273,9 @@ class REST
                     
                     $this->is_terms_request = true;
 
-                    if (empty($args['taxonomy'])) break;
+                    if (empty($args['taxonomy'])) {
+                        break;
+                    }
 
                     $this->taxonomy = $args['taxonomy'];
 

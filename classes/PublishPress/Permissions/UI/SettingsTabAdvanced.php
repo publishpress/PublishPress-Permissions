@@ -125,7 +125,7 @@ class SettingsTabAdvanced
             $opt = array_diff_key(
                 $opt,
                 array_fill_keys(
-                [
+                    [
                     'page_parent_editable_only',
                     'auto_assign_available_term',
                     'list_others_uneditable_posts',
@@ -139,7 +139,9 @@ class SettingsTabAdvanced
                     'limit_user_edit_by_level',
                     'non_admins_set_edit_exceptions',
                     'publish_exceptions',
-                ], true)
+                    ],
+                    true
+                )
             );
         }
 
@@ -238,7 +240,7 @@ class SettingsTabAdvanced
 
         $section = 'post_editor';                        // --- EDITOR OPTIONS SECTION ---
         if (!empty($ui->form_options[$tab][$section])) :
-        ?>
+            ?>
             <tr>
                 <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
@@ -292,7 +294,7 @@ class SettingsTabAdvanced
 
         $section = 'permissions'; // --- PERMISSIONS SECTION ---
         if (!empty($ui->form_options[$tab][$section])) :
-        ?>
+            ?>
             <tr>
                 <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
@@ -322,12 +324,12 @@ class SettingsTabAdvanced
                         $hint = '';
                     }
                     
-                    if ($hint):?>
+                    if ($hint) :?>
                     <br />
                     <div class="pp-subtext pp-subtext-show">
-                    <?php
-                    printf(esc_html__('%sPosts / Pages Listing:%s %s', 'press-permit-core'), '<b>', '</b>', esc_html($hint));
-                    ?>
+                        <?php
+                        printf(esc_html__('%sPosts / Pages Listing:%s %s', 'press-permit-core'), '<b>', '</b>', esc_html($hint));
+                        ?>
                     </div>
                     <?php endif;?>
                 </td>
@@ -337,7 +339,7 @@ class SettingsTabAdvanced
 
         $section = 'front_end'; // --- FRONT END SECTION ---
         if (!empty($ui->form_options[$tab][$section])) :
-        ?>
+            ?>
             <tr>
                 <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
@@ -366,12 +368,12 @@ class SettingsTabAdvanced
                     </div>
                 </td>
             </tr>
-        <?php
+            <?php
         endif; // any options accessable in this section
 
         $section = 'user_management';                                    // --- USER MANAGEMENT SECTION ---
         if (!empty($ui->form_options[$tab][$section])) : 
-        ?>
+            ?>
             <tr>
                 <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
@@ -399,7 +401,7 @@ class SettingsTabAdvanced
                     ?>
                     </div>
 
-                    <?php if (in_array('limit_user_edit_by_level', $ui->form_options[$tab][$section])):
+                    <?php if (in_array('limit_user_edit_by_level', $ui->form_options[$tab][$section])) :
                         $option_name = 'limit_user_edit_by_level';
                         $ui->all_options[] = $option_name;
                         if (!$option_val = $ui->getOption($option_name)) {
@@ -575,7 +577,7 @@ class SettingsTabAdvanced
 
                     <?php
                     if ($pp->getOption('display_hints')) :
-                    ?>
+                        ?>
                         <table id="pp_cap_descripts" class="pp_cap_descripts pp-hint" style="display:none">
                             <thead>
                                 <tr>
@@ -589,7 +591,7 @@ class SettingsTabAdvanced
                                 $pp_caps = apply_filters('presspermit_cap_descriptions', []);
 
                                 foreach ($pp_caps as $cap_name => $descript) :
-                                ?>
+                                    ?>
                                     <tr>
                                         <td class="cap-name"><?php echo esc_html($cap_name); ?></td>
                                         <td><?php echo esc_html($descript); ?></td>
@@ -614,9 +616,10 @@ class SettingsTabAdvanced
 
         foreach ($ppc->constants_by_type as $const_type => $constants) {
             foreach ($constants as $const_name) {
-                if (defined($const_name)            // disregard constants that are internally set to a default value
-                && (!in_array($const_name, ['PRESSPERMIT_DEBUG', 'PRESSPERMIT_LEGACY_HOOKS']) || constant($const_name))
-                && (('PUBLISHPRESS_ACTION_PRIORITY_INIT' != $const_name) || (10 != constant($const_name)))
+                if (
+                    defined($const_name)            // disregard constants that are internally set to a default value
+                    && (!in_array($const_name, ['PRESSPERMIT_DEBUG', 'PRESSPERMIT_LEGACY_HOOKS']) || constant($const_name))
+                    && (('PUBLISHPRESS_ACTION_PRIORITY_INIT' != $const_name) || (10 != constant($const_name)))
                 ) {
                     $defined_constant_types[$const_type] = true;
                     break;
@@ -628,15 +631,14 @@ class SettingsTabAdvanced
             <tr>
                 <td scope="row" colspan="2">
                     <span style="font-weight:bold"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></span>
-                    <?php if ($this->enabled):?>
+                    <?php if ($this->enabled) :?>
                     <br /><br />
-                    <?php
-                    $ui->optionCheckbox('list_all_constants', $tab, $section, true, '');
+                        <?php
+                        $ui->optionCheckbox('list_all_constants', $tab, $section, true, '');
                     endif; ?>
 
                     <?php if ($defined_constant_types || presspermit()->getOption('list_all_constants') || (defined('PRESSPERMIT_DEBUG') && PRESSPERMIT_DEBUG)) : ?>
-
-                        <?php if ($defined_constant_types): ?>
+                        <?php if ($defined_constant_types) : ?>
                             <table id="pp_defined_constants" class="pp_cap_descripts" style="width: 99%">
                                 <thead>
                                     <tr>
@@ -656,7 +658,7 @@ class SettingsTabAdvanced
 
                                     <?php
                                     foreach (array_keys($defined_constant_types) as $const_type) :
-                                    ?>
+                                        ?>
                                         <?php
                                         foreach ($ppc->constants_by_type[$const_type] as $const_name) :
                                             if (
@@ -665,20 +667,20 @@ class SettingsTabAdvanced
                                             ) {
                                                 continue;
                                             }
-                                        ?>
+                                            ?>
                                             <tr>
                                                 <td class="cap-name"><?php echo esc_html($const_name); ?></td>
                                                 <td><?php
                                                     $const_val = constant($const_name);
 
-                                                    if (false === $const_val) {
-                                                        $const_val = 'false';
-                                                    } elseif (true === $const_val) {
-                                                        $const_val = 'true';
-                                                    }
+                                                if (false === $const_val) {
+                                                    $const_val = 'false';
+                                                } elseif (true === $const_val) {
+                                                    $const_val = 'true';
+                                                }
 
                                                     echo esc_html(strval($const_val));
-                                                    ?>
+                                                ?>
                                                 </td>
                                                 <td><?php echo esc_html($ppc->constants[$const_name]->descript); ?></td>
                                             </tr>
@@ -690,7 +692,9 @@ class SettingsTabAdvanced
 
                         <?php if ($this->enabled) : // Unless debugging, only list defined constants and available constants in the same section ?>
                         <br />
-                        <table id="pp_available_constants" style="display:none;" class="pp_cap_descripts<?php if (!presspermit()->getOption('list_all_constants') && (!defined('PRESSPERMIT_DEBUG') || ! PRESSPERMIT_DEBUG)) echo ' pp-hint'; ?>" style="width: 99%">
+                        <table id="pp_available_constants" style="display:none;" class="pp_cap_descripts<?php if (!presspermit()->getOption('list_all_constants') && (!defined('PRESSPERMIT_DEBUG') || ! PRESSPERMIT_DEBUG)) {
+                            echo ' pp-hint';
+                                                                                                        } ?>" style="width: 99%">
                             <thead>
                                 <tr>
                                     <th class="cap-name" style="width:40%"><?php esc_html_e('Available Constant', 'press-permit-core'); ?></th>
@@ -713,7 +717,7 @@ class SettingsTabAdvanced
                                     if (!isset($defined_constant_types[$const_type]) && (!presspermit()->getOption('list_all_constants') && (!defined('PRESSPERMIT_DEBUG') || ! PRESSPERMIT_DEBUG))) {
                                         continue;
                                     }
-                                ?>
+                                    ?>
                                     <?php if (isset($ppc->constant_types[$const_type])) : ?>
                                         <tr class="const-section">
                                             <td>--- <?php echo esc_html($ppc->constant_types[$const_type]); ?> ---</td>
@@ -728,7 +732,7 @@ class SettingsTabAdvanced
                                             continue;
                                         }
                                         $class = (defined($const_name)) ? ' defined' : '';
-                                    ?>
+                                        ?>
                                         <tr>
                                             <td class="cap-name<?php echo esc_attr($class); ?>"><?php echo esc_html($const_name); ?></td>
 
@@ -762,7 +766,7 @@ class SettingsTabAdvanced
 
         if (is_multisite()) {
             $section = 'network';
-        ?>
+            ?>
             <tr>
                 <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
@@ -816,7 +820,7 @@ class SettingsTabAdvanced
 
                 </td>
             </tr>
-        <?php
+            <?php
         }
 
         ?>
@@ -834,6 +838,6 @@ class SettingsTabAdvanced
 
             </td>
         </tr>
-<?php
+        <?php
     }
 }

@@ -2,19 +2,19 @@
 
 namespace PublishPress\Permissions\UI;
 
-class HintsPro 
+class HintsPro
 {
     public static function proPromo()
     {
-    ?>
+        ?>
 <div style="margin-top:5px">
 <a href="#pp-pro-info"><?php esc_html_e('Show list of Permissions Pro features and screencasts', 'press-permit-core'); ?></a>
 </div>
 
-<?php
-$img_url = PRESSPERMIT_URLPATH . '/common/img/';
-$lang_id = 'press-permit-core';
-?>
+        <?php
+        $img_url = PRESSPERMIT_URLPATH . '/common/img/';
+        $lang_id = 'press-permit-core';
+        ?>
 <script type="text/javascript">
 /* <![CDATA[ */
 jQuery(document).ready(function ($) {

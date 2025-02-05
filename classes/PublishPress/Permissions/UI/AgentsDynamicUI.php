@@ -117,10 +117,10 @@ class AgentsDynamicUI
 
                                 <input id="pp_search_user_meta_val_<?php echo esc_attr($i); ?>_<?php echo esc_attr($id_suffix); ?>" class="pp-user-meta-field" 
                                        type="text" <?php
-                                if (PWP::empty_GET("pp_search_user_meta_key_{$i}_{$id_suffix}")) {
-                                    echo 'style="display:none"';
-                                }
-                                ?> title="<?php echo esc_attr($title); ?>" size="8"/>
+                                        if (PWP::empty_GET("pp_search_user_meta_key_{$i}_{$id_suffix}")) {
+                                            echo 'style="display:none"';
+                                        }
+                                        ?> title="<?php echo esc_attr($title); ?>" size="8"/>
 
                                 <?php if ($i < $ilim - 1) : ?>
                                     &nbsp;<span class="pp-usermeta-field-more" <?php
@@ -160,7 +160,11 @@ class AgentsDynamicUI
                     </h4>
 
                     <select id="agent_results_<?php echo esc_attr($id_suffix); ?>" class="pp_agent_results" <?php
-                    if ($multi_select) : ?>multiple="multiple" style="height:160px;"<?php else : ?>style="display:none;"<?php endif; ?> autocomplete="off">
+                    if ($multi_select) :
+                        ?>multiple="multiple" style="height:160px;"<?php 
+                    else :
+                        ?>style="display:none;"<?php 
+                    endif; ?> autocomplete="off">
                     </select>
 
                     <span id="agent_msg_<?php echo esc_attr($id_suffix); ?>"></span>
@@ -175,7 +179,7 @@ class AgentsDynamicUI
                     ?>
                     <td class="pp-members-current">
                         <h4>
-                        <?php if (!apply_filters('presspermit_suppress_agents_selection_label', false, $id_suffix, $args)):
+                        <?php if (!apply_filters('presspermit_suppress_agents_selection_label', false, $id_suffix, $args)) :
                             esc_html_e('Current Selections:', 'press-permit-core');
                         endif;?>
                         </h4>
@@ -206,9 +210,15 @@ class AgentsDynamicUI
                                 ?>
 
                                 <option value="<?php echo esc_attr($agent->ID); ?>" title="<?php echo esc_attr($data['title']); ?>" 
-                                <?php if (!empty($data['class']))           echo ' class="' . esc_attr($data['class']) . '"'; ?>
-                                <?php if (!empty($data['data-startdate']))  echo ' data-startdate="' . esc_attr($data['data-startdate']) . '"'; ?>
-                                <?php if (!empty($data['data-enddate']))    echo ' data-enddate="' . esc_attr($data['data-enddate']) . '"'; ?>
+                                <?php if (!empty($data['class'])) {
+                                    echo ' class="' . esc_attr($data['class']) . '"';
+                                } ?>
+                                <?php if (!empty($data['data-startdate'])) {
+                                    echo ' data-startdate="' . esc_attr($data['data-startdate']) . '"';
+                                } ?>
+                                <?php if (!empty($data['data-enddate'])) {
+                                    echo ' data-enddate="' . esc_attr($data['data-enddate']) . '"';
+                                } ?>
                                 >
                                 <?php echo esc_html($data['user_caption']); ?>
                                 </option>
@@ -226,7 +236,9 @@ class AgentsDynamicUI
 
                 <td>
                     <button type="button" id="select_agents_<?php echo esc_attr($id_suffix); ?>" class="pp_add button pp-default-button"
-                            style="<?php if (!$multi_select) : ?>display:none;<?php endif; ?>">
+                            style="<?php if (!$multi_select) :
+                                ?>display:none;<?php 
+                                   endif; ?>">
 
                         <?php echo esc_html($label_select); ?>
                     </button>
@@ -268,7 +280,7 @@ class AgentsDynamicUI
             $arr = array_merge($args, ['agent_type' => $agent_type, 'ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax')]);
             wp_localize_script('presspermit-agent-select', 'ppException', $arr);
         } else {
-        	// @todo: API
+            // @todo: API
             $_args = ['omit_admins' => '1', 'metagroups' => 0];
 
             if (!PWP::empty_REQUEST('page') && PWP::REQUEST_key_match('page', 'presspermit-edit-permissions')) {   
@@ -350,7 +362,11 @@ class AgentsDynamicUI
             <script type="text/javascript">
                 /* <![CDATA[ */
                 <?php foreach ($this->agents_js_queue as $args) : ?>
-                presspermitLoadAgentsJS('<?php echo esc_attr($args['id_sfx']); ?>', '<?php echo esc_attr($args['agent_type']); ?>', '<?php echo esc_attr($args['context']); ?>', '<?php echo esc_attr($args['agent_id']); ?>', '<?php echo esc_attr($args['suppress_selection_js']); ?>', <?php if ($author_selection_only) echo 'true'; else echo 'false'; ?>);
+                presspermitLoadAgentsJS('<?php echo esc_attr($args['id_sfx']); ?>', '<?php echo esc_attr($args['agent_type']); ?>', '<?php echo esc_attr($args['context']); ?>', '<?php echo esc_attr($args['agent_id']); ?>', '<?php echo esc_attr($args['suppress_selection_js']); ?>', <?php if ($author_selection_only) {
+                    echo 'true';
+                                         } else {
+                                             echo 'false';
+                                         } ?>);
                 <?php endforeach; ?>
                 /* ]]> */
             </script>

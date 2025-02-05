@@ -92,9 +92,9 @@ class PermissionsAdmin
                         && !$cap_caster->isValidPatternRole($arr_name[0])
                     ) {
                         $warning = '<span class="pp-red"> ' . sprintf(
-                                esc_html__('(using default capabilities due to invalid %s definition)', 'press-permit-core'),
-                                esc_html($wp_roles->role_names[$arr_name[0]])
-                            ) . '</span>';
+                            esc_html__('(using default capabilities due to invalid %s definition)', 'press-permit-core'),
+                            esc_html($wp_roles->role_names[$arr_name[0]])
+                        ) . '</span>';
                     }
                 } elseif ($slug_fallback) {
                     $role_caption = $arr_name[0];

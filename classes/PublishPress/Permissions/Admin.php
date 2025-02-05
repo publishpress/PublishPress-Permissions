@@ -227,7 +227,7 @@ class Admin
         if (presspermit()->isPro() && !presspermit()->getOption('display_branding')) {
             return;
         }
-?>
+        ?>
         <footer>
 
             <div class="pp-rating">
@@ -260,6 +260,6 @@ class Admin
             </div>
 
         </footer>
-<?php
+        <?php
     }
 }

@@ -60,8 +60,9 @@ class Ancestry
     private static function walkAncestors($child_id, $ancestors, $parents)
     {
         if (isset($parents[$child_id])) {
-            if (in_array($parents[$child_id], $ancestors))  // prevent infinite recursion if a page has a descendant set as its parent page
+            if (in_array($parents[$child_id], $ancestors)) {  // prevent infinite recursion if a page has a descendant set as its parent page
                 return $ancestors;
+            }
 
             $ancestors[] = $parents[$child_id];
             $ancestors = self::walkAncestors($parents[$child_id], $ancestors, $parents);
@@ -73,11 +74,13 @@ class Ancestry
     {
         static $ancestors;
 
-        if (!isset($ancestors) || !LibWP::empty_POST())
+        if (!isset($ancestors) || !LibWP::empty_POST()) {
             $ancestors = false;
+        }
 
-        if (is_array($ancestors) && !$object_id)
+        if (is_array($ancestors) && !$object_id) {
             return $ancestors;
+        }
 
         if (!$ancestors) {
             $ancestors = [];
@@ -91,18 +94,23 @@ class Ancestry
 
             // This query is cached to a static variable to ensure just a single execution per http GET
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-            if ($pages = $wpdb->get_results(                                                                                    // phpcs Note: IN clause sanitized above
-                "SELECT ID, post_parent FROM $wpdb->posts WHERE post_type IN ('$types_csv') AND post_status != 'auto-draft'"    // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-            )) {
+            if (
+                $pages = $wpdb->get_results(                                                                                    // phpcs Note: IN clause sanitized above
+                    "SELECT ID, post_parent FROM $wpdb->posts WHERE post_type IN ('$types_csv') AND post_status != 'auto-draft'"    // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                )
+            ) {
                 $parents = [];
-                foreach ($pages as $page)
-                    if ($page->post_parent)
+                foreach ($pages as $page) {
+                    if ($page->post_parent) {
                         $parents[$page->ID] = $page->post_parent;
+                    }
+                }
 
                 foreach ($pages as $page) {
                     $ancestors[$page->ID] = self::walkAncestors($page->ID, [], $parents);
-                    if (empty($ancestors[$page->ID]))
+                    if (empty($ancestors[$page->ID])) {
                         unset($ancestors[$page->ID]);
+                    }
                 }
             }
         }
@@ -119,14 +127,16 @@ class Ancestry
     {
         if (isset($children[$parent_id])) {
             if (is_numeric($max_depth)) {
-                if (!$max_depth)
+                if (!$max_depth) {
                     return $descendants;
-                else
+                } else {
                     $max_depth--;
+                }
             }
 
-            if (in_array($parent_id, $descendants))  // prevent infinite recursion if a page has parent set as one of its descendants
+            if (in_array($parent_id, $descendants)) {  // prevent infinite recursion if a page has parent set as one of its descendants
                 return $descendants;
+            }
 
             foreach ($children[$parent_id] as $child_id) {
                 $descendants[] = $child_id;
@@ -162,11 +172,9 @@ class Ancestry
             // Back compat for previous LibWP::getDescendantIds calls, which defaulted to no post_type clause
             if (false === $post_type) {
                 $type_clause = "1=1";
-
             } elseif ($post_type) {
                 $types_csv = implode("','", array_map('sanitize_key', (array) $post_type));
                 $type_clause = "post_type IN ('$types_csv')";
-
             } else {
                 $post_types = get_post_types(['hierarchical' => true]);
                 $types_csv = implode("','", array_map('sanitize_key', $post_types));
@@ -184,7 +192,6 @@ class Ancestry
             if ($post_status) {
                 $status_csv = implode("','", array_map('sanitize_key', (array) $post_status));
                 $status_clause = "AND post_status IN ('$status_csv')";
-
             } elseif ($exclude_autodrafts) {
                 $status_clause = "AND post_status != 'auto-draft'";
 
@@ -205,7 +212,9 @@ class Ancestry
         if ($pages) {
             $children = [];
             foreach ($pages as $page) {
-                if (!$page->ID) continue;
+                if (!$page->ID) {
+                    continue;
+                }
 
                 $children[$page->post_parent][] = $page->ID;
             }
@@ -250,7 +259,9 @@ class Ancestry
         if ($terms) {
             $children = [];
             foreach ($terms as $term) {
-                if (!$term->term_id) continue;
+                if (!$term->term_id) {
+                    continue;
+                }
 
                 $children[$term->parent][] = $term->term_id;
             }
@@ -265,11 +276,13 @@ class Ancestry
     {
         static $ancestors;
 
-        if (!isset($ancestors) || !LibWP::empty_POST())
+        if (!isset($ancestors) || !LibWP::empty_POST()) {
             $ancestors = false;
+        }
 
-        if (is_array($ancestors) && !$term_id)
+        if (is_array($ancestors) && !$term_id) {
             return $ancestors;
+        }
 
         if (!$ancestors) {
             $ancestors = [];
@@ -279,15 +292,18 @@ class Ancestry
             if ($terms) {
                 $parents = [];
 
-                foreach ($terms as $term)
-                    if ($term->parent)
+                foreach ($terms as $term) {
+                    if ($term->parent) {
                         $parents[$term->term_id] = $term->parent;
+                    }
+                }
 
                 foreach ($terms as $term) {
                     $_term_id = $term->term_id;
                     $ancestors[$_term_id] = self::walkAncestors($_term_id, [], $parents);
-                    if (empty($ancestors[$_term_id]))
+                    if (empty($ancestors[$_term_id])) {
                         unset($ancestors[$_term_id]);
+                    }
                 }
             }
         }
@@ -320,26 +336,32 @@ class Ancestry
         }
 
         // This function is only valid for arrays of post or term objects
-        if (!is_object(reset($items))) return $items;
+        if (!is_object(reset($items))) {
+            return $items;
+        }
 
         if ('ID' == $col_id) {
-            if (($child_of && !defined('PPC_FORCE_PAGE_REMAP')) || defined('PPC_NO_PAGE_REMAP'))
+            if (($child_of && !defined('PPC_FORCE_PAGE_REMAP')) || defined('PPC_NO_PAGE_REMAP')) {
                 $remap_parents = false;
+            }
         } elseif (($child_of && !defined('PPC_FORCE_TERM_REMAP')) || defined('PPC_NO_TERM_REMAP')) {
             $remap_parents = false;
         }
 
         $remap_parents = apply_filters('presspermit_enable_parent_remap', $remap_parents, $args);
 
-        if ($depth < 0)
+        if ($depth < 0) {
             $depth = 0;
+        }
 
-        if ($exclude)
+        if ($exclude) {
             $exclude = wp_parse_id_list($exclude);
+        }
 
         $filtered_items_by_id = [];
-        foreach ($items as $item)
+        foreach ($items as $item) {
             $filtered_items_by_id[$item->$col_id] = true;
+        }
 
         $remapped_items = [];
 
@@ -356,18 +378,19 @@ class Ancestry
                 $id = $item->$col_id;
 
                 if ($parent_id && ($child_of != $parent_id) && isset($ancestors[$id])) {
-
                     // Don't use any ancestors higher than $child_of
                     if ($child_of) {
                         $max_key = array_search($child_of, $ancestors[$id]);
-                        if (false !== $max_key)
+                        if (false !== $max_key) {
                             $ancestors[$id] = array_slice($ancestors[$id], 0, $max_key + 1);
+                        }
                     }
 
                     // Apply depth cutoff here so Walker is not thrown off by parent remapping.
                     if ($depth && $enforce_actual_depth) {
-                        if (count($ancestors[$id]) > ($depth - $one_if_root))
+                        if (count($ancestors[$id]) > ($depth - $one_if_root)) {
                             unset($items[$key]);
+                        }
                     }
 
                     if (!isset($filtered_items_by_id[$parent_id])) {
@@ -378,19 +401,20 @@ class Ancestry
                             foreach ($ancestors[$id] as $ancestor_id) {
                                 if (isset($filtered_items_by_id[$ancestor_id]) || ($ancestor_id == $child_of)) {
                                     // don't remap through a parent which was explicitly excluded
-                                    if ($exclude && in_array($items[$key]->$col_parent, $exclude) && !$remap_thru_excluded_parent)
+                                    if ($exclude && in_array($items[$key]->$col_parent, $exclude) && !$remap_thru_excluded_parent) {
                                         break;
+                                    }
 
                                     $visible_ancestor_id = $ancestor_id;
                                     break;
                                 }
                             }
 
-                            if ($visible_ancestor_id)
+                            if ($visible_ancestor_id) {
                                 $items[$key]->$col_parent = $visible_ancestor_id;
-
-                            elseif (!$child_of)
+                            } elseif (!$child_of) {
                                 $items[$key]->$col_parent = 0;
+                            }
 
                             // if using custom ordering, force remapped items to the bottom
                             if (($visible_ancestor_id == $child_of) && (false !== strpos($orderby, 'order'))) {
@@ -408,8 +432,9 @@ class Ancestry
 
             // temporary WP bug workaround: need to keep track of parent, for reasons described below
             if ($child_of && !$remapped_items) {
-                if (($first_child_of_match < 0) && ($child_of == $items[$key]->$col_parent))
+                if (($first_child_of_match < 0) && ($child_of == $items[$key]->$col_parent)) {
                     $first_child_of_match = $key;
+                }
             }
         }
 
@@ -427,7 +452,8 @@ class Ancestry
             }
         }
 
-        if ($remapped_items)
+        if ($remapped_items) {
             $items = array_merge($items, $remapped_items);
+        }
     }
 }

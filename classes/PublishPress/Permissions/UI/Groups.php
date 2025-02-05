@@ -63,7 +63,6 @@ class Groups
         GroupsHelper::getUrlProperties($url, $referer, $redirect);
 
         switch ($action) {
-
             case 'delete':
             case 'bulkdelete':
                 // phpcs Note: Nonce verification unnecessary because this is only generating a confirmation message,
@@ -79,7 +78,7 @@ class Groups
                     $groupids = (PWP::is_REQUEST('group')) ? [PWP::REQUEST_int('group')] : [];
                 }
 
-?>
+                ?>
                 <form action="" method="post" name="updategroups" id="updategroups">
                     <?php wp_nonce_field('pp-bulk-groups'); ?>
 
@@ -91,8 +90,9 @@ class Groups
                             <?php
                             $go_delete = 0;
 
-                            if (!$agent_type = apply_filters('presspermit_query_group_type', ''))
+                            if (!$agent_type = apply_filters('presspermit_query_group_type', '')) {
                                 $agent_type = 'pp_group';
+                            }
 
                             foreach ($groupids as $id) {
                                 $id = (int)$id;
@@ -119,7 +119,7 @@ class Groups
                         <?php endif; ?>
                     </div>
                 </form>
-            <?php
+                <?php
 
                 break;
 
@@ -143,22 +143,23 @@ class Groups
                             break;
                     }
                 endif;
-            ?>
+                ?>
 
                 <?php
                 $pp = presspermit();
 
                 if (isset($pp_admin->errors) && is_wp_error($pp_admin->errors)) :
-                ?>
+                    ?>
                     <div class="error">
                         <ul>
                             <?php
-                            foreach ($pp_admin->errors->get_error_messages() as $err)
+                            foreach ($pp_admin->errors->get_error_messages() as $err) {
                                 echo "<li>" . esc_html($err) . "</li>\n";
+                            }
                             ?>
                         </ul>
                     </div>
-                <?php
+                    <?php
                 endif;
 
                 ?>
@@ -167,10 +168,11 @@ class Groups
                     <?php PluginPage::icon(); ?>
                     <h1 class="wp-heading-inline">
                         <?php
-                        if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type))
+                        if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type)) {
                             $groups_caption = (defined('PP_GROUPS_CAPTION')) ? PP_GROUPS_CAPTION : __('Permission Groups', 'press-permit-core');
-                        else
+                        } else {
                             $groups_caption = $group_type_obj->labels->name;
+                        }
 
                         echo esc_html($groups_caption);
                         ?>
@@ -184,7 +186,7 @@ class Groups
                         if ($agent_type) {
                             $_url = add_query_arg(['agent_type' => $agent_type], $_url);
                         }
-                    ?>
+                        ?>
                         <a href="<?php echo esc_url($_url); ?>" class="page-title-action"><?php esc_html_e('Add New Group', 'press-permit-core'); ?></a>
                         <hr class="wp-header-end" />
                     <?php endif;
@@ -201,8 +203,9 @@ class Groups
 
                     $group_types = [];
 
-                    if (current_user_can('pp_administer_content'))
+                    if (current_user_can('pp_administer_content')) {
                         $group_types['wp_role'] = (object)['labels' => (object)['singular_name' => esc_html__('WordPress Role', 'press-permit-core'), 'plural_name' => esc_html__('WordPress Roles', 'press-permit-core')]];
+                    }
 
                     $group_types['pp_group'] = (object)['labels' => (object)['singular_name' => esc_html__('Custom Group', 'press-permit-core'), 'plural_name' => esc_html__('Custom Groups', 'press-permit-core')]];
 
@@ -237,8 +240,9 @@ class Groups
 
                     echo '</ul>';
 
-                    if (!empty($groupsearch))
-                        printf('<span class="subtitle">' . esc_html__('Search Results for &#8220;%s&#8221;', 'press-permit-core') . '</span>', esc_html($groupsearch)); ?>
+                    if (!empty($groupsearch)) {
+                        printf('<span class="subtitle">' . esc_html__('Search Results for &#8220;%s&#8221;', 'press-permit-core') . '</span>', esc_html($groupsearch));
+                    } ?>
 
                     <form action="<?php echo esc_url($url); ?>" method="get">
                         <input type="hidden" name="page" value="presspermit-groups" />
@@ -279,7 +283,7 @@ class Groups
                     ?>
 
                 </div>
-<?php
+                <?php
 
                 break;
         } // end of the $doaction switch

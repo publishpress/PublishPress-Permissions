@@ -15,18 +15,15 @@ class Settings
         $args = apply_filters('presspermit_handle_submission_args', []); // todo: is this used?
 
         if (PWP::is_POST('pp_submission_topic', 'options')) {
-
             if (isset($_POST['presspermit_submit'])) {
                 $this->updateOptions($args);
                 do_action('presspermit_handle_submission', 'update', $args);
-            
             } elseif (isset($_POST['presspermit_defaults'])) {
                 $this->defaultOptions($args);
                 do_action('presspermit_handle_submission', 'default', $args);
             }
 
             presspermit()->refreshOptions();
-
         } elseif (isset($_POST['pp_role_usage_defaults'])) {
             delete_option('presspermit_role_usage');
             presspermit()->refreshOptions();
@@ -187,11 +184,11 @@ class Settings
         }
 
         if ($_deactivated !== $deactivated) {
-            foreach(array_diff_key($deactivated, $_deactivated) as $module_name => $module) {
+            foreach (array_diff_key($deactivated, $_deactivated) as $module_name => $module) {
                 do_action($module_name . '_deactivate');
             }
 
-            foreach(array_diff_key($_deactivated, $deactivated) as $module_name => $module) {
+            foreach (array_diff_key($_deactivated, $deactivated) as $module_name => $module) {
                 if (in_array($module_name, ['presspermit-file-access'])) {
                     update_option(str_replace('-', '_', $module_name) . '_deactivate', 1);
                 }

@@ -84,7 +84,7 @@ class SettingsTabModules
                         <h4 style="margin:0 0 5px 0"><?php esc_html_e('Active Modules:', 'press-permit-core'); ?></h4>
                         <table class="pp-extensions pp-enabled">
                             <?php foreach ($pp_modules as $slug => $plugin_info) :
-                            ?>
+                                ?>
                                 <tr>
                                     <th>
                                         <?php $id = "module_active_{$slug}"; ?>
@@ -111,7 +111,7 @@ class SettingsTabModules
                                                 <span class="pp-ext-info"
                                                     title="<?php if (isset($ext_info->descript[$slug])) {
                                                                 echo esc_attr($ext_info->descript[$slug]);
-                                                            }
+                                                           }
                                                             ?>">
                                                     <?php echo esc_html($ext_info->blurb[$slug]); ?>
                                                 </span>
@@ -119,11 +119,11 @@ class SettingsTabModules
                                         </td>
                                     <?php endif; ?>
                                 </tr>
-                            <?php
+                                <?php
                                 $active_module_plugin_slugs[] = $plugin_info->plugin_slug;
                             endforeach; ?>
                         </table>
-                    <?php
+                        <?php
                     endif;
 
                     $modules_csv = implode(',', $active_module_plugin_slugs);
@@ -134,7 +134,6 @@ class SettingsTabModules
 
                     ksort($inactive);
                     if ($inactive) : ?>
-
                         <h4 style="margin:20px 0 5px 0">
                             <?php
                             esc_html_e('Inactive Modules:', 'press-permit-core')
@@ -154,8 +153,11 @@ class SettingsTabModules
                                                 value="1" />
 
                                             <?php
-                                            if (!empty($ext_info->title[$slug])) echo esc_html($ext_info->title[$slug]);
-                                            else echo esc_html($this->prettySlug($slug)); ?>
+                                            if (!empty($ext_info->title[$slug])) {
+                                                echo esc_html($ext_info->title[$slug]);
+                                            } else {
+                                                echo esc_html($this->prettySlug($slug));
+                                            } ?>
                                     </th>
                                     </label>
 
@@ -165,7 +167,7 @@ class SettingsTabModules
                                                 <span class="pp-ext-info"
                                                     title="<?php if (isset($ext_info->descript[$slug])) {
                                                                 echo esc_attr($ext_info->descript[$slug]);
-                                                            }
+                                                           }
                                                             ?>">
                                                     <?php echo esc_html($ext_info->blurb[$slug]); ?>
                                                 </span>
@@ -175,14 +177,14 @@ class SettingsTabModules
                                 </tr>
                             <?php endforeach; ?>
                         </table>
-                    <?php
+                        <?php
                     endif;
 
                     do_action('presspermit_modules_ui', $active_module_plugin_slugs, $inactive);
                     ?>
                 </td>
             </tr>
-<?php
+            <?php
         endif; // any options accessable in this section
     }
 

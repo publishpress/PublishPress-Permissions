@@ -1,16 +1,19 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class UserLimitation
 {
     public static function isLimitedEditor()
     {
-        if (presspermit()->isContentAdministrator())
+        if (presspermit()->isContentAdministrator()) {
             return false;
+        }
 
         if ($type_obj = get_post_type_object(PWP::findPostType())) {
-            if (!current_user_can($type_obj->cap->edit_posts))
+            if (!current_user_can($type_obj->cap->edit_posts)) {
                 return true;
+            }
 
             $user = presspermit()->getUser();
 

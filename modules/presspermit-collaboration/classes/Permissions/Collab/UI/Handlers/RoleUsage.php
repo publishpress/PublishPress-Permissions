@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI\Handlers;
 
 class RoleUsage
@@ -10,13 +11,14 @@ class RoleUsage
         $url = apply_filters('presspermit_role_usage_base_url', 'admin.php');
         $redirect = $err = false;
 
-        if (!current_user_can('pp_manage_settings'))
+        if (!current_user_can('pp_manage_settings')) {
             wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
+        }
 
         $pp = presspermit();
 
         switch ($action) {
-            case 'update' :
+            case 'update':
                 if (!$role = PWP::REQUEST_key('role')) {
                     break;
                 }
@@ -48,7 +50,7 @@ class RoleUsage
         } // end switch
 
         if ($redirect) {
-            if ($wp_http_referer = PWP::REQUEST_url('wp_http_referer'))  {
+            if ($wp_http_referer = PWP::REQUEST_url('wp_http_referer')) {
                 $redirect = add_query_arg('wp_http_referer', urlencode(esc_url_raw($wp_http_referer)), $redirect);
             }
 

@@ -4,7 +4,8 @@ namespace PublishPress\Permissions;
 
 class MediaFilters
 {
-    public function __construct() {
+    public function __construct()
+    {
         global $wp_post_types;
         $wp_post_types['attachment']->map_meta_cap = false;
 
@@ -19,12 +20,13 @@ class MediaFilters
             $post = (is_object($args[0])) ? $args[0] : get_post((int) $args[0]);
 
             if ($post && ('attachment' == $post->post_type)) {
-                if (!empty($post->post_parent))
+                if (!empty($post->post_parent)) {
                     $post_status = get_post_status($post->ID);
-                elseif ('inherit' == $post->post_status)
+                } elseif ('inherit' == $post->post_status) {
                     $post_status = (presspermit()->getOption('unattached_files_private')) ? 'private' : 'publish';
-                else
+                } else {
                     $post_status = $post->post_status;
+                }
 
                 $post_type = get_post_type_object($post->post_type);
                 $post_author_id = $post->post_author;
@@ -45,23 +47,25 @@ class MediaFilters
                         }
 
                         // If no author set yet, default to current user for cap checks.
-                        if (!$post_author_id)
+                        if (!$post_author_id) {
                             $post_author_id = $user_id;
+                        }
 
-                        if ($status_obj->private || presspermit()->moduleActive('file-access'))
+                        if ($status_obj->private || presspermit()->moduleActive('file-access')) {
                             $caps[] = $post_type->cap->read_private_posts;
-                        else
+                        } else {
                             $caps = map_meta_cap('edit_post', $user_id, $post->ID);
+                        }
 
                         $caps = apply_filters('presspermit_map_attachment_read_caps', $caps, $post, $user_id);
 
                         break;
                     default:
                         if (!presspermit()->doing_rest) {
-                        	require_once(PRESSPERMIT_CLASSPATH . '/MediaEdit.php');
+                            require_once(PRESSPERMIT_CLASSPATH . '/MediaEdit.php');
 
-                        	$args = array_merge($args, compact('post', 'post_status', 'post_type', 'post_author_id'));
-                        	$caps = MediaEdit::mapMetaCap($caps, $cap, $user_id, $args);
+                            $args = array_merge($args, compact('post', 'post_status', 'post_type', 'post_author_id'));
+                            $caps = MediaEdit::mapMetaCap($caps, $cap, $user_id, $args);
                         }
                 }
             }

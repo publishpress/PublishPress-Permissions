@@ -31,9 +31,15 @@ class PermissionsHooksAdmin
             add_action('save_post', [$this, 'actAuthorsPreventPostUpdateLockout'], 1, 3);
         }
 
-        add_filter('presspermit_exception_item_update_hooks', function($var) {return true;});
-        add_filter('presspermit_exception_item_insertion_hooks', function($var) {return true;});
-        add_filter('presspermit_exception_item_deletion_hooks', function($var) {return true;});
+        add_filter('presspermit_exception_item_update_hooks', function ($var) {
+            return true;
+        });
+        add_filter('presspermit_exception_item_insertion_hooks', function ($var) {
+            return true;
+        });
+        add_filter('presspermit_exception_item_deletion_hooks', function ($var) {
+            return true;
+        });
 
         add_action('presspermit_exception_items_updated', [$this, 'actPluginSettingsUpdated']);
         add_action('presspermit_inserted_exception_item', [$this, 'actPluginSettingsUpdated']);
@@ -105,11 +111,13 @@ class PermissionsHooksAdmin
         }
     }
 
-    public function actPluginSettingsUpdated() {
+    public function actPluginSettingsUpdated()
+    {
         $this->config_updated = true;
     }
 
-    public function actConfigUpdateFollowup() {
+    public function actConfigUpdateFollowup()
+    {
         if ($this->config_updated) {
             $this->wpeCacheFlush();
         }
@@ -122,21 +130,22 @@ class PermissionsHooksAdmin
      * https://github.org/a7/wpe-cache-flush/
      * http://github.org/a7/
      */
-    public function wpeCacheFlush() {
+    public function wpeCacheFlush()
+    {
         // Don't cause a fatal if there is no WpeCommon class
-        if ( ! class_exists( 'WpeCommon' ) ) {
+        if (! class_exists('WpeCommon')) {
             return false;
         }
 
-        if ( function_exists( 'WpeCommon::purge_memcached' ) ) {
+        if (function_exists('WpeCommon::purge_memcached')) {
             \WpeCommon::purge_memcached();
         }
 
-        if ( function_exists( 'WpeCommon::clear_maxcdn_cache' ) ) {
+        if (function_exists('WpeCommon::clear_maxcdn_cache')) {
             \WpeCommon::clear_maxcdn_cache();
         }
 
-        if ( function_exists( 'WpeCommon::purge_varnish_cache' ) ) {
+        if (function_exists('WpeCommon::purge_varnish_cache')) {
             \WpeCommon::purge_varnish_cache();
         }
 
@@ -144,7 +153,7 @@ class PermissionsHooksAdmin
         // Check for valid cache. Sometimes this is broken -- we don't know why! -- and it crashes when we flush.
         // If there's no cache, we don't need to flush anyway.
 
-        if ( !empty($wp_object_cache) && is_object( $wp_object_cache ) ) {
+        if (!empty($wp_object_cache) && is_object($wp_object_cache)) {
             @wp_cache_flush();
         }
     }
@@ -154,7 +163,7 @@ class PermissionsHooksAdmin
         foreach (['item', 'agent_roles', 'agent_exceptions', 'agent_permissions', 'user', 'settings', 'items_metabox'] as $ajax_type) { // todo: term_ui ?
             // This is for admin UI output.
             if (PWP::is_REQUEST("pp_ajax_{$ajax_type}")) {
-                $class_name = str_replace('_', '', ucwords( $ajax_type, '_') ) . 'Ajax';
+                $class_name = str_replace('_', '', ucwords($ajax_type, '_')) . 'Ajax';
                 
                 $class_parent = ( in_array($class_name, ['ItemAjax','UserAjax']) ) ? 'Dashboard' : '';
                 
@@ -171,7 +180,7 @@ class PermissionsHooksAdmin
         }
 
         if ('pp-menu-quick-search' == PWP::REQUEST_key('action')) {
-            require_once(PRESSPERMIT_CLASSPATH.'/UI/ItemsMetabox.php' );
+            require_once(PRESSPERMIT_CLASSPATH . '/UI/ItemsMetabox.php');
             \PublishPress\Permissions\UI\ItemsMetabox::ajax_menu_quick_search();
 
             exit;
@@ -183,7 +192,8 @@ class PermissionsHooksAdmin
         presspermit()->admin()->errorNotice('duplicate_module', ['module_slug' => $ext_slug, 'module_folder' => $ext_folder]);
     }
 
-    public function fltPatternRolesRaw($roles) {
+    public function fltPatternRolesRaw($roles)
+    {
         return $this->fltPatternRoles($roles, false);
     }
 
@@ -219,13 +229,15 @@ class PermissionsHooksAdmin
             return;
         }
 
-        foreach ([
+        foreach (
+            [
                      'pp-settings' => 'presspermit-settings',
                      'pp-groups' => 'presspermit-groups',
                      'pp-group-new' => 'presspermit-group-new',
                      'pp-users' => 'presspermit-users',
                      'pp-edit-permissions' => 'presspermit-edit-permissions',
-                 ] as $old_slug => $new_slug) {
+                 ] as $old_slug => $new_slug
+        ) {
             if (
                 strpos(esc_url_raw($_SERVER['REQUEST_URI']), "page=$old_slug")
                 && (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), 'admin.php'))
@@ -264,7 +276,8 @@ class PermissionsHooksAdmin
     }
 
     // Prevent users lacking edit_others capability from being locked out of their newly created post due to Authors' "default author for new posts" setting
-    function fltAuthorsPreventPostCreationLockout($default_author, $post) {
+    function fltAuthorsPreventPostCreationLockout($default_author, $post)
+    {
         global $current_user;
 
         if (presspermit()->isAdministrator()) {
@@ -284,25 +297,28 @@ class PermissionsHooksAdmin
         return $default_author;
     }
 
-    function actAuthorsPreventPostUpdateLockout($post_id, $post, $update) {
+    function actAuthorsPreventPostUpdateLockout($post_id, $post, $update)
+    {
         global $current_user;
         
-        if (!$update
-        || presspermit()->isAdministrator() 
-        || !function_exists('get_multiple_authors') 
-        || !function_exists('is_multiple_author_for_post')
-        || !PWP::is_POST('authors')
-        || !apply_filters('presspermit_maybe_override_authors_change', true, $post)
+        if (
+            !$update
+            || presspermit()->isAdministrator() 
+            || !function_exists('get_multiple_authors') 
+            || !function_exists('is_multiple_author_for_post')
+            || !PWP::is_POST('authors')
+            || !apply_filters('presspermit_maybe_override_authors_change', true, $post)
         ) {
             return;
         }
         
         if ($post_type = PWP::findPostType()) {
             if ($type_obj = get_post_type_object($post_type)) {
-                if (!empty($type_obj->cap->edit_others_posts) 
-                && empty($current_user->allcaps[$type_obj->cap->edit_others_posts])
-                && is_multiple_author_for_post($current_user, $post_id)
-                && method_exists('MultipleAuthors\Classes\Objects\Author', 'get_by_user_id')
+                if (
+                    !empty($type_obj->cap->edit_others_posts) 
+                    && empty($current_user->allcaps[$type_obj->cap->edit_others_posts])
+                    && is_multiple_author_for_post($current_user, $post_id)
+                    && method_exists('MultipleAuthors\Classes\Objects\Author', 'get_by_user_id')
                 ) {
                     if (!$current_author = \MultipleAuthors\Classes\Objects\Author::get_by_user_id($current_user->ID)) {
                         return;

@@ -37,12 +37,12 @@ class CapabilityFilters
         // This filter will not mess with any caps which are not part of a PP role assignment or exception.
         add_filter('user_has_cap', [$this, 'fltUserHasCap'], 99, 3); // apply PP filter last
 
-        add_filter('user_has_cap', function($caps) {
+        add_filter('user_has_cap', function ($caps) {
             presspermit()->doing_cap_check = true;
             return $caps;
         }, 10, 1);
 
-        add_filter('user_has_cap', function($caps) {
+        add_filter('user_has_cap', function ($caps) {
             presspermit()->doing_cap_check = false;
             return $caps;
         }, PHP_INT_MAX, 1);
@@ -65,13 +65,15 @@ class CapabilityFilters
     }
 
     public function fltConfirmRestReadable($rest_response, $handler, $request)
-    { // filter 'rest_request_after_callbacks'
+    {
+ // filter 'rest_request_after_callbacks'
         require_once(PRESSPERMIT_CLASSPATH . '/RESTHelper.php');
         return RESTHelper::fltConfirmRestReadable($rest_response, $handler, $request);
     }
 
     public function fltConfirmRestReadableLegacy($rest_response, $rest_server, $request)
-    { // filter 'rest_pre_dispatch'
+    {
+ // filter 'rest_pre_dispatch'
         require_once(PRESSPERMIT_CLASSPATH . '/RESTLegacy.php');
         return RESTLegacy::fltPreDispatch($rest_response, $rest_server, $request);
     }
@@ -87,8 +89,9 @@ class CapabilityFilters
     //
     public function fltUserHasCap($wp_sitecaps, $orig_reqd_caps, $args)
     {
-        if ($this->in_process || !isset($args[0]))
+        if ($this->in_process || !isset($args[0])) {
             return $wp_sitecaps;
+        }
 
         $pp = presspermit();
 
@@ -105,15 +108,18 @@ class CapabilityFilters
         $orig_cap = (isset($args[0])) ? sanitize_key($args[0]) : '';
 
         if (isset($args[2])) {
-            if (is_object($args[2]))
+            if (is_object($args[2])) {
                 $args[2] = (isset($args[2]->ID)) ? $args[2]->ID : 0;
-        } else
+            }
+        } else {
             $item_id = 0;
+        }
 
         $item_id = (isset($args[2])) ? (int) $args[2] : 0;
 
-        if ('read_document' == $orig_cap)  // todo: api
+        if ('read_document' == $orig_cap) {  // todo: api
             $orig_cap = 'read_post';
+        }
 
         if (defined('REST_REQUEST') && REST_REQUEST && $item_id) {
             $orig_cap = apply_filters('presspermit_rest_post_cap_requirement', $orig_cap, $item_id);
@@ -124,13 +130,15 @@ class CapabilityFilters
                 // deal with map_meta_cap() changing 'read_post' requirement to 'edit_post'
                 $types = get_post_types(['public' => true, 'show_ui' => true], 'object', 'or');
                 foreach (array_keys($types) as $_post_type) {
-                    if (array_intersect(
-                        Arr::subset(
-                            (array)$types[$_post_type]->cap,
-                            ['edit_posts', 'edit_others_posts', 'edit_published_posts', 'edit_private_posts']
-                        ),
-                        $orig_reqd_caps
-                    )) {
+                    if (
+                        array_intersect(
+                            Arr::subset(
+                                (array)$types[$_post_type]->cap,
+                                ['edit_posts', 'edit_others_posts', 'edit_published_posts', 'edit_private_posts']
+                            ),
+                            $orig_reqd_caps
+                        )
+                    ) {
                         $orig_cap = 'edit_post';
                         break;
                     }
@@ -166,8 +174,9 @@ class CapabilityFilters
             }
         }
 
-        if ((is_array($orig_cap) || !isset($meta_caps[$orig_cap]))	// Revisionary may pass array into args[0]
-        && (('edit_posts' != reset($orig_reqd_caps)) || !presspermit()->doingEmbed())
+        if (
+            (is_array($orig_cap) || !isset($meta_caps[$orig_cap]))  // Revisionary may pass array into args[0]
+            && (('edit_posts' != reset($orig_reqd_caps)) || !presspermit()->doingEmbed())
         ) { 
             $item_type = '';
 
@@ -183,8 +192,9 @@ class CapabilityFilters
                         $is_post_cap = true;
 
                         if (!$item_id && apply_filters('presspermit_do_find_post_id', true, $orig_reqd_caps, $args)) {
-                            if ($item_id = PWP::getPostID())
+                            if ($item_id = PWP::getPostID()) {
                                 $item_id = apply_filters('presspermit_get_post_id', $item_id, $orig_reqd_caps, $args);
+                            }
                         }
 
                         // If a post id can be determined from url or POST, will check for exceptions on that post only
@@ -281,8 +291,9 @@ class CapabilityFilters
                                     if (is_null($has_post_additions)) {
                                         $has_post_additions = (!$item_id || in_array($item_id, $additional_ids));
                                     }
-                                } else
+                                } else {
                                     $has_post_additions = false;
+                                }
 
                                 if ($has_post_additions) {
                                     $pass = true;
@@ -334,7 +345,7 @@ class CapabilityFilters
                                                     $listed_ids = [];
                                                 }
 
-                                                $listed_ids []= $item_id;
+                                                $listed_ids [] = $item_id;
                                                 $id_csv = implode("','", array_map('intval', array_unique($listed_ids)));
 
                                                 $taxonomies_csv = implode("','", array_map('sanitize_key', $enabled_taxonomies));
@@ -353,7 +364,7 @@ class CapabilityFilters
                                                         $listed_post_tt_ids[$row->object_id] = [];
                                                     }
 
-                                                    $listed_post_tt_ids[$row->object_id] []= $row->term_taxonomy_id;
+                                                    $listed_post_tt_ids[$row->object_id] [] = $row->term_taxonomy_id;
                                                 }
 
                                                 if (isset($listed_post_tt_ids[$item_id])) {
@@ -451,7 +462,7 @@ class CapabilityFilters
 
         switch ($source_name) {
             case 'post':
-                if (!isset($required_operation) ) {
+                if (!isset($required_operation)) {
                     $required_operation = (isset($this->meta_caps[$orig_cap])) ? $this->meta_caps[$orig_cap] : '';
                 }
 
@@ -480,8 +491,9 @@ class CapabilityFilters
 
         $pp = presspermit();
 
-        if (isset($args[1]) && ($args[1] != $pp->getUser()->ID))
+        if (isset($args[1]) && ($args[1] != $pp->getUser()->ID)) {
             return $wp_sitecaps;
+        }
         // =================================================== (end early exit checks) ======================================================
 
         // ========================================== ARGUMENT TRANSLATION AND STATUS DETECTION =============================================
@@ -528,9 +540,9 @@ class CapabilityFilters
 
         // skip the memcache under certain circumstances
         if (!$memcache_disabled) {
-			if ( 
-            (!PWP::empty_POST() && ( 'post.php' == $pagenow ) && PWP::getTypeCap( $post_type, 'edit_post' ) == reset($pp_reqd_caps) )  				   // edit_post cap check on wp-admin/post.php submission   			
-            || (!PWP::empty_GET('doaction') && in_array( reset($pp_reqd_caps), ['delete_post', PWP::getTypeCap( $post_type, 'delete_post' )], true ) )  // bulk post/page deletion is broken by hascap buffering
+            if ( 
+                (!PWP::empty_POST() && ( 'post.php' == $pagenow ) && PWP::getTypeCap($post_type, 'edit_post') == reset($pp_reqd_caps) )                  // edit_post cap check on wp-admin/post.php submission               
+                || (!PWP::empty_GET('doaction') && in_array(reset($pp_reqd_caps), ['delete_post', PWP::getTypeCap($post_type, 'delete_post')], true) )  // bulk post/page deletion is broken by hascap buffering
             ) { 
                 $this->memcache = [];
                 $memcache_disabled = true;
@@ -620,7 +632,7 @@ class CapabilityFilters
                     // Custom Post Type UI: Specific Permissions for editing do not grant access under some configurations
                     if (is_admin()) {
                         if (defined('PRESSPERMIT_EXTRA_POST_CACHE_DELETE')) {
-                            wp_cache_delete( $_id, 'posts' );
+                            wp_cache_delete($_id, 'posts');
                         }
                     }
                 }

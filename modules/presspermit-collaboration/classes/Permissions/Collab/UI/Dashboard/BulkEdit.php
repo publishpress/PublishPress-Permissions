@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class BulkEdit
@@ -10,8 +11,9 @@ class BulkEdit
         $location = 'users.php';
 
         if ($referer = wp_get_referer()) {
-            if (false !== strpos($referer, 'users.php'))
+            if (false !== strpos($referer, 'users.php')) {
                 $location = $referer;
+            }
         }
 
         $post_type = PWP::REQUEST_key('member_page_type');
@@ -21,7 +23,6 @@ class BulkEdit
 
         if (empty($users)) {
             $location = add_query_arg('ppmessage', 2, $location);
-
         } elseif (post_type_exists($post_type) && current_user_can($type_obj->cap->edit_others_posts) && current_user_can('edit_users')) {
             global $wpdb;
 
@@ -67,8 +68,9 @@ class BulkEdit
                 $taxonomies = get_taxonomies();
 
                 foreach ($taxonomies as $taxonomy) {
-                    if ('link_category' == $taxonomy)
+                    if ('link_category' == $taxonomy) {
                         continue;
+                    }
 
                     $terms[$taxonomy] = Collab::getObjectTerms($pattern_post->ID, $taxonomy, ['fields' => 'ids', 'pp_no_filter' => true]);
                 }
@@ -91,10 +93,8 @@ class BulkEdit
             $users_done = $wpdb->get_col($wpdb->prepare(
                 "SELECT p.post_author FROM $wpdb->postmeta AS pm INNER JOIN $wpdb->posts AS p ON pm.post_id = p.ID"
                 . " WHERE pm.meta_key = '_pp_auto_inserted' AND pm.meta_value = %s", 
-                
                 "{$pattern_post_id}:{$post_parent}"
-                )
-            );
+            ));
             
             $users = array_diff($users, $users_done);
 
@@ -105,8 +105,9 @@ class BulkEdit
 
                 $added = 0;
                 foreach ($users as $user_id) {
-                    if (!$user = new \WP_User($user_id))
+                    if (!$user = new \WP_User($user_id)) {
                         continue;
+                    }
 
                     if (current_user_can('edit_user', $user_id)) {
                         $post_title = str_replace('[username]', $user->display_name, $title_pattern);

@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class TermEdit
@@ -36,7 +37,6 @@ class TermEdit
 
             foreach (['manage', 'associate'] as $op) {
                 if ($op_obj = presspermit()->admin()->getOperationObject($op, $use_post_type)) {
-
                     $caption = ('associate' == $op) 
                     ? sprintf(
                         esc_html__('Permissions: Select this %1$s as Parent', 'press-permit-core'), 

@@ -1,9 +1,11 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class CommentFiltersAdmin
 {
-    function __construct() {
+    function __construct()
+    {
         add_filter('the_comments', [$this, 'fltLogCommentPostIds']);
 
         add_filter('map_meta_cap', [$this, 'fltAdjustReqdCaps'], 1, 4);        

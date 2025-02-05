@@ -8,7 +8,8 @@ class PluginPage
     private static $instance = null;
     var $table;
 
-    public static function instance() {
+    public static function instance()
+    {
         if (is_null(self::$instance)) {
             self::$instance = new PluginPage();
         }
@@ -24,7 +25,7 @@ class PluginPage
     public static function handleScreenOptions()
     {
         if (PWP::is_REQUEST('wp_screen_options')) {
-            check_ajax_referer( 'screen-options-nonce', 'screenoptionnonce' );
+            check_ajax_referer('screen-options-nonce', 'screenoptionnonce');
 
             if (isset($_REQUEST['wp_screen_options']['option']) && ('groups_per_page' == $_REQUEST['wp_screen_options']['option']) && isset($_REQUEST['wp_screen_options']['value'])) {
                 global $current_user;
@@ -41,7 +42,8 @@ class PluginPage
     {
         global $pagenow;
 
-        if (('upload.php' == $pagenow) && !defined('PRESSPERMIT_FILE_ACCESS_VERSION')
+        if (
+            ('upload.php' == $pagenow) && !defined('PRESSPERMIT_FILE_ACCESS_VERSION')
             && current_user_can('pp_manage_settings') && presspermit()->getOption('display_extension_hints')
         ) {
             require_once(PRESSPERMIT_CLASSPATH . '/UI/HintsMedia.php');
@@ -52,17 +54,15 @@ class PluginPage
             // todo: eliminate redundancy with Groups::__construct()
             if (!PWP::empty_REQUEST('action2')) {
                 $action = PWP::REQUEST_key('action2');
-
             } elseif (!PWP::empty_REQUEST('action')) {
                 $action = PWP::REQUEST_key('action');
-
             } elseif (!PWP::empty_REQUEST('pp_action')) {
                 $action = PWP::REQUEST_key('pp_action');
             } else {
                 $action = '';
             }
 
-            if ( ! in_array($action, ['delete', 'bulkdelete'])) {
+            if (! in_array($action, ['delete', 'bulkdelete'])) {
                 if (!$agent_type = PWP::REQUEST_key('agent_type')) {
                     $agent_type = 'pp_group';
                 }
@@ -74,14 +74,13 @@ class PluginPage
 
             $group_variant = self::getGroupVariant();
 
-            if ( ! $this->table = apply_filters('presspermit_groups_list_table', false, $agent_type) ) {
-                require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsListTable.php' );
+            if (! $this->table = apply_filters('presspermit_groups_list_table', false, $agent_type)) {
+                require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsListTable.php');
                 $this->table = new GroupsListTable(compact('agent_type', 'group_variant'));
             }
 
             add_screen_option(
                 'per_page',
-                
                 ['label' => _x('Groups', 'groups per page (screen options)', 'press-permit-core'), 
                 'default' => 20, 
                 'option' => 'groups_per_page'
@@ -89,10 +88,13 @@ class PluginPage
             );
         }
 
-        add_action('in_admin_header', function() {do_action('presspermit_plugin_page_admin_header');}, 100);
+        add_action('in_admin_header', function () {
+            do_action('presspermit_plugin_page_admin_header');
+        }, 100);
     }
 
-    public static function getAgentType($default_type = '') {
+    public static function getAgentType($default_type = '')
+    {
         if (!$_agent_type = PWP::REQUEST_key('agent_type')) {
             $_agent_type = $default_type;
         }
@@ -104,7 +106,8 @@ class PluginPage
         return $agent_type;
     }
 
-    public static function getGroupVariant() {
+    public static function getGroupVariant()
+    {
         if (PWP::empty_REQUEST('group_variant') && !PWP::empty_REQUEST('s')) {
             if ($wp_http_referer = PWP::REQUEST_url('_wp_http_referer')) {
                 $matches = [];

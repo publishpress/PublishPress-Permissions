@@ -4,7 +4,8 @@ namespace PublishPress\Permissions;
 
 class TermFiltersAdministrator
 {
-    public function __construct() {
+    public function __construct()
+    {
         add_filter('get_terms', [$this, 'fltPadTermCounts'], 10, 3);
     }
 
@@ -13,7 +14,8 @@ class TermFiltersAdministrator
         if (!defined('XMLRPC_REQUEST') && ('all' == $args['fields']) && empty($args['pp_no_filter'])) {
             global $pagenow;
 
-            if ((!is_admin() || !in_array($pagenow, ['post.php', 'post-new.php']))
+            if (
+                (!is_admin() || !in_array($pagenow, ['post.php', 'post-new.php']))
                 && (!defined('PP_UNFILTERED_TERM_COUNTS') || is_admin())
                 && (in_array($pagenow, ['edit-tags.php']) || !presspermit()->getOption('term_counts_unfiltered'))
             ) {

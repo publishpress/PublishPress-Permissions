@@ -148,8 +148,9 @@ class AdminFilters
 
     function fltExceptionTypes($types)
     {
-        if (isset($types['attachment']))
+        if (isset($types['attachment'])) {
             $types['attachment'] = get_post_type_object('attachment');
+        }
 
         return $types;
     }
@@ -281,7 +282,8 @@ class AdminFilters
 
     function fltPageParent($parent_id, $args = [])
     {
-        if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+        if (
+            (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
             || !presspermit()->filteringEnabled() || ('revision' == PWP::findPostType()) || did_action('pp_disable_page_parent_filter') || ($this->inserting_post)
             || (
                 defined('ELEMENTOR_VERSION') && !empty($_REQUEST['actions'])                                     // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
@@ -338,8 +340,9 @@ class AdminFilters
 
         global $pagenow;
 
-        if (0 === strpos($pagenow, 'options-'))
+        if (0 === strpos($pagenow, 'options-')) {
             return $orig_options_html;
+        }
 
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PageHierarchyFilters.php');
         return PageHierarchyFilters::fltDropdownPages($orig_options_html);
@@ -364,8 +367,9 @@ class AdminFilters
     // optional filter for WP role edit based on user level
     function fltEditableRoles($roles)
     {
-        if (!presspermit()->filteringEnabled() || !presspermit()->getOption('limit_user_edit_by_level'))
+        if (!presspermit()->filteringEnabled() || !presspermit()->getOption('limit_user_edit_by_level')) {
             return $roles;
+        }
 
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Users.php');
         return Users::editableRoles($roles);

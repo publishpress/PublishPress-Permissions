@@ -1,7 +1,8 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
-use \PublishPress\Permissions\Collab\NavMenus as NavMenus;
+use PublishPress\Permissions\Collab\NavMenus as NavMenus;
 
 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');
 
@@ -49,9 +50,10 @@ class NavMenu
 
             $include_tt_ids = $user->getExceptionTerms('manage', 'include', 'nav_menu', 'nav_menu');
 
-            if (!current_user_can($tx_obj->cap->manage_terms, $menu_tt_id)
-            || in_array($menu_tt_id, $exclude_tt_ids) 
-            || ($include_tt_ids && !in_array($menu_tt_id, $include_tt_ids))
+            if (
+                !current_user_can($tx_obj->cap->manage_terms, $menu_tt_id)
+                || in_array($menu_tt_id, $exclude_tt_ids) 
+                || ($include_tt_ids && !in_array($menu_tt_id, $include_tt_ids))
             ) {
                 $user = presspermit()->getUser();
 
@@ -74,12 +76,14 @@ class NavMenu
 
     function posts_where_limit_statuses($limit_statuses, $post_types)
     {
-        if ($stati = array_merge(
-            PWP::getPostStatuses(['public' => true, 'post_type' => $post_types]), 
-            PWP::getPostStatuses(['private' => true, 'post_type' => $post_types]))
-        )
-            
-        $limit_statuses = array_merge($limit_statuses, array_fill_keys($stati, true));
+        if (
+            $stati = array_merge(
+                PWP::getPostStatuses(['public' => true, 'post_type' => $post_types]), 
+                PWP::getPostStatuses(['private' => true, 'post_type' => $post_types])
+            )
+        ) {
+            $limit_statuses = array_merge($limit_statuses, array_fill_keys($stati, true));
+        }
 
         return $limit_statuses;
     }
@@ -97,7 +101,8 @@ class NavMenu
         }
     }
 
-    function flt_police_menu_item_data_edit($retval, $object_id, $meta_key, $meta_value, $prev_value) {
+    function flt_police_menu_item_data_edit($retval, $object_id, $meta_key, $meta_value, $prev_value)
+    {
         if ('_menu_item_type' == $meta_key) { // This is the first postmeta record updated by wp_update_nav_menu_item()
             $this->act_police_menu_item_edit($object_id);
             $this->menu_edit_checked[$object_id] = true;
@@ -147,15 +152,17 @@ class NavMenu
             <?php
         endif;
 
-        if (!$menu_id = NavMenus::determine_selected_menu())
+        if (!$menu_id = NavMenus::determine_selected_menu()) {
             return;
+        }
 
         $menu_items = wp_get_nav_menu_items($menu_id, ['post_status' => 'any']);
 
         $uneditable_items = [];
         foreach (array_keys($menu_items) as $key) {
-            if (!NavMenus::can_edit_menu_item($menu_items[$key]->ID, ['force_check' => true]))
+            if (!NavMenus::can_edit_menu_item($menu_items[$key]->ID, ['force_check' => true])) {
                 $uneditable_items[] = $menu_items[$key]->ID;
+            }
         }
 
         if ($uneditable_items) :
@@ -164,7 +171,7 @@ class NavMenu
             <style type="text/css">
                 <?php
                 $comma = '';
-                foreach( $uneditable_items as $id ) {
+                foreach ($uneditable_items as $id) {
                     echo esc_attr($comma) . "#delete-" . esc_attr($id) . ",#cancel-" . esc_attr($id) . ",#menu-item-" . esc_attr($id) . " span.meta-sep";
 
                     if (!$partial_editing) {
@@ -176,7 +183,7 @@ class NavMenu
 
                 echo '{display:none;} ';
 
-                foreach( $uneditable_items as $id ) {
+                foreach ($uneditable_items as $id) {
                     echo "#menu-item-" . esc_attr($id) . " div.menu-item-bar div.menu-item-handle label.item-title span.menu-item-title {color: #ccc;}";
 
                     if (!presspermit()->isContentAdministrator() && empty($current_user->allcaps['edit_theme_options']) && presspermit()->getOption('admin_nav_menu_lock_custom')) {
@@ -214,7 +221,7 @@ class NavMenu
                     display: none;
                 }
 
-                <?php if( count($editable_menus) < 2 ) :?>
+                <?php if (count($editable_menus) < 2) :?>
                 .manage-menus {
                     display: none;
                 }
@@ -253,8 +260,9 @@ class NavMenu
         <?php endif;
 
         // remove html for uneditable menu items (simply hiding them leads to unexpected menu item addition behavior)
-        if (!$menu_id = NavMenus::determine_selected_menu())
+        if (!$menu_id = NavMenus::determine_selected_menu()) {
             return;
+        }
 
         $menu_items = wp_get_nav_menu_items($menu_id, ['post_status' => 'any']);
 
@@ -270,14 +278,14 @@ class NavMenu
             <style type="text/css">
                 <?php
                 $comma = '';
-                if ( presspermit()->getOption( 'admin_nav_menu_partial_editing' ) ) {
-                    foreach( $uneditable_items as $id ) {
+                if (presspermit()->getOption('admin_nav_menu_partial_editing')) {
+                    foreach ($uneditable_items as $id) {
                         echo esc_attr($comma) . "#menu-item-" . esc_attr($id) . " a.item-delete,#menu-item-" . esc_attr($id) . " span.meta-sep";
                         $comma = ',';
                     }
                 } else {
-                    foreach( $uneditable_items as $id ) {
-                        echo esc_attr($comma) . "#menu-item-" . esc_attr($id) . ",#delete-" . esc_attr($id) . ",#cancel-". esc_attr($id);
+                    foreach ($uneditable_items as $id) {
+                        echo esc_attr($comma) . "#menu-item-" . esc_attr($id) . ",#delete-" . esc_attr($id) . ",#cancel-" . esc_attr($id);
                         $comma = ',';
                     }
                 }
@@ -285,7 +293,7 @@ class NavMenu
                 echo '{display:none;}';
 
                 $comma = ' ';
-                foreach( $uneditable_items as $id ) {
+                foreach ($uneditable_items as $id) {
                     if ('custom' == get_post_meta($id, '_menu_item_type', true)) {
                         $any_custom_items = true;
                         echo esc_attr($comma) . "#edit-menu-item-url-" . esc_attr($id);
@@ -298,7 +306,6 @@ class NavMenu
                 ?>
             </style>
         <?php endif;
-
     } // end function ui_hide_add_menu_footer_scripts
 
     function footer_scripts()

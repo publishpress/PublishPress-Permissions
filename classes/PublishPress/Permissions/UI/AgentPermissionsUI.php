@@ -120,7 +120,7 @@ class AgentPermissionsUI
 
         // Discourage anon/all metagroups having read exceptions for specific posts. Normally, that's what post visibility is for.
         $is_all_anon = (isset($args['agent']) && !empty($args['agent']->metagroup_id) && in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all']));
-?>
+        ?>
         <img id="pp_add_exception_waiting" class="waiting" style="display:none;position:absolute" src="<?php echo esc_url(admin_url('images/wpspin_light.gif')) ?>" alt="" />
         <table id="pp_add_exception">
             <thead>
@@ -141,8 +141,9 @@ class AgentPermissionsUI
                             <?php
                             $type_objects = apply_filters('presspermit_append_exception_types', $pp->admin()->orderTypes(apply_filters('presspermit_exception_types', $type_objects)));
 
-                            if (!empty($args['external']))
+                            if (!empty($args['external'])) {
                                 $type_objects = array_merge($type_objects, $args['external']);
+                            }
 
                             self::drawTypeOptions($type_objects, ['option_any' => true]);
                             do_action('presspermit_exception_types_dropdown', $args);
@@ -224,25 +225,26 @@ class AgentPermissionsUI
             ) : ?>
                 <div>
                     <?php
-                    if (presspermit()->isPro())
+                    if (presspermit()->isPro()) {
                         esc_html_e('To assign forum-specific Permissions for bbPress, activate the Compatibility Pack module.', 'press-permit-core');
-                    else
+                    } else {
                         printf(
                             esc_html__('To assign forum-specific Permissions for bbPress, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
                             '<a href="https://publishpress.com/pricing/">',
                             '</a>'
                         );
+                    }
                     ?>
                 </div>
             <?php endif; ?>
         </div><?php
-            }
+    }
 
-            private static function selectRolesUI($type_objects, $taxonomy_objects)
-            {
-                $pp = presspermit();
+    private static function selectRolesUI($type_objects, $taxonomy_objects)
+    {
+        $pp = presspermit();
 
-                ?>
+        ?>
         <img id="pp_add_role_waiting" class="waiting" style="display:none;position:absolute" src="<?php echo esc_url(admin_url('images/wpspin_light.gif')) ?>" alt="" />
         <table id="pp_add_role">
             <thead>
@@ -257,10 +259,10 @@ class AgentPermissionsUI
                 <tr>
                     <td>
                         <select name="pp_select_type" autocomplete="off">
-                            <?php
-                            self::drawTypeOptions($type_objects, ['option_na' => true]);
-                            do_action('presspermit_role_types_dropdown');
-                            ?></select>
+                    <?php
+                    self::drawTypeOptions($type_objects, ['option_na' => true]);
+                    do_action('presspermit_role_types_dropdown');
+                    ?></select>
                     </td>
 
                     <td class="pp-select-role" style="display:none"><select name="pp_select_role" autocomplete="off"></select></td>
@@ -287,93 +289,91 @@ class AgentPermissionsUI
 
         <div class='pp-ext-promo'>
             <?php
-                if (!$pp->moduleActive('status-control') && $pp->getOption('display_extension_hints')) : ?>
+            if (!$pp->moduleActive('status-control') && $pp->getOption('display_extension_hints')) : ?>
                 <div>
-                    <?php
-                    if (presspermit()->isPro()) {
-                        esc_html_e('To assign roles for custom post statuses, activate the Status Control module.', 'press-permit-core');
-                    }
-                    ?>
+                            <?php
+                            if (presspermit()->isPro()) {
+                                esc_html_e('To assign roles for custom post statuses, activate the Status Control module.', 'press-permit-core');
+                            }
+                            ?>
                 </div>
 
                 <div>
-                    <?php
-                    if (function_exists('bbp_get_version') && !$pp->moduleActive('compatibility') && $pp->getOption('display_extension_hints')) {
-                        if (presspermit()->isPro()) {
-                            esc_html_e('To assign roles for bbPress forums, activate the Compatibility Pack module.', 'press-permit-core');
-                        } else {
-                            printf(
-                                esc_html__('To assign roles for bbPress forums, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
-                                '<a href="https://publishpress.com/pricing/">',
-                                '</a>'
-                            );
-                        }
-                    }
-                    ?>
+                            <?php
+                            if (function_exists('bbp_get_version') && !$pp->moduleActive('compatibility') && $pp->getOption('display_extension_hints')) {
+                                if (presspermit()->isPro()) {
+                                    esc_html_e('To assign roles for bbPress forums, activate the Compatibility Pack module.', 'press-permit-core');
+                                } else {
+                                    printf(
+                                        esc_html__('To assign roles for bbPress forums, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                                        '<a href="https://publishpress.com/pricing/">',
+                                        '</a>'
+                                    );
+                                }
+                            }
+                            ?>
                 </div>
             <?php endif;
 
-                if ((defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) && !$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) : ?>
+            if ((defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) && !$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) : ?>
                 <div>
-                    <?php esc_html_e('To assign page-specific PublishPress Revision permissions, enable the Editing Permissions module.', 'press-permit-core'); ?>
+                        <?php esc_html_e('To assign page-specific PublishPress Revision permissions, enable the Editing Permissions module.', 'press-permit-core'); ?>
                 </div>
             <?php endif; ?>
         </div><?php
+    }
+
+    private static function itemSelectUI($type_objects)
+    {
+        require_once(PRESSPERMIT_CLASSPATH . '/UI/ItemsMetabox.php');
+
+        add_filter('get_terms_args', [__CLASS__, 'fltTermSelectNoPaging'], 50, 2);
+        add_action('admin_print_footer_scripts', [__CLASS__, 'actScriptHideTermSelectPaging']);
+
+        foreach ($type_objects as $type_obj) {
+            if (defined('PP_' . strtoupper($type_obj->name) . '_NO_EXCEPTIONS') || defined('PP_NO' . strtoupper($type_obj->name) . '_EXCEPTIONS')) {
+                continue;
             }
 
-            private static function itemSelectUI($type_objects)
-            {
-                require_once(PRESSPERMIT_CLASSPATH . '/UI/ItemsMetabox.php');
+            $type_obj = apply_filters('presspermit_permit_items_meta_box_object', $type_obj);
 
-                add_filter('get_terms_args', [__CLASS__, 'fltTermSelectNoPaging'], 50, 2);
-                add_action('admin_print_footer_scripts', [__CLASS__, 'actScriptHideTermSelectPaging']);
+            if (post_type_exists($type_obj->name)) {
+                $metabox_function = ['\PublishPress\Permissions\UI\ItemsMetabox', 'post_type_meta_box'];
+            } elseif (taxonomy_exists($type_obj->name)) {
+                $metabox_function = ['\PublishPress\Permissions\UI\ItemsMetabox', 'taxonomy_meta_box'];
+            } elseif (in_array($type_obj->name, ['pp_group', 'pp_net_group'], true)) {
+                $metabox_function = ['\PublishPress\Permissions\UI\ItemsMetabox', 'group_meta_box'];
+            } elseif (!$metabox_function = apply_filters('presspermit_item_select_metabox_function', '', $type_obj)) {
+                continue;
+            }
 
-                foreach ($type_objects as $type_obj) {
-                    if (defined('PP_' . strtoupper($type_obj->name) . '_NO_EXCEPTIONS') || defined('PP_NO' . strtoupper($type_obj->name) . '_EXCEPTIONS')) {
-                        continue;
-                    }
-
-                    $type_obj = apply_filters('presspermit_permit_items_meta_box_object', $type_obj);
-
-                    if (post_type_exists($type_obj->name))
-                        $metabox_function = ['\PublishPress\Permissions\UI\ItemsMetabox', 'post_type_meta_box'];
-
-                    elseif (taxonomy_exists($type_obj->name))
-                        $metabox_function = ['\PublishPress\Permissions\UI\ItemsMetabox', 'taxonomy_meta_box'];
-
-                    elseif (in_array($type_obj->name, ['pp_group', 'pp_net_group'], true))
-                        $metabox_function = ['\PublishPress\Permissions\UI\ItemsMetabox', 'group_meta_box'];
-
-                    elseif (!$metabox_function = apply_filters('presspermit_item_select_metabox_function', '', $type_obj))
-                        continue;
-
-                    add_meta_box("select-exception-{$type_obj->name}", sprintf(esc_html__('Select %s', 'press-permit-core'), $type_obj->labels->name), $metabox_function, 'edit-exceptions', 'side', 'default', $type_obj);
-                }
-                ?>
+            add_meta_box("select-exception-{$type_obj->name}", sprintf(esc_html__('Select %s', 'press-permit-core'), $type_obj->labels->name), $metabox_function, 'edit-exceptions', 'side', 'default', $type_obj);
+        }
+        ?>
         <div id="nav-menus-frame">
             <div id="menu-settings-column" class="metabox-holder pp-menu-settings-column">
                 <form id="nav-menu-meta" class="nav-menu-meta" method="post" enctype="multipart/form-data">
-                    <?php
-                    wp_nonce_field('add-exception_item', 'menu-settings-column-nonce');
-                    ?>
-                    <?php do_meta_boxes('edit-exceptions', 'side', null); ?>
+            <?php
+            wp_nonce_field('add-exception_item', 'menu-settings-column-nonce');
+            ?>
+            <?php do_meta_boxes('edit-exceptions', 'side', null); ?>
                 </form>
             </div><?php
-                    ?>
+            ?>
             <div class="nav-tabs-wrapper" style="display:n-one">
                 <div class="nav-tabs">
                     <span class="nav-tab menu-add-new nav-tab-active"></span>
                     <ul id="menu-to-edit" class="menu ui-sortable"> </ul>
                 </div><?php
-                        ?>
-            </div><?php
-                    ?>
-        </div><?php
-            }
-
-            private static function confirmRolesUI()
-            {
                 ?>
+            </div><?php
+            ?>
+        </div><?php
+    }
+
+    private static function confirmRolesUI()
+    {
+        ?>
         <div id="pp_site_selection_msg" class="pp-error-note pp-edit-msg" style="display:none"></div>
 
         <div id="pp_review_roles" class="pp-save-roles" style="display:none">
@@ -400,11 +400,11 @@ class AgentPermissionsUI
 
         <div id="pp_new_submission_msg" style="display:none">
         </div><?php
-            }
+    }
 
-            private static function confirmExceptionsUI()
-            {
-                ?>
+    private static function confirmExceptionsUI()
+    {
+        ?>
         <div id="pp_item_selection_msg" class="pp-error-note pp-edit-msg" style="display:none"></div>
 
         <div id="pp_review_exceptions" class="pp-save-exceptions" style="display:none">
@@ -425,7 +425,7 @@ class AgentPermissionsUI
             </table>
 
             <div id="pp_save_exceptions"><?php
-                                            ?>
+            ?>
                 <!--
             <p class="mirror-wrap">
                 <div class="mirror-label">
@@ -444,79 +444,83 @@ class AgentPermissionsUI
         </div>
         <div id="pp_new_x_submission_msg" style="display:none">
         </div><?php
+    }
+
+    public static function drawGroupPermissions($agent_id, $agent_type, $url, $wp_http_referer = '', $args = [])
+    {
+        $pp = presspermit();
+
+        $post_types = $pp->admin()->orderTypes($pp->getEnabledPostTypes([], 'object'));
+        $taxonomies = $pp->admin()->orderTypes($pp->getEnabledTaxonomies(['object_type' => false], 'object'));
+
+        $perms = [];
+
+        if (('pp_group' == $agent_type) && ($group = $pp->groups()->getGroup($agent_id))) {
+            $is_wp_role = ('wp_role' == $group->metagroup_type);
+        }
+
+        if (empty($group) || !in_array($group->metagroup_id, ['wp_anon', 'wp_all']) || defined('PP_ALL_ANON_ROLES')) {
+            $perms['roles'] = esc_html__('Add Supplemental Roles', 'press-permit-core');
+        }
+
+        $perms['exceptions'] = esc_html__('Set Specific Permissions', 'press-permit-core');
+
+        if (!isset($perms['roles'])) {
+            $current_tab = 'pp-add-exceptions';
+        } elseif (!isset($perms['roles'])) {
+            $current_tab = 'pp-add-roles';
+        } elseif (!$current_tab = get_user_option('pp-permissions-tab')) {
+            $current_tab = (isset($perms['roles'])) ? 'pp-add-roles' : 'pp-add-exceptions';
+        }
+
+        if (($args['agent']->metagroup_type != 'wp_role') || !in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all'])) {
+            $perms['clone'] = esc_html__('Copy', 'press-permit-core');
+        }
+
+        // --- add permission tabs ---
+        echo "<ul id='pp_add_permission_tabs' class='pp-list_horiz'>";
+        foreach ($perms as $perm_type => $_caption) {
+            $class = ("pp-add-$perm_type" == $current_tab) ? 'agp-selected_agent' : 'agp-unselected_agent';
+
+            echo "<li class='agp-agent pp-add-" . esc_attr($perm_type) . " pp-add-permissions " . esc_attr($class) . "'><a class='pp-add-" . esc_attr($perm_type) . "' href='javascript:void(0)'>"
+                . esc_html($_caption) . '</a></li>';
+        }
+        echo '</ul>';
+
+        // --- divs for add Roles / Exceptions ---
+        $arr = array_keys($perms);
+        $first_perm_type = reset($arr);
+        foreach (array_keys($perms) as $perm_type) {
+            $display_style = ("pp-add-$perm_type" == $current_tab) ? '' : ';display:none';
+            echo "<div class='pp-agents pp-group-box pp-add-permissions pp-add-" . esc_attr($perm_type) . "' style='clear:both" . esc_attr($display_style) . "'>";
+            echo '<div>';
+
+            if ('roles' == $perm_type) {
+                // temp workaround for bbPress
+                self::selectRolesUI(array_diff_key($post_types, array_fill_keys(['topic', 'reply'], true)), $taxonomies);
+            } elseif ('exceptions' == $perm_type) {
+                if (!isset($args['external'])) {
+                    $args['external'] = [];
+                }
+
+                $post_types = Arr::subset($post_types, $pp->getEnabledPostTypes(['layer' => 'exceptions']));
+                self::selectExceptionsUi(array_diff_key($post_types, array_fill_keys(['topic', 'reply'], true)), $taxonomies, $args);
             }
-
-            public static function drawGroupPermissions($agent_id, $agent_type, $url, $wp_http_referer = '', $args = [])
-            {
-                $pp = presspermit();
-
-                $post_types = $pp->admin()->orderTypes($pp->getEnabledPostTypes([], 'object'));
-                $taxonomies = $pp->admin()->orderTypes($pp->getEnabledTaxonomies(['object_type' => false], 'object'));
-
-                $perms = [];
-
-                if (('pp_group' == $agent_type) && ($group = $pp->groups()->getGroup($agent_id)))
-                    $is_wp_role = ('wp_role' == $group->metagroup_type);
-
-                if (empty($group) || !in_array($group->metagroup_id, ['wp_anon', 'wp_all']) || defined('PP_ALL_ANON_ROLES'))
-                    $perms['roles'] = esc_html__('Add Supplemental Roles', 'press-permit-core');
-
-                $perms['exceptions'] = esc_html__('Set Specific Permissions', 'press-permit-core');
-
-                if (!isset($perms['roles']))
-                    $current_tab = 'pp-add-exceptions';
-                elseif (!isset($perms['roles']))
-                    $current_tab = 'pp-add-roles';
-                elseif (!$current_tab = get_user_option('pp-permissions-tab'))
-                    $current_tab = (isset($perms['roles'])) ? 'pp-add-roles' : 'pp-add-exceptions';
-
-                if (($args['agent']->metagroup_type != 'wp_role') || !in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all'])) {
-                    $perms['clone'] = esc_html__('Copy', 'press-permit-core');
-                }
-
-                // --- add permission tabs ---
-                echo "<ul id='pp_add_permission_tabs' class='pp-list_horiz'>";
-                foreach ($perms as $perm_type => $_caption) {
-                    $class = ("pp-add-$perm_type" == $current_tab) ? 'agp-selected_agent' : 'agp-unselected_agent';
-
-                    echo "<li class='agp-agent pp-add-" . esc_attr($perm_type) . " pp-add-permissions " . esc_attr($class) . "'><a class='pp-add-" . esc_attr($perm_type) . "' href='javascript:void(0)'>"
-                        . esc_html($_caption) . '</a></li>';
-                }
-                echo '</ul>';
-
-                // --- divs for add Roles / Exceptions ---
-                $arr = array_keys($perms);
-                $first_perm_type = reset($arr);
-                foreach (array_keys($perms) as $perm_type) {
-                    $display_style = ("pp-add-$perm_type" == $current_tab) ? '' : ';display:none';
-                    echo "<div class='pp-agents pp-group-box pp-add-permissions pp-add-" . esc_attr($perm_type) . "' style='clear:both" . esc_attr($display_style) . "'>";
-                    echo '<div>';
-
-                    if ('roles' == $perm_type) {
-                        // temp workaround for bbPress
-                        self::selectRolesUI(array_diff_key($post_types, array_fill_keys(['topic', 'reply'], true)), $taxonomies);
-                    } elseif ('exceptions' == $perm_type) {
-                        if (!isset($args['external']))
-                            $args['external'] = [];
-
-                        $post_types = Arr::subset($post_types, $pp->getEnabledPostTypes(['layer' => 'exceptions']));
-                        self::selectExceptionsUi(array_diff_key($post_types, array_fill_keys(['topic', 'reply'], true)), $taxonomies, $args);
-                    }
-                ?>
+            ?>
 
             <form id="group-<?php echo esc_attr($perm_type); ?>-selections" action="<?php echo esc_url($url); ?>" method="post" <?php do_action('presspermit_group_edit_form_tag'); ?>>
                 <?php wp_nonce_field("pp-update-{$perm_type}_" . $agent_id, "_pp_nonce_$perm_type");
 
-                    if (in_array($agent_type, ['pp_group', 'pp_net_group'])) {
+                if (in_array($agent_type, ['pp_group', 'pp_net_group'])) {
                         wp_nonce_field('pp-update-group_' . $agent_id);
-                    }
+                }
                 ?>
                 <?php
-                    if ('clone' == $perm_type) {
+                if ('clone' == $perm_type) {
                         self::selectCloneUI($args['agent']);
-                    }
+                }
 
-                    if ($wp_http_referer) : ?>
+                if ($wp_http_referer) : ?>
                     <input type="hidden" name="wp_http_referer" value="<?php echo esc_url($wp_http_referer); ?>" />
                 <?php endif; ?>
                 <input type="hidden" name="action" value="pp_update<?php echo esc_attr($perm_type); ?>" />
@@ -527,674 +531,693 @@ class AgentPermissionsUI
                 <input type="hidden" name="description" value="-1" />
 
                 <?php
-                    if ('roles' == $perm_type) {
+                if ('roles' == $perm_type) {
                         self::confirmRolesUI();
-                    } elseif ('exceptions' == $perm_type) {
-                        self::confirmExceptionsUI();
-                    }
+                } elseif ('exceptions' == $perm_type) {
+                    self::confirmExceptionsUI();
+                }
 
                     // form close tag output by php due to code autoformatting issue
-                    echo '</form>';
-
-                    echo '</div></div>';
-                } // end foreach perm_type (roles, exceptions)
-
-                $args['agent_type'] = $agent_type;
-                $roles = $pp->getRoles($agent_id, $agent_type, ['post_types' => $post_types, 'taxonomies' => $taxonomies]);
-
-                $args['class'] = ('user' == $agent_type) ? 'pp-user-roles' : 'pp-group-roles';
-                $args['agent_type'] = $agent_type;
-                self::currentRolesUI($roles, $args);
-
-                $post_types[''] = ''; // also retrieve exceptions for (all) post type
-
-                $_args = [
-                    'assign_for' => '',
-                    'agent_type' => $agent_type,
-                    'agent_id' => $agent_id,
-                    'post_types' => array_keys($post_types),
-                    'taxonomies' => array_keys($taxonomies),
-                    'return_raw_results' => true
-                ];
-
-                if (PWP::empty_REQUEST('show_propagated')) {
-                    $_args['inherited_from'] = 0;
-                }
-
-                // todo: Determine how exception items can become orphaned, eliminate this routine check
-                require_once(PRESSPERMIT_CLASSPATH . '/DB/Permissions.php');
-                \PublishPress\Permissions\DB\Permissions::expose_orphaned_exception_items();
-
-                $exc = $pp->getExceptions($_args);
-                $args['class'] = ('user' == $agent_type) ? 'pp-user-roles' : 'pp-group-roles';
-
-                self::currentExceptionsUI($exc, $args);
-
-                do_action('presspermit_group_roles_ui', $agent_type, $agent_id);
-            }
-
-            public static function currentRolesUI($roles, $args = [])
-            {
-                $defaults = ['read_only' => false, 'caption' => '', 'class' => 'pp-group-roles', 'link' => '', 'agent_type' => '', 'show_groups_link' => false];
-                $args = array_merge($defaults, $args);
-                foreach (array_keys($defaults) as $var) {
-                    $$var = $args[$var];
-                }
-
-                if (!$caption) {
-                    $caption = ('user' == $agent_type)
-                        ? sprintf(esc_html__('Supplemental Roles %1$s(for user)%2$s', 'press-permit-core'), '', '')
-                        : esc_html__('Supplemental Roles', 'press-permit-core');
-                }
-
-                $type_roles = [];
-
-                if (!$roles)
-                    return;
-
-                // todo: still necessary?
-                $has_roles = false;
-                foreach (array_keys($roles) as $key) {
-                    if (!empty($roles[$key]))
-                        $has_roles = true;
-                }
-
-                if (!$has_roles)
-                    return;
-
-                $pp = presspermit();
-                $pp_admin = $pp->admin();
-
-                echo '<div style="clear:both;"></div>'
-                    . "<div id='pp_current_roles_header' class='pp-group-box " . esc_attr($class) . "'>"
-                    . '<h3>';
-
-                if ($link) {
-                    echo "<a href='" . esc_url($link) . "'>" . esc_html($caption) . "</a>";
-                } else {
-                    esc_html_e($caption);
-                }
-
-                if ($show_groups_link) : ?>
-                &nbsp;&bull;&nbsp;<small><a class='pp-show-groups' href='#'><?php _e('Show Groups', 'press-permit-core'); ?></a></small>
-            <?php endif;
-
-                echo '</h3>';
-                echo '<div>';
-
-                $_class = ($read_only) ? 'pp-readonly' : '';
-                echo '<div id="pp_current_roles" class="' . esc_attr($_class) . '">';
-
-                foreach (array_keys($roles) as $role_name) {
-                    if (strpos($role_name, ':')) {
-                        $arr = explode(':', $role_name);
-                        $source_name = $arr[1];
-                        $object_type = $arr[2];
-                    } else {
-                        $object_type = '';
-
-                        $source_name = (0 === strpos($role_name, 'pp_') && strpos($role_name, '_manager')) ? 'term' : 'post';
-                    }
-
-                    $type_roles[$source_name][$object_type][$role_name] = true;
-                }
-
-                foreach (array_keys($type_roles) as $source_name) {
-                    ksort($type_roles[$source_name]);
-
-                    foreach (array_keys($type_roles[$source_name]) as $object_type) {
-                        $any_done = false;
-
-                        if ($type_obj = $pp->getTypeObject($source_name, $object_type)) {
-                            $type_caption = $type_obj->labels->singular_name;
-                        } elseif ('term' == $source_name) {
-                            // term management roles will not be applied without editing permissions module, so do not display
-                            if (!$pp->moduleActive('collaboration')) {
-                                continue;
-                            }
-
-                            $type_caption = esc_html__('Term Management', 'press-permit-core');
-                        } else {
-                            $_role_name = key($type_roles[$source_name][$object_type]);
-                            if (false === strpos($_role_name, ':')) {
-                                $type_obj = (object)['labels' => (object)['name' => esc_html__('objects', 'press-permit-core'), 'singular_name' => esc_html__('objects', 'press-permit-core')]];
-                                $type_caption = esc_html__('Direct-Assigned', 'press-permit-core');
-                            } else {
-                                $type_obj = (object)['labels' => (object)['name' => esc_html__('objects', 'press-permit-core'), 'singular_name' => esc_html__('objects', 'press-permit-core')]];
-                                $type_caption = esc_html__('Disabled Type', 'press-permit-core');
-                            }
-                        }
-
-                        echo "<div class='type-roles-wrapper'>";
-                        echo '<h4 style="margin-bottom:0.3em">' . esc_html(sprintf(__('%s Roles', 'press-permit-core'), $type_caption)) . '</h4>';
-                        echo "<div class='pp-current-type-roles'>";
-
-                        // site roles
-                        if (isset($type_roles[$source_name][$object_type])) {
-                            echo "<div id='pp_current_" . esc_attr($source_name) . "_" . esc_attr($object_type) . "_site_roles' class='pp-current-roles pp-current-site-roles'>";
-                            $inputs = [];
-
-                            $_arr = $type_roles[$source_name][$object_type];
-                            ksort($_arr);
-                            foreach (array_keys($_arr) as $role_name) {
-                                if ($read_only) {
-                                    if (!empty($any_done)) echo ',&nbsp; ';
-                                    echo '<label>';
-                                    $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true]);
-                                    echo "</label>";
-                                    $any_done = true;
-                                } else {
-                                    $ass_id = $roles[$role_name];
-                                    $cb_id = 'pp_edit_role_' . str_replace(',', '_', $ass_id);
-
-                                    echo "<label for='" . esc_attr($cb_id) . "'><input id='" . esc_attr($cb_id) . "' type='checkbox' name='pp_edit_role[]' value='" . esc_attr($ass_id) . "'>&nbsp;";
-                                    $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true]);
-                                    echo '</label> ';
-                                }
-                            }
-
-                            echo '</div>';
-                        }
+                        echo '</form>';
 
                         echo '</div></div>';
-                    } // end foreach object_type
-                } // end foreach source_name
+        } // end foreach perm_type (roles, exceptions)
 
-                echo '<br /><div class="pp-role-bulk-edit" style="display:none">';
+        $args['agent_type'] = $agent_type;
+        $roles = $pp->getRoles($agent_id, $agent_type, ['post_types' => $post_types, 'taxonomies' => $taxonomies]);
 
-                echo "<select><option value=''>" . esc_html(PWP::__wp('Bulk Actions')) . "</option><option value='remove'>"
-                    . esc_html(PWP::__wp('Remove')) . '</option></select>';
-            ?>
+        $args['class'] = ('user' == $agent_type) ? 'pp-user-roles' : 'pp-group-roles';
+        $args['agent_type'] = $agent_type;
+        self::currentRolesUI($roles, $args);
+
+        $post_types[''] = ''; // also retrieve exceptions for (all) post type
+
+        $_args = [
+            'assign_for' => '',
+            'agent_type' => $agent_type,
+            'agent_id' => $agent_id,
+            'post_types' => array_keys($post_types),
+            'taxonomies' => array_keys($taxonomies),
+            'return_raw_results' => true
+        ];
+
+        if (PWP::empty_REQUEST('show_propagated')) {
+            $_args['inherited_from'] = 0;
+        }
+
+        // todo: Determine how exception items can become orphaned, eliminate this routine check
+        require_once(PRESSPERMIT_CLASSPATH . '/DB/Permissions.php');
+        \PublishPress\Permissions\DB\Permissions::expose_orphaned_exception_items();
+
+        $exc = $pp->getExceptions($_args);
+        $args['class'] = ('user' == $agent_type) ? 'pp-user-roles' : 'pp-group-roles';
+
+        self::currentExceptionsUI($exc, $args);
+
+        do_action('presspermit_group_roles_ui', $agent_type, $agent_id);
+    }
+
+    public static function currentRolesUI($roles, $args = [])
+    {
+        $defaults = ['read_only' => false, 'caption' => '', 'class' => 'pp-group-roles', 'link' => '', 'agent_type' => '', 'show_groups_link' => false];
+        $args = array_merge($defaults, $args);
+        foreach (array_keys($defaults) as $var) {
+            $$var = $args[$var];
+        }
+
+        if (!$caption) {
+            $caption = ('user' == $agent_type)
+                ? sprintf(esc_html__('Supplemental Roles %1$s(for user)%2$s', 'press-permit-core'), '', '')
+                : esc_html__('Supplemental Roles', 'press-permit-core');
+        }
+
+        $type_roles = [];
+
+        if (!$roles) {
+            return;
+        }
+
+        // todo: still necessary?
+        $has_roles = false;
+        foreach (array_keys($roles) as $key) {
+            if (!empty($roles[$key])) {
+                $has_roles = true;
+            }
+        }
+
+        if (!$has_roles) {
+            return;
+        }
+
+        $pp = presspermit();
+        $pp_admin = $pp->admin();
+
+        echo '<div style="clear:both;"></div>'
+            . "<div id='pp_current_roles_header' class='pp-group-box " . esc_attr($class) . "'>"
+            . '<h3>';
+
+        if ($link) {
+            echo "<a href='" . esc_url($link) . "'>" . esc_html($caption) . "</a>";
+        } else {
+            esc_html_e($caption);
+        }
+
+        if ($show_groups_link) : ?>
+                &nbsp;&bull;&nbsp;<small><a class='pp-show-groups' href='#'><?php _e('Show Groups', 'press-permit-core'); ?></a></small>
+        <?php endif;
+
+        echo '</h3>';
+        echo '<div>';
+
+        $_class = ($read_only) ? 'pp-readonly' : '';
+        echo '<div id="pp_current_roles" class="' . esc_attr($_class) . '">';
+
+        foreach (array_keys($roles) as $role_name) {
+            if (strpos($role_name, ':')) {
+                $arr = explode(':', $role_name);
+                $source_name = $arr[1];
+                $object_type = $arr[2];
+            } else {
+                $object_type = '';
+
+                $source_name = (0 === strpos($role_name, 'pp_') && strpos($role_name, '_manager')) ? 'term' : 'post';
+            }
+
+            $type_roles[$source_name][$object_type][$role_name] = true;
+        }
+
+        foreach (array_keys($type_roles) as $source_name) {
+            ksort($type_roles[$source_name]);
+
+            foreach (array_keys($type_roles[$source_name]) as $object_type) {
+                $any_done = false;
+
+                if ($type_obj = $pp->getTypeObject($source_name, $object_type)) {
+                    $type_caption = $type_obj->labels->singular_name;
+                } elseif ('term' == $source_name) {
+                    // term management roles will not be applied without editing permissions module, so do not display
+                    if (!$pp->moduleActive('collaboration')) {
+                        continue;
+                    }
+
+                    $type_caption = esc_html__('Term Management', 'press-permit-core');
+                } else {
+                    $_role_name = key($type_roles[$source_name][$object_type]);
+                    if (false === strpos($_role_name, ':')) {
+                        $type_obj = (object)['labels' => (object)['name' => esc_html__('objects', 'press-permit-core'), 'singular_name' => esc_html__('objects', 'press-permit-core')]];
+                        $type_caption = esc_html__('Direct-Assigned', 'press-permit-core');
+                    } else {
+                        $type_obj = (object)['labels' => (object)['name' => esc_html__('objects', 'press-permit-core'), 'singular_name' => esc_html__('objects', 'press-permit-core')]];
+                        $type_caption = esc_html__('Disabled Type', 'press-permit-core');
+                    }
+                }
+
+                echo "<div class='type-roles-wrapper'>";
+                echo '<h4 style="margin-bottom:0.3em">' . esc_html(sprintf(__('%s Roles', 'press-permit-core'), $type_caption)) . '</h4>';
+                echo "<div class='pp-current-type-roles'>";
+
+                // site roles
+                if (isset($type_roles[$source_name][$object_type])) {
+                    echo "<div id='pp_current_" . esc_attr($source_name) . "_" . esc_attr($object_type) . "_site_roles' class='pp-current-roles pp-current-site-roles'>";
+                    $inputs = [];
+
+                    $_arr = $type_roles[$source_name][$object_type];
+                    ksort($_arr);
+                    foreach (array_keys($_arr) as $role_name) {
+                        if ($read_only) {
+                            if (!empty($any_done)) {
+                                echo ',&nbsp; ';
+                            }
+                            echo '<label>';
+                            $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true]);
+                            echo "</label>";
+                            $any_done = true;
+                        } else {
+                            $ass_id = $roles[$role_name];
+                            $cb_id = 'pp_edit_role_' . str_replace(',', '_', $ass_id);
+
+                            echo "<label for='" . esc_attr($cb_id) . "'><input id='" . esc_attr($cb_id) . "' type='checkbox' name='pp_edit_role[]' value='" . esc_attr($ass_id) . "'>&nbsp;";
+                            $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true]);
+                            echo '</label> ';
+                        }
+                    }
+
+                    echo '</div>';
+                }
+
+                echo '</div></div>';
+            } // end foreach object_type
+        } // end foreach source_name
+
+        echo '<br /><div class="pp-role-bulk-edit" style="display:none">';
+
+        echo "<select><option value=''>" . esc_html(PWP::__wp('Bulk Actions')) . "</option><option value='remove'>"
+            . esc_html(PWP::__wp('Remove')) . '</option></select>';
+        ?>
             <input type="submit" name="" class="button submit-edit-item-role" value="<?php esc_attr_e('Apply', 'press-permit-core'); ?>" />
             <?php
 
-                echo '<img class="waiting" style="display:none;" src="' . esc_url(admin_url('images/wpspin_light.gif')) . '" alt="" />';
-                echo '</div>';
+            echo '<img class="waiting" style="display:none;" src="' . esc_url(admin_url('images/wpspin_light.gif')) . '" alt="" />';
+            echo '</div>';
 
-                echo '</div>';
+            echo '</div>';
 
-                echo '</div></div>';
+            echo '</div></div>';
 
-                return true;
+            return true;
+    }
+
+    public static function currentExceptionsUI($exc_results, $args = [])
+    {
+        $defaults = [
+            'read_only' => false,
+            'class' => 'pp-group-roles',
+            'item_links' => false,
+            'caption' => '',
+            'show_groups_link' => false,
+            'link' => '',
+            'agent_type' => ''
+        ];
+
+        $args = array_merge($defaults, $args);
+        foreach (array_keys($defaults) as $var) {
+            $$var = $args[$var];
+        }
+
+        if (!$exc_results) {
+            return;
+        }
+
+        $pp = presspermit();
+        $pp_admin = $pp->admin();
+        $pp_groups = $pp->groups();
+
+        if (!$caption) {
+            $caption = ('user' == $agent_type)
+                ? sprintf(esc_html__('Specific Permissions %1$s(for user)%2$s', 'press-permit-core'), '', '')
+                : esc_html__('Specific Permissions', 'press-permit-core');
+        }
+
+        require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Ancestry.php');
+
+        $exceptions = array_fill_keys(array_merge(['term', 'post'], $pp_groups->getGroupTypes()), []);
+
+        // support imported include exception with no items included
+        $item_paths = array_fill_keys(array_keys($exceptions), [esc_html__('(none)', 'press-permit-core')]);
+
+        $post_types = $pp->getEnabledPostTypes([], 'names');
+        $taxonomies = $pp->getEnabledTaxonomies(['object_type' => false], 'names');
+
+        // object_type not strictly necessary here, included for consistency with term role array
+        foreach ($exc_results as $row) {
+            switch ($row->via_item_source) {
+                case 'term':
+                    if ($row->item_id) {
+                        $taxonomy = '';
+                        $term_id = (int)PWP::ttidToTermid($row->item_id, $taxonomy);
+
+                        if ($row->item_id) {
+                            $item_paths['term'][$row->item_id] = \PressShack\Ancestry::getTermPath($term_id, $taxonomy);
+                        }
+
+                        $via_type = $taxonomy;
+                    } else {
+                        $via_type = $row->via_item_type;
+                    }
+
+                    break;
+
+                case 'post':
+                    if ($row->item_id) {
+                        $item_paths['post'][$row->item_id] = \PressShack\Ancestry::getPostPath($row->item_id);
+                    }
+                    // no break
+
+                default:
+                    if ($pp_groups->groupTypeExists($row->via_item_source)) {
+                        static $groups_by_id;
+
+                        if (!isset($groups_by_id)) {
+                            $groups_by_id = [];
+                        }
+
+                        if (!isset($groups_by_id[$row->via_item_source])) {
+                            $groups_by_id[$row->via_item_source] = [];
+
+                            foreach ($pp_groups->getGroups($row->via_item_source, ['skip_meta_types' => 'wp_role']) as $group) {
+                                $groups_by_id[$row->via_item_source][$group->ID] = $group->name;
+                            }
+                        }
+
+                        if (isset($groups_by_id[$row->via_item_source][$row->item_id])) {
+                            $item_paths[$row->via_item_source][$row->item_id] = $groups_by_id[$row->via_item_source][$row->item_id];
+                        }
+
+                        $via_type = $row->via_item_source;
+                    } else {
+                        $via_type = ($row->via_item_type) ? $row->via_item_type : $row->for_item_type;
+                    }
             }
 
-            public static function currentExceptionsUI($exc_results, $args = [])
-            {
-                $defaults = [
-                    'read_only' => false,
-                    'class' => 'pp-group-roles',
-                    'item_links' => false,
-                    'caption' => '',
-                    'show_groups_link' => false,
-                    'link' => '',
-                    'agent_type' => ''
-                ];
+            $_assign_for = trim($row->assign_for);
+            $exceptions[$row->via_item_source][$via_type][$row->for_item_type][$row->operation][$row->mod_type][$row->for_item_status][$row->item_id][$_assign_for] = $row->eitem_id;
 
-                $args = array_merge($defaults, $args);
-                foreach (array_keys($defaults) as $var) {
-                    $$var = $args[$var];
-                }
+            if (!empty($row->inherited_from)) {
+                $exceptions[$row->via_item_source][$via_type][$row->for_item_type][$row->operation][$row->mod_type][$row->for_item_status][$row->item_id]['inherited_from'] = $row->inherited_from;
+            }
+        }
 
-                if (!$exc_results)
-                    return;
+        echo '<div style="clear:both;"></div>'
+            . "<div id='pp_current_exceptions' class='pp-group-box " . esc_attr($class) . "'>"
+            . '<h3>';
 
-                $pp = presspermit();
-                $pp_admin = $pp->admin();
-                $pp_groups = $pp->groups();
+        if ($link) {
+            echo "<a href='" . esc_url($link) . "'>" . esc_html($caption) . "</a>";
+        } else {
+            esc_html_e($caption);
+        }
 
-                if (!$caption) {
-                    $caption = ('user' == $agent_type)
-                        ? sprintf(esc_html__('Specific Permissions %1$s(for user)%2$s', 'press-permit-core'), '', '')
-                        : esc_html__('Specific Permissions', 'press-permit-core');
-                }
-
-                require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Ancestry.php');
-
-                $exceptions = array_fill_keys(array_merge(['term', 'post'], $pp_groups->getGroupTypes()), []);
-
-                // support imported include exception with no items included
-                $item_paths = array_fill_keys(array_keys($exceptions), [esc_html__('(none)', 'press-permit-core')]);
-
-                $post_types = $pp->getEnabledPostTypes([], 'names');
-                $taxonomies = $pp->getEnabledTaxonomies(['object_type' => false], 'names');
-
-                // object_type not strictly necessary here, included for consistency with term role array
-                foreach ($exc_results as $row) {
-                    switch ($row->via_item_source) {
-                        case 'term':
-                            if ($row->item_id) {
-                                $taxonomy = '';
-                                $term_id = (int)PWP::ttidToTermid($row->item_id, $taxonomy);
-
-                                if ($row->item_id)
-                                    $item_paths['term'][$row->item_id] = \PressShack\Ancestry::getTermPath($term_id, $taxonomy);
-
-                                $via_type = $taxonomy;
-                            } else
-                                $via_type = $row->via_item_type;
-
-                            break;
-
-                        case 'post':
-                            if ($row->item_id)
-                                $item_paths['post'][$row->item_id] = \PressShack\Ancestry::getPostPath($row->item_id);
-                            // no break
-
-                        default:
-                            if ($pp_groups->groupTypeExists($row->via_item_source)) {
-                                static $groups_by_id;
-
-                                if (!isset($groups_by_id)) {
-                                    $groups_by_id = [];
-                                }
-
-                                if (!isset($groups_by_id[$row->via_item_source])) {
-                                    $groups_by_id[$row->via_item_source] = [];
-
-                                    foreach ($pp_groups->getGroups($row->via_item_source, ['skip_meta_types' => 'wp_role']) as $group) {
-                                        $groups_by_id[$row->via_item_source][$group->ID] = $group->name;
-                                    }
-                                }
-
-                                if (isset($groups_by_id[$row->via_item_source][$row->item_id])) {
-                                    $item_paths[$row->via_item_source][$row->item_id] = $groups_by_id[$row->via_item_source][$row->item_id];
-                                }
-
-                                $via_type = $row->via_item_source;
-                            } else
-                                $via_type = ($row->via_item_type) ? $row->via_item_type : $row->for_item_type;
-                    }
-
-                    $_assign_for = trim($row->assign_for);
-                    $exceptions[$row->via_item_source][$via_type][$row->for_item_type][$row->operation][$row->mod_type][$row->for_item_status][$row->item_id][$_assign_for] = $row->eitem_id;
-
-                    if (!empty($row->inherited_from)) {
-                        $exceptions[$row->via_item_source][$via_type][$row->for_item_type][$row->operation][$row->mod_type][$row->for_item_status][$row->item_id]['inherited_from'] = $row->inherited_from;
-                    }
-                }
-
-                echo '<div style="clear:both;"></div>'
-                    . "<div id='pp_current_exceptions' class='pp-group-box " . esc_attr($class) . "'>"
-                    . '<h3>';
-
-                if ($link) {
-                    echo "<a href='" . esc_url($link) . "'>" . esc_html($caption) . "</a>";
-                } else {
-                    esc_html_e($caption);
-                }
-
-                if ($show_groups_link) : ?>
+        if ($show_groups_link) : ?>
                 &nbsp;&bull;&nbsp;<small><a class='pp-show-groups' href='#'><?php _e('Show Groups', 'press-permit-core'); ?></a></small>
-                <?php endif;
+        <?php endif;
 
-                echo '</h3>';
+        echo '</h3>';
 
-                echo '<div>';
+        echo '<div>';
 
-                echo '<div id="pp_current_exceptions_inner">';
+        echo '<div id="pp_current_exceptions_inner">';
 
-                if (PWP::empty_REQUEST('all_types') && !empty($exceptions['post'])) {
-                    $all_types = array_fill_keys(array_merge($post_types, $taxonomies, ['']), true);
+        if (PWP::empty_REQUEST('all_types') && !empty($exceptions['post'])) {
+            $all_types = array_fill_keys(array_merge($post_types, $taxonomies, ['']), true);
 
-                    // hide topic, reply assignments even if they are somehow saved/imported without inherited_from value
-                    $all_types = array_diff_key($all_types, ['topic' => true, 'reply' => true]);
+            // hide topic, reply assignments even if they are somehow saved/imported without inherited_from value
+            $all_types = array_diff_key($all_types, ['topic' => true, 'reply' => true]);
 
-                    $exceptions['post'] = array_intersect_key($exceptions['post'], $all_types);
+            $exceptions['post'] = array_intersect_key($exceptions['post'], $all_types);
 
-                    foreach (array_keys($exceptions['post']) as $key) {
-                        $exceptions['post'][$key] = array_intersect_key($exceptions['post'][$key], $all_types);
+            foreach (array_keys($exceptions['post']) as $key) {
+                $exceptions['post'][$key] = array_intersect_key($exceptions['post'][$key], $all_types);
+            }
+        }
+
+        foreach (array_keys($exceptions) as $via_src) {
+            ksort($exceptions[$via_src]);
+
+            foreach (array_keys($exceptions[$via_src]) as $via_type) {
+                if ($via_type_obj = $pp->getTypeObject($via_src, $via_type)) {
+                    $via_type_caption = $via_type_obj->labels->singular_name;
+
+                    if ('wp_navigation' == $via_type) {    // @todo: use labels_pp property?
+                        if (in_array(get_locale(), ['en_EN', 'en_US'])) {
+                            $via_type_caption = __('Nav Menu (Block)', 'press-permit-core');
+                        } else {
+                            $via_type_caption .= ' (' . __('Block', 'press-permit-core') . ')';
+                        }
+                    } elseif ('nav_menu' == $via_type) {    // @todo: use labels_pp property?
+                        if (in_array(get_locale(), ['en_EN', 'en_US'])) {
+                            $via_type_caption = __('Nav Menu (Legacy)', 'press-permit-core');
+                        } else {
+                            $via_type_caption .= ' (' . __('Legacy', 'press-permit-core') . ')';
+                        }
                     }
+                } else {
+                    continue;
                 }
 
-                foreach (array_keys($exceptions) as $via_src) {
-                    ksort($exceptions[$via_src]);
+                $any_redundant = false;
 
-                    foreach (array_keys($exceptions[$via_src]) as $via_type) {
-                        if ($via_type_obj = $pp->getTypeObject($via_src, $via_type)) {
-                            $via_type_caption = $via_type_obj->labels->singular_name;
+                echo "<div id='pp_current_" . esc_attr($via_src) . "_" . esc_attr($via_type) . "_roles' class='pp-current-exceptions'>";
 
-                            if ('wp_navigation' == $via_type) {    // @todo: use labels_pp property?
-                                if (in_array(get_locale(), ['en_EN', 'en_US'])) {
-                                    $via_type_caption = __('Nav Menu (Block)', 'press-permit-core');
-                                } else {
-                                    $via_type_caption .= ' (' . __('Block', 'press-permit-core') . ')';
-                                }
-                            } elseif ('nav_menu' == $via_type) {    // @todo: use labels_pp property?
-                                if (in_array(get_locale(), ['en_EN', 'en_US'])) {
-                                    $via_type_caption = __('Nav Menu (Legacy)', 'press-permit-core');
-                                } else {
-                                    $via_type_caption .= ' (' . __('Legacy', 'press-permit-core') . ')';
-                                }
-                            }
-                        } else
+                ksort($exceptions[$via_src][$via_type]);
+
+                foreach (array_keys($exceptions[$via_src][$via_type]) as $for_type) {
+                    if ($pp_groups->groupTypeExists($for_type)) {
+                        $for_src = $for_type;
+                    } else {
+                        $for_src = (taxonomy_exists($for_type) || !$for_type) ? 'term' : 'post';
+                    }
+
+                    if (!$for_type) {
+                        $for_type_obj = (object)['labels' => (object)['singular_name' => esc_html__('(all post types)', 'press-permit-core')]];
+                        $for_type_obj->labels->name = $for_type_obj->labels->singular_name;
+                    } elseif (!$for_type_obj = $pp->getTypeObject($for_src, $for_type)) {
+                        continue;
+                    }
+
+                    foreach (array_keys($exceptions[$via_src][$via_type][$for_type]) as $operation) {
+                        if (!$operation_obj = $pp_admin->getOperationObject($operation, $for_type)) {
                             continue;
+                        }
 
-                        $any_redundant = false;
+                        $op_label = (!empty($operation_obj->abbrev)) ? $operation_obj->abbrev : $operation_obj->label;
 
-                        echo "<div id='pp_current_" . esc_attr($via_src) . "_" . esc_attr($via_type) . "_roles' class='pp-current-exceptions'>";
+                        if ('assign' == $operation) {
+                            $op_caption = ($for_type)
+                                ? sprintf(esc_html__('%1$s (%2$s: %3$s)', 'press-permit-core'), $op_label, $for_type_obj->labels->singular_name, $via_type_caption)
+                                : sprintf(esc_html__('%1$s %2$s %3$s', 'press-permit-core'), $op_label, $via_type_caption, $for_type_obj->labels->singular_name);
+                        } elseif (in_array($operation, ['manage', 'associate'], true)) {
+                            $op_caption = sprintf(esc_html__('%1$s - %2$s', 'press-permit-core'), $op_label, $via_type_caption);
+                        } elseif (!empty($for_type_obj->labels->name)) {
+                            $op_caption = sprintf(esc_html__('%1$s - %2$s', 'press-permit-core'), $op_label, $for_type_obj->labels->name);
+                        } else {
+                            $op_caption = sprintf(esc_html__('%1$s - %2$s', 'press-permit-core'), $op_label, $for_type_obj->label);
+                        }
 
-                        ksort($exceptions[$via_src][$via_type]);
+                        echo "<div class='type-roles-wrapper'>";
+                        echo '<h4>' . esc_html($op_caption) . '</h4>';
+                        echo "<div class='pp-current-type-roles'>";
 
-                        foreach (array_keys($exceptions[$via_src][$via_type]) as $for_type) {
-                            if ($pp_groups->groupTypeExists($for_type))
-                                $for_src = $for_type;
-                            else
-                                $for_src = (taxonomy_exists($for_type) || !$for_type) ? 'term' : 'post';
+                        echo '<div class="pp-current-roles-tbl-wrapper"><table>';
 
-                            if (!$for_type) {
-                                $for_type_obj = (object)['labels' => (object)['singular_name' => esc_html__('(all post types)', 'press-permit-core')]];
-                                $for_type_obj->labels->name = $for_type_obj->labels->singular_name;
-                            } elseif (!$for_type_obj = $pp->getTypeObject($for_src, $for_type)) {
+                        // fill table body (item assignments for each role)
+                        echo '<tbody>';
+
+                        foreach (array_keys($exceptions[$via_src][$via_type][$for_type][$operation]) as $mod_type) {
+                            if (!$mod_type_obj = self::getModificationObject($mod_type)) {
                                 continue;
                             }
 
-                            foreach (array_keys($exceptions[$via_src][$via_type][$for_type]) as $operation) {
-                                if (!$operation_obj = $pp_admin->getOperationObject($operation, $for_type))
-                                    continue;
+                            foreach (array_keys($exceptions[$via_src][$via_type][$for_type][$operation][$mod_type]) as $status) {
+                                if ($status) {
+                                    $_status = explode(':', $status);
+                                    if (count($_status) > 1) {
+                                        $attrib = $_status[0];
+                                        $_status = $_status[1];
+                                    } else {
+                                        $attrib = 'post_status';
+                                        $_status = $status;
+                                    }
 
-                                $op_label = (!empty($operation_obj->abbrev)) ? $operation_obj->abbrev : $operation_obj->label;
-
-                                if ('assign' == $operation) {
-                                    $op_caption = ($for_type)
-                                        ? sprintf(esc_html__('%1$s (%2$s: %3$s)', 'press-permit-core'), $op_label, $for_type_obj->labels->singular_name, $via_type_caption)
-                                        : sprintf(esc_html__('%1$s %2$s %3$s', 'press-permit-core'), $op_label, $via_type_caption, $for_type_obj->labels->singular_name);
-                                } elseif (in_array($operation, ['manage', 'associate'], true)) {
-                                    $op_caption = sprintf(esc_html__('%1$s - %2$s', 'press-permit-core'), $op_label, $via_type_caption);
-                                } elseif (!empty($for_type_obj->labels->name)) {
-                                    $op_caption = sprintf(esc_html__('%1$s - %2$s', 'press-permit-core'), $op_label, $for_type_obj->labels->name);
-                                } else {
-                                    $op_caption = sprintf(esc_html__('%1$s - %2$s', 'press-permit-core'), $op_label, $for_type_obj->label);
-                                }
-
-                                echo "<div class='type-roles-wrapper'>";
-                                echo '<h4>' . esc_html($op_caption) . '</h4>';
-                                echo "<div class='pp-current-type-roles'>";
-
-                                echo '<div class="pp-current-roles-tbl-wrapper"><table>';
-
-                                // fill table body (item assignments for each role)
-                                echo '<tbody>';
-
-                                foreach (array_keys($exceptions[$via_src][$via_type][$for_type][$operation]) as $mod_type) {
-                                    if (!$mod_type_obj = self::getModificationObject($mod_type))
-                                        continue;
-
-                                    foreach (array_keys($exceptions[$via_src][$via_type][$for_type][$operation][$mod_type]) as $status) {
-                                        if ($status) {
-                                            $_status = explode(':', $status);
-                                            if (count($_status) > 1) {
-                                                $attrib = $_status[0];
-                                                $_status = $_status[1];
-                                            } else {
-                                                $attrib = 'post_status';
-                                                $_status = $status;
-                                            }
-
-                                            if ('post_status' == $attrib) {
-                                                if ($status_obj = get_post_status_object($_status)) {
-                                                    $status_label = $status_obj->label;
-                                                } elseif ('{unpublished}' == $_status) {  // todo: API
-                                                    $status_label = esc_html__('unpublished', 'press-permit-core');
-                                                } else {
-                                                    $status_label = $status;
-                                                }
-                                            } else
-                                                $status_label = $status;
-
-                                            $mod_caption = sprintf(esc_html__('%1$s (%2$s)', 'press-permit-core'), $mod_type_obj->label, $status_label);
+                                    if ('post_status' == $attrib) {
+                                        if ($status_obj = get_post_status_object($_status)) {
+                                            $status_label = $status_obj->label;
+                                        } elseif ('{unpublished}' == $_status) {  // todo: API
+                                            $status_label = esc_html__('unpublished', 'press-permit-core');
                                         } else {
-                                            $mod_caption = $mod_type_obj->label;
+                                            $status_label = $status;
                                         }
+                                    } else {
+                                        $status_label = $status;
+                                    }
 
-                                        if (('exclude' == $mod_type) && !empty($exceptions[$via_src][$via_type][$for_type][$operation]['include'])) {
-                                            $tr_class = 'pp_faded';
-                                            $mod_caption = sprintf(esc_html__('* %s', 'press-permit-core'), $mod_caption);
-                                            $any_redundant = true;
-                                        } else
-                                            $tr_class = '';
-
-                                        echo "<tr class='" . esc_attr($tr_class) . "'><td class='pp_item_role_caption'>" . esc_html($mod_caption) . "</td>";
-                                        echo '<td>';
-
-                                        echo "<div class='pp-role-terms-wrapper pp-role-terms-" . esc_attr($via_type) . "'>";
-
-                                        if (('term' == $via_src) && !in_array($operation, ['manage', 'associate'], true)) {
-                                            if (taxonomy_exists($via_type)) {
-                                                // "Categories:"
-                                                $tx_obj = get_taxonomy($via_type);
-                                                $tx_caption = $tx_obj->labels->name;
-                                            } else
-                                                $tx_caption = '';
-
-                                            echo '<div class="pp-taxonomy-caption">' . esc_html(sprintf(__('%s:', 'press-permit-core'), $tx_caption)) . '</div>';
-                                        }
-
-                                        echo '<div class="pp-role-terms">';
-
-                                        $tx_item_paths = array_intersect_key($item_paths[$via_src], $exceptions[$via_src][$via_type][$for_type][$operation][$mod_type][$status]);
-
-                                        uasort($tx_item_paths, 'strnatcasecmp');  // sort by array values, but maintain keys );
-
-                                        foreach ($tx_item_paths as $item_id => $item_path) {
-                                            if (!$item_id && ('associate' == $operation)) {
-                                                $item_path = esc_html__('(no parent)', 'press-permit-core');
-                                            }
-
-                                            $assignment = $exceptions[$via_src][$via_type][$for_type][$operation][$mod_type][$status][$item_id];
-
-                                            $classes = [];
-
-                                            if (isset($assignment['children'])) {
-                                                if (isset($assignment['item'])) {
-                                                    $ass_id = $assignment['item'] . ',' . $assignment['children'];
-                                                    $classes[] = 'role_both';
-                                                    $any_both = true;
-                                                } else {
-                                                    $ass_id = '0,' . $assignment['children'];
-                                                    $classes[] = 'role_ch';
-                                                    $any_child_only = true;
-                                                }
-                                            } else {
-                                                $ass_id = $assignment['item'];
-                                            }
-
-                                            $class = ($classes) ? implode(' ', $classes) : '';
-
-                                            if ($read_only) {
-                                                if ($item_links) {
-                                                    $item_edit_url = '';
-                                                    echo "<div><a href='" . esc_url($item_edit_url) . "' class='" . esc_attr($class) . "'>" . esc_url($item_path) . "</a></div>";
-                                                } else
-                                                    echo "<div><span class='" . esc_attr($class) . "'>" . esc_html($item_path) . "</span></div>";
-                                            } else {
-                                                $cb_id = 'pp_edit_exception_' . str_replace(',', '_', $ass_id);
-
-                                                if (!empty($assignment['inherited_from'])) {
-                                                    $classes[] = 'inherited';
-                                                    $classes[] = "from_{$assignment['inherited_from']}";
-                                                }
-
-                                                if ($tr_class) // apply fading for redundantly stored exclusions
-                                                    $classes[] = $tr_class;
-
-                                                $lbl_class = ($classes) ? implode(' ', $classes) : '';
-
-                                                if ('term' == $via_src) {
-                                                    $term_id = PWP::ttidToTermid($item_id, $via_type);
-
-                                                    $edit_url = ('nav_menu' == $via_type)
-                                                        ? admin_url("nav-menus.php?action=edit&menu=172")
-                                                        : admin_url("term.php?taxonomy={$via_type}&tag_ID=$term_id&post_type=$for_type");
-                                                } else {
-                                                    $edit_url = admin_url("post.php?post=$item_id&action=edit");
-                                                }
-                                                echo "<div><label for='" . esc_attr($cb_id) . "' class='" . esc_attr($lbl_class) . "'><input id='" . esc_attr($cb_id) . "' type='checkbox' name='pp_edit_exception[]' value='" . esc_attr($ass_id) . "' class='" . esc_attr($class) . "' autocomplete='off'> " . esc_html($item_path) . '</label><a href="' . esc_url($edit_url) . '">' . esc_html__('edit') . '</a></div>';
-                                            }
-                                        } // end foreach item
-
-                                        if ((count($tx_item_paths) > 3) && !$read_only) {
-                                            $cb_id = "pp_check_all_{$via_src}_{$via_type}_{$for_type}_{$operation}_{$status}";
-
-                                            echo "<div><label for='" . esc_attr($cb_id) . "'><input type='checkbox' id='" . esc_attr($cb_id) . "' class='pp_check_all'> "
-                                                . esc_html__('(all)', 'press-permit-core')  . '</label></div>';
-                                        }
-
-                                        echo '</div></div>';   // pp-role-terms, pp-role-terms-wrapper
-
-                                        echo '</td></tr>';
-                                    } // end foreach status
-                                } // end foreach mod_type
-                                echo '</tbody>';
-
-                                echo '</table></div>';  // pp-current-roles-tbl-wrapper
-
-                                echo '<div class="pp-exception-bulk-edit" style="display:none">';
-
-                                echo "<select autocomplete='off'><option value='' autocomplete='off'>" . esc_html(PWP::__wp('Bulk Actions'))
-                                    . "</option><option value='remove'>" . esc_html__('Remove', 'press-permit-core') . '</option>';
-
-                                if (('post' == $via_src) && (!$via_type || $via_type_obj->hierarchical)) {
-                                    echo "<option value='propagate'>"
-                                        . esc_html(sprintf(__('Assign for selected and sub-%s', 'press-permit-core'), $via_type_obj->labels->name))
-                                        . '</option>';
-
-                                    echo "<option value='unpropagate'>"
-                                        . esc_html(sprintf(__('Assign for selected %s only', 'press-permit-core'), $via_type_obj->labels->singular_name))
-                                        . '</option>';
-
-                                    echo "<option value='children_only'>"
-                                        . esc_html(sprintf(__('Assign for sub-%s only', 'press-permit-core'), $via_type_obj->labels->name))
-                                        . '</option>';
-                                } elseif ('term' == $via_src && $via_type_obj->hierarchical) {
-                                    echo "<option value='propagate'>"
-                                        . esc_html__('Assign for selected and sub-terms', 'press-permit-core')
-                                        . '</option>';
-
-                                    echo "<option value='unpropagate'>"
-                                        . esc_html__('Assign for selected term only', 'press-permit-core')
-                                        . '</option>';
-
-                                    echo "<option value='children_only'>"
-                                        . esc_html__('Assign for sub-terms only', 'press-permit-core')
-                                        . '</option>';
-                                }
-
-                                if ('associate' == $operation) {
-                                    $_op = ('term' == $via_src) ? 'term_associate' : 'post_associate';
+                                    $mod_caption = sprintf(esc_html__('%1$s (%2$s)', 'press-permit-core'), $mod_type_obj->label, $status_label);
                                 } else {
-                                    $_op = $operation;
+                                    $mod_caption = $mod_type_obj->label;
                                 }
 
-                                $convert_caption = [
-                                    'additional' => __('Convert to "Enabled"', 'press-permit-core'),
-                                    'exclude' => __('Convert to "Blocked"', 'press-permit-core'),   // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
-                                    'include' => __('Convert to "Limit to"', 'press-permit-core'),
-                                ];
-
-                                if (in_array($via_src, ['post', 'term'])) {
-                                    switch ($_op) {
-                                        case 'read':
-                                        case 'edit':
-                                        case 'copy':
-                                        case 'revise':
-                                        case 'publish':
-                                        case 'post_associate':
-                                        case 'assign':
-                                            $mirror_ops = ['read', 'edit'];
-
-                                            if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
-                                                $mirror_ops[] = 'copy';
-                                            }
-
-                                            if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) {
-                                                $mirror_ops[] = 'revise';
-                                            }
-
-                                            if ($pp->getOption('publish_exceptions')) {
-                                                $mirror_ops[] = 'publish';
-                                            }
-
-                                            if ('term' == $via_src) {
-                                                $mirror_ops[] = 'assign';
-                                            }
-
-                                            if ($for_type_obj->hierarchical) {
-                                                $mirror_ops[] = 'associate';
-                                            }
-
-                                            break;
-
-                                        case 'manage':
-                                        case 'term_associate':
-                                            $mirror_ops = ['manage'];
-
-                                            if ($for_type_obj->hierarchical) {
-                                                $mirror_ops[] = 'associate';
-                                            }
-
-                                            break;
-
-                                        default:
-                                            $mirror_ops = apply_filters('presspermit_available_mirror_ops', [], $op, $for_type);
-                                    }
-
-                                    $mirror_ops = array_diff($mirror_ops, [$operation]);
-
-                                    foreach ($mirror_ops as $op) {
-                                        $op_obj = $pp_admin->getOperationObject($op);
-
-                                        $caption = (('assign' == $op) || !$for_type || ('term' == $for_type))
-                                            ? sprintf(
-                                                esc_html__('Mirror to %s', 'press-permit-core'),
-                                                $op_obj->label
-                                            )
-                                            : sprintf(
-                                                esc_html__('Mirror to %s %s', 'press-permit-core'),
-                                                $op_obj->label,
-                                                $for_type_obj->labels->singular_name
-                                            );
-
-                                        echo "<option value='mirror_" . esc_attr($op) . "'>"
-                                            . esc_html($caption)
-                                            . '</option>';
-                                    }
-
-                                    foreach (['additional', 'exclude', 'include'] as $_mod_type) {
-                                        echo "<option value='convert_" . esc_attr($_mod_type) . "'>"
-                                            . esc_html($convert_caption[$_mod_type])
-                                            . '</option>';
-                                    }
+                                if (('exclude' == $mod_type) && !empty($exceptions[$via_src][$via_type][$for_type][$operation]['include'])) {
+                                    $tr_class = 'pp_faded';
+                                    $mod_caption = sprintf(esc_html__('* %s', 'press-permit-core'), $mod_caption);
+                                    $any_redundant = true;
+                                } else {
+                                    $tr_class = '';
                                 }
 
-                                echo '</select>';
-                ?>
+                                echo "<tr class='" . esc_attr($tr_class) . "'><td class='pp_item_role_caption'>" . esc_html($mod_caption) . "</td>";
+                                echo '<td>';
+
+                                echo "<div class='pp-role-terms-wrapper pp-role-terms-" . esc_attr($via_type) . "'>";
+
+                                if (('term' == $via_src) && !in_array($operation, ['manage', 'associate'], true)) {
+                                    if (taxonomy_exists($via_type)) {
+                                        // "Categories:"
+                                        $tx_obj = get_taxonomy($via_type);
+                                        $tx_caption = $tx_obj->labels->name;
+                                    } else {
+                                        $tx_caption = '';
+                                    }
+
+                                    echo '<div class="pp-taxonomy-caption">' . esc_html(sprintf(__('%s:', 'press-permit-core'), $tx_caption)) . '</div>';
+                                }
+
+                                echo '<div class="pp-role-terms">';
+
+                                $tx_item_paths = array_intersect_key($item_paths[$via_src], $exceptions[$via_src][$via_type][$for_type][$operation][$mod_type][$status]);
+
+                                uasort($tx_item_paths, 'strnatcasecmp');  // sort by array values, but maintain keys );
+
+                                foreach ($tx_item_paths as $item_id => $item_path) {
+                                    if (!$item_id && ('associate' == $operation)) {
+                                        $item_path = esc_html__('(no parent)', 'press-permit-core');
+                                    }
+
+                                    $assignment = $exceptions[$via_src][$via_type][$for_type][$operation][$mod_type][$status][$item_id];
+
+                                    $classes = [];
+
+                                    if (isset($assignment['children'])) {
+                                        if (isset($assignment['item'])) {
+                                            $ass_id = $assignment['item'] . ',' . $assignment['children'];
+                                            $classes[] = 'role_both';
+                                            $any_both = true;
+                                        } else {
+                                            $ass_id = '0,' . $assignment['children'];
+                                            $classes[] = 'role_ch';
+                                            $any_child_only = true;
+                                        }
+                                    } else {
+                                        $ass_id = $assignment['item'];
+                                    }
+
+                                    $class = ($classes) ? implode(' ', $classes) : '';
+
+                                    if ($read_only) {
+                                        if ($item_links) {
+                                            $item_edit_url = '';
+                                            echo "<div><a href='" . esc_url($item_edit_url) . "' class='" . esc_attr($class) . "'>" . esc_url($item_path) . "</a></div>";
+                                        } else {
+                                            echo "<div><span class='" . esc_attr($class) . "'>" . esc_html($item_path) . "</span></div>";
+                                        }
+                                    } else {
+                                        $cb_id = 'pp_edit_exception_' . str_replace(',', '_', $ass_id);
+
+                                        if (!empty($assignment['inherited_from'])) {
+                                            $classes[] = 'inherited';
+                                            $classes[] = "from_{$assignment['inherited_from']}";
+                                        }
+
+                                        if ($tr_class) { // apply fading for redundantly stored exclusions
+                                            $classes[] = $tr_class;
+                                        }
+
+                                        $lbl_class = ($classes) ? implode(' ', $classes) : '';
+
+                                        if ('term' == $via_src) {
+                                            $term_id = PWP::ttidToTermid($item_id, $via_type);
+
+                                            $edit_url = ('nav_menu' == $via_type)
+                                                ? admin_url("nav-menus.php?action=edit&menu=172")
+                                                : admin_url("term.php?taxonomy={$via_type}&tag_ID=$term_id&post_type=$for_type");
+                                        } else {
+                                            $edit_url = admin_url("post.php?post=$item_id&action=edit");
+                                        }
+                                        echo "<div><label for='" . esc_attr($cb_id) . "' class='" . esc_attr($lbl_class) . "'><input id='" . esc_attr($cb_id) . "' type='checkbox' name='pp_edit_exception[]' value='" . esc_attr($ass_id) . "' class='" . esc_attr($class) . "' autocomplete='off'> " . esc_html($item_path) . '</label><a href="' . esc_url($edit_url) . '">' . esc_html__('edit') . '</a></div>';
+                                    }
+                                } // end foreach item
+
+                                if ((count($tx_item_paths) > 3) && !$read_only) {
+                                    $cb_id = "pp_check_all_{$via_src}_{$via_type}_{$for_type}_{$operation}_{$status}";
+
+                                    echo "<div><label for='" . esc_attr($cb_id) . "'><input type='checkbox' id='" . esc_attr($cb_id) . "' class='pp_check_all'> "
+                                        . esc_html__('(all)', 'press-permit-core')  . '</label></div>';
+                                }
+
+                                echo '</div></div>';   // pp-role-terms, pp-role-terms-wrapper
+
+                                echo '</td></tr>';
+                            } // end foreach status
+                        } // end foreach mod_type
+                        echo '</tbody>';
+
+                        echo '</table></div>';  // pp-current-roles-tbl-wrapper
+
+                        echo '<div class="pp-exception-bulk-edit" style="display:none">';
+
+                        echo "<select autocomplete='off'><option value='' autocomplete='off'>" . esc_html(PWP::__wp('Bulk Actions'))
+                            . "</option><option value='remove'>" . esc_html__('Remove', 'press-permit-core') . '</option>';
+
+                        if (('post' == $via_src) && (!$via_type || $via_type_obj->hierarchical)) {
+                            echo "<option value='propagate'>"
+                                . esc_html(sprintf(__('Assign for selected and sub-%s', 'press-permit-core'), $via_type_obj->labels->name))
+                                . '</option>';
+
+                            echo "<option value='unpropagate'>"
+                                . esc_html(sprintf(__('Assign for selected %s only', 'press-permit-core'), $via_type_obj->labels->singular_name))
+                                . '</option>';
+
+                            echo "<option value='children_only'>"
+                                . esc_html(sprintf(__('Assign for sub-%s only', 'press-permit-core'), $via_type_obj->labels->name))
+                                . '</option>';
+                        } elseif ('term' == $via_src && $via_type_obj->hierarchical) {
+                            echo "<option value='propagate'>"
+                                . esc_html__('Assign for selected and sub-terms', 'press-permit-core')
+                                . '</option>';
+
+                            echo "<option value='unpropagate'>"
+                                . esc_html__('Assign for selected term only', 'press-permit-core')
+                                . '</option>';
+
+                            echo "<option value='children_only'>"
+                                . esc_html__('Assign for sub-terms only', 'press-permit-core')
+                                . '</option>';
+                        }
+
+                        if ('associate' == $operation) {
+                            $_op = ('term' == $via_src) ? 'term_associate' : 'post_associate';
+                        } else {
+                            $_op = $operation;
+                        }
+
+                        $convert_caption = [
+                            'additional' => __('Convert to "Enabled"', 'press-permit-core'),
+                            'exclude' => __('Convert to "Blocked"', 'press-permit-core'),   // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
+                            'include' => __('Convert to "Limit to"', 'press-permit-core'),
+                        ];
+
+                        if (in_array($via_src, ['post', 'term'])) {
+                            switch ($_op) {
+                                case 'read':
+                                case 'edit':
+                                case 'copy':
+                                case 'revise':
+                                case 'publish':
+                                case 'post_associate':
+                                case 'assign':
+                                    $mirror_ops = ['read', 'edit'];
+
+                                    if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+                                        $mirror_ops[] = 'copy';
+                                    }
+
+                                    if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) {
+                                        $mirror_ops[] = 'revise';
+                                    }
+
+                                    if ($pp->getOption('publish_exceptions')) {
+                                        $mirror_ops[] = 'publish';
+                                    }
+
+                                    if ('term' == $via_src) {
+                                        $mirror_ops[] = 'assign';
+                                    }
+
+                                    if ($for_type_obj->hierarchical) {
+                                        $mirror_ops[] = 'associate';
+                                    }
+
+                                    break;
+
+                                case 'manage':
+                                case 'term_associate':
+                                    $mirror_ops = ['manage'];
+
+                                    if ($for_type_obj->hierarchical) {
+                                        $mirror_ops[] = 'associate';
+                                    }
+
+                                    break;
+
+                                default:
+                                    $mirror_ops = apply_filters('presspermit_available_mirror_ops', [], $op, $for_type);
+                            }
+
+                            $mirror_ops = array_diff($mirror_ops, [$operation]);
+
+                            foreach ($mirror_ops as $op) {
+                                $op_obj = $pp_admin->getOperationObject($op);
+
+                                $caption = (('assign' == $op) || !$for_type || ('term' == $for_type))
+                                    ? sprintf(
+                                        esc_html__('Mirror to %s', 'press-permit-core'),
+                                        $op_obj->label
+                                    )
+                                    : sprintf(
+                                        esc_html__('Mirror to %s %s', 'press-permit-core'),
+                                        $op_obj->label,
+                                        $for_type_obj->labels->singular_name
+                                    );
+
+                                echo "<option value='mirror_" . esc_attr($op) . "'>"
+                                    . esc_html($caption)
+                                    . '</option>';
+                            }
+
+                            foreach (['additional', 'exclude', 'include'] as $_mod_type) {
+                                echo "<option value='convert_" . esc_attr($_mod_type) . "'>"
+                                    . esc_html($convert_caption[$_mod_type])
+                                    . '</option>';
+                            }
+                        }
+
+                        echo '</select>';
+                        ?>
 
                             <input type="submit" name="" class="button submit-edit-item-exception" value="<?php esc_attr_e('Apply', 'press-permit-core'); ?>" />
-                            <?php
+                        <?php
                                 echo '<img class="waiting" style="display:none;" src="'
-                                    . esc_url(admin_url('images/wpspin_light.gif'))
-                                    . '" alt="" />';
+                            . esc_url(admin_url('images/wpspin_light.gif'))
+                            . '" alt="" />';
 
-                            ?>
+                        ?>
                             <div class="mirror-confirm" style="display:none"></div>
                         <?php
 
-                                echo '</div>';  // pp-exception-bulk-edit
+                        echo '</div>';  // pp-exception-bulk-edit
 
-                                echo '</div></div>';  // type-roles-wrapper, pp-current-type-roles
-                            } // end foreach operation
-                        } // end foreach for_type
+                        echo '</div></div>';  // type-roles-wrapper, pp-current-type-roles
+                    } // end foreach operation
+                } // end foreach for_type
 
-                        if ($any_redundant) {
-                            echo '<div class="pp-current-roles-note">'
-                                . esc_html__('* = Permissions redundant due to a corresponding &quot;only these&quot; entry', 'press-permit-core')
-                                . '</div>';
-                        }
+                if ($any_redundant) {
+                    echo '<div class="pp-current-roles-note">'
+                        . esc_html__('* = Permissions redundant due to a corresponding &quot;only these&quot; entry', 'press-permit-core')
+                        . '</div>';
+                }
 
-                        if (!empty($via_type_obj->hierarchical)) {
-                            $_caption = strtolower($via_type_obj->labels->name);
+                if (!empty($via_type_obj->hierarchical)) {
+                    $_caption = strtolower($via_type_obj->labels->name);
 
-                            if (!empty($any_both) || !empty($any_child_only)) : ?>
+                    if (!empty($any_both) || !empty($any_child_only)) : ?>
                             <div class="pp-current-roles-note">
 
                                 <?php
@@ -1203,175 +1226,173 @@ class AgentPermissionsUI
                                         . esc_html(sprintf(__('... = assigned for %1$s and sub-%1$s', 'press-permit-core'), $_caption))
                                         . '</span>';
                                 }
-                                if (!empty($any_child_only))
+                                if (!empty($any_child_only)) {
                                     echo '<span>' . esc_html(sprintf(__('* = assigned for sub-%s only', 'press-permit-core'), $_caption)) . '</span>';
+                                }
                                 ?>
                             </div>
-                    <?php
+                        <?php
+                    endif;
 
-                            endif;
+                    if (!empty($_SERVER['REQUEST_URI'])) {
+                        $show_all_url = add_query_arg('show_propagated', '1', esc_url_raw($_SERVER['REQUEST_URI']));
 
-                            if (!empty($_SERVER['REQUEST_URI'])) {
-                                $show_all_url = add_query_arg('show_propagated', '1', esc_url_raw($_SERVER['REQUEST_URI']));
-
-                                if ('term' == $via_src) {
-                                    if (PWP::empty_REQUEST('show_propagated')) {
-                                        echo '<div class="pp-current-roles-note">'
-                                            . sprintf(
-                                                esc_html__('Note: Permissions inherited from parent %1$s are not displayed. %2$sshow all%3$s', 'press-permit-core'),
-                                                esc_html($_caption),
-                                                "&nbsp;&nbsp;<a href='" . esc_url($show_all_url) . "'>",
-                                                '</a>'
-                                            )
-                                            . '</div>';
-                                    }
-                                } else {
-                                    echo '<div class="pp-current-roles-note">';
-
-                                    if (PWP::empty_REQUEST('show_propagated')) {
-                                        printf(
-                                            esc_html__('Note: Permissions inherited from parent %1$s or terms are not displayed. %2$sshow all%3$s', 'press-permit-core'),
-                                            esc_html($_caption),
-                                            "&nbsp;&nbsp;<a href='" . esc_url($show_all_url) . "'>",
-                                            '</a>'
-                                        );
-                                    } else {
-                                        echo '<br />';
-                                    }
-
-                                    if (defined('WP_DEBUG')) {
-                                        $fix_child_url = add_query_arg('pp_fix_child_exceptions', '1', esc_url_raw($_SERVER['REQUEST_URI']));
-
-                                        if (PWP::empty_REQUEST('show_propagated')) {
-                                            echo '&nbsp;&nbsp;&bull;';
-                                        }
-
-                                        printf(
-                                            esc_html__(' %1$sfix sub-%2$s permissions %3$s', 'press-permit-core'),
-                                            "&nbsp;&nbsp;<a href='" . esc_url($fix_child_url) . "'>",
-                                            esc_html(strtolower($via_type_obj->labels->name)),
-                                            '</a>'
-                                        );
-                                    }
-
-                                    echo '</div>';
-                                }
+                        if ('term' == $via_src) {
+                            if (PWP::empty_REQUEST('show_propagated')) {
+                                echo '<div class="pp-current-roles-note">'
+                                    . sprintf(
+                                        esc_html__('Note: Permissions inherited from parent %1$s are not displayed. %2$sshow all%3$s', 'press-permit-core'),
+                                        esc_html($_caption),
+                                        "&nbsp;&nbsp;<a href='" . esc_url($show_all_url) . "'>",
+                                        '</a>'
+                                    )
+                                    . '</div>';
                             }
+                        } else {
+                            echo '<div class="pp-current-roles-note">';
+
+                            if (PWP::empty_REQUEST('show_propagated')) {
+                                printf(
+                                    esc_html__('Note: Permissions inherited from parent %1$s or terms are not displayed. %2$sshow all%3$s', 'press-permit-core'),
+                                    esc_html($_caption),
+                                    "&nbsp;&nbsp;<a href='" . esc_url($show_all_url) . "'>",
+                                    '</a>'
+                                );
+                            } else {
+                                echo '<br />';
+                            }
+
+                            if (defined('WP_DEBUG')) {
+                                $fix_child_url = add_query_arg('pp_fix_child_exceptions', '1', esc_url_raw($_SERVER['REQUEST_URI']));
+
+                                if (PWP::empty_REQUEST('show_propagated')) {
+                                    echo '&nbsp;&nbsp;&bull;';
+                                }
+
+                                printf(
+                                    esc_html__(' %1$sfix sub-%2$s permissions %3$s', 'press-permit-core'),
+                                    "&nbsp;&nbsp;<a href='" . esc_url($fix_child_url) . "'>",
+                                    esc_html(strtolower($via_type_obj->labels->name)),
+                                    '</a>'
+                                );
+                            }
+
+                            echo '</div>';
                         }
-
-                        echo '</div>';  // pp-current-exceptions
-
-                    } // end foreach via_type
-
-                } // end foreach via_src
-
-                echo '</div>';  // pp_current_exceptions_inner
-
-                echo '</div>';  // no class
-
-                echo '</div>';  // pp_current_exceptions
-            }
-
-            // Called once each for members checklist, managers checklist in admin UI.
-            // In either case, current (checked) members are at the top of the list.
-            private static function userSelectionUI($group_id, $agent_type, $user_class = 'member', $all_users = '')
-            {
-                // This is only needed for checkbox selection
-                if (!$all_users) {
-                    $all_users = get_users(
-                        [
-                            'fields' => ['ID', 'user_login'],
-                            'orderby' => 'user_login'
-                        ]
-                    );
-
-                    foreach (array_keys($all_users) as $k) {
-                        $all_users[$k]->display_name = $all_users[$k]->user_login;
                     }
                 }
 
-                $current_users = ($group_id)
-                    ? presspermit()->groups()->getGroupMembers($group_id, $agent_type, 'all', ['member_type' => $user_class, 'status' => 'any'])
-                    : [];
+                echo '</div>';  // pp-current-exceptions
+            } // end foreach via_type
+        } // end foreach via_src
 
-                $args = [
-                    'suppress_extra_prefix' => true,
-                    'ajax_selection' => true,
-                    'agent_id' => $group_id,
-                ];
+        echo '</div>';  // pp_current_exceptions_inner
 
-                echo '<div>';
+        echo '</div>';  // no class
 
-                echo '<div class="pp-agent-select">';
+        echo '</div>';  // pp_current_exceptions
+    }
 
-                $agents = presspermit()->admin()->agents();
-                $agents->agentsUI('user', $all_users, $user_class, $current_users, $args);
-                echo '</div>';
+            // Called once each for members checklist, managers checklist in admin UI.
+            // In either case, current (checked) members are at the top of the list.
+    private static function userSelectionUI($group_id, $agent_type, $user_class = 'member', $all_users = '')
+    {
+        // This is only needed for checkbox selection
+        if (!$all_users) {
+            $all_users = get_users(
+                [
+                    'fields' => ['ID', 'user_login'],
+                    'orderby' => 'user_login'
+                ]
+            );
 
-                echo '</div>';
+            foreach (array_keys($all_users) as $k) {
+                $all_users[$k]->display_name = $all_users[$k]->user_login;
             }
+        }
 
-            public static function drawMemberChecklists($group_id, $agent_type, $args = [])
-            {
-                $defaults = ['member_types' => ['member'], 'suppress_caption' => false];
-                $args = array_merge($defaults, $args);
-                foreach (array_keys($defaults) as $var) {
-                    $$var = $args[$var];
-                }
+        $current_users = ($group_id)
+            ? presspermit()->groups()->getGroupMembers($group_id, $agent_type, 'all', ['member_type' => $user_class, 'status' => 'any'])
+            : [];
 
-                $captions['member'] = apply_filters('presspermit_group_members_caption', esc_html__('Group Members', 'press-permit-core'));
+        $args = [
+            'suppress_extra_prefix' => true,
+            'ajax_selection' => true,
+            'agent_id' => $group_id,
+        ];
 
-                echo '<div class="pp-group-box pp-group_members" style="display:none;">';
+        echo '<div>';
 
-                if (!$suppress_caption) {
-                    echo '<h3>';
+        echo '<div class="pp-agent-select">';
 
-                    // note: member_type other than 'member' is never invoked as of PP Core 2.1-beta
+        $agents = presspermit()->admin()->agents();
+        $agents->agentsUI('user', $all_users, $user_class, $current_users, $args);
+        echo '</div>';
 
-                    $i = 0;
-                    foreach ($member_types as $member_type) {
-                        $link_class = ($i) ? 'agp-unselected_agent' : 'agp-selected_agent';
+        echo '</div>';
+    }
 
-                    ?>
+    public static function drawMemberChecklists($group_id, $agent_type, $args = [])
+    {
+        $defaults = ['member_types' => ['member'], 'suppress_caption' => false];
+        $args = array_merge($defaults, $args);
+        foreach (array_keys($defaults) as $var) {
+            $$var = $args[$var];
+        }
+
+        $captions['member'] = apply_filters('presspermit_group_members_caption', esc_html__('Group Members', 'press-permit-core'));
+
+        echo '<div class="pp-group-box pp-group_members" style="display:none;">';
+
+        if (!$suppress_caption) {
+            echo '<h3>';
+
+            // note: member_type other than 'member' is never invoked as of PP Core 2.1-beta
+
+            $i = 0;
+            foreach ($member_types as $member_type) {
+                $link_class = ($i) ? 'agp-unselected_agent' : 'agp-selected_agent';
+
+                ?>
                     <span class="<?php echo esc_attr($link_class); ?> pp-member-type pp-$member_type">
                         <a href="#" class="<?php echo "pp-" . esc_attr($member_type); ?>"><?php echo esc_html($captions[$member_type]); ?></a>
                     </span>
                 <?php
 
-                        $i++;
-                        if ($i < count($member_types)) {
-                            echo '<span> | </span>';
-                        }
-                    }
-
-                    echo '</h3>';
+                $i++;
+                if ($i < count($member_types)) {
+                    echo '<span> | </span>';
                 }
-
-                $i = 0;
-                foreach ($member_types as $member_type) {
-                    $style = ($i) ? 'display:none' : '';
-                ?>
-                <div class="<?php echo "pp-member-type pp-" . esc_attr($member_type); ?>" style="<?php echo esc_attr($style); ?>">
-                    <?php
-                    self::userSelectionUI($group_id, $agent_type, $member_type);
-                    ?>
-                </div>
-            <?php
-                    $i++;
-                }
-
-                echo '</div>';
-
-                do_action('presspermit_group_members_ui', $group_id, $agent_type);
             }
 
-            private static function selectCloneUI($agent)
-            {
-                global $wp_roles;
-                esc_html_e('Copy Roles and Permissions from:', 'press-permit-core');
+            echo '</h3>';
+        }
 
-                $pp_only = (array) presspermit()->getOption('supplemental_role_defs');
+        $i = 0;
+        foreach ($member_types as $member_type) {
+            $style = ($i) ? 'display:none' : '';
             ?>
+                <div class="<?php echo "pp-member-type pp-" . esc_attr($member_type); ?>" style="<?php echo esc_attr($style); ?>">
+            <?php
+            self::userSelectionUI($group_id, $agent_type, $member_type);
+            ?>
+                </div>
+            <?php
+            $i++;
+        }
+
+        echo '</div>';
+
+        do_action('presspermit_group_members_ui', $group_id, $agent_type);
+    }
+
+    private static function selectCloneUI($agent)
+    {
+        global $wp_roles;
+        esc_html_e('Copy Roles and Permissions from:', 'press-permit-core');
+
+        $pp_only = (array) presspermit()->getOption('supplemental_role_defs');
+        ?>
             <select name="pp_select_role" autocomplete="off">
 
                 <?php
@@ -1394,16 +1415,16 @@ class AgentPermissionsUI
                 <input id="pp_clone_permissions" class="button button-primary pp-primary-button" type="submit" name="pp_clone_permissions" value="<?php esc_attr_e('Copy Roles and Permissions', 'press-permit-core'); ?>">
             </div>
         <?php
-            }
+    }
 
-            public static function fltTermSelectNoPaging($args, $taxonomies)
-            {
-                $args['number'] = 999;
-                return $args;
-            }
+    public static function fltTermSelectNoPaging($args, $taxonomies)
+    {
+        $args['number'] = 999;
+        return $args;
+    }
 
-            public static function actScriptHideTermSelectPaging()
-            {
+    public static function actScriptHideTermSelectPaging()
+    {
         ?>
             <script type="text/javascript">
                 /* <![CDATA[ */
@@ -1412,24 +1433,24 @@ class AgentPermissionsUI
                 });
                 /* ]]> */
             </script><?php
-                    }
+    }
 
-                    private static function getModificationObject($mod_type)
-                    {
-                        static $mod_types;
+    private static function getModificationObject($mod_type)
+    {
+        static $mod_types;
 
-                        if (!isset($mod_types)) {
-                            $mod_types = [
-                                'include' => (object)['label' => esc_html__('Limit to:', 'press-permit-core')],
+        if (!isset($mod_types)) {
+            $mod_types = [
+                'include' => (object)['label' => esc_html__('Limit to:', 'press-permit-core')],
 
-                                // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
-                                'exclude' => (object)['label' => esc_html__('Blocked:', 'press-permit-core')],
-                            ];
+                // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
+                'exclude' => (object)['label' => esc_html__('Blocked:', 'press-permit-core')],
+            ];
 
-                            if (!defined('PP_NO_ADDITIONAL_ACCESS')) {
-                                $mod_types['additional'] = (object)['label' => esc_html__('Enabled:', 'press-permit-core')];
-                            }
-                        }
-                        return (isset($mod_types[$mod_type])) ? $mod_types[$mod_type] : (object)[];
-                    }
-                }
+            if (!defined('PP_NO_ADDITIONAL_ACCESS')) {
+                $mod_types['additional'] = (object)['label' => esc_html__('Enabled:', 'press-permit-core')];
+            }
+        }
+        return (isset($mod_types[$mod_type])) ? $mod_types[$mod_type] : (object)[];
+    }
+}

@@ -1,12 +1,14 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class PostEdit
 {
     public static function defaultPrivacyWorkaround()
     {
-        if (PWP::empty_POST('publish') && PWP::is_POST('visibility') && PWP::is_POST('post_type') 
-        && presspermit()->getTypeOption('default_privacy', PWP::POST_key('post_type'))
+        if (
+            PWP::empty_POST('publish') && PWP::is_POST('visibility') && PWP::is_POST('post_type') 
+            && presspermit()->getTypeOption('default_privacy', PWP::POST_key('post_type'))
         ) {
             $stati = get_post_stati(['moderation' => true], 'names');
             if (!PWP::empty_POST('post_status') && in_array(PWP::POST_key('post_status'), $stati, true)) {
@@ -15,8 +17,9 @@ class PostEdit
 
             $stati = get_post_stati(['public' => true, 'private' => true], 'names', 'or');
 
-            if (!in_array(PWP::POST_key('visibility'), ['public', 'password'], true) 
-            && (!PWP::is_POST('hidden_post_status') || !in_array(PWP::POST_key('hidden_post_status'), $stati, true))
+            if (
+                !in_array(PWP::POST_key('visibility'), ['public', 'password'], true) 
+                && (!PWP::is_POST('hidden_post_status') || !in_array(PWP::POST_key('hidden_post_status'), $stati, true))
             ) {
                 $_POST['post_status'] = PWP::POST_key('hidden_post_status');
                 $_REQUEST['post_status'] = PWP::POST_key('hidden_post_status');
@@ -55,14 +58,17 @@ class PostEdit
     {
         global $current_user;
 
-        if (presspermit()->isUserUnfiltered($current_user->ID, compact('post_type')))
+        if (presspermit()->isUserUnfiltered($current_user->ID, compact('post_type'))) {
             return true;
+        }
 
-        if (!$post_type_obj = get_post_type_object($post_type))
+        if (!$post_type_obj = get_post_type_object($post_type)) {
             return true;
+        }
 
-        if (!$post_type_obj->hierarchical)
+        if (!$post_type_obj->hierarchical) {
             return true;
+        }
 
         $user = presspermit()->getUser();
 
@@ -70,31 +76,36 @@ class PostEdit
 
         // apply manually assigned associate exceptions even if lock_top_pages filtering is disabled
         $post_ids = $user->getExceptionPosts($required_operation, 'exclude', $post_type);
-        if (in_array(0, $post_ids))
+        if (in_array(0, $post_ids)) {
             return false;
+        }
 
         $post_ids = $user->getExceptionPosts($required_operation, 'include', $post_type);
-        if ($post_ids && !in_array(0, $post_ids))
+        if ($post_ids && !in_array(0, $post_ids)) {
             return false;
+        }
 
         $post_ids = $user->getExceptionPosts('edit', 'include', $post_type);
         if ($post_ids) {
             global $post;
 
-            if ($additional_post_ids = $user->getExceptionPosts('edit', 'additional', $post_type))
+            if ($additional_post_ids = $user->getExceptionPosts('edit', 'additional', $post_type)) {
                 $post_ids = array_merge($post_ids, $additional_post_ids);
+            }
 
             // cannot currently support propagation of parent exceptions to new top level pages, 
             // so don't offer (no parent) as a post parent selection if editing is limited to a subset of pages and this page is not in that subset
             $post_id = PWP::getPostID();
-            if (!$post_id || !in_array($post_id, $post_ids))
+            if (!$post_id || !in_array($post_id, $post_ids)) {
                 return false;
+            }
         }
 
         $top_pages_locked = presspermit()->getOption('lock_top_pages');
 
-        if ('no_parent_filter' == $top_pages_locked)
+        if ('no_parent_filter' == $top_pages_locked) {
             return true;
+        }
 
         if (('page' == $post_type) || !defined('PP_LOCK_OPTION_PAGES_ONLY')) {
             if ('1' === $top_pages_locked) {
@@ -107,7 +118,8 @@ class PostEdit
 
                 return current_user_can($reqd_caps);
             }
-        } else
+        } else {
             return true;
+        }
     }
 }

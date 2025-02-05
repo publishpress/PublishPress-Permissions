@@ -39,17 +39,21 @@ class AgentPermissions
         $metagroup_type = (!empty($agent->metagroup_type)) ? $agent->metagroup_type : '';
 
         if ('user' == $agent_type) {
-            if (!current_user_can('pp_administer_content') || !current_user_can('list_users'))
+            if (!current_user_can('pp_administer_content') || !current_user_can('list_users')) {
                 wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
+            }
 
-            if ($agent_id && empty($agent->ID))
+            if ($agent_id && empty($agent->ID)) {
                 wp_die(esc_html__('Invalid user ID.', 'press-permit-core'));
+            }
         } else {
-            if (!$pp_groups->userCan('pp_edit_groups', $agent_id, $agent_type))
+            if (!$pp_groups->userCan('pp_edit_groups', $agent_id, $agent_type)) {
                 wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
+            }
 
-            if (('wp_role' == $metagroup_type) && !current_user_can('pp_administer_content'))
+            if (('wp_role' == $metagroup_type) && !current_user_can('pp_administer_content')) {
                 wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
+            }
 
             if (!$agent) {
                 wp_die(esc_html__('Invalid group ID.', 'press-permit-core'));
@@ -136,24 +140,24 @@ class AgentPermissions
                 <?php PluginPage::icon(); ?>
                 <h1 class="wp-heading-inline"><?php
 
-                                                if ('user' == $agent_type) {
-                                                    ($agent_id) ? esc_html_e('Edit User Permissions', 'press-permit-core') : esc_html_e('Add User Permissions', 'press-permit-core');
-                                                } elseif ('wp_role' == $metagroup_type) {
-                                                    if (defined('PUBLISHPRESS_CAPS_VERSION')) {
-                                                        printf(
-                                                            esc_html__('Edit Permission Group (%sWordPress Role%s)', 'press-permit-core'),
-                                                            '<a href="' . esc_url(admin_url("admin.php?page=capsman&action=edit&role={$agent->metagroup_id}")) . '" title="' . esc_attr(esc_html__('Edit role capabilities directly', 'press-permit-core')) . '">',
-                                                            '</a>'
-                                                        );
-                                                    } else {
-                                                        esc_html_e('Edit Permission Group (WordPress Role)', 'press-permit-core');
-                                                    }
-                                                } elseif ('pp_group' == $agent_type) {
-                                                    esc_html_e('Edit Permission Group', 'press-permit-core');
-                                                } elseif ($group_type_obj = $pp_groups->getGroupTypeObject($agent_type)) {
-                                                    printf(esc_html__('Edit Permissions (%s)', 'press-permit-core'), esc_html($group_type_obj->labels->singular_name));
-                                                }
-                                                ?></h1>
+                if ('user' == $agent_type) {
+                    ($agent_id) ? esc_html_e('Edit User Permissions', 'press-permit-core') : esc_html_e('Add User Permissions', 'press-permit-core');
+                } elseif ('wp_role' == $metagroup_type) {
+                    if (defined('PUBLISHPRESS_CAPS_VERSION')) {
+                        printf(
+                            esc_html__('Edit Permission Group (%sWordPress Role%s)', 'press-permit-core'),
+                            '<a href="' . esc_url(admin_url("admin.php?page=capsman&action=edit&role={$agent->metagroup_id}")) . '" title="' . esc_attr(esc_html__('Edit role capabilities directly', 'press-permit-core')) . '">',
+                            '</a>'
+                        );
+                    } else {
+                        esc_html_e('Edit Permission Group (WordPress Role)', 'press-permit-core');
+                    }
+                } elseif ('pp_group' == $agent_type) {
+                    esc_html_e('Edit Permission Group', 'press-permit-core');
+                } elseif ($group_type_obj = $pp_groups->getGroupTypeObject($agent_type)) {
+                    printf(esc_html__('Edit Permissions (%s)', 'press-permit-core'), esc_html($group_type_obj->labels->singular_name));
+                }
+                ?></h1>
 
                 <?php
                 $gvar = ($group_variant) ? $group_variant : 'pp_group';
@@ -163,7 +167,7 @@ class AgentPermissions
                     if ($agent_type) {
                         $_url = add_query_arg(['agent_type' => $agent_type], $_url);
                     }
-                ?>
+                    ?>
                     <a href="<?php echo esc_url($_url); ?>" class="page-title-action"><?php esc_html_e('Add New', 'press-permit-core'); ?></a>
                 <?php endif; ?>
 
@@ -220,22 +224,22 @@ class AgentPermissions
                                         $user = new \WP_User($agent_id);
                                         $primary_role = reset($user->roles);
                                         if (isset($wp_roles->role_names[$primary_role])) :
-                                    ?>
+                                            ?>
                                             <tr>
                                                 <th><label>
                                                         <!-- <label for="user_login"> --><?php echo esc_html__('Primary Role:', 'press-permit-core'); ?></label>
                                                 </th>
                                                 <td><?php
-                                                    if ($role_group_id = $pp_groups->getMetagroup('wp_role', $primary_role, ['cols' => 'id'])) {
-                                                        echo "<a href='" . esc_url('admin.php?page=presspermit-edit-permissions&action=edit&agent_type=pp_group&agent_id="' . (int) $role_group_id) . "'>"
-                                                            . esc_html($wp_roles->role_names[$primary_role]) . '</a>';
-                                                    } else {
-                                                        echo esc_html($wp_roles->role_names[$primary_role]);
-                                                    }
-                                                    ?>
+                                                if ($role_group_id = $pp_groups->getMetagroup('wp_role', $primary_role, ['cols' => 'id'])) {
+                                                    echo "<a href='" . esc_url('admin.php?page=presspermit-edit-permissions&action=edit&agent_type=pp_group&agent_id="' . (int) $role_group_id) . "'>"
+                                                        . esc_html($wp_roles->role_names[$primary_role]) . '</a>';
+                                                } else {
+                                                    echo esc_html($wp_roles->role_names[$primary_role]);
+                                                }
+                                                ?>
                                                 </td>
                                             </tr>
-                                        <?php
+                                            <?php
                                         endif;
                                         ?>
                                     <?php elseif ($agent_id) : ?>
@@ -257,9 +261,9 @@ class AgentPermissions
                                     $pp_groups->groupTypeEditable($agent_type) && (empty($agent->metagroup_type) || !in_array($agent->metagroup_type, ['wp_role', 'meta_role'], true)
                                         || apply_filters('presspermit_metagroup_editable', false, $agent->metagroup_type, $agent_id))
                                 ) {
-                                ?>
+                                    ?>
                                     <input type="submit" name="submit" id="submit" class="button button-primary pp-primary-button" value="<?php esc_attr_e('Update Group', 'press-permit-core') ?>">
-                                <?php
+                                    <?php
                                 }
                                 ?>
                             </td>
@@ -278,11 +282,13 @@ class AgentPermissions
                         ) {
                             $member_types = [];
 
-                            if ($pp_groups->userCan('pp_manage_members', $agent_id, $agent_type))
+                            if ($pp_groups->userCan('pp_manage_members', $agent_id, $agent_type)) {
                                 $member_types[] = 'member';
+                            }
 
-                            if ($member_types)
+                            if ($member_types) {
                                 AgentPermissionsUI::drawMemberChecklists($agent_id, $agent_type, compact('member_types'));
+                            }
                         }
                     } elseif ('user' == $agent_type) {
                         echo '<br />';
@@ -370,7 +376,7 @@ class AgentPermissions
 
                             AgentPermissionsUI::currentExceptionsUI($exceptions, ['read_only' => true, 'class' => 'pp-group-roles', 'caption' => $role_group_caption, 'show_groups_link' => true]);
                         } else {
-                        ?>
+                            ?>
                             <h4>
                                 <?php
                                 $url = "users.php";
@@ -382,7 +388,7 @@ class AgentPermissions
                                 <li><?php printf(esc_html__('%1$sUsers who have Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_exceptions=1") . "'>", '</a>'); ?></li>
                                 <li><?php printf(esc_html__('%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_perms=1") . "'>", '</a>'); ?></li>
                             </ul>
-                        <?php
+                            <?php
                         }
                         ?>
                     </div>
@@ -415,6 +421,6 @@ class AgentPermissions
             presspermit()->admin()->publishpressFooter();
             ?>
         </div>
-<?php
+        <?php
     }
 }

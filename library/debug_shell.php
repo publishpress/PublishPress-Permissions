@@ -1,5 +1,9 @@
-<?php // avoid bombing out if the actual debug file is not loaded
-if (!defined('ABSPATH')) exit; // Exit if accessed directly
+<?php 
+
+// avoid bombing out if the actual debug file is not loaded
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly
+}
 
 function presspermit_editing_plugin()
 {
@@ -30,7 +34,7 @@ if (!function_exists('pp_log_mem_usage')) {
 }
 
 if (!function_exists('pp_dump')) {
-    function pp_dump(&$var, $info = FALSE, $display_objects = true)
+    function pp_dump(&$var, $info = false, $display_objects = true)
     {
     }
 }

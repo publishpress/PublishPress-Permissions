@@ -10,7 +10,7 @@ class Database
         if (defined('PRESSPERMIT_CLASSPATH')) {
             require_once(PRESSPERMIT_CLASSPATH . '/DB/DatabaseSetup.php');
             return \PublishPress\Permissions\DB\DatabaseSetup::dbDelta($tabledefs, $execute);
-                        } else {
+        } else {
             return [];
         }
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class Capabilities
@@ -7,7 +8,8 @@ class Capabilities
     private $processed_taxonomies = [];
     private static $instance = null;
 
-    public static function instance() {
+    public static function instance()
+    {
         if (is_null(self::$instance)) {
             self::$instance = new Capabilities();
         }
@@ -42,8 +44,9 @@ class Capabilities
 
         // Work around bug in More Taxonomies (and possibly other plugins) where category taxonomy is overriden without setting it public
         foreach (['category', 'post_tag'] as $taxonomy) {
-            if (isset($wp_taxonomies[$taxonomy]))
+            if (isset($wp_taxonomies[$taxonomy])) {
                 $wp_taxonomies[$taxonomy]->public = true;
+            }
         }
 
         $use_taxonomies = array_diff($this->getAssistedTaxonomies(), $this->processed_taxonomies);
@@ -98,8 +101,10 @@ class Capabilities
 
             $tx_caps = (array)$wp_taxonomies[$taxonomy]->cap;
 
-            if ((!in_array($taxonomy, $use_taxonomies, true) || empty($wp_taxonomies[$taxonomy]->public))
-                && ('nav_menu' != $taxonomy)) {
+            if (
+                (!in_array($taxonomy, $use_taxonomies, true) || empty($wp_taxonomies[$taxonomy]->public))
+                && ('nav_menu' != $taxonomy)
+            ) {
                 continue;
             }
 
@@ -132,11 +137,11 @@ class Capabilities
                     // If this capability is also defined as another taxonomy cap, replace it
                     // note: greater than check is on array value, not count
                     if (!empty($tx_caps[$cap_property]) && ($this->all_taxonomy_caps[$tx_caps[$cap_property]] > 1)) {
-
                         // ... but leave it alone if it is a standard taxonomy-specific cap for this taxonomy
-                        if (($tx_caps[$cap_property] != str_replace('_terms', "_{$plural_type}", $cap_property))
-                            && ($tx_caps[$cap_property] != str_replace('_terms', "_{$taxonomy}s", $cap_property))) {
-
+                        if (
+                            ($tx_caps[$cap_property] != str_replace('_terms', "_{$plural_type}", $cap_property))
+                            && ($tx_caps[$cap_property] != str_replace('_terms', "_{$taxonomy}s", $cap_property))
+                        ) {
                             $wp_taxonomies[$taxonomy]->cap->$cap_property = str_replace('_terms', "_{$plural_type}", $replacement_cap_format);
                         }
                     }
@@ -202,7 +207,8 @@ class Capabilities
     }
 
     function getAssistedTaxonomies()
-    {     // apply CME filter only if CME is active
+    {
+     // apply CME filter only if CME is active
         $tx_args = ['public' => true];
 
         return (defined('CAPSMAN_VERSION'))

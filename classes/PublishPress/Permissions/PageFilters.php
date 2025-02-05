@@ -37,8 +37,9 @@ class PageFilters
 
         // depth is not really a get_pages arg, but remap exclude arg to exclude_tree if wp_list_terms called with depth=1
         if (!empty($args['exclude']) && empty($args['exclude_tree']) && !empty($args['depth']) && (1 == $args['depth'])) {
-            if ((is_array($args['exclude']) && count($args['exclude']) > 1) 
-            || (!is_array($args['exclude']) && (0 !== strpos($args['exclude'], ',')))
+            if (
+                (is_array($args['exclude']) && count($args['exclude']) > 1) 
+                || (!is_array($args['exclude']) && (0 !== strpos($args['exclude'], ',')))
             ) {
                 // work around wp_list_pages() bug of attaching leading comma if a plugin uses wp_list_pages_excludes filter
                 $args['exclude_tree'] = $args['exclude'];
@@ -89,11 +90,14 @@ class PageFilters
             }
         }
 
-        if (!in_array($post_type, $enabled_post_types, true))
+        if (!in_array($post_type, $enabled_post_types, true)) {
             return $results;
+        }
 
-        if (!empty($args['name']) && ('parent_id' == $args['name']) 
-        && !presspermit()->moduleActive('collaboration')) {
+        if (
+            !empty($args['name']) && ('parent_id' == $args['name']) 
+            && !presspermit()->moduleActive('collaboration')
+        ) {
             return $results;
         }
 
@@ -129,13 +133,13 @@ class PageFilters
             return $results;
         }
 
-        foreach(['include', 'exclude', 'exclude_parent', 'exclude_tree', 'authors'] as $var) {
+        foreach (['include', 'exclude', 'exclude_parent', 'exclude_tree', 'authors'] as $var) {
             // PressPermit: need to maintain explicitly set array value of zero ("Only these: (none))", but ignore scalar zero passed by third party code
-			if (('include' == $var) && is_scalar($r['include']) && empty($r['include'])) {
-				$r['include'] = [];
-			} else {
-            	$r[$var] = wp_parse_id_list($r[$var]);
-        	}
+            if (('include' == $var) && is_scalar($r['include']) && empty($r['include'])) {
+                $r['include'] = [];
+            } else {
+                $r[$var] = wp_parse_id_list($r[$var]);
+            }
         }
 
         if ($_filtered_vars = apply_filters('presspermit_get_pages_args', $r)) {  // PPCE filter modifies append_page, exclude_tree, sort_column
@@ -151,7 +155,7 @@ class PageFilters
             return $results;
         }
 
-		// =========== PressPermit: workaround for Page List plugin
+        // =========== PressPermit: workaround for Page List plugin
         if (defined('PAGE_LIST_PLUGIN_VERSION') && !empty($args['item_spacing']) && did_action('get_template_part') && !did_action('get_footer')) {
             return $results;
         }
@@ -225,14 +229,15 @@ class PageFilters
             $incpages = wp_parse_id_list($include);
             if (!empty($incpages)) {
                 if (defined('PRESSPERMIT_GET_PAGES_DISABLE_IN_CLAUSE') && PRESSPERMIT_GET_PAGES_DISABLE_IN_CLAUSE) {
-	                foreach ($incpages as $incpage) {  // todo: change to IN clause after confirming no issues with PP query parsing
-	                    if ($incpage) {
-	                        if (empty($inclusions))
-	                            $inclusions = ' AND ( ID = ' . intval($incpage) . ' ';
-	                        else
-	                            $inclusions .= ' OR ID = ' . intval($incpage) . ' ';
-	                    }
-	                }
+                    foreach ($incpages as $incpage) {  // todo: change to IN clause after confirming no issues with PP query parsing
+                        if ($incpage) {
+                            if (empty($inclusions)) {
+                                $inclusions = ' AND ( ID = ' . intval($incpage) . ' ';
+                            } else {
+                                $inclusions .= ' OR ID = ' . intval($incpage) . ' ';
+                            }
+                        }
+                    }
 
                     if (!empty($inclusions)) {
                         $inclusions .= ')';
@@ -240,8 +245,8 @@ class PageFilters
                 } else {
                     $incpages = array_map('intval', $incpages);
                     $inclusions = ' AND ID IN (' . implode(",", $incpages) . ')';
-            	}
-        	}
+                }
+            }
         }
 
         $exclusions = '';
@@ -249,12 +254,13 @@ class PageFilters
             $expages = wp_parse_id_list($exclude);
             if (!empty($expages)) {
                 if (defined('PRESSPERMIT_GET_PAGES_DISABLE_IN_CLAUSE') && PRESSPERMIT_GET_PAGES_DISABLE_IN_CLAUSE) {
-	                foreach ($expages as $expage) { // todo: change to IN clause after confirming no issues with PP query parsing
-	                    if (empty($exclusions))
-	                        $exclusions = ' AND ( ID <> ' . intval($expage) . ' ';
-	                    else
-	                        $exclusions .= ' AND ID <> ' . intval($expage) . ' ';
-	                }
+                    foreach ($expages as $expage) { // todo: change to IN clause after confirming no issues with PP query parsing
+                        if (empty($exclusions)) {
+                            $exclusions = ' AND ( ID <> ' . intval($expage) . ' ';
+                        } else {
+                            $exclusions .= ' AND ID <> ' . intval($expage) . ' ';
+                        }
+                    }
 
                     if (!empty($exclusions)) {
                         $exclusions .= ')';
@@ -262,8 +268,8 @@ class PageFilters
                 } else {
                     $expages = array_map('intval', $expages);
                     $exclusions = ' AND ID NOT IN (' . implode(",", $expages) . ')';
-            	}
-        	}
+                }
+            }
         }
 
         $author_query = '';
@@ -352,8 +358,9 @@ class PageFilters
         foreach (explode(',', $sort_column) as $orderby) {
             $orderby = trim($orderby);
             
-            if (!in_array($orderby, $allowed_keys, true))
+            if (!in_array($orderby, $allowed_keys, true)) {
                 continue;
+            }
 
             switch ($orderby) {
                 case 'menu_order':
@@ -368,10 +375,11 @@ class PageFilters
                     $orderby = "$wpdb->posts.comment_count";
                     break;
                 default:
-                    if (0 === strpos($orderby, 'post_'))
+                    if (0 === strpos($orderby, 'post_')) {
                         $orderby = "$wpdb->posts." . $orderby;
-                    else
+                    } else {
                         $orderby = "$wpdb->posts.post_" . $orderby;
+                    }
             }
 
             $orderby_array[] = $orderby;
@@ -393,10 +401,11 @@ class PageFilters
 
         $is_front = PWP::isFront();
 
-        if ($is_front && !empty($current_user->ID))
+        if ($is_front && !empty($current_user->ID)) {
             $frontend_list_private = !defined('PP_SUPPRESS_PRIVATE_PAGES'); // currently using Page option for all hierarchical types
-        else
+        } else {
             $frontend_list_private = false;
+        }
 
         $force_publish_status = !$frontend_list_private && ('publish' == $post_status);
 
@@ -411,15 +420,13 @@ class PageFilters
         }
 
         // WP core does not include private pages in query.  Include private statuses in anticipation of user-specific filtering
-        if (is_array($post_status))
+        if (is_array($post_status)) {
             $where_status = "AND post_status IN ('" . implode("','", array_map('sanitize_key', $post_status)) . "')";
-
-        elseif ($post_status && (('publish' != $post_status) || ($is_front && !$frontend_list_private)))
+        } elseif ($post_status && (('publish' != $post_status) || ($is_front && !$frontend_list_private))) {
             $where_status = $wpdb->prepare("AND post_status = %s", $post_status);
-
-        elseif ($is_front)
+        } elseif ($is_front) {
             $where_status = "AND post_status IN ('" . implode("','", array_map('sanitize_key', $safeguard_statuses)) . "')";
-        else {
+        } else {
             // todo: Revisionary 2.0 : query replacement workaround due to previous clause here: AND post_status NOT IN [internal=true]
             $where_status = "AND post_status IN ('" . implode("','", array_map('sanitize_key', get_post_stati(['internal' => false]))) . "')";
         }
@@ -428,8 +435,9 @@ class PageFilters
 
         if (is_admin() && in_array($pagenow, ['post.php', 'post-new.php'])) {
             global $post;
-            if ($post)
+            if ($post) {
                 $where_id = "AND ID != $post->ID";
+            }
         }
 
         $where = "AND $where_post_type AND ( 1=1 $where_status $where $author_query $where_id )";
@@ -459,7 +467,8 @@ class PageFilters
 
             $groupby = $distinct = '';
 
-            if ((in_array($pagenow, ['post.php', 'post-new.php']) || (defined('REST_REQUEST') && REST_REQUEST))
+            if (
+                (in_array($pagenow, ['post.php', 'post-new.php']) || (defined('REST_REQUEST') && REST_REQUEST))
             ) {
                 $clauses = apply_filters(
                     'presspermit_get_pages_clauses',
@@ -471,10 +480,11 @@ class PageFilters
                 // Pass query through the request filter
                 $_args['post_types'] = $post_type;
 
-                if ($required_operation)
+                if ($required_operation) {
                     $_args['required_operation'] = $required_operation;
-                else
+                } else {
                     $_args['required_operation'] = (PWP::isFront() && !presspermit_is_preview()) ? 'read' : 'edit';
+                }
 
                 if (('associate' == $_args['required_operation']) && presspermit()->getOption('page_parent_editable_only')) {
                     $_args['required_operation'] = 'edit';
@@ -482,8 +492,9 @@ class PageFilters
 
                 $rest_params = (defined('REST_REQUEST') && REST_REQUEST) ? \PublishPress\Permissions\REST::instance()->params : [];
 
-                if (((('edit' == $_args['required_operation']) && (isset($args['post_parent']) || !empty($rest_params['exclude']) || !empty($rest_params['parent_exclude']))))
-                || ('associate' == $alternate_operation)
+                if (
+                    ((('edit' == $_args['required_operation']) && (isset($args['post_parent']) || !empty($rest_params['exclude']) || !empty($rest_params['parent_exclude']))))
+                    || ('associate' == $alternate_operation)
                 ) {  // workaround for CMS Page View
                     if (!presspermit()->getOption('page_parent_editable_only')) {
                         $_args['alternate_required_ops'] = ['associate'];
@@ -592,8 +603,9 @@ class PageFilters
                 }
             }
 
-            if (empty($found))
+            if (empty($found)) {
                 $pages[] = $append_page;
+            }
         }
 
         // re-index the array, just in case anyone cares

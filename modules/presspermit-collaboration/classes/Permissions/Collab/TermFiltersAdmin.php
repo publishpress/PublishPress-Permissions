@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class TermFiltersAdmin
@@ -19,12 +20,14 @@ class TermFiltersAdmin
             if ($edit_tt_ids = $user->getExceptionTerms('edit', $mod_type, '', $taxonomy)) {
                 if ('include' == $mod_type) {
                     if ($universal[$mod_type]) {
-                        if ($edit_assign_intersect = array_intersect($universal[$mod_type], $edit_tt_ids))
+                        if ($edit_assign_intersect = array_intersect($universal[$mod_type], $edit_tt_ids)) {
                             $universal[$mod_type] = $edit_assign_intersect;
-                        else
+                        } else {
                             $universal[$mod_type] = [-1];  // include exceptions are set for both edit and assign, and there is no overlap
-                    } else
+                        }
+                    } else {
                         $universal[$mod_type] = $edit_tt_ids;
+                    }
                 } else {
                     $universal[$mod_type] = array_merge($universal[$mod_type], $edit_tt_ids);
                 }
@@ -43,12 +46,14 @@ class TermFiltersAdmin
             if ($edit_tt_ids = $user->getExceptionTerms('edit', $mod_type, $post_type, $taxonomy)) {
                 if ('include' == $mod_type) {
                     if ($tt_ids) {
-                        if ($edit_assign_intersect = array_intersect($tt_ids, $edit_tt_ids))
+                        if ($edit_assign_intersect = array_intersect($tt_ids, $edit_tt_ids)) {
                             $tt_ids = $edit_assign_intersect;
-                        else
+                        } else {
                             $tt_ids = [-1];  // include exceptions are set for both edit and assign, and there is no overlap.  Note: universal+type_specific include exceptions are additive, but edit*assign include exceptions are an intersection
-                    } else
+                        }
+                    } else {
                         $tt_ids = $edit_tt_ids;
+                    }
                 } else {
                     $tt_ids = array_merge($tt_ids, $edit_tt_ids);
                 }
@@ -59,8 +64,9 @@ class TermFiltersAdmin
             if (!empty($args['additional_tt_ids'])) {
                 if ($tx_obj = get_taxonomy($taxonomy)) {
                     // if a user lacking sitewide manage cap has additions, only those terms are manageable
-                    if (empty($user->allcaps[$tx_obj->cap->manage_terms]))
+                    if (empty($user->allcaps[$tx_obj->cap->manage_terms])) {
                         $tt_ids = array_merge($tt_ids, $args['additional_tt_ids']);
+                    }
                 }
             }
         }

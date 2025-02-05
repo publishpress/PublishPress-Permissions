@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\Revisionary;
 
 class PostFilters
@@ -17,7 +18,8 @@ class PostFilters
         add_filter('presspermit_base_cap_replacements', [$this, 'fltBaseCapReplacements'], 10, 3);
     }
 
-    public function fltHaveSiteCaps($have_site_caps, $post_type, $args) {
+    public function fltHaveSiteCaps($have_site_caps, $post_type, $args)
+    {
         global $current_user;
 
         if (!empty($args['has_cap_check']) && ('edit_post' == $args['has_cap_check']) && !presspermit_is_preview()) {
@@ -35,7 +37,7 @@ class PostFilters
                 }
                 
                 if (empty($current_user->all_caps['edit_others_revisions'])) {
-                    foreach( ['pending-revision', 'future-revisions'] as $status) {
+                    foreach (['pending-revision', 'future-revisions'] as $status) {
                         $have_site_caps['owner'][] = $status;
                         
                         if (!empty($have_site_caps['user']) && in_array($status, $have_site_caps['user'])) {
@@ -49,7 +51,8 @@ class PostFilters
         return $have_site_caps;
     }
 
-    function fltBaseCapReplacements($replace_caps, $reqd_caps, $post_type) {
+    function fltBaseCapReplacements($replace_caps, $reqd_caps, $post_type)
+    {
         if ($type_obj = get_post_type_object($post_type)) {
             if (!empty($type_obj->cap->edit_posts)) {
                 $replace_caps['list_others_revisions'] = $type_obj->cap->edit_posts;
@@ -59,7 +62,8 @@ class PostFilters
         return $replace_caps;
     }
 
-    function fltRequireEditOthersDrafts($require, $post_type, $post_status, $args) {
+    function fltRequireEditOthersDrafts($require, $post_type, $post_status, $args)
+    {
         $status_obj = get_post_status_object($post_status);
 
         if ($status_obj && !empty($status_obj->capability_status)) { // Custom statuses with non-default capability mapping won't be available to Revisors by default
@@ -76,7 +80,7 @@ class PostFilters
         if ($wp_query->is_preview && defined('REVISIONARY_VERSION')) {
             if (!empty($wp_query->query['p'])) {
                 $post_id = (int) $wp_query->query['p'];
-            } elseif(!empty($wp_query->query['page_id'])) {
+            } elseif (!empty($wp_query->query['page_id'])) {
                 $post_id = (int) $wp_query->query['page_id'];
             } else {
                 return $object_types;
@@ -110,20 +114,20 @@ class PostFilters
     function fltPostsWhere($where, $args)
     {
         // for past revisions
-        if (defined('REVISIONARY_VERSION') && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
-        && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))) {
+        if (
+            defined('REVISIONARY_VERSION') && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+            && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
+        ) {
             $matches = [];
             if (preg_match("/post_type = '([0-9a-zA-Z_\-]+)'/", $where, $matches)) {
                 if ($matches[1]) {
                     global $wpdb;
                     $where = str_replace(
                         "$wpdb->posts.post_type = '{$matches[1]}'", 
-
                         "( $wpdb->posts.post_type = '{$matches[1]}' " 
                         . " OR ( $wpdb->posts.post_type = 'revision'"
                         . " AND $wpdb->posts.post_status IN ('inherit')"
                         . " AND $wpdb->posts.post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) ) ",
-
                         $where
                     );
                 }
@@ -136,8 +140,9 @@ class PostFilters
     function flt_meta_cap($meta_cap)
     {
         // for past revisions todo: pending, future revisions?
-        if (defined('REVISIONARY_VERSION') && ('read_post' == $meta_cap) && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
-        && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
+        if (
+            defined('REVISIONARY_VERSION') && ('read_post' == $meta_cap) && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+            && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
         ) {
             $meta_cap = 'edit_post';
         }

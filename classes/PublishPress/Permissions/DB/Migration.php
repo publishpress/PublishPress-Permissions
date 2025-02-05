@@ -35,7 +35,7 @@ class Migration
                 'presspermit-compatibility' => 'pp-compatibility',
                 'presspermit-file-access'   => 'pp-file-url-filter',
                 'presspermit-membership'    => 'pp-membership',
-                'presspermit-status-control'=> 'pp-custom-post-statuses',      
+                'presspermit-status-control' => 'pp-custom-post-statuses',      
                 'presspermit-teaser'        => 'pp-content-teaser',
             ];
 
@@ -52,7 +52,7 @@ class Migration
             $any_activated = false;
 
             $deactivate_modules = [];
-            foreach($ext_map as $module_plugin_slug => $legacy_slug) {
+            foreach ($ext_map as $module_plugin_slug => $legacy_slug) {
                 if (isset($ext_option_name[$legacy_slug])) {
                     $deactivate = ('presspermit-file-access' == $module_plugin_slug) 
                     ? false === get_option($ext_option_name[$legacy_slug])  // may be set to "0", with file filtering still active
@@ -128,8 +128,9 @@ class Migration
             );
 
             // keep a log in case questions arise
-            if (!$arr = get_option('ppc_exposed_attachment_eitems'))
+            if (!$arr = get_option('ppc_exposed_attachment_eitems')) {
                 $arr = [];
+            }
 
             $arr = array_merge($arr, $eitem_ids);
             update_option('ppc_exposed_attachment_eitems', $arr);
@@ -144,10 +145,12 @@ class Migration
 
         // Direct query of plugin table on plugin admin operation
         // phpcs:delete WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        if ($eitem_ids = $wpdb->get_col(
-            "SELECT eitem_id FROM $wpdb->ppc_exception_items AS i INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
-            . " WHERE e.for_item_source = 'post' AND e.for_item_type = 'attachment' AND i.assign_for = 'children'"
-        )) {
+        if (
+            $eitem_ids = $wpdb->get_col(
+                "SELECT eitem_id FROM $wpdb->ppc_exception_items AS i INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
+                . " WHERE e.for_item_source = 'post' AND e.for_item_type = 'attachment' AND i.assign_for = 'children'"
+            )
+        ) {
             $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
 
             // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -158,13 +161,13 @@ class Migration
         foreach (['read', 'associate'] as $operation) { // retain editing exceptions - to be exposed by self::get_propagated_attachment_exceptions()
             $mod_type_clause = ('associate' == $operation) ? '' : "AND e.mod_type != 'include'"; // keep include exceptions in case they are being relied upon to modify access to other media.  They will be exposed by self::get_propagated_attachment_exceptions().
 
-            if ($results = $wpdb->get_results(
+            if (
+                $results = $wpdb->get_results(
                     $wpdb->prepare(
                         "SELECT eitem_id, item_id FROM $wpdb->ppc_exception_items AS i"
                         . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id"
                         . " WHERE i.inherited_from > 0 AND e.for_item_source = 'post' AND e.for_item_type = 'attachment'"
                         . " AND e.operation = %s $mod_type_clause", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
                         $operation
                     )
                 )
@@ -184,8 +187,9 @@ class Migration
                 );
 
                 // keep a log in case questions arise
-                if (!$arr = get_option("ppc_deleted_{$operation}_exc_attachments"))
+                if (!$arr = get_option("ppc_deleted_{$operation}_exc_attachments")) {
                     $arr = [];
+                }
 
                 $arr = array_merge($arr, array_unique($item_ids));
                 update_option("ppc_deleted_{$operation}_exc_attachments", $arr);
@@ -200,7 +204,6 @@ class Migration
         global $wpdb;
 
         if ($tableindices = $wpdb->get_results("SHOW INDEX FROM $wpdb->pp_group_members")) {
-
             foreach ($tableindices as $tableindex) {
                 if ('PRIMARY' == $tableindex->Key_name) {
                     // phpcs:delete WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching

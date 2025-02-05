@@ -8,20 +8,20 @@ class ItemsMetaboxAjax
     {
         check_ajax_referer('pp-ajax');
 
-        if ( ! current_user_can( 'pp_assign_roles' ) )
-            wp_die( -1 );
+        if (! current_user_can('pp_assign_roles')) {
+            wp_die(-1);
+        }
 
-        require_once( PRESSPERMIT_CLASSPATH . '/UI/ItemsMetabox.php' );
+        require_once(PRESSPERMIT_CLASSPATH . '/UI/ItemsMetabox.php');
 
         if (PWP::is_POST('item-type', 'post_type')) {
             $type = 'posttype';
             $callback = ['\PublishPress\Permissions\UI\ItemsMetabox', 'post_type_meta_box'];
             $items = (array) presspermit()->getEnabledPostTypes([], 'object');
-
         } elseif (PWP::is_POST('item-type', 'taxonomy')) {
             $type = 'taxonomy';
             $callback = ['\PublishPress\Permissions\UI\ItemsMetabox', 'taxonomy_meta_box'];
-            $items = (array) get_taxonomies( [ 'show_ui' => true ], 'object' );
+            $items = (array) get_taxonomies([ 'show_ui' => true ], 'object');
         }
 
         // Nonce verificaiton is not needed here, as this is just UI output

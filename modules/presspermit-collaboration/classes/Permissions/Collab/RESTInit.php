@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class RESTInit
@@ -6,7 +7,8 @@ class RESTInit
     var $post_terms = [];
     var $post_updated = [];
 
-    function __construct() {
+    function __construct()
+    {
         add_action('init', [$this, 'add_post_type_filters'], 99);
 
         add_filter("rest_post_collection_params", [$this, 'post_collection_params'], 1, 2);
@@ -14,7 +16,8 @@ class RESTInit
         add_action('post_updated', [$this, 'actLogPostUpdated']);
     }
 
-    function add_post_type_filters() {
+    function add_post_type_filters()
+    {
         foreach (presspermit()->getEnabledPostTypes() as $post_type) {
             add_filter("rest_{$post_type}_collection_params", [$this, 'post_collection_params'], 99, 2);
 
@@ -27,7 +30,8 @@ class RESTInit
         }
     }
 
-    function actLogPostUpdated($post_id) {
+    function actLogPostUpdated($post_id)
+    {
         $this->post_updated[$post_id] = true;
     }
 
@@ -43,19 +47,21 @@ class RESTInit
     }
 
     // log post terms already stored prior to REST action
-    function actLogPostTerms($post, $request) {
+    function actLogPostTerms($post, $request)
+    {
         if (!isset($this->post_terms[$post->ID])) {
             $this->post_terms[$post->ID] = [];
         }
 
-        foreach(get_object_taxonomies($post->post_type, 'objects') as $tx) {
+        foreach (get_object_taxonomies($post->post_type, 'objects') as $tx) {
             $this->post_terms[$tx->rest_base] = wp_get_object_terms($post->ID, $tx->name, ['fields' => 'ids']);
         }
     }
 
     // prevent unauthorized term assignment or removal
-    function actFilterPostTerms($post, $request) {
-        foreach(get_object_taxonomies($post->post_type, 'objects') as $tx) {
+    function actFilterPostTerms($post, $request)
+    {
+        foreach (get_object_taxonomies($post->post_type, 'objects') as $tx) {
             if (!isset($request[$tx->rest_base])) {
                 continue;
             }
@@ -75,7 +81,8 @@ class RESTInit
         }
     }
 
-    function page_parent_query_args($args, $request) {
+    function page_parent_query_args($args, $request)
+    {
         $params = $request->get_params();
 
         if (is_array($params) && !empty($params['parent_exclude']) && !empty($params['context'] && ('edit' == $params['context']))) {
@@ -110,8 +117,8 @@ class RESTInit
             }
 
             $include_page_ids = [];
-            foreach($pages as $page) {
-            	$include_page_ids []= $page->ID;
+            foreach ($pages as $page) {
+                $include_page_ids [] = $page->ID;
             }
 
             // always include existing page parent value as a dropdown option
@@ -126,7 +133,7 @@ class RESTInit
 
             if ($post_id) {
                 if ($current_parent = get_post_field('post_parent', $post_id)) {
-                    $include_page_ids []= $current_parent;
+                    $include_page_ids [] = $current_parent;
                 }
             }
 
@@ -134,8 +141,8 @@ class RESTInit
             $args['post_status'] = $post_statuses;
 
             if (defined('PP_PAGE_PARENT_NOPAGING')) {
-            	$args['nopaging'] = 1;
-			}
+                $args['nopaging'] = 1;
+            }
 
             $args['orderby'] = presspermit()->getOption('page_parent_order') ? 'post_title' : 'menu_order';
 
@@ -152,7 +159,8 @@ class RESTInit
         return $args;
     }
 
-    function page_parent_results($results, $query_obj) {
+    function page_parent_results($results, $query_obj)
+    {
         if (!$results) {
             return $results;
         }

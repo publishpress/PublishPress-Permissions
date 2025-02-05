@@ -202,7 +202,7 @@ class AgentsAjax
                 $args
             );
 
-	        $results = $user_search->get_results();
+            $results = $user_search->get_results();
 
             if ($results) {
                 foreach ($results as $row) {
@@ -227,13 +227,15 @@ class AgentsAjax
                 $omit_groups = [];
             }
 
-            if ($groups = $pp_groups->getGroups(
-                $agent_type,
-                ['search' => $search_str]
-            )) {
+            if (
+                $groups = $pp_groups->getGroups(
+                    $agent_type,
+                    ['search' => $search_str]
+                )
+            ) {
                 foreach ($groups as $row) {
                     if ((empty($row->metagroup_id) || is_null($row->metagroup_id)) && !isset($omit_groups[$row->ID])) {
-                        echo "<option value='" . esc_attr($row->ID) . "'>". esc_html($row->name) . "</option>";
+                        echo "<option value='" . esc_attr($row->ID) . "'>" . esc_html($row->name) . "</option>";
                     }
                 }
             }

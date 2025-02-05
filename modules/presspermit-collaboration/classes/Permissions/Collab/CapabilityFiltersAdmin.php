@@ -90,8 +90,9 @@ class CapabilityFiltersAdmin
     function fltHaveSiteCaps($have_site_caps, $post_type, $args)
     {
         if ('attachment' == $post_type) {
-            if (presspermit()->getOption('own_attachments_always_editable') || !empty(presspermit()->getUser()->allcaps['edit_own_attachments']))
+            if (presspermit()->getOption('own_attachments_always_editable') || !empty(presspermit()->getUser()->allcaps['edit_own_attachments'])) {
                 $have_site_caps['owner'][] = 'inherit';
+            }
         }
 
         return $have_site_caps;
@@ -102,8 +103,9 @@ class CapabilityFiltersAdmin
     {
         global $pagenow, $current_user;
 
-        if ($this->in_has_cap_call || ($user_id != $current_user->ID))
+        if ($this->in_has_cap_call || ($user_id != $current_user->ID)) {
             return $reqd_caps;
+        }
 
         $orig_reqd_caps = (array)$reqd_caps;
 
@@ -125,7 +127,8 @@ class CapabilityFiltersAdmin
         }
 
         // for scoped menu management roles, satisfy edit_theme_options cap requirement
-        if (('nav-menus.php' == $pagenow)
+        if (
+            ('nav-menus.php' == $pagenow)
             || (('edit_theme_options' == reset($reqd_caps)) && ('edit_theme_options' == $orig_cap) && (PWP::doingAdminMenus() || (defined('DOING_AJAX') && DOING_AJAX)))
         ) {
             if (empty($current_user->allcaps['edit_theme_options'])) {
@@ -147,7 +150,6 @@ class CapabilityFiltersAdmin
 
                 foreach ($alt_caps as $divi_requirement => $alt_requirements) {
                     if ($divi_requirement == $orig_cap) {
-
                         foreach ($alt_requirements as $require_cap) {
                             if (!empty($current_user->allcaps[$require_cap])) {
                                 return [$require_cap];
@@ -167,14 +169,17 @@ class CapabilityFiltersAdmin
                 $replace_post_caps = ['publish_posts', 'edit_others_posts', 'edit_published_posts'];
 
                 static $did_admin_init = false;
-                if (!$did_admin_init)
+                if (!$did_admin_init) {
                     $did_admin_init = did_action('admin_init');
+                }
 
-                if ($did_admin_init)  // otherwise extra padding between menu items due to some items populated but unpermitted
+                if ($did_admin_init) {  // otherwise extra padding between menu items due to some items populated but unpermitted
                     $replace_post_caps[] = 'edit_posts';
+                }
 
-                if (in_array($pagenow, ['upload.php', 'media.php']))
+                if (in_array($pagenow, ['upload.php', 'media.php'])) {
                     $replace_post_caps = array_merge($replace_post_caps, ['delete_posts', 'delete_others_posts']);
+                }
 
                 if (array_intersect($reqd_caps, $replace_post_caps)) {
                     if (!empty($args[0])) {
@@ -213,8 +218,9 @@ class CapabilityFiltersAdmin
                 false !== $key && (PWP::doingAdminMenus() || in_array($pagenow, ['upload.php', 'post.php', 'post-new.php'])
                     || (defined('DOING_AJAX') && DOING_AJAX && PWP::is_REQUEST('action', ['query-attachments', 'mla-query-attachments'])))
             ) {
-                if (empty($current_user->allcaps['upload_files']) && !empty($current_user->allcaps['edit_files']))
+                if (empty($current_user->allcaps['upload_files']) && !empty($current_user->allcaps['edit_files'])) {
                     $reqd_caps[$key] = 'edit_files';
+                }
             }
         }
 
@@ -288,8 +294,9 @@ class CapabilityFiltersAdmin
 
                         $op = 'assign';
                         $return_taxonomy = $term_obj->taxonomy;
-                        if (!empty($post_type))
+                        if (!empty($post_type)) {
                             $item_type = $post_type;
+                        }
                     }
                 } else {
                     $item_type = '';
@@ -382,16 +389,19 @@ class CapabilityFiltersAdmin
 
                 // note: item_type is taxonomy here
                 if ($tt_ids = $user->getExceptionTerms($op, 'include', $item_type, $taxonomy, $args)) {
-                    if (!in_array($item_id, array_merge($tt_ids, $additional_tt_ids)))
+                    if (!in_array($item_id, array_merge($tt_ids, $additional_tt_ids))) {
                         $fail = true;
+                    }
                 } elseif ($tt_ids = $user->getExceptionTerms($op, 'exclude', $item_type, $taxonomy, $args)) {
                     $tt_ids = array_diff($tt_ids, $additional_tt_ids);
-                    if (in_array($item_id, $tt_ids))
+                    if (in_array($item_id, $tt_ids)) {
                         $fail = true;
+                    }
                 }
 
-                if ($fail)
+                if ($fail) {
                     $wp_sitecaps = array_diff_key($wp_sitecaps, array_fill_keys($orig_reqd_caps, true));
+                }
             }
         }
 
@@ -404,8 +414,9 @@ class CapabilityFiltersAdmin
         if (('include' == $mod_type) && !$exceptions && !empty($args['additional_tt_ids'])) {
             if ('manage' == $op) {
                 $tx_obj = get_taxonomy($taxonomy);
-                if (empty(presspermit()->getUser()->allcaps[$tx_obj->cap->manage_terms]))
+                if (empty(presspermit()->getUser()->allcaps[$tx_obj->cap->manage_terms])) {
                     $exceptions = $args['additional_tt_ids'];
+                }
             }
         }
 
@@ -447,8 +458,9 @@ class CapabilityFiltersAdmin
 
     function fltDoFindPostId($do, $orig_reqd_caps, $args)
     {
-        if (PWP::doingAdminMenus())
+        if (PWP::doingAdminMenus()) {
             return false;
+        }
 
         return $do;
     }
@@ -458,7 +470,6 @@ class CapabilityFiltersAdmin
         if (!current_user_can('edit_post', $post_id)) {
             if ($type_obj = get_post_type_object(get_post_field('post_type', $post_id))) {
                 if (PWP::is_POST('save') || PWP::is_POST('publish')) {
-
                     if (!defined('PRESSPERMIT_NO_PROCESS_BEFORE_REDIRECT')) {
                         require_once(PRESSPERMIT_CLASSPATH . '/PostSave.php');
 

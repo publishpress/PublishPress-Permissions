@@ -22,12 +22,14 @@ class GroupNew
             }
 
             $wp_http_referer = remove_query_arg(['update', 'delete_count'], stripslashes($wp_http_referer));
-        } else
+        } else {
             $wp_http_referer = '';
+        }
 
-        if (!current_user_can('pp_create_groups'))
+        if (!current_user_can('pp_create_groups')) {
             wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
-?>
+        }
+        ?>
 
         <?php
         $pp = presspermit();
@@ -71,15 +73,16 @@ class GroupNew
                 <h1><?php
                     $agent_type = PWP::REQUEST_key('agent_type');
 
-                    if (!$pp_groups->groupTypeEditable($agent_type)) {
-                        $agent_type = 'pp_group';
-                    }
+                if (!$pp_groups->groupTypeEditable($agent_type)) {
+                    $agent_type = 'pp_group';
+                }
 
-                    if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type))
-                        esc_html_e('Create New Permission Group', 'press-permit-core');
-                    else
-                        printf(esc_html__('Create New %s', 'press-permit-core'), esc_html($group_type_obj->labels->singular_name));
-                    ?></h1>
+                if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type)) {
+                    esc_html_e('Create New Permission Group', 'press-permit-core');
+                } else {
+                    printf(esc_html__('Create New %s', 'press-permit-core'), esc_html($group_type_obj->labels->singular_name));
+                }
+                ?></h1>
             </header>
 
             <form action="" method="post" id="creategroup" name="creategroup" class="pp-admin">
@@ -128,6 +131,6 @@ class GroupNew
             presspermit()->admin()->publishpressFooter();
             ?>
         </div>
-<?php
+        <?php
     }
 }

@@ -34,7 +34,7 @@ class TermsListing
             $tx_obj = get_taxonomy($taxonomy);
             $type_obj = get_post_type_object($typenow);
             $url = "edit-tags.php?taxonomy=$taxonomy&pp_universal=1";
-?>
+            ?>
             <div class="form-wrap">
                 <p>
                     <?php
@@ -48,7 +48,7 @@ class TermsListing
                     ?>
                 </p>
             </div>
-        <?php
+            <?php
         }
     }
 
@@ -98,8 +98,9 @@ class TermsListing
             $op_names = [];
 
             foreach ($this->exceptions[$id] as $op) {
-                if ($op_obj = $pp_admin->getOperationObject($op, $typenow))
+                if ($op_obj = $pp_admin->getOperationObject($op, $typenow)) {
                     $op_names[] = $op_obj->label;
+                }
             }
 
             uasort($op_names, 'strnatcasecmp');
@@ -120,7 +121,7 @@ class TermsListing
             });
             /* ]]> */
         </script>
-    <?php
+        <?php
     }
 
     public function actScriptUniversalExceptions()
@@ -130,7 +131,7 @@ class TermsListing
         if (PWP::empty_REQUEST('pp_universal')) {
             return;
         }
-    ?>
+        ?>
         <script type="text/javascript">
             /* <![CDATA[ */
             function updateQueryStringParameterPP(uri, key, value) {
@@ -154,7 +155,7 @@ class TermsListing
             });
             /* ]]> */
         </script>
-    <?php
+        <?php
     }
 
     // In "Add New Term" form, hide the "Main" option from Parent dropdown if the logged user doesn't have manage_terms cap site-wide
@@ -181,7 +182,7 @@ class TermsListing
                 return;
             }
         }
-    ?>
+        ?>
         <script type="text/javascript">
             /* <![CDATA[ */
             jQuery(document).ready(function($) {
@@ -189,7 +190,7 @@ class TermsListing
             });
             /* ]]> */
         </script>
-<?php
+        <?php
     }
 
     private function logTermData()
@@ -254,7 +255,6 @@ class TermsListing
                         . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
                         . " WHERE e.for_item_type IN ('$for_type_csv') AND e.via_item_source = 'term'"                      // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                         . " AND e.via_item_type = %s AND e.agent_type IN ('$agent_type_csv') AND i.item_id IN ('$id_csv')", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
                     $taxonomy
                 )
             );

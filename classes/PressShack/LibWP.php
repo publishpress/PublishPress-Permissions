@@ -1,4 +1,5 @@
 <?php
+
 namespace PressShack;
 
 class LibWP
@@ -14,18 +15,16 @@ class LibWP
         return version_compare($wp_version, '5.0', '>=') || substr($wp_version, 0, 2) === '5.';
     }
 
-    public static function getPluginPage() {
+    public static function getPluginPage()
+    {
         global $plugin_page, $pagenow;
 
         if (!is_admin()) {
             return false;
-
         } elseif (!empty($plugin_page)) {
             return $plugin_page;
-
         } elseif (empty($pagenow) || ('admin.php' != $pagenow)) {
             return false;
-
         } else {
             return self::REQUEST_key('page');
         }
@@ -90,88 +89,88 @@ class LibWP
         }
 
         if (class_exists('Classic_Editor')) {
-			if (self::is_REQUEST('classic-editor__forget') && (self::is_REQUEST('classic') || self::is_REQUEST('classic-editor'))) {
-				return false;
+            if (self::is_REQUEST('classic-editor__forget') && (self::is_REQUEST('classic') || self::is_REQUEST('classic-editor'))) {
+                return false;
+            } elseif (self::is_REQUEST('classic-editor__forget') && !self::is_REQUEST('classic') && !self::is_REQUEST('classic-editor')) {
+                return true;
+            } elseif (get_option('classic-editor-allow-users') === 'allow') {
+                if ($post_id = self::getPostID()) {
+                    $which = get_post_meta($post_id, 'classic-editor-remember', true);
 
-			} elseif (self::is_REQUEST('classic-editor__forget') && !self::is_REQUEST('classic') && !self::is_REQUEST('classic-editor')) {
-				return true;
-
-			} elseif (get_option('classic-editor-allow-users') === 'allow') {
-				if ($post_id = self::getPostID()) {
-					$which = get_post_meta( $post_id, 'classic-editor-remember', true );
-
-					if ('block-editor' == $which) {
-						return true;
-					} elseif ('classic-editor' == $which) {
-						return false;
-					}
-				} else {
+                    if ('block-editor' == $which) {
+                        return true;
+                    } elseif ('classic-editor' == $which) {
+                        return false;
+                    }
+                } else {
                     $use_block = ('block' == get_user_meta($current_user->ID, 'wp_classic-editor-settings'));
 
                     if (version_compare($wp_version, '5.9-beta', '>=')) {
-                    	if ($has_nav_action = has_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
-                    		remove_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
-                    	}
-                    	
-                    	if ($has_nav_filter = has_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
-                    		remove_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
-                    	}
+                        if ($has_nav_action = has_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
+                            remove_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
+                        }
+                        
+                        if ($has_nav_filter = has_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
+                            remove_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
+                        }
                     }
 
                     $use_block = $use_block && apply_filters('use_block_editor_for_post_type', $use_block, $post_type);
 
                     if (version_compare($wp_version, '5.9-beta', '>=') && !empty($has_nav_filter)) {
-                        add_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type', 10, 2 );
+                        add_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type', 10, 2);
                     }
 
                     return $use_block;
-				}
-			}
-		}
+                }
+            }
+        }
 
         // Divi: Classic Editor option
-		if (function_exists('et_get_option') && ( 'on' == et_get_option( 'et_enable_classic_editor', 'off' ))) {
-			return false;
-		}
+        if (function_exists('et_get_option') && ( 'on' == et_get_option('et_enable_classic_editor', 'off'))) {
+            return false;
+        }
 
-		$pluginsState = array(
-			'classic-editor' => class_exists( 'Classic_Editor' ),
-			'gutenberg'      => function_exists( 'the_gutenberg_project' ),
-			'gutenberg-ramp' => class_exists('Gutenberg_Ramp'),
+        $pluginsState = array(
+            'classic-editor' => class_exists('Classic_Editor'),
+            'gutenberg'      => function_exists('the_gutenberg_project'),
+            'gutenberg-ramp' => class_exists('Gutenberg_Ramp'),
             'disable-gutenberg' => class_exists('DisableGutenberg'),
-		);
-		
-		$conditions = [];
+        );
+        
+        $conditions = [];
 
-        if ($suppress_filter) remove_filter('use_block_editor_for_post_type', $suppress_filter, 10, 2);
+        if ($suppress_filter) {
+            remove_filter('use_block_editor_for_post_type', $suppress_filter, 10, 2);
+        }
 
-		/**
-		 * 5.0:
-		 *
-		 * Classic editor either disabled or enabled (either via an option or with GET argument).
-		 * It's a hairy conditional :(
-		 */
+        /**
+         * 5.0:
+         *
+         * Classic editor either disabled or enabled (either via an option or with GET argument).
+         * It's a hairy conditional :(
+         */
 
         if (version_compare($wp_version, '5.9-beta', '>=')) {
             if ($has_nav_action = has_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
-        		remove_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
-        	}
-        	
-        	if ($has_nav_filter = has_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
-        		remove_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
-        	}
+                remove_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
+            }
+            
+            if ($has_nav_filter = has_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
+                remove_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
+            }
         }
 
         $_post = get_post(self::getPostID());
 
         $conditions[] = (self::isWp5() || $pluginsState['gutenberg'])
-						&& ! $pluginsState['classic-editor']
-						&& ! $pluginsState['gutenberg-ramp']
+                        && ! $pluginsState['classic-editor']
+                        && ! $pluginsState['gutenberg-ramp']
                         && ! $pluginsState['disable-gutenberg']
                         && apply_filters('use_block_editor_for_post_type', true, $post_type)
                         && (empty($_post) || !is_a($_post, 'WP_Post') || apply_filters('use_block_editor_for_post', true, $_post));
 
-		$conditions[] = self::isWp5()
+        $conditions[] = self::isWp5()
                         && $pluginsState['classic-editor']
                         && (get_option('classic-editor-replace') === 'block'
                             && ! self::is_GET('classic-editor__forget'));
@@ -188,17 +187,18 @@ class LibWP
                         && !self::disableGutenberg(self::getPostID());
 
         if (version_compare($wp_version, '5.9-beta', '>=') && !empty($has_nav_filter)) {
-            add_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type', 10, 2 );
+            add_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type', 10, 2);
         }
 
-		// Returns true if at least one condition is true.
-		$result = count(
-				   array_filter($conditions,
-					   function ($c) {
-						   return (bool)$c;
-					   }
-				   )
-               ) > 0;
+        // Returns true if at least one condition is true.
+        $result = count(
+            array_filter(
+                $conditions,
+                function ($c) {
+                    return (bool)$c;
+                }
+            )
+        ) > 0;
         
         if (!$suppress_filter) {
             $buffer[$post_type] = $result;
@@ -209,29 +209,52 @@ class LibWP
     }
 
     // Port function from Disable Gutenberg plugin due to problematic early is_plugin_active() function call
-    private static function disableGutenberg($post_id = false) {
-	
-        if (function_exists('disable_gutenberg_whitelist_id') && disable_gutenberg_whitelist_id($post_id)) return false;
+    private static function disableGutenberg($post_id = false)
+    {
+    
+        if (function_exists('disable_gutenberg_whitelist_id') && disable_gutenberg_whitelist_id($post_id)) {
+            return false;
+        }
         
-        if (function_exists('disable_gutenberg_whitelist_slug') && disable_gutenberg_whitelist_slug($post_id)) return false;
+        if (function_exists('disable_gutenberg_whitelist_slug') && disable_gutenberg_whitelist_slug($post_id)) {
+            return false;
+        }
         
-        if (function_exists('disable_gutenberg_whitelist_title') && disable_gutenberg_whitelist_title($post_id)) return false;
+        if (function_exists('disable_gutenberg_whitelist_title') && disable_gutenberg_whitelist_title($post_id)) {
+            return false;
+        }
         
-        if (self::is_GET('block-editor')) return false;
+        if (self::is_GET('block-editor')) {
+            return false;
+        }
         
-        if (self::is_GET('classic-editor')) return true;
+        if (self::is_GET('classic-editor')) {
+            return true;
+        }
         
-        if (self::is_POST('classic-editor')) return true;
+        if (self::is_POST('classic-editor')) {
+            return true;
+        }
         
-        if (function_exists('disable_gutenberg_disable_all') && disable_gutenberg_disable_all()) return true;
+        if (function_exists('disable_gutenberg_disable_all') && disable_gutenberg_disable_all()) {
+            return true;
+        }
         
-        if (function_exists('disable_gutenberg_disable_user_role') && disable_gutenberg_disable_user_role()) return true;
+        if (function_exists('disable_gutenberg_disable_user_role') && disable_gutenberg_disable_user_role()) {
+            return true;
+        }
         
-        if (function_exists('disable_gutenberg_disable_post_type') && disable_gutenberg_disable_post_type()) return true;
+        if (function_exists('disable_gutenberg_disable_post_type') && disable_gutenberg_disable_post_type()) {
+            return true;
+        }
         
-        if (function_exists('disable_gutenberg_disable_templates') && disable_gutenberg_disable_templates()) return true;
+        if (function_exists('disable_gutenberg_disable_templates') && disable_gutenberg_disable_templates()) {
+            return true;
+        }
         
-        if (function_exists('disable_gutenberg_disable_ids') && disable_gutenberg_disable_ids($post_id)) return true;
+        if (function_exists('disable_gutenberg_disable_ids') && disable_gutenberg_disable_ids($post_id)) {
+            return true;
+        }
         
         return false;
     }
@@ -255,18 +278,20 @@ class LibWP
      * @param string $entry String entry
      * @return string Sanitized entry
      */
-    public static function sanitizeEntry( $entry ) {
-        $entry = preg_replace( '/[^a-zA-Z0-9 \.\,\+\*\:\|\(\)_\-]/', '', $entry );
+    public static function sanitizeEntry($entry)
+    {
+        $entry = preg_replace('/[^a-zA-Z0-9 \.\,\+\*\:\|\(\)_\-]/', '', $entry);
         return $entry;
     }
 
     /*
     * Same as sanitize_key(), but without applying filters
     */
-    public static function sanitizeKey( $key ) {
+    public static function sanitizeKey($key)
+    {
         $raw_key = $key;
-        $key     = strtolower( $key );
-        $key     = preg_replace( '/[^a-z0-9_\-]/', '', $key );
+        $key     = strtolower($key);
+        $key     = preg_replace('/[^a-z0-9_\-]/', '', $key);
         
         return $key;
     }
@@ -277,7 +302,8 @@ class LibWP
     // * Qualify a request to deterimine filter loading
     // * Retrieve a variable when nonce verification is not necessary, or has already been applied
 
-    public static function empty_REQUEST($var = false) {
+    public static function empty_REQUEST($var = false)
+    {
         if (false === $var) {
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return empty($_REQUEST);
@@ -287,11 +313,11 @@ class LibWP
         }
     }
 
-    public static function is_REQUEST($var, $match = false) {
+    public static function is_REQUEST($var, $match = false)
+    {
         if (false === $match) {
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return isset($_REQUEST[$var]);
-            
         } elseif (is_array($match)) {
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return (isset($_REQUEST[$var]) && in_array($_REQUEST[$var], $match));
@@ -301,7 +327,8 @@ class LibWP
         }
     }
 
-    public static function REQUEST_key($var) {
+    public static function REQUEST_key($var)
+    {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (empty($_REQUEST[$var])) {
             return '';
@@ -311,7 +338,8 @@ class LibWP
         return (is_array($_REQUEST[$var])) ? array_map('sanitize_key', $_REQUEST[$var]) : sanitize_key($_REQUEST[$var]);
     }
 
-    public static function REQUEST_key_match($var, $match, $args = []) {
+    public static function REQUEST_key_match($var, $match, $args = [])
+    {
         $args = (array) $args;
         
         $match_type = (!empty($args['match_type'])) ? $args['match_type'] : 'starts';
@@ -337,17 +365,20 @@ class LibWP
         return $matched;
     }
 
-    public static function REQUEST_int($var) {
+    public static function REQUEST_int($var)
+    {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         return (!empty($_REQUEST[$var])) ? intval($_REQUEST[$var]) : 0;
     }
 
-    public static function REQUEST_url($var) {
+    public static function REQUEST_url($var)
+    {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         return (!empty($_REQUEST) && !empty($_REQUEST[$var])) ? sanitize_url(sanitize_text_field($_REQUEST[$var])) : '';
     }
 
-    public static function empty_POST($var = false) {
+    public static function empty_POST($var = false)
+    {
         if (false === $var) {
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
             return empty($_POST);
@@ -357,7 +388,8 @@ class LibWP
         }
     }
 
-    public static function is_POST($var, $match = false) {
+    public static function is_POST($var, $match = false)
+    {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
         if (empty($_POST)) {
             return false;
@@ -366,7 +398,6 @@ class LibWP
         if (false == $match) {
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
             return (isset($_POST[$var]));
-        
         } elseif (is_array($match)) {
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
             return (isset($_POST[$var]) && in_array($_POST[$var], $match));
@@ -376,7 +407,8 @@ class LibWP
         }
     }
 
-    public static function POST_key($var) {
+    public static function POST_key($var)
+    {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
         if (empty($_POST) || empty($_POST[$var])) {
             return '';
@@ -386,17 +418,20 @@ class LibWP
         return (is_array($_POST[$var])) ? array_map('sanitize_key', $_POST[$var]) : sanitize_key($_POST[$var]);
     }
 
-    public static function POST_int($var) {
+    public static function POST_int($var)
+    {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
         return (!empty($_POST) && !empty($_POST[$var])) ? intval($_POST[$var]) : 0;
     }
 
-    public static function POST_url($var) {
+    public static function POST_url($var)
+    {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
         return (!empty($_POST) && !empty($_POST[$var])) ? sanitize_url(sanitize_text_field($_POST[$var])) : '';
     }
 
-    public static function empty_GET($var = false) {
+    public static function empty_GET($var = false)
+    {
         if (false === $var) {
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return empty($_GET);
@@ -406,11 +441,11 @@ class LibWP
         }
     }
 
-    public static function is_GET($var, $match = false) {
+    public static function is_GET($var, $match = false)
+    {
         if (false === $match) {
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return isset($_GET[$var]);
-
         } elseif (is_array($match)) {
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return (isset($_GET[$var]) && in_array($_GET[$var], $match));
@@ -420,7 +455,8 @@ class LibWP
         }
     }
 
-    public static function GET_key($var) {
+    public static function GET_key($var)
+    {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (empty($_GET[$var])) {
             return '';
@@ -430,17 +466,20 @@ class LibWP
         return (is_array($_GET[$var])) ? array_map('sanitize_key', $_GET[$var]) : sanitize_key($_GET[$var]);
     }
 
-    public static function GET_int($var) {
+    public static function GET_int($var)
+    {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         return (!empty($_GET[$var])) ? intval($_GET[$var]) : 0;
     }
 
-    public static function GET_url($var) {
+    public static function GET_url($var)
+    {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         return (!empty($_GET[$var])) ? sanitize_url(sanitize_text_field($_GET[$var])) : '';
     }
 
-    public static function SERVER_url($var) {
+    public static function SERVER_url($var)
+    {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         return (!empty($_SERVER[$var])) ? sanitize_url(sanitize_text_field($_SERVER[$var])) : '';
     }
@@ -479,8 +518,9 @@ class LibWP
             $stati = get_post_stati($args, 'object', $operator);
 
             foreach ($stati as $status => $obj) {
-                if (!empty($obj->post_type) && !array_intersect((array)$post_type, (array)$obj->post_type))
+                if (!empty($obj->post_type) && !array_intersect((array)$post_type, (array)$obj->post_type)) {
                     unset($stati[$status]);
+                }
             }
 
             // restore original argument for filter
@@ -542,7 +582,6 @@ class LibWP
         if (!empty($wp_query->queried_object)) {
             if (isset($wp_query->queried_object->post_type)) {
                 $object_type = $wp_query->queried_object->post_type;
-
             } elseif (isset($wp_query->queried_object->name)) {
                 if (post_type_exists($wp_query->queried_object->name)) {  // bbPress forums list
                     $object_type = $wp_query->queried_object->name;
@@ -550,13 +589,10 @@ class LibWP
             }
         } elseif (in_array($pagenow, ['post-new.php', 'edit.php'])) {
             $object_type = self::is_GET('post_type') ? self::GET_key('post_type') : 'post';
-
         } elseif (in_array($pagenow, ['edit-tags.php'])) {
             $object_type = !self::empty_REQUEST('taxonomy') ? self::REQUEST_key('taxonomy') : 'category';
-
         } elseif (in_array($pagenow, ['admin-ajax.php']) && !self::empty_REQUEST('taxonomy')) {
             $object_type = self::REQUEST_key('taxonomy');
-
         } elseif ($_post_id = self::POST_int('post_ID')) {
             if ($_post = get_post($_post_id)) {
                 $object_type = $_post->post_type;
@@ -600,7 +636,6 @@ class LibWP
             if (!empty($wp_query)) {
                 if (!empty($wp_query->query_vars) && !empty($wp_query->query_vars['p'])) {
                     return (int) $wp_query->query_vars['p'];
-
                 } elseif (!empty($wp_query->query['post_type']) && !empty($wp_query->query['name'])) {
                     global $wpdb;
 
@@ -617,13 +652,10 @@ class LibWP
             }
         } elseif (self::is_REQUEST('post')) {
             return self::REQUEST_int('post');
-
         } elseif (self::is_REQUEST('post_ID')) {
             return self::REQUEST_int('post_ID');
-
         } elseif (self::is_REQUEST('post_id')) {
             return self::REQUEST_int('post_id');
-
         } elseif (defined('WOOCOMMERCE_VERSION') && !self::empty_REQUEST('product_id')) {
             return self::REQUEST_int('product_id');
         }
@@ -643,8 +675,9 @@ class LibWP
 
     public static function ttidToTermid($tt_ids, &$taxonomy, $all_terms = false)
     {
-        if (!$taxonomy && is_array($tt_ids))  // if multiple terms are involved, avoid complication of multiple taxonomies
+        if (!$taxonomy && is_array($tt_ids)) {  // if multiple terms are involved, avoid complication of multiple taxonomies
             return false;
+        }
 
         if (!$all_terms) {
             static $buffer_all_terms;
@@ -667,20 +700,23 @@ class LibWP
 
         $term_ids = [];
 
-        if (is_object($all_terms) || !$tt_ids) // error on invalid taxonomy
+        if (is_object($all_terms) || !$tt_ids) { // error on invalid taxonomy
             return $tt_ids;
+        }
 
         foreach ((array)$tt_ids as $tt_id) {
             foreach (array_keys($all_terms) as $_taxonomy) {
-                if ($taxonomy && ($_taxonomy != $taxonomy))  // if conversion is for a single term, taxonomy specification is not required
+                if ($taxonomy && ($_taxonomy != $taxonomy)) {  // if conversion is for a single term, taxonomy specification is not required
                     continue;
+                }
 
                 foreach (array_keys($all_terms[$_taxonomy]) as $key) {
                     if ($all_terms[$_taxonomy][$key]->term_taxonomy_id == $tt_id) {
                         $term_ids[] = $all_terms[$_taxonomy][$key]->term_id;
 
-                        if (!$taxonomy)
+                        if (!$taxonomy) {
                             $taxonomy = $_taxonomy;  // set byref variable to determined taxonomy
+                        }
 
                         break;
                     }
@@ -714,15 +750,17 @@ class LibWP
 
         $tt_ids = [];
 
-        if (is_object($all_terms) || !$term_ids || !isset($all_terms[$taxonomy])) // error on invalid taxonomy
+        if (is_object($all_terms) || !$term_ids || !isset($all_terms[$taxonomy])) { // error on invalid taxonomy
             return $term_ids;
+        }
 
         foreach ((array)$term_ids as $term_id) {
-            foreach (array_keys($all_terms[$taxonomy]) as $key)
+            foreach (array_keys($all_terms[$taxonomy]) as $key) {
                 if (($all_terms[$taxonomy][$key]->term_id == $term_id)) {
                     $tt_ids[] = $all_terms[$taxonomy][$key]->term_taxonomy_id;
                     break;
                 }
+            }
         }
 
         return (is_array($term_ids)) ? $tt_ids : current($tt_ids);
@@ -798,7 +836,7 @@ class LibWP
 
     public static function isMuPlugin($plugin_path = '')
     {
-        if ( ! $plugin_path && defined('PRESSPERMIT_FILE') ) {
+        if (! $plugin_path && defined('PRESSPERMIT_FILE')) {
             $plugin_path = PRESSPERMIT_FILE;
         }
         return (defined('WPMU_PLUGIN_DIR') && (false !== strpos($plugin_path, WPMU_PLUGIN_DIR)));
@@ -810,8 +848,8 @@ class LibWP
             if (defined('PRESSPERMIT_PRO_FILE')) {
                 $plugin_file = plugin_basename(PRESSPERMIT_PRO_FILE);
             } elseif (defined('PRESSPERMIT_FILE')) {
-            	$plugin_file = plugin_basename(PRESSPERMIT_FILE);
-        	}
+                $plugin_file = plugin_basename(PRESSPERMIT_FILE);
+            }
         }
         
         return (array_key_exists($plugin_file, (array)maybe_unserialize(get_site_option('active_sitewide_plugins'))));
@@ -830,7 +868,8 @@ class LibWP
         );
     }
 
-    public static function postAuthorClause($args = []) {
+    public static function postAuthorClause($args = [])
+    {
         global $wpdb, $current_user;
 
         $defaults = [
@@ -839,11 +878,12 @@ class LibWP
             'join' => '',
         ];
 
-        if ($ppma_active = defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') 
-        && version_compare(PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION, '3.8.0', '>=') 
-        && !empty($args['join']) 
-        && strpos($args['join'], 'ppma_t')
-        && (empty($args['context']) || ('tally_term_counts' != $args['context']))
+        if (
+            $ppma_active = defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') 
+            && version_compare(PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION, '3.8.0', '>=') 
+            && !empty($args['join']) 
+            && strpos($args['join'], 'ppma_t')
+            && (empty($args['context']) || ('tally_term_counts' != $args['context']))
         ) {
             $defaults['join_table'] = 'ppma_t';
         }
@@ -870,7 +910,8 @@ class LibWP
         return $clause;
     }
 
-    public static function admin_rel_url($admin_page = '') {
+    public static function admin_rel_url($admin_page = '')
+    {
         $admin_url = admin_url($admin_page);
         $admin_arr = wp_parse_url($admin_url);
     

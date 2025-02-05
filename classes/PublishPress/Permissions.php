@@ -720,7 +720,6 @@ class Permissions
 
         if ($is_multisite) {
             if (!empty($this->netwide_options) && in_array($option_basename, (array)$this->netwide_options, true)) {
-
                 if (!is_array($this->net_options) || !isset($this->net_options["presspermit_$option_basename"])) {  // in case PP Compatibility is not activated
                     if (in_array($option_basename, ['edd_key', 'beta_updates'], true)) {
                         $this->net_options["presspermit_$option_basename"] = get_site_option("presspermit_$option_basename");

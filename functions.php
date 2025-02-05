@@ -1,5 +1,7 @@
 <?php
-function presspermit() {
+
+function presspermit()
+{
     require_once(__DIR__ . '/classes/PublishPress/Permissions.php');
     return \PublishPress\Permissions::instance();
 }
@@ -17,10 +19,11 @@ function presspermitPluginPage()
     return $pp_plugin_page;
 }
 
-function presspermit_is_preview() {
+function presspermit_is_preview()
+{
     global $wp_query;
 
-	if (isset($wp_query)) {
+    if (isset($wp_query)) {
         $is_preview = is_preview();
     } else {
         $is_preview = !\PressShack\LibWP::empty_REQUEST('preview');
@@ -28,7 +31,7 @@ function presspermit_is_preview() {
 
     if (!$is_preview) {
         if (defined('ELEMENTOR_VERSION')) {
-           $is_preview = !\PressShack\LibWP::empty_REQUEST('elementor-preview');
+            $is_preview = !\PressShack\LibWP::empty_REQUEST('elementor-preview');
         } elseif (defined('ET_CORE')) {
             $is_preview = !\PressShack\LibWP::empty_REQUEST('et_fb');
         }

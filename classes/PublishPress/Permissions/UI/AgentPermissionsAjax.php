@@ -4,7 +4,8 @@ namespace PublishPress\Permissions\UI;
 
 class AgentPermissionsAjax
 {
-    public function __construct() {
+    public function __construct()
+    {
         check_ajax_referer('pp-ajax');
 
         $pp = presspermit();
@@ -80,7 +81,8 @@ class AgentPermissionsAjax
                         }
 
                         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-                        if ($_ass_ids = $wpdb->get_col(
+                        if (
+                            $_ass_ids = $wpdb->get_col(
                                 $wpdb->prepare(
                                     "SELECT assignment_id FROM $wpdb->ppc_roles WHERE $this_group_clause role_name=%s",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                                     $row->role_name
@@ -137,13 +139,15 @@ class AgentPermissionsAjax
                         // also delete any redundant item exceptions for this agent
 
                         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-                        if ($_eitem_ids = $wpdb->get_col(
-                            $wpdb->prepare(
-                                "SELECT eitem_id FROM $wpdb->ppc_exception_items WHERE exception_id=%d AND item_id=%d",
-                                $row->exception_id,
-                                $row->item_id
+                        if (
+                            $_eitem_ids = $wpdb->get_col(
+                                $wpdb->prepare(
+                                    "SELECT eitem_id FROM $wpdb->ppc_exception_items WHERE exception_id=%d AND item_id=%d",
+                                    $row->exception_id,
+                                    $row->item_id
+                                )
                             )
-                        )) {
+                        ) {
                             \PublishPress\Permissions\DB\PermissionsUpdate::removeExceptionItemsById($_eitem_ids);
                         }
                     }
@@ -158,7 +162,6 @@ class AgentPermissionsAjax
             case 'exceptions_propagate':
             case 'exceptions_unpropagate':
             case 'exceptions_children_only':
-
                 $edited_input_ids = [];
                 $all_eitem_ids = [];
 
@@ -184,17 +187,18 @@ class AgentPermissionsAjax
                     $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
 
                     // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-                    if ($row = $wpdb->get_row(
-                        "SELECT * FROM $wpdb->ppc_exception_items AS i"
-                        . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
-                        . " WHERE $agent_clause eitem_id IN ('$eitem_id_csv') LIMIT 1"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                    )) {
+                    if (
+                        $row = $wpdb->get_row(
+                            "SELECT * FROM $wpdb->ppc_exception_items AS i"
+                            . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
+                            . " WHERE $agent_clause eitem_id IN ('$eitem_id_csv') LIMIT 1"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                        )
+                    ) {
                         $args = (array)$row;
 
                         if ('exceptions_propagate' == $action) {
                             $agents = ['children' => [$agent_id => true]];
                             $pp->assignExceptions($agents, $agent_type, $args);
-
                         } elseif ('exceptions_unpropagate' == $action) {
                             $agents = ['item' => [$agent_id => true]];
                             $pp->assignExceptions($agents, $agent_type, $args);
@@ -204,7 +208,6 @@ class AgentPermissionsAjax
 
                             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                             $wpdb->delete($wpdb->ppc_exception_items, ['inherited_from' => $row->eitem_id]);
-
                         } elseif ('exceptions_children_only' == $action) {
                             $agents = ['children' => [$agent_id => true]];
                             $pp->assignExceptions($agents, $agent_type, $args);
@@ -228,7 +231,6 @@ class AgentPermissionsAjax
             default:
                 // mirror specified existing exception items to specified operation
                 if (0 === strpos($action, 'exceptions_mirror_')) {
-                    
                     $arr = explode('_', $action);
 
                     if (count($arr) < 3) {
@@ -262,11 +264,13 @@ class AgentPermissionsAjax
                         $eitem_id_csv = implode("','", array_map('intval', $eitem_ids));
 
                         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-                        foreach ($results = $wpdb->get_results(
-                            "SELECT * FROM $wpdb->ppc_exception_items AS i"
-                            . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
-                            . " WHERE $agent_clause eitem_id IN ('$eitem_id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                        ) as $row) {
+                        foreach (
+                            $results = $wpdb->get_results(
+                                "SELECT * FROM $wpdb->ppc_exception_items AS i"
+                                . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
+                                . " WHERE $agent_clause eitem_id IN ('$eitem_id_csv')"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                            ) as $row
+                        ) {
                             $args = (array)$row;
                             $args['operation'] = $mirror_op;
                             $agents = [$row->assign_for => [$agent_id => true]];
@@ -283,7 +287,6 @@ class AgentPermissionsAjax
                     echo '<!--ppResponse-->' . 'exceptions_mirror' . '~' . esc_attr(implode('|', $edited_input_ids)) . '<--ppResponse-->';
                     break;
                 } elseif (0 === strpos($action, 'exceptions_convert_')) {
-                    
                     $arr = explode('_', $action);
 
                     if (count($arr) < 3) {
@@ -319,11 +322,13 @@ class AgentPermissionsAjax
                         $mod_type_clause = $wpdb->prepare("AND e.mod_type != %s", $modification); // don't change exceptions that already have requested mod_type
 
                         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-                        foreach ($results = $wpdb->get_results(
-                            "SELECT * FROM $wpdb->ppc_exception_items AS i"
-                            . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
-                            . " WHERE $agent_clause eitem_id IN ('$eitem_id_csv') $mod_type_clause"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                        ) as $row) {
+                        foreach (
+                            $results = $wpdb->get_results(
+                                "SELECT * FROM $wpdb->ppc_exception_items AS i"
+                                . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
+                                . " WHERE $agent_clause eitem_id IN ('$eitem_id_csv') $mod_type_clause"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                            ) as $row
+                        ) {
                             $args = (array)$row;
                             $args['mod_type'] = $modification;
                             $agents = [$row->assign_for => [$agent_id => true]];
@@ -341,7 +346,6 @@ class AgentPermissionsAjax
                     echo '<!--ppResponse-->' . 'exceptions_convert' . '~' . esc_attr(implode('|', $edited_input_ids)) . '<--ppResponse-->';
                     break;
                 }
-
         } // end switch
     }
 

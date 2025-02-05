@@ -25,8 +25,9 @@ class CollabHooksAdmin
         add_filter('presspermit_admin_groups', [$this, 'fltAdminGroups'], 10, 2);
 
         if (defined('PRESSPERMIT_ENABLE_PAGE_TEMPLATE_LIMITER') && PRESSPERMIT_ENABLE_PAGE_TEMPLATE_LIMITER && !empty($_SERVER['REQUEST_URI'])) {
-            if (false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), PWP::admin_rel_url('post.php'))
-            || false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), PWP::admin_rel_url('post-new.php'))
+            if (
+                false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), PWP::admin_rel_url('post.php'))
+                || false !== strpos(esc_url_raw($_SERVER['REQUEST_URI']), PWP::admin_rel_url('post-new.php'))
             ) {
                 require_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/PageTemplateLimiter.php');
                 new \PublishPress\Permissions\PageTemplateLimiter();
@@ -49,23 +50,26 @@ class CollabHooksAdmin
                     'presspermit_posts_clauses_intercept', 
                     function ($clauses, $orig_clauses) {
                         return $orig_clauses;
-                    }, 10, 2
+                    },
+                    10,
+                    2
                 );
             } else {
                 add_action('admin_print_scripts', [$this, 'NestedPagesDisableQuickEdit']);
             }
         }
 
-        add_action('presspermit_load_constants', function() {
+        add_action('presspermit_load_constants', function () {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Constants.php');
             new \PublishPress\Permissions\Collab\Constants();
         });
     }
 
-    function actAddMediaApplyDefaultTerm($post_id) {
+    function actAddMediaApplyDefaultTerm($post_id)
+    {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
         
-        foreach(get_object_taxonomies('attachment') as $taxonomy) {
+        foreach (get_object_taxonomies('attachment') as $taxonomy) {
             if (!$terms = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids'])) {
                 if ($terms = Collab\PostTermsSave::fltPreObjectTerms($terms, $taxonomy, ['object_id' => $post_id, 'post_type' => 'attachment', 'force_filtering' => true])) {
                     wp_set_post_terms($post_id, $terms, $taxonomy);
@@ -74,7 +78,8 @@ class CollabHooksAdmin
         }
     }
 
-    function NestedPagesDisableQuickEdit() {
+    function NestedPagesDisableQuickEdit()
+    {
         global $current_user;
 
         $allow_quickedit_roles = (defined('PP_NESTED_PAGES_QUICKEDIT_ROLES')) ? explode(',', str_replace(' ', '', strtolower(constant('PP_NESTED_PAGES_QUICKEDIT_ROLES')))) : [];
@@ -90,11 +95,11 @@ class CollabHooksAdmin
         if ($hide_quickedit || $hide_context_menu) {
             ?>
             <style type="text/css">
-            <?php if ($hide_quickedit):?>
+            <?php if ($hide_quickedit) :?>
             a.np-quick-edit {display:none;}
             <?php endif;?>
             
-            <?php if ($hide_context_menu):?>
+            <?php if ($hide_context_menu) :?>
             div.nestedpages-dropdown a {display:none;}
             <?php endif;?>
             </style>
@@ -219,28 +224,29 @@ class CollabHooksAdmin
             if ('bulk-posts' == $referer) {
                 if (!PWP::empty_REQUEST('action')) {
                     $action = PWP::REQUEST_key('action');
-
                 } elseif (!PWP::empty_REQUEST('action2')) {
                     $action = PWP::REQUEST_key('action2');
-                
                 } else {
                     $action = '';
                 }
 
-                if ('edit' != $action)
+                if ('edit' != $action) {
                     return;
+                }
             }
 
-            if (Collab::isLimitedEditor() && !current_user_can('pp_force_quick_edit'))
+            if (Collab::isLimitedEditor() && !current_user_can('pp_force_quick_edit')) {
                 wp_die(esc_html__('access denied', 'press-permit-core'));
+            }
         }
     }
 
     function actMaybeOverrideKses()
     {
         if (!PWP::empty_POST() && PWP::is_POST('action', 'editpost')) {
-            if (current_user_can('unfiltered_html')) // initial core cap check in kses_init() is unfilterable
+            if (current_user_can('unfiltered_html')) { // initial core cap check in kses_init() is unfilterable
                 kses_remove_filters();
+            }
         }
     }
 

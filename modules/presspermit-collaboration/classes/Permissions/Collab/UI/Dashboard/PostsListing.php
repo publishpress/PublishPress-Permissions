@@ -1,9 +1,11 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class PostsListing
 {
-    function __construct() {
+    function __construct()
+    {
         if (defined('PRESSPERMIT_STATUSES_VERSION')) {
             add_action('admin_print_footer_scripts', [$this, 'act_modify_inline_edit_ui']);
         }
@@ -11,8 +13,8 @@ class PostsListing
         add_action('admin_print_scripts', [$this, 'act_maybe_hide_quickedit']);
         
         if (!defined('PUBLISHPRESS_STATUSES_VERSION')) {
-        	add_action('admin_head', [$this, 'act_register_column_filters']);
-    	}
+            add_action('admin_head', [$this, 'act_register_column_filters']);
+        }
         
         add_action('init', [$this, 'act_tax_force_show_admin_col'], 99);
     }
@@ -33,8 +35,8 @@ class PostsListing
         global $typenow;
         
         if (!defined('PUBLISHPRESS_STATUSES_VERSION')) {
-        	add_action("manage_{$typenow}_posts_custom_column", [$this, 'actManagePostsCustomColumn'], 10, 2);
-    	}
+            add_action("manage_{$typenow}_posts_custom_column", [$this, 'actManagePostsCustomColumn'], 10, 2);
+        }
     }
 
     public function actManagePostsCustomColumn($column_name, $id)
@@ -86,13 +88,13 @@ class PostsListing
                 <?php
                 $pp = presspermit();
                 $moderation_statuses = [];
-                foreach (PWP::getPostStatuses(
-                    ['_builtin' => false, 
-                    'moderation' => true, 
-                    'post_type' => $screen->post_type
-                    ],
-
-                    'object'
+                foreach (
+                    PWP::getPostStatuses(
+                        ['_builtin' => false, 
+                        'moderation' => true, 
+                        'post_type' => $screen->post_type
+                        ],
+                        'object'
                     ) as $status => $status_obj 
                 ) {
                     $set_status_cap = "set_{$status}_posts";
@@ -106,8 +108,8 @@ class PostsListing
                     }
                 }
 
-                foreach( $moderation_statuses as $status => $status_obj ) :
-                ?>
+                foreach ($moderation_statuses as $status => $status_obj) :
+                    ?>
                 if (!$('select[name="_status"] option[value="<?php echo esc_attr($status);?>"]').length) {
                     $('<option value="<?php echo esc_attr($status);?>"><?php echo esc_html($status_obj->label);?></option>').insertBefore('select[name="_status"] option[value="pending"]');
                 }

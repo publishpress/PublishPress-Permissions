@@ -41,8 +41,9 @@ class Settings
             $wp_scripts->in_footer[] = 'presspermit-pro-settings';  // otherwise it will not be printed in footer  todo: review
         }
 
-        if (!current_user_can('pp_manage_settings'))
+        if (!current_user_can('pp_manage_settings')) {
             wp_die(esc_html(PWP::__wp('Cheatin&#8217; uh?')));
+        }
 
         do_action('presspermit_options_ui');
 
@@ -60,13 +61,15 @@ class Settings
         if ($_hidden = apply_filters('presspermit_hide_options', [])) {
             $hidden = [];
             foreach (array_keys($_hidden) as $option_name) {
-                if (!is_array($_hidden[$option_name]) && strlen($option_name) > 3)
+                if (!is_array($_hidden[$option_name]) && strlen($option_name) > 3) {
                     $hidden[] = substr($option_name, 3);
+                }
             }
 
             foreach (array_keys($ui->form_options) as $tab) {
-                foreach (array_keys($ui->form_options[$tab]) as $section)
+                foreach (array_keys($ui->form_options[$tab]) as $section) {
                     $ui->form_options[$tab][$section] = array_diff($ui->form_options[$tab][$section], $hidden);
+                }
             }
         } ?>
         <div class="pressshack-admin-wrapper wrap" id="pp-permissions-wrapper">
@@ -124,21 +127,21 @@ class Settings
             $table_class = 'form-table pp-form-table pp-options-table';
 
             if (PWP::is_REQUEST('presspermit_submit') || PWP::is_REQUEST('presspermit_submit_redirect')) :
-            ?>
+                ?>
                 <div id="message" class="updated">
                     <p>
                         <strong><?php esc_html_e('All settings were updated.', 'press-permit-core'); ?>&nbsp;</strong>
                     </p>
                 </div>
-            <?php
+                <?php
             elseif (PWP::is_REQUEST('presspermit_defaults')) :
-            ?>
+                ?>
                 <div id="message" class="updated">
                     <p>
                         <strong><?php esc_html_e('All settings were reset to defaults.', 'press-permit-core'); ?>&nbsp;</strong>
                     </p>
                 </div>
-            <?php
+                <?php
             endif;
 
             foreach (array_keys($ui->tab_captions) as $tab) {
@@ -160,7 +163,9 @@ class Settings
             <span class="submit pp-submit" style="border:none;display:block!important;">
                 <input type="submit" name="presspermit_submit" class="button-primary" value="<?php esc_attr_e('Save Changes', 'press-permit-core'); ?>" />
                 <input type="hidden" name="pp_tab"
-                    value="<?php if ($pp_tab = PWP::REQUEST_key('pp_tab')) echo esc_attr($pp_tab); ?>" />
+                    value="<?php if ($pp_tab = PWP::REQUEST_key('pp_tab')) {
+                        echo esc_attr($pp_tab);
+                           } ?>" />
             </span>
             <?php
             echo '</div>'; // pp-options-wrapper
@@ -201,7 +206,7 @@ class Settings
             ?>
         </div>
 
-<?php
+        <?php
     }
 
     public static function pluginInfoURL($plugin_slug)

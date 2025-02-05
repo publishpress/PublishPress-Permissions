@@ -53,8 +53,9 @@ class SqlTokenizerBase
         if ($array_pos = array_search($arg_name, (array)$tokens)) {
             $ilim = count($tokens);
             for ($i = $array_pos + 1; $i < $ilim; $i++) {
-                if (in_array($tokens[$i], $this->endparens) || in_array($tokens[$i], $this->separators))
+                if (in_array($tokens[$i], $this->endparens) || in_array($tokens[$i], $this->separators)) {
                     return $return;
+                }
 
                 if (
                     !in_array($tokens[$i], $this->tokens) && !in_array($tokens[$i], $this->startparens)

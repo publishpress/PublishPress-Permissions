@@ -42,10 +42,14 @@ class ItemExceptionsRenderUI
 
             $this->options['standard'][0] = $this->opt_labels['blocked'];
 
-            if (!defined('PP_NO_ADDITIONAL_ACCESS')) $this->options['standard'][2] = $this->opt_labels['enabled'];
+            if (!defined('PP_NO_ADDITIONAL_ACCESS')) {
+                $this->options['standard'][2] = $this->opt_labels['enabled'];
+            }
         } else {
             $this->options['standard'][''] = $this->opt_labels['no_setting'];
-            if (!defined('PP_NO_ADDITIONAL_ACCESS')) $this->options['standard'][2] = $this->opt_labels['enabled'];
+            if (!defined('PP_NO_ADDITIONAL_ACCESS')) {
+                $this->options['standard'][2] = $this->opt_labels['enabled'];
+            }
         }
 
         switch ($agent_type) {
@@ -201,12 +205,13 @@ class ItemExceptionsRenderUI
                 }
 
                 $for_type = ($for_item_type) ? $for_item_type : '(all)';
-            ?>
+                ?>
                 <td class="<?php echo ('children' == $assign_for) ? 'pp-exc-children' : 'pp-exc-item'; ?>">
                     <select name='pp_exceptions<?php echo esc_attr("[$for_type][$op][$agent_type][$assign_for][$agent_id]") . "' class='" . esc_attr($this->opt_class[$current_val]) . "'"; ?><?php echo esc_attr($disabled); ?> autocomplete="off">
                     <?php
                     foreach ($this->options[$option_set] as $val => $lbl) :
-                        if (('wp_role' == $agent_type)
+                        if (
+                            ('wp_role' == $agent_type)
                             && in_array($agent_info->metagroup_id, ['wp_anon', 'wp_all'], true)
                             && (!$pp->moduleActive('file-access') || 'attachment' != $for_type)
                             && !defined('PP_ALL_ANON_FULL_EXCEPTIONS')
@@ -214,7 +219,7 @@ class ItemExceptionsRenderUI
                         ) {
                             continue;
                         }
-                    ?>
+                        ?>
                     <option value=' <?php echo esc_attr("$val") . "' class='" . esc_attr($this->opt_class[$val]) . "' ";
                                     selected($val, $current_val); ?>>
                         <?php echo esc_html($lbl); ?>
@@ -228,10 +233,10 @@ class ItemExceptionsRenderUI
                     <?php endif; ?>
 
                 </td>
-            <?php
+                <?php
             }
             ?>
         </tr>
-<?php
+        <?php
     } // end function 
 }

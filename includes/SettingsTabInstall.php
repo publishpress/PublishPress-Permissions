@@ -9,7 +9,9 @@ class SettingsTabInstall
     public function __construct()
     {
         // This class is called in pro version only
-        if (!defined('PRESSPERMIT_PRO_VERSION')) return;
+        if (!defined('PRESSPERMIT_PRO_VERSION')) {
+            return;
+        }
         add_filter('presspermit_option_tabs', [$this, 'optionTabs'], 90);
         add_filter('presspermit_section_captions', [$this, 'sectionCaptions']);
         add_filter('presspermit_option_captions', [$this, 'optionCaptions']);
@@ -68,7 +70,7 @@ class SettingsTabInstall
                     <strong><?php esc_html_e('Version info was refreshed.', 'press-permit-core'); ?>&nbsp;</strong>
                 </p>
             </div>
-            <?php endif;
+        <?php endif;
     }
 
     public function optionsUI()
@@ -122,7 +124,7 @@ class SettingsTabInstall
                         <h4><?php esc_html_e('Further details for your installation:', 'press-permit-core'); ?></h4>
                         <ul id="presspermit-pro-install-details" class="pp-bullet-list">
 
-                            <?php if (($expired && $expire_days < 365) || get_option('presspermitpro_version') || $activated): ?>
+                            <?php if (($expired && $expire_days < 365) || get_option('presspermitpro_version') || $activated) : ?>
                                 <li>
                                     <?php
                                     if ($expired) {
@@ -146,20 +148,21 @@ class SettingsTabInstall
                                 </li>
                             <?php endif; ?>
 
-                            <?php if ($key_string): ?>
+                            <?php if ($key_string) : ?>
                                 <li>
                                     <?php
-                                    if ($expire_date)
+                                    if ($expire_date) {
                                         echo esc_html(sprintf(__("Original presspermit.com support key hash: <strong>%s</strong> (expires %s)"), esc_html($key_string), esc_html($expire_date)));
-                                    else
+                                    } else {
                                         echo esc_html(sprintf(__("Original presspermit.com support key hash: <strong>%s</strong>"), esc_html($key_string), esc_html($expire_date)));
+                                    }
                                     ?>
                                 </li>
                             <?php endif; ?>
                         </ul>
                     </td>
                 </tr>
-        <?php
+                <?php
             endif; // any options accessable in this section
         endif; // any status messages to display
 
@@ -198,9 +201,7 @@ class SettingsTabInstall
                     if (!empty($do_info_link)) {
                         printf(
                             esc_html__('PublishPress Permissions Version: %1$s %2$s', 'press-permit-core'),
-
                             esc_html(PRESSPERMIT_VERSION),
-
                             "<span class='update-message'> &bull; <a href='" . esc_url($info_url) . "' class='thickbox'>"
                                 . sprintf(esc_html__('%s&nbsp;details', 'press-permit-core'), esc_html($wp_plugin_updates->response[plugin_basename(PRESSPERMIT_FILE)]->new_version))
                                 . '</a></span>'
@@ -222,7 +223,7 @@ class SettingsTabInstall
                         <?php
                         if ($ver_history = (array) json_decode($ver_history)) :
                             $ver_history = array_reverse($ver_history, true);
-                        ?>
+                            ?>
                             <div class="agp-vtight"><?php esc_html_e('Installation History', 'press-permit-core'); ?></div>
                             <?php
                             echo '<textarea id="pp_version_history" name="pp_version_history" rows="5" cols="30" style="width: 250px; height: 85px" readonly="readonly">';
@@ -270,7 +271,7 @@ class SettingsTabInstall
                 </p>
             </td>
         </tr>
-<?php
+        <?php
     }
 
     private function useNetworkUpdates()

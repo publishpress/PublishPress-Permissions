@@ -1,10 +1,11 @@
 <?php
-namespace PublishPress\Permissions\Collab\Revisionary;
 
+namespace PublishPress\Permissions\Collab\Revisionary;
 
 class AdminLegacy
 {
-    function __construct() {
+    function __construct()
+    {
         add_filter('map_meta_cap', [$this, 'flt_mapMetaCap'], 1, 4);
         add_filter('pre_post_parent', [$this, 'fltPageParent']);
         add_filter('presspermit_get_exception_items', [$this, 'flt_get_exception_items'], 10, 5);
@@ -69,32 +70,33 @@ class AdminLegacy
     {
         // args elements: status, in_clause, src_table 
 
-        if (in_array($operation, ['edit', 'delete'], true) && empty($args['status']) 
-        && !in_array($post_type, apply_filters('presspermit_unrevisable_types', []), true)) {
+        if (
+            in_array($operation, ['edit', 'delete'], true) && empty($args['status']) 
+            && !in_array($post_type, apply_filters('presspermit_unrevisable_types', []), true)
+        ) {
             $user = presspermit()->getUser();
             
-			if ( isset($args['ids']) ) { // PressPermit Core >= 2.6.2
-				
-				// If we are hiding other revisions from revisors, need to distinguish 
-				// between 'edit' exceptions and 'revise' exceptions (which are merged upstream for other reasons).
-				if (rvy_get_option('revisor_lock_others_revisions')) {
+            if (isset($args['ids'])) { // PressPermit Core >= 2.6.2
+                // If we are hiding other revisions from revisors, need to distinguish 
+                // between 'edit' exceptions and 'revise' exceptions (which are merged upstream for other reasons).
+                if (rvy_get_option('revisor_lock_others_revisions')) {
                     $revise_ids = [];
                     
                     switch ($args['via_item_source']) {
-						case 'post':
-							$via_item_type = (isset($args['via_item_type'])) ? $args['via_item_type'] : $post_type;
-							$revise_ids = $user->getExceptionPosts( 
+                        case 'post':
+                            $via_item_type = (isset($args['via_item_type'])) ? $args['via_item_type'] : $post_type;
+                            $revise_ids = $user->getExceptionPosts( 
                                 'revise', 
                                 'additional', 
                                 $via_item_type, 
                                 ['status' => $args['status']]
                             );
                             
-							break;
-						
-						case 'term':
-							foreach(presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
-								$tt_ids = $user->getExceptionTerms( 
+                            break;
+                        
+                        case 'term':
+                            foreach (presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
+                                $tt_ids = $user->getExceptionTerms( 
                                     'revise', 
                                     'additional', 
                                     $post_type, 
@@ -103,46 +105,46 @@ class AdminLegacy
                                 );
                                 
                                 $revise_ids = array_merge($revise_ids, $tt_ids);
-							}
-							
-							break;
-					}
+                            }
+                            
+                            break;
+                    }
                     
-					$edit_ids = ($revise_ids) ? array_diff($args['ids'], $revise_ids) : $args['ids'];
-					
-					if ( $edit_ids || $revise_ids ) {
-						$parent_clause = array();
-						
-						if ( $edit_ids ) {
-							$parent_clause []= "( {$args['src_table']}.post_parent IN ('" . implode("','", $edit_ids) . "') )";
-						}
-						
-						if ( $revise_ids ) {
-                            $parent_clause []= "( {$args['src_table']}.post_author = $user->ID" 
+                    $edit_ids = ($revise_ids) ? array_diff($args['ids'], $revise_ids) : $args['ids'];
+                    
+                    if ($edit_ids || $revise_ids) {
+                        $parent_clause = array();
+                        
+                        if ($edit_ids) {
+                            $parent_clause [] = "( {$args['src_table']}.post_parent IN ('" . implode("','", $edit_ids) . "') )";
+                        }
+                        
+                        if ($revise_ids) {
+                            $parent_clause [] = "( {$args['src_table']}.post_author = $user->ID" 
                             . " AND {$args['src_table']}.post_parent IN ('" . implode("','", $revise_ids) . "') )";
-						}
-						
-						$parent_clause = 'AND (' . Arr::implode(' OR ', $parent_clause) . ' )';
-						
+                        }
+                        
+                        $parent_clause = 'AND (' . Arr::implode(' OR ', $parent_clause) . ' )';
+                        
                         $clause .= " OR ( {$args['src_table']}.post_type = 'revision'"
                         . " AND {$args['src_table']}.post_status IN ('pending', 'future') $parent_clause )";
-					}
-				} else {
-					// Not hiding other users' revisions from Revisors, so list all posts with 'edit' or 'revise' exceptions regardless of author.
+                    }
+                } else {
+                    // Not hiding other users' revisions from Revisors, so list all posts with 'edit' or 'revise' exceptions regardless of author.
                     $clause .= " OR ( {$args['src_table']}.post_type = 'revision'" 
                     . " AND {$args['src_table']}.post_status IN ('pending', 'future')"
                     . " AND {$args['src_table']}.post_parent {$args['in_clause']} )";
-				}
-			} else {
-				// Older PP Core version doesn't pass ids, so can't distinguish between 'edit' and 'revise' exceptions; retain previous behavior.
+                }
+            } else {
+                // Older PP Core version doesn't pass ids, so can't distinguish between 'edit' and 'revise' exceptions; retain previous behavior.
                 $clause .= " OR ( {$args['src_table']}.post_type = 'revision'"
                 . " AND {$args['src_table']}.post_status IN ('pending', 'future')"
                 . " AND {$args['src_table']}.post_author = " . presspermit()->getUser()->ID 
                 . " AND {$args['src_table']}.post_parent {$args['in_clause']} )";
-			}
-		}
+            }
+        }
 
-		return $clause;
+        return $clause;
     }
 
     public function flt_mapMetaCap($caps, $meta_cap, $user_id, $wp_args)
@@ -150,8 +152,9 @@ class AdminLegacy
         global $current_user;
 
         if (in_array($meta_cap, ['edit_post', 'edit_page'], true)) {
-            if ($user_id != $current_user->ID)
+            if ($user_id != $current_user->ID) {
                 return $caps;
+            }
 
             if (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'update.php')) { // Revisionary does not load on update.php
                 return $caps;
@@ -169,8 +172,9 @@ class AdminLegacy
                 }
             }
 
-            if (!rvy_get_option('require_edit_others_drafts'))
+            if (!rvy_get_option('require_edit_others_drafts')) {
                 return $caps;
+            }
 
             if (isset($wp_args[0]) && is_object($wp_args[0])) {
                 if ($current_user->ID == $wp_args[0]->post_author) {
@@ -202,8 +206,9 @@ class AdminLegacy
     // merge revise exceptions into edit exceptions
     public function flt_get_exception_items($exception_items, $operation, $mod_type, $for_item_type, $args = [])
     {
-        if ('edit' != $operation)
+        if ('edit' != $operation) {
             return $exception_items;
+        }
 
         global $revisionary;
 
@@ -273,8 +278,9 @@ class AdminLegacy
                             )
                         );
 
-                        if (array_intersect($reqd_caps, $strip_capreqs))
+                        if (array_intersect($reqd_caps, $strip_capreqs)) {
                             $reqd_caps [] = $type_obj->cap->edit_posts;
+                        }
                     }
                 }
 

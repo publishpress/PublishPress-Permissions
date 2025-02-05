@@ -136,17 +136,21 @@ class PostEdit
     {
         global $pagenow;
 
-        if ('edit.php' == $pagenow)
+        if ('edit.php' == $pagenow) {
             return;
+        }
 
         static $been_here;
-        if (isset($been_here)) return;
+        if (isset($been_here)) {
+            return;
+        }
         $been_here = true;
 
         global $typenow;
 
-        if (!in_array($typenow, presspermit()->getEnabledPostTypes(), true) || in_array($typenow, ['revision']))
+        if (!in_array($typenow, presspermit()->getEnabledPostTypes(), true) || in_array($typenow, ['revision'])) {
             return;
+        }
 
         if (current_user_can('pp_assign_roles')) {
             $this->initItemExceptionsUI();
@@ -159,20 +163,21 @@ class PostEdit
     public function drawSettingsUI($object, $box)
     {
         if ($type_obj = get_post_type_object($object->post_type)) :
-?>
+            ?>
             <label for="pp_enable_post_type"><input type="checkbox" name="pp_enable_post_type"
                     id="pp_enable_post_type" />
                 <?php printf(esc_html__('enable custom permissions for %s', 'press-permit-core'), esc_html($type_obj->labels->name)); ?>
             </label>
-        <?php
+            <?php
         endif;
     }
 
     // wrapper function so we don't have to load item_roles_ui class just to register the metabox
     public function drawExceptionsUI($object, $box)
     {
-        if (empty($box['id']))
+        if (empty($box['id'])) {
             return;
+        }
 
         $item_id = (!empty($object) && ('auto-draft' == $object->post_status)) ? 0 : $object->ID;
 
@@ -211,7 +216,8 @@ class PostEdit
     } // end function
 
     public function actScriptForceAutosaveBeforeUpload()
-    {  // under some configuration, it is necessary to pre-assign categories. Autosave accomplishes this by triggering save_post action handlers.
+    {
+  // under some configuration, it is necessary to pre-assign categories. Autosave accomplishes this by triggering save_post action handlers.
         if (!presspermit()->isUserUnfiltered()) : ?>
             <script type="text/javascript">
                 /* <![CDATA[ */
@@ -224,7 +230,7 @@ class PostEdit
                 });
                 /* ]]> */
             </script>
-<?php
+            <?php
         endif;
     } // end function
 }

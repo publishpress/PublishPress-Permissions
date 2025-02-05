@@ -16,8 +16,9 @@ class MediaEdit
             case 'delete_post':
             case 'delete_page':
                 // If no author set yet, default to current user for cap checks.
-                if (!$post_author_id)
+                if (!$post_author_id) {
                     $post_author_id = $user_id;
+                }
 
                 // If the user is the author...
                 if ($user_id == $post_author_id) {
@@ -25,8 +26,9 @@ class MediaEdit
                     if ('publish' == $post_status) {
                         $caps[] = $post_type->cap->delete_published_posts;
                     } elseif ('trash' == $post_status) {
-                        if ('publish' == get_post_meta($post->ID, '_wp_trash_meta_status', true))
+                        if ('publish' == get_post_meta($post->ID, '_wp_trash_meta_status', true)) {
                             $caps[] = $post_type->cap->delete_published_posts;
+                        }
                     } else {
                         // If the post is draft...
                         $caps[] = $post_type->cap->delete_posts;
@@ -35,10 +37,11 @@ class MediaEdit
                     // The user is trying to edit someone else's post.
                     $caps[] = $post_type->cap->delete_others_posts;
                     // The post is published, extra cap required.
-                    if ('publish' == $post_status)
+                    if ('publish' == $post_status) {
                         $caps[] = $post_type->cap->delete_published_posts;
-                    elseif ('private' == $post_status)
+                    } elseif ('private' == $post_status) {
                         $caps[] = $post_type->cap->delete_private_posts;
+                    }
                 }
                 break;
             // edit_post breaks down to edit_posts, edit_published_posts, or
@@ -46,8 +49,9 @@ class MediaEdit
             case 'edit_post':
             case 'edit_page':
                 // If no author set yet, default to current user for cap checks.
-                if (!$post_author_id)
+                if (!$post_author_id) {
                     $post_author_id = $user_id;
+                }
 
                 // If the user is the author...
                 if ($user_id == $post_author_id) {
@@ -55,8 +59,9 @@ class MediaEdit
                     if ('publish' == $post_status) {
                         $caps[] = $post_type->cap->edit_published_posts;
                     } elseif ('trash' == $post_status) {
-                        if ('publish' == get_post_meta($post->ID, '_wp_trash_meta_status', true))
+                        if ('publish' == get_post_meta($post->ID, '_wp_trash_meta_status', true)) {
                             $caps[] = $post_type->cap->edit_published_posts;
+                        }
                     } else {
                         // If the post is draft...
                         $caps[] = $post_type->cap->edit_posts;
@@ -65,10 +70,11 @@ class MediaEdit
                     // The user is trying to edit someone else's post.
                     $caps[] = $post_type->cap->edit_others_posts;
                     // The post is published, extra cap required.
-                    if ('publish' == $post_status)
+                    if ('publish' == $post_status) {
                         $caps[] = $post_type->cap->edit_published_posts;
-                    elseif ('private' == $post_status)
+                    } elseif ('private' == $post_status) {
                         $caps[] = $post_type->cap->edit_private_posts;
+                    }
                 }
                 break;
 
@@ -99,8 +105,9 @@ class MediaEdit
                      *
                      */
                     $allowed = apply_filters("auth_post_meta_{$meta_key}", false, $meta_key, $post->ID, $user_id, $cap, $caps);
-                    if (!$allowed)
+                    if (!$allowed) {
                         $caps[] = $cap;
+                    }
                 } elseif ($meta_key && is_protected_meta($meta_key, 'post')) {
                     $caps[] = $cap;
                 }

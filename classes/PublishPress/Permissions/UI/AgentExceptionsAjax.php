@@ -36,28 +36,29 @@ class AgentExceptionsAjax
             $via_source_name = 'term';
             $for_type = '';
         } else {
-            if (!$for_type || post_type_exists($for_type))
+            if (!$for_type || post_type_exists($for_type)) {
                 $for_source_name = 'post';
-            elseif (taxonomy_exists($for_type))
+            } elseif (taxonomy_exists($for_type)) {
                 $for_source_name = 'term';
-            else
+            } else {
                 $for_source_name = $for_type;
+            }
 
             if (!$via_type && post_type_exists($for_type)) {
                 $via_type = $for_type;
                 $via_source_name = 'post';
             } else {
-                if (post_type_exists($via_type))
+                if (post_type_exists($via_type)) {
                     $via_source_name = 'post';
-                elseif (taxonomy_exists($via_type))
+                } elseif (taxonomy_exists($via_type)) {
                     $via_source_name = 'term';
-                else
+                } else {
                     $via_source_name = $via_type;
+                }
             }
         }
 
         switch ($pp_ajax_agent_exceptions) {
-
             case 'get_operation_options':
                 // todo: deal with login timeout in JS to avoid multiple messages
                 if (!is_user_logged_in()) {
@@ -95,10 +96,12 @@ class AgentExceptionsAjax
                 if ($agent_id && ('pp_group' == $agent_type)) {
                     $group = $pp->groups()->getGroup($agent_id);
                     $is_wp_role = ('wp_role' == $group->metagroup_type);
-                } else
+                } else {
                     $is_wp_role = false;
+                }
 
-                if ((!$is_wp_role
+                if (
+                    (!$is_wp_role
                         || !in_array($group->metagroup_id, ['wp_anon', 'wp_all'])
                         || ($pp->moduleActive('file-access') && 'attachment' == $for_type)
                         || defined('PP_ALL_ANON_FULL_EXCEPTIONS'))
@@ -184,7 +187,7 @@ class AgentExceptionsAjax
 
                 foreach ($types as $val => $title) {
                     $class = ($for_type == $val) ? 'pp-post-object' : '';
-                    echo "<option value='" . esc_attr($val) . "' class='" . esc_attr($class) . "'>". esc_html($title) . "</option>";
+                    echo "<option value='" . esc_attr($val) . "' class='" . esc_attr($class) . "'>" . esc_html($title) . "</option>";
                 }
 
                 break;

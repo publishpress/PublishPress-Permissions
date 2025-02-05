@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class TermEditWorkarounds
@@ -36,14 +37,16 @@ class TermEditWorkarounds
             if ($tx_obj = get_taxonomy($taxonomy)) {
                 $user = presspermit()->getUser();
 
-                if (!$included_ttids = apply_filters(
-                    'presspermit_get_terms_exceptions', 
-                    $user->getExceptionTerms('associate', 'include', $taxonomy, $taxonomy, ['merge_universals' => true]), 
-                    'associate', 
-                    'include', 
-                    $taxonomy, 
-                    $additional_tt_ids
-                )) {
+                if (
+                    !$included_ttids = apply_filters(
+                        'presspermit_get_terms_exceptions', 
+                        $user->getExceptionTerms('associate', 'include', $taxonomy, $taxonomy, ['merge_universals' => true]), 
+                        'associate', 
+                        'include', 
+                        $taxonomy, 
+                        $additional_tt_ids
+                    )
+                ) {
                     $excluded_ttids = apply_filters(
                         'presspermit_get_terms_exceptions', 
                         $user->getExceptionTerms('associate', 'include', $taxonomy, $taxonomy, ['merge_universals' => true]), 
@@ -60,25 +63,30 @@ class TermEditWorkarounds
 
                     $permit = true;
                     if ($included_ttids) {
-                        if ($additional_tt_ids)
+                        if ($additional_tt_ids) {
                             $included_ttids = array_merge($included_ttids, $additional_tt_ids);
+                        }
 
-                        if (!in_array($parent_ttid, $included_ttids))
+                        if (!in_array($parent_ttid, $included_ttids)) {
                             $permit = false;
+                        }
                     } else {
-                        if ($additional_tt_ids)
+                        if ($additional_tt_ids) {
                             $excluded_ttids = array_diff($excluded_ttids, $additional_tt_ids);
+                        }
 
-                        if (in_array($parent_ttid, $excluded_ttids))
+                        if (in_array($parent_ttid, $excluded_ttids)) {
                             $permit = false;
+                        }
                     }
                 } else {
-                    if ($included_ttids && !in_array(0, $included_ttids))
+                    if ($included_ttids && !in_array(0, $included_ttids)) {
                         $permit = false;
-                    elseif ($excluded_ttids && in_array(0, $excluded_ttids))
+                    } elseif ($excluded_ttids && in_array(0, $excluded_ttids)) {
                         $permit = false;
-                    else
+                    } else {
                         $permit = !empty($user->allcaps[$tx_obj->cap->manage_terms]);
+                    }
                 }
             }
 

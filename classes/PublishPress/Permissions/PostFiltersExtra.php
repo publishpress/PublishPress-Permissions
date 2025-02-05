@@ -51,7 +51,6 @@ class PostFiltersExtra
                 $matches = [];
                 if (preg_match('/SELECT .* FROM [^ ]+posts AS ([^ ]) .*/', $request, $matches)) {
                     $args['source_alias'] = $matches[1];
-                
                 } elseif ($return = preg_match('/SELECT .* FROM ([^ ]+)posts .*/', $request, $matches)) {
                     $args['source_alias'] = $matches[1] . 'posts';
                 }
@@ -63,7 +62,8 @@ class PostFiltersExtra
 
             // attachment filtering is applied here
             $clauses['where'] = apply_filters(
-                'presspermit_posts_clauses_where', apply_filters('presspermit_posts_where', $clauses['where'], $args),
+                'presspermit_posts_clauses_where',
+                apply_filters('presspermit_posts_where', $clauses['where'], $args),
                 $clauses,
                 $args
             );
@@ -118,5 +118,4 @@ class PostFiltersExtra
 
         return $where;
     }
-
 } // end class

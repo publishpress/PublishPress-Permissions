@@ -110,7 +110,6 @@ class ItemExceptionsData
                         $this->agent_info['user'][$row->ID]->name = $row->user_login;
                     }
                 }
-
             } elseif ('pp_group' != $agent_type) {
                 $_args = ['ids' => $ids];
                 $this->agent_info[$agent_type] = $pp->groups()->getGroups($agent_type, $_args);
@@ -156,7 +155,6 @@ class ItemExceptionsData
                     foreach (array_keys($this->current_exceptions) as $for_item_type) {
                         foreach (array_keys($this->current_exceptions[$for_item_type]) as $op) {
                             if (isset($this->current_exceptions[$for_item_type][$op]['pp_group'][$agent_id])) {
-
                                 $this->current_exceptions[$for_item_type][$op]['wp_role'][$agent_id]
                                     = (array)$this->current_exceptions[$for_item_type][$op]['pp_group'][$agent_id];
 
@@ -172,7 +170,6 @@ class ItemExceptionsData
         foreach (array_keys($this->current_exceptions) as $for_item_type) {
             foreach (array_keys($this->current_exceptions[$for_item_type]) as $op) {
                 foreach (array_keys($this->current_exceptions[$for_item_type][$op]) as $agent_type) {
-
                     $this->current_exceptions[$for_item_type][$op][$agent_type]
                         = array_intersect_key($this->current_exceptions[$for_item_type][$op][$agent_type], $this->agent_info[$agent_type]);
                 }
@@ -180,16 +177,19 @@ class ItemExceptionsData
         }
 
         $query_users = (isset($this->agent_info['user'])) ? array_keys($this->agent_info['user']) : [];
-        if (!empty($args['agent_type']) && ('user' == $args['agent_type']) && !empty($args['agent_id']))
+        if (!empty($args['agent_type']) && ('user' == $args['agent_type']) && !empty($args['agent_id'])) {
             $query_users = array_merge($query_users, (array)$args['agent_id']);
+        }
 
         $agents_clause = [];
 
-        if (!empty($args['agent_type']) && ('user' != $args['agent_type']))
+        if (!empty($args['agent_type']) && ('user' != $args['agent_type'])) {
             $agents_clause[] = $wpdb->prepare("( e.agent_type = %s )", $args['agent_type']);
+        }
 
-        if ($query_users)
+        if ($query_users) {
             $agents_clause[] = "( e.agent_type != 'user' OR e.agent_id IN ('" . implode("','", array_map('intval', $query_users)) . "') )";
+        }
 
         $agents_clause = ($agents_clause) ? Arr::implode(' OR ', $agents_clause) : '1=1';
 
@@ -214,16 +214,16 @@ class ItemExceptionsData
                     "SELECT DISTINCT e.agent_type, e.agent_id, e.operation, e.for_item_type FROM $wpdb->ppc_exceptions AS e"
                     . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
                     . " WHERE $agents_clause AND i.assign_for = %s AND e.mod_type = 'include' $where",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
                     $_assign_for
                 )
             );
 
             foreach ($results as $row) {
-                if (('pp_group' == $row->agent_type) && in_array($row->agent_id, array_keys($this->agent_info['wp_role'])))
+                if (('pp_group' == $row->agent_type) && in_array($row->agent_id, array_keys($this->agent_info['wp_role']))) {
                     $_agent_type = 'wp_role';
-                else
+                } else {
                     $_agent_type = $row->agent_type;
+                }
 
                 Arr::setElem(
                     $this->inclusions_active,

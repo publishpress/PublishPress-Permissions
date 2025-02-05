@@ -6,19 +6,24 @@ class LibArray
 {
     // derived from http://us3.php.net/manual/en/ref.array.php#80631
     public static function flatten($arr_md, $go_deep = false)
-    { //flattens multi-dim arrays (if go_deep, supports > 2D but destroys keys)
-        if (!is_array($arr_md)) return [];
+    {
+ //flattens multi-dim arrays (if go_deep, supports > 2D but destroys keys)
+        if (!is_array($arr_md)) {
+            return [];
+        }
 
         $arr_flat = [];
 
         foreach ($arr_md as $element) {
             if (is_array($element)) {
-                if ($go_deep)
+                if ($go_deep) {
                     $arr_flat = array_merge($arr_flat, self::flatten($element));
-                else
+                } else {
                     $arr_flat = array_merge($arr_flat, $element);
-            } else
+                }
+            } else {
                 array_push($arr_flat, $element);
+            }
         }
 
         return $arr_flat;
@@ -29,8 +34,9 @@ class LibArray
         $elem = &$arr;
 
         foreach ($dims as $dim => $val) {
-            if (!isset($elem[$val]))
+            if (!isset($elem[$val])) {
                 $elem[$val] = [];
+            }
 
             $elem = &$elem[$val];
         }
@@ -38,8 +44,9 @@ class LibArray
 
     public static function implode($delim, $arr, $wrap_open = ' ( ', $wrap_close = ' ) ')
     {
-        if (!is_array($arr))
+        if (!is_array($arr)) {
             return $arr;
+        }
 
         $delim = "$wrap_close $delim $wrap_open";
 
@@ -53,25 +60,30 @@ class LibArray
 
     public static function getPropertyArray(&$arr, $id_prop, $buffer_prop)
     {
-        if (!is_array($arr))
+        if (!is_array($arr)) {
             return;
+        }
 
         $buffer = [];
 
-        foreach (array_keys($arr) as $key)
+        foreach (array_keys($arr) as $key) {
             $buffer[$arr[$key]->$id_prop] = (isset($arr[$key]->$buffer_prop)) ? $arr[$key]->$buffer_prop : '';
+        }
 
         return $buffer;
     }
 
     public static function restorePropertyArray(&$target_arr, $buffer_arr, $id_prop, $buffer_prop)
     {
-        if (!is_array($target_arr) || !is_array($buffer_arr))
+        if (!is_array($target_arr) || !is_array($buffer_arr)) {
             return;
+        }
 
-        foreach (array_keys($target_arr) as $key)
-            if (isset($buffer_arr[$target_arr[$key]->$id_prop]))
+        foreach (array_keys($target_arr) as $key) {
+            if (isset($buffer_arr[$target_arr[$key]->$id_prop])) {
                 $target_arr[$key]->$buffer_prop = $buffer_arr[$target_arr[$key]->$id_prop];
+            }
+        }
     }
 
     public static function subset($arr, $keys)

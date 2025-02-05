@@ -4,7 +4,9 @@ namespace PublishPress\Permissions\UI\Dashboard;
 
 // menu icons by Jonas Rask: https://www.jonasraskdesign.com/
 
-if (!defined('ABSPATH')) exit; // Exit if accessed directly
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly
+}
 
 define('PRESSPERMIT_URLPATH', plugins_url('', PRESSPERMIT_FILE));
 
@@ -33,8 +35,8 @@ class DashboardFilters
             require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/PostEdit.php');
             new PostEdit();
             $is_post_admin = true;
-
-        } elseif (('term.php' == $pagenow) || (('edit-tags.php' == $pagenow)
+        } elseif (
+            ('term.php' == $pagenow) || (('edit-tags.php' == $pagenow)
                 && PWP::is_REQUEST('action', 'edit'))
         ) {
             if (current_user_can('pp_assign_roles')) {
@@ -46,7 +48,6 @@ class DashboardFilters
         if ('users.php' == $pagenow) {
             require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/UsersListing.php');
             new UsersListing();
-
         } elseif (('edit.php' == $pagenow) || PWP::isAjax('inline-save')) {
             if (!$post_type = PWP::REQUEST_key('post_type')) {
                 $post_type = 'post';
@@ -75,7 +76,6 @@ class DashboardFilters
 
             if ('presspermit-edit-permissions' == $pp_plugin_page) {
                 add_action('admin_head', [$this, 'actLoadScripts']);
-
             } elseif ('presspermit-settings' == $pp_plugin_page) {
                 wp_enqueue_style('plugin-install');
                 wp_enqueue_script('plugin-install');
@@ -106,13 +106,13 @@ class DashboardFilters
         if (in_array($pagenow, ['user-edit.php', 'user-new.php', 'profile.php'])) {
             wp_enqueue_style('presspermit-edit-permissions', PRESSPERMIT_URLPATH . '/common/css/edit-permissions.css', [], PRESSPERMIT_VERSION);
             wp_enqueue_style('presspermit-groups-checklist', PRESSPERMIT_URLPATH . '/common/css/groups-checklist.css', [], PRESSPERMIT_VERSION);
-       
         } elseif (in_array($pp_plugin_page, ['presspermit-edit-permissions', 'presspermit-group-new'], true)) {
             wp_enqueue_style('presspermit-edit-permissions', PRESSPERMIT_URLPATH . '/common/css/edit-permissions.css', [], PRESSPERMIT_VERSION);
             wp_enqueue_style('presspermit-groups-checklist', PRESSPERMIT_URLPATH . '/common/css/groups-checklist.css', [], PRESSPERMIT_VERSION);
         } 
         
-        if (('presspermit-settings' == presspermitPluginPage()) || (('plugin-install.php' == $pagenow)
+        if (
+            ('presspermit-settings' == presspermitPluginPage()) || (('plugin-install.php' == $pagenow)
             && isset($_SERVER['HTTP_REFERER']) && strpos(esc_url_raw($_SERVER['HTTP_REFERER']), 'presspermit-settings'))
         ) {
             wp_enqueue_style('presspermit-settings', PRESSPERMIT_URLPATH . '/common/css/settings.css', [], PRESSPERMIT_VERSION);
@@ -134,7 +134,7 @@ class DashboardFilters
             $agent_type = 'pp_group';
         }
 
-		$agent_id = PWP::REQUEST_int('agent_id');
+        $agent_id = PWP::REQUEST_int('agent_id');
 
         $load_role_scripts = $pp->groups()->userCan('pp_manage_members', $agent_id, $agent_type)
         || $pp->groups()->anyGroupManager() || current_user_can('pp_assign_roles')
@@ -142,14 +142,14 @@ class DashboardFilters
 
         $load_exception_scripts = current_user_can('pp_assign_roles') || presspermit()->admin()->bulkRolesEnabled();
 
-        if ( $load_role_scripts || $load_exception_scripts ) {
+        if ($load_role_scripts || $load_exception_scripts) {
             require_once(PRESSPERMIT_CLASSPATH . '/UI/AgentPermissionsUI.php');
             
-            if ( $load_role_scripts ) {
+            if ($load_role_scripts) {
                 \PublishPress\Permissions\UI\AgentPermissionsUI::roleAssignmentScripts();
             }
 
-            if ( $load_exception_scripts ) {
+            if ($load_exception_scripts) {
                 \PublishPress\Permissions\UI\AgentPermissionsUI::exceptionAssignmentScripts();
             }
         }
@@ -179,13 +179,15 @@ class DashboardFilters
 
         $pp_page = sanitize_key($page);
 
-        if (in_array($pp_page, [
+        if (
+            in_array($pp_page, [
             'presspermit-settings', 'presspermit-groups', 'presspermit-users',
             'presspermit-edit-permissions', 'presspermit-group-new',
-        ], true)) {
+            ], true)
+        ) {
             $class_name = ('presspermit-edit-permissions' == $pp_page)
             ? 'AgentPermissions' 
-            : str_replace('-', '', ucwords( str_replace('presspermit-', '', $pp_page), '-') );
+            : str_replace('-', '', ucwords(str_replace('presspermit-', '', $pp_page), '-'));
 
             require_once(PRESSPERMIT_CLASSPATH . "/UI/{$class_name}.php");
             $load_class = "\\PublishPress\Permissions\\UI\\$class_name";
@@ -215,7 +217,8 @@ class DashboardFilters
     {
         $request_uri = esc_url_raw(PWP::SERVER_url('REQUEST_URI'));
 
-        if ($request_uri && false !== strpos($request_uri, trailingslashit(PWP::admin_rel_url('')) . 'network/')
+        if (
+            $request_uri && false !== strpos($request_uri, trailingslashit(PWP::admin_rel_url('')) . 'network/')
         ) {
             return;
         }
@@ -242,7 +245,7 @@ class DashboardFilters
 
             if (defined('PUBLISHPRESS_PERMISSIONS_MENU_GROUPING')) {
                 foreach (get_option('active_plugins') as $plugin_file) {
-                    if ( false !== strpos($plugin_file, 'publishpress.php') ) {
+                    if (false !== strpos($plugin_file, 'publishpress.php')) {
                         $menu_order = 27;
                     }
                 }
@@ -389,7 +392,6 @@ class DashboardFilters
         $request_uri = esc_url_raw(PWP::SERVER_url('REQUEST_URI'));
 
         if (isset($site_url['path']) && $request_uri && (untrailingslashit($request_uri) == untrailingslashit(admin_url('')))) {
-
             return;
         }
 

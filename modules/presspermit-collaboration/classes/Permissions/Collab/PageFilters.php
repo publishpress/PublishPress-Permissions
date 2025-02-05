@@ -1,9 +1,11 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class PageFilters
 {
-    function __construct() {
+    function __construct()
+    {
         add_filter('presspermit_get_pages_intercept', [$this, 'fltGetPagesIntercept'], 10, 3);
         add_filter('presspermit_get_pages_args', [$this, 'fltGetPagesArgs']);
     }
@@ -18,8 +20,9 @@ class PageFilters
             global $post;
 
             if (!empty($post) && ($args['post_type'] == $post->post_type)) {
-                if ($post->post_parent && ('auto-draft' != $post->post_status))
+                if ($post->post_parent && ('auto-draft' != $post->post_status)) {
                     $args['append_page'] = get_post($post->post_parent);
+                }
 
                 $args['exclude_tree'] = $post->ID;
             }

@@ -35,13 +35,13 @@ class PermissionsHooks
         }
 
         if (
-        is_multisite() && defined('PRESSPERMIT_ADMIN_QUERY_MS_PREFIX_SAFEGUARD')
+            is_multisite() && defined('PRESSPERMIT_ADMIN_QUERY_MS_PREFIX_SAFEGUARD')
         ) {
             add_filter('query', [$this, 'fltQuerySafeguard'], 99999);
         }
 
-		if (presspermit()->isPro()) {
-        	add_action('admin_init', [$this, 'loadUpdater']);
+        if (presspermit()->isPro()) {
+            add_action('admin_init', [$this, 'loadUpdater']);
         }
         
         add_action('user_has_cap', [$this, 'fltEarlyUserHasCap'], 50, 3);
@@ -54,18 +54,20 @@ class PermissionsHooks
         // Prevent Event Calendar plugin's term hierarchy array from being updated with a filtered subset
         add_filter("pre_update_option_event-categories_children", [$this, 'fltUpdateEventCategoriesChildren'], 10, 2);
 
-        add_action("created_event-categories", function() {
+        add_action("created_event-categories", function () {
             update_option('presspermit_created_event_category', true);
         });
 
-        if (get_option('presspermit_created_event_category')
-        || (is_admin() && !empty($pagenow) && ('edit-tags.php' == $pagenow) && !PWP::empty_REQUEST('taxonomy') && PWP::REQUEST_key_match('taxonomy', 'event-categories'))
+        if (
+            get_option('presspermit_created_event_category')
+            || (is_admin() && !empty($pagenow) && ('edit-tags.php' == $pagenow) && !PWP::empty_REQUEST('taxonomy') && PWP::REQUEST_key_match('taxonomy', 'event-categories'))
         ) {
             add_action('init', [$this, 'actCreatedEventCategory'], 50);
         }
     }
 
-	public function loadUpdater() {
+    public function loadUpdater()
+    {
         return presspermit()->load_updater();
     }
 
@@ -79,7 +81,8 @@ class PermissionsHooks
         return $this->filtering_enabled;
     }
 
-    function fltTermChildren($option_val, $option_name, $default_val) {
+    function fltTermChildren($option_val, $option_name, $default_val)
+    {
         if (!empty(presspermit()->flags['disable_term_filtering'])) {
             return $option_val;
         }
@@ -98,8 +101,8 @@ class PermissionsHooks
                 'update_term_meta_cache' => false,
             )
         );
-        foreach ( $terms as $term_id => $parent ) {
-            if ( $parent > 0 ) {
+        foreach ($terms as $term_id => $parent) {
+            if ($parent > 0) {
                 $children[ $parent ][] = $term_id;
             }
         }
@@ -107,9 +110,11 @@ class PermissionsHooks
         return $children;
     }
 
-    function fltUpdateEventCategoriesChildren($value, $old_value) {
-        if (is_null($old_value) || empty($old_value) 
-        || (did_action('presspermit_restore_term_children_cache') && !did_action('presspermit_restored_term_children_cache'))
+    function fltUpdateEventCategoriesChildren($value, $old_value)
+    {
+        if (
+            is_null($old_value) || empty($old_value) 
+            || (did_action('presspermit_restore_term_children_cache') && !did_action('presspermit_restored_term_children_cache'))
         ) {
             return $value;
         }
@@ -123,7 +128,8 @@ class PermissionsHooks
         return $value;
     }
 
-    function actCreatedEventCategory() {
+    function actCreatedEventCategory()
+    {
         if (function_exists('_get_term_hierarchy') && taxonomy_exists('event-categories')) {
             if (!$term_children = _get_term_hierarchy('event-categories')) {
                 presspermit()->flags['disable_term_filtering'] = true;
@@ -137,8 +143,9 @@ class PermissionsHooks
 
                 global $wp_query, $wpdb;
 
-                if ($term_children 
-                || !$wpdb->get_col("SELECT term_id FROM $wpdb->term_taxonomy WHERE taxonomy = 'event-categories' AND parent > 0")   // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+                if (
+                    $term_children 
+                    || !$wpdb->get_col("SELECT term_id FROM $wpdb->term_taxonomy WHERE taxonomy = 'event-categories' AND parent > 0")   // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 ) {
                     delete_option('presspermit_created_event_category');
                 }
@@ -159,12 +166,16 @@ class PermissionsHooks
 
     public function loadFilters()
     {
-        if (apply_filters(
-    		'presspermit_early_caps_init',
-    		!defined('PRESSPERMIT_NO_EARLY_CAPS_INIT') 
-            && (class_exists('ACF') || !defined('CPTUI_VERSION'))
-    	)) {
-            add_action('init', function() {presspermit()->capDefs(['force' => true]);}, 5);
+        if (
+            apply_filters(
+                'presspermit_early_caps_init',
+                !defined('PRESSPERMIT_NO_EARLY_CAPS_INIT') 
+                && (class_exists('ACF') || !defined('CPTUI_VERSION'))
+            )
+        ) {
+            add_action('init', function () {
+                presspermit()->capDefs(['force' => true]);
+            }, 5);
         }
 
         add_action('set_current_user', [$this, 'actSetCurrentUser'], 99);
@@ -209,7 +220,9 @@ class PermissionsHooks
 
         if (defined('PRESSPERMIT_NO_USER_LOCALE')) {
             // Prevent numerous user queries with Block Editor
-            add_filter('pre_determine_locale', function($locale) {return get_locale();});
+            add_filter('pre_determine_locale', function ($locale) {
+                return get_locale();
+            });
         }
     }
 
@@ -266,7 +279,8 @@ class PermissionsHooks
         return $wp_sitecaps;
     }
 
-    public function actNormalInitUser() {
+    public function actNormalInitUser()
+    {
         $this->actInitUser();
         do_action('presspermit_init_user_complete');
     }
@@ -349,7 +363,7 @@ class PermissionsHooks
                 $last_entry = reset($ver_history);
 
                 if (!empty($new_entry) && ($last_entry != $new_entry)) {
-                    $ver_history []= $new_entry;
+                    $ver_history [] = $new_entry;
                     $updated_log = true;
                 }
             }
@@ -368,7 +382,7 @@ class PermissionsHooks
             $last_entry = reset($ver_history);
 
             if ($last_entry != $new_entry) {
-                $ver_history []= $new_entry;
+                $ver_history [] = $new_entry;
                 $updated_log = true;
             }
 
@@ -487,8 +501,9 @@ class PermissionsHooks
         // content filters, loaded conditionally depending on whether the current user is a content administrator
         $this->loadContentFilters();
 
-        if (is_admin() && ('async-upload.php' != $pagenow) && !defined('XMLRPC_REQUEST') 
-        && (!defined('DOING_AJAX') || !DOING_AJAX || PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
+        if (
+            is_admin() && ('async-upload.php' != $pagenow) && !defined('XMLRPC_REQUEST') 
+            && (!defined('DOING_AJAX') || !DOING_AJAX || PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
         ) {
             // filters which are only needed for the wp-admin UI
             require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/DashboardFilters.php');
@@ -533,21 +548,23 @@ class PermissionsHooks
         return $results;
     }
 
-    public function fltAdminPostsListing() {
-		global $wp_query, $typenow;
-		
-		if ( ! empty( $wp_query->posts ) && empty( presspermit()->listed_ids[$typenow] ) ) {
-			$this->fltPostsListing( $wp_query->posts );
-		}
-	}
+    public function fltAdminPostsListing()
+    {
+        global $wp_query, $typenow;
+        
+        if (! empty($wp_query->posts) && empty(presspermit()->listed_ids[$typenow])) {
+            $this->fltPostsListing($wp_query->posts);
+        }
+    }
 
     // restore pre-4.4 behavior of not requiring 'publish' status for inclusion in page uri hierarchy
     public function fltGetPageUri($uri, $page)
     {
         $page = get_post($page);
 
-        if (!$page)
+        if (!$page) {
             return false;
+        }
 
         $uri = $page->post_name;
 
@@ -563,11 +580,12 @@ class PermissionsHooks
     // configuration / filter addition which depends on whether the current user is an Administrator
     private function loadContentFilters()
     {
-        if (defined('DOING_AJAX') && DOING_AJAX 
-        && PWP::is_REQUEST('action', ['woocommerce_load_variations', 'woocommerce_add_variation', 'woocommerce_remove_variations', 'woocommerce_save_variations'])
+        if (
+            defined('DOING_AJAX') && DOING_AJAX 
+            && PWP::is_REQUEST('action', ['woocommerce_load_variations', 'woocommerce_add_variation', 'woocommerce_remove_variations', 'woocommerce_save_variations'])
         ) {
-			return;
-		}
+            return;
+        }
 
         $pp = presspermit();
 
@@ -587,10 +605,11 @@ class PermissionsHooks
         }
 
         // (also use content filters on front end to FILTER IN private content which WP inappropriately hides from administrators)
-        if (($is_front && $front_filtering) 
-        || !$is_unfiltered 
-        || ('nav-menus.php' == $pagenow) 
-        || (defined('DOING_AJAX') && DOING_AJAX && PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
+        if (
+            ($is_front && $front_filtering) 
+            || !$is_unfiltered 
+            || ('nav-menus.php' == $pagenow) 
+            || (defined('DOING_AJAX') && DOING_AJAX && PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
         ) {
             if (! $this->post_filters_loaded) { // since this could possibly fire on multiple 'set_current_user' calls, avoid redundancy
                 require_once(PRESSPERMIT_CLASSPATH . '/PostFilters.php');
@@ -629,14 +648,16 @@ class PermissionsHooks
 
         if (($is_front && $front_filtering) || (!$is_unfiltered && (!defined('DOING_AUTOSAVE') || !DOING_AUTOSAVE))) {
             // Work around unexplained issue with access to static methods of LibWP class failing if called before init action
-            if ((did_action('init') || defined('PRESSPERMIT_TERM_FILTERS_LEGACY_LOAD')) 
-            && !presspermit()->getOption('limit_front_end_term_filtering')
+            if (
+                (did_action('init') || defined('PRESSPERMIT_TERM_FILTERS_LEGACY_LOAD')) 
+                && !presspermit()->getOption('limit_front_end_term_filtering')
             ) {
                 require_once(PRESSPERMIT_CLASSPATH . '/TermFilters.php');
                 new Permissions\TermFilters();
             } else {
-                add_action('init',
-                    function() {
+                add_action(
+                    'init',
+                    function () {
                         require_once(PRESSPERMIT_CLASSPATH . '/TermFilters.php');
                         new Permissions\TermFilters();
                     }
@@ -671,7 +692,8 @@ class PermissionsHooks
     }
 
     public function actClearTermChildrenCache($children, $option_val, $option_name)
-    {  // fires on pre_update_option_$taxonomy filter
+    {
+  // fires on pre_update_option_$taxonomy filter
         if (defined('DOING_AJAX') && DOING_AJAX) {
             delete_option($option_name);
         }
@@ -685,7 +707,7 @@ class PermissionsHooks
         $matches = [];
 
         // @todo: require an Advanced setting to be enabled
-		
+        
         if (preg_match('/SELECT[\s\r\n]+' . $wpdb->base_prefix . '([^\s\r\n]*)posts./', $query, $matches)) {
             $posts_table = $wpdb->base_prefix . $matches[1] . 'posts';
 
@@ -697,5 +719,4 @@ class PermissionsHooks
 
         return $query;
     }
-
 } // end class

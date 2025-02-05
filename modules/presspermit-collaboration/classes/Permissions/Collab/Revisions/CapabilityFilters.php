@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\Revisions;
 
 class CapabilityFilters
@@ -19,28 +20,30 @@ class CapabilityFilters
         add_action('init', [$this, 'actEnableLimitedRevisors'], 5);
     }
 
-	function actEnableLimitedRevisors($user_id) {
-		global $current_user;
+    function actEnableLimitedRevisors($user_id)
+    {
+        global $current_user;
 
-		if (is_admin()) {
-			if ($post_id = rvy_detect_post_id()) {
-				if ('draft-revision' == rvy_in_revision_workflow($post_id)) {
-					if ($post = get_post($post_id)) {
-						if ($current_user->ID == $post->post_author) {
-							if ($type_obj = get_post_type_object($post->post_type)) {
-								$current_user->allcaps[$type_obj->cap->edit_posts] = true;
-							}
+        if (is_admin()) {
+            if ($post_id = rvy_detect_post_id()) {
+                if ('draft-revision' == rvy_in_revision_workflow($post_id)) {
+                    if ($post = get_post($post_id)) {
+                        if ($current_user->ID == $post->post_author) {
+                            if ($type_obj = get_post_type_object($post->post_type)) {
+                                $current_user->allcaps[$type_obj->cap->edit_posts] = true;
+                            }
 
                             // note: this capability does not affect access to published posts or other users' posts
-							$current_user->allcaps['edit_posts'] = true;
-						}
-					}
-				}
-			}
-		}
+                            $current_user->allcaps['edit_posts'] = true;
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    function fltUserHasReviseCap($wp_sitecaps, $orig_reqd_caps, $args) {
+    function fltUserHasReviseCap($wp_sitecaps, $orig_reqd_caps, $args)
+    {
         global $current_user;
         
         $args = (array) $args;
@@ -76,7 +79,8 @@ class CapabilityFilters
 
     // todo: confirm this is no longer needed
 
-    function actGrantListingCaps() {
+    function actGrantListingCaps()
+    {
         global $current_user, $revisionary;
 
         if (empty($revisionary->enabled_post_types)) {
@@ -89,11 +93,11 @@ class CapabilityFilters
 
         $user = presspermit()->getUser();
 
-        foreach(array_keys($revisionary->enabled_post_types) as $post_type) {
+        foreach (array_keys($revisionary->enabled_post_types) as $post_type) {
             $type_obj = get_post_type_object($post_type);
 
             // todo: custom privacy caps
-            foreach(['edit_published_posts', 'edit_private_posts'] as $prop) {
+            foreach (['edit_published_posts', 'edit_private_posts'] as $prop) {
                 if (!empty($type_obj->cap->$prop) && empty($current_user->allcaps[$type_obj->cap->$prop])) {
                     if (!empty($current_user->allcaps[$type_obj->cap->edit_posts]) || !empty($current_user->allcaps['submit_changes'])) {
                         $list_cap = str_replace('edit_', 'list_', $type_obj->cap->$prop);
@@ -106,7 +110,8 @@ class CapabilityFilters
     }
 
     // todo: move to a general module
-    function fltPostAccessApplyExceptions($can_do, $operation, $post_type, $post_id, $args = []) {
+    function fltPostAccessApplyExceptions($can_do, $operation, $post_type, $post_id, $args = [])
+    {
         // todo: implement PP_RESTRICTION_PRIORITY ?
         
         // todo: implement for specific revision statuses
@@ -195,7 +200,8 @@ class CapabilityFilters
         return $can_do;
     }
 
-    function fltCanCopy($can_copy, $post_id, $base_status, $revision_status, $args) {
+    function fltCanCopy($can_copy, $post_id, $base_status, $revision_status, $args)
+    {
         if (rvy_in_revision_workflow($post_id)) {
             return false;
         }
@@ -212,7 +218,6 @@ class CapabilityFilters
         //} elseif ('future' == $base_status) {
             // todo: review possible implementation for scheduled revisions
             //$operation = 'schedule'
-
         } else {
             return $can_copy;
         }
@@ -220,14 +225,14 @@ class CapabilityFilters
         if ($can_copy) {
             // Apply blocking exceptions for Create Revision operation
             return $this->fltPostAccessApplyExceptions($can_copy, $operation, $post_type, $post_id);
-
         } else {
-        	// Possession of a submit_post permission also grants implicit copy_post permission.  This is partly for consistency with Revisions 2.x behavior
-        	return $this->fltPostAccessApplyExceptions($can_copy, $operation, $post_type, $post_id) || $this->fltPostAccessApplyExceptions($can_copy, 'revise', $post_type, $post_id);
-    	}
+            // Possession of a submit_post permission also grants implicit copy_post permission.  This is partly for consistency with Revisions 2.x behavior
+            return $this->fltPostAccessApplyExceptions($can_copy, $operation, $post_type, $post_id) || $this->fltPostAccessApplyExceptions($can_copy, 'revise', $post_type, $post_id);
+        }
     }
 
-    function fltCanSubmit($can_submit, $post_id, $new_base_status, $new_revision_status, $args) {
+    function fltCanSubmit($can_submit, $post_id, $new_base_status, $new_revision_status, $args)
+    {
         if ('pending' != $new_base_status || !rvy_in_revision_workflow($post_id)) {
             return false;
         }
@@ -246,7 +251,7 @@ class CapabilityFilters
     {
         foreach (get_post_types(['public' => true, 'show_ui' => true], 'object', 'or') as $post_type => $type_obj) {
             $caps = array_diff($caps, ['edit_posts', 'edit_pages']); // ignore generic caps defined for extraneous properties (assign_term, etc.) 
-            if (array_intersect((array)$type_obj->cap,  $caps)) {
+            if (array_intersect((array)$type_obj->cap, $caps)) {
                 return $post_type;
             }
         }
@@ -259,8 +264,10 @@ class CapabilityFilters
         $return = [];
 
         if (('read_post' == reset($pp_reqd_caps))) {
-            if (!is_admin() && PWP::is_REQUEST('post_type', 'revision') 
-            && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))) {
+            if (
+                !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+                && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
+            ) {
                 $return['pp_reqd_caps'] = ['edit_post'];
             }
         }

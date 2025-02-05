@@ -32,7 +32,8 @@ class Groups
     }
 
     public function getGroupTypes($args = [], $return = 'name')
-    {  // todo: handle $args
+    {
+  // todo: handle $args
         if (!isset($this->group_types)) {
             return [];
         }
@@ -44,8 +45,9 @@ class Groups
         if (!empty($args['editable'])) {
             $editable_group_types = apply_filters('presspermit_editable_group_types', ['pp_group']);
             return ('object' == $return) ? Arr::subset($this->group_types, $editable_group_types) : $editable_group_types;
-        } else
+        } else {
             return ('object' == $return) ? $this->group_types : array_keys($this->group_types);
+        }
     }
 
     private function initGroupLabels($args = [])
@@ -179,10 +181,12 @@ class Groups
 
             // Direct query of plugin table for this function, which supports various plugin admin operations
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-            if ($result = $wpdb->get_row($wpdb->prepare(
-                "SELECT ID, group_name AS name, group_description, metagroup_type, metagroup_id FROM $wpdb->pp_groups WHERE ID = %d",
-                $agent_id
-            ))) {
+            if (
+                $result = $wpdb->get_row($wpdb->prepare(
+                    "SELECT ID, group_name AS name, group_description, metagroup_type, metagroup_id FROM $wpdb->pp_groups WHERE ID = %d",
+                    $agent_id
+                ))
+            ) {
                 $result->name = stripslashes($result->name);
                 $result->group_description = stripslashes($result->group_description);
                 $result->group_name = $result->name;  // todo: review usage of these properties
@@ -191,8 +195,9 @@ class Groups
             if ($result = new \WP_User($agent_id)) {
                 $result->name = $result->display_name;
             }
-        } else
+        } else {
             $result = null;
+        }
 
         return apply_filters('presspermit_get_group', $result, $agent_id, $agent_type);
     }
@@ -259,7 +264,7 @@ class Groups
         $args = array_merge($defaults, $args);
 
         // guard against groups table being imported into a different database (with mismatching options table)
-        $dbname = defined( 'DB_NAME' ) ? DB_NAME : '';
+        $dbname = defined('DB_NAME') ? DB_NAME : '';
         $site_key = md5(get_option('site_url') . $dbname . $wpdb->prefix);
 
         if (!$buffered_groups = presspermit()->getOption("buffer_metagroup_id_{$site_key}")) {
@@ -270,7 +275,8 @@ class Groups
         if (!isset($buffered_groups[$key])) {
             // Direct query of plugin table to populate the metagroup cache
             // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-            if (!$group = $wpdb->get_row(
+            if (
+                !$group = $wpdb->get_row(
                     $wpdb->prepare(
                         "SELECT * FROM $wpdb->pp_groups WHERE metagroup_type = %s AND metagroup_id = %s LIMIT 1",
                         $metagroup_type,

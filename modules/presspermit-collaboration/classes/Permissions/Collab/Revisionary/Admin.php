@@ -1,10 +1,11 @@
 <?php
-namespace PublishPress\Permissions\Collab\Revisionary;
 
+namespace PublishPress\Permissions\Collab\Revisionary;
 
 class Admin
 {
-    function __construct() {
+    function __construct()
+    {
         add_filter('map_meta_cap', [$this, 'flt_mapMetaCap'], 3, 4);
 
         add_filter('presspermit_get_exception_items', [$this, 'flt_get_exception_items'], 10, 5);
@@ -63,8 +64,10 @@ class Admin
 
         $append_clause = '';
 
-        if (in_array($operation, ['edit', 'delete'], true) && empty($args['status']) 
-        && !in_array($post_type, apply_filters('presspermit_unrevisable_types', []), true)) {
+        if (
+            in_array($operation, ['edit', 'delete'], true) && empty($args['status']) 
+            && !in_array($post_type, apply_filters('presspermit_unrevisable_types', []), true)
+        ) {
             $user = presspermit()->getUser();
 
             if ('post' == $args['via_item_source']) {
@@ -89,17 +92,17 @@ class Admin
 
                     $edit_ids = ($revise_ids) ? array_diff($args['ids'], $revise_ids) : $args['ids'];
                     
-                    if ( $edit_ids || $revise_ids ) {
+                    if ($edit_ids || $revise_ids) {
                         $parent_clause = [];
                         
-                        if ( $edit_ids ) {
-                            $parent_clause []= "( {$args['src_table']}.comment_count IN ('" . implode("','", $edit_ids) . "') )";
+                        if ($edit_ids) {
+                            $parent_clause [] = "( {$args['src_table']}.comment_count IN ('" . implode("','", $edit_ids) . "') )";
                         }
                         
-                        if ( $revise_ids ) {
+                        if ($revise_ids) {
                             $status_csv = "'" . implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'or')) . "'";
 
-                            $parent_clause []= "( " . PWP::postAuthorClause($args) 
+                            $parent_clause [] = "( " . PWP::postAuthorClause($args) 
                             . " AND {$args['src_table']}.comment_count IN ('" . implode("','", $revise_ids) . "') AND {$args['src_table']}.post_status IN ($status_csv) )";
                         }
                         
@@ -115,7 +118,7 @@ class Admin
             } elseif ('term' == $args['via_item_source']) {
                 $revise_tt_ids = [];
 
-                foreach(presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
+                foreach (presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
                     $tt_ids = $user->getExceptionTerms( 
                         'revise', 
                         'additional', 
@@ -136,25 +139,27 @@ class Admin
                 
                     $append_clause .= " OR ( {$args['src_table']}.post_status IN ('pending-revision', 'future-revision') AND $parent_tt_clause )";
                 }
-			}
-		}
+            }
+        }
 
         if ($append_clause) {
             $clause = "({$args['src_table']}.post_status NOT IN ('pending-revision', 'future-revision') AND ($clause)) $append_clause";
         }
 
-		return $clause;
+        return $clause;
     }
 
     public function flt_mapMetaCap($caps, $meta_cap, $user_id, $wp_args)
     {
         global $current_user;
 
-        if ($user_id && in_array($meta_cap, ['edit_post', 'edit_page'], true) && !empty($wp_args[0]) 
-			&& function_exists('rvy_get_option') && function_exists('rvy_default_options') // Revisions plugin does not initialize on plugins.php URL
-		) {
-            if ($user_id != $current_user->ID)
+        if (
+            $user_id && in_array($meta_cap, ['edit_post', 'edit_page'], true) && !empty($wp_args[0]) 
+            && function_exists('rvy_get_option') && function_exists('rvy_default_options') // Revisions plugin does not initialize on plugins.php URL
+        ) {
+            if ($user_id != $current_user->ID) {
                 return $caps;
+            }
 
             if (isset($_SERVER['SCRIPT_NAME']) && false !== strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'update.php')) { // Revisionary does not load on update.php
                 return $caps;
@@ -202,7 +207,7 @@ class Admin
                 }
 
                 if (empty($current_user->allcaps['edit_others_drafts'])) {
-                	$caps[] = "edit_others_drafts";
+                    $caps[] = "edit_others_drafts";
                 }
             }
         }
@@ -213,8 +218,9 @@ class Admin
     // merge revise exceptions into edit exceptions
     public function flt_get_exception_items($exception_items, $operation, $mod_type, $for_item_type, $args = [])
     {
-        if ('edit' != $operation)
+        if ('edit' != $operation) {
             return $exception_items;
+        }
 
         global $revisionary;
 
@@ -264,7 +270,8 @@ class Admin
     }
 
     // Apply term revision restrictions separately with status clause to avoid removing unpublished posts from the listing 
-    function fltTermRestrictionsClause($where, $args) {
+    function fltTermRestrictionsClause($where, $args)
+    {
         global $wpdb;
 
         $defaults = array_fill_keys(
@@ -280,7 +287,8 @@ class Admin
             'term_additions_clause', 
             'post_additions_clause', 
             'type_exemption_clause'
-            ], ''
+            ],
+            ''
         );
 
         $args = array_merge($defaults, $args);
@@ -303,7 +311,7 @@ class Admin
                     ? $user->getExceptionTerms('revise', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
                     : [];
                     
-                    $published_stati_csv = implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'OR' ));
+                    $published_stati_csv = implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'OR'));
 
                     if ('include' == $mod) {
                         if ($tx_additional_ids) {
@@ -318,7 +326,6 @@ class Admin
                 
                         $where .= " AND ( $term_include_clause $term_additions_clause $post_additions_clause $type_exemption_clause )";
                         continue 2;
-
                     } else {
                         if ($tx_additional_ids) {
                             $tt_ids = array_diff($tt_ids, $tx_additional_ids);
@@ -349,7 +356,7 @@ class Admin
             $user = presspermit()->getUser();
 
             if (empty($user->except["revise_post"])) {
-               $user->retrieveExceptions('revise', 'post');
+                $user->retrieveExceptions('revise', 'post');
             }
 
             $revision_uris = apply_filters('presspermit_revision_uris', ['edit.php', 'upload.php', 'widgets.php', 'revision.php', 'admin-ajax.php', 'rvy-revisions', 'revisionary-q']);
@@ -371,8 +378,9 @@ class Admin
                             )
                         );
 
-                        if (array_intersect($reqd_caps, $strip_capreqs))
+                        if (array_intersect($reqd_caps, $strip_capreqs)) {
                             $reqd_caps [] = $type_obj->cap->edit_posts;
+                        }
                     }
                 }
 
@@ -401,8 +409,8 @@ class Admin
             $adjust_statuses = apply_filters(
                 'revisionary_main_post_statuses', 
                 array_merge(
-                	get_post_stati( ['public' => true, 'private' => true], 'names', 'or' ),
-                	['future']
+                    get_post_stati(['public' => true, 'private' => true], 'names', 'or'),
+                    ['future']
                 ),
                 'names'
             );

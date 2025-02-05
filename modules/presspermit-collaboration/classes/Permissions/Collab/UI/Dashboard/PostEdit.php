@@ -51,11 +51,13 @@ class PostEdit
 
             $required_operation = (presspermit()->getOption('page_parent_editable_only')) ? 'edit' : 'associate';
 
-            if ($restriction_where = \PublishPress\Permissions\PageFilters::getRestrictionClause(
-                $required_operation,
-                $post_type,
-                compact('col_id')
-            )) {
+            if (
+                $restriction_where = \PublishPress\Permissions\PageFilters::getRestrictionClause(
+                    $required_operation,
+                    $post_type,
+                    compact('col_id')
+                )
+            ) {
                 $clauses['where'] .= $restriction_where;
             }
 
@@ -150,7 +152,7 @@ class PostEdit
         if (is_numeric($set_visibility) || !get_post_status_object($set_visibility)) {
             $set_visibility = 'private';
         }
-?>
+        ?>
         <script type="text/javascript">
             /* <![CDATA[ */
             jQuery(document).ready(function($) {
@@ -201,7 +203,7 @@ class PostEdit
                 });
                 //]]>
             </script>
-        <?php
+            <?php
         endif;
 
         if (empty($user->allcaps['upload_files']) && !empty($user->allcaps['edit_files'])) : ?>
@@ -246,10 +248,12 @@ class PostEdit
                 || $user->getExceptionTerms('edit', 'include', $post_type, $taxonomy, ['merge_universals' => true])
             ) {
                 $disallow_add_term = true;
-            } elseif ($tt_ids = array_merge(
-                $user->getExceptionTerms('assign', 'exclude', $post_type, $taxonomy, ['merge_universals' => true]),
-                $user->getExceptionTerms('edit', 'exclude', $post_type, $taxonomy, ['merge_universals' => true])
-            )) {
+            } elseif (
+                $tt_ids = array_merge(
+                    $user->getExceptionTerms('assign', 'exclude', $post_type, $taxonomy, ['merge_universals' => true]),
+                    $user->getExceptionTerms('edit', 'exclude', $post_type, $taxonomy, ['merge_universals' => true])
+                )
+            ) {
                 $tt_ids = array_diff($tt_ids, $additional_tt_ids);
                 if (count($tt_ids)) {
                     $disallow_add_term = true;
@@ -263,13 +267,13 @@ class PostEdit
             }
 
             if ($disallow_add_term) :
-            ?>
+                ?>
                 <style type="text/css">
                     #<?php echo esc_attr($taxonomy); ?>-adder {
                         display: none;
                     }
                 </style>
-            <?php
+                <?php
             endif;
         }
     }
@@ -277,7 +281,9 @@ class PostEdit
     function ui_add_author_link()
     {
         static $done;
-        if (!empty($done)) return;
+        if (!empty($done)) {
+            return;
+        }
         $done = true;
 
         global $post;
@@ -320,7 +326,7 @@ class PostEdit
                 });
                 /* ]]> */
             </script>
-<?php
+            <?php
         endif;
     }
 }

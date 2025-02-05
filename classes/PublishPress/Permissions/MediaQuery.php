@@ -8,17 +8,20 @@ class MediaQuery
     {
         global $wpdb;
 
-        if (!$where)
+        if (!$where) {
             return $where;
+        }
 
-        if (!$args)
+        if (!$args) {
             $args = [];
+        }
 
         if (empty($args['src_table'])) {
             $src_table = (!empty($args['source_alias'])) ? $args['source_alias'] : $wpdb->posts;
             $args['src_table'] = $src_table;
-        } else
+        } else {
             $src_table = $args['src_table'];
+        }
 
         $_args = (array)$args;
 
@@ -29,22 +32,26 @@ class MediaQuery
 
             if (!empty($args['limit_ids']) && (1 == count($args['limit_ids']))) {
                 if ($_post = get_post(reset($args['limit_ids']))) {
-                    if ($_parent_type = array_intersect($_post_types, (array)get_post_field('post_type', $_post->post_parent)))
+                    if ($_parent_type = array_intersect($_post_types, (array)get_post_field('post_type', $_post->post_parent))) {
                         $_post_types = $_parent_type;
+                    }
                 }
             }
             $_args['post_types'] = $_post_types; // set for parent subquery only
             $_args['source_alias'] = 'p';
 
-            if (!empty($args['has_cap_check']))
+            if (!empty($args['has_cap_check'])) {
                 unset($_args['limit_statuses']);
+            }
 
-            if (empty($_args['limit_statuses']))
+            if (empty($_args['limit_statuses'])) {
                 $_args['skip_stati_usage_clause'] = true;
+            }
 
             if ('delete' == $_args['required_operation']) {
-                if (defined('PP_EDIT_EXCEPTIONS_ALLOW_DELETION') || defined('PP_EDIT_EXCEPTIONS_ALLOW_ATTACHMENT_DELETION'))
+                if (defined('PP_EDIT_EXCEPTIONS_ALLOW_DELETION') || defined('PP_EDIT_EXCEPTIONS_ALLOW_ATTACHMENT_DELETION')) {
                     $_args['required_operation'] = 'edit';
+                }
             }
 
             $pp_where = apply_filters('presspermit_posts_where', '', $_args);
@@ -78,8 +85,9 @@ class MediaQuery
             if (apply_filters('presspermit_attachments_allow_unfiltered_parent', class_exists('SlideDeckPlugin', false))) {
                 $pp_type_csv = implode("','", array_map('sanitize_key', array_merge(presspermit()->getEnabledPostTypes(), ['revision', 'attachment'])));
                 $non_pp_parent_clause = " OR ( $src_table.post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type NOT IN ('$pp_type_csv') ) )";
-            } else
+            } else {
                 $non_pp_parent_clause = '';
+            }
 
             $where = str_replace(
                 "$src_table.post_type = 'attachment'",

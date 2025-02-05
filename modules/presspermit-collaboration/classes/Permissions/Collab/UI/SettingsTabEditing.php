@@ -2,7 +2,7 @@
 
 namespace PublishPress\Permissions\Collab\UI;
 
-use \PublishPress\Permissions\UI\SettingsAdmin as SettingsAdmin;
+use PublishPress\Permissions\UI\SettingsAdmin as SettingsAdmin;
 
 class SettingsTabEditing
 {
@@ -85,7 +85,7 @@ class SettingsTabEditing
 
         $section = 'post_editor';                        // --- EDITOR OPTIONS SECTION ---
         if (!empty($ui->form_options[$tab][$section])) :
-        ?>
+            ?>
             <tr>
                 <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
@@ -107,30 +107,36 @@ class SettingsTabEditing
                             $do_force_option = true;
                             $ui->all_otype_options[] = 'force_default_privacy';
                             $force_values = array_merge(array_fill_keys($pp->getEnabledPostTypes(), 0), $ui->getOptionArray('force_default_privacy'));  // add enabled types whose settings have never been stored
-                        } else
+                        } else {
                             $do_force_option = false;
+                        }
                         ?>
                         <table class='agp-vtight_input agp-rlabel'>
                             <?php
 
                             foreach ($opt_values as $object_type => $setting) :
-                                if ('attachment' == $object_type) continue;
+                                if ('attachment' == $object_type) {
+                                    continue;
+                                }
 
                                 $id = $option_name . '-' . $object_type;
                                 $name = "{$option_name}[$object_type]";
-                            ?>
+                                ?>
                                 <tr>
                                     <td class="rlabel">
                                         <input name='<?php echo esc_attr($name); ?>' type='hidden' value='' />
-                                        <label for='<?php echo esc_attr($id); ?>'><?php if ($type_obj = get_post_type_object($object_type)) echo esc_html($type_obj->labels->name);
-                                                                                    else echo esc_html($object_type); ?></label>
+                                        <label for='<?php echo esc_attr($id); ?>'><?php if ($type_obj = get_post_type_object($object_type)) {
+                                            echo esc_html($type_obj->labels->name);
+                                                    } else {
+                                                        echo esc_html($object_type);
+                                                    } ?></label>
                                     </td>
 
                                     <td><select name='<?php echo esc_attr($name); ?>' id='<?php echo esc_attr($id); ?>' autocomplete='off'>
                                             <option value=''><?php esc_html_e('Public'); ?></option>
                                             <?php foreach (get_post_stati(['private' => true], 'object') as $status_obj) :
                                                 $selected = ($setting === $status_obj->name) ? ' selected ' : '';
-                                            ?>
+                                                ?>
                                                 <option value='<?php echo esc_attr($status_obj->name); ?>' <?php echo esc_attr($selected); ?>><?php echo esc_html($status_obj->label); ?></option>
                                             <?php endforeach; ?>
                                         </select>
@@ -141,12 +147,14 @@ class SettingsTabEditing
                                             $style = ($setting) ? '' : 'display:none';
                                             $checked = (!empty($force_values[$object_type]) || PWP::isBlockEditorActive($object_type)) ? ' checked ' : '';
                                             $disabled = (PWP::isBlockEditorActive($object_type)) ? " disabled " : '';
-                                        ?>
+                                            ?>
                                             <input name='<?php echo esc_attr($name); ?>' type='hidden' value='0' />
                                             &nbsp;<label style='<?php echo esc_attr($style); ?>' for="<?php echo esc_attr($id); ?>"><input
                                                     type="checkbox" <?php echo esc_attr($checked); ?><?php echo esc_attr($disabled); ?>id="<?php echo esc_attr($id); ?>"
                                                     name="<?php echo esc_attr($name); ?>"
-                                                    value="1" /><?php if ($do_force_option) : ?>&nbsp;<?php esc_html_e('lock', 'press-permit-core'); ?><?php endif; ?>
+                                                    value="1" /><?php if ($do_force_option) :
+                                                        ?>&nbsp;<?php esc_html_e('lock', 'press-permit-core'); ?><?php 
+                                                                endif; ?>
                                             </label>
                                         <?php endif; ?>
 
@@ -185,7 +193,7 @@ class SettingsTabEditing
 
         $section = 'content_management';                        // --- POSTS / PAGES LISTING SECTION ---
         if (!empty($ui->form_options[$tab][$section])) :
-        ?>
+            ?>
             <tr>
                 <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
@@ -207,7 +215,7 @@ class SettingsTabEditing
                     <?php
 
                     if (defined('PP_MEDIA_LIB_UNFILTERED')) :
-                    ?>
+                        ?>
                         <div><span class="pp-important">
                                 <?php SettingsAdmin::echoStr('media_lib_unfiltered'); ?>
                             </span></div><br />
@@ -265,7 +273,6 @@ class SettingsTabEditing
                                 esc_html__('%1$s sample IDs:%2$s %3$s', 'press-permit-core'),
                                 "<a href='javascript:void(0)' onclick='jQuery(document).ready(function($){ $('#pp_sample_ids').show(); });'>",
                                 '</a>',
-
                                 '<span id="pp_sample_ids" class="pp-gray" style="display:none">'
                                     . 'password-span, slugdiv, edit-slug-box, authordiv, commentstatusdiv, trackbacksdiv, postcustom, revisionsdiv, pageparentdiv'
                                     . '</span>'
@@ -288,9 +295,10 @@ class SettingsTabEditing
                             $ui->all_options[] = $id;
 
                             // force setting and corresponding keys to string, to avoid quirks with integer keys
-                            if (!$current_setting = strval($ui->getOption($id)))
+                            if (!$current_setting = strval($ui->getOption($id))) {
                                 $current_setting = '0';
-                        ?>
+                            }
+                            ?>
                             <div>
                                 <?php
                                 esc_html_e('Specified element IDs also require the following site-wide Role:', 'press-permit-core');

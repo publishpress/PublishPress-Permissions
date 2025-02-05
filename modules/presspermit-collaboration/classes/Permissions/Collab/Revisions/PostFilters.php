@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\Revisions;
 
 class PostFilters
@@ -20,7 +21,8 @@ class PostFilters
         add_filter('presspermit_base_cap_replacements', [$this, 'fltBaseCapReplacements'], 10, 3);
     }
 
-    function fltQueryPostStatuses($use_statuses, $args) {
+    function fltQueryPostStatuses($use_statuses, $args)
+    {
         if (!function_exists('rvy_get_option') || !rvy_get_option('permissions_compat_mode')) {
             // Don't include revision statuses in post_status clause of Posts query
             $use_statuses = array_diff_key($use_statuses, array_fill_keys(rvy_revision_statuses(), true));
@@ -29,7 +31,8 @@ class PostFilters
         return $use_statuses;
     }
 
-    public function fltHaveSiteCaps($have_site_caps, $post_type, $args) {
+    public function fltHaveSiteCaps($have_site_caps, $post_type, $args)
+    {
         global $current_user;
 
         if (!empty($args['has_cap_check']) && in_array($args['has_cap_check'], ['read_post', 'edit_post']) && !empty($args['limit_ids']) && !presspermit_is_preview()) {
@@ -55,7 +58,8 @@ class PostFilters
         return $have_site_caps;
     }
 
-    function fltBaseCapReplacements($replace_caps, $reqd_caps, $post_type) {
+    function fltBaseCapReplacements($replace_caps, $reqd_caps, $post_type)
+    {
         global $current_user;
         
         if ($type_obj = get_post_type_object($post_type)) {
@@ -80,7 +84,8 @@ class PostFilters
         return $replace_caps;
     }
 
-    function fltRequireEditOthersDrafts($require, $post_type, $post_status, $args) {
+    function fltRequireEditOthersDrafts($require, $post_type, $post_status, $args)
+    {
         $status_obj = get_post_status_object($post_status);
 
         if ($status_obj && !empty($status_obj->capability_status)) { // Custom statuses with non-default capability mapping won't be available to Revisors by default
@@ -97,7 +102,7 @@ class PostFilters
         if ($wp_query->is_preview && defined('PUBLISHPRESS_REVISIONS_VERSION')) {
             if (!empty($wp_query->query['p'])) {
                 $post_id = (int) $wp_query->query['p'];
-            } elseif(!empty($wp_query->query['page_id'])) {
+            } elseif (!empty($wp_query->query['page_id'])) {
                 $post_id = (int) $wp_query->query['page_id'];
             } else {
                 return $object_types;
@@ -131,22 +136,22 @@ class PostFilters
     function fltPostsWhere($where, $args)
     {
         // for past revisions
-        if (defined('PUBLISHPRESS_REVISIONS_VERSION') && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
-        && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))) {
+        if (
+            defined('PUBLISHPRESS_REVISIONS_VERSION') && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+            && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
+        ) {
             $matches = [];
             if (preg_match("/post_type = '([0-9a-zA-Z_\-]+)'/", $where, $matches)) {
                 if ($matches[1]) {
                     global $wpdb;
                     $where = str_replace(
                         "$wpdb->posts.post_type = '{$matches[1]}'", 
-
                         "( $wpdb->posts.post_type = '{$matches[1]}' " 
                         . " OR ( $wpdb->posts.post_type = 'revision'"
                         . " AND $wpdb->posts.post_status IN ('inherit')"
                         . " AND $wpdb->posts.post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) ) ",
-
-                       // . " OR ( $wpdb->posts.post_status IN ('pending-revision', 'future-revision') "
-                       // . " AND $wpdb->posts.comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )", 
+                        // . " OR ( $wpdb->posts.post_status IN ('pending-revision', 'future-revision') "
+                        // . " AND $wpdb->posts.comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )", 
                         
                         $where
                     );
@@ -157,9 +162,11 @@ class PostFilters
         return $where;
     }
 
-    function flt_meta_cap($meta_cap) {
-        if (defined('PUBLISHPRESS_REVISIONS_VERSION') && ('read_post' == $meta_cap) && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
-        && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
+    function flt_meta_cap($meta_cap)
+    {
+        if (
+            defined('PUBLISHPRESS_REVISIONS_VERSION') && ('read_post' == $meta_cap) && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+            && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
         ) {
             $meta_cap = 'edit_post';
         }

@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI;
 
 class AjaxUI
@@ -7,19 +8,20 @@ class AjaxUI
     {
         $op_captions['edit'] = (object)['label' => esc_html__('Edit'), 'noun_label' => esc_html__('Editing', 'press-permit-core')];
 
-        if (presspermit()->getOption('publish_exceptions'))
+        if (presspermit()->getOption('publish_exceptions')) {
             $op_captions['publish'] = (object)['label' => esc_html__('Publish'), 'noun_label' => esc_html__('Publishing', 'press-permit-core')];
+        }
 
         if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
             if (rvy_get_option('revision_statuses_noun_labels')) {
-            	$op_captions['copy'] = (object)['label' => esc_html__('Working Copy of'), 'abbrev' => esc_html__('Working Copy'), 'noun_label' => esc_html__('Copy', 'press-permit-core')];
-            	$op_captions['revise'] = (object)['label' => esc_html__('Submit Changes to'), 'abbrev' => esc_html__('Submit Changes'), 'noun_label' => esc_html__('Request', 'press-permit-core')];
+                $op_captions['copy'] = (object)['label' => esc_html__('Working Copy of'), 'abbrev' => esc_html__('Working Copy'), 'noun_label' => esc_html__('Copy', 'press-permit-core')];
+                $op_captions['revise'] = (object)['label' => esc_html__('Submit Changes to'), 'abbrev' => esc_html__('Submit Changes'), 'noun_label' => esc_html__('Request', 'press-permit-core')];
             } else {
                 $op_captions['copy'] = (object)['label' => esc_html__('Create Revision of'), 'abbrev' => esc_html__('Create Revision'), 'noun_label' => esc_html__('New Revision', 'press-permit-core')];
                 $op_captions['revise'] = (object)['label' => esc_html__('Submit Revision of'), 'abbrev' => esc_html__('Submit Revision'), 'noun_label' => esc_html__('Submitted Revision', 'press-permit-core')];
             }
 
-            foreach(['label', 'abbrev', 'noun_label'] as $prop) {
+            foreach (['label', 'abbrev', 'noun_label'] as $prop) {
                 $op_captions['copy']->$prop = str_replace(' ', '&nbsp;', $op_captions['copy']->$prop);
                 $op_captions['revise']->$prop = str_replace(' ', '&nbsp;', $op_captions['revise']->$prop);
             }
@@ -84,14 +86,12 @@ class AjaxUI
                 $op_obj = $pp->admin()->getOperationObject('assign', $for_item_type);
                 $ops['assign'] = $op_obj->label;
             }
-
         } elseif ('_term_' == $for_item_source) {
             $op_obj = $pp->admin()->getOperationObject('manage');
             $ops['manage'] = $op_obj->label;
 
             $op_obj = $pp->admin()->getOperationObject('associate');
             $ops['associate'] = $op_obj->agent_label;
-
         } elseif (in_array($for_item_source, ['pp_group', 'pp_net_group'], true)) {
             $op_obj = $pp->admin()->getOperationObject('manage', $for_item_type);
             $ops['manage'] = $op_obj->label;
@@ -131,8 +131,9 @@ class AjaxUI
                 $types[$taxonomy] = $tx_obj->labels->name;
             }
 
-            if ('manage' != $operation)
+            if ('manage' != $operation) {
                 unset($types['nav_menu']);
+            }
         }
 
         return $types;

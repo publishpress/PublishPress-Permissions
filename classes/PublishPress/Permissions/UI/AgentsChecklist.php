@@ -30,8 +30,9 @@ class AgentsChecklist
         if ('eligible' == $agents_subset) {
             $item_assignments = array_intersect_key($item_assignments, $all_agents);
 
-            if (!$agent_count = count($all_agents) - count($item_assignments))
+            if (!$agent_count = count($all_agents) - count($item_assignments)) {
                 return;
+            }
         } else {
             $agent_count = count($item_assignments);
         }
@@ -68,11 +69,17 @@ class AgentsChecklist
 
             switch ($agents_subset) {
                 case 'current':
-                    if (!isset($item_assignments[$id])) $skip = true;
+                    if (!isset($item_assignments[$id])) {
+                        $skip = true;
+                    }
                     break;
                 default: //'eligible'
-                    if (isset($item_assignments[$id])) $skip = true;
-                    if ($eligible_ids && !in_array($id, $eligible_ids)) $skip = true;
+                    if (isset($item_assignments[$id])) {
+                        $skip = true;
+                    }
+                    if ($eligible_ids && !in_array($id, $eligible_ids)) {
+                        $skip = true;
+                    }
             }
 
             if ($skip) {
@@ -80,18 +87,20 @@ class AgentsChecklist
                 continue;
             }
 
-            if (('pp_group' == $agent_type) && $agent->metagroup_id)
+            if (('pp_group' == $agent_type) && $agent->metagroup_id) {
                 $caption = \PublishPress\Permissions\DB\Groups::getMetagroupName($agent->metagroup_type, $agent->metagroup_id, $agent->name);
-            else
+            } else {
                 $caption = $agent->name;
+            }
 
             if (strlen($caption) > $caption_length_limit) {
                 $full_captions[$id] = $caption;
 
-                if ($rtl)
+                if ($rtl) {
                     $caption = '...' . substr($caption, strlen($caption) - $caption_length_limit);
-                else
+                } else {
                     $caption = substr($caption, 0, $caption_length_limit) . '...';
+                }
             }
 
             if (strlen($caption) > $longest_caption_length) {
@@ -122,8 +131,9 @@ class AgentsChecklist
 
             $edit_title_text = esc_attr__('view / edit group', 'press-permit-core');
             $edit_caption = esc_html__('edit', 'press-permit-core');
-        } else
+        } else {
             $edit_link_base = '';
+        }
 
         foreach ($all_agents as $agent) {
             $id = $agent->ID;
@@ -132,36 +142,40 @@ class AgentsChecklist
                 $display_name = (isset($agent->display_name)) ? $agent->display_name : '';
 
                 $li_title =  \PublishPress\Permissions\DB\Groups::getMetagroupDescript($agent->metagroup_type, $agent->metagroup_id, $display_name);
-            } elseif (isset($full_captions[$id]))
+            } elseif (isset($full_captions[$id])) {
                 $li_title = $full_captions[$id];
-            else
+            } else {
                 $li_title = $captions[$id];
+            }
 
             $checked = (isset($item_assignments[$id])) ? ' checked ' : '';
             $disabled = ($locked_ids && in_array($id, $locked_ids)) ? " disabled " : '';
 
             echo "<li title='" . esc_attr($li_title) . "'>";
 
-            if ($hide_checkboxes)
+            if ($hide_checkboxes) {
                 echo '&bull; ';
-            else
+            } else {
                 echo "<input type='checkbox' name='" . esc_attr($name_attrib) . "[]'" . esc_attr($disabled) . esc_attr($checked) . " value='" . esc_attr($id) . "' id='r" . esc_attr("{$exec_count}_{$id}") . "' />";
+            }
 
-            echo "<label for='" . esc_attr("r{$exec_count}_{$id}"). "'>";
+            echo "<label for='" . esc_attr("r{$exec_count}_{$id}") . "'>";
             echo ' ' . esc_html($captions[$id]);
             echo '</label>';
 
-            if ($edit_link_base && presspermit()->groups()->userCan('pp_edit_groups', $id, $agent_type))
+            if ($edit_link_base && presspermit()->groups()->userCan('pp_edit_groups', $id, $agent_type)) {
                 echo ' <a href="' . esc_url($edit_link_base . $id) . '" target="_blank" title="' . esc_attr($edit_title_text) . '">'
                     . esc_html($edit_caption) . '</a>';
+            }
 
             echo '</li>';
         } //foreach agent
 
         echo "<li></li></ul>"; // prevent invalid markup if no other li's
 
-        if ($agent_count > $emsize_threshold)
+        if ($agent_count > $emsize_threshold) {
             echo '</div>';
+        }
 
         echo '</div></div>';
     }

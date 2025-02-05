@@ -32,12 +32,14 @@
  * @package     PublishPress Permissions
  * @author      PublishPress
  * @copyright   Copyright (c) 2025 PublishPress. All rights reserved.
- * @license		GNU General Public License version 3
- * @link		https://publishpress.com/
+ * @license     GNU General Public License version 3
+ * @link        https://publishpress.com/
  *
  **/
 
-if (!defined('ABSPATH')) exit; // Exit if accessed directly
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly
+}
 
 global $wp_version;
 
@@ -191,7 +193,8 @@ if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro
         }
 
         // Critical errors that prevent initialization
-        if ((defined('PPC_FOLDER') && defined('PPC_BASENAME') && function_exists('ppc_deactivate') && presspermit_err('pp_core_active'))
+        if (
+            (defined('PPC_FOLDER') && defined('PPC_BASENAME') && function_exists('ppc_deactivate') && presspermit_err('pp_core_active'))
             || (defined('PP_VERSION') && function_exists('pp_get_otype_option') && presspermit_err('pp_legacy_active'))  // Press Permit 1.x (circa 2012) active
             || (defined('SCOPER_VERSION') && function_exists('rs_get_user') && presspermit_err('rs_active') && ! is_admin())
             || (constant('PRESSPERMIT_DEBUG') && is_admin() && presspermit_editing_plugin()) // avoid lockout in case of erroneous plugin edit via wp-admin

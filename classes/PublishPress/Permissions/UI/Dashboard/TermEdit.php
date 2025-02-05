@@ -9,34 +9,33 @@ class TermEdit
     public function __construct()
     {
         if (!did_action('presspermit_term_edit_ui')) {
-	        wp_enqueue_script('post');
-	        wp_enqueue_script('postbox');
-	
-	        wp_enqueue_style('presspermit-item-edit', PRESSPERMIT_URLPATH . '/common/css/item-edit.css', [], PRESSPERMIT_VERSION);
-	        wp_enqueue_style('presspermit-term-edit', PRESSPERMIT_URLPATH . '/common/css/term-edit.css', [], PRESSPERMIT_VERSION);
-	
-	        add_action('admin_print_scripts', ['\PublishPress\Permissions\UI\Dashboard\ItemEdit', 'scriptItemEdit']);
+            wp_enqueue_script('post');
+            wp_enqueue_script('postbox');
+    
+            wp_enqueue_style('presspermit-item-edit', PRESSPERMIT_URLPATH . '/common/css/item-edit.css', [], PRESSPERMIT_VERSION);
+            wp_enqueue_style('presspermit-term-edit', PRESSPERMIT_URLPATH . '/common/css/term-edit.css', [], PRESSPERMIT_VERSION);
+    
+            add_action('admin_print_scripts', ['\PublishPress\Permissions\UI\Dashboard\ItemEdit', 'scriptItemEdit']);
             add_action('admin_print_scripts', [$this, 'compatStyles']);
 
-	        add_action('admin_menu', [$this, 'actAddMetaBoxes']);
-	
-	        if ($taxonomy = PWP::REQUEST_key('taxonomy')) {
-	            if (presspermit()->isTaxonomyEnabled($taxonomy)) {
-	                add_action('admin_head', [$this, 'actScriptsWP']);
+            add_action('admin_menu', [$this, 'actAddMetaBoxes']);
+    
+            if ($taxonomy = PWP::REQUEST_key('taxonomy')) {
+                if (presspermit()->isTaxonomyEnabled($taxonomy)) {
+                    add_action('admin_head', [$this, 'actScriptsWP']);
 
-	                add_action("{$taxonomy}_edit_form", [$this, 'actExceptionEditUI']);
-
-	            } elseif (defined('PRESSPERMIT_LEGACY_TAXONOMY_ENABLE_METABOX')) {
-	                add_action("{$taxonomy}_edit_form", [$this, 'actTaxonomyEnableUI']);
-	            }
-	
-	            if (!PWP::empty_REQUEST('pp_universal')) {
-	                add_action("{$taxonomy}_edit_form", [$this, 'actUniversalExceptionsUIsupport']);
-	            }
-	        }
-	
-	        do_action('presspermit_term_edit_ui');
-	    }
+                    add_action("{$taxonomy}_edit_form", [$this, 'actExceptionEditUI']);
+                } elseif (defined('PRESSPERMIT_LEGACY_TAXONOMY_ENABLE_METABOX')) {
+                    add_action("{$taxonomy}_edit_form", [$this, 'actTaxonomyEnableUI']);
+                }
+    
+                if (!PWP::empty_REQUEST('pp_universal')) {
+                    add_action("{$taxonomy}_edit_form", [$this, 'actUniversalExceptionsUIsupport']);
+                }
+            }
+    
+            do_action('presspermit_term_edit_ui');
+        }
     }
 
     public function initItemExceptionsUI()
@@ -52,10 +51,10 @@ class TermEdit
     {
         static $done;
 
-		if (empty($done)) {
-			$done = [];
-		}
-	
+        if (empty($done)) {
+            $done = [];
+        }
+    
         if (empty($box['id']) || !empty($done[$box['id']])) {
             return;
         }
@@ -259,15 +258,15 @@ class TermEdit
         }
 
         if ((current_user_can('pp_administer_content') || defined('PRESSPERMIT_EDIT_TERM_EXTRA_BUTTON')) && !defined('PRESSPERMIT_EDIT_TERM_SUPPRESS_EXTRA_BUTTON')) :?>
-	        <div class="edit-tag-actions">
-	            <input class="button button-primary" value="<?php esc_attr_e('Update', 'press-permit-core'); ?>" type="submit">
-	        </div>
-	        <?php
-	
-	        if ($post_type) {
-	            echo '<br />';
-	            self::universalExceptionsNote($tag, $taxonomy, $post_type);
-	        }
+            <div class="edit-tag-actions">
+                <input class="button button-primary" value="<?php esc_attr_e('Update', 'press-permit-core'); ?>" type="submit">
+            </div>
+            <?php
+    
+            if ($post_type) {
+                echo '<br />';
+                self::universalExceptionsNote($tag, $taxonomy, $post_type);
+            }
         endif; ?>
         <div id="poststuff" class="metabox-holder">
             <div id="post-body">
@@ -337,7 +336,7 @@ class TermEdit
             <label for="pp_enable_taxonomy"><input type="checkbox" name="pp_enable_taxonomy"/>
                 <?php printf(esc_html__('enable custom permissions for %s', 'press-permit-core'), esc_html($tx->labels->name)); ?>
             </label>
-        <?php
+            <?php
         endif;
     }
 
@@ -382,16 +381,17 @@ class TermEdit
         <?php
     }
 
-    public function compatStyles() {
+    public function compatStyles()
+    {
         // Hide invalid Simple WP Membership Protection metabox which is triggered due to existence of add_meta_box() function.
-        if (defined('SIMPLE_WP_MEMBERSHIP_VER') && !defined('PRESSPERMIT_ALLOW_SIMPLE_MEMBERSHIP_METABOX')):
-        ?>
+        if (defined('SIMPLE_WP_MEMBERSHIP_VER') && !defined('PRESSPERMIT_ALLOW_SIMPLE_MEMBERSHIP_METABOX')) :
+            ?>
         <style type="text/css">
             #swpm_sectionid {
                 display: none;
             }
         </style>
-        <?php 
+            <?php 
         endif;
     }
 

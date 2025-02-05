@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class PostSave
@@ -11,37 +12,44 @@ class PostSave
 
         $set_terms = false;
 
-        if (!$post_type_obj = get_post_type_object($post_type))
+        if (!$post_type_obj = get_post_type_object($post_type)) {
             return false;
+        }
 
-        if (array_intersect(
-            [   'edit_post', 
+        if (
+            array_intersect(
+                [   'edit_post', 
                 'publish_posts', 
                 'edit_posts', 
                 $post_type_obj->cap->edit_post, 
                 $post_type_obj->cap->publish_posts, 
                 $post_type_obj->cap->edit_posts
-            ], 
-            $pp_reqd_caps)
+                ], 
+                $pp_reqd_caps
+            )
         ) {
             static $objects_done;
-            if (!isset($objects_done))
+            if (!isset($objects_done)) {
                 $objects_done = [];
+            }
 
-            if (in_array($object_id, $objects_done))
+            if (in_array($object_id, $objects_done)) {
                 return false;
+            }
 
             $objects_done[] = $object_id;
 
             $uses_taxonomies = presspermit()->getEnabledTaxonomies(['object_type' => $post_type]);
 
             static $inserted_terms;
-            if (!isset($inserted_terms))
+            if (!isset($inserted_terms)) {
                 $inserted_terms = [];
+            }
 
             foreach ($uses_taxonomies as $taxonomy) {
-                if (isset($inserted_terms[$taxonomy][$object_id]))
+                if (isset($inserted_terms[$taxonomy][$object_id])) {
                     continue;
+                }
 
                 $inserted_terms[$taxonomy][$object_id] = true;
 

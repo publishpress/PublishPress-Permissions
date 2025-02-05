@@ -26,8 +26,9 @@ class PluginUpdated
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'buffer_metagroup_id_%'");
 
-            if (version_compare($prev_version, '2.7-beta', '>=')
-            && version_compare($prev_version, '2.7-beta3', '<')
+            if (
+                version_compare($prev_version, '2.7-beta', '>=')
+                && version_compare($prev_version, '2.7-beta3', '<')
             ) {
                 // Previous 2.7 betas added wrong capabilities
                 // (todo: possibly migrate all capabilities, but not yet)
@@ -49,7 +50,7 @@ class PluginUpdated
                 self::syncWordPressRoles();
             }
         
-        	do_action('presspermit_version_updated', $prev_version);
+            do_action('presspermit_version_updated', $prev_version);
 
             if (version_compare($prev_version, '3.11.3', '<')) {
                 if (false === get_option('presspermit_pattern_roles_include_generic_rolecaps')) {
@@ -61,7 +62,9 @@ class PluginUpdated
                         update_option('presspermit_pattern_roles_include_generic_rolecaps', 1);
                     }
                 }
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '3.8-beta2', '<')) {
                 // Restore taxonomy_children option arrays now that an alternate filtering mechanism is in place
@@ -75,7 +78,9 @@ class PluginUpdated
                 }
 
                 presspermit()->flags['disable_term_filtering'] = false;
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '3.3.3', '<')) {
                 // Activation of invalid "Custom permissions for Authors" setting on Edit Author screen broke Authors > Authors listing and editing access
@@ -85,24 +90,32 @@ class PluginUpdated
                         update_option('presspermit_enabled_taxonomies', $taxs);
                     }
                 }
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '2.7-beta', '<')) {
                 require_once(PRESSPERMIT_CLASSPATH . '/DB/Migration.php');
                 DB\Migration::migrateOptions();
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '2.3.19-dev', '<')) {
                 require_once(PRESSPERMIT_CLASSPATH . '/DB/Migration.php');
                 DB\Migration::remove_group_members_pk();
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '2.1.47-dev', '<')) {
                 if (!get_option('presspermit_post_blockage_priority')) {
                     // previously, post-assigned reading/editing blockages could be overriden by category-assigned additions
                     update_option('presspermit_legacy_exception_handling', true);
                 }
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '2.1.35', '<')) {
                 require_once(PRESSPERMIT_CLASSPATH . '/DB/Migration.php');
@@ -116,7 +129,9 @@ class PluginUpdated
 
                 require_once(PRESSPERMIT_CLASSPATH . '/DB/Permissions.php');
                 \PublishPress\Permissions\DB\Permissions::expose_orphaned_exception_items();
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '2.1.33', '<')) {
                 if ($enabled_taxonomies = get_option('presspermit_enabled_taxonomies')) {
@@ -124,17 +139,22 @@ class PluginUpdated
                     $enabled_taxonomies['post_tag'] = true;
                     update_option('presspermit_enabled_taxonomies', $enabled_taxonomies);
                 }
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '2.1.16-beta', '<')) {
                 // Direct query on plugin table for version update operation
                 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $wpdb->query("UPDATE $wpdb->ppc_exceptions SET for_item_source = 'post' WHERE for_item_source = 'all'");
-            } else break;
+            } else {
+                break;
+            }
         } while (0); // end single-pass version check loop
     }
 
-    public static function deactivateModules($args = []) {
+    public static function deactivateModules($args = [])
+    {
         $deactivated = (isset($args['current_deactivations'])) 
         ? $args['current_deactivations'] 
         : get_option('presspermit_deactivated_modules');
@@ -230,11 +250,13 @@ class PluginUpdated
 
         // Direct query on plugin table for version update operation
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        if ($orphan_ids = $wpdb->get_col(
-            "SELECT eitem_id FROM $wpdb->ppc_exception_items AS i INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id "
-            . "WHERE ( e.via_item_source = 'post' AND i.item_id NOT IN ( SELECT ID FROM $wpdb->posts ) )"
-            . " OR ( e.via_item_source = 'term' AND i.item_id NOT IN ( SELECT term_taxonomy_id FROM $wpdb->term_taxonomy ) )"
-        )) {
+        if (
+            $orphan_ids = $wpdb->get_col(
+                "SELECT eitem_id FROM $wpdb->ppc_exception_items AS i INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id "
+                . "WHERE ( e.via_item_source = 'post' AND i.item_id NOT IN ( SELECT ID FROM $wpdb->posts ) )"
+                . " OR ( e.via_item_source = 'term' AND i.item_id NOT IN ( SELECT term_taxonomy_id FROM $wpdb->term_taxonomy ) )"
+            )
+        ) {
             $orphan_id_csv = implode("','", array_map('intval', $orphan_ids));
 
             $wpdb->query(

@@ -4,12 +4,13 @@ namespace PublishPress\Permissions\UI\Dashboard;
 
 class ItemAjax
 {
-    public function __construct() {
+    public function __construct()
+    {
         check_ajax_referer('pp-ajax');
 
         if (!$via_item_source = PWP::GET_key('via_item_source')) {
             exit;
-		}
+        }
         
         if (!$pp_ajax_item = PWP::GET_key('pp_ajax_item')) {
             exit;
@@ -20,16 +21,15 @@ class ItemAjax
         $html = '';
 
         switch ($pp_ajax_item) {
-
             case 'get_agent_exception_ui':
                 if (!is_user_logged_in()) {
                     echo '<option>' . esc_html__('(login timed out)', 'press-permit-core') . '</option>';
                     exit;
                 }
 
-				if (!current_user_can('pp_assign_roles')) {
-					exit;	
-				}
+                if (!current_user_can('pp_assign_roles')) {
+                    exit;   
+                }
 
                 $id_sfx = (!empty($_GET['id_sfx'])) ? sanitize_text_field($_GET['id_sfx']) : '';
 
@@ -105,8 +105,9 @@ class ItemAjax
                 $exc_render->setOptions($agent_type);
 
                 foreach ($agent_ids as $agent_id) {
-                    if (!$agent_id)
+                    if (!$agent_id) {
                         continue;
+                    }
 
                     $exc_render->drawRow(
                         $agent_type,

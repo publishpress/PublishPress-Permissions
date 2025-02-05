@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\Compat;
 
 class MultipleAuthors
@@ -14,14 +15,16 @@ class MultipleAuthors
         }
     }
 
-    function fltDefaultOptions($options) {
+    function fltDefaultOptions($options)
+    {
         $options['force_empty_author'] = 'no';
         return $options;
     }
 
-    function fltAuthorsOptions($options) {
+    function fltAuthorsOptions($options)
+    {
         if (!empty($options)) {
-            $options->force_empty_author= 'no';
+            $options->force_empty_author = 'no';
         }
 
         return $options;

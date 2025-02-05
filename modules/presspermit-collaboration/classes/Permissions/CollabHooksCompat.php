@@ -1,11 +1,13 @@
 <?php
+
 namespace PublishPress\Permissions;
 
 class CollabHooksCompat
 {
     private $wp_version;
 
-    function __construct() {
+    function __construct()
+    {
         add_action('init', [$this, 'actStatusRegistrations'], 44);  // statuses need to be registered before establish_status_caps() execution
 
         add_action('presspermit_roles_defined', [$this, 'actAdjustDefaultPatternRoles']);
@@ -15,7 +17,7 @@ class CollabHooksCompat
         add_filter('presspermit_apply_arbitrary_caps', [$this, 'fltApplyArbitraryCaps'], 10, 3);
 
         if (defined('POLYLANG_VERSION') && !defined('PRESSPERMIT_NO_POLYLANG_WORKAROUND')) {
-            add_action('wp_loaded', function() {
+            add_action('wp_loaded', function () {
                 global $wp_version;
 
                 // For now, we need Polylang to apply 'get_pages' filtering as in its previous versions
@@ -27,11 +29,10 @@ class CollabHooksCompat
                 }
             }, 4);
 
-            add_action('wp_loaded', function() {
+            add_action('wp_loaded', function () {
                 global $wp_version;
 
                 if (isset($this->wp_version)) {
-
                     // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
                     $wp_version = $this->wp_version;
                 }
@@ -118,8 +119,9 @@ class CollabHooksCompat
 
     function actStatusRegistrations()
     {
-        if (!defined('PRESSPERMIT_VERSION'))
+        if (!defined('PRESSPERMIT_VERSION')) {
             return;
+        }
 
         if (defined('PRESSPERMIT_STATUSES_VERSION') && !defined('PP_NO_MODERATION')) {
             // custom moderation stati

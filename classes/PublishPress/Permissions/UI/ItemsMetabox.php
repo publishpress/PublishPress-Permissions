@@ -117,7 +117,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
             $args = array_merge($args, (array)$post_type['args']->_default_query);
         }
 
-        $get_posts = new \WP_Query;
+        $get_posts = new \WP_Query();
         $posts = $get_posts->query($args);
         if (!$get_posts->post_count) {
             echo '<p>' . esc_html__('No items.') . '</p>';
@@ -157,35 +157,45 @@ class ItemsMetabox extends \Walker_Nav_Menu
         ?>
         <div id="posttype-<?php echo esc_attr($post_type_name); ?>" class="posttypediv<?php if ($hierarchical) {
             echo ' hierarchical';
-        } ?>">
+                          } ?>">
 
             <ul id="posttype-<?php echo esc_attr($post_type_name); ?>-tabs" class="posttype-tabs add-menu-item-tabs">
 
-                <li <?php if ('most-recent' == $current_tab) echo ' class="tabs"'; ?>>
+                <li <?php if ('most-recent' == $current_tab) {
+                    echo ' class="tabs"';
+                    } ?>>
                     <a class="nav-tab-link" href="<?php if ($nav_menu_selected_id) {
                         echo esc_url(add_query_arg($post_type_name . '-tab', 'most-recent', remove_query_arg($removed_args)));
-                    }
-                    ?>#tabs-panel-posttype-<?php echo esc_attr($post_type_name); ?>-most-recent"><?php esc_html_e('Most Recent'); ?>
+                                                  }
+                                                    ?>#tabs-panel-posttype-<?php echo esc_attr($post_type_name); ?>-most-recent"><?php esc_html_e('Most Recent'); ?>
                     </a></li>
 
-                <li <?php if ('all' == $current_tab) echo ' class="tabs"'; ?>>
+                <li <?php if ('all' == $current_tab) {
+                    echo ' class="tabs"';
+                    } ?>>
                     <a class="nav-tab-link" href="<?php if ($nav_menu_selected_id) {
                         echo esc_url(add_query_arg($post_type_name . '-tab', 'all', remove_query_arg($removed_args)));
-                    }
-                    ?>#<?php echo esc_attr($post_type_name); ?>-all"><?php esc_html_e('View All'); ?>
+                                                  }
+                                                    ?>#<?php echo esc_attr($post_type_name); ?>-all"><?php esc_html_e('View All'); ?>
                     </a></li>
 
-                <li <?php if ('search' == $current_tab) echo ' class="tabs"'; ?>>
+                <li <?php if ('search' == $current_tab) {
+                    echo ' class="tabs"';
+                    } ?>>
                     <a class="nav-tab-link" href="<?php if ($nav_menu_selected_id) {
                         echo esc_url(add_query_arg($post_type_name . '-tab', 'search', remove_query_arg($removed_args)));
-                    }
-                    ?>#tabs-panel-posttype-<?php echo esc_attr($post_type_name); ?>-search"><?php esc_html_e('Search'); ?>
+                                                  }
+                                                    ?>#tabs-panel-posttype-<?php echo esc_attr($post_type_name); ?>-search"><?php esc_html_e('Search'); ?>
                     </a></li>
 
             </ul>
 
             <div id="tabs-panel-posttype-<?php echo esc_attr($post_type_name); ?>-most-recent" class="tabs-panel <?php
-            if ('most-recent' == $current_tab) echo 'tabs-panel-active'; else echo 'tabs-panel-inactive';
+            if ('most-recent' == $current_tab) {
+                echo 'tabs-panel-active';
+            } else {
+                echo 'tabs-panel-inactive';
+            }
             ?>">
                 <ul id="<?php echo esc_attr($post_type_name); ?>checklist-most-recent" class="categorychecklist form-no-clear">
 
@@ -203,7 +213,11 @@ class ItemsMetabox extends \Walker_Nav_Menu
             </div><!-- /.tabs-panel -->
 
             <div class="tabs-panel <?php
-            if ('search' == $current_tab) echo 'tabs-panel-active'; else echo 'tabs-panel-inactive';
+            if ('search' == $current_tab) {
+                echo 'tabs-panel-active';
+            } else {
+                echo 'tabs-panel-inactive';
+            }
             ?>" id="tabs-panel-posttype-<?php echo esc_attr($post_type_name); ?>-search">
 
                 <?php
@@ -219,13 +233,13 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
                     if ($searched) {
                         if (function_exists('_filter_query_attachment_filenames')) {
-                            add_filter( "wp_allow_query_attachment_by_filename", "__return_true" );
+                            add_filter("wp_allow_query_attachment_by_filename", "__return_true");
                         }
 
                         $post_status = ('attachment' == $post_type_name) ? 'inherit' : '';
                         $search_results = query_posts(['s' => $searched, 'post_type' => $post_type_name, 'fields' => 'all', 'order' => 'DESC', 'post_status' => $post_status]);
 
-                        remove_filter( "wp_allow_query_attachment_by_filename", "__return_true" );
+                        remove_filter("wp_allow_query_attachment_by_filename", "__return_true");
                     }
                 }
                 ?>
@@ -273,7 +287,11 @@ class ItemsMetabox extends \Walker_Nav_Menu
             ?>
 
             <div id="<?php echo esc_attr($post_type_name); ?>-all" class="tabs-panel tabs-panel-view-all<?php
-            if ('all' == $current_tab) echo ' tabs-panel-active'; else echo ' tabs-panel-inactive';
+            if ('all' == $current_tab) {
+                echo ' tabs-panel-active';
+            } else {
+                echo ' tabs-panel-inactive';
+            }
             ?>">
 
                 <?php if (!empty($page_links)) : ?>
@@ -445,18 +463,22 @@ class ItemsMetabox extends \Walker_Nav_Menu
         <div id="posttype-<?php echo esc_attr($post_type_name); ?>" class="posttypediv">
 
             <ul id="posttype-<?php echo esc_attr($post_type_name); ?>-tabs" class="posttype-tabs add-menu-item-tabs">
-                <li <?php if ('most-recent' == $current_tab) echo ' class="tabs"';?>>
+                <li <?php if ('most-recent' == $current_tab) {
+                    echo ' class="tabs"';
+                    }?>>
                     <a class="nav-tab-link" href="<?php if ($nav_menu_selected_id) {
                         echo esc_url(add_query_arg($post_type_name . '-tab', 'most-recent', remove_query_arg($removed_args)));
-                    }
-                    ?>#tabs-panel-posttype-<?php echo esc_attr($post_type_name); ?>-most-recent"><?php esc_html_e('Most Recent'); ?>
+                                                  }
+                                                    ?>#tabs-panel-posttype-<?php echo esc_attr($post_type_name); ?>-most-recent"><?php esc_html_e('Most Recent'); ?>
                     </a></li>
 
-                <li <?php if ('all' == $current_tab) echo ' class="tabs"'; ?>>
+                <li <?php if ('all' == $current_tab) {
+                    echo ' class="tabs"';
+                    } ?>>
                     <a class="nav-tab-link" href="<?php if ($nav_menu_selected_id) {
                         echo esc_url(add_query_arg($post_type_name . '-tab', 'all', remove_query_arg($removed_args)));
-                    }
-                    ?>#<?php echo esc_attr($post_type_name); ?>-all"><?php esc_html_e('View All'); ?>
+                                                  }
+                                                    ?>#<?php echo esc_attr($post_type_name); ?>-all"><?php esc_html_e('View All'); ?>
                     </a></li>
             </ul>
 
@@ -634,11 +656,13 @@ class ItemsMetabox extends \Walker_Nav_Menu
         ?>
         <div id="taxonomy-<?php echo esc_attr($taxonomy_name); ?>" class="taxonomydiv<?php if ($hierarchical) {
             echo ' hierarchical';
-        }
-        ?>">
+                          }
+                            ?>">
 
             <ul id="taxonomy-<?php echo esc_attr($taxonomy_name); ?>-tabs" class="taxonomy-tabs add-menu-item-tabs">
-                <li <?php if ('most-used' == $current_tab) echo ' class="tabs"'; ?>>
+                <li <?php if ('most-used' == $current_tab) {
+                    echo ' class="tabs"';
+                    } ?>>
                     <a class="nav-tab-link" href="<?php
                     if ($nav_menu_selected_id) {
                         echo esc_url(add_query_arg($taxonomy_name . '-tab', 'most-used', remove_query_arg($removed_args)));
@@ -646,23 +670,31 @@ class ItemsMetabox extends \Walker_Nav_Menu
                     ?>#tabs-panel-<?php echo esc_attr($taxonomy_name); ?>-pop"><?php esc_html_e('Most Used'); ?>
                     </a></li>
 
-                <li <?php if ('all' == $current_tab) echo ' class="tabs"'; ?>>
+                <li <?php if ('all' == $current_tab) {
+                    echo ' class="tabs"';
+                    } ?>>
                     <a class="nav-tab-link" href="<?php if ($nav_menu_selected_id) {
                         echo esc_url(add_query_arg($taxonomy_name . '-tab', 'all', remove_query_arg($removed_args)));
-                    }
-                    ?>#tabs-panel-<?php echo esc_attr($taxonomy_name); ?>-all"><?php esc_html_e('View All'); ?>
+                                                  }
+                                                    ?>#tabs-panel-<?php echo esc_attr($taxonomy_name); ?>-all"><?php esc_html_e('View All'); ?>
                     </a></li>
 
-                <li <?php if ('search' == $current_tab) echo ' class="tabs"'; ?>>
+                <li <?php if ('search' == $current_tab) {
+                    echo ' class="tabs"';
+                    } ?>>
                     <a class="nav-tab-link" href="<?php if ($nav_menu_selected_id) {
                         echo esc_url(add_query_arg($taxonomy_name . '-tab', 'search', remove_query_arg($removed_args)));
-                    }
-                    ?>#tabs-panel-search-taxonomy-<?php echo esc_attr($taxonomy_name); ?>"><?php esc_html_e('Search'); ?>
+                                                  }
+                                                    ?>#tabs-panel-search-taxonomy-<?php echo esc_attr($taxonomy_name); ?>"><?php esc_html_e('Search'); ?>
                     </a></li>
             </ul>
 
             <div id="tabs-panel-<?php echo esc_attr($taxonomy_name); ?>-pop" class="tabs-panel <?php
-            if ('most-used' == $current_tab) echo 'tabs-panel-active'; else echo 'tabs-panel-inactive';
+            if ('most-used' == $current_tab) {
+                echo 'tabs-panel-active';
+            } else {
+                echo 'tabs-panel-inactive';
+            }
             ?>">
 
                 <ul id="<?php echo esc_attr($taxonomy_name); ?>checklist-pop" class="categorychecklist form-no-clear">
@@ -676,7 +708,11 @@ class ItemsMetabox extends \Walker_Nav_Menu
             </div><!-- /.tabs-panel -->
 
             <div id="tabs-panel-<?php echo esc_attr($taxonomy_name); ?>-all" class="tabs-panel tabs-panel-view-all<?php
-            if ('all' == $current_tab) echo 'tabs-panel-active'; else echo ' tabs-panel-inactive';
+            if ('all' == $current_tab) {
+                echo 'tabs-panel-active';
+            } else {
+                echo ' tabs-panel-inactive';
+            }
             ?>">
 
                 <?php if (!empty($page_links)) : ?>
@@ -732,7 +768,11 @@ class ItemsMetabox extends \Walker_Nav_Menu
             </div><!-- /.tabs-panel -->
 
             <div class="tabs-panel <?php
-            if ('search' == $current_tab) echo 'tabs-panel-active'; else 'tabs-panel-inactive';
+            if ('search' == $current_tab) {
+                echo 'tabs-panel-active';
+            } else {
+                'tabs-panel-inactive';
+            }
             ?>" id="tabs-panel-search-taxonomy-<?php echo esc_attr($taxonomy_name); ?>">
 
                 <?php
@@ -836,7 +876,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
         $query = (!empty($_REQUEST['q'])) ? sanitize_text_field($_REQUEST['q']) : '';
 
-        $args['walker'] = new ItemsMetabox;
+        $args['walker'] = new ItemsMetabox();
         $args['is_search_result'] = true;
 
         if (preg_match('/quick-search-(posttype|taxonomy)-([a-zA-Z_-]*\b)/', $type, $matches)) {
@@ -846,7 +886,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
                 $status = ('attachment' == $matches[2]) ? 'inherit' : '';
                 add_filter('posts_search', [__CLASS__, 'item_menu_search_clause']);
 
-                add_filter( "wp_allow_query_attachment_by_filename", "__return_true" );
+                add_filter("wp_allow_query_attachment_by_filename", "__return_true");
 
                 // Query posts call executed on Edit Permissions screen quick search entry
                 query_posts([
@@ -858,7 +898,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
                     'post_status' => $status,
                 ]);
 
-                remove_filter( "wp_allow_query_attachment_by_filename", "__return_true" );
+                remove_filter("wp_allow_query_attachment_by_filename", "__return_true");
 
                 remove_filter('posts_search', [__CLASS__, 'item_menu_search_clause']);
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
 Copyright © 2025 PublishPress
 
@@ -20,7 +21,9 @@ along with this plugin.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace PublishPress;
 
-if (!defined('ABSPATH')) exit; // Exit if accessed directly
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly
+}
 
 if (!defined('PRESSPERMIT_COLLAB_FILE')) {
     define('PRESSPERMIT_COLLAB_FILE', __FILE__);
@@ -29,8 +32,7 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
 
     add_action(
         'plugins_loaded', 
-        function() 
-        {
+        function () { 
             if (!defined('PRESSPERMIT_VERSION')) {
                 return;
             }
@@ -39,9 +41,15 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
 
             $title = 'Editing Permissions'; // @todo: review removing this, as it is separately set with translation downstream
 
-            if (presspermit()->registerModule(
-                'collaboration', $title, dirname(plugin_basename(__FILE__)), $ext_version, ['min_pp_version' => '2.7-beta']
-            )) {
+            if (
+                presspermit()->registerModule(
+                    'collaboration',
+                    $title,
+                    dirname(plugin_basename(__FILE__)),
+                    $ext_version,
+                    ['min_pp_version' => '2.7-beta']
+                )
+            ) {
                 define('PRESSPERMIT_COLLAB_VERSION', $ext_version);
 
                 class_alias('\PressShack\LibArray', '\PublishPress\Permissions\Collab\Arr');
@@ -60,7 +68,7 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
                 require_once(__DIR__ . '/classes/Permissions/Collab.php');
                 class_alias('\PublishPress\Permissions\Collab', '\PublishPress\Permissions\Collab\Collab');
 
-                if ( is_admin() ) {
+                if (is_admin()) {
                     class_alias('\PublishPress\Permissions\Collab', '\PublishPress\Permissions\Collab\UI\Collab');
                     class_alias('\PublishPress\Permissions\Collab', '\PublishPress\Permissions\Collab\UI\Handlers\Collab');
                     class_alias('\PublishPress\Permissions\Collab', '\PublishPress\Permissions\Collab\UI\Dashboard\Collab');
@@ -81,7 +89,7 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
                     if ($post_id = PWP::REQUEST_int('post')) {
                         if ($_post = get_post($post_id)) {
                             if ('auto-draft' == $post_id) {
-                            	return;
+                                return;
                             }
                         }
                     }
@@ -100,8 +108,7 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
 
     add_action(
         'plugins_loaded', 
-        function() 
-        {
+        function () { 
             if (!defined('REVISIONARY_VERSION') && defined('RVY_VERSION')) {
                 define('REVISIONARY_VERSION', RVY_VERSION);
             }
@@ -111,8 +118,7 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
 } else {
     add_action(
         'init', 
-        function()
-        {
+        function () {
             do_action('presspermit_duplicate_module', 'collaboration', dirname(plugin_basename(__FILE__)));
         }
     );

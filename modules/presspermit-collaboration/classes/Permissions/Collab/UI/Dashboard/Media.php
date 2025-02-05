@@ -1,10 +1,12 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class Media
 {
     public static function count_attachments_query($query)
-    { // return false if no modification
+    {
+ // return false if no modification
         if (strpos($query, 'WHERE ')) {
             static $att_sanity_count = 0;
 

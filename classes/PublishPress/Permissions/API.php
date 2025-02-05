@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions;
 
 if (!defined('PRESSPERMIT_NO_LEGACY_API') && !defined('PPC_VERSION')) {

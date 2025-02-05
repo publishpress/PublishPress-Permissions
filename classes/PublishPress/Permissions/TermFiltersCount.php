@@ -7,8 +7,9 @@ class TermFiltersCount
     private static $instance = null;
     var $parent_remap_enabled = true;
 
-    public static function instance($args = []) {
-        if ( is_null( self::$instance ) ) {
+    public static function instance($args = [])
+    {
+        if (is_null(self::$instance)) {
             self::$instance = new TermFiltersCount();
             self::$instance->init();
         }
@@ -22,10 +23,10 @@ class TermFiltersCount
 
     private function __construct()
     {
-
     }
 
-    private function init() {
+    private function init()
+    {
         require_once(PRESSPERMIT_CLASSPATH . '/TermQuery.php');
 
         // flt_get_terms is required on the front end (even for administrators) so private posts are included in count, as basis for display when hide_empty arg is used
@@ -93,7 +94,7 @@ class TermFiltersCount
                 case 'tt_ids':
                 case 'slugs':
                     $selects = array( 't.*', 'tt.*' );
-                    if ( 'all_with_object_id' === $args['fields'] && ! empty( $args['object_ids'] ) ) {
+                    if ('all_with_object_id' === $args['fields'] && ! empty($args['object_ids'])) {
                         $selects[] = 'tr.object_id';
                     }
                     break;
@@ -211,7 +212,8 @@ class TermFiltersCount
         // In addition, without the TermQuery::tallyTermCounts() call, WP will hide terms that have no public posts (even if this user can read some of the pvt posts).
         // Post counts will be incremented to include child terms only if $pad_counts is true
         if (!defined('XMLRPC_REQUEST') && (1 == count($taxonomies))) {
-            if ((!is_admin() || !in_array($pagenow, ['post.php', 'post-new.php']))
+            if (
+                (!is_admin() || !in_array($pagenow, ['post.php', 'post-new.php']))
                 && (!defined('PP_UNFILTERED_TERM_COUNTS') || is_admin())
                 && (in_array($pagenow, ['edit-tags.php']) || !presspermit()->getOption('term_counts_unfiltered'))
             ) {
@@ -223,9 +225,9 @@ class TermFiltersCount
                     foreach (array_keys($terms) as $k) {
                         foreach (array_keys($all_terms) as $key) {
                             if (is_object($all_terms[$key]) && is_object($terms[$k])) {
-                            	if ($all_terms[$key]->term_taxonomy_id == $terms[$k]->term_taxonomy_id) {
-                                	$terms[$k]->count = $all_terms[$key]->count;
-                                	break;
+                                if ($all_terms[$key]->term_taxonomy_id == $terms[$k]->term_taxonomy_id) {
+                                    $terms[$k]->count = $all_terms[$key]->count;
+                                    break;
                                 }
                             }
                         }
@@ -290,9 +292,9 @@ class TermFiltersCount
         $_terms = [];
 
         if (('id=>parent' == $fields) && apply_filters('presspermit_get_terms_filter_id_parent', true, $terms, $taxonomies, $args)) {
-			foreach ( $terms as $term ) {
+            foreach ($terms as $term) {
                 if (is_object($term)) {
-                	$_terms[$term->term_id] = $term->parent;
+                    $_terms[$term->term_id] = $term->parent;
                 } elseif ($_term = get_term($term, reset($taxonomies))) {
                     if (!is_wp_error($_term)) {
                         $_terms[$_term->term_id] = $_term->parent;
@@ -300,67 +302,67 @@ class TermFiltersCount
                 }
             }
         } elseif ('ids' == $fields) {
-			foreach ( $terms as $term ) {
-				$_terms[] = (int) $term->term_id;
-			}
-		} elseif ( 'tt_ids' == $fields ) {
-			foreach ( $terms as $term ) {
-				$_terms[] = (is_object($term)) ? (int) $term->term_taxonomy_id : (int) $term;
+            foreach ($terms as $term) {
+                $_terms[] = (int) $term->term_id;
+            }
+        } elseif ('tt_ids' == $fields) {
+            foreach ($terms as $term) {
+                $_terms[] = (is_object($term)) ? (int) $term->term_taxonomy_id : (int) $term;
             }
         } elseif ('names' == $fields) {
-			foreach ( $terms as $term ) {
+            foreach ($terms as $term) {
                 // todo: track conditions, source for improper array population
                 if (is_object($term)) {
                     $_terms[] = $term->name;
                 } elseif (is_numeric($term) && count($taxonomies) == 1) {
                     if ($term = get_term($term, reset($taxonomies))) {
                         if (!is_wp_error($term)) {
-                        	$_terms[] = $term->name;
-                    	}
+                            $_terms[] = $term->name;
+                        }
                     }
                 } elseif (is_string($term)) {
                     $_terms[] = $term;
                 }
             }
-		} elseif ( 'slugs' == $fields ) {
-			foreach ( $terms as $term ) {
+        } elseif ('slugs' == $fields) {
+            foreach ($terms as $term) {
                 if (is_object($term)) {
-					$_terms[] = $term->slug;
+                    $_terms[] = $term->slug;
                 } elseif (is_numeric($term) && count($taxonomies) == 1) {
                     if ($term = get_term($term, reset($taxonomies))) {
                         if (!is_wp_error($term)) {
-                        	$_terms[] = $term->slug;
-                    	}
-                	}
-				}
-			}
-		} elseif ( 'id=>name' == $fields ) {
-			foreach ( $terms as $term ) {
+                            $_terms[] = $term->slug;
+                        }
+                    }
+                }
+            }
+        } elseif ('id=>name' == $fields) {
+            foreach ($terms as $term) {
                 if (is_object($term)) {
-					$_terms[ $term->term_id ] = $term->name;
+                    $_terms[ $term->term_id ] = $term->name;
                 } elseif (is_numeric($term) && count($taxonomies) == 1) {
                     if ($term = get_term($term, reset($taxonomies))) {
                         if (!is_wp_error($term)) {
-                        	$_terms[ $term->term_id ] = $term->name;
-                    	}
-                	}
-				}
-			}
-		} elseif ( 'id=>slug' == $fields ) {
-			foreach ( $terms as $term ) {
+                            $_terms[ $term->term_id ] = $term->name;
+                        }
+                    }
+                }
+            }
+        } elseif ('id=>slug' == $fields) {
+            foreach ($terms as $term) {
                 if (is_object($term)) {
                     $_terms[ $term->term_id ] = $term->slug;
                 } elseif (is_numeric($term) && count($taxonomies) == 1) {
                     if ($term = get_term($term, reset($taxonomies))) {
                         if (!is_wp_error($term)) {
-							$_terms[ $term->term_id ] = $term->slug;
+                            $_terms[ $term->term_id ] = $term->slug;
                         }
                     }
                 }
-			}
-		}
+            }
+        }
 
-        if ( ! empty( $_terms ) ) {
+        if (! empty($_terms)) {
             $terms = $_terms;
         }
 

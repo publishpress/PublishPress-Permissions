@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions;
 
 class CollabHooksAdminNonAdministrator
@@ -24,8 +25,9 @@ class CollabHooksAdminNonAdministrator
     {
         if (defined('REST_REQUEST') && presspermit()->doingREST()) {
             // rest_pre_dispatch filter only allows with matching rest method (GET, etc)
-            if ('read' == \PublishPress\Permissions\REST::instance()->operation)
+            if ('read' == \PublishPress\Permissions\REST::instance()->operation) {
                 return true;
+            }
         }
 
         return $is_front;
@@ -85,8 +87,9 @@ class CollabHooksAdminNonAdministrator
                     $args['required_operation'] = 'assign';
                 }
             }
-        } elseif (in_array($pagenow, ['post.php', 'post-new.php', 'press-this.php']))
+        } elseif (in_array($pagenow, ['post.php', 'post-new.php', 'press-this.php'])) {
             $args['object_type'] = PWP::findPostType();
+        }
 
         return $args;
     }
@@ -106,13 +109,15 @@ class CollabHooksAdminNonAdministrator
 
                 $tx_name = (is_object($taxonomies[0]) && isset($taxonomies[0]->name)) ? $taxonomies[0]->name : $taxonomies[0];
 
-                if (!presspermit()->isTaxonomyEnabled($tx_name))
+                if (!presspermit()->isTaxonomyEnabled($tx_name)) {
                     return $clauses;
+                }
                 //---------------------------------------------------------
 
                 // Don't filter get_terms() call in edit_post(), which invalidates entry term selection if existing term is detected
-                if (!empty($args['name']) && !PWP::empty_POST())
+                if (!empty($args['name']) && !PWP::empty_POST()) {
                     return $clauses;
+                }
 
                 if ($tt_ids = Collab::getObjectTerms($object_id, $taxonomies[0], ['fields' => 'tt_ids', 'pp_no_filter' => true])) {
                     $clauses['where'] = "( {$clauses['where']} OR tt.term_taxonomy_id IN ('" . implode("','", $tt_ids) . "') )";
@@ -144,8 +149,9 @@ class CollabHooksAdminNonAdministrator
     function fltGetTermsAdditional($additional_tt_ids, $required_operation, $post_type, $taxonomy, $args)
     {
         if ('assign' == $required_operation) {
-            if ($_edit_tt_ids = presspermit()->getUser()->getExceptionTerms('edit', 'additional', $post_type, $taxonomy, ['status' => true]))
+            if ($_edit_tt_ids = presspermit()->getUser()->getExceptionTerms('edit', 'additional', $post_type, $taxonomy, ['status' => true])) {
                 $additional_tt_ids = array_merge($additional_tt_ids, Arr::flatten($_edit_tt_ids));
+            }
         }
 
         return $additional_tt_ids;

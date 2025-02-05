@@ -72,7 +72,8 @@ class Triggers
         }
     }
 
-    function fltPostData($data, $postarr) {
+    function fltPostData($data, $postarr)
+    {
         global $current_user;
 
         $cap_name = 'autoset_' . $postarr['post_type'] . '_author';
@@ -87,7 +88,6 @@ class Triggers
     public function fltHideRoles($roles)
     {
         if ($pp_only = (array) presspermit()->getOption('supplemental_role_defs')) {
-
             if ($user_id = PWP::REQUEST_int('user_id')) {  // display role already set for this user, regardless of pp_only setting
                 $user = new \WP_User($user_id);
                 if (!empty($user->roles)) {
@@ -122,13 +122,16 @@ class Triggers
 
     public function actEditAttachment($post_id)
     {
-        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
 
         require_once(PRESSPERMIT_CLASSPATH . '/PostSave.php');
         PostSave::actSaveItem('post', $post_id, false);
     }
 
-    public function fltLogRevisionPublication($val, $arg1, $arg2) {
+    public function fltLogRevisionPublication($val, $arg1, $arg2)
+    {
         $this->revision_publication = true;
         return $val;
     }
@@ -137,13 +140,13 @@ class Triggers
     {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             if (defined('PRESSPERMIT_AUTOSAVE_BYPASS_SAVE_FILTERS')) {
-            	return;
-        	}
+                return;
+            }
         }
 
         if (!empty(presspermit()->flags['ignore_save_post'])) {
             if (defined('PRESSPERMIT_SAVE_POST_ALLOW_BYPASS') || !empty($this->revision_publication)) {
-            	return;
+                return;
             }
         }
 
@@ -244,7 +247,8 @@ class Triggers
         }
     }
 
-    public function actSyncUserRoleGroups($user_ids = []) {
+    public function actSyncUserRoleGroups($user_ids = [])
+    {
         foreach ((array) $user_ids as $user_id) {
             if (is_object($user_id)) {
                 $user_id = $user_id->ID;

@@ -23,8 +23,9 @@ class TermFilters
 
         add_filter('terms_clauses', [$this, 'fltTermsClauses'], 50, 3);
 
-        if (!presspermit()->isUserUnfiltered())
+        if (!presspermit()->isUserUnfiltered()) {
             add_filter('get_the_terms', [$this, 'fltGetTheTerms'], 10, 3);
+        }
 
         // Avoid redundant filtering when called from within a get_posts() call
         // (PP filters already use posts_clauses filter to apply term exceptions via join)
@@ -35,7 +36,8 @@ class TermFilters
         add_filter('get_object_terms', [$this, 'fltEnableTermRemap']);
     }
 
-    public function fltDisableTermRemap($arg) {
+    public function fltDisableTermRemap($arg)
+    {
         $this->parent_remap_enabled = false;
 
         if (!empty($this->count_filters_obj)) {
@@ -45,7 +47,8 @@ class TermFilters
         return $arg;
     }
 
-    public function fltEnableTermRemap($arg) {
+    public function fltEnableTermRemap($arg)
+    {
         $this->parent_remap_enabled = true;
 
         if (!empty($this->count_filters_obj)) {
@@ -79,56 +82,64 @@ class TermFilters
 
         if ($terms) {
             $args = [];
-            if ($this->skipFiltering((array)$taxonomy, $args))
+            if ($this->skipFiltering((array)$taxonomy, $args)) {
                 return $terms;
+            }
 
-            if (defined('PP_GET_TERMS_SHORTCUT') && !did_action('wp_head'))  // experimental theme-specific workaround
+            if (defined('PP_GET_TERMS_SHORTCUT') && !did_action('wp_head')) {  // experimental theme-specific workaround
                 return $terms;
+            }
 
             if (!$post_id) {
                 return $terms;
             }
 
-            if (!$_post = get_post($post_id))
+            if (!$_post = get_post($post_id)) {
                 return $terms;
+            }
 
             $operation = 'read';
 
             // Prevent Reading exceptions from being applied for Gutenberg term assignment checkbox visibility / selection
             if (presspermit()->doing_rest) {
                 $operation = REST::instance()->operation;
-
             } elseif (!empty($_SERVER['HTTP_REFERER']) && false !== strpos(esc_url_raw($_SERVER['HTTP_REFERER']), PWP::admin_rel_url('post'))) {
                 $operation = 'edit';
             }
 
             if (!apply_filters('presspermit_skip_the_terms_filtering', false, $post_id)) {
-                if ($restrict_ids = $user->getExceptionTerms(
-                    $operation,
-                    'include',
-                    $_post->post_type,
-                    $taxonomy,
-                    ['merge_universals' => true, 'return_term_ids' => true]
-                )) {
+                if (
+                    $restrict_ids = $user->getExceptionTerms(
+                        $operation,
+                        'include',
+                        $_post->post_type,
+                        $taxonomy,
+                        ['merge_universals' => true, 'return_term_ids' => true]
+                    )
+                ) {
                     foreach (array_keys($terms) as $key) {
                         if (!in_array($terms[$key]->term_id, $restrict_ids)) {
                             unset($terms[$key]);
                         }
                     }
-                } elseif ($restrict_ids = $user->getExceptionTerms(
-                    $operation,
-                    'exclude',
-                    $_post->post_type,
-                    $taxonomy,
-                    ['merge_universals' => true, 'return_term_ids' => true]
-                )) {
-                    if ($add_ids = $user->getExceptionTerms(
+                } elseif (
+                    $restrict_ids = $user->getExceptionTerms(
                         $operation,
-                        'additional',
+                        'exclude',
                         $_post->post_type,
                         $taxonomy,
                         ['merge_universals' => true, 'return_term_ids' => true]
-                    )) {
+                    )
+                ) {
+                    if (
+                        $add_ids = $user->getExceptionTerms(
+                            $operation,
+                            'additional',
+                            $_post->post_type,
+                            $taxonomy,
+                            ['merge_universals' => true, 'return_term_ids' => true]
+                        )
+                    ) {
                         $restrict_ids = array_diff($restrict_ids, $add_ids);
                     }
 
@@ -168,12 +179,15 @@ class TermFilters
 
         if (defined('DOING_AJAX') && DOING_AJAX && method_exists('\PressShack\LibWP', 'REQUEST_key')) {
             if ($action = PWP::REQUEST_key('action')) {
-                if (in_array(
-                    $action, 
-                    (array) apply_filters(
-                        'presspermit_unfiltered_ajax',
-                        ['woocommerce_load_variations', 'woocommerce_add_variation', 'woocommerce_remove_variations', 'woocommerce_save_variations', 'us_ajax_grid']
-                    ), true)
+                if (
+                    in_array(
+                        $action, 
+                        (array) apply_filters(
+                            'presspermit_unfiltered_ajax',
+                            ['woocommerce_load_variations', 'woocommerce_add_variation', 'woocommerce_remove_variations', 'woocommerce_save_variations', 'us_ajax_grid']
+                        ),
+                        true
+                    )
                 ) {
                     return true;
                 }
@@ -202,15 +216,17 @@ class TermFilters
     {
         global $pagenow;
 
-        if ($this->skipFiltering($taxonomies, $args))
+        if ($this->skipFiltering($taxonomies, $args)) {
             return $args;
+        }
 
         $defaults = ['skip_teaser' => false, 'post_type' => '', 'required_operation' => ''];
         $args = wp_parse_args($args, $defaults);
 
         if (('all' == $args['fields']) || $args['hide_empty'] || $args['pad_counts']) {
-            if (apply_filters('presspermit_apply_term_count_filters', true, $args, $taxonomies) 
-            && (empty($pagenow) || ('edit-tags.php' != $pagenow) || defined('PRESSPERMIT_LEGACY_ADMIN_TERM_COUNT_FILTER'))
+            if (
+                apply_filters('presspermit_apply_term_count_filters', true, $args, $taxonomies) 
+                && (empty($pagenow) || ('edit-tags.php' != $pagenow) || defined('PRESSPERMIT_LEGACY_ADMIN_TERM_COUNT_FILTER'))
             ) {
                 require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
                 $this->count_filters_obj = TermFiltersCount::instance(['parent_remap_enabled' => $this->parent_remap_enabled]);
@@ -253,8 +269,9 @@ class TermFilters
     {
         global $pagenow;
 
-        if ($this->skipFiltering($taxonomies, $args))
+        if ($this->skipFiltering($taxonomies, $args)) {
             return $clauses;
+        }
 
         $user = presspermit()->getUser();
 
@@ -269,22 +286,22 @@ class TermFilters
 
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             $args['required_operation'] = 'assign';
-            
         } elseif (empty($args['required_operation']) && !defined('PP_ADMIN_TERMS_READONLY_LISTABLE') && (!defined('PP_ADMIN_READONLY_LISTABLE') || presspermit()->getOption('admin_hide_uneditable_posts'))) {
             if (in_array($pagenow, ['edit-tags.php', 'nav-menus.php'])) {
                 $args['required_operation'] = 'manage';
             } else {
-	            $args['required_operation'] = apply_filters(
-	                'presspermit_get_terms_operation',
-	                PWP::isFront() ? 'read' : 'assign',
-	                $taxonomies,
-	                $args
-	            );
+                $args['required_operation'] = apply_filters(
+                    'presspermit_get_terms_operation',
+                    PWP::isFront() ? 'read' : 'assign',
+                    $taxonomies,
+                    $args
+                );
             }
         }
 
-        if (!empty($args['required_operation']) && in_array($args['required_operation'], ['assign', 'manage']) 
-        && !defined('PRESSPERMIT_LEGACY_TERM_FILTERS_ARGS')
+        if (
+            !empty($args['required_operation']) && in_array($args['required_operation'], ['assign', 'manage']) 
+            && !defined('PRESSPERMIT_LEGACY_TERM_FILTERS_ARGS')
         ) {
             $args['hide_empty'] = false;
         }
@@ -335,7 +352,6 @@ class TermFilters
 
                         if (!empty($matches[1])) {
                             $args['object_type'] = get_post_field('post_type', $matches[1]);
-
                         } elseif (false !== strpos($referer, $admin_post_new_rel_url)) {
                             preg_match("/$admin_post_new_rel_url\?post_type=([a-zA-Z_\-0-9]+)/", $referer, $matches);
                             
@@ -348,9 +364,9 @@ class TermFilters
                     }
                 }
 
-                if (!empty($args['object_type']))
+                if (!empty($args['object_type'])) {
                     $exception_types = array_intersect((array)$args['object_type'], $enabled_types);
-                else {
+                } else {
                     $tx = get_taxonomy($taxonomy);
                     $exception_types = array_intersect((array)$tx->object_type, $enabled_types);
                 }
@@ -415,8 +431,9 @@ class TermFilters
                     } else {
                         $any_non_inclusions = true;
 
-                        if ('exclude' == $mod_type)
+                        if ('exclude' == $mod_type) {
                             $excluded_ttids[] = [];
+                        }
                     }
                 }
             }
