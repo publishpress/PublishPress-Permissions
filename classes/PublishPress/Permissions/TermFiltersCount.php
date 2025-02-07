@@ -5,7 +5,7 @@ namespace PublishPress\Permissions;
 class TermFiltersCount
 {
     private static $instance = null;
-    var $parent_remap_enabled = true;
+    public $parent_remap_enabled = true;
 
     public static function instance($args = [])
     {
@@ -31,7 +31,7 @@ class TermFiltersCount
 
         // flt_get_terms is required on the front end (even for administrators) so private posts are included in count, as basis for display when hide_empty arg is used
         add_filter('get_terms', [$this, 'fltGetTerms'], 0, 3);   // WPML registers at priority 1
-        
+
         add_filter('get_terms_fields', [$this, 'fltGetTermsFields'], 99, 2);
     }
 
@@ -59,7 +59,7 @@ class TermFiltersCount
         }
 
         if (in_array($args['fields'], ['ids', 'names', 'id=>parent'])) {
-            // flt_get_terms() needs intermediate result set to be term objects with count property, even if final result set will be ids only.  
+            // flt_get_terms() needs intermediate result set to be term objects with count property, even if final result set will be ids only.
             // We will convert result set back to expected format before returning.
             // This also prevents WP core get_terms() from padding term counts needlessly
             $buffer_args['fields'] = $args['fields'];
@@ -233,7 +233,7 @@ class TermFiltersCount
                         }
                     }
 
-                // Perf: If empty terms are not being hidden and show_count is set false, there is no need to filter the term counts.
+                    // Perf: If empty terms are not being hidden and show_count is set false, there is no need to filter the term counts.
                 } elseif (!isset($args['actual_args']['show_count']) || !empty($args['actual_args']['show_count'])) {
                     TermQuery::tallyTermCounts($terms, reset($taxonomies), compact('pad_counts', 'skip_teaser', 'post_type'));
                 }

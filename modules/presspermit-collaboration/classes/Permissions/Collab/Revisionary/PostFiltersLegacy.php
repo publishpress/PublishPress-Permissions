@@ -6,14 +6,14 @@ class PostFiltersLegacy
 {
     private $filtered_post_clauses_type = '';
 
-    function __construct()
+    public function __construct()
     {
         add_filter('presspermit_main_posts_clauses_types', [$this, 'flt_posts_clauses_object_types'], 10, 2);
         add_filter('presspermit_main_posts_clauses_where', [$this, 'flt_posts_clauses_where'], 10, 1);
         add_filter('presspermit_meta_cap', [$this, 'flt_meta_cap']);
     }
 
-    function flt_posts_clauses_object_types($object_types)
+    public function flt_posts_clauses_object_types($object_types)
     {
         global $wp_query;
 
@@ -31,7 +31,7 @@ class PostFiltersLegacy
         return $object_types;
     }
 
-    function flt_posts_clauses_where($objects_where)
+    public function flt_posts_clauses_where($objects_where)
     {
         if ($this->filtered_post_clauses_type) {
             $objects_where = str_replace("post_type = 'post'", "post_type = '$this->filtered_post_clauses_type'", $objects_where);
@@ -43,10 +43,10 @@ class PostFiltersLegacy
     }
 
     // this is no longer used as a filter, but still called internally
-    function fltPostsWhere($where, $args)
+    public function fltPostsWhere($where, $args)
     {
         if (
-            defined('REVISIONARY_VERSION') && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+            defined('REVISIONARY_VERSION') && !is_admin() && PWP::is_REQUEST('post_type', 'revision')
             && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
         ) {
             $matches = [];
@@ -54,10 +54,10 @@ class PostFiltersLegacy
                 if ($matches[1]) {
                     global $wpdb;
                     $where = str_replace(
-                        "$wpdb->posts.post_type = '{$matches[1]}'", 
+                        "$wpdb->posts.post_type = '{$matches[1]}'",
                         "( $wpdb->posts.post_type = '{$matches[1]}' OR ( $wpdb->posts.post_type = 'revision'"
                         . " AND $wpdb->posts.post_status IN ('pending','future','inherit')"
-                        . " AND $wpdb->posts.post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )", 
+                        . " AND $wpdb->posts.post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )",
                         $where
                     );
                 }
@@ -67,10 +67,10 @@ class PostFiltersLegacy
         return $where;
     }
 
-    function flt_meta_cap($meta_cap)
+    public function flt_meta_cap($meta_cap)
     {
         if (
-            defined('REVISIONARY_VERSION') && ('read_post' == $meta_cap) && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+            defined('REVISIONARY_VERSION') && ('read_post' == $meta_cap) && !is_admin() && PWP::is_REQUEST('post_type', 'revision')
             && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
         ) {
             $meta_cap = 'edit_post';

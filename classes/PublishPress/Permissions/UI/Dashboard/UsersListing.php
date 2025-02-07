@@ -9,11 +9,11 @@ class UsersListing
         add_filter('manage_users_columns', [$this, 'fltUsersColumns']);
         add_filter('manage_users_custom_column', [$this, 'fltUsersCustomColumn'], 99, 3); // filter late in case other plugin filters do not retain passed value
         add_filter('manage_users_sortable_columns', [$this, 'fltUsersColumnsSortable']);
-        
+
         add_filter('pre_user_query', [$this, 'fltUserQueryExceptions']);
-        
+
         add_action('restrict_manage_users', [$this, 'actBulkGroupsUI']);
-        
+
         $this->groupsBulk();
     }
 
@@ -197,7 +197,7 @@ class UsersListing
                                 if (!empty($any_done)) {
                                     $content .= ', ';
                                 }
-                                
+
                                 if (defined('PP_USERS_UI_GROUP_FILTER_LINK') && !empty($_SERVER['REQUEST_URI'])) {
                                     $url = add_query_arg('pp_group', $_id, esc_url_raw($_SERVER['REQUEST_URI']));
                                     $content .= "<a href='" . esc_url($url) . "'>" . esc_html($name) . "</a>";
@@ -225,7 +225,7 @@ class UsersListing
 
                 if (!isset($role_info)) {
                     $role_info = \PublishPress\Permissions\API::countRoles(
-                        'user', 
+                        'user',
                         ['query_agent_ids' => array_keys($wp_list_table->items)]
                     );
                 }
@@ -240,7 +240,7 @@ class UsersListing
 
                     $hide_roles = apply_filters('presspermit_hide_roles', $hide_roles);
                 }
-                
+
                 $user_object->roles = array_diff($user_object->roles, $hide_roles);
 
                 $role_titles = [];
@@ -269,9 +269,9 @@ class UsersListing
                 $content .= '<span class="pp-group-site-roles">' . implode(', ', $role_titles) . '</span>';
 
                 if ($do_edit_link) {
-                    $content .= '</a>'; 
+                    $content .= '</a>';
                 }
-                
+
                 break;
 
             case 'pp_exceptions':

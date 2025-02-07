@@ -45,7 +45,7 @@ class TermsListing
                         esc_html($tx_obj->labels->singular_name),
                         '</a>'
                     );
-                    ?>
+            ?>
                 </p>
             </div>
             <?php

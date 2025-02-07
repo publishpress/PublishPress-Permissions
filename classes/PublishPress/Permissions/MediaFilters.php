@@ -12,7 +12,7 @@ class MediaFilters
         add_filter('map_meta_cap', [$this,'fltMapMediaMetaCap'], 2, 4);
     }
 
-    // Work around inappropriate edit cap requirement mapped by WP core map_meta_cap().  
+    // Work around inappropriate edit cap requirement mapped by WP core map_meta_cap().
     // Problem with WP core is that it uses get_post_status() in WP_Query but not in map_meta_cap().
     public function fltMapMediaMetaCap($caps, $cap, $user_id, $args)
     {

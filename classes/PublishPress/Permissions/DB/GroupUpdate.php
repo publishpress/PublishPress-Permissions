@@ -272,7 +272,7 @@ class GroupUpdate
         if (
             $prev = $wpdb->get_row(
                 $wpdb->prepare(
-                    "SELECT * FROM $wpdb->groups_table WHERE ID = %d", 
+                    "SELECT * FROM $wpdb->groups_table WHERE ID = %d",
                     $group_id
                 )
             )
@@ -303,7 +303,7 @@ class GroupUpdate
         if (
             $string && !$wpdb->get_var(
                 $wpdb->prepare(
-                    "SELECT ID FROM $wpdb->groups_table WHERE group_name = %s LIMIT 1", 
+                    "SELECT ID FROM $wpdb->groups_table WHERE group_name = %s LIMIT 1",
                     $string
                 )
             )

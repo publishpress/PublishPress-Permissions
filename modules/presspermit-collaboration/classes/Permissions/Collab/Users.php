@@ -17,9 +17,9 @@ class Users
             if (isset($role_levels[$role_name]) && ($role_levels[$role_name] > $current_user_level)) {
                 unset($roles[$role_name]);
             } elseif (
-                !presspermit()->isUserAdministrator() 
-                && in_array($pagenow, ['users.php', 'user-edit.php', 'user-new.php']) 
-                && !defined('PPCE_CAN_ASSIGN_OWN_ROLE') 
+                !presspermit()->isUserAdministrator()
+                && in_array($pagenow, ['users.php', 'user-edit.php', 'user-new.php'])
+                && !defined('PPCE_CAN_ASSIGN_OWN_ROLE')
                 && isset($role_levels[$role_name]) && ($role_levels[$role_name] >= $current_user_level)
             ) {
                 unset($roles[$role_name]);
@@ -40,7 +40,7 @@ class Users
             || apply_filters('presspermit_block_user_edit', false, (int) $args[2])
         ) {
             $wp_sitecaps = array_diff_key(
-                $wp_sitecaps, 
+                $wp_sitecaps,
                 array_fill_keys(['edit_users', 'delete_users', 'remove_users', 'promote_users'], true)
             );
         }
@@ -106,7 +106,7 @@ class Users
                     if (!isset($role_levels[$row->role_name])) {
                         continue;
                     }
-    
+
                     if (!isset($user_levels[$row->user_id]) || ($role_levels[$row->role_name] > $user_levels[$row->user_id])) {
                         $user_levels[$row->user_id] = $role_levels[$row->role_name];
                     }

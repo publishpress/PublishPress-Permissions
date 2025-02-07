@@ -39,7 +39,7 @@ class PostsListing
 
         if (!empty($typenow)) {
             if (strpos($query, "ELECT COUNT( 1 )")) {
-                $statuses_clause = " AND post_status IN ('" . implode("','", get_post_stati()) . "')"; 
+                $statuses_clause = " AND post_status IN ('" . implode("','", get_post_stati()) . "')";
                 $query = str_replace("WHERE post_type = '$typenow'", "WHERE post_type = '$typenow' $statuses_clause", $query);
             }
         }

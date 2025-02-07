@@ -14,12 +14,13 @@ class Admin
             if (
                 ('presspermit-edit-permissions' == $pp_plugin_page)
                 || PWP::is_POST('action', ['pp_updateroles', 'pp_updateexceptions', 'pp_updateclone'])
-                || ((PWP::is_REQUEST('_wp_http_referer') && strpos(esc_url_raw(PWP::REQUEST_url('_wp_http_referer')), 'presspermit-edit-permissions'))
+                || (
+                    (PWP::is_REQUEST('_wp_http_referer') && strpos(esc_url_raw(PWP::REQUEST_url('_wp_http_referer')), 'presspermit-edit-permissions'))
                 || ('presspermit-group-new' == $pp_plugin_page)
                 )
             ) {
                 add_action(
-                    'presspermit_user_init', 
+                    'presspermit_user_init',
                     function () {
                         require_once(PRESSPERMIT_CLASSPATH . '/UI/Handlers/AgentEdit.php');
                         new AgentEdit();
@@ -31,7 +32,8 @@ class Admin
 
         if (!PWP::empty_REQUEST('action') || !PWP::empty_REQUEST('action2') || !PWP::empty_REQUEST('pp_action')) {
             if (
-                ('presspermit-groups' == presspermitPluginPage()) || (!PWP::empty_REQUEST('wp_http_referer')
+                ('presspermit-groups' == presspermitPluginPage()) || (
+                    !PWP::empty_REQUEST('wp_http_referer')
                     && (strpos(esc_url_raw(PWP::REQUEST_url('wp_http_referer')), 'page=presspermit-groups'))
                 )
             ) {

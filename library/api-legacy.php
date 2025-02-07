@@ -150,7 +150,7 @@ if (!function_exists('pp_load_admin_api')) {
 if (!function_exists('pp_get_enabled_types')) {
     function pp_get_enabled_types($src_name, $args = [], $output = 'names')
     {
-        return ( 'post' == $src_name ) ? presspermit()->getEnabledPostTypes($args, $output) : [];
+        return ('post' == $src_name) ? presspermit()->getEnabledPostTypes($args, $output) : [];
     }
 }
 

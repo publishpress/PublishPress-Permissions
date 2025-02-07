@@ -38,7 +38,7 @@ class PluginUpdated
                     $role->add_cap('pp_create_groups');
                     $role->add_cap('pp_delete_groups');
                 }
-        
+
                 if ($role = @get_role('editor')) {
                     $role->remove_cap('presspermit_create_groups');
                     $role->remove_cap('presspermit_delete_groups');
@@ -49,13 +49,13 @@ class PluginUpdated
                 // Delete any invalid user metagroup relationships from bad buffer_metagroup_id values
                 self::syncWordPressRoles();
             }
-        
+
             do_action('presspermit_version_updated', $prev_version);
 
             if (version_compare($prev_version, '3.11.3', '<')) {
                 if (false === get_option('presspermit_pattern_roles_include_generic_rolecaps')) {
                     // If any type-specific supplemental roles are already stored, default to previous behavior of including many generic capabilities from Pattern Role
-                    
+
                     // Direct query on plugin table for version update operation
                     // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                     if ($wpdb->get_row("SELECT assignment_id FROM $wpdb->ppc_roles WHERE role_name LIKE '%:%'")) {
@@ -122,7 +122,7 @@ class PluginUpdated
 
                 // Previously, page exceptions were propagated to all descendents, including attachments (but this is unnecessary and potentially undesirable)
                 DB\Migration::delete_propagated_attachment_exceptions();
-                DB\Migration::expose_attachment_exception_items();  // "include" exceptions for Read/Edit operations are exposed but not deleted, since they affect access to other media 
+                DB\Migration::expose_attachment_exception_items();  // "include" exceptions for Read/Edit operations are exposed but not deleted, since they affect access to other media
 
                 // Previously, propagated exceptions were not removed when parent exception assign_for was changed to item only.  Expose them by setting inherited_from to 0
                 //DB\Migration::expose_orphaned_exception_items();
@@ -155,10 +155,10 @@ class PluginUpdated
 
     public static function deactivateModules($args = [])
     {
-        $deactivated = (isset($args['current_deactivations'])) 
-        ? $args['current_deactivations'] 
+        $deactivated = (isset($args['current_deactivations']))
+        ? $args['current_deactivations']
         : get_option('presspermit_deactivated_modules');
-        
+
         if (!$deactivated) {
             $deactivations = [];
         }
@@ -168,8 +168,8 @@ class PluginUpdated
         } else {
             // default deactivations
             $new_deactivations = [
-                'presspermit-circles', 
-                'presspermit-file-access', 
+                'presspermit-circles',
+                'presspermit-file-access',
                 'presspermit-membership'
             ];
         }
@@ -187,10 +187,10 @@ class PluginUpdated
         }
 
         $deactivated = array_merge(
-            $deactivated, 
+            $deactivated,
             array_fill_keys($new_deactivations, (object)[])
         );
-        
+
         update_option('presspermit_deactivated_modules', $deactivated);
     }
 
@@ -198,15 +198,15 @@ class PluginUpdated
     {
         $administrator_caps = array_fill_keys(
             [
-            'pp_manage_settings', 
-            'pp_administer_content', 
-            'pp_create_groups', 
-            'pp_edit_groups', 
-            'pp_delete_groups', 
-            'pp_manage_members', 
-            'pp_assign_roles', 
+            'pp_manage_settings',
+            'pp_administer_content',
+            'pp_create_groups',
+            'pp_edit_groups',
+            'pp_delete_groups',
+            'pp_manage_members',
+            'pp_assign_roles',
             'pp_set_read_exceptions'
-            ], 
+            ],
             true
         );
 

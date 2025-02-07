@@ -33,7 +33,7 @@
 
     <?php
     presspermit()->admin()->publishpressFooter();
-    ?>
+            ?>
 </div>
 
 <?php

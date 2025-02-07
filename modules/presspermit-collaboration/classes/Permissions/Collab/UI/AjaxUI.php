@@ -31,18 +31,18 @@ class AjaxUI
 
         $op_captions = array_merge($op_captions, [
             'associate' => (object)[
-                'label' => esc_html__('Set as Parent', 'press-permit-core'), 
-                'noun_label' => esc_html__('Set as Parent', 'press-permit-core'), 
+                'label' => esc_html__('Set as Parent', 'press-permit-core'),
+                'noun_label' => esc_html__('Set as Parent', 'press-permit-core'),
                 'agent_label' => esc_html__('Set as Parent', 'press-permit-core')
             ],
-            
+
             'assign' => (object)[
-                'label' => esc_html__('Assign Term', 'press-permit-core'), 
+                'label' => esc_html__('Assign Term', 'press-permit-core'),
                 'noun_label' => esc_html__('Assignment', 'press-permit-core')
             ],
 
             'manage' => (object)[
-                'label' => esc_html__('Manage'), 
+                'label' => esc_html__('Manage'),
                 'noun_label' => esc_html__('Management', 'press-permit-core')
             ],
         ]);
@@ -127,7 +127,7 @@ class AjaxUI
                         $tx_obj->labels->name .= ' (' . __('Legacy', 'press-permit-core') . ')';
                     }
                 }
-            
+
                 $types[$taxonomy] = $tx_obj->labels->name;
             }
 

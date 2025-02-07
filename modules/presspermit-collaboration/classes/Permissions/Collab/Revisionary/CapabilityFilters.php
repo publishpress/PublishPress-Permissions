@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab\Revisionary;
 
 class CapabilityFilters
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('presspermit_has_post_cap_vars', [$this, 'has_post_cap_vars'], 10, 4);
 
@@ -17,12 +17,12 @@ class CapabilityFilters
         add_filter('presspermit_query_post_statuses', [$this, 'fltPostStatuses'], 10, 2);
     }
 
-    function fltPostStatuses($statuses, $args)
+    public function fltPostStatuses($statuses, $args)
     {
         global $pagenow;
 
         if (
-            !empty($args['has_cap_check']) || !PWP::empty_REQUEST('preview') || 'revision.php' == $pagenow 
+            !empty($args['has_cap_check']) || !PWP::empty_REQUEST('preview') || 'revision.php' == $pagenow
         ) {
             if (rvy_get_option('pending_revisions')) {
                 $statuses ['pending-revision'] = get_post_status_object('pending-revision');
@@ -36,14 +36,14 @@ class CapabilityFilters
         return $statuses;
     }
 
-    function fltRevisionaryBlockEditorClearance($missing_caps, $reqd_caps, $post_type, $meta_cap)
+    public function fltRevisionaryBlockEditorClearance($missing_caps, $reqd_caps, $post_type, $meta_cap)
     {
         global $revisionary;
 
         // Prevent improper blockage submitting pending revision from Gutenberg editor
 
         if (
-            ('edit_post' == $meta_cap) && defined('REST_REQUEST') && REST_REQUEST 
+            ('edit_post' == $meta_cap) && defined('REST_REQUEST') && REST_REQUEST
             && !empty($revisionary) && empty($revisionary->skip_revision_allowance)
         ) {
             if ($type_obj = get_post_type_object($post_type)) {
@@ -55,7 +55,7 @@ class CapabilityFilters
     }
 
     // hooks to map_meta_cap
-    function fltAdjustReqdCaps($reqd_caps, $orig_cap, $user_id, $args)
+    public function fltAdjustReqdCaps($reqd_caps, $orig_cap, $user_id, $args)
     {
         global $pagenow, $current_user;
 
@@ -84,10 +84,10 @@ class CapabilityFilters
             }
 
 
-            // ensure proper cap requirements when a non-Administrator Quick-Edits or Bulk-Edits Posts/Pages 
+            // ensure proper cap requirements when a non-Administrator Quick-Edits or Bulk-Edits Posts/Pages
             // (which may be included in the edit listing only for revision submission)
             if (
-                in_array($pagenow, ['edit.php', 'edit-tags.php', 'admin-ajax.php']) && !PWP::empty_REQUEST('action') 
+                in_array($pagenow, ['edit.php', 'edit-tags.php', 'admin-ajax.php']) && !PWP::empty_REQUEST('action')
                 && (-1 != PWP::REQUEST_key('action') || (PWP::is_REQUEST('action2') && -1 != PWP::REQUEST_key('action2')))
             ) {
                 $reqd_caps = $admin_class::fix_table_edit_reqd_caps($reqd_caps, $orig_cap, get_post($args[0]), get_post_type_object($object_type));
@@ -107,7 +107,7 @@ class CapabilityFilters
     private function postTypeFromCaps($caps)
     {
         foreach (get_post_types(['public' => true, 'show_ui' => true], 'object', 'or') as $post_type => $type_obj) {
-            $caps = array_diff($caps, ['edit_posts', 'edit_pages']); // ignore generic caps defined for extraneous properties (assign_term, etc.) 
+            $caps = array_diff($caps, ['edit_posts', 'edit_pages']); // ignore generic caps defined for extraneous properties (assign_term, etc.)
             if (array_intersect((array)$type_obj->cap, $caps)) {
                 return $post_type;
             }
@@ -116,13 +116,13 @@ class CapabilityFilters
         return false;
     }
 
-    function has_post_cap_vars($force_vars, $wp_sitecaps, $pp_reqd_caps, $vars)
+    public function has_post_cap_vars($force_vars, $wp_sitecaps, $pp_reqd_caps, $vars)
     {
         $return = [];
 
         if (('read_post' == reset($pp_reqd_caps))) {
             if (
-                !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+                !is_admin() && PWP::is_REQUEST('post_type', 'revision')
                 && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
             ) {
                 $return['pp_reqd_caps'] = ['edit_post'];

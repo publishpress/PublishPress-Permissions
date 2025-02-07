@@ -39,20 +39,20 @@ class TermEditWorkarounds
 
                 if (
                     !$included_ttids = apply_filters(
-                        'presspermit_get_terms_exceptions', 
-                        $user->getExceptionTerms('associate', 'include', $taxonomy, $taxonomy, ['merge_universals' => true]), 
-                        'associate', 
-                        'include', 
-                        $taxonomy, 
+                        'presspermit_get_terms_exceptions',
+                        $user->getExceptionTerms('associate', 'include', $taxonomy, $taxonomy, ['merge_universals' => true]),
+                        'associate',
+                        'include',
+                        $taxonomy,
                         $additional_tt_ids
                     )
                 ) {
                     $excluded_ttids = apply_filters(
-                        'presspermit_get_terms_exceptions', 
-                        $user->getExceptionTerms('associate', 'include', $taxonomy, $taxonomy, ['merge_universals' => true]), 
-                        'associate', 
-                        'exclude', 
-                        $taxonomy, 
+                        'presspermit_get_terms_exceptions',
+                        $user->getExceptionTerms('associate', 'include', $taxonomy, $taxonomy, ['merge_universals' => true]),
+                        'associate',
+                        'exclude',
+                        $taxonomy,
                         $additional_tt_ids
                     );
                 }

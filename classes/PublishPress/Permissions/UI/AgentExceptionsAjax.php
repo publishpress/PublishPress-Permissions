@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\UI;
 
 class AgentExceptionsAjax
 {
-    public function __construct() 
+    public function __construct()
     {
         check_ajax_referer('pp-ajax');
 

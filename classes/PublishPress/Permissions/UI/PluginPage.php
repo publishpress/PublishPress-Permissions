@@ -6,14 +6,14 @@ namespace PublishPress\Permissions\UI;
 class PluginPage
 {
     private static $instance = null;
-    var $table;
+    public $table;
 
     public static function instance()
     {
         if (is_null(self::$instance)) {
             self::$instance = new PluginPage();
         }
-        
+
         return self::$instance;
     }
 
@@ -81,8 +81,8 @@ class PluginPage
 
             add_screen_option(
                 'per_page',
-                ['label' => _x('Groups', 'groups per page (screen options)', 'press-permit-core'), 
-                'default' => 20, 
+                ['label' => _x('Groups', 'groups per page (screen options)', 'press-permit-core'),
+                'default' => 20,
                 'option' => 'groups_per_page'
                 ]
             );

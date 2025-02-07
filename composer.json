@@ -54,6 +54,7 @@
     "get:version": "ppbuild version",
     "gen:mo": "wp i18n make-mo ./languages ./languages --allow-root",
     "gen:pot": "wp i18n make-pot . languages/press-permit-core.pot --domain=press-permit-core --exclude=dev-workspace,.wordpress-org,.github,dist,tests,vendor, --allow-root",
+    "config:phpcs": "phpcs --config-set installed_paths \"../../phpcsstandards/phpcsutils,../../phpcsstandards/phpcsextra,../../automattic/vipwpcs,../../phpcompatibility/php-compatibility,../../sirbrillig/phpcs-variable-analysis,../../publishpress/publishpress-phpcs-standards/standards,../../wp-coding-standards/wpcs\"",
     "check:longpath": "longpath .",
     "check:lint": "phplint",
     "check:phpcs": "phpcs",
@@ -71,6 +72,18 @@
     "check:php80": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 8.0",
     "check:php81": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 8.1",
     "check:php82": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 8.2",
+    "fix:cs": "phpcbf --standard=.phpcs.xml",
+    "fix:php-cs-fixer": "php-cs-fixer fix .",
+    "fix:php": [
+      "@fix:php-cs-fixer",
+      "@fix:cs"
+    ],
+    "post-install-cmd": [
+      "@config:phpcs"
+    ],
+    "post-update-cmd": [
+      "@config:phpcs"
+    ],
     "pre-autoload-dump": "composer dumpautoload --working-dir=./lib",
     "pre-update-cmd": "composer update --working-dir=./lib",
     "pre-install-cmd": "composer install --working-dir=./lib",

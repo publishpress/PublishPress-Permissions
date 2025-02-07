@@ -12,7 +12,7 @@ class PostSaveHierarchical
 
         if (presspermit()->doing_rest) {
             $rest = \PublishPress\Permissions\REST::instance();
-            
+
             if (!empty($rest) && 'WP_REST_Attachments_Controller' == $rest->endpoint_class) {
                 return $parent_id;
             }
@@ -126,9 +126,9 @@ class PostSaveHierarchical
                 }
 
                 $parent_id = apply_filters(
-                    'presspermit_validate_page_parent', 
-                    $parent_id, 
-                    $post_type, 
+                    'presspermit_validate_page_parent',
+                    $parent_id,
+                    $post_type,
                     compact('descendants', 'include_ids', 'exclude_ids')
                 );
             }
@@ -147,7 +147,7 @@ class PostSaveHierarchical
         return $parent_id;
     }
 
-    static function getPageDescendantIds($page_id, $pages = '')
+    public static function getPageDescendantIds($page_id, $pages = '')
     {
         global $wpdb;
 
@@ -222,7 +222,7 @@ class PostSaveHierarchical
         }
 
         if (
-            $post 
+            $post
             && ((!$post->post_parent && ($post->post_status != 'auto-draft' || Collab::userCanAssociateMain($post_type)))
             || in_array($post->post_parent, $allowed_parents)
             || in_array($post->post_parent, $valid_parents) && ($post->post_status != 'auto-draft'))
@@ -238,10 +238,10 @@ class PostSaveHierarchical
             } else {
                 $parent_id = 0;
             }
-            
+
             if (!defined('PRESSPERMIT_NO_PROCESS_BEFORE_PARENT_REVERT')) {
                 require_once(PRESSPERMIT_CLASSPATH . '/PostSave.php');
-    
+
                 if ($parent_id) {
                     $is_new = true;
                     require_once(PRESSPERMIT_CLASSPATH . '/ItemSave.php');
@@ -258,7 +258,7 @@ class PostSaveHierarchical
         return $parent_id;
     }
 
-    // Filtering of Page Parent submission (applied to post_status filter because fallback on invalid submission 
+    // Filtering of Page Parent submission (applied to post_status filter because fallback on invalid submission
     // for a previously unpublished post is to force it to draft status).
     //
     // There is currently no way to explictly restrict or grant Page Association rights to Main Page (root). Instead:
@@ -300,7 +300,7 @@ class PostSaveHierarchical
 
         // if the page is and was associated with Main Page, don't mess
         if (
-            empty($selected_parent_id) && empty($_post->post_parent) 
+            empty($selected_parent_id) && empty($_post->post_parent)
             && ($already_published || defined('PPCE_LIMITED_EDITORS_TOP_LEVEL_PUBLISH'))
         ) {
             return $status;

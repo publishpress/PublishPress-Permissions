@@ -113,7 +113,7 @@ class Constants
 
         if (defined('PRESSPERMIT_FILE_ACCESS_VERSION')) {
             $consts = array_merge(
-                $consts, 
+                $consts,
                 [
                 'PP_ATTACHED_FILE_AUTOPRIVACY' => esc_html__("Attached Files Private setting available", 'press-permit-core-hints'),
                 'PPFF_EXCLUDE_MIME_TYPES' => esc_html__("Comma-separated list of mime types to exclude from File Access filtering", 'press-permit-core-hints'),
@@ -213,17 +213,17 @@ class Constants
             $this->constants[$k] = (object)['descript' => $v, 'type' => $type];
         }
 
-    // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-    /*
-    if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined("REVISIONARY_VERSION")) {
-    $type = 'third-party';
-    $consts = [
-        'SCOPER_DEFAULT_MONITOR_GROUPS' => "",
-        'PP_DEFAULT_MONITOR_GROUPS' => "",
-    ];
-    foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 'type' => $type];
-    }
-    */
+        // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+        /*
+        if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined("REVISIONARY_VERSION")) {
+        $type = 'third-party';
+        $consts = [
+            'SCOPER_DEFAULT_MONITOR_GROUPS' => "",
+            'PP_DEFAULT_MONITOR_GROUPS' => "",
+        ];
+        foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 'type' => $type];
+        }
+        */
 
         $this->constants = apply_filters('presspermit_constants', $this->constants);
 
@@ -258,8 +258,8 @@ class Constants
         'PP_LEGACY_PAGE_URI_FILTER' => '',
 
     // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-    //'PRESSPERMIT_READ_PUBLIC_CAP' => '', 
-    
+    //'PRESSPERMIT_READ_PUBLIC_CAP' => '',
+
         'PRESSPERMIT_STRICT_READ_CAP' => '',
         'PRESSPERMIT_SIMPLIFY_READ_PERMISSIONS' => '',
         'PRESSPERMIT_LEGACY_HOOKS' => '',
@@ -315,7 +315,7 @@ class Constants
         $this->constants = $this->constants + $arr;
     } // end function
 
-    function loadConstantTypes()
+    public function loadConstantTypes()
     {
         foreach ($this->constants as $name => $const) {
             if (empty($const->suppress_display)) {

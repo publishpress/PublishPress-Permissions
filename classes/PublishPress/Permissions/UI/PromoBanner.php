@@ -12,49 +12,49 @@ namespace PublishPress\Permissions\UI;
 
 class PromoBanner
 {
-  /**
-   * @var array $features List of features for the plugin.
-   */
+    /**
+     * @var array $features List of features for the plugin.
+     */
     private $features = [];
 
-  /**
-   * @var string $pluginDocsUrl URL to the plugin documentation.
-   */
+    /**
+     * @var string $pluginDocsUrl URL to the plugin documentation.
+     */
     private $pluginDocsUrl;
 
-  /**
-   * @var string $pluginName Name of the plugin.
-   */
+    /**
+     * @var string $pluginName Name of the plugin.
+     */
     private $pluginName;
 
-  /**
-   * @var string $pluginSupportUrl URL to the plugin support page.
-   */
+    /**
+     * @var string $pluginSupportUrl URL to the plugin support page.
+     */
     private $pluginSupportUrl;
 
-  /**
-   * @var string $pluginUrl URL to the plugin homepage.
-   */
+    /**
+     * @var string $pluginUrl URL to the plugin homepage.
+     */
     private $pluginUrl;
 
-  /**
-   * @var string $title Title of the promo banner.
-   */
+    /**
+     * @var string $title Title of the promo banner.
+     */
     private $title;
 
-  /**
-   * @var string $subtitle Subtitle of the promo banner.
-   */
+    /**
+     * @var string $subtitle Subtitle of the promo banner.
+     */
     private $subtitle;
 
-  /**
-   * @var string $supportTitle Title for the support section in the promo banner.
-   */
+    /**
+     * @var string $supportTitle Title for the support section in the promo banner.
+     */
     private $supportTitle;
 
-  /**
-   * @var string $supportSubtitle Subtitle for the support section in the promo banner.
-   */
+    /**
+     * @var string $supportSubtitle Subtitle for the support section in the promo banner.
+     */
     private $supportSubtitle;
 
     public function __construct($args = [])

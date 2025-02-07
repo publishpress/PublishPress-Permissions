@@ -6,7 +6,7 @@ class PostFiltersFrontNonAdministrator
 {
     public function __construct()
     {
- // Ubermenu: intermittant failure to display top level menu items
+        // Ubermenu: intermittant failure to display top level menu items
         if (!defined('PP_DISABLE_NAV_MENU_FILTER') && !defined('SHORTCODE_IN_MENUS_RES') && (!defined('UBERMENU_VERSION') || presspermit()->getOption('force_nav_menu_filter'))) {
             if (is_user_logged_in() || !presspermit()->getOption('anonymous_unfiltered')) {
                 add_filter('wp_get_nav_menu_items', [$this, 'fltNavMenuItems'], 50, 3);
@@ -74,7 +74,7 @@ class PostFiltersFrontNonAdministrator
         if (isset($item_types['taxonomy'])) {
             foreach ($item_types['taxonomy'] as $taxonomy => $item_ids) {
                 $hide_empty = (defined('PP_NAV_MENU_SHOW_EMPTY_TERMS')) ? '0' : '1';
-                
+
                 $terms = get_terms($taxonomy, "hide_empty=$hide_empty");
 
                 $okay_ids = [];

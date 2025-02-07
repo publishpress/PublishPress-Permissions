@@ -4,34 +4,34 @@ namespace PublishPress\Permissions\Collab\Revisionary;
 
 class ContentRoles extends \RevisionaryContentRoles
 {
-    function filter_object_terms($terms, $taxonomy)
+    public function filter_object_terms($terms, $taxonomy)
     {
         return apply_filters('presspermit_pre_object_terms', $terms, $taxonomy);
     }
 
-    function get_metagroup_edit_link($metagroup_name)
+    public function get_metagroup_edit_link($metagroup_name)
     {
         if ($group = presspermit()->groups()->getGroupByName('[' . $metagroup_name . ']')) {
             return "admin.php?page=presspermit-edit-permissions&action=edit&agent_id=$group->ID";
         } elseif ($group = presspermit()->groups()->getGroupByName($metagroup_name)) {
             return "admin.php?page=presspermit-edit-permissions&action=edit&agent_id=$group->ID";
         }
-    
+
         return '';
     }
 
-    function get_metagroup_members($metagroup_name, $args = [])
+    public function get_metagroup_members($metagroup_name, $args = [])
     {
         if ($group = presspermit()->groups()->getGroupByName('[' . $metagroup_name . ']')) {
             return presspermit()->groups()->getGroupMembers($group->ID, 'pp_group', 'id', ['maybe_metagroup' => true]);
         } elseif ($group = presspermit()->groups()->getGroupByName($metagroup_name)) {
             return presspermit()->groups()->getGroupMembers($group->ID, 'pp_group', 'id', ['maybe_metagroup' => true]);
         }
-    
+
         return [];
     }
 
-    function users_who_can($reqd_caps, $object_id = 0, $args = [])
+    public function users_who_can($reqd_caps, $object_id = 0, $args = [])
     {
         $pp = presspermit();
 
@@ -76,17 +76,17 @@ class ContentRoles extends \RevisionaryContentRoles
         return [];
     }
 
-    function add_listed_ids($source_name, $object_type, $id) // retain $source_name arg for Revisionary API
+    public function add_listed_ids($source_name, $object_type, $id) // retain $source_name arg for Revisionary API
     {
         presspermit()->listed_ids[$object_type][$id] = true;
     }
 
-    function set_hascap_flags($flags)
+    public function set_hascap_flags($flags)
     {
         // no longer applicable (retain API for Revisionary)
     }
 
-    function is_direct_file_access()
+    public function is_direct_file_access()
     {
         return presspermit()->isDirectFileAccess();
     }

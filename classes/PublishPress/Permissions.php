@@ -6,9 +6,9 @@ use PublishPress\Permissions\Factory;
 
 /**
  * Main PressPermit class for plugin initialization and configuration routing
- * 
+ *
  * Singleton object returned by presspermit()
- * 
+ *
  * Initiates filter application by instantiating PublishPress\PermissionsHooks
  * Also provides some commonly used wrapper methods
  *
@@ -78,7 +78,7 @@ class Permissions
     {
         add_filter('presspermit_unfiltered_content', [$this, 'fltPluginCompatUnfilteredContent'], 5, 1);
 
-        // Log the post ID field for the sanitize_post() call by wp_insert_post(), 
+        // Log the post ID field for the sanitize_post() call by wp_insert_post(),
         // to provide context for subsequent pre_post_status, pre_post_parent, pre_post_category, pre_post_tags_input filter applications
         add_filter(
             'pre_post_ID',
@@ -525,7 +525,7 @@ class Permissions
             } else {
                 global $wp_roles, $wp_post_types, $wp_post_statuses;
 
-                // Avoid redundant execution if no late changes were made to roles, capabilities, types or statuses 
+                // Avoid redundant execution if no late changes were made to roles, capabilities, types or statuses
                 if (!defined('PRESSPERMIT_STATUSES_VERSION')) { // Status Control module causes late registration of statuses
                     $allcaps_hash = md5(wp_json_encode($user->allcaps));
                     $site_roles_hash = md5(wp_json_encode(array_keys($user->site_roles)));
@@ -649,7 +649,7 @@ class Permissions
     /*
      * USAGE: args['labels']['name'] = translationed caption
      * USAGE: args['labels']['name'] = translated caption
-     * USAGE: args['default_caps'] = [cap_name => true, another_cap_name => true] defines caps for pattern roles which do not have a corresponding WP role 
+     * USAGE: args['default_caps'] = [cap_name => true, another_cap_name => true] defines caps for pattern roles which do not have a corresponding WP role
      */
     public function registerPatternRole($role_name, $args = [])
     {

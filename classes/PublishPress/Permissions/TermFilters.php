@@ -181,7 +181,7 @@ class TermFilters
             if ($action = PWP::REQUEST_key('action')) {
                 if (
                     in_array(
-                        $action, 
+                        $action,
                         (array) apply_filters(
                             'presspermit_unfiltered_ajax',
                             ['woocommerce_load_variations', 'woocommerce_add_variation', 'woocommerce_remove_variations', 'woocommerce_save_variations', 'us_ajax_grid']
@@ -225,7 +225,7 @@ class TermFilters
 
         if (('all' == $args['fields']) || $args['hide_empty'] || $args['pad_counts']) {
             if (
-                apply_filters('presspermit_apply_term_count_filters', true, $args, $taxonomies) 
+                apply_filters('presspermit_apply_term_count_filters', true, $args, $taxonomies)
                 && (empty($pagenow) || ('edit-tags.php' != $pagenow) || defined('PRESSPERMIT_LEGACY_ADMIN_TERM_COUNT_FILTER'))
             ) {
                 require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
@@ -236,7 +236,7 @@ class TermFilters
 
         if (presspermit()->doing_rest) {
             $rest = \PublishPress\Permissions\REST::instance();
-            
+
             if ($rest->is_posts_request) {
                 if (empty($args['required_operation']) || ('assign' != $args['required_operation'])) {
                     if (!empty($_SERVER['HTTP_REFERER']) && false !== strpos(esc_url_raw($_SERVER['HTTP_REFERER']), PWP::admin_rel_url('post'))) {
@@ -300,7 +300,7 @@ class TermFilters
         }
 
         if (
-            !empty($args['required_operation']) && in_array($args['required_operation'], ['assign', 'manage']) 
+            !empty($args['required_operation']) && in_array($args['required_operation'], ['assign', 'manage'])
             && !defined('PRESSPERMIT_LEGACY_TERM_FILTERS_ARGS')
         ) {
             $args['hide_empty'] = false;
@@ -311,7 +311,7 @@ class TermFilters
         }
 
         // must consider all related post types when filtering terms list
-        // NOTE: If hide_empty is true, additional filtering will be applied to the results based on a full posts query.  
+        // NOTE: If hide_empty is true, additional filtering will be applied to the results based on a full posts query.
         // Posts may have direct restrictions which make them inaccessable regardless of term restrictions.
         $all_excluded_ttids = [];
 
@@ -354,7 +354,7 @@ class TermFilters
                             $args['object_type'] = get_post_field('post_type', $matches[1]);
                         } elseif (false !== strpos($referer, $admin_post_new_rel_url)) {
                             preg_match("/$admin_post_new_rel_url\?post_type=([a-zA-Z_\-0-9]+)/", $referer, $matches);
-                            
+
                             if (!empty($matches[1])) {
                                 $args['object_type'] = $matches[1];
                             } else {

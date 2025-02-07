@@ -7,7 +7,7 @@ class AgentEdit
     public function __construct()
     {
         global $current_user;
-        
+
         require_once(PRESSPERMIT_CLASSPATH . '/DB/GroupUpdate.php');
 
         $action = PWP::REQUEST_key('action');
@@ -53,11 +53,11 @@ class AgentEdit
                     $agent_id = PWP::REQUEST_int('agent_id');
                     require_once(PRESSPERMIT_CLASSPATH . '/DB/Cloner.php');
                     \PublishPress\Permissions\DB\Cloner::clonePermissions(
-                        'pp_group', 
-                        $agent_id, 
+                        'pp_group',
+                        $agent_id,
                         PWP::REQUEST_key('pp_select_role')
                     );
-                    
+
                     $redirect = "$url?page=presspermit-edit-permissions&agent_id=$agent_id&agent_type=$agent_type&updated=1&pp_cloned=1";
                 }
 
@@ -221,7 +221,7 @@ class AgentEdit
             // phpcs Note: sanitized per-element below
 
             // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-            foreach ($_POST['pp_add_exception'] as $exc) {  
+            foreach ($_POST['pp_add_exception'] as $exc) {
                 $exc = apply_filters('presspermit_add_exception', $exc);
 
                 if ('(all)' == $exc['for_type']) {
@@ -328,7 +328,7 @@ class AgentEdit
                 $errors->add('group_name', esc_html__('<strong>ERROR</strong>: Please enter a group name.', 'press-permit-core'));
             } elseif (!$update && !\PublishPress\Permissions\DB\GroupUpdate::groupNameAvailable($group->group_name, $agent_type)) {
                 $errors->add(
-                    'user_login', 
+                    'user_login',
                     esc_html__('<strong>ERROR</strong>: This group name is already registered. Please choose another one.', 'press-permit-core')
                 );
             }

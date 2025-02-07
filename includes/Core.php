@@ -4,7 +4,7 @@ namespace PublishPress\Permissions;
 
 class Core
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('presspermit_options', [$this, 'fltPressPermitOptions'], 15);
 
@@ -12,7 +12,7 @@ class Core
 
         if (! $presspermit_loaded_by_pro) {
             add_action('init', function () {
- // late execution avoids clash with autoloaders in other plugins
+                // late execution avoids clash with autoloaders in other plugins
                 if (
                     presspermitPluginPage()
                     || (defined('DOING_AJAX') && DOING_AJAX && !PWP::empty_REQUEST('action') && (false !== strpos(PWP::REQUEST_key('action'), 'press-permit-core')))
@@ -42,7 +42,7 @@ class Core
         return presspermitPluginPage();
     }
 
-    function fltPressPermitOptions($options)
+    public function fltPressPermitOptions($options)
     {
         $options['presspermit_display_extension_hints'] = true;
         return $options;

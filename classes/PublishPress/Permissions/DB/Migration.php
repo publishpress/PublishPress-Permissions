@@ -35,7 +35,7 @@ class Migration
                 'presspermit-compatibility' => 'pp-compatibility',
                 'presspermit-file-access'   => 'pp-file-url-filter',
                 'presspermit-membership'    => 'pp-membership',
-                'presspermit-status-control' => 'pp-custom-post-statuses',      
+                'presspermit-status-control' => 'pp-custom-post-statuses',
                 'presspermit-teaser'        => 'pp-content-teaser',
             ];
 
@@ -54,7 +54,7 @@ class Migration
             $deactivate_modules = [];
             foreach ($ext_map as $module_plugin_slug => $legacy_slug) {
                 if (isset($ext_option_name[$legacy_slug])) {
-                    $deactivate = ('presspermit-file-access' == $module_plugin_slug) 
+                    $deactivate = ('presspermit-file-access' == $module_plugin_slug)
                     ? false === get_option($ext_option_name[$legacy_slug])  // may be set to "0", with file filtering still active
                     : !get_option($ext_option_name[$legacy_slug]);
 
@@ -71,7 +71,7 @@ class Migration
 
             if (!$any_activated) {
                 $deactivate_modules = array_fill_keys(
-                    ['presspermit-circles', 'presspermit-file-access', 'presspermit-membership'], 
+                    ['presspermit-circles', 'presspermit-file-access', 'presspermit-membership'],
                     (object)[]
                 );
             }

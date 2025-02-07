@@ -5,9 +5,9 @@ namespace PublishPress\Permissions;
 /**
  * Triggers class
  *
- * Deals with content, user or site changes which may require a 
- * corresponding permissions data update or other action. 
- * 
+ * Deals with content, user or site changes which may require a
+ * corresponding permissions data update or other action.
+ *
  * @package PressPermit
  * @author Kevin Behrens <kevin@agapetry.net>
  * @copyright Copyright (c) 2024, PublishPress
@@ -72,7 +72,7 @@ class Triggers
         }
     }
 
-    function fltPostData($data, $postarr)
+    public function fltPostData($data, $postarr)
     {
         global $current_user;
 
@@ -216,7 +216,7 @@ class Triggers
                 }
 
                 ppc_delete_agent_permissions($id, 'user');
-                
+
                 if (is_multisite()) {
                     restore_current_blog();
                 }

@@ -219,19 +219,19 @@ class SettingsTabAdvanced
                 <td>
                     <?php
                     $hint = '';
-                    $ui->optionCheckbox('advanced_options', $tab, $section, $hint);
+            $ui->optionCheckbox('advanced_options', $tab, $section, $hint);
 
-                    ?>
+            ?>
                     <div>
                         <?php
-                        $hint = esc_html__('note: Plugin settings and configuration data will be deleted, but only after the last copy of Permissions / Permissions Pro is deleted.', 'press-permit-core');
-                        $ui->optionCheckbox('delete_settings_on_uninstall', $tab, $section, $hint);
-                        ?>
+                $hint = esc_html__('note: Plugin settings and configuration data will be deleted, but only after the last copy of Permissions / Permissions Pro is deleted.', 'press-permit-core');
+            $ui->optionCheckbox('delete_settings_on_uninstall', $tab, $section, $hint);
+            ?>
                     </div>
 
                     <?php
                     do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
-                    ?>
+            ?>
                 </td>
             </tr>
         <?php endif; // any options accessable in this section
@@ -276,18 +276,18 @@ class SettingsTabAdvanced
                     <?php
                     $ui->optionCheckbox('page_parent_editable_only', $tab, $section);
 
-                    $ui->optionCheckbox('page_parent_order', $tab, $section);
-                    ?>
+            $ui->optionCheckbox('page_parent_order', $tab, $section);
+            ?>
 
                     <br />
                     <?php
-                    $hint = esc_html__("When saving a post, if the default term is not selectable, substitute first available.", 'presspermit-pro')
-                        . ' ' . esc_html__('Some term-limited editing configurations require this.', 'presspermit=pro');
+            $hint = esc_html__("When saving a post, if the default term is not selectable, substitute first available.", 'presspermit-pro')
+            . ' ' . esc_html__('Some term-limited editing configurations require this.', 'presspermit=pro');
 
-                    $ui->optionCheckbox('auto_assign_available_term', $tab, $section, $hint);
+            $ui->optionCheckbox('auto_assign_available_term', $tab, $section, $hint);
 
-                    do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
-                    ?>
+            do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
+            ?>
                 </td>
             </tr>
         <?php endif; // any options accessable in this section
@@ -300,36 +300,36 @@ class SettingsTabAdvanced
                 <td>
                     <?php
                     $hint = SettingsAdmin::getStr('post_blockage_priority');
-                    $ui->optionCheckbox('post_blockage_priority', $tab, $section, $hint);
+            $ui->optionCheckbox('post_blockage_priority', $tab, $section, $hint);
 
-                    // @todo: review
-                    //$ui->optionCheckbox('suppress_administrator_metagroups', $tab, $section, true);
+            // @todo: review
+            //$ui->optionCheckbox('suppress_administrator_metagroups', $tab, $section, true);
 
-                    $ui->optionCheckbox('publish_exceptions', $tab, $section, '');
+            $ui->optionCheckbox('publish_exceptions', $tab, $section, '');
 
-                    ?>
+            ?>
                     <div style="margin-top:30px">
                     <?php
-                    $ui->optionCheckbox('non_admins_set_read_exceptions', $tab, $section, true);
-                    $ui->optionCheckbox('non_admins_set_edit_exceptions', $tab, $section, true);
-                    ?>
+            $ui->optionCheckbox('non_admins_set_read_exceptions', $tab, $section, true);
+            $ui->optionCheckbox('non_admins_set_edit_exceptions', $tab, $section, true);
+            ?>
                     </div>
 
                     <?php
-                    do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
+            do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
 
-                    if (defined('PP_ADMIN_READONLY_LISTABLE') && (!$pp->getOption('admin_hide_uneditable_posts') || defined('PP_ADMIN_POSTS_NO_FILTER'))) {
-                        $hint = SettingsAdmin::getStr('posts_listing_unmodified');
-                    } else {
-                        $hint = '';
-                    }
-                    
-                    if ($hint) :?>
+            if (defined('PP_ADMIN_READONLY_LISTABLE') && (!$pp->getOption('admin_hide_uneditable_posts') || defined('PP_ADMIN_POSTS_NO_FILTER'))) {
+                $hint = SettingsAdmin::getStr('posts_listing_unmodified');
+            } else {
+                $hint = '';
+            }
+
+        if ($hint) :?>
                     <br />
                     <div class="pp-subtext pp-subtext-show">
                         <?php
-                        printf(esc_html__('%sPosts / Pages Listing:%s %s', 'press-permit-core'), '<b>', '</b>', esc_html($hint));
-                        ?>
+            printf(esc_html__('%sPosts / Pages Listing:%s %s', 'press-permit-core'), '<b>', '</b>', esc_html($hint));
+            ?>
                     </div>
                     <?php endif;?>
                 </td>
@@ -346,25 +346,25 @@ class SettingsTabAdvanced
                     <?php
                     $ui->optionCheckbox('media_search_results', $tab, $section, '');
 
-                    $hint = SettingsAdmin::getStr('strip_private_caption');
-                    $ui->optionCheckbox('strip_private_caption', $tab, $section, $hint);
+            $hint = SettingsAdmin::getStr('strip_private_caption');
+            $ui->optionCheckbox('strip_private_caption', $tab, $section, $hint);
 
-                    ?>
+            ?>
                     <div style="margin-top:30px">
                     <?php
-                    $ui->optionCheckbox('anonymous_unfiltered', $tab, $section, true);
+            $ui->optionCheckbox('anonymous_unfiltered', $tab, $section, true);
 
-                    $ui->optionCheckbox('limit_front_end_term_filtering', $tab, $section, true);
+            $ui->optionCheckbox('limit_front_end_term_filtering', $tab, $section, true);
 
-                    $ui->optionCheckbox('term_counts_unfiltered', $tab, $section, '');
+            $ui->optionCheckbox('term_counts_unfiltered', $tab, $section, '');
 
-                    if (defined('UBERMENU_VERSION')) {
-                        $hint = SettingsAdmin::getStr('force_nav_menu_filter');
-                        $ui->optionCheckbox('force_nav_menu_filter', $tab, $section, $hint);
-                    }
+            if (defined('UBERMENU_VERSION')) {
+                $hint = SettingsAdmin::getStr('force_nav_menu_filter');
+                $ui->optionCheckbox('force_nav_menu_filter', $tab, $section, $hint);
+            }
 
-                    do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
-                    ?>
+            do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
+            ?>
                     </div>
                 </td>
             </tr>
@@ -372,7 +372,7 @@ class SettingsTabAdvanced
         endif; // any options accessable in this section
 
         $section = 'user_management';                                    // --- USER MANAGEMENT SECTION ---
-        if (!empty($ui->form_options[$tab][$section])) : 
+        if (!empty($ui->form_options[$tab][$section])) :
             ?>
             <tr>
                 <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
@@ -380,25 +380,25 @@ class SettingsTabAdvanced
                     <?php
                     $hint = '';
 
-                    if (!defined('is_multisite()')) {
-                        $ui->optionCheckbox('new_user_groups_ui', $tab, $section, $hint, '<br />');
-                    }
+            if (!defined('is_multisite()')) {
+                $ui->optionCheckbox('new_user_groups_ui', $tab, $section, $hint, '<br />');
+            }
 
-                    $hint = SettingsAdmin::getStr('display_user_profile_roles');
-                    $ui->optionCheckbox('display_user_profile_groups', $tab, $section);
-                    $ui->optionCheckbox('display_user_profile_roles', $tab, $section, $hint);
+            $hint = SettingsAdmin::getStr('display_user_profile_roles');
+            $ui->optionCheckbox('display_user_profile_groups', $tab, $section);
+            $ui->optionCheckbox('display_user_profile_roles', $tab, $section, $hint);
 
-                    $ui->optionCheckbox('user_search_by_role', $tab, $section, true);
+            $ui->optionCheckbox('user_search_by_role', $tab, $section, true);
 
-                    ?>
+            ?>
                     <div style="margin-top:30px">
                     <?php
-                    $ui->optionCheckbox('users_bulk_groups', $tab, $section, '');
-                    $ui->optionCheckbox('add_author_pages', $tab, $section, true, '');
+            $ui->optionCheckbox('users_bulk_groups', $tab, $section, '');
+            $ui->optionCheckbox('add_author_pages', $tab, $section, true, '');
 
-                    $div_style = ($pp->getOption('add_author_pages')) ? '' : 'display:none';
-                    $ui->optionCheckbox('publish_author_pages', $tab, $section, '', '', compact('div_style'));
-                    ?>
+            $div_style = ($pp->getOption('add_author_pages')) ? '' : 'display:none';
+            $ui->optionCheckbox('publish_author_pages', $tab, $section, '', '', compact('div_style'));
+            ?>
                     </div>
 
                     <?php if (in_array('limit_user_edit_by_level', $ui->form_options[$tab][$section])) :
@@ -424,28 +424,28 @@ class SettingsTabAdvanced
                         <div class='pp-subtext'>
                             <?php
                             SettingsAdmin::echoStr('limit_user_edit_by_level');
-                            ?>
+                        ?>
                         </div>
                     <?php endif;?>
                 
                     <div class="pp-user-permissions-help">
                         <p>
                             <?php
-                            $url = "users.php";
-                            printf(
-                                esc_html__('For user-specific Supplemental Roles and Permissions, click a "Roles" cell on the %1$sUsers%2$s screen.', 'press-permit-core'),
-                                "<strong><a href='" . esc_url($url) . "'>",
-                                '</a></strong>'
-                            );
-                            ?>
+                        $url = "users.php";
+            printf(
+                esc_html__('For user-specific Supplemental Roles and Permissions, click a "Roles" cell on the %1$sUsers%2$s screen.', 'press-permit-core'),
+                "<strong><a href='" . esc_url($url) . "'>",
+                '</a></strong>'
+            );
+            ?>
                         </p>
                     </div>
 
                     <div class="pp-hint pp-user-permissions-help" style="display:none">
                         <p>
                             <?php
-                            esc_html_e('To filter the Users list by Permissions, follow a link below:', 'press-permit-core');
-                            ?>
+            esc_html_e('To filter the Users list by Permissions, follow a link below:', 'press-permit-core');
+            ?>
                         </p>
 
                         <ul class="pp-notes">
@@ -475,10 +475,10 @@ class SettingsTabAdvanced
                         );
                         ?>
                     </span>
-                    <?php endif; 
-                    
-                    do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
-                    ?>
+                    <?php endif;
+
+            do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
+            ?>
                 </td>
             </tr>
         <?php endif;
@@ -493,8 +493,8 @@ class SettingsTabAdvanced
 
                     $ui->optionCheckbox('admin_nav_menu_partial_editing', $tab, $section, true, '');
 
-                    $ui->optionCheckbox('admin_nav_menu_lock_custom', $tab, $section, true, '');
-                    ?>
+            $ui->optionCheckbox('admin_nav_menu_lock_custom', $tab, $section, true, '');
+            ?>
                 </td>
             </tr>
         <?php endif; // any options accessable in this section
@@ -507,8 +507,8 @@ class SettingsTabAdvanced
                     <?php
                     $ui->optionCheckbox('pattern_roles_include_generic_rolecaps', $tab, $section, true, '');
 
-                    do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
-                    ?>
+            do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
+            ?>
 
                     <div style="font-style: italic">
                         <?php printf(
@@ -516,15 +516,15 @@ class SettingsTabAdvanced
                             '<strong><a href="' . esc_url(admin_url('admin.php?page=presspermit-role-usage')) . '">',
                             '</a></strong>'
                         );
-                        ?>
+            ?>
                     </div>
                     <br />
 
                     <div>
                         <?php
-                        $args = (defined('PP_FORCE_DYNAMIC_ROLES')) ? ['val' => 1, 'no_storage' => true, 'disabled' => true] : [];
-                        $ui->optionCheckbox('dynamic_wp_roles', $tab, $section, true, '', $args);
-                        ?>
+            $args = (defined('PP_FORCE_DYNAMIC_ROLES')) ? ['val' => 1, 'no_storage' => true, 'disabled' => true] : [];
+            $ui->optionCheckbox('dynamic_wp_roles', $tab, $section, true, '', $args);
+            ?>
                     </div>
                 </td>
             </tr>
@@ -538,12 +538,12 @@ class SettingsTabAdvanced
                     <?php
                     $ui->optionCheckbox('display_hints', $tab, $section, true);
 
-                    if (presspermit()->isPro()) {
-                        $ui->optionCheckbox('display_extension_hints', $tab, $section, true);
-                    }
+            if (presspermit()->isPro()) {
+                $ui->optionCheckbox('display_extension_hints', $tab, $section, true);
+            }
 
-                    do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
-                    ?>
+            do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
+            ?>
                 </td>
             </tr>
         <?php endif; // any options accessable in this section
@@ -571,7 +571,7 @@ class SettingsTabAdvanced
                                         . '" class="thickbox" title=" PublishPress Capabilities">PublishPress&nbsp;Capabilities</a></span>'
                                 );
                             }
-                            ?>
+        ?>
                         </span>
                     </span>
 
@@ -590,8 +590,8 @@ class SettingsTabAdvanced
                                 <?php
                                 $pp_caps = apply_filters('presspermit_cap_descriptions', []);
 
-                                foreach ($pp_caps as $cap_name => $descript) :
-                                    ?>
+                        foreach ($pp_caps as $cap_name => $descript) :
+                            ?>
                                     <tr>
                                         <td class="cap-name"><?php echo esc_html($cap_name); ?></td>
                                         <td><?php echo esc_html($descript); ?></td>
@@ -673,14 +673,14 @@ class SettingsTabAdvanced
                                                 <td><?php
                                                     $const_val = constant($const_name);
 
-                                                if (false === $const_val) {
-                                                    $const_val = 'false';
-                                                } elseif (true === $const_val) {
-                                                    $const_val = 'true';
-                                                }
+                                            if (false === $const_val) {
+                                                $const_val = 'false';
+                                            } elseif (true === $const_val) {
+                                                $const_val = 'true';
+                                            }
 
-                                                    echo esc_html(strval($const_val));
-                                                ?>
+                                            echo esc_html(strval($const_val));
+                                            ?>
                                                 </td>
                                                 <td><?php echo esc_html($ppc->constants[$const_name]->descript); ?></td>
                                             </tr>
@@ -690,11 +690,11 @@ class SettingsTabAdvanced
                             </table>
                         <?php endif; ?>
 
-                        <?php if ($this->enabled) : // Unless debugging, only list defined constants and available constants in the same section ?>
+                        <?php if ($this->enabled) : // Unless debugging, only list defined constants and available constants in the same section?>
                         <br />
                         <table id="pp_available_constants" style="display:none;" class="pp_cap_descripts<?php if (!presspermit()->getOption('list_all_constants') && (!defined('PRESSPERMIT_DEBUG') || ! PRESSPERMIT_DEBUG)) {
                             echo ' pp-hint';
-                                                                                                        } ?>" style="width: 99%">
+                        } ?>" style="width: 99%">
                             <thead>
                                 <tr>
                                     <th class="cap-name" style="width:40%"><?php esc_html_e('Available Constant', 'press-permit-core'); ?></th>
@@ -749,7 +749,7 @@ class SettingsTabAdvanced
 
                                                     echo esc_html(strval($const_val));
                                                 }
-                                                ?>
+                                        ?>
                                             </td>
 
                                             <td class="<?php echo esc_attr($class); ?>"><?php echo esc_html($ppc->constants[$const_name]->descript); ?></td>
@@ -774,9 +774,9 @@ class SettingsTabAdvanced
                     <div id="pp_modify_default_settings" class="pp-settings-code">
                         <?php
                         $msg = esc_html__("To modify one or more default settings network-wide, <strong>copy</strong> the following code into your theme's <strong>functions.php</strong> file (or some other file which is always executed and not auto-updated) and modify as desired:", 'press-permit-core');
-                        $msg = str_replace(['&lt;strong&gt;', '&lt;/strong&gt;'], '', $msg);
-                        _e($msg);
-                        ?>
+            $msg = str_replace(['&lt;strong&gt;', '&lt;/strong&gt;'], '', $msg);
+            _e($msg);
+            ?>
                         <textarea rows='10' cols='150' readonly='readonly'>
     // Use this filter if you want to change the default, but still allow manual setting
     add_filter( 'presspermit_default_options', 'my_presspermit_default_options', 99 );
@@ -794,10 +794,10 @@ class SettingsTabAdvanced
 
                     <div id="pp_force_settings" class="pp-settings-code">
                         <?php
-                        $msg  = esc_html__("To force the value of one or more settings network-wide, <strong>copy</strong> the following code into your theme's <strong>functions.php</strong> file (or some other file which is always executed and not auto-updated) and modify as desired:", 'press-permit-core');
-                        $msg = str_replace(['&lt;strong&gt;', '&lt;/strong&gt;'], '', $msg);
-                        _e($msg);
-                        ?>
+            $msg  = esc_html__("To force the value of one or more settings network-wide, <strong>copy</strong> the following code into your theme's <strong>functions.php</strong> file (or some other file which is always executed and not auto-updated) and modify as desired:", 'press-permit-core');
+            $msg = str_replace(['&lt;strong&gt;', '&lt;/strong&gt;'], '', $msg);
+            _e($msg);
+            ?>
                         <textarea rows='13' cols='150' readonly='readonly'>
     // Use this filter if you want to force an option, blocking/disregarding manual setting
     add_filter( 'presspermit_options', 'my_presspermit_options', 99 );
@@ -830,7 +830,7 @@ class SettingsTabAdvanced
 
                 <?php
                 $msg = esc_html__("All settings in this form (including those on undisplayed tabs) will be reset to DEFAULTS.  Are you sure?", 'press-permit-core');
-                ?>
+        ?>
                 <p class="submit pp-submit-alternate" style="border:none;float:right">
                     <input type="submit" name="presspermit_defaults" value="<?php esc_attr_e('Revert to Defaults', 'press-permit-core') ?>"
                         onclick="<?php echo "javascript:if (confirm('" . esc_attr($msg) . "')) {return true;} else {return false;}"; ?>" />

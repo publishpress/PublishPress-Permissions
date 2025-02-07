@@ -9,9 +9,9 @@ class TermFiltersAdmin
         // if a term is excluded (or outside an include set) for editing, don't allow assignment either
         $user = presspermit()->getUser();
 
-         // this is for the purpose of exempting items from omission due to include/exclude exceptions
+        // this is for the purpose of exempting items from omission due to include/exclude exceptions
         $universal['additional'] = array_merge(
-            $universal['additional'], 
+            $universal['additional'],
             $user->getExceptionTerms('edit', 'additional', '', $taxonomy)
         );
 

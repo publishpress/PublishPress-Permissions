@@ -18,13 +18,13 @@ class PostSave
 
         if (
             array_intersect(
-                [   'edit_post', 
-                'publish_posts', 
-                'edit_posts', 
-                $post_type_obj->cap->edit_post, 
-                $post_type_obj->cap->publish_posts, 
+                [   'edit_post',
+                'publish_posts',
+                'edit_posts',
+                $post_type_obj->cap->edit_post,
+                $post_type_obj->cap->publish_posts,
                 $post_type_obj->cap->edit_posts
-                ], 
+                ],
                 $pp_reqd_caps
             )
         ) {
@@ -66,7 +66,7 @@ class PostSave
                         $set_terms = array_unique(array_map('intval', $set_terms));
 
                         // safeguard against unintended clearing of stored categories
-                        if (($set_terms != $stored_terms) && $set_terms && ($set_terms != [1])) { 
+                        if (($set_terms != $stored_terms) && $set_terms && ($set_terms != [1])) {
                             wp_set_object_terms($object_id, $set_terms, $taxonomy);
                             $set_terms = true;
                         }

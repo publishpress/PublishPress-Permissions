@@ -141,14 +141,14 @@ class AgentPermissionsUI
                             <?php
                             $type_objects = apply_filters('presspermit_append_exception_types', $pp->admin()->orderTypes(apply_filters('presspermit_exception_types', $type_objects)));
 
-                            if (!empty($args['external'])) {
-                                $type_objects = array_merge($type_objects, $args['external']);
-                            }
+        if (!empty($args['external'])) {
+            $type_objects = array_merge($type_objects, $args['external']);
+        }
 
-                            self::drawTypeOptions($type_objects, ['option_any' => true]);
-                            do_action('presspermit_exception_types_dropdown', $args);
+        self::drawTypeOptions($type_objects, ['option_any' => true]);
+        do_action('presspermit_exception_types_dropdown', $args);
 
-                            ?></select>
+        ?></select>
                     </td>
 
                     <td class="pp-select-x-operation" style="display:none"></td>
@@ -215,26 +215,26 @@ class AgentPermissionsUI
                 <div>
                     <?php
                     esc_html_e('To assign page-specific Permissions for editing, parent selection or term assignment, enable the Editing Permissions module.', 'press-permit-core');
-                    ?>
+                ?>
                 </div>
             <?php endif;
 
-            if (
-                function_exists('bbp_get_version') && !$pp->moduleActive('compatibility')
-                && $pp->getOption('display_extension_hints')
-            ) : ?>
+        if (
+            function_exists('bbp_get_version') && !$pp->moduleActive('compatibility')
+            && $pp->getOption('display_extension_hints')
+        ) : ?>
                 <div>
                     <?php
-                    if (presspermit()->isPro()) {
-                        esc_html_e('To assign forum-specific Permissions for bbPress, activate the Compatibility Pack module.', 'press-permit-core');
-                    } else {
-                        printf(
-                            esc_html__('To assign forum-specific Permissions for bbPress, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
-                            '<a href="https://publishpress.com/pricing/">',
-                            '</a>'
-                        );
-                    }
-                    ?>
+                if (presspermit()->isPro()) {
+                    esc_html_e('To assign forum-specific Permissions for bbPress, activate the Compatibility Pack module.', 'press-permit-core');
+                } else {
+                    printf(
+                        esc_html__('To assign forum-specific Permissions for bbPress, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                        '<a href="https://publishpress.com/pricing/">',
+                        '</a>'
+                    );
+                }
+        ?>
                 </div>
             <?php endif; ?>
         </div><?php
@@ -261,8 +261,8 @@ class AgentPermissionsUI
                         <select name="pp_select_type" autocomplete="off">
                     <?php
                     self::drawTypeOptions($type_objects, ['option_na' => true]);
-                    do_action('presspermit_role_types_dropdown');
-                    ?></select>
+        do_action('presspermit_role_types_dropdown');
+        ?></select>
                     </td>
 
                     <td class="pp-select-role" style="display:none"><select name="pp_select_role" autocomplete="off"></select></td>
@@ -292,32 +292,32 @@ class AgentPermissionsUI
             if (!$pp->moduleActive('status-control') && $pp->getOption('display_extension_hints')) : ?>
                 <div>
                             <?php
-                            if (presspermit()->isPro()) {
-                                esc_html_e('To assign roles for custom post statuses, activate the Status Control module.', 'press-permit-core');
-                            }
-                            ?>
+                if (presspermit()->isPro()) {
+                    esc_html_e('To assign roles for custom post statuses, activate the Status Control module.', 'press-permit-core');
+                }
+                ?>
                 </div>
 
                 <div>
                             <?php
-                            if (function_exists('bbp_get_version') && !$pp->moduleActive('compatibility') && $pp->getOption('display_extension_hints')) {
-                                if (presspermit()->isPro()) {
-                                    esc_html_e('To assign roles for bbPress forums, activate the Compatibility Pack module.', 'press-permit-core');
-                                } else {
-                                    printf(
-                                        esc_html__('To assign roles for bbPress forums, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
-                                        '<a href="https://publishpress.com/pricing/">',
-                                        '</a>'
-                                    );
-                                }
-                            }
-                            ?>
+                if (function_exists('bbp_get_version') && !$pp->moduleActive('compatibility') && $pp->getOption('display_extension_hints')) {
+                    if (presspermit()->isPro()) {
+                        esc_html_e('To assign roles for bbPress forums, activate the Compatibility Pack module.', 'press-permit-core');
+                    } else {
+                        printf(
+                            esc_html__('To assign roles for bbPress forums, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                            '<a href="https://publishpress.com/pricing/">',
+                            '</a>'
+                        );
+                    }
+                }
+        ?>
                 </div>
             <?php endif;
 
-            if ((defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) && !$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) : ?>
+        if ((defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) && !$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) : ?>
                 <div>
-                        <?php esc_html_e('To assign page-specific PublishPress Revision permissions, enable the Editing Permissions module.', 'press-permit-core'); ?>
+                                <?php esc_html_e('To assign page-specific PublishPress Revision permissions, enable the Editing Permissions module.', 'press-permit-core'); ?>
                 </div>
             <?php endif; ?>
         </div><?php
@@ -355,19 +355,19 @@ class AgentPermissionsUI
                 <form id="nav-menu-meta" class="nav-menu-meta" method="post" enctype="multipart/form-data">
             <?php
             wp_nonce_field('add-exception_item', 'menu-settings-column-nonce');
-            ?>
+        ?>
             <?php do_meta_boxes('edit-exceptions', 'side', null); ?>
                 </form>
             </div><?php
-            ?>
+        ?>
             <div class="nav-tabs-wrapper" style="display:n-one">
                 <div class="nav-tabs">
                     <span class="nav-tab menu-add-new nav-tab-active"></span>
                     <ul id="menu-to-edit" class="menu ui-sortable"> </ul>
                 </div><?php
-                ?>
+        ?>
             </div><?php
-            ?>
+        ?>
         </div><?php
     }
 
@@ -425,7 +425,7 @@ class AgentPermissionsUI
             </table>
 
             <div id="pp_save_exceptions"><?php
-            ?>
+        ?>
                 <!--
             <p class="mirror-wrap">
                 <div class="mirror-label">
@@ -511,16 +511,16 @@ class AgentPermissionsUI
             <form id="group-<?php echo esc_attr($perm_type); ?>-selections" action="<?php echo esc_url($url); ?>" method="post" <?php do_action('presspermit_group_edit_form_tag'); ?>>
                 <?php wp_nonce_field("pp-update-{$perm_type}_" . $agent_id, "_pp_nonce_$perm_type");
 
-                if (in_array($agent_type, ['pp_group', 'pp_net_group'])) {
-                        wp_nonce_field('pp-update-group_' . $agent_id);
-                }
-                ?>
+            if (in_array($agent_type, ['pp_group', 'pp_net_group'])) {
+                wp_nonce_field('pp-update-group_' . $agent_id);
+            }
+            ?>
                 <?php
-                if ('clone' == $perm_type) {
-                        self::selectCloneUI($args['agent']);
-                }
+            if ('clone' == $perm_type) {
+                self::selectCloneUI($args['agent']);
+            }
 
-                if ($wp_http_referer) : ?>
+            if ($wp_http_referer) : ?>
                     <input type="hidden" name="wp_http_referer" value="<?php echo esc_url($wp_http_referer); ?>" />
                 <?php endif; ?>
                 <input type="hidden" name="action" value="pp_update<?php echo esc_attr($perm_type); ?>" />
@@ -531,16 +531,16 @@ class AgentPermissionsUI
                 <input type="hidden" name="description" value="-1" />
 
                 <?php
-                if ('roles' == $perm_type) {
-                        self::confirmRolesUI();
-                } elseif ('exceptions' == $perm_type) {
-                    self::confirmExceptionsUI();
-                }
+            if ('roles' == $perm_type) {
+                self::confirmRolesUI();
+            } elseif ('exceptions' == $perm_type) {
+                self::confirmExceptionsUI();
+            }
 
-                    // form close tag output by php due to code autoformatting issue
-                        echo '</form>';
+            // form close tag output by php due to code autoformatting issue
+            echo '</form>';
 
-                        echo '</div></div>';
+            echo '</div></div>';
         } // end foreach perm_type (roles, exceptions)
 
         $args['agent_type'] = $agent_type;
@@ -718,13 +718,13 @@ class AgentPermissionsUI
             <?php
 
             echo '<img class="waiting" style="display:none;" src="' . esc_url(admin_url('images/wpspin_light.gif')) . '" alt="" />';
-            echo '</div>';
+        echo '</div>';
 
-            echo '</div>';
+        echo '</div>';
 
-            echo '</div></div>';
+        echo '</div></div>';
 
-            return true;
+        return true;
     }
 
     public static function currentExceptionsUI($exc_results, $args = [])
@@ -1226,10 +1226,10 @@ class AgentPermissionsUI
                                         . esc_html(sprintf(__('... = assigned for %1$s and sub-%1$s', 'press-permit-core'), $_caption))
                                         . '</span>';
                                 }
-                                if (!empty($any_child_only)) {
-                                    echo '<span>' . esc_html(sprintf(__('* = assigned for sub-%s only', 'press-permit-core'), $_caption)) . '</span>';
-                                }
-                                ?>
+                        if (!empty($any_child_only)) {
+                            echo '<span>' . esc_html(sprintf(__('* = assigned for sub-%s only', 'press-permit-core'), $_caption)) . '</span>';
+                        }
+                        ?>
                             </div>
                         <?php
                     endif;
@@ -1293,8 +1293,8 @@ class AgentPermissionsUI
         echo '</div>';  // pp_current_exceptions
     }
 
-            // Called once each for members checklist, managers checklist in admin UI.
-            // In either case, current (checked) members are at the top of the list.
+    // Called once each for members checklist, managers checklist in admin UI.
+    // In either case, current (checked) members are at the top of the list.
     private static function userSelectionUI($group_id, $agent_type, $user_class = 'member', $all_users = '')
     {
         // This is only needed for checkbox selection
@@ -1406,7 +1406,7 @@ class AgentPermissionsUI
                         echo "<option value='" . esc_attr($role_name) . "'>" . esc_html($role_caption) . "</option>";
                     }
                 }
-                ?>
+        ?>
 
             </select>
 

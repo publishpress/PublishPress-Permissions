@@ -44,10 +44,10 @@ class GroupNew
                         $group_variant = 'pp_group';
                     }
 
-                    $groups_link = ($wp_http_referer && strpos($wp_http_referer, 'presspermit-groups'))
-                        ? $wp_http_referer
-                        : admin_url("admin.php?page=presspermit-groups&group_variant=$group_variant");
-                    ?>
+            $groups_link = ($wp_http_referer && strpos($wp_http_referer, 'presspermit-groups'))
+            ? $wp_http_referer
+            : admin_url("admin.php?page=presspermit-groups&group_variant=$group_variant");
+            ?>
 
                     <a href="<?php echo esc_url($groups_link); ?>"><?php esc_html_e('Back to groups list', 'press-permit-core'); ?></a>
                 </p>
@@ -61,28 +61,28 @@ class GroupNew
                 foreach ($pp_admin->errors->get_error_messages() as $msg) {
                     echo '<p>' . esc_html($msg) . '</p>';
                 }
-                ?>
+            ?>
             </div>
         <?php endif; ?>
 
         <div class="wrap pressshack-admin-wrapper" id="pp-permissions-wrapper">
             <header>
                 <?php
-                PluginPage::icon();
-                ?>
+            PluginPage::icon();
+        ?>
                 <h1><?php
-                    $agent_type = PWP::REQUEST_key('agent_type');
+        $agent_type = PWP::REQUEST_key('agent_type');
 
-                if (!$pp_groups->groupTypeEditable($agent_type)) {
-                    $agent_type = 'pp_group';
-                }
+        if (!$pp_groups->groupTypeEditable($agent_type)) {
+            $agent_type = 'pp_group';
+        }
 
-                if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type)) {
-                    esc_html_e('Create New Permission Group', 'press-permit-core');
-                } else {
-                    printf(esc_html__('Create New %s', 'press-permit-core'), esc_html($group_type_obj->labels->singular_name));
-                }
-                ?></h1>
+        if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type)) {
+            esc_html_e('Create New Permission Group', 'press-permit-core');
+        } else {
+            printf(esc_html__('Create New %s', 'press-permit-core'), esc_html($group_type_obj->labels->singular_name));
+        }
+        ?></h1>
             </header>
 
             <form action="" method="post" id="creategroup" name="creategroup" class="pp-admin">
@@ -110,26 +110,26 @@ class GroupNew
                 </table>
 
                 <?php
-                if ($pp_groups->userCan('pp_manage_members', 0, $agent_type)) {
-                    AgentPermissionsUI::drawMemberChecklists(0, $agent_type);
-                }
+        if ($pp_groups->userCan('pp_manage_members', 0, $agent_type)) {
+            AgentPermissionsUI::drawMemberChecklists(0, $agent_type);
+        }
 
-                echo '<div class="pp-settings-caption" style="clear:both;"><br />';
-                esc_html_e('Note: Groups are a more flexible alternative to user roles. You can create groups of users and give or deny them access to areas of your site.', 'press-permit-core');
-                echo '</div>';
+        echo '<div class="pp-settings-caption" style="clear:both;"><br />';
+        esc_html_e('Note: Groups are a more flexible alternative to user roles. You can create groups of users and give or deny them access to areas of your site.', 'press-permit-core');
+        echo '</div>';
 
-                do_action('presspermit_new_group_ui');
-                ?>
+        do_action('presspermit_new_group_ui');
+        ?>
 
                 <?php
-                submit_button(esc_html__('Create Group', 'press-permit-core'), 'primary large pp-submit', '', true, 'tabindex="3"');
-                ?>
+        submit_button(esc_html__('Create Group', 'press-permit-core'), 'primary large pp-submit', '', true, 'tabindex="3"');
+        ?>
 
             </form>
 
             <?php
             presspermit()->admin()->publishpressFooter();
-            ?>
+        ?>
         </div>
         <?php
     }

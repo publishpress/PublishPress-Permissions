@@ -7,7 +7,7 @@ class LibArray
     // derived from http://us3.php.net/manual/en/ref.array.php#80631
     public static function flatten($arr_md, $go_deep = false)
     {
- //flattens multi-dim arrays (if go_deep, supports > 2D but destroys keys)
+        //flattens multi-dim arrays (if go_deep, supports > 2D but destroys keys)
         if (!is_array($arr_md)) {
             return [];
         }

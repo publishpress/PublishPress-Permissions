@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab;
 
 class CapabilityFilters
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('presspermit_has_post_cap_vars', [$this, 'fltHasPostCapVars'], 10, 4);
 
@@ -17,8 +17,8 @@ class CapabilityFilters
             add_action('presspermit_has_post_cap_pre', [$this, 'actSavePostPreAssignTerms'], 10, 4);
         }
     }
-    
-    function fltUserHasCapParams($params, $orig_reqd_caps, $args)
+
+    public function fltUserHasCapParams($params, $orig_reqd_caps, $args)
     {
         $defaults = ['orig_cap' => '', 'item_id' => 0];
         $args = array_merge($defaults, $args);
@@ -55,7 +55,7 @@ class CapabilityFilters
         }
     }
 
-    function fltExceptionStati($stati, $item_status, $op, $args = [])
+    public function fltExceptionStati($stati, $item_status, $op, $args = [])
     {
         $status_obj = get_post_status_object($item_status);
 
@@ -81,7 +81,7 @@ class CapabilityFilters
         return $stati;
     }
 
-    function fltCapOperation($op, $base_cap, $item_type)
+    public function fltCapOperation($op, $base_cap, $item_type)
     {
         if (!$type_obj = get_post_type_object($item_type)) {
             return '';
@@ -103,7 +103,7 @@ class CapabilityFilters
         return $op;
     }
 
-    function fltHasPostCapVars($force_vars, $wp_sitecaps, $pp_reqd_caps, $vars)
+    public function fltHasPostCapVars($force_vars, $wp_sitecaps, $pp_reqd_caps, $vars)
     {
         $defaults = ['post_type' => '', 'post_id' => 0, 'user_id' => 0, 'required_operation' => ''];
         $vars = array_merge($defaults, $vars);
@@ -160,8 +160,9 @@ class CapabilityFilters
         } else { // post_id is not a revision
             if (
                 ('read' == $required_operation) && (
-                (isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'wp-admin/revision.php')) || (defined('DOING_AJAX') && DOING_AJAX 
-                && PWP::is_REQUEST('action', 'get-revision-diffs')))
+                    (isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'wp-admin/revision.php')) || (defined('DOING_AJAX') && DOING_AJAX
+                && PWP::is_REQUEST('action', 'get-revision-diffs'))
+                )
             ) {
                 $return['required_operation'] = 'edit';
             }
@@ -194,14 +195,14 @@ class CapabilityFilters
         // note: CapabilityFilters::fltUserHasCap() filters return array to allowed variables before extracting
     }
 
-    function actSavePostPreAssignTerms($pp_reqd_caps, $source_name, $object_type, $post_id)
+    public function actSavePostPreAssignTerms($pp_reqd_caps, $source_name, $object_type, $post_id)
     {
         // Workaround to deal with WP core's checking of publish cap prior to storing categories:
         // Store terms to DB in advance of any cap-checking query which may use those terms to qualify an operation.
         if (
-            ('post' != $source_name) 
-            || !is_admin() 
-            || PWP::empty_REQUEST('action') 
+            ('post' != $source_name)
+            || !is_admin()
+            || PWP::empty_REQUEST('action')
             || !in_array(PWP::REQUEST_key('action'), ['editpost', 'autosave'])
 
             // Only pre-assign terms if capability check is for the original post being added or edited. But on new post creation, getPostID() could return zero

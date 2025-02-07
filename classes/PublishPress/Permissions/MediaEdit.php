@@ -44,8 +44,8 @@ class MediaEdit
                     }
                 }
                 break;
-            // edit_post breaks down to edit_posts, edit_published_posts, or
-            // edit_others_posts
+                // edit_post breaks down to edit_posts, edit_published_posts, or
+                // edit_others_posts
             case 'edit_post':
             case 'edit_page':
                 // If no author set yet, default to current user for cap checks.

@@ -26,7 +26,7 @@ class Ancestry
                 }
             }
         }
-        
+
         return $title_caption;
     }
 
@@ -152,12 +152,12 @@ class Ancestry
         global $wpdb;
 
         $defaults = [
-            'post_type' => '', 
-            'max_depth' => false, 
-            'pages' => [], 
-            'post_status' => false, 
+            'post_type' => '',
+            'max_depth' => false,
+            'pages' => [],
+            'post_status' => false,
             'exclude_autodrafts' => true,
-            'include_revisions' => false, 
+            'include_revisions' => false,
             'include_attachments' => true
         ];
 
@@ -195,13 +195,13 @@ class Ancestry
             } elseif ($exclude_autodrafts) {
                 $status_clause = "AND post_status != 'auto-draft'";
 
-            // Back compat for previous LibWP::getDescendantIds calls, which defaulted to not excluding autodrafts
+                // Back compat for previous LibWP::getDescendantIds calls, which defaulted to not excluding autodrafts
             } else {
                 $status_clause = '';
             }
 
             // phpcs Note: type_clause and status_clause sanitized above due to IN clause, variable request structure
-            
+
             // This function is called only for Post update and Permissions management requests
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $pages = $wpdb->get_results(
@@ -394,7 +394,7 @@ class Ancestry
                     }
 
                     if (!isset($filtered_items_by_id[$parent_id])) {
-                        // Remap to a visible ancestor, if any 
+                        // Remap to a visible ancestor, if any
                         if (!$depth || isset($items[$key])) {
                             $visible_ancestor_id = 0;
 

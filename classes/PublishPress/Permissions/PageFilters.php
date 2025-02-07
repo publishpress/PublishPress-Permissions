@@ -16,7 +16,7 @@ namespace PublishPress\Permissions;
 class PageFilters
 {
     // PP-filtered equivalent to WP core get_pages
-    // Lack of query filters creates need to replicate the whole function  
+    // Lack of query filters creates need to replicate the whole function
     //
     public static function fltGetPages($results, $args = [])
     {
@@ -38,7 +38,7 @@ class PageFilters
         // depth is not really a get_pages arg, but remap exclude arg to exclude_tree if wp_list_terms called with depth=1
         if (!empty($args['exclude']) && empty($args['exclude_tree']) && !empty($args['depth']) && (1 == $args['depth'])) {
             if (
-                (is_array($args['exclude']) && count($args['exclude']) > 1) 
+                (is_array($args['exclude']) && count($args['exclude']) > 1)
                 || (!is_array($args['exclude']) && (0 !== strpos($args['exclude'], ',')))
             ) {
                 // work around wp_list_pages() bug of attaching leading comma if a plugin uses wp_list_pages_excludes filter
@@ -95,7 +95,7 @@ class PageFilters
         }
 
         if (
-            !empty($args['name']) && ('parent_id' == $args['name']) 
+            !empty($args['name']) && ('parent_id' == $args['name'])
             && !presspermit()->moduleActive('collaboration')
         ) {
             return $results;
@@ -186,7 +186,7 @@ class PageFilters
             if (!is_array($post_status) && strpos($post_status, ',')) {
                 $post_status = explode(',', $post_status);
             }
-                
+
             if (array_diff((array)$post_status, get_post_stati())) {
                 return $results;
             }
@@ -325,7 +325,7 @@ class PageFilters
                 $where .= " AND post_parent IN ($post_parent__in)";
             }
         } elseif ($parent >= 0) {  // ========= PressPermit filter
-            $where .= ' AND ' 
+            $where .= ' AND '
             . apply_filters(
                 'presspermit_get_pages_parent',
                 $wpdb->prepare('post_parent = %d ', $parent),
@@ -357,7 +357,7 @@ class PageFilters
 
         foreach (explode(',', $sort_column) as $orderby) {
             $orderby = trim($orderby);
-            
+
             if (!in_array($orderby, $allowed_keys, true)) {
                 continue;
             }
@@ -572,12 +572,12 @@ class PageFilters
         // Support a disjointed pages tree with some parents hidden
         if ($child_of || empty($tease_all) && (empty($depth) || ($depth > 1))) {  // if we're including all pages with teaser, no need to continue thru tree remapping
             require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Ancestry.php');
-           
+
             $ancestors = \PressShack\Ancestry::getPageAncestors(0, $post_type); // array of all ancestor IDs for keyed page_id, with direct parent first
 
             $orderby = $sort_column;
 
-            $remap_args = compact('child_of', 'parent', 'exclude', 'depth', 'orderby');  // one or more of these args may have been modified after extraction 
+            $remap_args = compact('child_of', 'parent', 'exclude', 'depth', 'orderby');  // one or more of these args may have been modified after extraction
 
             \PressShack\Ancestry::remapTree($pages, $ancestors, $remap_args);
         }

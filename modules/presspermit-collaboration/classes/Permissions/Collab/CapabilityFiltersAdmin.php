@@ -4,9 +4,9 @@ namespace PublishPress\Permissions\Collab;
 
 class CapabilityFiltersAdmin
 {
-    var $in_has_cap_call = false;
+    public $in_has_cap_call = false;
 
-    function __construct()
+    public function __construct()
     {
         add_filter('presspermit_do_find_post_id', [$this, 'fltDoFindPostId'], 10, 3);
         add_filter('presspermit_user_has_cap_params', [$this, 'fltUserHasCapParams'], 10, 3);
@@ -31,19 +31,19 @@ class CapabilityFiltersAdmin
         add_filter('user_has_cap', [$this, 'fltFlagHasCapDone'], 999);
     }
 
-    function fltFlagHasCapCall($caps)
+    public function fltFlagHasCapCall($caps)
     {
         $this->in_has_cap_call = true;
         return $caps;
     }
 
-    function fltFlagHasCapDone($caps)
+    public function fltFlagHasCapDone($caps)
     {
         $this->in_has_cap_call = false;
         return $caps;
     }
 
-    function fltBypassAttachmentsFiltering($clauses, $orig_clauses, $_wp_query = false, $args = [])
+    public function fltBypassAttachmentsFiltering($clauses, $orig_clauses, $_wp_query = false, $args = [])
     {
         $required_operation = (isset($args['required_operation'])) ? $args['required_operation'] : '';
 
@@ -62,7 +62,7 @@ class CapabilityFiltersAdmin
         return $clauses;
     }
 
-    function fltAdjustPostsWhereClause($adjust, $type_where_clause, $post_type, $args)
+    public function fltAdjustPostsWhereClause($adjust, $type_where_clause, $post_type, $args)
     {
         if ('attachment' == $post_type) {
             if (
@@ -77,7 +77,7 @@ class CapabilityFiltersAdmin
         return $adjust;
     }
 
-    function fltForceAttachmentParentClause($force, $args)
+    public function fltForceAttachmentParentClause($force, $args)
     {
         global $current_user;
 
@@ -87,7 +87,7 @@ class CapabilityFiltersAdmin
         );
     }
 
-    function fltHaveSiteCaps($have_site_caps, $post_type, $args)
+    public function fltHaveSiteCaps($have_site_caps, $post_type, $args)
     {
         if ('attachment' == $post_type) {
             if (presspermit()->getOption('own_attachments_always_editable') || !empty(presspermit()->getUser()->allcaps['edit_own_attachments'])) {
@@ -99,7 +99,7 @@ class CapabilityFiltersAdmin
     }
 
     // hooks to map_meta_cap
-    function fltAdjustReqdCaps($reqd_caps, $orig_cap, $user_id, $args)
+    public function fltAdjustReqdCaps($reqd_caps, $orig_cap, $user_id, $args)
     {
         global $pagenow, $current_user;
 
@@ -258,7 +258,7 @@ class CapabilityFiltersAdmin
         return false;
     }
 
-    function fltUserHasCapParams($params, $orig_reqd_caps, $args)
+    public function fltUserHasCapParams($params, $orig_reqd_caps, $args)
     {
         // todo: how can this ever execute prior to class inclusion in CollabHooks.php? (error with CAS integration)
         if (!class_exists('\PublishPress\Permissions\Collab\Capabilities')) {
@@ -343,7 +343,7 @@ class CapabilityFiltersAdmin
         return $params;
     }
 
-    function fltCreditTxCapException($pass, $params)
+    public function fltCreditTxCapException($pass, $params)
     {
         if (!empty($params['is_term_cap'])) {
             $defaults = ['op' => '', 'item_id' => 0, 'item_type' => '', 'tt_ids' => '', 'type_caps' => ''];
@@ -367,7 +367,7 @@ class CapabilityFiltersAdmin
         return $pass;
     }
 
-    function fltUserHasCaps($wp_sitecaps, $orig_reqd_caps, $params)
+    public function fltUserHasCaps($wp_sitecaps, $orig_reqd_caps, $params)
     {
         $defaults = ['is_term_cap' => false, 'op' => '', 'item_type' => '', 'item_id' => 0, 'taxonomy' => ''];
         $params = array_merge($defaults, $params);
@@ -409,7 +409,7 @@ class CapabilityFiltersAdmin
     }
 
     // if user lacks sitewide term management cap, make any additions double as implicit inclusions (so inaccessable terms are not listed)
-    function fltGetTermsExceptions($exceptions, $taxonomy, $op, $mod_type, $post_type, $args = [])
+    public function fltGetTermsExceptions($exceptions, $taxonomy, $op, $mod_type, $post_type, $args = [])
     {
         if (('include' == $mod_type) && !$exceptions && !empty($args['additional_tt_ids'])) {
             if ('manage' == $op) {
@@ -423,7 +423,7 @@ class CapabilityFiltersAdmin
         return $exceptions;
     }
 
-    function fltGetTermsPreserveCurrentParent($clauses, $taxonomies, $args)
+    public function fltGetTermsPreserveCurrentParent($clauses, $taxonomies, $args)
     {
         global $pagenow;
 
@@ -445,7 +445,7 @@ class CapabilityFiltersAdmin
         return $clauses;
     }
 
-    function fltConstructPostsRequestArgs($args)
+    public function fltConstructPostsRequestArgs($args)
     {
         foreach (['action', 'action2'] as $var) {
             if (!PWP::empty_REQUEST($var) && in_array(PWP::REQUEST_key($var), ['trash', 'untrash', 'delete'])) {
@@ -456,7 +456,7 @@ class CapabilityFiltersAdmin
         return $args;
     }
 
-    function fltDoFindPostId($do, $orig_reqd_caps, $args)
+    public function fltDoFindPostId($do, $orig_reqd_caps, $args)
     {
         if (PWP::doingAdminMenus()) {
             return false;
@@ -465,7 +465,7 @@ class CapabilityFiltersAdmin
         return $do;
     }
 
-    function fltMaybeRedirectPostEditLocation($location, $post_id)
+    public function fltMaybeRedirectPostEditLocation($location, $post_id)
     {
         if (!current_user_can('edit_post', $post_id)) {
             if ($type_obj = get_post_type_object(get_post_field('post_type', $post_id))) {

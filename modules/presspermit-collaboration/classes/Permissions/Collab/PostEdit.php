@@ -7,7 +7,7 @@ class PostEdit
     public static function defaultPrivacyWorkaround()
     {
         if (
-            PWP::empty_POST('publish') && PWP::is_POST('visibility') && PWP::is_POST('post_type') 
+            PWP::empty_POST('publish') && PWP::is_POST('visibility') && PWP::is_POST('post_type')
             && presspermit()->getTypeOption('default_privacy', PWP::POST_key('post_type'))
         ) {
             $stati = get_post_stati(['moderation' => true], 'names');
@@ -18,7 +18,7 @@ class PostEdit
             $stati = get_post_stati(['public' => true, 'private' => true], 'names', 'or');
 
             if (
-                !in_array(PWP::POST_key('visibility'), ['public', 'password'], true) 
+                !in_array(PWP::POST_key('visibility'), ['public', 'password'], true)
                 && (!PWP::is_POST('hidden_post_status') || !in_array(PWP::POST_key('hidden_post_status'), $stati, true))
             ) {
                 $_POST['post_status'] = PWP::POST_key('hidden_post_status');
@@ -93,7 +93,7 @@ class PostEdit
                 $post_ids = array_merge($post_ids, $additional_post_ids);
             }
 
-            // cannot currently support propagation of parent exceptions to new top level pages, 
+            // cannot currently support propagation of parent exceptions to new top level pages,
             // so don't offer (no parent) as a post parent selection if editing is limited to a subset of pages and this page is not in that subset
             $post_id = PWP::getPostID();
             if (!$post_id || !in_array($post_id, $post_ids)) {
@@ -112,8 +112,8 @@ class PostEdit
                 // only administrators can change top level structure
                 return false;
             } else {
-                $reqd_caps = ('author' === $top_pages_locked) 
-                ? $post_type_obj->cap->publish_posts 
+                $reqd_caps = ('author' === $top_pages_locked)
+                ? $post_type_obj->cap->publish_posts
                 : $post_type_obj->cap->edit_others_posts;
 
                 return current_user_can($reqd_caps);

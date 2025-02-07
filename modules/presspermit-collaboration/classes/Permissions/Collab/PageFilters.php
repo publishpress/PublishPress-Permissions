@@ -4,13 +4,13 @@ namespace PublishPress\Permissions\Collab;
 
 class PageFilters
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('presspermit_get_pages_intercept', [$this, 'fltGetPagesIntercept'], 10, 3);
         add_filter('presspermit_get_pages_args', [$this, 'fltGetPagesArgs']);
     }
 
-    function fltGetPagesArgs($args)
+    public function fltGetPagesArgs($args)
     {
         if (!empty($args['no_pp_filter'])) {
             return $args;
@@ -31,9 +31,9 @@ class PageFilters
         return $args;
     }
 
-    function fltGetPagesIntercept($intercept, $results, $args)
+    public function fltGetPagesIntercept($intercept, $results, $args)
     {
-        // For the page parent dropdown, return no available selections for a published main page 
+        // For the page parent dropdown, return no available selections for a published main page
         // if the logged user isn't allowed to de-associate it from Main.
         if (!empty($args['name']) && ('parent_id' == $args['name'])) {
             global $post;

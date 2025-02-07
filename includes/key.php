@@ -3,7 +3,7 @@
 function _presspermit_legacy_key_status($refresh = false)
 {
     $opt_val = presspermit()->getOption('support_key');
-    
+
     if (!is_array($opt_val) || count($opt_val) < 2) {
         return false;
     } else {

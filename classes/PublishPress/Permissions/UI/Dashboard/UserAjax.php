@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\UI\Dashboard;
 
 class UserAjax
 {
-    public function __construct() 
+    public function __construct()
     {
         if (!current_user_can('create_users') || !current_user_can('pp_manage_members')) {
             return;

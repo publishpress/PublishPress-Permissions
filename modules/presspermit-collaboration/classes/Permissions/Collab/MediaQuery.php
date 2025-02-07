@@ -60,9 +60,10 @@ class MediaQuery
         }
 
         // edit_others_unattached_files
-        $admin_others_unattached = (!$has_cap_check || !empty($current_user->allcaps[$reqd_cap])) 
-        && ($pp->getOption('admin_others_unattached_files') 
-            || !empty($current_user->allcaps['list_others_unattached_files']) 
+        $admin_others_unattached = (!$has_cap_check || !empty($current_user->allcaps[$reqd_cap]))
+        && (
+            $pp->getOption('admin_others_unattached_files')
+            || !empty($current_user->allcaps['list_others_unattached_files'])
             || !empty($current_user->allcaps['edit_others_files'])
         );  // PP Setting effectively eliminates cap requirement
 
@@ -104,14 +105,14 @@ class MediaQuery
 
             $author_clause = PWP::postAuthorClause($args);
 
-            $attached_clause = ($admin_others_attached || $can_edit_others_sitewide || $admin_others_attached_to_readable) 
-            ? '' 
+            $attached_clause = ($admin_others_attached || $can_edit_others_sitewide || $admin_others_attached_to_readable)
+            ? ''
             : "AND $author_clause";
 
-            $own_clause = ($pp->getOption('own_attachments_always_editable') || !empty($current_user->allcaps['edit_own_attachments'])) 
-            ? "$author_clause OR " 
+            $own_clause = ($pp->getOption('own_attachments_always_editable') || !empty($current_user->allcaps['edit_own_attachments']))
+            ? "$author_clause OR "
             : '';
-            
+
             $where .= " AND ( {$own_clause}$unattached_clause ( $parent_subquery $attached_clause ) )";
         }
 

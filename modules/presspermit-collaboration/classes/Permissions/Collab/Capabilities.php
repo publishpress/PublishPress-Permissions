@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab;
 
 class Capabilities
 {
-    var $all_taxonomy_caps = [];  // $all_taxonomy_caps = array of cap names
+    public $all_taxonomy_caps = [];  // $all_taxonomy_caps = array of cap names
     private $processed_taxonomies = [];
     private static $instance = null;
 
@@ -28,17 +28,17 @@ class Capabilities
         add_action('presspermit_refresh_capabilities', [$this, 'forceDistinctTaxonomyCaps']);
     }
 
-    function fltAdministratorCaps($caps)
+    public function fltAdministratorCaps($caps)
     {
         return array_merge($caps, array_fill_keys(array_keys($this->all_taxonomy_caps), true));
     }
 
-    function fltExcludeArbitraryCaps($exclude_caps)
+    public function fltExcludeArbitraryCaps($exclude_caps)
     {
         return array_merge($exclude_caps, $this->all_taxonomy_caps);
     }
 
-    function forceDistinctTaxonomyCaps()
+    public function forceDistinctTaxonomyCaps()
     {
         global $wp_taxonomies, $wp_roles;
 
@@ -94,7 +94,7 @@ class Capabilities
             if ('yes' == $wp_taxonomies[$taxonomy]->public) {
                 $wp_taxonomies[$taxonomy]->public = true;
 
-            // clean up a More Taxonomies quirk (otherwise wp_get_taxonomy_object will fail when filtering for public => true)
+                // clean up a More Taxonomies quirk (otherwise wp_get_taxonomy_object will fail when filtering for public => true)
             } elseif (('' === $wp_taxonomies[$taxonomy]->public) && (!empty($wp_taxonomies[$taxonomy]->query_var_bool))) {
                 $wp_taxonomies[$taxonomy]->public = true;
             }
@@ -131,7 +131,7 @@ class Capabilities
                 }
 
                 // First, force taxonomy-specific capabilities.
-                // (Don't allow any capability defined for this taxonomy to match any capability defined for category or post tag 
+                // (Don't allow any capability defined for this taxonomy to match any capability defined for category or post tag
                 // (unless this IS category or post tag)
                 foreach ($tx_specific_caps as $cap_property => $replacement_cap_format) {
                     // If this capability is also defined as another taxonomy cap, replace it
@@ -187,14 +187,14 @@ class Capabilities
         if (current_user_can('administrator') || current_user_can('pp_administer_content')) {  // @ todo: support restricted administrator
             global $current_user;
             $current_user->allcaps = array_merge(
-                $current_user->allcaps, 
+                $current_user->allcaps,
                 array_fill_keys(array_keys($this->all_taxonomy_caps), true)
             );
 
             $user = presspermit()->getUser();
             if (!empty($user)) {
                 $user->allcaps = array_merge(
-                    $user->allcaps, 
+                    $user->allcaps,
                     array_fill_keys(array_keys($this->all_taxonomy_caps), true)
                 );
             }
@@ -206,9 +206,9 @@ class Capabilities
         $this->processed_taxonomies = array_merge($this->processed_taxonomies, $use_taxonomies);
     }
 
-    function getAssistedTaxonomies()
+    public function getAssistedTaxonomies()
     {
-     // apply CME filter only if CME is active
+        // apply CME filter only if CME is active
         $tx_args = ['public' => true];
 
         return (defined('CAPSMAN_VERSION'))
@@ -216,7 +216,7 @@ class Capabilities
             : presspermit()->getEnabledTaxonomies($tx_args);
     }
 
-    function getDetailedTaxonomies()
+    public function getDetailedTaxonomies()
     {
         if (!defined('CAPSMAN_VERSION')) { // currently relying on CME settings UI
             return [];

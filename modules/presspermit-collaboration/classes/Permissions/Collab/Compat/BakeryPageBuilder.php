@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab\Compat;
 
 class BakeryPageBuilder
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('get_terms_args', [$this, 'fltGetTermsArgs'], 10, 2);
     }

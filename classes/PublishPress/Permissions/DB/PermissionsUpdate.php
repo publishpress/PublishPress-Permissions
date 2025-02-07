@@ -7,7 +7,7 @@ namespace PublishPress\Permissions\DB;
 
 class PermissionsUpdateHelper
 {
-    var $insertion_action_enabled = true;
+    public $insertion_action_enabled = true;
 
     public function disableActions($unused_new = '', $unused_old = '')
     {
@@ -79,7 +79,7 @@ class PermissionsUpdate
             if (!$agent_id) {
                 continue;
             }
-            
+
             if (
                 $ass_ids = $wpdb->get_col($wpdb->prepare(
                     "SELECT assignment_id FROM $wpdb->ppc_roles WHERE role_name = %s AND agent_id = %d",
@@ -133,23 +133,23 @@ class PermissionsUpdate
     public static function deleteRoles($agent_ids, $agent_type = 'pp_group')
     {
         global $wpdb;
-    
+
         $agent_id_csv = implode("','", array_map('intval', (array) $agent_ids));
-        
-        $wpdb->query( 
-            $wpdb->prepare( 
+
+        $wpdb->query(
+            $wpdb->prepare(
                 "DELETE FROM $wpdb->ppc_roles WHERE agent_type = %s AND agent_id IN ('$agent_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                $agent_type 
+                $agent_type
             )
         );
     }
 
     /*
      * See function doc for presspermit_assign_exceptions
-     * 
+     *
      * Additional arguments recognized by self::insertExceptions():
      *    is_auto_insertion = false  (if true, skips logging the item as having a manually modified role assignment)
-     *    agents[assign_for][agent_id] = has_access 
+     *    agents[assign_for][agent_id] = has_access
      */
     public static function assignExceptions($agents, $agent_type = 'pp_group', $args = [])
     {
@@ -361,7 +361,7 @@ class PermissionsUpdate
 
         if ($delete_agents_from_eitem['item'] || $delete_agents_from_eitem['children'] || $delete_agents_from_eitem['']) {
             // first retrieve ppc_exceptions records for each agent
-            
+
             $agent_id_csv = implode("','", array_map('intval', $agent_ids));
 
             $stored_e = $wpdb->get_results(
@@ -444,7 +444,7 @@ class PermissionsUpdate
                             $id_csv = implode("','", array_map('intval', $descendant_ids));
 
                             // phpcs Note: id and exception_id IN clauses constructed and sanitized above
-                            
+
                             if (
                                 $delete_eitem_ids = $wpdb->get_col(
                                     "SELECT eitem_id FROM $wpdb->ppc_exception_items WHERE inherited_from != '0'"
@@ -692,7 +692,7 @@ class PermissionsUpdate
 
                 $_results = $wpdb->get_results(
                     $wpdb->prepare(
-                        "SELECT for_item_type, exception_id FROM $wpdb->ppc_exceptions WHERE" 
+                        "SELECT for_item_type, exception_id FROM $wpdb->ppc_exceptions WHERE"
                         . " mod_type = %s AND for_item_source = %s AND for_item_status = %s AND operation = %s AND agent_type = %s AND via_item_source = %s AND via_item_type = %s"
                         . " AND for_item_type = %s AND agent_id = %d",
                         $mod_type,
@@ -706,7 +706,7 @@ class PermissionsUpdate
                         $agent_id
                     )
                 );
-                
+
                 foreach ($_results as $row) {
                     $exceptions_by_type[$row->for_item_type] = $row->exception_id;
                 }
@@ -797,7 +797,7 @@ class PermissionsUpdate
                             $child_exception_id,
                             $this_inherited_from
                         );
-                        
+
                         $insert_row_count++;
 
                         if ($helper->insertion_action_enabled) {
@@ -1109,7 +1109,7 @@ class PermissionsUpdate
         $exceptions = $wpdb->get_results(
             "SELECT * FROM $wpdb->ppc_exceptions WHERE for_item_source = 'post' AND via_item_source = 'post'"
         );
-        
+
         foreach ($exceptions as $exc) {
             $items = $wpdb->get_results(
                 $wpdb->prepare(

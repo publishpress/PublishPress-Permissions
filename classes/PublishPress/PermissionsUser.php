@@ -11,14 +11,14 @@ namespace PublishPress;
  */
 class PermissionsUser extends \WP_User
 {
-    var $groups = [];       // USAGE: groups [agent_type] [group id] = 1
-    var $site_roles = [];
+    public $groups = [];       // USAGE: groups [agent_type] [group id] = 1
+    public $site_roles = [];
 
-                            // note: nullstring for_item_type means all post types
-                            
-                            // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-    var $except = [];       // USAGE: except [{operation}_{for_item_source}] [via_item_source] [via_item_type] ['include' or 'exclude'] [for_item_type] [for_item_status] = array of stored IDs / term_taxonomy_ids
-    var $cfg = [];
+    // note: nullstring for_item_type means all post types
+
+    // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+    public $except = [];       // USAGE: except [{operation}_{for_item_source}] [via_item_source] [via_item_type] ['include' or 'exclude'] [for_item_type] [for_item_status] = array of stored IDs / term_taxonomy_ids
+    public $cfg = [];
 
     public function __construct($id = 0, $name = '', $args = [])
     {
@@ -49,7 +49,7 @@ class PermissionsUser extends \WP_User
         }
 
         global $current_user;
-        
+
         if ($id == $current_user->ID) {
             add_filter('map_meta_cap', [$this, 'reinstateCaps'], 99, 3);
         }
@@ -82,7 +82,7 @@ class PermissionsUser extends \WP_User
     public function getUsergroupsClause($table_alias, $args = [])
     {
         global $wpdb;
-        
+
         $args = array_merge(['context' => '', $args]);
 
         $table_alias = ($table_alias) ? sanitize_key($table_alias) . '.' : '';
@@ -173,7 +173,7 @@ class PermissionsUser extends \WP_User
         } else {
             // Passing user object causes this user's wp_role metagroups to be synchronized with their WP roles
             $user_groups = $pp_groups->getGroupsForUser($this, $args['agent_type'], $args);
-            
+
             if (isset($this->roles)) {
                 if ($pp->getOption('dynamic_wp_roles') || defined('PP_FORCE_DYNAMIC_ROLES')) {
                     $have_role_group_names = [];
@@ -360,7 +360,7 @@ class PermissionsUser extends \WP_User
     public function reinstateCaps($wp_blogcaps, $orig_reqd_caps, $args)
     {
         global $current_user;
-                                    // todo: review (Add New Media)
+        // todo: review (Add New Media)
         if (empty($current_user) || !did_action('presspermit_init') || did_action('presspermit_user_reload')) {
             return $wp_blogcaps;
         }

@@ -21,7 +21,7 @@ class HintsMedia
                         '</a>'
                     );
                 }
-                ?>'
+        ?>'
                 + '</span>');
 
                 $('a.pp-file-filtering-promo').on('click', function()

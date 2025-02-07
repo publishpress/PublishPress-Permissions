@@ -84,7 +84,7 @@ class PermissionsHooksAdmin
             if (!current_user_can('pp_manage_settings')) {
                 wp_die(esc_html(PWP::__wp('Cheatin&#8217; uh?')));
             }
-    
+
             if (!PWP::empty_REQUEST('presspermit_refresh_updates')) {
                 delete_site_transient('update_plugins');
                 delete_option('_site_transient_update_plugins');
@@ -92,14 +92,14 @@ class PermissionsHooksAdmin
                 wp_redirect(admin_url('admin.php?page=presspermit-settings&presspermit_refresh_done=1'));
                 exit;
             }
-    
+
             if (!PWP::empty_REQUEST('pp_renewal')) {
                 if (presspermit()->isPro()) {
                     include_once(PRESSPERMIT_PRO_ABSPATH . '/includes-pro/pro-renewal-redirect.php');
                 } else {
                     include_once(PRESSPERMIT_ABSPATH . '/includes/renewal-redirect.php');
                 }
-    
+
                 exit;
             }
         }
@@ -164,12 +164,12 @@ class PermissionsHooksAdmin
             // This is for admin UI output.
             if (PWP::is_REQUEST("pp_ajax_{$ajax_type}")) {
                 $class_name = str_replace('_', '', ucwords($ajax_type, '_')) . 'Ajax';
-                
-                $class_parent = ( in_array($class_name, ['ItemAjax','UserAjax']) ) ? 'Dashboard' : '';
-                
-                $require_path = ( $class_parent ) ? "{$class_parent}/" : '';
+
+                $class_parent = (in_array($class_name, ['ItemAjax','UserAjax'])) ? 'Dashboard' : '';
+
+                $require_path = ($class_parent) ? "{$class_parent}/" : '';
                 require_once(PRESSPERMIT_CLASSPATH . "/UI/{$require_path}{$class_name}.php");
-                
+
                 $load_class = "\\PublishPress\Permissions\UI\\";
                 $load_class .= ($class_parent) ? $class_parent . "\\" . $class_name : $class_name;
 
@@ -276,14 +276,14 @@ class PermissionsHooksAdmin
     }
 
     // Prevent users lacking edit_others capability from being locked out of their newly created post due to Authors' "default author for new posts" setting
-    function fltAuthorsPreventPostCreationLockout($default_author, $post)
+    public function fltAuthorsPreventPostCreationLockout($default_author, $post)
     {
         global $current_user;
 
         if (presspermit()->isAdministrator()) {
             return $default_author;
         }
-        
+
         if ($post_type = PWP::findPostType()) {
             if ($type_obj = get_post_type_object($post_type)) {
                 if (!empty($type_obj->cap->edit_others_posts) && !current_user_can($type_obj->cap->edit_others_posts)) {
@@ -297,25 +297,25 @@ class PermissionsHooksAdmin
         return $default_author;
     }
 
-    function actAuthorsPreventPostUpdateLockout($post_id, $post, $update)
+    public function actAuthorsPreventPostUpdateLockout($post_id, $post, $update)
     {
         global $current_user;
-        
+
         if (
             !$update
-            || presspermit()->isAdministrator() 
-            || !function_exists('get_multiple_authors') 
+            || presspermit()->isAdministrator()
+            || !function_exists('get_multiple_authors')
             || !function_exists('is_multiple_author_for_post')
             || !PWP::is_POST('authors')
             || !apply_filters('presspermit_maybe_override_authors_change', true, $post)
         ) {
             return;
         }
-        
+
         if ($post_type = PWP::findPostType()) {
             if ($type_obj = get_post_type_object($post_type)) {
                 if (
-                    !empty($type_obj->cap->edit_others_posts) 
+                    !empty($type_obj->cap->edit_others_posts)
                     && empty($current_user->allcaps[$type_obj->cap->edit_others_posts])
                     && is_multiple_author_for_post($current_user, $post_id)
                     && method_exists('MultipleAuthors\Classes\Objects\Author', 'get_by_user_id')

@@ -247,7 +247,7 @@ class AgentPermissionsAjax
                     $all_eitem_ids = [];
 
                     $input_vals = (!empty($_GET['pp_eitem_ids'])) ? explode('|', PWP::sanitizeCSV(sanitize_text_field($_GET['pp_eitem_ids']))) : [];
-                    
+
                     if (!$input_vals) {
                         exit;
                     }
@@ -303,7 +303,7 @@ class AgentPermissionsAjax
                     $all_eitem_ids = [];
 
                     $input_vals = (!empty($_GET['pp_eitem_ids'])) ? explode('|', PWP::sanitizeCSV(sanitize_text_field($_GET['pp_eitem_ids']))) : [];
-                    
+
                     if (!$input_vals) {
                         exit;
                     }

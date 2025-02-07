@@ -221,7 +221,7 @@ class ItemExceptionsRenderUI
                         }
                         ?>
                     <option value=' <?php echo esc_attr("$val") . "' class='" . esc_attr($this->opt_class[$val]) . "' ";
-                                    selected($val, $current_val); ?>>
+                        selected($val, $current_val); ?>>
                         <?php echo esc_html($lbl); ?>
                         </option>
                     <?php endforeach; ?>
@@ -235,8 +235,8 @@ class ItemExceptionsRenderUI
                 </td>
                 <?php
             }
-            ?>
+        ?>
         </tr>
         <?php
-    } // end function 
+    } // end function
 }

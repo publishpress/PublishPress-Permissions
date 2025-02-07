@@ -77,6 +77,6 @@ class Collab
 
         $rest = \PublishPress\Permissions\REST::instance();
 
-        return ( $rest->is_posts_request || $rest->is_terms_request ) && ! $rest->is_view_method;
+        return ($rest->is_posts_request || $rest->is_terms_request) && ! $rest->is_view_method;
     }
 }

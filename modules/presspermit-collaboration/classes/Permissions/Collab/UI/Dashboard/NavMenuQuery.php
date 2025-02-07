@@ -12,13 +12,13 @@ namespace PublishPress\Permissions\Collab\UI\Dashboard;
  */
 class NavMenuQuery
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('parse_query', [$this, 'fltAvailableMenuItemsParseQuery']);
     }
 
     // enable this to prevent Nav Menu Managers from adding items they cannot edit
-    function fltAvailableMenuItemsParseQuery(&$query)
+    public function fltAvailableMenuItemsParseQuery(&$query)
     {
         if (isset($query->query_vars['post_type']) && ('nav_menu_item' == $query->query_vars['post_type'])) {
             return;

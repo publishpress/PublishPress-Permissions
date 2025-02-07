@@ -3,27 +3,27 @@
 if (get_option('presspermit_delete_settings_on_uninstall')) {
     global $wpdb;
 
-    // Since stored settings are shared among all installed versions, 
+    // Since stored settings are shared among all installed versions,
     // all copies of the plugin (both Pro and Free) need to be deleted (not just deactivated) before deleting any settings.
     $permissions_plugin_count = 0;
 
     if (! function_exists('get_plugins')) {
         require_once ABSPATH . 'wp-admin/includes/plugin.php';
     }
-    
+
     $_plugins = get_plugins();
-    
+
     foreach ($_plugins as $_plugin) {
         if (!empty($_plugin['Title']) && in_array($_plugin['Title'], ['PublishPress Permissions', 'PublishPress Permissions Pro'])) {
             $permissions_plugin_count++;
         }
     }
-    
+
     if ($permissions_plugin_count === 1) {
         $orig_site_id = get_current_blog_id();
-        
+
         $site_ids = (function_exists('get_sites')) ? get_sites(['fields' => 'ids']) : (array) $orig_site_id;
-        
+
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
         foreach ($site_ids as $_blog_id) {
@@ -44,7 +44,7 @@ if (get_option('presspermit_delete_settings_on_uninstall')) {
             delete_option('pps_version');
 
             wp_load_alloptions(true);
-            
+
             if (!empty($wpdb->postmeta)) {
                 @$wpdb->query(
                     "DELETE FROM $wpdb->postmeta WHERE meta_key IN ("

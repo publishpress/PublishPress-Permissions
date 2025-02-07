@@ -34,11 +34,11 @@ class PostEditCustomize
         } elseif ('admin_content' == $sitewide_requirement) {
             $sitewide_requirement_met = $pp->isContentAdministrator();
         } elseif ('editor' == $sitewide_requirement) {
-            $reqd_caps = (isset($type_obj->cap->edit_published_posts)) 
+            $reqd_caps = (isset($type_obj->cap->edit_published_posts))
             ? [$type_obj->cap->edit_published_posts, $type_obj->cap->edit_others_posts]
             : [$type_obj->cap->edit_posts, $type_obj->cap->edit_others_posts];
         } elseif ('author' == $sitewide_requirement) {
-            $reqd_caps = (isset($type_obj->cap->edit_published_posts)) 
+            $reqd_caps = (isset($type_obj->cap->edit_published_posts))
             ? [$type_obj->cap->edit_published_posts]
             : [$type_obj->cap->edit_posts];
         } elseif ($sitewide_requirement) {
@@ -73,16 +73,16 @@ class PostEditCustomize
             echo "\n<style type='text/css'>\n<!--\n";
 
             $removeable_metaboxes = apply_filters(
-                'presspermit_removeable_metaboxes', 
-                [   'categorydiv', 
-                    'tagsdiv-post_tag', 
-                    'postcustom', 
-                    'pagecustomdiv', 
-                    'authordiv', 
-                    'pageauthordiv', 
-                    'trackbacksdiv', 
-                    'revisionsdiv', 
-                    'pending_revisions_div', 
+                'presspermit_removeable_metaboxes',
+                [   'categorydiv',
+                    'tagsdiv-post_tag',
+                    'postcustom',
+                    'pagecustomdiv',
+                    'authordiv',
+                    'pageauthordiv',
+                    'trackbacksdiv',
+                    'revisionsdiv',
+                    'pending_revisions_div',
                     'future_revisionsdiv'
                 ]
             );

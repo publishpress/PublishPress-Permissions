@@ -6,13 +6,13 @@ class SettingsAdmin
 {
     private static $instance;
 
-    var $form_options;
-    var $tab_captions;
-    var $section_captions;
-    var $option_captions;
-    var $all_options;
-    var $all_otype_options;
-    var $display_hints;
+    public $form_options;
+    public $tab_captions;
+    public $section_captions;
+    public $option_captions;
+    public $all_options;
+    public $all_otype_options;
+    public $display_hints;
 
     public static function instance()
     {
@@ -39,7 +39,7 @@ class SettingsAdmin
     public static function getStr($string_id)
     {
         switch ($string_id) {
-        // Core
+            // Core
             case 'post_blockage_priority':
                 return __('If disabled, manually "blocked" posts can be unblocked by specific Category / Term Permissions.', 'press-permit-core-hints');
 
@@ -71,7 +71,7 @@ class SettingsAdmin
                 return __('Note: Groups and Roles are always displayed in "Edit User"', 'press-permit-core-hints');
 
 
-        // Advanced
+                // Advanced
             case 'anonymous_unfiltered':
                 return __('Disable Permissions filtering for users who are not logged in.', 'press-permit-core-hints');
 
@@ -111,7 +111,7 @@ class SettingsAdmin
             case 'non_admins_set_edit_exceptions':
                 return __('Users also need the pp_set_edit_exceptions capability in their WordPress role.', 'press-permit-core-hints');
 
-        // Editing
+                // Editing
             case 'collaborative-publishing':
                 return sprintf(__('Settings related to content editing permissions, provided by the %s module.', 'press-permit-core-hints'), __('Editing Permissions', 'press-permit-core-hints'));
 
@@ -160,7 +160,7 @@ class SettingsAdmin
             case 'non_admins_set_edit_exceptions':
                 return __('If enabled, the capabilities pp_set_edit_exceptions, pp_set_associate_exceptions, etc. will be honored. See list of capabilities below.', 'press-permit-core-hints');
 
-        // Circles
+                // Circles
             case 'access_circles_limit_revisions':
                 return __('Circle members will be blocked from accessing Revisions authored by non-members.', 'presspermit-pro-hints');
 
@@ -176,7 +176,7 @@ class SettingsAdmin
             case 'PP_NON_EDITORS_SET_EDIT_EXCEPTIONS':
                 return esc_html__("Enable post contributors or authors with pp_set_edit_exceptions capability to set editing Permissions on posts authored by others", 'press-permit-core-hints');
 
-        // 'editing'
+                // 'editing'
             case 'PP_LOCK_OPTION_PAGES_ONLY':
                 return esc_html__("Permissions setting 'Pages can be set or removed from Top Level by' applies to 'page' type only", 'press-permit-core-hints');
 
@@ -186,7 +186,7 @@ class SettingsAdmin
             case 'PPC_ASSOCIATION_NOFILTER':
                 return esc_html__("Circle membership does not limit page association (page parent setting) ability", 'press-permit-core-hints');
 
-        // auto-default-term-setting-override
+                // auto-default-term-setting-override
             case 'PP_AUTO_DEFAULT_TERM':
                 return esc_html__("Determines the default value of Permissions > Settings > Editing > Auto-assign default term", 'press-permit-core-hints');
 
@@ -221,7 +221,7 @@ class SettingsAdmin
                 return esc_html__("Don't define an 'Approved' status, even if Status Control module is active", 'press-permit-core-hints');
 
 
-        // 'nav-menu-manage'
+                // 'nav-menu-manage'
             case 'PP_SUPPRESS_APPEARANCE_LINK':
                 return esc_html__("If user has Nav Menu management capabilities but can't 'edit_theme_options', strip link out of wp-admin Appearance Menu instead of linking it to nav-menus", 'press-permit-core-hints');
 
@@ -241,12 +241,12 @@ class SettingsAdmin
                 return esc_html__("Eliminate extra filtering queries on Nav Menu update, even for non-Administrators", 'press-permit-core-hints');
 
 
-        // 'media'
+                // 'media'
             case 'PP_BLOCK_UNATTACHED_UPLOADS':
                 return esc_html__("Don't allow non-Administrators to see others' unattached uploads, regardless of Permissions settings.  Their own unattached uploads are still accessible unless option 'own_attachments_always_editable' is set false", 'press-permit-core-hints');
 
 
-        // 'admin'
+                // 'admin'
             case 'PPCE_CAN_ASSIGN_OWN_ROLE':
                 return esc_html__("Limited User Editors can assign their own role", 'press-permit-core-hints');
 
@@ -259,7 +259,7 @@ class SettingsAdmin
         return apply_filters('presspermit_get_constant_descript', '', $constant);
     }
 
-    static function setCapabilityDescriptions($pp_caps)
+    public static function setCapabilityDescriptions($pp_caps)
     {
         $pp_caps['pp_manage_settings'] = esc_html__('Modify these Permissions settings', 'press-permit-core-hints');
         $pp_caps['pp_unfiltered'] = esc_html__('PublishPress Permissions does not apply any Supplemental Roles or Specific Permissions to limit or expand viewing or editing access', 'press-permit-core-hints');
@@ -277,16 +277,16 @@ class SettingsAdmin
             if ((defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION'))) {
                 $pp_caps['pp_set_revise_exceptions'] = esc_html__('Set Revision Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
             }
-    
+
             $pp_caps['pp_set_associate_exceptions'] =       esc_html__('Set Association (Parent) Permissions on Edit Post screen (where applicable)', 'press-permit-core-hints');
             $pp_caps['pp_set_term_assign_exceptions'] =     esc_html__('Set Term Assignment Permissions on Edit Term screen (in relation to an editable post type)', 'press-permit-core-hints');
             $pp_caps['pp_set_term_manage_exceptions'] =     esc_html__('Set Term Management Permissions on Edit Term screen', 'press-permit-core-hints');
             $pp_caps['pp_set_term_associate_exceptions'] =  esc_html__('Set Term Association (Parent) Permissions on Edit Term screen', 'press-permit-core-hints');
-    
+
             $pp_caps['edit_own_attachments'] =          esc_html__('Edit own file uploads, even if they become attached to an uneditable post', 'press-permit-core-hints');
             $pp_caps['list_others_unattached_files'] =  esc_html__("See other user's unattached file uploads in Media Library", 'press-permit-core-hints');
             $pp_caps['pp_associate_any_page'] =         esc_html__('Disregard association permissions (for all hierarchical post types)', 'press-permit-core-hints');
-    
+
             $pp_caps['pp_list_all_files'] =     esc_html__('Do not alter the Media Library listing provided by WordPress', 'press-permit-core-hints');
             $pp_caps['list_posts'] =            esc_html__('On the Posts screen, satisfy a missing edit_posts capability by listing uneditable drafts', 'press-permit-core-hints');
             $pp_caps['list_others_posts'] =     esc_html__("On the Posts screen, satisfy a missing edit_others_posts capability by listing other user's uneditable posts", 'press-permit-core-hints');
@@ -331,12 +331,12 @@ class SettingsAdmin
         $return = ['in_scope' => false, 'no_storage' => false, 'disabled' => false, 'title' => '', 'style' => '', 'div_style' => ''];
 
         if (
-            isset($this->form_options[$tab_name][$section_name]) 
-            && in_array($option_name, $this->form_options[$tab_name][$section_name], true) 
+            isset($this->form_options[$tab_name][$section_name])
+            && in_array($option_name, $this->form_options[$tab_name][$section_name], true)
             && isset($this->option_captions[$option_name])
         ) {
             $display_label = (!isset($args['display_label'])) ? true : $args['display_label'];
-            
+
             if (empty($args['no_storage'])) {
                 $this->all_options[] = $option_name;
             }
@@ -356,11 +356,11 @@ class SettingsAdmin
             echo "<div class='agp-opt-checkbox " . esc_attr($option_name) . "' style='" . esc_attr($div_style) . "'>"
                 . "<label for='" . esc_attr($option_name) . "' title='" . esc_attr($title) . "'>"
                 . "<input name='" . esc_attr($option_name) . "' type='checkbox' " . esc_attr($disabled) . " style='" . esc_attr($style) . "' id='" . esc_attr($option_name) . "' value='1' " . esc_attr(checked('1', $return['val'], false)) . " autocomplete='off' /> ";
-                
+
             if ($display_label && isset($this->option_captions[$option_name])) {
                 esc_html_e($this->option_captions[$option_name]);
             }
-            
+
             echo "</label>";
 
             if ($hint_text && $this->display_hints) {
@@ -390,9 +390,9 @@ class SettingsAdmin
 
     private function hideNetworkOption($option_name)
     {
-                                                                        // Precautionary exception: don't change storage location for license key
+        // Precautionary exception: don't change storage location for license key
         $is_main_site = (defined('PRESSPERMIT_LEGACY_MAIN_SITE_CHECK') || (('edd_key' == $option_name) && !defined('PRESSPERMIT_EDD_KEY_SITEMETA_STORAGE'))) ? (1 == get_current_blog_id()) : is_main_site();
-        
+
         if (is_multisite()) {
             return (in_array($option_name, presspermit()->netwide_options, true) && PWP::isNetworkActivated()
                 && !is_network_admin() && !$is_main_site);
@@ -404,7 +404,7 @@ class SettingsAdmin
     public function filterNetworkOptions()
     {
         $is_main_site = (defined('PRESSPERMIT_LEGACY_MAIN_SITE_CHECK')) ? (1 == get_current_blog_id()) : is_main_site();
-        
+
         if (is_multisite() && !is_network_admin() && !$is_main_site) {
             $pp = presspermit();
             $this->all_options = array_diff($this->all_options, $pp->netwide_options);

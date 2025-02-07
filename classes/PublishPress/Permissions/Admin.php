@@ -222,7 +222,7 @@ class Admin
         $err->addNotice($notice, ['id' => $msg_id]);
     }
 
-    function publishpressFooter()
+    public function publishpressFooter()
     {
         if (presspermit()->isPro() && !presspermit()->getOption('display_branding')) {
             return;
@@ -237,7 +237,7 @@ class Admin
                         '<strong>PublishPress Permissions</strong>',
                         '<span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>'
                     );
-                    ?>
+        ?>
                 </a>
             </div>
 

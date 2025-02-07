@@ -8,7 +8,7 @@ class EyesOnlyAdmin
     {
         add_filter('sseo_pp_group_items', [$this, 'fltGroups']);
     }
-    
+
     public function fltGroups($group_labels)
     {
         $group_labels = [];

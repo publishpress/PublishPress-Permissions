@@ -8,7 +8,7 @@ class AgentPermissions
     {
         // called by Dashboard\DashboardFilters::actMenuHandler
 
-        // todo: separate function for update messages 
+        // todo: separate function for update messages
 
         $pp = presspermit();
         $pp_admin = $pp->admin();
@@ -131,7 +131,7 @@ class AgentPermissions
                 foreach ($pp_admin->errors->get_error_messages() as $msg) {
                     echo '<p>' . esc_html($msg) . '</p>';
                 }
-                ?>
+            ?>
             </div>
         <?php endif; ?>
 
@@ -140,34 +140,34 @@ class AgentPermissions
                 <?php PluginPage::icon(); ?>
                 <h1 class="wp-heading-inline"><?php
 
-                if ('user' == $agent_type) {
-                    ($agent_id) ? esc_html_e('Edit User Permissions', 'press-permit-core') : esc_html_e('Add User Permissions', 'press-permit-core');
-                } elseif ('wp_role' == $metagroup_type) {
-                    if (defined('PUBLISHPRESS_CAPS_VERSION')) {
-                        printf(
-                            esc_html__('Edit Permission Group (%sWordPress Role%s)', 'press-permit-core'),
-                            '<a href="' . esc_url(admin_url("admin.php?page=capsman&action=edit&role={$agent->metagroup_id}")) . '" title="' . esc_attr(esc_html__('Edit role capabilities directly', 'press-permit-core')) . '">',
-                            '</a>'
-                        );
-                    } else {
-                        esc_html_e('Edit Permission Group (WordPress Role)', 'press-permit-core');
-                    }
-                } elseif ('pp_group' == $agent_type) {
-                    esc_html_e('Edit Permission Group', 'press-permit-core');
-                } elseif ($group_type_obj = $pp_groups->getGroupTypeObject($agent_type)) {
-                    printf(esc_html__('Edit Permissions (%s)', 'press-permit-core'), esc_html($group_type_obj->labels->singular_name));
+            if ('user' == $agent_type) {
+                ($agent_id) ? esc_html_e('Edit User Permissions', 'press-permit-core') : esc_html_e('Add User Permissions', 'press-permit-core');
+            } elseif ('wp_role' == $metagroup_type) {
+                if (defined('PUBLISHPRESS_CAPS_VERSION')) {
+                    printf(
+                        esc_html__('Edit Permission Group (%sWordPress Role%s)', 'press-permit-core'),
+                        '<a href="' . esc_url(admin_url("admin.php?page=capsman&action=edit&role={$agent->metagroup_id}")) . '" title="' . esc_attr(esc_html__('Edit role capabilities directly', 'press-permit-core')) . '">',
+                        '</a>'
+                    );
+                } else {
+                    esc_html_e('Edit Permission Group (WordPress Role)', 'press-permit-core');
                 }
-                ?></h1>
+            } elseif ('pp_group' == $agent_type) {
+                esc_html_e('Edit Permission Group', 'press-permit-core');
+            } elseif ($group_type_obj = $pp_groups->getGroupTypeObject($agent_type)) {
+                printf(esc_html__('Edit Permissions (%s)', 'press-permit-core'), esc_html($group_type_obj->labels->singular_name));
+            }
+        ?></h1>
 
                 <?php
-                $gvar = ($group_variant) ? $group_variant : 'pp_group';
+        $gvar = ($group_variant) ? $group_variant : 'pp_group';
 
-                if ($pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')) :
-                    $_url = admin_url('admin.php?page=presspermit-group-new');
-                    if ($agent_type) {
-                        $_url = add_query_arg(['agent_type' => $agent_type], $_url);
-                    }
-                    ?>
+        if ($pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')) :
+            $_url = admin_url('admin.php?page=presspermit-group-new');
+            if ($agent_type) {
+                $_url = add_query_arg(['agent_type' => $agent_type], $_url);
+            }
+            ?>
                     <a href="<?php echo esc_url($_url); ?>" class="page-title-action"><?php esc_html_e('Add New', 'press-permit-core'); ?></a>
                 <?php endif; ?>
 
@@ -185,10 +185,10 @@ class AgentPermissions
                     <?php endif; ?>
 
                     <?php
-                    $disabled = (!$pp_groups->groupTypeEditable($agent_type) || $agent->metagroup_id) ? ' disabled ' : '';
+            $disabled = (!$pp_groups->groupTypeEditable($agent_type) || $agent->metagroup_id) ? ' disabled ' : '';
 
-                    // todo: better html / css for update button pos
-                    ?>
+        // todo: better html / css for update button pos
+        ?>
                     <table class="pp-agent-profile">
                         <tr>
                             <td>
@@ -236,12 +236,12 @@ class AgentPermissions
                                                 } else {
                                                     echo esc_html($wp_roles->role_names[$primary_role]);
                                                 }
-                                                ?>
+                                        ?>
                                                 </td>
                                             </tr>
                                             <?php
-                                        endif;
-                                        ?>
+                                    endif;
+        ?>
                                     <?php elseif ($agent_id) : ?>
                                         <tr>
                                             <th>
@@ -265,7 +265,7 @@ class AgentPermissions
                                     <input type="submit" name="submit" id="submit" class="button button-primary pp-primary-button" value="<?php esc_attr_e('Update Group', 'press-permit-core') ?>">
                                     <?php
                                 }
-                                ?>
+        ?>
                             </td>
                         </tr>
                     </table>
@@ -274,29 +274,29 @@ class AgentPermissions
 
                     do_action('presspermit_group_edit_form', $agent_type, $agent_id);
 
-                    if ($agent_id) {
-                        if (
-                            $pp_groups->groupTypeEditable($agent_type)
-                            && !in_array($agent->metagroup_type, ['wp_role', 'meta_role'], true)
-                            && !in_array($agent_type, apply_filters('presspermit_automember_group_types', ['bp_group']), true)
-                        ) {
-                            $member_types = [];
+        if ($agent_id) {
+            if (
+                $pp_groups->groupTypeEditable($agent_type)
+                && !in_array($agent->metagroup_type, ['wp_role', 'meta_role'], true)
+                && !in_array($agent_type, apply_filters('presspermit_automember_group_types', ['bp_group']), true)
+            ) {
+                $member_types = [];
 
-                            if ($pp_groups->userCan('pp_manage_members', $agent_id, $agent_type)) {
-                                $member_types[] = 'member';
-                            }
+                if ($pp_groups->userCan('pp_manage_members', $agent_id, $agent_type)) {
+                    $member_types[] = 'member';
+                }
 
-                            if ($member_types) {
-                                AgentPermissionsUI::drawMemberChecklists($agent_id, $agent_type, compact('member_types'));
-                            }
-                        }
-                    } elseif ('user' == $agent_type) {
-                        echo '<br />';
-                        AgentPermissionsUI::drawMemberChecklists(0, 'pp_group', ['suppress_caption' => true]);
-                    }
+                if ($member_types) {
+                    AgentPermissionsUI::drawMemberChecklists($agent_id, $agent_type, compact('member_types'));
+                }
+            }
+        } elseif ('user' == $agent_type) {
+            echo '<br />';
+            AgentPermissionsUI::drawMemberChecklists(0, 'pp_group', ['suppress_caption' => true]);
+        }
 
-                    do_action('presspermit_edit_group_profile', $agent_type, $agent_id);
-                    ?>
+        do_action('presspermit_edit_group_profile', $agent_type, $agent_id);
+        ?>
 
                     <input type="hidden" name="action" value="update" />
                     <input type="hidden" name="agent_id" id="agent_id" value="<?php echo esc_attr($agent_id); ?>" />
@@ -311,105 +311,105 @@ class AgentPermissions
                 }
 
 
-                if ('user' == $agent_type) : ?>
+        if ('user' == $agent_type) : ?>
                     <div>
-                        <?php if ($agent_id) {
-                            $roles = [];
-                            $user = $pp->getUser($agent_id);
-                            $user->retrieveExtraGroups();
-                            $user->getSiteRoles();
+                                        <?php if ($agent_id) {
+                                            $roles = [];
+                                            $user = $pp->getUser($agent_id);
+                                            $user->retrieveExtraGroups();
+                                            $user->getSiteRoles();
 
-                            $post_types = $pp->getEnabledPostTypes([], 'object');
-                            $taxonomies = $pp->getEnabledTaxonomies([], 'object');
+                                            $post_types = $pp->getEnabledPostTypes([], 'object');
+                                            $taxonomies = $pp->getEnabledTaxonomies([], 'object');
 
-                            foreach (array_keys($user->groups) as $agent_type) {
-                                foreach (array_keys($user->groups[$agent_type]) as $_agent_id) {
-                                    $args = compact('post_types', 'taxonomies');
-                                    $args['query_agent_ids'] = array_keys($user->groups[$agent_type]);
-                                    $roles = array_merge($roles, $pp->getRoles($_agent_id, $agent_type, $args));
-                                }
-                            }
+                                            foreach (array_keys($user->groups) as $agent_type) {
+                                                foreach (array_keys($user->groups[$agent_type]) as $_agent_id) {
+                                                    $args = compact('post_types', 'taxonomies');
+                                                    $args['query_agent_ids'] = array_keys($user->groups[$agent_type]);
+                                                    $roles = array_merge($roles, $pp->getRoles($_agent_id, $agent_type, $args));
+                                                }
+                                            }
 
-                            require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/Profile.php');
-                            Dashboard\Profile::displayUserGroups(
-                                $agent_id,
-                                [
-                                    'initial_hide' => true,
-                                    'selected_only' => true,
-                                    'force_display' => true,
-                                    'edit_membership_link' => true,
-                                    'hide_checkboxes' => true,
-                                ]
-                            );
+                                            require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/Profile.php');
+                                            Dashboard\Profile::displayUserGroups(
+                                                $agent_id,
+                                                [
+                                                'initial_hide' => true,
+                                                'selected_only' => true,
+                                                'force_display' => true,
+                                                'edit_membership_link' => true,
+                                                'hide_checkboxes' => true,
+                                                ]
+                                            );
 
-                            $role_group_caption = sprintf(
-                                esc_html__('Supplemental Roles %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
-                                '',
-                                '',
-                                '',
-                                ''
-                            );
+                                            $role_group_caption = sprintf(
+                                                esc_html__('Supplemental Roles %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
+                                                '',
+                                                '',
+                                                '',
+                                                ''
+                                            );
 
-                            AgentPermissionsUI::currentRolesUI($roles, ['read_only' => true, 'class' => 'pp-group-roles', 'caption' => $role_group_caption, 'show_groups_link' => true]);
+                                            AgentPermissionsUI::currentRolesUI($roles, ['read_only' => true, 'class' => 'pp-group-roles', 'caption' => $role_group_caption, 'show_groups_link' => true]);
 
-                            $exceptions = [];
+                                            $exceptions = [];
 
-                            $args = ['assign_for' => '', 'inherited_from' => 0, 'post_types' => array_keys($post_types), 'taxonomies' => array_keys($taxonomies), 'return_raw_results' => true];
+                                            $args = ['assign_for' => '', 'inherited_from' => 0, 'post_types' => array_keys($post_types), 'taxonomies' => array_keys($taxonomies), 'return_raw_results' => true];
 
-                            foreach (array_keys($user->groups) as $agent_type) {
-                                $args['agent_type'] = $agent_type;
-                                $args['ug_clause'] = " AND e.agent_type = '$agent_type' AND e.agent_id IN ('"
-                                    . implode("','", array_keys($user->groups[$agent_type])) . "')";
+                                            foreach (array_keys($user->groups) as $agent_type) {
+                                                $args['agent_type'] = $agent_type;
+                                                $args['ug_clause'] = " AND e.agent_type = '$agent_type' AND e.agent_id IN ('"
+                                                    . implode("','", array_keys($user->groups[$agent_type])) . "')";
 
-                                $args['query_agent_ids'] = array_keys($user->groups[$agent_type]);
+                                                $args['query_agent_ids'] = array_keys($user->groups[$agent_type]);
 
-                                $exceptions = array_merge($exceptions, $pp->getExceptions($args));
-                            }
+                                                $exceptions = array_merge($exceptions, $pp->getExceptions($args));
+                                            }
 
-                            $role_group_caption = sprintf(
-                                esc_html__('Specific Permissions %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
-                                '',
-                                '',
-                                '',
-                                ''
-                            );
+                                            $role_group_caption = sprintf(
+                                                esc_html__('Specific Permissions %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
+                                                '',
+                                                '',
+                                                '',
+                                                ''
+                                            );
 
-                            AgentPermissionsUI::currentExceptionsUI($exceptions, ['read_only' => true, 'class' => 'pp-group-roles', 'caption' => $role_group_caption, 'show_groups_link' => true]);
-                        } else {
-                            ?>
+                                            AgentPermissionsUI::currentExceptionsUI($exceptions, ['read_only' => true, 'class' => 'pp-group-roles', 'caption' => $role_group_caption, 'show_groups_link' => true]);
+                                        } else {
+                                            ?>
                             <h4>
-                                <?php
-                                $url = "users.php";
-                                printf(esc_html__('View currently stored user permissions:', 'press-permit-core'));
-                                ?>
+                                                <?php
+                                                $url = "users.php";
+                                            printf(esc_html__('View currently stored user permissions:', 'press-permit-core'));
+                                            ?>
                             </h4>
                             <ul class="pp-notes">
                                 <li><?php printf(esc_html__('%1$sUsers who have Supplemental Roles assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_roles=1") . "'>", '</a>'); ?></li>
                                 <li><?php printf(esc_html__('%1$sUsers who have Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_exceptions=1") . "'>", '</a>'); ?></li>
                                 <li><?php printf(esc_html__('%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_perms=1") . "'>", '</a>'); ?></li>
                             </ul>
-                            <?php
-                        }
-                        ?>
+                                            <?php
+                                        }
+        ?>
                     </div>
                 <?php endif;
 
-                if ($pp_admin->bulkRolesEnabled()) {
-                    echo '<div class="pp_exceptions_notes">';
-                    echo '<div><strong>' . esc_html__('Specific Permissions Explained:', 'press-permit-core') . '</strong>';
-                    echo "<ul>";
-                    echo "<li>" . esc_html__('"Block" : Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core') . '</li>';
-                    echo "<li>" . esc_html__('"Limit to" : Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.', 'press-permit-core') . '</li>';
-                    echo "<li>" . esc_html__('"Enable" : Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core') . '</li>';
-                    echo "</ul>";
-                    echo '</div>';
+        if ($pp_admin->bulkRolesEnabled()) {
+            echo '<div class="pp_exceptions_notes">';
+            echo '<div><strong>' . esc_html__('Specific Permissions Explained:', 'press-permit-core') . '</strong>';
+            echo "<ul>";
+            echo "<li>" . esc_html__('"Block" : Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core') . '</li>';
+            echo "<li>" . esc_html__('"Limit to" : Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.', 'press-permit-core') . '</li>';
+            echo "<li>" . esc_html__('"Enable" : Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core') . '</li>';
+            echo "</ul>";
+            echo '</div>';
 
-                    echo '<div>';
-                    esc_html_e('Keep in mind that Roles and Specific Permissions can be assigned to WP Roles, BuddyPress Groups, Custom Groups and/or individual Users.  "Enable" and "Limit to" adjustments are unavailable for groups in some contexts.', 'press-permit-core');
-                    echo '</div>';
-                    echo '</div>';
-                }
-                ?>
+            echo '<div>';
+            esc_html_e('Keep in mind that Roles and Specific Permissions can be assigned to WP Roles, BuddyPress Groups, Custom Groups and/or individual Users.  "Enable" and "Limit to" adjustments are unavailable for groups in some contexts.', 'press-permit-core');
+            echo '</div>';
+            echo '</div>';
+        }
+        ?>
 
                 <?php if ('user' == $agent_type) : ?>
                     <!-- </div> -->
@@ -419,7 +419,7 @@ class AgentPermissions
 
             <?php
             presspermit()->admin()->publishpressFooter();
-            ?>
+        ?>
         </div>
         <?php
     }

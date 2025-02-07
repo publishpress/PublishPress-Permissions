@@ -101,7 +101,7 @@ class ItemExceptionsData
                     'orderby' => 'user_login'
                     ]
                 );
-    
+
                 $this->agent_info['user'] = [];
 
                 if ($results = $user_search->get_results()) {
@@ -200,7 +200,7 @@ class ItemExceptionsData
             $where = $wpdb->prepare(" AND e.for_item_source = %s", $for_item_source);
         }
 
-        // This function is not currently used to retrieve propagation records 
+        // This function is not currently used to retrieve propagation records
         //$_assignment_modes = ($hierarchical) ? [ 'item', 'children' ] : [ 'item' ];   // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
         $_assignment_modes = ['item'];
 

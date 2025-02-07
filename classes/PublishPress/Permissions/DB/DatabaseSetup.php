@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\DB;
 
 class DatabaseSetup
 {
-    function __construct($last_db_ver = false)
+    public function __construct($last_db_ver = false)
     {
         self::updateSchema($last_db_ver);
     }
@@ -28,7 +28,7 @@ class DatabaseSetup
 
         // note: dbDelta requires two spaces after PRIMARY KEY, no spaces between KEY columns
 
-        // Groups table def 
+        // Groups table def
         $tabledefs = "CREATE TABLE $wpdb->pp_groups (
          ID bigint(20) NOT NULL auto_increment,
          group_name text NOT NULL,
@@ -61,7 +61,7 @@ class DatabaseSetup
         ;
         ";
 
-        /*  ppc_roles: 
+        /*  ppc_roles:
         // note: dbDelta requires two spaces after PRIMARY KEY, no spaces between KEY columns
         //
             agent_type: user / pp_group / bp_group / etc.
@@ -118,7 +118,7 @@ class DatabaseSetup
         ";
 
         /* ppc_exception_items:
-        
+
             exception_id: foreign key to ppc_exceptions
             item_id: post ID or term_id
             assign_for: exception applies to item or its children?
@@ -145,7 +145,7 @@ class DatabaseSetup
 
     public static function dbDelta($queries, $execute = true)
     {
-  // lifted from WP because forced inclusion of schema.php interferes with site creation
+        // lifted from WP because forced inclusion of schema.php interferes with site creation
         global $wpdb;
 
         // Separate individual queries into an array
@@ -223,7 +223,7 @@ class DatabaseSetup
                     $table = sanitize_key($table);
 
                     // Fetch the table column structure from the database (NOTE: table variable is not to be quoted, so sanitized above)
-                    
+
                     $tablefields = $wpdb->get_results("DESCRIBE {$table};");  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                     // For every field in the table
@@ -269,7 +269,7 @@ class DatabaseSetup
 
                     // Index stuff goes here
                     // Fetch the table index structure from the database  (NOTE: table variable is not to be quoted, so sanitized above)
-                    
+
                     $tableindices = $wpdb->get_results("SHOW INDEX FROM {$table};"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                     if ($tableindices) {

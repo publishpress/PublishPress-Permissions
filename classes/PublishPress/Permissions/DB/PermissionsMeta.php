@@ -31,7 +31,7 @@ class PermissionsMeta
 
         // Project Nami compat
         $count_clause = ($wpdb && method_exists($wpdb, 'db_edition') && empty($wpdb->use_mysqli))
-        ? "COUNT(i.item_id)" 
+        ? "COUNT(i.item_id)"
         : "COUNT(DISTINCT i.exception_id, i.item_id)";
 
         if (('user' == $agent_type) && $join_groups) {

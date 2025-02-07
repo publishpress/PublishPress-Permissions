@@ -31,8 +31,8 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
     define('PRESSPERMIT_COLLAB_CLASSPATH', __DIR__ . '/classes/Permissions/Collab');
 
     add_action(
-        'plugins_loaded', 
-        function () { 
+        'plugins_loaded',
+        function () {
             if (!defined('PRESSPERMIT_VERSION')) {
                 return;
             }
@@ -107,17 +107,17 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
     );
 
     add_action(
-        'plugins_loaded', 
-        function () { 
+        'plugins_loaded',
+        function () {
             if (!defined('REVISIONARY_VERSION') && defined('RVY_VERSION')) {
                 define('REVISIONARY_VERSION', RVY_VERSION);
             }
-        }, 
+        },
         20
     );
 } else {
     add_action(
-        'init', 
+        'init',
         function () {
             do_action('presspermit_duplicate_module', 'collaboration', dirname(plugin_basename(__FILE__)));
         }

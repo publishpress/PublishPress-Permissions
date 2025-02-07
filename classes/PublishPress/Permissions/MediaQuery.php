@@ -56,7 +56,7 @@ class MediaQuery
 
             $pp_where = apply_filters('presspermit_posts_where', '', $_args);
             $type_csv = implode("','", array_map('sanitize_key', $_post_types));
-            
+
             if (defined('PRESSPERMIT_MEDIA_IGNORE_UNREGISTERED_PARENT_TYPES')) {
                 // treat media attached to unregistered post types as unattached, to avoid improper and confusing filtering
                 $args['subqry'] = "SELECT ID FROM $wpdb->posts AS p WHERE 1=1 AND ( ( ( p.post_type IN ('$type_csv') ) $pp_where ) OR ( p.post_type NOT IN ('$public_types_csv') ) )";  // pass this into filter even if not applying here
@@ -74,9 +74,9 @@ class MediaQuery
             $attached_vis_clause = apply_filters('presspermit_attached_visibility_clause', $attached_vis_clause, $clauses, $_args);
 
             $unattached_vis_clause = apply_filters(
-                'presspermit_unattached_visibility_clause', 
-                "$src_table.post_parent = '0'", 
-                $clauses, 
+                'presspermit_unattached_visibility_clause',
+                "$src_table.post_parent = '0'",
+                $clauses,
                 $_args
             );
 

@@ -72,7 +72,7 @@ class PostTermsSaveXmlRpc
                 if (isset($post_data['terms_names']) && is_array($post_data['terms_names'])) {
                     foreach ($post_data['terms_names'][$taxonomy] as $term_name) {
                         // term creation is outside the scope of this usage
-                        if ($term = get_term_by('name', $term_name, $taxonomy)) { 
+                        if ($term = get_term_by('name', $term_name, $taxonomy)) {
                             $terms[] = (int)$term->term_id;
                         }
                     }

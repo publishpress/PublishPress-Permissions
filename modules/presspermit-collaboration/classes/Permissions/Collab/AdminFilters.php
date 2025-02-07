@@ -6,9 +6,9 @@ class AdminFilters
 {
     private $inserting_post = false;
 
-    // Backend filtering which is generally enabled for all requests 
+    // Backend filtering which is generally enabled for all requests
     //
-    function __construct()
+    public function __construct()
     {
         add_action('presspermit_init', [$this, 'actDisableForumPatternRoles']);
 
@@ -78,7 +78,7 @@ class AdminFilters
         return $option_val;
     }
 
-    function actSavePost($post_id, $post, $update)
+    public function actSavePost($post_id, $post, $update)
     {
         if (!empty(presspermit()->flags['ignore_save_post'])) {
             return;
@@ -104,7 +104,7 @@ class AdminFilters
         }
     }
 
-    function actUnloadCurrentUserExceptions($item_id)
+    public function actUnloadCurrentUserExceptions($item_id)
     {
         if (!empty(presspermit()->flags['ignore_save_post'])) {
             return;
@@ -113,7 +113,7 @@ class AdminFilters
         presspermit()->getUser()->except = []; // force current user exceptions to be reloaded at relevant next capability check
     }
 
-    function actDisableForumPatternRoles()
+    public function actDisableForumPatternRoles()
     {
         $pp = presspermit();
         $pp->role_defs->disabled_pattern_role_types = array_merge(
@@ -122,7 +122,7 @@ class AdminFilters
         );
     }
 
-    function fltGetEnabledTaxonomies($taxonomies, $args = [])
+    public function fltGetEnabledTaxonomies($taxonomies, $args = [])
     {
         if (is_admin() && (empty($args['object_type']) || ('nav_menu_item' == $args['object_type']))) {
             $taxonomies['nav_menu'] = 'nav_menu';
@@ -131,13 +131,13 @@ class AdminFilters
         return $taxonomies;
     }
 
-    function fltGetEnabledTaxonomiesByKey($taxonomies, $args = [])
+    public function fltGetEnabledTaxonomiesByKey($taxonomies, $args = [])
     {
         $forced_taxonomies = $this->fltGetEnabledTaxonomies(array_keys($taxonomies), $args);
         return array_merge($taxonomies, $forced_taxonomies);
     }
 
-    function fltAddException($exception)
+    public function fltAddException($exception)
     {
         if ('_term_' == $exception['for_type']) {
             $exception['for_type'] = $exception['via_type'];
@@ -146,7 +146,7 @@ class AdminFilters
         return $exception;
     }
 
-    function fltExceptionTypes($types)
+    public function fltExceptionTypes($types)
     {
         if (isset($types['attachment'])) {
             $types['attachment'] = get_post_type_object('attachment');
@@ -155,7 +155,7 @@ class AdminFilters
         return $types;
     }
 
-    function fltAppendExceptionTypes($types)
+    public function fltAppendExceptionTypes($types)
     {
         $types['pp_group'] = (object)[
             'name' => 'pp_group',
@@ -168,7 +168,7 @@ class AdminFilters
         return $types;
     }
 
-    function actDropdownTaxonomyTypes($args = [])
+    public function actDropdownTaxonomyTypes($args = [])
     {
         if (
             empty($args['agent']) || empty($args['agent']->metagroup_id)
@@ -178,31 +178,31 @@ class AdminFilters
         }
     }
 
-    function fltOperationCaptions($op_captions)
+    public function fltOperationCaptions($op_captions)
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/AjaxUI.php');
         return UI\AjaxUI::fltOperationCaptions($op_captions);
     }
 
-    function fltExceptionOperations($ops, $for_source_name, $for_item_type)
+    public function fltExceptionOperations($ops, $for_source_name, $for_item_type)
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/AjaxUI.php');
         return UI\AjaxUI::fltExceptionOperations($ops, $for_source_name, $for_item_type);
     }
 
-    function fltExceptionViaTypes($types, $for_source_name, $for_type, $operation, $mod_type)
+    public function fltExceptionViaTypes($types, $for_source_name, $for_type, $operation, $mod_type)
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/AjaxUI.php');
         return UI\AjaxUI::fltExceptionViaTypes($types, $for_source_name, $for_type, $operation, $mod_type);
     }
 
-    function actExceptionsStatusUi($for_type, $args = [])
+    public function actExceptionsStatusUi($for_type, $args = [])
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/AjaxUI.php');
         UI\AjaxUI::actExceptionsStatusUi($for_type, $args);
     }
 
-    function fltGetRoleTitle($role_title, $args)
+    public function fltGetRoleTitle($role_title, $args)
     {
         $matches = [];
         preg_match("/pp_(.*)_manager/", $role_title, $matches);
@@ -226,7 +226,7 @@ class AdminFilters
         return $role_title;
     }
 
-    function actAjaxRoleVars($force, $args)
+    public function actAjaxRoleVars($force, $args)
     {
         if (0 === strpos($args['for_item_type'], '_term_')) {
             $force = (array)$force;
@@ -237,7 +237,7 @@ class AdminFilters
         return $force;
     }
 
-    function fltGetTypeRoles($type_roles, $for_item_source, $for_item_type)
+    public function fltGetTypeRoles($type_roles, $for_item_source, $for_item_type)
     {
         if ('term' == $for_item_source) {
             $pp = presspermit();
@@ -251,7 +251,7 @@ class AdminFilters
     }
 
     // Optionally, prevent anyone from editing or deleting a user whose level is higher than their own
-    function fltHasEditUserCap($wp_sitecaps, $orig_reqd_caps, $args)
+    public function fltHasEditUserCap($wp_sitecaps, $orig_reqd_caps, $args)
     {
         if (
             presspermit()->filteringEnabled() && (
@@ -274,13 +274,13 @@ class AdminFilters
         return $wp_sitecaps;
     }
 
-    function fltLogInsertPost($maybe_empty, $postarr)
+    public function fltLogInsertPost($maybe_empty, $postarr)
     {
         $this->inserting_post = true;
         return $maybe_empty;
     }
 
-    function fltPageParent($parent_id, $args = [])
+    public function fltPageParent($parent_id, $args = [])
     {
         if (
             (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
@@ -332,7 +332,7 @@ class AdminFilters
     }
 
     // filter page dropdown contents for Page Parent controls; leave others alone
-    function fltDropdownPages($orig_options_html)
+    public function fltDropdownPages($orig_options_html)
     {
         if (presspermit()->isUserUnfiltered() || (!empty($orig_options_html) && (!strpos($orig_options_html, 'parent_id') && !strpos($orig_options_html, 'post_parent')))) {
             return $orig_options_html;
@@ -348,7 +348,7 @@ class AdminFilters
         return PageHierarchyFilters::fltDropdownPages($orig_options_html);
     }
 
-    function fltPostStatus($status)
+    public function fltPostStatus($status)
     {
         if (presspermit()->isUserUnfiltered() || ('auto-draft' == $status) || (!empty($_SERVER['REQUEST_URI']) && strpos(sanitize_text_field($_SERVER['REQUEST_URI']), 'nav-menus.php'))) {
             return $status;
@@ -358,14 +358,14 @@ class AdminFilters
         return PostEdit::fltPostStatus($status);
     }
 
-    function fltAppendAttachmentClause($where, $clauses, $args)
+    public function fltAppendAttachmentClause($where, $clauses, $args)
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/MediaQuery.php');
         return MediaQuery::appendAttachmentClause($where, $clauses, $args);
     }
 
     // optional filter for WP role edit based on user level
-    function fltEditableRoles($roles)
+    public function fltEditableRoles($roles)
     {
         if (!presspermit()->filteringEnabled() || !presspermit()->getOption('limit_user_edit_by_level')) {
             return $roles;

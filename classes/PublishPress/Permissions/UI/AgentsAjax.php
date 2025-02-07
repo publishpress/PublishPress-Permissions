@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\UI;
 
 class AgentsAjax
 {
-    public function __construct() 
+    public function __construct()
     {
         global $wpdb, $current_blog;
 
@@ -33,13 +33,13 @@ class AgentsAjax
 
         $search_str = !empty($_GET['pp_agent_search']) ? sanitize_text_field($_GET['pp_agent_search']) : '';
         $orig_search_str = strval($search_str);
-        
+
         $agent_id = PWP::GET_int('pp_agent_id');
         $topic = str_replace(':', ',', $topic);
 
         $omit_admins = !PWP::empty_GET('pp_omit_admins');
         $context = PWP::GET_key('pp_context');
-        
+
         if (strpos($topic, ',')) {
             $arr_topic = explode(',', $topic);
             if (isset($arr_topic[1])) {
@@ -146,7 +146,7 @@ class AgentsAjax
                 // force search values to be cast as numeric or boolean
                 $force_numeric_keys = (defined('PP_USER_SEARCH_NUMERIC_FIELDS')) ? explode(',', PP_USER_SEARCH_NUMERIC_FIELDS) : [];
                 $force_boolean_keys = (defined('PP_USER_SEARCH_BOOLEAN_FIELDS')) ? explode(',', PP_USER_SEARCH_BOOLEAN_FIELDS) : [];
-                
+
                 $meta_search = [];
 
                 for ($i = 0; $i < count($um_keys); $i++) {

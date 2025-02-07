@@ -29,12 +29,12 @@ class SqlTokenizer extends SqlTokenizerBase
  */
 class SqlTokenizerBase
 {
-    var $querysections = ['alter', 'create', 'drop', 'select', 'delete', 'insert', 'update', 'from', 'where', 'limit', 'order'];
-    var $operators = ['=', '<>', '<', '<=', '>', '>=', 'like', 'clike', 'slike', 'not', 'is', 'in', 'between'];
-    var $separators = ['and'];
-    var $startparens = ['{', '('];
-    var $endparens = ['}', ')'];
-    var $tokens = [',', ' '];
+    public $querysections = ['alter', 'create', 'drop', 'select', 'delete', 'insert', 'update', 'from', 'where', 'limit', 'order'];
+    public $operators = ['=', '<>', '<', '<=', '>', '>=', 'like', 'clike', 'slike', 'not', 'is', 'in', 'between'];
+    public $separators = ['and'];
+    public $startparens = ['{', '('];
+    public $endparens = ['}', ')'];
+    public $tokens = [',', ' '];
 
     /**
      * Simple SQL Tokenizer
@@ -90,7 +90,7 @@ class SqlTokenizerBase
          **/
         $regex = '('; # begin group
         $regex .= '(?:--|\\#)[\\ \\t\\S]*'; # inline comments
-        $regex .= '|(?:<>|<=>|>=|<=|==|=|!=|!|<<|>>|<|>|\\|\\||\\||&&|&|-|\\+|\\*(?!\/)|\/(?!\\*)|\\%|~|\\^|\\?)'; # logical operators 
+        $regex .= '|(?:<>|<=>|>=|<=|==|=|!=|!|<<|>>|<|>|\\|\\||\\||&&|&|-|\\+|\\*(?!\/)|\/(?!\\*)|\\%|~|\\^|\\?)'; # logical operators
         $regex .= '|[\\[\\]\\(\\),;`]|\\\'\\\'(?!\\\')|\\"\\"(?!\\"")'; # empty single/double quotes
         $regex .= '|".*?(?:(?:""){1,}"|(?<!["\\\\])"(?!")|\\\\"{2})|\'.*?(?:(?:\'\'){1,}\'|(?<![\'\\\\])\'(?!\')|\\\\\'{2})'; # quoted strings
         $regex .= '|\/\\*[\\ \\t\\n\\S]*?\\*\/'; # c style comments

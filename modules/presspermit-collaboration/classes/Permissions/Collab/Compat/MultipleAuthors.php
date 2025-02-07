@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab\Compat;
 
 class MultipleAuthors
 {
-    function __construct()
+    public function __construct()
     {
         // Note: Some filters will be required even if PPMA is inactive, to deal with orphaned posts
 
@@ -15,13 +15,13 @@ class MultipleAuthors
         }
     }
 
-    function fltDefaultOptions($options)
+    public function fltDefaultOptions($options)
     {
         $options['force_empty_author'] = 'no';
         return $options;
     }
 
-    function fltAuthorsOptions($options)
+    public function fltAuthorsOptions($options)
     {
         if (!empty($options)) {
             $options->force_empty_author = 'no';

@@ -443,12 +443,12 @@ class GroupsListTable extends GroupsListTableBase
             <input type="search" id="<?php echo esc_attr($input_id); ?>" name="s" value="<?php _admin_search_query(); ?>"
                 class="<?php echo esc_attr($class); ?>" <?php if ($tabindex) {
                     echo ' tabindex="' . (int) $tabindex . '"';
-                       } ?> />
+                } ?> />
 
             <?php
             $attribs = ($tabindex) ? ['id' => 'search-submit', 'tabindex' => $tabindex + 1] : ['id' => 'search-submit'];
-            submit_button($text, '', '', false, $attribs);
-            ?>
+        submit_button($text, '', '', false, $attribs);
+        ?>
         </p>
         <?php
     }
@@ -465,9 +465,9 @@ class GroupsListTable extends GroupsListTableBase
                 </div>
                 <?php
             endif;
-            $this->extra_tablenav($which);
-            $this->pagination($which);
-            ?>
+        $this->extra_tablenav($which);
+        $this->pagination($which);
+        ?>
 
             <br class="clear" />
         </div>

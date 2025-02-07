@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class PostsListingNonAdministrator
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('posts_results', [$this, 'flt_posts_results'], 50, 3);
 

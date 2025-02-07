@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
 // phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize, WordPress.PHP.DevelopmentFunctions.error_log_error_log
 // phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_var_dump, WordPress.PHP.DevelopmentFunctions.error_log_var_dump
 // phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace
-// phpcs:disable PublishPressStandards.Debug.DisallowDebugFunctions.FoundVarDumpFunction, 
+// phpcs:disable PublishPressStandards.Debug.DisallowDebugFunctions.FoundVarDumpFunction,
 
 add_action('admin_footer', 'presspermit_echo_usage_message', 50);
 

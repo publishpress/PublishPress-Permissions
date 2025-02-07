@@ -4,21 +4,21 @@ namespace PublishPress\Permissions\Collab;
 
 class REST_Workarounds
 {
-    var $buffer_taxonomies = [];
+    public $buffer_taxonomies = [];
 
-    function __construct()
+    public function __construct()
     {
         add_action('presspermit_user_init', [$this, 'actHandleRestTermAssignment'], 50);
 
         add_action('plugins_loaded', function () {
-            foreach (presspermit()->getEnabledPostTypes() as $post_type) { 
+            foreach (presspermit()->getEnabledPostTypes() as $post_type) {
                 add_action("rest_insert_{$post_type}", [$this, 'actRestDisableDirectTermAssignment']);
                 add_action("rest_after_insert_{$post_type}", [$this, 'actRestorePostTypeTaxonomies'], 1);  // early execution
             }
         });
     }
 
-    function actRestDisableDirectTermAssignment($post)
+    public function actRestDisableDirectTermAssignment($post)
     {
         global $wp_taxonomies;
 
@@ -34,7 +34,7 @@ class REST_Workarounds
         }
     }
 
-    function actRestorePostTypeTaxonomies($post)
+    public function actRestorePostTypeTaxonomies($post)
     {
         global $wp_taxonomies;
 
@@ -44,7 +44,7 @@ class REST_Workarounds
         $wp_taxonomies = $this->buffer_taxonomies;
     }
 
-    function actHandleRestTermAssignment()
+    public function actHandleRestTermAssignment()
     {
         if (empty($_SERVER['REQUEST_URI'])) {
             return;
@@ -94,17 +94,17 @@ class REST_Workarounds
                     $_POST['post_type'] = $type_rest_base;
                     break;
 
-                // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 } elseif (!empty($_REQUEST[$rest_base])) { // legacy Gutenberg versions
                     // No nonce verification because we need to deal with the term assignment attempt in any case
 
                     // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                     $selected_terms = array_intersect(array_map('intval', (array) $_REQUEST[$rest_base]), $user_terms);
-                    
+
                     $taxonomy = $tx_obj->name;
 
                     $user_terms = get_terms(
-                        $taxonomy, 
+                        $taxonomy,
                         ['required_operation' => 'assign', 'hide_empty' => 0, 'fields' => 'ids', 'post_type' => $type_obj->name]
                     );
 
@@ -123,7 +123,7 @@ class REST_Workarounds
                 }
             }
 
-            break; // post type was matched to REST request 
+            break; // post type was matched to REST request
         } // end foreach type
     }
 }

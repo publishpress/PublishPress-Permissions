@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class DashboardWidgetsFilters
 {
-    function __construct()
+    public function __construct()
     {
         if (!class_exists('Glance_That')) {
             add_action('dashboard_glance_items', [$this, 'act_right_now_pending']);
@@ -12,7 +12,7 @@ class DashboardWidgetsFilters
         }
     }
 
-    function act_right_now_pending()
+    public function act_right_now_pending()
     {
         $post_types = array_diff_key(get_post_types(['public' => true, 'show_ui' => true], 'object', 'or'), ['attachment' => true]);
 
@@ -42,7 +42,7 @@ class DashboardWidgetsFilters
 
                         echo '<td class="first b ' . esc_attr($type_class) . ' b-waiting">' . "<a href='" . esc_url($url) . "'><span class='pending-count'>" . esc_html($num) . "</span></a> " . '</td>';
                         echo '<td class="t posts">';
-                        
+
                         echo "<a class='waiting' href='" . esc_url($url) . "'>";
 
                         if (intval($num_posts->$status_name) <= 1) {

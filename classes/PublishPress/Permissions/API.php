@@ -91,7 +91,7 @@ class API
 
     /*
      * args['labels']['name'] = translated caption
-     * args['default_caps'] = [cap_name => true, another_cap_name => true] defines caps for pattern roles which do not have a corresponding WP role 
+     * args['default_caps'] = [cap_name => true, another_cap_name => true] defines caps for pattern roles which do not have a corresponding WP role
      */
     public static function registerPatternRole($role_name, $args = [])
     {

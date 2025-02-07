@@ -54,7 +54,7 @@ class CommentFilters
         }
 
         $clauses['where'] = "1=1 " . apply_filters(
-            'presspermit_posts_where', 
+            'presspermit_posts_where',
             'AND ' . $clauses['where'],
             array_merge($args, ['post_types' => $post_type, 'skip_teaser' => true, 'query_contexts' => $query_contexts])
         );

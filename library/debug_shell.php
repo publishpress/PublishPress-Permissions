@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // avoid bombing out if the actual debug file is not loaded
 if (!defined('ABSPATH')) {

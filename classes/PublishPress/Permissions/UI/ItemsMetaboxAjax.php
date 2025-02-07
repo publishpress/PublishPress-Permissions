@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\UI;
 
 class ItemsMetaboxAjax
 {
-    public function __construct() 
+    public function __construct()
     {
         check_ajax_referer('pp-ajax');
 
@@ -44,7 +44,7 @@ class ItemsMetaboxAjax
                 ]);
 
                 $markup = ob_get_clean();
-                
+
                 echo wp_json_encode([
                     'replace-id' => $type . '-' . $item->name,
                     'markup' => $markup,

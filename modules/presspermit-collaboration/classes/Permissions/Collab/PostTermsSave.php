@@ -73,7 +73,7 @@ class PostTermsSave
             $objects = true;
         } elseif ('ids' == $fields || 'names' == $fields || 'slugs' == $fields) {
             // phpcs Note: Permissions handles low-level filtering, so sometimes we need a direct terms query without any external filtering
-            
+
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $_terms = $wpdb->get_col(
                 $wpdb->prepare(
@@ -92,7 +92,7 @@ class PostTermsSave
             $terms = array_merge($terms, $_terms);
         } elseif ('tt_ids' == $fields) {
             // phpcs Note: Permissions handles low-level filtering, so sometimes we need a direct terms query without any external filtering
-            
+
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $terms = $wpdb->get_col(
                 $wpdb->prepare(
@@ -152,7 +152,7 @@ class PostTermsSave
                 $post_terms = (!empty($_POST[$tx_obj->object_terms_post_var]))                     // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
                 ? array_map('intval', (array) $_POST[$tx_obj->object_terms_post_var])              // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
                 : [];
-                
+
                 return array_map('intval', $post_terms);
             } elseif (!empty($_POST['tax_input'][$taxonomy])) {                                         // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
                 if (is_taxonomy_hierarchical($taxonomy) && is_array($_POST['tax_input'][$taxonomy])) {  // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
@@ -255,7 +255,7 @@ class PostTermsSave
 
             // if term assignment is limited to a fixed set, ignore any attempt to assign a newly created term
             if (
-                $user->getExceptionTerms('assign', 'include', PWP::findPostType(), $taxonomy) 
+                $user->getExceptionTerms('assign', 'include', PWP::findPostType(), $taxonomy)
                 || $user->getExceptionTerms('assign', 'include', '', $taxonomy)
             ) {
                 $new_terms = [];
@@ -377,7 +377,7 @@ class PostTermsSave
             }
 
             $user_terms = get_terms(
-                $taxonomy, 
+                $taxonomy,
                 ['fields' => 'ids', 'hide_empty' => false, 'required_operation' => 'assign', 'object_type' => $post_type]
             );
 
@@ -386,7 +386,7 @@ class PostTermsSave
             // If restrictive editing exceptions based on term assignment are set but term assignment exceptions are not explicitly set,
             // store a default term from user's set of editable terms
             if (
-                $user->getExceptionTerms('edit', 'include', $post_type, $taxonomy) 
+                $user->getExceptionTerms('edit', 'include', $post_type, $taxonomy)
                 || $user->getExceptionTerms('edit', 'include', '', $taxonomy)
                 || $user->getExceptionTerms('edit', 'exclude', $post_type, $taxonomy)
                 || $user->getExceptionTerms('edit', 'exclude', '', $taxonomy)
@@ -394,7 +394,7 @@ class PostTermsSave
                 $select_default_term = true;
 
                 if (
-                    !$user->getExceptionTerms('assign', 'include', $post_type, $taxonomy) 
+                    !$user->getExceptionTerms('assign', 'include', $post_type, $taxonomy)
                     && !$user->getExceptionTerms('assign', 'include', '', $taxonomy)
                     && !$user->getExceptionTerms('assign', 'exclude', $post_type, $taxonomy)
                     && !$user->getExceptionTerms('assign', 'exclude', '', $taxonomy)
@@ -402,7 +402,7 @@ class PostTermsSave
                     && !$user->getExceptionTerms('assign', 'additional', '', $taxonomy)
                 ) {
                     $user_edit_terms = get_terms(
-                        $taxonomy, 
+                        $taxonomy,
                         ['fields' => 'ids', 'hide_empty' => false, 'required_operation' => 'edit', 'object_type' => $post_type]
                     );
 
@@ -427,9 +427,9 @@ class PostTermsSave
                 }
             }
         }
-        
+
         if (
-            empty($selected_terms) && ((is_taxonomy_hierarchical($taxonomy) 
+            empty($selected_terms) && ((is_taxonomy_hierarchical($taxonomy)
             && ('post_tag' != $taxonomy)) || self::userHasTermLimitations($taxonomy))
         ) {
             if ($tx_obj = get_taxonomy($taxonomy)) {
@@ -457,15 +457,15 @@ class PostTermsSave
                     $default_terms = $filtered_default_terms;
                 } elseif (is_array($user_terms)) {
                     // This excecutes only if no default terms are user-assignable
-                    
+
                     sort($user_terms); // default to lowest ID term
 
-                    // If user has any "include" or "additional" term exceptions, substitute 1st available term, contingent on certain conditions or constant definitions. 
+                    // If user has any "include" or "additional" term exceptions, substitute 1st available term, contingent on certain conditions or constant definitions.
                     // (Previously assigned regardless of user's term exceptions)
                     // (Even earlier, always assigned regardless of $select_default_term flag or $user_terms count)
                     if (
                         (
-                        presspermit()->getOption('auto_assign_available_term')
+                            presspermit()->getOption('auto_assign_available_term')
                         && ((!defined('PP_AUTO_DEFAULT_SINGLE_TERM_ONLY') && empty($args['is_auto_draft'])) || (!empty($select_default_term) && empty($args['is_auto_draft'])) || (count($user_terms) == 1))
                         && !defined('PP_NO_AUTO_DEFAULT_' . strtoupper($taxonomy))
                         && (defined('PP_AUTO_DEFAULT_TERM_EXCEPTIONS_NOT_REQUIRED') || self::userHasTermLimitations($taxonomy, ['include', 'additional'], $post_type))
@@ -475,7 +475,7 @@ class PostTermsSave
                         if (
                             !$object_id || // Never auto-assign terms to the front page or posts
                             (
-                            ((int) $object_id !== (int) get_option('page_on_front')) 
+                                ((int) $object_id !== (int) get_option('page_on_front'))
                             && ((int) $object_id !== (int) get_option('page_for_posts'))
                             )
                         ) {
@@ -499,7 +499,7 @@ class PostTermsSave
         return $selected_terms;
     }
 
-    static function userHasTermLimitations($taxonomy, $mod_types = ['include'], $current_post_type = '')
+    public static function userHasTermLimitations($taxonomy, $mod_types = ['include'], $current_post_type = '')
     {
         if (!$current_post_type) {
             $current_post_type = PWP::findPostType();
@@ -520,11 +520,11 @@ class PostTermsSave
                 }
 
                 foreach (array_keys($user->except[$for_op][$via_src][$taxonomy]) as $mod_type) {
-                     // only consider specified mod type(s)
+                    // only consider specified mod type(s)
                     if (in_array($mod_type, $mod_types, true)) {
                         foreach (array_keys($user->except[$for_op][$via_src][$taxonomy][$mod_type]) as $for_item_type) {
                             // only consider exceptions for current/specified post type
-                            if (!in_array($for_item_type, [$current_post_type, ''], true)) { 
+                            if (!in_array($for_item_type, [$current_post_type, ''], true)) {
                                 continue;
                             }
 

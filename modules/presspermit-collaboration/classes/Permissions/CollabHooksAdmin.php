@@ -4,7 +4,7 @@ namespace PublishPress\Permissions;
 
 class CollabHooksAdmin
 {
-    function __construct()
+    public function __construct()
     {
         // Late init following status registration, including moderation property for PublishPress statuses
         add_action('init', [$this, 'actDefaultPrivacyWorkaround'], 72);
@@ -47,7 +47,7 @@ class CollabHooksAdmin
         if (class_exists('NestedPages') && PWP::is_REQUEST('page', 'nestedpages')) {
             if (defined('PP_NESTED_PAGES_DISABLE_FILTERING') && !defined('PP_NESTED_PAGES_ENABLE_FILTERING')) {
                 add_filter(
-                    'presspermit_posts_clauses_intercept', 
+                    'presspermit_posts_clauses_intercept',
                     function ($clauses, $orig_clauses) {
                         return $orig_clauses;
                     },
@@ -65,10 +65,10 @@ class CollabHooksAdmin
         });
     }
 
-    function actAddMediaApplyDefaultTerm($post_id)
+    public function actAddMediaApplyDefaultTerm($post_id)
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/PostTermsSave.php');
-        
+
         foreach (get_object_taxonomies('attachment') as $taxonomy) {
             if (!$terms = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids'])) {
                 if ($terms = Collab\PostTermsSave::fltPreObjectTerms($terms, $taxonomy, ['object_id' => $post_id, 'post_type' => 'attachment', 'force_filtering' => true])) {
@@ -78,7 +78,7 @@ class CollabHooksAdmin
         }
     }
 
-    function NestedPagesDisableQuickEdit()
+    public function NestedPagesDisableQuickEdit()
     {
         global $current_user;
 
@@ -88,8 +88,8 @@ class CollabHooksAdmin
         $force_quick_edit = current_user_can('pp_force_quick_edit');
 
         $hide_quickedit = !presspermit()->isUserUnfiltered() && !array_intersect($current_user->roles, $allow_quickedit_roles) && !$force_quick_edit;
-        
-        $hide_context_menu = !presspermit()->isUserUnfiltered() && !array_intersect($current_user->roles, $allow_context_menu_roles) 
+
+        $hide_context_menu = !presspermit()->isUserUnfiltered() && !array_intersect($current_user->roles, $allow_context_menu_roles)
         && (!$force_quick_edit || defined('PP_NESTED_PAGES_NO_CONTEXT_MENU_ALLOWANCE'));
 
         if ($hide_quickedit || $hide_context_menu) {
@@ -107,7 +107,7 @@ class CollabHooksAdmin
         }
     }
 
-    function actLoadUIFilters()
+    public function actLoadUIFilters()
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/DashboardFilters.php');
         new Collab\UI\Dashboard\DashboardFilters();
@@ -118,7 +118,7 @@ class CollabHooksAdmin
         }
     }
 
-    function actAdminWorkaroundFilters()
+    public function actAdminWorkaroundFilters()
     {
         global $pagenow;
 
@@ -157,7 +157,7 @@ class CollabHooksAdmin
         }
     }
 
-    function actImplicitNavMenuCaps()
+    public function actImplicitNavMenuCaps()
     {
         global $current_user;
 
@@ -167,7 +167,7 @@ class CollabHooksAdmin
                     $manage_cap = $tx->cap->manage_terms;
                 }
             }
-            
+
             if (empty($manage_cap)) {
                 $manage_cap = 'manage_nav_menus';
             }
@@ -178,27 +178,27 @@ class CollabHooksAdmin
         }
     }
 
-    function fltUserHasGroupCap($has_cap, $cap_name, $group_id, $group_type)
+    public function fltUserHasGroupCap($has_cap, $cap_name, $group_id, $group_type)
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/RoleAdmin.php');
         return Collab\RoleAdmin::hasGroupCap($has_cap, $cap_name, $group_id, $group_type);
     }
 
     // returns supplemental group which can be edited or member-managed via supplemental permissions
-    function fltAdminGroups($editable_group_ids, $operation = 'manage')
+    public function fltAdminGroups($editable_group_ids, $operation = 'manage')
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/RoleAdmin.php');
         return Collab\RoleAdmin::retrieveAdminGroups($editable_group_ids, $operation);
     }
 
-    function fltCanSetExceptions($can, $operation, $for_item_type, $args = [])
+    public function fltCanSetExceptions($can, $operation, $for_item_type, $args = [])
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/RoleAdmin.php');
         return Collab\RoleAdmin::canSetExceptions($can, $operation, $for_item_type, $args);
     }
 
     // prevent default_privacy option from forcing a draft/pending post into private publishing
-    function actDefaultPrivacyWorkaround()
+    public function actDefaultPrivacyWorkaround()
     {
         global $pagenow;
         if (!PWP::empty_POST() && in_array($pagenow, ['post.php', 'post-new.php'])) {
@@ -207,7 +207,7 @@ class CollabHooksAdmin
         }
     }
 
-    function actPreGetPosts($query_obj)
+    public function actPreGetPosts($query_obj)
     {
         if (defined('DOING_AJAX') && DOING_AJAX) {
             switch (PWP::REQUEST_key('action')) {
@@ -218,7 +218,7 @@ class CollabHooksAdmin
         }
     }
 
-    function actCheckAdminReferer($referer)
+    public function actCheckAdminReferer($referer)
     {
         if (in_array($referer, ['bulk-posts', 'inlineeditnonce'], true)) {
             if ('bulk-posts' == $referer) {
@@ -241,7 +241,7 @@ class CollabHooksAdmin
         }
     }
 
-    function actMaybeOverrideKses()
+    public function actMaybeOverrideKses()
     {
         if (!PWP::empty_POST() && PWP::is_POST('action', 'editpost')) {
             if (current_user_can('unfiltered_html')) { // initial core cap check in kses_init() is unfilterable
@@ -250,7 +250,7 @@ class CollabHooksAdmin
         }
     }
 
-    function actAdminHandlers()
+    public function actAdminHandlers()
     {
         if (!PWP::empty_POST()) {
             if ('presspermit-role-usage-edit' == presspermitPluginPage()) {
@@ -259,13 +259,13 @@ class CollabHooksAdmin
         }
     }
 
-    function load_role_usage_edit_handler()
+    public function load_role_usage_edit_handler()
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Handlers/RoleUsage.php');
         Collab\UI\Handlers\RoleUsage::handleRequest();
     }
 
-    function actAddAuthorPages()
+    public function actAddAuthorPages()
     {
         if (!PWP::empty_REQUEST('add_member_page')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/BulkEdit.php');
@@ -273,25 +273,25 @@ class CollabHooksAdmin
         }
     }
 
-    function fltUserCanAdminRole($can_admin, $role_name, $object_type, $item_id = 0)
+    public function fltUserCanAdminRole($can_admin, $role_name, $object_type, $item_id = 0)
     {
         return $this->userCanAdminRole($role_name, $object_type, $item_id);
     }
 
-    function userCanAdminRole($role_name, $object_type, $item_id = 0)
+    public function userCanAdminRole($role_name, $object_type, $item_id = 0)
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Permissions.php');
         return Collab\Permissions::userCanAdminRole($role_name, $object_type, $item_id);
     }
 
-    function actUpdateItemExceptions($via_item_source, $item_id, $args)
+    public function actUpdateItemExceptions($via_item_source, $item_id, $args)
     {
         if ('term' == $via_item_source) {
             Collab\ItemSave::itemUpdateProcessExceptions('term', 'term', $item_id, $args);
         }
     }
 
-    function fltEditNavMenuFilterDisable($use_clauses, $orig_clauses)
+    public function fltEditNavMenuFilterDisable($use_clauses, $orig_clauses)
     {
         if (presspermit()->isContentAdministrator() || defined('PPCE_DISABLE_NAV_MENU_UPDATE_FILTERS')) {
             if (did_action('wp_update_nav_menu') || did_action('wp_update_nav_menu_item')) {

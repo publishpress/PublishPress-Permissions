@@ -65,7 +65,7 @@ THE SOFTWARE.
 //   Kevin Behrens : removed singularization code (not needed for capability naming)
 class Inflect
 {
-    static $plural = array(
+    public static $plural = array(
       '/(quiz)$/i'               => "$1zes",
       '/^(ox)$/i'                => "$1en",
       '/([m|l])ouse$/i'          => "$1ice",
@@ -86,8 +86,8 @@ class Inflect
       '/s$/i'                    => "s",
       '/$/'                      => "s"
     );
-  
-    static $irregular = array(
+
+    public static $irregular = array(
       'move'   => 'moves',
       'foot'   => 'feet',
       'goose'  => 'geese',
@@ -98,9 +98,9 @@ class Inflect
       'person' => 'people',
       'valve'  => 'valves'
     );
-  
-    static $uncountable = array( 
-      'sheep', 
+
+    public static $uncountable = array(
+      'sheep',
       'fish',
       'deer',
       'series',
@@ -110,24 +110,24 @@ class Inflect
       'information',
       'equipment'
     );
-  
+
     public static function pluralize($string)
     {
-      // save some time in the case that singular and plural are the same
+        // save some time in the case that singular and plural are the same
         if (in_array(strtolower($string), self::$uncountable)) {
             return $string;
         }
 
-      // check for irregular singular forms
+        // check for irregular singular forms
         foreach (self::$irregular as $pattern => $result) {
             $pattern = '/' . $pattern . '$/i';
-      
+
             if (preg_match($pattern, $string)) {
                 return preg_replace($pattern, $result, $string);
             }
         }
 
-      // check for matches using regular expressions
+        // check for matches using regular expressions
         foreach (self::$plural as $pattern => $result) {
             if (preg_match($pattern, $string)) {
                 return preg_replace($pattern, $result, $string);

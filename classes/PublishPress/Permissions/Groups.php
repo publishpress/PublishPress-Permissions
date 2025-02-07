@@ -33,7 +33,7 @@ class Groups
 
     public function getGroupTypes($args = [], $return = 'name')
     {
-  // todo: handle $args
+        // todo: handle $args
         if (!isset($this->group_types)) {
             return [];
         }
@@ -284,11 +284,11 @@ class Groups
                     )
                 )
             ) {
-                // Groups table not created early enough on some multisite installations when third party code triggers early set_current_user action. 
+                // Groups table not created early enough on some multisite installations when third party code triggers early set_current_user action.
                 // TODO: Identify indicators to call dbSetup() pre-emptively.
                 if (!empty($wpdb->last_error) && is_string($wpdb->last_error) && strpos($wpdb->last_error, ' exist')) {
                     require(PRESSPERMIT_ABSPATH . '/db-config.php');
-                    
+
                     require_once(PRESSPERMIT_CLASSPATH . '/DB/DatabaseSetup.php');
                     new DB\DatabaseSetup();
 
@@ -320,7 +320,7 @@ class Groups
     public function isMetagroup($metagroup_type, $group_id)
     {
         $group = $this->getGroup($group_id, 'pp_group');
-        
+
         return ($group && ! empty($group->metagroup_type) && ($metagroup_type == $group->metagroup_type))
         ? $group
         : false;

@@ -16,6 +16,8 @@
 
 # Cache
 /cache/*
+.php-cs-fixer.cache
+.phplint.cache
 
 # Miscellaneous
 .DS_Store

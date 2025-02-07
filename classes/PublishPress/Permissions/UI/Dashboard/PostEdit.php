@@ -6,7 +6,7 @@ require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/ItemEdit.php');
 
 class PostEdit
 {
-    var $item_exceptions_ui = false;
+    public $item_exceptions_ui = false;
 
     public function __construct()
     {
@@ -217,7 +217,7 @@ class PostEdit
 
     public function actScriptForceAutosaveBeforeUpload()
     {
-  // under some configuration, it is necessary to pre-assign categories. Autosave accomplishes this by triggering save_post action handlers.
+        // under some configuration, it is necessary to pre-assign categories. Autosave accomplishes this by triggering save_post action handlers.
         if (!presspermit()->isUserUnfiltered()) : ?>
             <script type="text/javascript">
                 /* <![CDATA[ */

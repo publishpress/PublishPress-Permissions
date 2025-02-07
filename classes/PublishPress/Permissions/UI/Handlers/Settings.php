@@ -52,8 +52,8 @@ class Settings
 
         $pp = presspermit();
 
-        $reviewed_options = (!empty($_POST['all_options'])) 
-        ? array_map('sanitize_key', explode(',', sanitize_text_field($_POST['all_options']))) 
+        $reviewed_options = (!empty($_POST['all_options']))
+        ? array_map('sanitize_key', explode(',', sanitize_text_field($_POST['all_options'])))
         : [];
 
         if (!$reviewed_options) {
@@ -62,13 +62,13 @@ class Settings
 
         $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
 
-        $all_otype_options = (!empty($_POST['all_otype_options'])) 
-        ? array_map('sanitize_key', explode(',', sanitize_text_field($_POST['all_otype_options']))) 
+        $all_otype_options = (!empty($_POST['all_otype_options']))
+        ? array_map('sanitize_key', explode(',', sanitize_text_field($_POST['all_otype_options'])))
         : [];
 
         if ($all_otype_options) {
             $reviewed_options = array_merge(
-                $reviewed_options, 
+                $reviewed_options,
                 $all_otype_options
             );
         }
@@ -91,8 +91,8 @@ class Settings
 
         $pp = presspermit();
 
-        $all_options = (!empty($_POST['all_options'])) 
-        ? array_map('sanitize_text_field', explode(',', sanitize_text_field($_POST['all_options']))) 
+        $all_options = (!empty($_POST['all_options']))
+        ? array_map('sanitize_text_field', explode(',', sanitize_text_field($_POST['all_options'])))
         : [];
 
         if (!$all_options) {
@@ -104,7 +104,7 @@ class Settings
         $default_prefix = apply_filters('presspermit_options_apply_default_prefix', '', $args);
 
         foreach (array_map('\PressShack\LibWP::sanitizeEntry', $all_options) as $option_basename) {
-            if (!apply_filters('presspermit_custom_sanitize_setting', false, $option_basename, $default_prefix, $args)) {                
+            if (!apply_filters('presspermit_custom_sanitize_setting', false, $option_basename, $default_prefix, $args)) {
                 if (isset($_POST[$option_basename]) && is_array($_POST[$option_basename])) {
                     $pp->updateOption($default_prefix . $option_basename, array_map('sanitize_text_field', $_POST[$option_basename]), $args);
                 } else {
@@ -115,8 +115,8 @@ class Settings
             }
         }
 
-        $all_otype_options = (!empty($_POST['all_otype_options'])) 
-        ? array_map('sanitize_text_field', explode(',', sanitize_text_field($_POST['all_otype_options']))) 
+        $all_otype_options = (!empty($_POST['all_otype_options']))
+        ? array_map('sanitize_text_field', explode(',', sanitize_text_field($_POST['all_otype_options'])))
         : [];
 
         if ($all_otype_options) {
@@ -149,17 +149,17 @@ class Settings
                 delete_option('presspermit_legacy_exception_handling');
             }
         }
-        
+
         // =============== Module Activation ================
         if (!$_deactivated = $pp->getOption('deactivated_modules')) {
             $_deactivated = [];
         }
-        
+
         $deactivated = $_deactivated;
 
         // add deactivations (unchecked from Active list)
 
-        $reviewed_modules = (!empty($_POST['presspermit_reviewed_modules'])) 
+        $reviewed_modules = (!empty($_POST['presspermit_reviewed_modules']))
         ? array_fill_keys(array_map('sanitize_key', explode(',', sanitize_text_field($_POST['presspermit_reviewed_modules']))), (object)[])
         : [];
 
@@ -168,8 +168,8 @@ class Settings
                 $deactivated,
                 array_diff_key(
                     $reviewed_modules,
-                    !empty($_POST['presspermit_active_modules']) 
-                    ? array_filter((array) array_map('sanitize_key', (array) $_POST['presspermit_active_modules'])) 
+                    !empty($_POST['presspermit_active_modules'])
+                    ? array_filter((array) array_map('sanitize_key', (array) $_POST['presspermit_active_modules']))
                     : []
                 )
             );
@@ -178,7 +178,7 @@ class Settings
         // remove deactivations (checked in Inactive list)
         if (!empty($_POST['presspermit_deactivated_modules'])) {
             $deactivated = array_diff_key(
-                $deactivated, 
+                $deactivated,
                 array_map('sanitize_key', (array) $_POST['presspermit_deactivated_modules'])
             );
         }

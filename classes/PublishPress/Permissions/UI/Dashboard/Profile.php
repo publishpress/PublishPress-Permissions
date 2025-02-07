@@ -116,7 +116,7 @@ class Profile
         $pp_groups = $pp->groups();
 
         if (is_object($user_id)) {
-            $user_id = $user_id->ID; 
+            $user_id = $user_id->ID;
         }
 
         $group_types = $pp_groups->getGroupTypes(['editable' => true]);
@@ -194,7 +194,7 @@ class Profile
 
             // This ajax request is just to return UI
             $single_select = ('user-new.php' == $pagenow) || ('new_user_groups_ui' == PWP::REQUEST_key('pp_ajax_user'))
-            ? defined('PRESSPERMIT_ADD_USER_SINGLE_GROUP_SELECT') 
+            ? defined('PRESSPERMIT_ADD_USER_SINGLE_GROUP_SELECT')
             : defined('PRESSPERMIT_EDIT_USER_SINGLE_GROUP_SELECT');
 
             $css_id = $agent_type;
@@ -207,7 +207,7 @@ class Profile
             ];
 
             $pp->admin()->agents()->agentsUI($agent_type, $all_groups, $css_id, $stored_groups, $args);
-            
+
             if ($edit_membership_link || (!$all_groups && $force_display)) :
                 ?>
                 <p>
@@ -228,15 +228,15 @@ class Profile
                         ? __('Note: BuddyPress Groups and other externally defined groups are not listed here, even if they modify permissions', 'press-permit-core')
                         : '';
 
-                    $note = apply_filters(
-                        'presspermit_user_profile_groups_note',
-                        $note,
-                        $user_id,
-                        $args
-                    );
+                $note = apply_filters(
+                    'presspermit_user_profile_groups_note',
+                    $note,
+                    $user_id,
+                    $args
+                );
 
-                    echo esc_html($note);
-                    ?>
+                echo esc_html($note);
+                ?>
                 </span>
                 </p>
                 <?php
@@ -249,7 +249,7 @@ class Profile
 
         wp_nonce_field('pp-user-profile-groups', '_pp_permissions_nonce');
     }
-    
+
     public static function listAgentExceptions($agent_type, $id, $args = [])
     {
         static $exception_info;
@@ -355,9 +355,9 @@ class Profile
                 } else {
                     echo esc_html($caption);
                 }
-                ?>
+        ?>
             </h3>
-        <?php 
+        <?php
         if (!$any_exceptions_listed = self::listAgentExceptions($agent_type, $agent_id, $args)) :
             ob_clean();
         else :?>
@@ -371,17 +371,17 @@ class Profile
                     <h3>
                         <?php
                         esc_html_e('Custom User Permissions', 'press-permit-core');
-                        ?>
+                ?>
                     </h3>
                     <p>
                         <?php
-                        printf(
-                            esc_html__('Supplemental roles and specific permissions assigned to a user\'s primary role or other Permission Groups are usually the cleanest way to customize permissions.  You can also %1$scustomize this user directly%2$s.', 'press-permit-core'),
-                            "<a href='" . esc_url($edit_url) . "'>",
-                            '</a>'
-                        );
+                printf(
+                    esc_html__('Supplemental roles and specific permissions assigned to a user\'s primary role or other Permission Groups are usually the cleanest way to customize permissions.  You can also %1$scustomize this user directly%2$s.', 'press-permit-core'),
+                    "<a href='" . esc_url($edit_url) . "'>",
+                    '</a>'
+                );
 
-                        ?>
+                ?>
                     </p>
                 </div>
                 <?php

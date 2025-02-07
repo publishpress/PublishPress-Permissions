@@ -109,8 +109,8 @@ class DashboardFilters
         } elseif (in_array($pp_plugin_page, ['presspermit-edit-permissions', 'presspermit-group-new'], true)) {
             wp_enqueue_style('presspermit-edit-permissions', PRESSPERMIT_URLPATH . '/common/css/edit-permissions.css', [], PRESSPERMIT_VERSION);
             wp_enqueue_style('presspermit-groups-checklist', PRESSPERMIT_URLPATH . '/common/css/groups-checklist.css', [], PRESSPERMIT_VERSION);
-        } 
-        
+        }
+
         if (
             ('presspermit-settings' == presspermitPluginPage()) || (('plugin-install.php' == $pagenow)
             && isset($_SERVER['HTTP_REFERER']) && strpos(esc_url_raw($_SERVER['HTTP_REFERER']), 'presspermit-settings'))
@@ -144,7 +144,7 @@ class DashboardFilters
 
         if ($load_role_scripts || $load_exception_scripts) {
             require_once(PRESSPERMIT_CLASSPATH . '/UI/AgentPermissionsUI.php');
-            
+
             if ($load_role_scripts) {
                 \PublishPress\Permissions\UI\AgentPermissionsUI::roleAssignmentScripts();
             }
@@ -162,7 +162,7 @@ class DashboardFilters
         // Work around an issue with WP menu access handling
         // https://core.trac.wordpress.org/ticket/22895
 
-        // Add a dummy submenu item to prevent WP from stripping out solitary submenus.  
+        // Add a dummy submenu item to prevent WP from stripping out solitary submenus.
         // Otherwise menu access loses type sensitivity and requires "edit_posts" cap for all types.
         foreach (array_keys($submenu) as $key) {
             if (1 == count($submenu[$key]) && (0 === strpos($key, 'edit.php'))) {
@@ -186,7 +186,7 @@ class DashboardFilters
             ], true)
         ) {
             $class_name = ('presspermit-edit-permissions' == $pp_page)
-            ? 'AgentPermissions' 
+            ? 'AgentPermissions'
             : str_replace('-', '', ucwords(str_replace('presspermit-', '', $pp_page), '-'));
 
             require_once(PRESSPERMIT_CLASSPATH . "/UI/{$class_name}.php");
@@ -283,11 +283,11 @@ class DashboardFilters
             do_action('pp_added_role_usage_submenu');
 
             add_submenu_page(
-                $pp_options_menu, 
-                esc_html__('Role Usage', 'press-permit-core'), 
-                esc_html__('Role Usage', 'press-permit-core'), 
-                'read', 
-                'presspermit-role-usage', 
+                $pp_options_menu,
+                esc_html__('Role Usage', 'press-permit-core'),
+                esc_html__('Role Usage', 'press-permit-core'),
+                'read',
+                'presspermit-role-usage',
                 $handler
             );
 
@@ -295,11 +295,11 @@ class DashboardFilters
                 do_action('pp_added_edit_role_usage_submenu');
 
                 add_submenu_page(
-                    $pp_options_menu, 
-                    esc_html__('Edit Role Usage', 'press-permit-core'), 
-                    esc_html__('Edit Role Usage', 'press-permit-core'), 
-                    'read', 
-                    'presspermit-role-usage-edit', 
+                    $pp_options_menu,
+                    esc_html__('Edit Role Usage', 'press-permit-core'),
+                    esc_html__('Edit Role Usage', 'press-permit-core'),
+                    'read',
+                    'presspermit-role-usage-edit',
                     $handler
                 );
             }

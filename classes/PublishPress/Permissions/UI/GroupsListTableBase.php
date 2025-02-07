@@ -122,7 +122,7 @@ class GroupsListTableBase extends \WP_List_Table
             $always_visible = true;
         }
 
-        echo '<div class="' . ( $always_visible ? 'row-actions visible' : 'row-actions' ) . '">';
+        echo '<div class="' . ($always_visible ? 'row-actions visible' : 'row-actions') . '">';
 
         $i = 0;
 
@@ -130,7 +130,7 @@ class GroupsListTableBase extends \WP_List_Table
             // phpcs Note: row action link is escaped upstream
 
             ++$i;
-            $sep = ( $i < $action_count ) ? ' | ' : '';
+            $sep = ($i < $action_count) ? ' | ' : '';
             echo "<span class='" . esc_attr($action) . "'>" . $link . esc_html($sep) . "</span>";  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         }
 

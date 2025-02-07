@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab;
 
 class AdminWorkarounds
 {
-    function __construct()
+    public function __construct()
     {
         global $pagenow;
 
@@ -34,7 +34,7 @@ class AdminWorkarounds
 
         // URIs ending in specified filename will not be subjected to low-level query filtering
         $nomess_uris = apply_filters(
-            'presspermit_skip_lastresort_filter_uris', 
+            'presspermit_skip_lastresort_filter_uris',
             ['categories.php', 'themes.php', 'plugins.php', 'profile.php', 'link.php']
         );
 
@@ -154,7 +154,7 @@ class AdminWorkarounds
             foreach (array_keys($menu) as $key) {
                 // no need to change the cap requirement if they also have edit_posts cap
                 if (
-                    ('themes.php' == $menu[$key][2]) 
+                    ('themes.php' == $menu[$key][2])
                     && empty($current_user->allcaps['edit_theme_options']) && ('edit_theme_options' == $menu[$key][1])
                 ) {
                     if ($tx = get_taxonomy('nav_menu')) {
@@ -162,7 +162,7 @@ class AdminWorkarounds
                             $manage_cap = $tx->cap->manage_terms;
                         }
                     }
-                    
+
                     if (empty($manage_cap)) {
                         $manage_cap = 'manage_nav_menus';
                     }
@@ -189,7 +189,7 @@ class AdminWorkarounds
             $menu_id = PWP::REQUEST_int('menu');
 
             if (
-                !$pp->isUserUnfiltered() 
+                !$pp->isUserUnfiltered()
                 && empty($current_user->allcaps['edit_theme_options']) && empty($current_user->allcaps['edit_menus']) && empty(presspermit()->getUser()->site_roles['pp_nav_menu_manager'])
             ) {
                 if ($menu = get_term($menu_id, 'nav_menu')) {
@@ -219,7 +219,7 @@ class AdminWorkarounds
             }
         } elseif (false !== strpos($referer_name, 'delete-nav_menu-')) {
             if (
-                !$pp->isUserUnfiltered() 
+                !$pp->isUserUnfiltered()
                 && empty($current_user->allcaps['edit_theme_options']) && empty($current_user->allcaps['delete_menus'])
             ) {
                 wp_die(esc_html__('You do not have permission to delete that Navigation Menu.', 'press-permit-core'));
@@ -272,13 +272,13 @@ class AdminWorkarounds
 
                 $ug_clause = $user->getUsergroupsClause('e');
                 $new_term_exceptions = presspermit()->getExceptions(
-                    ['operations' => ['manage'], 
-                    'for_item_source' => 'term', 
-                    'via_item_source' => 'term', 
-                    'assign_for' => 'children', 
-                    'taxonomies' => [$taxonomy], 
-                    'post_types' => [$post_type], 
-                    'item_id' => PWP::termidToTtid($term_parent, $taxonomy), 
+                    ['operations' => ['manage'],
+                    'for_item_source' => 'term',
+                    'via_item_source' => 'term',
+                    'assign_for' => 'children',
+                    'taxonomies' => [$taxonomy],
+                    'post_types' => [$post_type],
+                    'item_id' => PWP::termidToTtid($term_parent, $taxonomy),
                     'ug_clause' => $ug_clause]
                 );
 
@@ -286,7 +286,7 @@ class AdminWorkarounds
                 if ($includes = $user->getExceptionTerms('manage', 'include', $post_type, $taxonomy, ['merge_universals' => true])) {
                     if (
                         !$term_parent || !$new_term_exceptions || (
-                        empty($new_term_exceptions['manage_term']['term'][$taxonomy]['include']) 
+                            empty($new_term_exceptions['manage_term']['term'][$taxonomy]['include'])
                         && empty($new_term_exceptions['manage_term']['term'][$taxonomy]['additional'])
                         )
                     ) {
@@ -295,7 +295,7 @@ class AdminWorkarounds
                 } elseif ($excludes = $user->getExceptionTerms('manage', 'exclude', $post_type, $taxonomy, ['merge_universals' => true])) {
                     // block term creation if user is bound by "Not these" exceptions for term management (but allow if a propagating exception for selected term parent will apply)
                     if (
-                        !empty($new_term_exceptions['manage_term']['term'][$taxonomy]['exclude']) 
+                        !empty($new_term_exceptions['manage_term']['term'][$taxonomy]['exclude'])
                         && empty($new_term_exceptions['manage_term']['term'][$taxonomy]['additional'])
                     ) {
                         die(-1);
@@ -377,7 +377,7 @@ class AdminWorkarounds
         if ('_menu_item_menu_item_parent' == $meta_key) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/NavMenus.php');
             new NavMenus();
-            
+
             NavMenus::act_updated_post_meta($meta_id, $object_id, $meta_key, $meta_value);
         }
     }
@@ -410,7 +410,7 @@ class AdminWorkarounds
         $posts = $wpdb->posts;
 
         // Search on query portions to make this as forward-compatible as possible.
-        // Important to include " FROM table WHERE " as a strpos requirement because scoped queries 
+        // Important to include " FROM table WHERE " as a strpos requirement because scoped queries
         // (which should not be further altered here) will insert a JOIN clause
         // strpos search for "ELECT " rather than "SELECT" so we don't have to distinguish 0 from false
 
@@ -428,12 +428,12 @@ class AdminWorkarounds
 
         $pos_from = strpos($query, "FROM $posts");
         $pos_where = strpos($query, "WHERE ");
-        
+
         // todo: use 'wp_count_posts' filter instead?
 
         if (
             !defined('PRESSPERMIT_DISABLE_POST_COUNT_FILTER')
-            && (strpos($query, "ELECT post_status, COUNT( * ) AS num_posts ") || (strpos($query, "ELECT COUNT( 1 )") && $pos_from && (!$pos_where || ($pos_from < $pos_where)))) 
+            && (strpos($query, "ELECT post_status, COUNT( * ) AS num_posts ") || (strpos($query, "ELECT COUNT( 1 )") && $pos_from && (!$pos_where || ($pos_from < $pos_where))))
             && preg_match("/FROM\s*{$posts}\s*WHERE post_type\s*=\s*'([^ ]+)'/", $query, $matches)
         ) {
             $_post_type = (!empty($matches[1])) ? $matches[1] : PWP::findPostType();
@@ -447,14 +447,14 @@ class AdminWorkarounds
                 } else {
                     foreach (PWP::getPostStatuses(['private' => true, 'post_type' => $_post_type]) as $_status) {
                         $query = str_replace(
-                            "AND (post_status != '$_status' OR ( post_author = {$current_user->ID} AND post_status = '$_status' ))", 
-                            '', 
+                            "AND (post_status != '$_status' OR ( post_author = {$current_user->ID} AND post_status = '$_status' ))",
+                            '',
                             $query
                         );
-                        
+
                         $query = str_replace(
-                            "AND (post_status != '$_status' OR ( post_author = '{$current_user->ID}' AND post_status = '$_status' ))", 
-                            '', 
+                            "AND (post_status != '$_status' OR ( post_author = '{$current_user->ID}' AND post_status = '$_status' ))",
+                            '',
                             $query
                         );
                     }
@@ -462,21 +462,21 @@ class AdminWorkarounds
                     $query = str_replace("post_status", "$posts.post_status", $query);
 
                     $query = apply_filters(
-                        'presspermit_posts_request', 
-                        $query, 
-                        [   'use_revisions_object_roles' => defined('REVISIONARY_VERSION'), 
-                            'post_types' => $_post_type, 
+                        'presspermit_posts_request',
+                        $query,
+                        [   'use_revisions_object_roles' => defined('REVISIONARY_VERSION'),
+                            'post_types' => $_post_type,
                             'append_post_type_clause' => false
                         ]
                     );
 
                     if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
                         $revision_status_csv = rvy_revision_statuses(['return' => 'csv']);
-                        
+
                         if (!strpos($query, "AND post_mime_type NOT IN ($revision_status_csv)")) {
                             $query = str_replace(
-                                " post_type = '{$matches[1]}'", 
-                                "( post_type = '{$matches[1]}' AND post_mime_type NOT IN ($revision_status_csv) )", 
+                                " post_type = '{$matches[1]}'",
+                                "( post_type = '{$matches[1]}' AND post_mime_type NOT IN ($revision_status_csv) )",
                                 $query
                             );
                         }
@@ -495,21 +495,21 @@ class AdminWorkarounds
                         if (defined('REVISIONARY_VERSION')) {
                             if (version_compare(REVISIONARY_VERSION, '1.5-alpha', '<')) {
                                 $query = str_replace(
-                                    " post_type = '{$matches[1]}'", 
+                                    " post_type = '{$matches[1]}'",
                                     $wpdb->prepare(
                                         "( post_type = %s OR ( post_type = 'revision' AND post_status IN ('pending','future')"
                                         . " AND post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s ) ) )",
                                         $matches[1],
                                         $matches[1]
-                                    ), 
+                                    ),
                                     $query
                                 );
                             } else {
                                 $query = str_replace(
-                                    " post_type = '{$matches[1]}'", 
+                                    " post_type = '{$matches[1]}'",
                                     $wpdb->prepare(
                                         "( post_type = %s OR ( post_status IN ('pending-revision','future-revision')"
-                                        . " AND comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s ) ) )", 
+                                        . " AND comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = %s ) ) )",
                                         $matches[1],
                                         $matches[1]
                                     ),
@@ -520,7 +520,7 @@ class AdminWorkarounds
 
                                 if (!empty($matches[1])) {
                                     $query = str_replace($matches[1], $matches[1] . ", 'pending-revision', 'future-revision'", $query);
-                                }     
+                                }
                             }
                         }
                     }
@@ -536,7 +536,7 @@ class AdminWorkarounds
         // WP_MediaListTable::get_views() - for unattached count :
         // SELECT COUNT( * ) FROM $wpdb->posts WHERE post_type = 'attachment' AND post_status != 'trash' AND post_parent < 1
         if (
-            strpos($query, "post_type = 'attachment'") && strpos($query, 'COUNT( * )') && (0 === strpos($query, "SELECT ")) 
+            strpos($query, "post_type = 'attachment'") && strpos($query, 'COUNT( * )') && (0 === strpos($query, "SELECT "))
             && ('upload.php' == $pagenow) && !strpos($query, 'AS num_comments') && !defined('PP_MEDIA_LIB_UNFILTERED')
         ) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/Media.php');
@@ -566,12 +566,12 @@ class AdminWorkarounds
                     $selected = ($page_temp && !empty($page_temp->post_parent)) ? $page_temp->post_parent : '';
 
                     wp_dropdown_pages(
-                        ['post_type' => 'page', 
-                        'exclude_tree' => esc_attr($object_id), 
-                        'selected' => esc_attr($selected), 
-                        'name' => 'parent_id', 
-                        'show_option_none' => esc_html__('(no parent)'), 
-                        'sort_column' => 'menu_order, post_title', 
+                        ['post_type' => 'page',
+                        'exclude_tree' => esc_attr($object_id),
+                        'selected' => esc_attr($selected),
+                        'name' => 'parent_id',
+                        'show_option_none' => esc_html__('(no parent)'),
+                        'sort_column' => 'menu_order, post_title',
                         'echo' => 1
                         ]
                     );
@@ -592,19 +592,19 @@ class AdminWorkarounds
 
                         if (!empty($qry_vars['post'])) {
                             $pp = presspermit();
-                            
+
                             $ok_tags = get_terms(
-                                ['taxonomy' => $taxonomy, 
-                                'fields' => 'ids', 
-                                'required_operation' => 'edit', 
-                                'object_id' => $qry_vars['post'], 
+                                ['taxonomy' => $taxonomy,
+                                'fields' => 'ids',
+                                'required_operation' => 'edit',
+                                'object_id' => $qry_vars['post'],
                                 'use_object_roles' => true
                                 ]
                             );
-                            
+
                             $query = str_replace(
-                                " WHERE tt.taxonomy = '$taxonomy'", 
-                                " WHERE tt.term_id IN ('" . implode("','", $ok_tags) . "') AND tt.taxonomy = '$taxonomy'", 
+                                " WHERE tt.taxonomy = '$taxonomy'",
+                                " WHERE tt.term_id IN ('" . implode("','", $ok_tags) . "') AND tt.taxonomy = '$taxonomy'",
                                 $query
                             );
                         }

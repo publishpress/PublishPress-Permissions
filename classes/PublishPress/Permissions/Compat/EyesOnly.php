@@ -9,7 +9,7 @@ class EyesOnly
         add_action('init', [$this, 'actRegister']);
         add_filter('eo_shortcode_matched', [$this, 'fltShortcodeMatched'], 10, 3);
     }
-    
+
     public function actRegister()
     {
         sseo_register_parameter('pp_group', esc_html__('Permission Group', 'press-permit-core'));

@@ -4,7 +4,7 @@ namespace PublishPress\Permissions;
 
 class TermQuery
 {
-    // derived from WP _pad_term_counts(), but includes private posts in counts based on current user's access 
+    // derived from WP _pad_term_counts(), but includes private posts in counts based on current user's access
     public static function tallyTermCounts(&$terms, $taxonomy, $args = [])
     {
         global $wpdb;
@@ -34,7 +34,7 @@ class TermQuery
 
         // Get the object and term ids and stick them in a lookup table
         $tax_obj = get_taxonomy($taxonomy);
-        
+
         if ($post_type || $tax_obj) {
             $object_types = ($post_type) ? (array) $post_type : (array) esc_sql($tax_obj->object_type);
         } else {
@@ -51,7 +51,7 @@ class TermQuery
             );
         } else {
             $join = '';
-            
+
             if ($stati = get_post_stati(['public' => true, 'private' => true], 'names', 'or')) {
                 $stati_csv = implode("', '", array_map('sanitize_key', $stati));
                 $status_clause = "AND post_status IN ('$stati_csv')";
@@ -91,7 +91,7 @@ class TermQuery
                 "SELECT tr.object_id, tr.term_taxonomy_id FROM $wpdb->term_relationships AS tr"
                 . " INNER JOIN $wpdb->posts ON object_id = $wpdb->posts.ID $join"               // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 . " WHERE tr.term_taxonomy_id IN ('$term_id_csv') $type_status_clause"          // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-            ); 
+            );
 
             $cache_results[$ckey] = $results;
         }

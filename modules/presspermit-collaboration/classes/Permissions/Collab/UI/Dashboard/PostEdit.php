@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class PostEdit
 {
-    function __construct()
+    public function __construct()
     {
         add_action('admin_head', [$this, 'ui_hide_admin_divs']);
         add_action('admin_print_scripts', [$this, 'ui_add_js']);
@@ -28,7 +28,7 @@ class PostEdit
         }
     }
 
-    function fltGetPages_clauses($clauses, $post_type, $args)
+    public function fltGetPages_clauses($clauses, $post_type, $args)
     {
         global $wpdb, $post;
 
@@ -84,7 +84,7 @@ class PostEdit
         return $clauses;
     }
 
-    function flt_post_updated_messages($messages)
+    public function flt_post_updated_messages($messages)
     {
         if (!presspermit()->isUserUnfiltered()) {
             if ($type_obj = presspermit()->getTypeObject('post', PWP::findPostType())) {
@@ -98,7 +98,7 @@ class PostEdit
         return $messages;
     }
 
-    function ui_hide_admin_divs()
+    public function ui_hide_admin_divs()
     {
         global $pagenow;
         if (!in_array($pagenow, ['post.php', 'post-new.php'])) {
@@ -116,7 +116,7 @@ class PostEdit
         }
     }
 
-    function ui_add_js()
+    public function ui_add_js()
     {
         global $wp_scripts;
 
@@ -133,7 +133,7 @@ class PostEdit
         wp_enqueue_script('presspermit-collab-post-edit', PRESSPERMIT_COLLAB_URLPATH . "/common/js/post-edit{$suffix}.js", [], PRESSPERMIT_COLLAB_VERSION);
     }
 
-    function default_privacy_js()
+    public function default_privacy_js()
     {
         global $post, $typenow;
 
@@ -184,7 +184,7 @@ class PostEdit
         <?php
     }
 
-    function suppress_upload_ui()
+    public function suppress_upload_ui()
     {
         $user = presspermit()->getUser();
 
@@ -225,7 +225,7 @@ class PostEdit
         endif;
     }
 
-    function suppress_add_category_ui()
+    public function suppress_add_category_ui()
     {
         if (presspermit()->isContentAdministrator()) {
             return;
@@ -278,7 +278,7 @@ class PostEdit
         }
     }
 
-    function ui_add_author_link()
+    public function ui_add_author_link()
     {
         static $done;
         if (!empty($done)) {

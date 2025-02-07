@@ -109,7 +109,7 @@ class LibWP
                         if ($has_nav_action = has_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
                             remove_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
                         }
-                        
+
                         if ($has_nav_filter = has_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
                             remove_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
                         }
@@ -127,7 +127,7 @@ class LibWP
         }
 
         // Divi: Classic Editor option
-        if (function_exists('et_get_option') && ( 'on' == et_get_option('et_enable_classic_editor', 'off'))) {
+        if (function_exists('et_get_option') && ('on' == et_get_option('et_enable_classic_editor', 'off'))) {
             return false;
         }
 
@@ -137,7 +137,7 @@ class LibWP
             'gutenberg-ramp' => class_exists('Gutenberg_Ramp'),
             'disable-gutenberg' => class_exists('DisableGutenberg'),
         );
-        
+
         $conditions = [];
 
         if ($suppress_filter) {
@@ -155,7 +155,7 @@ class LibWP
             if ($has_nav_action = has_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
                 remove_action('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
             }
-            
+
             if ($has_nav_filter = has_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type')) {
                 remove_filter('use_block_editor_for_post_type', '_disable_block_editor_for_navigation_post_type');
             }
@@ -180,10 +180,10 @@ class LibWP
                         && (get_option('classic-editor-replace') === 'classic'
                             && self::is_GET('classic-editor__forget'));
 
-        $conditions[] = $pluginsState['gutenberg-ramp'] 
+        $conditions[] = $pluginsState['gutenberg-ramp']
                         && (empty($_post) || !is_a($_post, 'WP_Post') || apply_filters('use_block_editor_for_post', true, $_post));
 
-        $conditions[] = $pluginsState['disable-gutenberg'] 
+        $conditions[] = $pluginsState['disable-gutenberg']
                         && !self::disableGutenberg(self::getPostID());
 
         if (version_compare($wp_version, '5.9-beta', '>=') && !empty($has_nav_filter)) {
@@ -199,7 +199,7 @@ class LibWP
                 }
             )
         ) > 0;
-        
+
         if (!$suppress_filter) {
             $buffer[$post_type] = $result;
         }
@@ -211,51 +211,51 @@ class LibWP
     // Port function from Disable Gutenberg plugin due to problematic early is_plugin_active() function call
     private static function disableGutenberg($post_id = false)
     {
-    
+
         if (function_exists('disable_gutenberg_whitelist_id') && disable_gutenberg_whitelist_id($post_id)) {
             return false;
         }
-        
+
         if (function_exists('disable_gutenberg_whitelist_slug') && disable_gutenberg_whitelist_slug($post_id)) {
             return false;
         }
-        
+
         if (function_exists('disable_gutenberg_whitelist_title') && disable_gutenberg_whitelist_title($post_id)) {
             return false;
         }
-        
+
         if (self::is_GET('block-editor')) {
             return false;
         }
-        
+
         if (self::is_GET('classic-editor')) {
             return true;
         }
-        
+
         if (self::is_POST('classic-editor')) {
             return true;
         }
-        
+
         if (function_exists('disable_gutenberg_disable_all') && disable_gutenberg_disable_all()) {
             return true;
         }
-        
+
         if (function_exists('disable_gutenberg_disable_user_role') && disable_gutenberg_disable_user_role()) {
             return true;
         }
-        
+
         if (function_exists('disable_gutenberg_disable_post_type') && disable_gutenberg_disable_post_type()) {
             return true;
         }
-        
+
         if (function_exists('disable_gutenberg_disable_templates') && disable_gutenberg_disable_templates()) {
             return true;
         }
-        
+
         if (function_exists('disable_gutenberg_disable_ids') && disable_gutenberg_disable_ids($post_id)) {
             return true;
         }
-        
+
         return false;
     }
 
@@ -292,7 +292,7 @@ class LibWP
         $raw_key = $key;
         $key     = strtolower($key);
         $key     = preg_replace('/[^a-z0-9_\-]/', '', $key);
-        
+
         return $key;
     }
 
@@ -341,11 +341,11 @@ class LibWP
     public static function REQUEST_key_match($var, $match, $args = [])
     {
         $args = (array) $args;
-        
+
         $match_type = (!empty($args['match_type'])) ? $args['match_type'] : 'starts';
 
         $matched = false;
-        
+
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $request_key = self::REQUEST_key($var);
 
@@ -356,7 +356,7 @@ class LibWP
                 case 'contains':
                     $matched = (false !== strpos($request_key, $match));
                     break;
-                    
+
                 default: // 'starts'
                     $matched = (0 === strpos($request_key, $match));
             }
@@ -394,7 +394,7 @@ class LibWP
         if (empty($_POST)) {
             return false;
         }
-        
+
         if (false == $match) {
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
             return (isset($_POST[$var]));
@@ -769,7 +769,7 @@ class LibWP
     public static function getDescendantIds($item_source, $item_id, $args = [])
     {
         require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Ancestry.php');
-        
+
         switch ($item_source) {
             case 'post':
                 // Back compat for existing getDescendantIds() calls
@@ -777,7 +777,7 @@ class LibWP
                     $args['post_type'] = (array) $args['post_types'];
                     unset($args['post_types']);
                 }
-                
+
                 if (!isset($args['post_type']) && empty($args['any_type_or_taxonomy'])) {
                     $args['post_type'] = false;
                 }
@@ -851,7 +851,7 @@ class LibWP
                 $plugin_file = plugin_basename(PRESSPERMIT_FILE);
             }
         }
-        
+
         return (array_key_exists($plugin_file, (array)maybe_unserialize(get_site_option('active_sitewide_plugins'))));
     }
 
@@ -879,9 +879,9 @@ class LibWP
         ];
 
         if (
-            $ppma_active = defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') 
-            && version_compare(PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION, '3.8.0', '>=') 
-            && !empty($args['join']) 
+            $ppma_active = defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION')
+            && version_compare(PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION, '3.8.0', '>=')
+            && !empty($args['join'])
             && strpos($args['join'], 'ppma_t')
             && (empty($args['context']) || ('tally_term_counts' != $args['context']))
         ) {
@@ -914,7 +914,7 @@ class LibWP
     {
         $admin_url = admin_url($admin_page);
         $admin_arr = wp_parse_url($admin_url);
-    
+
         $admin_rel_path = (!empty($admin_arr['path']))
         ? $admin_arr['path']
         : $admin_url;

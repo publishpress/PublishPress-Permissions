@@ -11,11 +11,11 @@ class ItemAjax
         if (!$via_item_source = PWP::GET_key('via_item_source')) {
             exit;
         }
-        
+
         if (!$pp_ajax_item = PWP::GET_key('pp_ajax_item')) {
             exit;
         }
-        
+
         $item_id = PWP::GET_int('item_id');
 
         $html = '';
@@ -28,7 +28,7 @@ class ItemAjax
                 }
 
                 if (!current_user_can('pp_assign_roles')) {
-                    exit;   
+                    exit;
                 }
 
                 $id_sfx = (!empty($_GET['id_sfx'])) ? sanitize_text_field($_GET['id_sfx']) : '';
@@ -47,7 +47,7 @@ class ItemAjax
                 $for_item_source = (taxonomy_exists($for_item_type)) ? 'term' : 'post';
 
                 $via_item_type = PWP::GET_key('via_item_type');
-                
+
                 $agent_ids = (!empty($_GET['agent_ids'])) ? array_map('intval', explode(',', sanitize_text_field($_GET['agent_ids']))) : [];
 
                 if (('post' == $via_item_source) && $item_id && !current_user_can('edit_post', $item_id)) {

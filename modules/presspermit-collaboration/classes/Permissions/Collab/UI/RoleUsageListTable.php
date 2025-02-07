@@ -6,8 +6,8 @@ require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/RoleUsageQuery.php');
 
 class RoleUsageListTable extends \WP_List_Table
 {
-    var $site_id;
-    var $role_info;
+    public $site_id;
+    public $role_info;
 
     private static $instance = null;
 
@@ -36,12 +36,12 @@ class RoleUsageListTable extends \WP_List_Table
         ]);
     }
 
-    function ajax_user_can()
+    public function ajax_user_can()
     {
         return current_user_can('pp_manage_settings');
     }
 
-    function prepare_items()
+    public function prepare_items()
     {
         // Query the user IDs for this page
         $search = new RoleUsageQuery();
@@ -53,22 +53,22 @@ class RoleUsageListTable extends \WP_List_Table
         ]);
     }
 
-    function no_items()
+    public function no_items()
     {
         esc_html_e('No matching roles were found.', 'press-permit-core');
     }
 
-    function get_views()
+    public function get_views()
     {
         return [];
     }
 
-    function get_bulk_actions()
+    public function get_bulk_actions()
     {
         return [];
     }
 
-    function get_columns()
+    public function get_columns()
     {
         $c = [
             'role_name' => PWP::__wp('Role'),
@@ -78,21 +78,21 @@ class RoleUsageListTable extends \WP_List_Table
         return $c;
     }
 
-    function get_sortable_columns()
+    public function get_sortable_columns()
     {
         $c = [];
 
         return $c;
     }
 
-    function display_rows()
+    public function display_rows()
     {
         foreach ($this->items as $role_object) {
             $this->single_row($role_object);
         }
     }
 
-    function display_tablenav($which)
+    public function display_tablenav($which)
     {
     }
 
@@ -104,7 +104,7 @@ class RoleUsageListTable extends \WP_List_Table
      * @param int $num_users Optional. User count to display for this group.
      * @return string
      */
-    function single_row($role_obj)
+    public function single_row($role_obj)
     {
         static $base_url;
 
@@ -131,14 +131,14 @@ class RoleUsageListTable extends \WP_List_Table
             switch ($column_name) {
                 case 'role_name':
                     echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
-                    
+
                     if ($can_manage) {
                         $edit_link = $base_url . "?page=presspermit-role-usage-edit&amp;action=edit&amp;role={$role_name}";
                         echo "<strong><a href='" . esc_url($edit_link) . "'>" . esc_html($role_obj->labels->singular_name) . "</a></strong><br />";
                     } else {
                         echo '<strong>' . esc_html($role_obj->labels->name) . '</strong>';
                     }
-                
+
                     $mode = get_user_setting('posts_list_mode', 'list');
                     $class = ('excerpt' === $mode) ? 'row-actions visible' : 'row-actions';
 
@@ -153,7 +153,7 @@ class RoleUsageListTable extends \WP_List_Table
                     }
 
                     echo '</div>';
-                    
+
                     echo "</td>";
 
                     break;
@@ -162,10 +162,10 @@ class RoleUsageListTable extends \WP_List_Table
                         case 'direct':
                             $caption = esc_html__('Direct Assignment', 'press-permit-core');
                             break;
-                            
+
                         default:
-                            $caption = (empty($role_obj->usage)) 
-                            ? esc_html__('no supplemental assignment', 'press-permit-core') 
+                            $caption = (empty($role_obj->usage))
+                            ? esc_html__('no supplemental assignment', 'press-permit-core')
                             : esc_html__('Pattern Role', 'press-permit-core');
                     }
                     echo "<td class='" . esc_attr($class) . "' style='" . esc_attr($style) . "'>";
@@ -181,7 +181,7 @@ class RoleUsageListTable extends \WP_List_Table
         echo '</tr>';
     }
 
-    function row_actions($actions, $always_visible = false)
+    public function row_actions($actions, $always_visible = false)
     {
     }
 }

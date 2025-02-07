@@ -4,18 +4,18 @@ namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class PostsListing
 {
-    function __construct()
+    public function __construct()
     {
         if (defined('PRESSPERMIT_STATUSES_VERSION')) {
             add_action('admin_print_footer_scripts', [$this, 'act_modify_inline_edit_ui']);
         }
 
         add_action('admin_print_scripts', [$this, 'act_maybe_hide_quickedit']);
-        
+
         if (!defined('PUBLISHPRESS_STATUSES_VERSION')) {
             add_action('admin_head', [$this, 'act_register_column_filters']);
         }
-        
+
         add_action('init', [$this, 'act_tax_force_show_admin_col'], 99);
     }
 
@@ -33,7 +33,7 @@ class PostsListing
     public function act_register_column_filters()
     {
         global $typenow;
-        
+
         if (!defined('PUBLISHPRESS_STATUSES_VERSION')) {
             add_action("manage_{$typenow}_posts_custom_column", [$this, 'actManagePostsCustomColumn'], 10, 2);
         }
@@ -87,29 +87,29 @@ class PostsListing
             jQuery(document).ready(function ($) {
                 <?php
                 $pp = presspermit();
-                $moderation_statuses = [];
-                foreach (
-                    PWP::getPostStatuses(
-                        ['_builtin' => false, 
-                        'moderation' => true, 
-                        'post_type' => $screen->post_type
-                        ],
-                        'object'
-                    ) as $status => $status_obj 
-                ) {
-                    $set_status_cap = "set_{$status}_posts";
+        $moderation_statuses = [];
+        foreach (
+            PWP::getPostStatuses(
+                ['_builtin' => false,
+                'moderation' => true,
+                'post_type' => $screen->post_type
+                ],
+                'object'
+            ) as $status => $status_obj
+        ) {
+            $set_status_cap = "set_{$status}_posts";
 
-                    $check_cap = (!empty($post_type_object->cap->$set_status_cap)) 
-                    ? $post_type_object->cap->$set_status_cap 
-                    : $post_type_object->cap->publish_posts;
+            $check_cap = (!empty($post_type_object->cap->$set_status_cap))
+            ? $post_type_object->cap->$set_status_cap
+            : $post_type_object->cap->publish_posts;
 
-                    if ($pp->isContentAdministrator() || current_user_can($check_cap)) {
-                        $moderation_statuses[$status] = $status_obj;
-                    }
-                }
+            if ($pp->isContentAdministrator() || current_user_can($check_cap)) {
+                $moderation_statuses[$status] = $status_obj;
+            }
+        }
 
-                foreach ($moderation_statuses as $status => $status_obj) :
-                    ?>
+        foreach ($moderation_statuses as $status => $status_obj) :
+            ?>
                 if (!$('select[name="_status"] option[value="<?php echo esc_attr($status);?>"]').length) {
                     $('<option value="<?php echo esc_attr($status);?>"><?php echo esc_html($status_obj->label);?></option>').insertBefore('select[name="_status"] option[value="pending"]');
                 }
@@ -120,4 +120,3 @@ class PostsListing
         <?php
     } // end function add_inline_edit_ui
 }
-

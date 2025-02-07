@@ -41,8 +41,8 @@ class ItemSave
 
         if ($can_assign_roles = current_user_can('pp_assign_roles')) {
             if (
-                apply_filters('presspermit_disable_exception_edit', false, $via_item_source, $item_id) 
-                || apply_filters('presspermit_disable_exception_ui', false, $via_item_source, $item_id, '') 
+                apply_filters('presspermit_disable_exception_edit', false, $via_item_source, $item_id)
+                || apply_filters('presspermit_disable_exception_ui', false, $via_item_source, $item_id, '')
             ) {
                 $can_assign_roles = false;
             }
@@ -109,10 +109,10 @@ class ItemSave
                 foreach (array_keys($posted_exceptions[$for_item_type]) as $op) {
                     $op = sanitize_key($op);
                     $_for_item_source = $for_item_source;
-                    
-                    if (('term' == $for_item_source) || (('term' == $via_item_source) && in_array($op, ['manage', 'associate']) )) {
+
+                    if (('term' == $for_item_source) || (('term' == $via_item_source) && in_array($op, ['manage', 'associate']))) {
                         $_for_item_source = 'term';
-                        
+
                         if (!taxonomy_exists($_for_type)) {
                             continue;
                         }
@@ -136,7 +136,7 @@ class ItemSave
                         $args['agent_type'] = $agent_type;
 
                         // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-                        // posted_exceptions [for_item_type] [op] [agent_type] [assign_for] [agent_id] = has_access 
+                        // posted_exceptions [for_item_type] [op] [agent_type] [assign_for] [agent_id] = has_access
                         $pp->assignExceptions($posted_exceptions[$for_item_type][$op][$agent_type], $agent_type, $args);
                     }
                 }
@@ -186,7 +186,7 @@ class ItemSave
         if ((intval($set_parent) != intval($last_parent)) || $is_new_term || $is_new) {
             // retain all explicitly selected exceptions
             global $wpdb;                               // any_type_or_taxonomy arg retains previous query construction (no post_type or taxonomy clause)
-            $descendant_ids = PWP::getDescendantIds($via_item_source, $item_id, ['any_type_or_taxonomy' => true, 'exclude_autodrafts' => false]);  
+            $descendant_ids = PWP::getDescendantIds($via_item_source, $item_id, ['any_type_or_taxonomy' => true, 'exclude_autodrafts' => false]);
             if ($descendant_ids && ('term' == $via_item_source)) {
                 $descendant_ids = PWP::termidToTtid($descendant_ids, $via_item_type);
             }
@@ -222,29 +222,29 @@ class ItemSave
 
                 // propagate exception from new parent to this item and its branch of sub-items
                 require_once(PRESSPERMIT_CLASSPATH . '/DB/PermissionsUpdate.php');
-                
+
                 $force_for_item_type = (isset($args['force_for_item_type'])) ? $args['force_for_item_type'] : false; // todo: why is this variable not already set?
                 $_args = compact('retain_exceptions', 'force_for_item_type');
 
                 $_args['parent_exceptions'] = DB\PermissionsUpdate::getParentExceptions(
-                    $via_item_source, 
-                    $item_id, 
+                    $via_item_source,
+                    $item_id,
                     $set_parent
                 );
 
                 $any_inserts = DB\PermissionsUpdate::inheritParentExceptions(
-                    $via_item_source, 
-                    $item_id, 
-                    $set_parent, 
+                    $via_item_source,
+                    $item_id,
+                    $set_parent,
                     $_args
                 );
 
                 foreach ($descendant_ids as $_descendant_id) {
-                    $any_inserts = $any_inserts 
+                    $any_inserts = $any_inserts
                     || DB\PermissionsUpdate::inheritParentExceptions(
-                        $via_item_source, 
-                        $_descendant_id, 
-                        $set_parent, 
+                        $via_item_source,
+                        $_descendant_id,
+                        $set_parent,
                         $_args
                     );
                 }

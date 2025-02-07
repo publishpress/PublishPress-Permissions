@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab\Revisionary;
 
 class AdminLegacy
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('map_meta_cap', [$this, 'flt_mapMetaCap'], 1, 4);
         add_filter('pre_post_parent', [$this, 'fltPageParent']);
@@ -50,9 +50,9 @@ class AdminLegacy
             $$var = $args[$var];
         }
 
-        $clause .= " OR ( $src_table.post_type='revision' AND $src_table.post_parent IN" 
+        $clause .= " OR ( $src_table.post_type='revision' AND $src_table.post_parent IN"
         . " ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $tt_ids) . "') ) )";
-        
+
         return $clause;
     }
 
@@ -68,70 +68,70 @@ class AdminLegacy
 
     public function flt_additions_clause($clause, $operation, $post_type, $args)
     {
-        // args elements: status, in_clause, src_table 
+        // args elements: status, in_clause, src_table
 
         if (
-            in_array($operation, ['edit', 'delete'], true) && empty($args['status']) 
+            in_array($operation, ['edit', 'delete'], true) && empty($args['status'])
             && !in_array($post_type, apply_filters('presspermit_unrevisable_types', []), true)
         ) {
             $user = presspermit()->getUser();
-            
+
             if (isset($args['ids'])) { // PressPermit Core >= 2.6.2
-                // If we are hiding other revisions from revisors, need to distinguish 
+                // If we are hiding other revisions from revisors, need to distinguish
                 // between 'edit' exceptions and 'revise' exceptions (which are merged upstream for other reasons).
                 if (rvy_get_option('revisor_lock_others_revisions')) {
                     $revise_ids = [];
-                    
+
                     switch ($args['via_item_source']) {
                         case 'post':
                             $via_item_type = (isset($args['via_item_type'])) ? $args['via_item_type'] : $post_type;
-                            $revise_ids = $user->getExceptionPosts( 
-                                'revise', 
-                                'additional', 
-                                $via_item_type, 
+                            $revise_ids = $user->getExceptionPosts(
+                                'revise',
+                                'additional',
+                                $via_item_type,
                                 ['status' => $args['status']]
                             );
-                            
+
                             break;
-                        
+
                         case 'term':
                             foreach (presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
-                                $tt_ids = $user->getExceptionTerms( 
-                                    'revise', 
-                                    'additional', 
-                                    $post_type, 
-                                    $taxonomy, 
+                                $tt_ids = $user->getExceptionTerms(
+                                    'revise',
+                                    'additional',
+                                    $post_type,
+                                    $taxonomy,
                                     ['status' => $args['status'], 'merge_universals' => true]
                                 );
-                                
+
                                 $revise_ids = array_merge($revise_ids, $tt_ids);
                             }
-                            
+
                             break;
                     }
-                    
+
                     $edit_ids = ($revise_ids) ? array_diff($args['ids'], $revise_ids) : $args['ids'];
-                    
+
                     if ($edit_ids || $revise_ids) {
                         $parent_clause = array();
-                        
+
                         if ($edit_ids) {
                             $parent_clause [] = "( {$args['src_table']}.post_parent IN ('" . implode("','", $edit_ids) . "') )";
                         }
-                        
+
                         if ($revise_ids) {
-                            $parent_clause [] = "( {$args['src_table']}.post_author = $user->ID" 
+                            $parent_clause [] = "( {$args['src_table']}.post_author = $user->ID"
                             . " AND {$args['src_table']}.post_parent IN ('" . implode("','", $revise_ids) . "') )";
                         }
-                        
+
                         $parent_clause = 'AND (' . Arr::implode(' OR ', $parent_clause) . ' )';
-                        
+
                         $clause .= " OR ( {$args['src_table']}.post_type = 'revision'"
                         . " AND {$args['src_table']}.post_status IN ('pending', 'future') $parent_clause )";
                     }
                 } else {
                     // Not hiding other users' revisions from Revisors, so list all posts with 'edit' or 'revise' exceptions regardless of author.
-                    $clause .= " OR ( {$args['src_table']}.post_type = 'revision'" 
+                    $clause .= " OR ( {$args['src_table']}.post_type = 'revision'"
                     . " AND {$args['src_table']}.post_status IN ('pending', 'future')"
                     . " AND {$args['src_table']}.post_parent {$args['in_clause']} )";
                 }
@@ -139,7 +139,7 @@ class AdminLegacy
                 // Older PP Core version doesn't pass ids, so can't distinguish between 'edit' and 'revise' exceptions; retain previous behavior.
                 $clause .= " OR ( {$args['src_table']}.post_type = 'revision'"
                 . " AND {$args['src_table']}.post_status IN ('pending', 'future')"
-                . " AND {$args['src_table']}.post_author = " . presspermit()->getUser()->ID 
+                . " AND {$args['src_table']}.post_author = " . presspermit()->getUser()->ID
                 . " AND {$args['src_table']}.post_parent {$args['in_clause']} )";
             }
         }
@@ -229,15 +229,15 @@ class AdminLegacy
                 return $exception_items;
             }
 
-            $exception_items = (isset($user->except['edit_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type])) 
-            ? $user->except['edit_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type] 
+            $exception_items = (isset($user->except['edit_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type]))
+            ? $user->except['edit_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type]
             : [];
 
             foreach (array_keys($user->except['revise_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type]) as $_status) {
                 Arr::setElem($exception_items, [$_status]);
 
                 $exception_items[$_status] = array_merge(
-                    $exception_items[$_status], 
+                    $exception_items[$_status],
                     $user->except['revise_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type][$_status]
                 );
             }
@@ -269,11 +269,11 @@ class AdminLegacy
                 foreach ((array)$object_type as $_object_type) {
                     if ($type_obj = get_post_type_object($_object_type)) {
                         $strip_capreqs = array_merge(
-                            $strip_capreqs, 
+                            $strip_capreqs,
                             apply_filters(
-                                'rvy_replace_post_edit_caps', 
-                                [$type_obj->cap->edit_published_posts, $type_obj->cap->edit_private_posts], 
-                                $_object_type, 
+                                'rvy_replace_post_edit_caps',
+                                [$type_obj->cap->edit_published_posts, $type_obj->cap->edit_private_posts],
+                                $_object_type,
                                 0
                             )
                         );
@@ -314,18 +314,18 @@ class AdminLegacy
 
         if ($type_obj = get_post_type_object($post_type)) {
             $replace_caps = apply_filters(
-                'rvy_replace_post_edit_caps', 
-                [   'edit_published_posts', 
-                    'edit_private_posts', 
-                    'publish_posts', 
-                    $type_obj->cap->edit_published_posts, 
-                    $type_obj->cap->edit_private_posts, 
+                'rvy_replace_post_edit_caps',
+                [   'edit_published_posts',
+                    'edit_private_posts',
+                    'publish_posts',
+                    $type_obj->cap->edit_published_posts,
+                    $type_obj->cap->edit_private_posts,
                     $type_obj->cap->publish_posts
-                ], 
-                $post_type, 
+                ],
+                $post_type,
                 $post_id
             );
-            
+
             $use_cap_req = $type_obj->cap->edit_posts;
         } else {
             $replace_caps = [];
@@ -342,7 +342,7 @@ class AdminLegacy
         return $rs_reqd_caps;
     }
 
-    // ensure proper cap requirements when a non-Administrator Quick-Edits or Bulk-Edits Posts/Pages 
+    // ensure proper cap requirements when a non-Administrator Quick-Edits or Bulk-Edits Posts/Pages
     // (which may be included in the edit listing only for revision submission)
     public static function fix_table_edit_reqd_caps($pp_reqd_caps, $orig_meta_cap, $_post, $object_type_obj)
     {

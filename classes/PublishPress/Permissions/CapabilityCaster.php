@@ -13,11 +13,11 @@ namespace PublishPress\Permissions;
 
 class CapabilityCaster
 {
-    var $pattern_role_type_caps = [];
-    var $pattern_role_taxonomy_caps = [];
-    var $pattern_role_cond_caps = [];
-    var $pattern_role_arbitrary_caps = [];
-    var $typecast_role_caps = [];
+    public $pattern_role_type_caps = [];
+    public $pattern_role_taxonomy_caps = [];
+    public $pattern_role_cond_caps = [];
+    public $pattern_role_arbitrary_caps = [];
+    public $typecast_role_caps = [];
 
     public function isValidPatternRole($wp_role_name, $role_caps = false)
     {
@@ -164,7 +164,7 @@ class CapabilityCaster
 
         if (!empty($type_obj->cap->read) && ('read' == $type_obj->cap->read)) {
             $type_obj->cap->read = PRESSPERMIT_READ_PUBLIC_CAP;
-        } 
+        }
 
         // disregard stored Supplemental Roles for Media when Media is no longer enabled for PP filtering (otherwise Post editing caps are granted)
         if (('attachment' == $object_type)) {
@@ -247,7 +247,7 @@ class CapabilityCaster
             // note: getTypecastCaps() returns arr[pattern_cap_name] = type_cap_name
             //   but we need to return arr[type_cap_name] = true
             $add_caps = array_merge($add_caps, array_fill_keys($this->getTypecastCaps($role_name), true));
-    
+
             if (!presspermit()->getOption('pattern_roles_include_generic_rolecaps')) {
                 $arr_name = explode(':', $role_name);
                 if (!empty($arr_name[3]) && ('post_status' == $arr_name[3])) {

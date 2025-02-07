@@ -76,7 +76,7 @@ class RoleAdmin
         // group management exceptions permit full group editing (as well as member management)
         if (!empty($user->except['manage_pp_group']['pp_group']['']['additional']['pp_group'][''])) {
             $editable_group_ids = array_merge(
-                $editable_group_ids, 
+                $editable_group_ids,
                 $user->except['manage_pp_group']['pp_group']['']['additional']['pp_group']['']
             );
         }
@@ -102,10 +102,10 @@ class RoleAdmin
     public static function canSetExceptions($can, $operation, $for_item_type, $args = [])
     {
         $defaults = [
-            'item_id' => 0, 
-            'via_item_source' => 'post', 
-            'via_item_type' => '', 
-            'for_item_source' => 'post', 
+            'item_id' => 0,
+            'via_item_source' => 'post',
+            'via_item_type' => '',
+            'for_item_source' => 'post',
             'is_administrator' => false
         ];
 
@@ -120,7 +120,7 @@ class RoleAdmin
             $can_assign_edit_exceptions = false;
 
             if (
-                presspermit()->getOption('non_admins_set_edit_exceptions') 
+                presspermit()->getOption('non_admins_set_edit_exceptions')
                 && defined('PP_NON_EDITORS_SET_EDIT_EXCEPTIONS') && PP_NON_EDITORS_SET_EDIT_EXCEPTIONS
             ) {
                 $can_edit_published = true;
@@ -156,23 +156,27 @@ class RoleAdmin
                 break;
 
             case 'copy':
-                $can = defined('PUBLISHPRESS_REVISIONS_VERSION') && ($is_administrator || $can_assign_edit_exceptions || (
-                    $can_edit_published && current_user_can('pp_set_copy_exceptions'))
+                $can = defined('PUBLISHPRESS_REVISIONS_VERSION') && (
+                    $is_administrator || $can_assign_edit_exceptions || (
+                        $can_edit_published && current_user_can('pp_set_copy_exceptions')
+                    )
                 );
                 break;
 
             case 'revise':
-                $can = (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) && ($is_administrator || $can_assign_edit_exceptions || (
-                    $can_edit_published && current_user_can('pp_set_revise_exceptions'))
+                $can = (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) && (
+                    $is_administrator || $can_assign_edit_exceptions || (
+                        $can_edit_published && current_user_can('pp_set_revise_exceptions')
+                    )
                 );
                 break;
 
             case 'associate':
                 if ('term' == $via_item_source) {
-                    $can = is_taxonomy_hierarchical($for_item_type) 
+                    $can = is_taxonomy_hierarchical($for_item_type)
                     && ($is_administrator || current_user_can('pp_set_term_associate_exceptions'));
                 } else {
-                    $can = is_post_type_hierarchical($for_item_type) && ($is_administrator 
+                    $can = is_post_type_hierarchical($for_item_type) && ($is_administrator
                     || ($can_edit_published && current_user_can('pp_set_associate_exceptions')));
                 }
                 break;

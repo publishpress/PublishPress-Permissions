@@ -83,8 +83,8 @@ class PermissionsAdmin
                 $warning = '';
 
                 if (isset($pp->role_defs->pattern_roles[$arr_name[0]])) {
-                    $role_caption = (isset($pp->role_defs->pattern_roles[$arr_name[0]]->labels->$caption_prop)) 
-                    ? $pp->role_defs->pattern_roles[$arr_name[0]]->labels->$caption_prop 
+                    $role_caption = (isset($pp->role_defs->pattern_roles[$arr_name[0]]->labels->$caption_prop))
+                    ? $pp->role_defs->pattern_roles[$arr_name[0]]->labels->$caption_prop
                     : '';
 
                     if (
@@ -187,7 +187,7 @@ class PermissionsAdmin
                             printf(
                                 esc_html__('(using default capabilities due to invalid %s definition)', 'press-permit-core'),
                                 esc_html($wp_roles->role_names[$arr_name[0]])
-                            ); 
+                            );
                             echo '</span>';
                         }
 

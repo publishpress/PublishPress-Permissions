@@ -66,14 +66,14 @@ class CapabilityFilters
 
     public function fltConfirmRestReadable($rest_response, $handler, $request)
     {
- // filter 'rest_request_after_callbacks'
+        // filter 'rest_request_after_callbacks'
         require_once(PRESSPERMIT_CLASSPATH . '/RESTHelper.php');
         return RESTHelper::fltConfirmRestReadable($rest_response, $handler, $request);
     }
 
     public function fltConfirmRestReadableLegacy($rest_response, $rest_server, $request)
     {
- // filter 'rest_pre_dispatch'
+        // filter 'rest_pre_dispatch'
         require_once(PRESSPERMIT_CLASSPATH . '/RESTLegacy.php');
         return RESTLegacy::fltPreDispatch($rest_response, $rest_server, $request);
     }
@@ -177,7 +177,7 @@ class CapabilityFilters
         if (
             (is_array($orig_cap) || !isset($meta_caps[$orig_cap]))  // Revisionary may pass array into args[0]
             && (('edit_posts' != reset($orig_reqd_caps)) || !presspermit()->doingEmbed())
-        ) { 
+        ) {
             $item_type = '';
 
             // If we would fail a straight post cap check, pass it if appropriate additions stored
@@ -301,7 +301,7 @@ class CapabilityFilters
                                     if ($enabled_taxonomies = $pp->getEnabledTaxonomies(['object_type' => $item_type])) {
                                         // This capability check is for a post type capability, but NOT a meta cap check (read_post / edit_post / delete_post)
                                         // Either the check is not for an individual post, or the user does not have a corresponding Specific Permission for that post.
-                                        
+
                                         global $wpdb, $pagenow;
 
                                         static $listed_post_tt_ids;
@@ -325,7 +325,7 @@ class CapabilityFilters
                                                     break;
                                                 } else {
                                                     foreach ($_terms as $term) {
-                                                        $post_tt_ids[] = $term->term_taxonomy_id; 
+                                                        $post_tt_ids[] = $term->term_taxonomy_id;
                                                     }
                                                 }
                                             }
@@ -540,10 +540,10 @@ class CapabilityFilters
 
         // skip the memcache under certain circumstances
         if (!$memcache_disabled) {
-            if ( 
-                (!PWP::empty_POST() && ( 'post.php' == $pagenow ) && PWP::getTypeCap($post_type, 'edit_post') == reset($pp_reqd_caps) )                  // edit_post cap check on wp-admin/post.php submission               
-                || (!PWP::empty_GET('doaction') && in_array(reset($pp_reqd_caps), ['delete_post', PWP::getTypeCap($post_type, 'delete_post')], true) )  // bulk post/page deletion is broken by hascap buffering
-            ) { 
+            if (
+                (!PWP::empty_POST() && ('post.php' == $pagenow) && PWP::getTypeCap($post_type, 'edit_post') == reset($pp_reqd_caps))                  // edit_post cap check on wp-admin/post.php submission
+                || (!PWP::empty_GET('doaction') && in_array(reset($pp_reqd_caps), ['delete_post', PWP::getTypeCap($post_type, 'delete_post')], true))  // bulk post/page deletion is broken by hascap buffering
+            ) {
                 $this->memcache = [];
                 $memcache_disabled = true;
             }
@@ -553,7 +553,7 @@ class CapabilityFilters
         $query_args = ['required_operation' => $required_operation, 'post_types' => $post_type, 'skip_teaser' => true];
 
         // generate a string key for this set of required caps, for use below in checking, caching the filtered results
-        $cap_arg = ( 'edit_page' == $args[0] ) ? 'edit_post' : sanitize_key($args[0]); // minor perf boost on uploads.php, TODO: move to PPCE
+        $cap_arg = ('edit_page' == $args[0]) ? 'edit_post' : sanitize_key($args[0]); // minor perf boost on uploads.php, TODO: move to PPCE
         $capreqs_key = ($memcache_disabled) ? false : $cap_arg . $pp->flags['cache_key_suffix'] . md5(wp_json_encode($query_args));
 
         // Check whether this object id was already tested for the same reqd_caps in a previous execution of this function within the same http request
@@ -614,7 +614,7 @@ class CapabilityFilters
                 // phpcs Note: All clauses in this request are sanitized above and or upstream in function constructPostsRequest.
                 // This shared function ensures matching filtering by the 'posts_request' and 'user_has_cap' filters.
 
-                // Direct database query to apply all relevant Permissions configuration to the currently 
+                // Direct database query to apply all relevant Permissions configuration to the currently
                 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
                 $okay_ids = $wpdb->get_col($request);
 

@@ -6,7 +6,7 @@ class CollabHooksCompat
 {
     private $wp_version;
 
-    function __construct()
+    public function __construct()
     {
         add_action('init', [$this, 'actStatusRegistrations'], 44);  // statuses need to be registered before establish_status_caps() execution
 
@@ -40,7 +40,7 @@ class CollabHooksCompat
         }
     }
 
-    function fltOperations($ops)
+    public function fltOperations($ops)
     {
         $ops[] = 'edit';
 
@@ -61,7 +61,7 @@ class CollabHooksCompat
         return $ops;
     }
 
-    function actDefinePatternCaps($pattern_role_caps)
+    public function actDefinePatternCaps($pattern_role_caps)
     {
         $type_obj = get_taxonomy('category');
         $type_caps['category'] = array_intersect_key(get_object_vars($type_obj->cap), array_fill_keys(['manage_terms'], true));
@@ -74,7 +74,7 @@ class CollabHooksCompat
         }
     }
 
-    function fltApplyArbitraryCaps($caps, $arr_name, $type_obj)
+    public function fltApplyArbitraryCaps($caps, $arr_name, $type_obj)
     {
         $base_role_name = $arr_name[0];
 
@@ -89,23 +89,23 @@ class CollabHooksCompat
             // these caps will be added only for supplemental roles with no status specified
             if (!empty($arr_name[4])) {
                 $arbitrary_caps = array_diff_key(
-                    $arbitrary_caps, 
+                    $arbitrary_caps,
                     array_fill_keys(
                         apply_filters(
-                            'presspermit_status_role_skip_caps', 
+                            'presspermit_status_role_skip_caps',
                             [
-                                'list_users', 
-                                'edit_users', 
-                                'delete_users', 
-                                'switch_themes', 
-                                'edit_themes', 
-                                'activate_plugins', 
-                                'edit_plugins', 
-                                'manage_options', 
-                                'manage_links', 
+                                'list_users',
+                                'edit_users',
+                                'delete_users',
+                                'switch_themes',
+                                'edit_themes',
+                                'activate_plugins',
+                                'edit_plugins',
+                                'manage_options',
+                                'manage_links',
                                 'import'
                             ]
-                        ), 
+                        ),
                         true
                     )
                 );
@@ -117,7 +117,7 @@ class CollabHooksCompat
         return $caps;
     }
 
-    function actStatusRegistrations()
+    public function actStatusRegistrations()
     {
         if (!defined('PRESSPERMIT_VERSION')) {
             return;
@@ -137,14 +137,14 @@ class CollabHooksCompat
         }
     }
 
-    function actAdjustDefaultPatternRoles()
+    public function actAdjustDefaultPatternRoles()
     {
         if (defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) {
             presspermit()->registerPatternRole(
-                'revisor', 
+                'revisor',
                 [
                     'labels' => (object)[
-                        'name' => esc_html__('Revisors', 'press-permit-core'), 
+                        'name' => esc_html__('Revisors', 'press-permit-core'),
                         'singular_name' => esc_html__('Revisor', 'press-permit-core')
                     ]
                 ]

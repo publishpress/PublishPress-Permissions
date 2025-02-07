@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab\Revisions;
 
 class Admin
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('map_meta_cap', [$this, 'flt_mapMetaCap'], 3, 4);
 
@@ -32,7 +32,7 @@ class Admin
         global $current_user;
 
         if (
-            $user_id && in_array($meta_cap, ['edit_post', 'edit_page'], true) && !empty($wp_args[0]) 
+            $user_id && in_array($meta_cap, ['edit_post', 'edit_page'], true) && !empty($wp_args[0])
             && function_exists('rvy_get_option') && function_exists('rvy_default_options') // Revisions plugin does not initialize on plugins.php URL
         ) {
             if ($user_id != $current_user->ID) {
@@ -73,7 +73,7 @@ class Admin
                 if (!presspermit()->doing_cap_check && $post_type_obj) {
                     if (!empty($post_type_obj->cap->edit_others_posts) && empty($current_user->allcaps[$post_type_obj->cap->edit_others_posts])) {
                         $revise_cap = str_replace('edit_', 'revise_', $post_type_obj->cap->edit_others_posts);
-                        
+
                         if (!empty($current_user->allcaps[$revise_cap])) {
                             $caps[] = $revise_cap;
                         } else {
@@ -82,10 +82,10 @@ class Admin
 
                         if (rvy_get_option('copy_posts_capability')) {
                             $copy_cap = str_replace('edit_', 'copy_', $post_type_obj->cap->edit_others_posts);
-                            
+
                             if (!empty($current_user->allcaps[$copy_cap])) {
                                 $caps[] = $copy_cap;
-                            } else { 
+                            } else {
                                 $caps [] = str_replace('edit_', 'copy_', $post_type_obj->cap->edit_others_posts);
                             }
                         }
@@ -143,15 +143,15 @@ class Admin
             return $exception_items;
         }
 
-        $exception_items = (isset($user->except['edit_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type])) 
-        ? $user->except['edit_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type] 
+        $exception_items = (isset($user->except['edit_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type]))
+        ? $user->except['edit_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type]
         : [];
 
         foreach (array_keys($user->except['revise_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type]) as $_status) {
             Arr::setElem($exception_items, [$_status]);
 
             $exception_items[$_status] = array_merge(
-                $exception_items[$_status], 
+                $exception_items[$_status],
                 $user->except['revise_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type][$_status]
             );
         }
@@ -160,7 +160,7 @@ class Admin
             Arr::setElem($exception_items, [$_status]);
 
             $exception_items[$_status] = array_merge(
-                $exception_items[$_status], 
+                $exception_items[$_status],
                 $user->except['copy_post'][$via_item_source][$via_item_type][$mod_type][$for_item_type][$_status]
             );
         }
@@ -174,8 +174,8 @@ class Admin
         return $exception_items;
     }
 
-    // Apply term revision restrictions separately with status clause to avoid removing unpublished posts from the listing 
-    function fltTermRestrictionsClause($where, $args)
+    // Apply term revision restrictions separately with status clause to avoid removing unpublished posts from the listing
+    public function fltTermRestrictionsClause($where, $args)
     {
         global $wpdb;
 
@@ -186,16 +186,16 @@ class Admin
 
         $defaults = array_fill_keys(
             ['required_operation',
-            'post_type', 
-            'src_table', 
-            'merge_additions', 
-            'exempt_post_types', 
-            'mod_types', 
+            'post_type',
+            'src_table',
+            'merge_additions',
+            'exempt_post_types',
+            'mod_types',
             'tx_args',
-            'additional_ttids', 
-            'apply_object_additions', 
-            'term_additions_clause', 
-            'post_additions_clause', 
+            'additional_ttids',
+            'apply_object_additions',
+            'term_additions_clause',
+            'post_additions_clause',
             'type_exemption_clause'
             ],
             ''
@@ -216,7 +216,7 @@ class Admin
 
         foreach (presspermit()->getEnabledTaxonomies($tx_args) as $taxonomy) {
             foreach ($mod_types as $mod) {
-                if ($tt_ids = $user->getExceptionTerms('revise', $mod, $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])) {    
+                if ($tt_ids = $user->getExceptionTerms('revise', $mod, $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])) {
                     if ($merge_additions) {
                         $tx_additional_ids = array_merge(
                             $user->getExceptionTerms('revise', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
@@ -224,7 +224,7 @@ class Admin
                     } else {
                         $tx_additional_ids = [];
                     }
-                    
+
                     $published_stati_csv = implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'OR'));
 
                     if ('include' == $mod) {
@@ -255,7 +255,7 @@ class Admin
 
         foreach (presspermit()->getEnabledTaxonomies($tx_args) as $taxonomy) {
             foreach ($mod_types as $mod) {
-                if ($tt_ids = $user->getExceptionTerms('copy', $mod, $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])) {    
+                if ($tt_ids = $user->getExceptionTerms('copy', $mod, $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])) {
                     if ($merge_additions) {
                         $tx_additional_ids = array_merge(
                             $user->getExceptionTerms('copy', 'additional', $post_type, $taxonomy, ['status' => '', 'merge_universals' => true])
@@ -263,7 +263,7 @@ class Admin
                     } else {
                         $tx_additional_ids = [];
                     }
-                    
+
                     $published_stati_csv = implode("','", get_post_stati(['public' => true, 'private' => true], 'names', 'OR'));
 
                     if ('include' == $mod) {
@@ -278,7 +278,7 @@ class Admin
                             "( $src_table.post_status NOT IN ('$published_stati_csv') OR $src_table.ID IN ( SELECT object_id FROM $wpdb->term_relationships WHERE term_taxonomy_id IN ('" . implode("','", $tt_ids) . "') ) )",
                             compact('tt_ids', 'src_table')
                         );
-                
+
                         $where .= " AND ( $term_include_clause $term_additions_clause $post_additions_clause $type_exemption_clause )";
                         continue 2;
                     } else {

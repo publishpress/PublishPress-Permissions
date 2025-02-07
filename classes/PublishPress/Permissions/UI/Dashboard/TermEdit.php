@@ -11,15 +11,15 @@ class TermEdit
         if (!did_action('presspermit_term_edit_ui')) {
             wp_enqueue_script('post');
             wp_enqueue_script('postbox');
-    
+
             wp_enqueue_style('presspermit-item-edit', PRESSPERMIT_URLPATH . '/common/css/item-edit.css', [], PRESSPERMIT_VERSION);
             wp_enqueue_style('presspermit-term-edit', PRESSPERMIT_URLPATH . '/common/css/term-edit.css', [], PRESSPERMIT_VERSION);
-    
+
             add_action('admin_print_scripts', ['\PublishPress\Permissions\UI\Dashboard\ItemEdit', 'scriptItemEdit']);
             add_action('admin_print_scripts', [$this, 'compatStyles']);
 
             add_action('admin_menu', [$this, 'actAddMetaBoxes']);
-    
+
             if ($taxonomy = PWP::REQUEST_key('taxonomy')) {
                 if (presspermit()->isTaxonomyEnabled($taxonomy)) {
                     add_action('admin_head', [$this, 'actScriptsWP']);
@@ -28,12 +28,12 @@ class TermEdit
                 } elseif (defined('PRESSPERMIT_LEGACY_TAXONOMY_ENABLE_METABOX')) {
                     add_action("{$taxonomy}_edit_form", [$this, 'actTaxonomyEnableUI']);
                 }
-    
+
                 if (!PWP::empty_REQUEST('pp_universal')) {
                     add_action("{$taxonomy}_edit_form", [$this, 'actUniversalExceptionsUIsupport']);
                 }
             }
-    
+
             do_action('presspermit_term_edit_ui');
         }
     }
@@ -54,7 +54,7 @@ class TermEdit
         if (empty($done)) {
             $done = [];
         }
-    
+
         if (empty($box['id']) || !empty($done[$box['id']])) {
             return;
         }
@@ -262,7 +262,7 @@ class TermEdit
                 <input class="button button-primary" value="<?php esc_attr_e('Update', 'press-permit-core'); ?>" type="submit">
             </div>
             <?php
-    
+
             if ($post_type) {
                 echo '<br />';
                 self::universalExceptionsNote($tag, $taxonomy, $post_type);
@@ -275,12 +275,12 @@ class TermEdit
 
                     require_once(ABSPATH . 'wp-admin/includes/meta-boxes.php');
 
-                    $this->prepMetaboxes();
+        $this->prepMetaboxes();
 
-                    $type = ($post_type) ? $post_type : 'post';
-                    do_meta_boxes($type, 'advanced', $tag);
+        $type = ($post_type) ? $post_type : 'post';
+        do_meta_boxes($type, 'advanced', $tag);
 
-                    ?>
+        ?>
                 </div> <!-- post-body-content -->
             </div> <!-- post-body -->
         </div> <!-- poststuff -->
@@ -308,19 +308,19 @@ class TermEdit
 
                     require_once(ABSPATH . 'wp-admin/includes/meta-boxes.php');
 
-                    add_meta_box(
-                        "pp_enable_taxonomy",
-                        esc_html__('Permissions Settings', 'press-permit-core'),
-                        [$this, 'drawSettingsUI'],
-                        $taxonomy,
-                        'advanced',
-                        'default',
-                        []
-                    );
+        add_meta_box(
+            "pp_enable_taxonomy",
+            esc_html__('Permissions Settings', 'press-permit-core'),
+            [$this, 'drawSettingsUI'],
+            $taxonomy,
+            'advanced',
+            'default',
+            []
+        );
 
-                    do_meta_boxes($taxonomy, 'advanced', $tag);
+        do_meta_boxes($taxonomy, 'advanced', $tag);
 
-                    ?>
+        ?>
                 </div> <!-- post-body-content -->
             </div> <!-- post-body -->
         </div> <!-- poststuff -->
@@ -360,22 +360,22 @@ class TermEdit
                     $referer = wp_get_referer();
                 }
 
-                $url = esc_url_raw(
-                    add_query_arg(
-                        '_wp_original_http_referer',
-                        urlencode($referer),
-                        "term.php?taxonomy=$taxonomy&amp;tag_ID={$tag->term_id}&amp;pp_universal=1"
-                    )
-                );
+        $url = esc_url_raw(
+            add_query_arg(
+                '_wp_original_http_referer',
+                urlencode($referer),
+                "term.php?taxonomy=$taxonomy&amp;tag_ID={$tag->term_id}&amp;pp_universal=1"
+            )
+        );
 
-                printf(
-                    esc_html__('Displayed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
-                    esc_html($type_obj->labels->singular_name),
-                    "<a href='" . esc_url($url) . "'>",
-                    esc_html($tx_obj->labels->singular_name),
-                    '</a>'
-                );
-                ?>
+        printf(
+            esc_html__('Displayed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
+            esc_html($type_obj->labels->singular_name),
+            "<a href='" . esc_url($url) . "'>",
+            esc_html($tx_obj->labels->singular_name),
+            '</a>'
+        );
+        ?>
             </p>
         </div>
         <?php
@@ -391,7 +391,7 @@ class TermEdit
                 display: none;
             }
         </style>
-            <?php 
+            <?php
         endif;
     }
 

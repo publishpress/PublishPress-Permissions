@@ -41,8 +41,8 @@ class BulkEdit
 
                     // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                     $pattern_post = $wpdb->get_row($wpdb->prepare(
-                        "SELECT ID, post_content, post_parent FROM $wpdb->posts WHERE post_name = %s AND post_type = %s LIMIT 1", 
-                        $slug, 
+                        "SELECT ID, post_content, post_parent FROM $wpdb->posts WHERE post_name = %s AND post_type = %s LIMIT 1",
+                        $slug,
                         $post_type
                     ));
                 } else {
@@ -92,10 +92,10 @@ class BulkEdit
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $users_done = $wpdb->get_col($wpdb->prepare(
                 "SELECT p.post_author FROM $wpdb->postmeta AS pm INNER JOIN $wpdb->posts AS p ON pm.post_id = p.ID"
-                . " WHERE pm.meta_key = '_pp_auto_inserted' AND pm.meta_value = %s", 
+                . " WHERE pm.meta_key = '_pp_auto_inserted' AND pm.meta_value = %s",
                 "{$pattern_post_id}:{$post_parent}"
             ));
-            
+
             $users = array_diff($users, $users_done);
 
             if (!count($users)) {

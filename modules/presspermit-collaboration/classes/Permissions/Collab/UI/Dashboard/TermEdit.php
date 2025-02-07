@@ -4,20 +4,20 @@ namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class TermEdit
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('presspermit_term_exceptions_metaboxes', [$this, 'term_exceptions_metaboxes'], 10, 3);
         add_action('presspermit_prep_metaboxes', [$this, 'pp_prep_metaboxes'], 10, 3);
     }
 
-    function update_item_exceptions($via_item_source, $item_id, $args)
+    public function update_item_exceptions($via_item_source, $item_id, $args)
     {
         if ('term' == $via_item_source) {
             ItemSave::itemUpdateProcessExceptions('term', 'term', $item_id, $args);
         }
     }
 
-    function pp_prep_metaboxes($via_item_source, $via_item_type, $tt_id)
+    public function pp_prep_metaboxes($via_item_source, $via_item_type, $tt_id)
     {
         if ('term' == $via_item_source) {
             global $typenow;
@@ -29,7 +29,7 @@ class TermEdit
         }
     }
 
-    function term_exceptions_metaboxes($boxes, $taxonomy, $use_post_type)
+    public function term_exceptions_metaboxes($boxes, $taxonomy, $use_post_type)
     {
         if (!$use_post_type) {  // term management / association exceptions UI only displed when editing "Universal Exceptions" (empty post type)
             $tx = get_taxonomy($taxonomy);
@@ -37,14 +37,14 @@ class TermEdit
 
             foreach (['manage', 'associate'] as $op) {
                 if ($op_obj = presspermit()->admin()->getOperationObject($op, $use_post_type)) {
-                    $caption = ('associate' == $op) 
+                    $caption = ('associate' == $op)
                     ? sprintf(
-                        esc_html__('Permissions: Select this %1$s as Parent', 'press-permit-core'), 
+                        esc_html__('Permissions: Select this %1$s as Parent', 'press-permit-core'),
                         $tx->labels->singular_name
                     )
                     : sprintf(
-                        esc_html__('Permissions: %1$s this %2$s', 'press-permit-core'), 
-                        $op_obj->label, 
+                        esc_html__('Permissions: %1$s this %2$s', 'press-permit-core'),
+                        $op_obj->label,
                         $tx->labels->singular_name
                     );
 

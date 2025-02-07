@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab\UI\Handlers;
 
 class RoleUsage
 {
-    public static function handleRequest() 
+    public static function handleRequest()
     {
         $action = PWP::REQUEST_key('action');
 

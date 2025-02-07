@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab\Revisions;
 
 class CapabilityFilters
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('presspermit_has_post_cap_vars', [$this, 'has_post_cap_vars'], 10, 4);
 
@@ -20,7 +20,7 @@ class CapabilityFilters
         add_action('init', [$this, 'actEnableLimitedRevisors'], 5);
     }
 
-    function actEnableLimitedRevisors($user_id)
+    public function actEnableLimitedRevisors($user_id)
     {
         global $current_user;
 
@@ -42,10 +42,10 @@ class CapabilityFilters
         }
     }
 
-    function fltUserHasReviseCap($wp_sitecaps, $orig_reqd_caps, $args)
+    public function fltUserHasReviseCap($wp_sitecaps, $orig_reqd_caps, $args)
     {
         global $current_user;
-        
+
         $args = (array) $args;
 
         if (!array_diff($orig_reqd_caps, array_keys(array_filter($wp_sitecaps)))) {
@@ -79,7 +79,7 @@ class CapabilityFilters
 
     // todo: confirm this is no longer needed
 
-    function actGrantListingCaps()
+    public function actGrantListingCaps()
     {
         global $current_user, $revisionary;
 
@@ -110,10 +110,10 @@ class CapabilityFilters
     }
 
     // todo: move to a general module
-    function fltPostAccessApplyExceptions($can_do, $operation, $post_type, $post_id, $args = [])
+    public function fltPostAccessApplyExceptions($can_do, $operation, $post_type, $post_id, $args = [])
     {
         // todo: implement PP_RESTRICTION_PRIORITY ?
-        
+
         // todo: implement for specific revision statuses
 
         $user = presspermit()->getUser();
@@ -128,7 +128,7 @@ class CapabilityFilters
 
         // Only check for 'exclude' restrictive exceptions if not already lacking access
         if ($can_do) {
-            $items = (!empty($user->except[$op_key]['post']['']['exclude'][$post_type][''])) 
+            $items = (!empty($user->except[$op_key]['post']['']['exclude'][$post_type]['']))
             ? $user->except[$op_key]['post']['']['exclude'][$post_type]['']
             : [];
 
@@ -141,7 +141,7 @@ class CapabilityFilters
                         if (!isset($post_terms[$taxonomy])) {
                             $post_terms[$taxonomy] = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids']);
                         }
-                        
+
                         if (array_intersect($term_ids, $post_terms[$taxonomy])) {
                             $can_do = false;
                             break;
@@ -153,7 +153,7 @@ class CapabilityFilters
 
         // Only check for 'include' restrictive exceptions if not already lacking access
         if ($can_do) {
-            $items = (!empty($user->except[$op_key]['post']['']['include'][$post_type][''])) 
+            $items = (!empty($user->except[$op_key]['post']['']['include'][$post_type]['']))
             ? $user->except[$op_key]['post']['']['include'][$post_type]['']
             : [];
 
@@ -176,7 +176,7 @@ class CapabilityFilters
 
         // check Enable exceptions
         if (!$can_do) {
-            $items = (!empty($user->except[$op_key]['post']['']['additional'][$post_type][''])) 
+            $items = (!empty($user->except[$op_key]['post']['']['additional'][$post_type]['']))
             ? $user->except[$op_key]['post']['']['additional'][$post_type]['']
             : [];
 
@@ -200,12 +200,12 @@ class CapabilityFilters
         return $can_do;
     }
 
-    function fltCanCopy($can_copy, $post_id, $base_status, $revision_status, $args)
+    public function fltCanCopy($can_copy, $post_id, $base_status, $revision_status, $args)
     {
         if (rvy_in_revision_workflow($post_id)) {
             return false;
         }
-        
+
         if (presspermit()->isAdministrator()) {
             return $can_copy;
         }
@@ -215,7 +215,7 @@ class CapabilityFilters
         if ('draft' == $base_status) {
             $operation = 'copy';
 
-        //} elseif ('future' == $base_status) {
+            //} elseif ('future' == $base_status) {
             // todo: review possible implementation for scheduled revisions
             //$operation = 'schedule'
         } else {
@@ -231,7 +231,7 @@ class CapabilityFilters
         }
     }
 
-    function fltCanSubmit($can_submit, $post_id, $new_base_status, $new_revision_status, $args)
+    public function fltCanSubmit($can_submit, $post_id, $new_base_status, $new_revision_status, $args)
     {
         if ('pending' != $new_base_status || !rvy_in_revision_workflow($post_id)) {
             return false;
@@ -250,7 +250,7 @@ class CapabilityFilters
     private function postTypeFromCaps($caps)
     {
         foreach (get_post_types(['public' => true, 'show_ui' => true], 'object', 'or') as $post_type => $type_obj) {
-            $caps = array_diff($caps, ['edit_posts', 'edit_pages']); // ignore generic caps defined for extraneous properties (assign_term, etc.) 
+            $caps = array_diff($caps, ['edit_posts', 'edit_pages']); // ignore generic caps defined for extraneous properties (assign_term, etc.)
             if (array_intersect((array)$type_obj->cap, $caps)) {
                 return $post_type;
             }
@@ -259,13 +259,13 @@ class CapabilityFilters
         return false;
     }
 
-    function has_post_cap_vars($force_vars, $wp_sitecaps, $pp_reqd_caps, $vars)
+    public function has_post_cap_vars($force_vars, $wp_sitecaps, $pp_reqd_caps, $vars)
     {
         $return = [];
 
         if (('read_post' == reset($pp_reqd_caps))) {
             if (
-                !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+                !is_admin() && PWP::is_REQUEST('post_type', 'revision')
                 && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
             ) {
                 $return['pp_reqd_caps'] = ['edit_post'];

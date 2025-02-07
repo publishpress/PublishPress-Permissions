@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab;
 
 class XmlRpc
 {
-    function __construct()
+    public function __construct()
     {
         if (version_compare('7.0', phpversion(), '>=')) {
             // phpcs:ignore WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsRemoteFile
@@ -25,19 +25,19 @@ class XmlRpc
         add_filter('pre_post_category', [$this, 'flt_pre_post_category']);
     }
 
-    function flt_adjust_methods($methods)
+    public function flt_adjust_methods($methods)
     {
         $methods['mt.setPostCategories'] = [$this, 'mt_set_categories'];
         return $methods;
     }
 
-    function flt_pre_post_category($catids)
+    public function flt_pre_post_category($catids)
     {
         return apply_filters('presspermit_pre_object_terms', $catids, 'category');
     }
 
     // Override default method. Otherwise categories are unfilterable.
-    function mt_set_categories($args)
+    public function mt_set_categories($args)
     {
         global $wp_xmlrpc_server;
         $wp_xmlrpc_server->escape($args);
@@ -77,7 +77,7 @@ class XmlRpc
         return true;
     }
 
-    function act_wlw_on_init()
+    public function act_wlw_on_init()
     {
         global $wp_xmlrpc_server;
 

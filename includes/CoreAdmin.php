@@ -4,7 +4,7 @@ namespace PublishPress\Permissions;
 
 class CoreAdmin
 {
-    function __construct()
+    public function __construct()
     {
         add_action('presspermit_permissions_menu', [$this, 'actAdminMenuPromos'], 12, 2);
         add_action('presspermit_menu_handler', [$this, 'menuHandler']);
@@ -59,27 +59,27 @@ class CoreAdmin
         );
     }
 
-    function actAdminMenuPromos($pp_options_menu, $handler)
+    public function actAdminMenuPromos($pp_options_menu, $handler)
     {
         // Disable custom status promos until PublishPress Statuses and compatible version of Permissions Pro are released
 
         // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
         /*
         add_submenu_page(
-            $pp_options_menu, 
-            esc_html__('Workflow Statuses', 'press-permit-core'), 
-            esc_html__('Workflow Statuses', 'press-permit-core'), 
-            'read', 
-            'presspermit-statuses', 
+            $pp_options_menu,
+            esc_html__('Workflow Statuses', 'press-permit-core'),
+            esc_html__('Workflow Statuses', 'press-permit-core'),
+            'read',
+            'presspermit-statuses',
             $handler
         );
 
         add_submenu_page(
-            $pp_options_menu, 
-            esc_html__('Visibility Statuses', 'press-permit-core'), 
-            esc_html__('Visibility Statuses', 'press-permit-core'), 
-            'read', 
-            'presspermit-visibility-statuses', 
+            $pp_options_menu,
+            esc_html__('Visibility Statuses', 'press-permit-core'),
+            esc_html__('Visibility Statuses', 'press-permit-core'),
+            'read',
+            'presspermit-visibility-statuses',
             $handler
         );
         */
@@ -103,7 +103,7 @@ class CoreAdmin
         );
     }
 
-    function menuHandler($pp_page)
+    public function menuHandler($pp_page)
     {
         if (in_array($pp_page, ['presspermit-statuses', 'presspermit-visibility-statuses', 'presspermit-sync', 'presspermit-posts-teaser'], true)) {
             $slug = str_replace('presspermit-', '', $pp_page);
@@ -111,7 +111,7 @@ class CoreAdmin
         }
     }
 
-    function actAdminMenu()
+    public function actAdminMenu()
     {
         $pp_cred_menu = presspermit()->admin()->getMenuParams('permits');
 
@@ -125,7 +125,7 @@ class CoreAdmin
         );
     }
 
-    function setUpgradeMenuLink()
+    public function setUpgradeMenuLink()
     {
         $url = 'https://publishpress.com/links/permissions-menu';
         ?>
@@ -146,7 +146,7 @@ class CoreAdmin
         <?php
     }
 
-    function actProModulesUI($active_module_plugin_slugs, $inactive)
+    public function actProModulesUI($active_module_plugin_slugs, $inactive)
     {
         $pro_modules = array_diff(
             presspermit()->getAvailableModules(['force_all' => true]),
@@ -179,7 +179,7 @@ class CoreAdmin
                                 } else {
                                     echo esc_html($this->prettySlug($slug));
                                 }
-                                ?>
+                    ?>
                             </label>
                         </th>
 
@@ -188,9 +188,9 @@ class CoreAdmin
                                 <?php if (isset($ext_info->blurb[$slug])) : ?>
                                     <span class="pp-ext-info"
                                         title="<?php if (isset($ext_info->descript[$slug])) {
-                                                    echo esc_attr($ext_info->descript[$slug]);
-                                               }
-                                                ?>">
+                                            echo esc_attr($ext_info->descript[$slug]);
+                                        }
+                                    ?>">
                                         <?php echo esc_html($ext_info->blurb[$slug]); ?>
                                     </span>
                                 <?php endif; ?>

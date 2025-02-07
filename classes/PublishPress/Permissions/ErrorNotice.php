@@ -66,7 +66,7 @@ class ErrorNotice
 
             case 'rs_active':
                 define('PRESSPERMIT_DISABLE_QUERYFILTERS', true);
-            
+
                 $args = (PWP::is_REQUEST('page') && PWP::REQUEST_key_match('page', 'presspermit-'))
                     ? ['style' => 'color:black']
                     : [];
@@ -144,7 +144,7 @@ class ErrorNotice
         }
 
         if (empty($default_switch)) {
-            do_action('presspermit_load_error', $err);         
+            do_action('presspermit_load_error', $err);
         }
 
         return true;
@@ -169,9 +169,9 @@ class ErrorNotice
 
         foreach ($this->notices as $msg_id => $msg) {
             $style = (!empty($msg->style)) ? $msg->style : "color:black";
-            
+
             $class = 'pp-admin-notice';
-            
+
             $class .= (!empty($msg->class)) ? $msg->class : '';
 
             if (! empty($pp_plugin_page)) {

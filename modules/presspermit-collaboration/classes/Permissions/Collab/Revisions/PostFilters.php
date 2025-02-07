@@ -6,7 +6,7 @@ class PostFilters
 {
     private $filtered_post_clauses_type = '';
 
-    function __construct()
+    public function __construct()
     {
         add_filter('presspermit_have_site_caps', [$this, 'fltHaveSiteCaps'], 10, 3);
 
@@ -21,7 +21,7 @@ class PostFilters
         add_filter('presspermit_base_cap_replacements', [$this, 'fltBaseCapReplacements'], 10, 3);
     }
 
-    function fltQueryPostStatuses($use_statuses, $args)
+    public function fltQueryPostStatuses($use_statuses, $args)
     {
         if (!function_exists('rvy_get_option') || !rvy_get_option('permissions_compat_mode')) {
             // Don't include revision statuses in post_status clause of Posts query
@@ -58,10 +58,10 @@ class PostFilters
         return $have_site_caps;
     }
 
-    function fltBaseCapReplacements($replace_caps, $reqd_caps, $post_type)
+    public function fltBaseCapReplacements($replace_caps, $reqd_caps, $post_type)
     {
         global $current_user;
-        
+
         if ($type_obj = get_post_type_object($post_type)) {
             if (!empty($type_obj->cap->edit_posts)) {
                 $replace_caps['list_others_revisions'] = $type_obj->cap->edit_posts;
@@ -84,7 +84,7 @@ class PostFilters
         return $replace_caps;
     }
 
-    function fltRequireEditOthersDrafts($require, $post_type, $post_status, $args)
+    public function fltRequireEditOthersDrafts($require, $post_type, $post_status, $args)
     {
         $status_obj = get_post_status_object($post_status);
 
@@ -95,7 +95,7 @@ class PostFilters
         return $require;
     }
 
-    function flt_posts_clauses_object_types($object_types)
+    public function flt_posts_clauses_object_types($object_types)
     {
         global $wp_query;
 
@@ -121,7 +121,7 @@ class PostFilters
         return $object_types;
     }
 
-    function flt_posts_clauses_where($objects_where)
+    public function flt_posts_clauses_where($objects_where)
     {
         if ($this->filtered_post_clauses_type) {
             $objects_where = str_replace("post_type = 'post'", "post_type = '$this->filtered_post_clauses_type'", $objects_where);
@@ -133,11 +133,11 @@ class PostFilters
     }
 
     // this is no longer used as a filter, but still called internally
-    function fltPostsWhere($where, $args)
+    public function fltPostsWhere($where, $args)
     {
         // for past revisions
         if (
-            defined('PUBLISHPRESS_REVISIONS_VERSION') && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+            defined('PUBLISHPRESS_REVISIONS_VERSION') && !is_admin() && PWP::is_REQUEST('post_type', 'revision')
             && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
         ) {
             $matches = [];
@@ -145,14 +145,14 @@ class PostFilters
                 if ($matches[1]) {
                     global $wpdb;
                     $where = str_replace(
-                        "$wpdb->posts.post_type = '{$matches[1]}'", 
-                        "( $wpdb->posts.post_type = '{$matches[1]}' " 
+                        "$wpdb->posts.post_type = '{$matches[1]}'",
+                        "( $wpdb->posts.post_type = '{$matches[1]}' "
                         . " OR ( $wpdb->posts.post_type = 'revision'"
                         . " AND $wpdb->posts.post_status IN ('inherit')"
                         . " AND $wpdb->posts.post_parent IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) ) ",
                         // . " OR ( $wpdb->posts.post_status IN ('pending-revision', 'future-revision') "
-                        // . " AND $wpdb->posts.comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )", 
-                        
+                        // . " AND $wpdb->posts.comment_count IN ( SELECT ID FROM $wpdb->posts WHERE post_type = '{$matches[1]}' ) ) )",
+
                         $where
                     );
                 }
@@ -162,10 +162,10 @@ class PostFilters
         return $where;
     }
 
-    function flt_meta_cap($meta_cap)
+    public function flt_meta_cap($meta_cap)
     {
         if (
-            defined('PUBLISHPRESS_REVISIONS_VERSION') && ('read_post' == $meta_cap) && !is_admin() && PWP::is_REQUEST('post_type', 'revision') 
+            defined('PUBLISHPRESS_REVISIONS_VERSION') && ('read_post' == $meta_cap) && !is_admin() && PWP::is_REQUEST('post_type', 'revision')
             && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
         ) {
             $meta_cap = 'edit_post';

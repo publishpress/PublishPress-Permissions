@@ -6,7 +6,7 @@ use PublishPress\Permissions\UI\SettingsAdmin as SettingsAdmin;
 
 class SettingsTabEditing
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('presspermit_option_tabs', [$this, 'optionTabs'], 4);
         add_filter('presspermit_section_captions', [$this, 'sectionCaptions']);
@@ -16,13 +16,13 @@ class SettingsTabEditing
         add_action('presspermit_editing_options_ui', [$this, 'optionsUI']);
     }
 
-    function optionTabs($tabs)
+    public function optionTabs($tabs)
     {
         $tabs['editing'] = esc_html__('Editing', 'press-permit-core');
         return $tabs;
     }
 
-    function sectionCaptions($sections)
+    public function sectionCaptions($sections)
     {
         $new = [
             'post_editor'              => esc_html__('Editor Options', 'press-permit-core'),
@@ -37,7 +37,7 @@ class SettingsTabEditing
         return $sections;
     }
 
-    function optionCaptions($captions)
+    public function optionCaptions($captions)
     {
         $opt = [
             'editor_hide_html_ids'                   => esc_html__('Limited Editing Elements', 'press-permit-core'),
@@ -55,7 +55,7 @@ class SettingsTabEditing
         return array_merge($captions, $opt);
     }
 
-    function optionSections($sections)
+    public function optionSections($sections)
     {
         // Editing tab
         $new = [
@@ -76,7 +76,7 @@ class SettingsTabEditing
         return $sections;
     }
 
-    function optionsUI()
+    public function optionsUI()
     {
         $pp = presspermit();
 
@@ -96,40 +96,40 @@ class SettingsTabEditing
                     <div class="agp-vspaced_input default_privacy" style="margin-left: 2em;">
                         <?php
                         $option_name = 'default_privacy';
-                        $ui->all_otype_options[] = $option_name;
+            $ui->all_otype_options[] = $option_name;
 
-                        $opt_values = array_merge(array_fill_keys($pp->getEnabledPostTypes(), 0), $ui->getOptionArray($option_name));  // add enabled types whose settings have never been stored
-                        $opt_values = array_intersect_key($opt_values, array_fill_keys($pp->getEnabledPostTypes(), 0));  // skip stored types that are not enabled
-                        $opt_values = array_diff_key($opt_values, array_fill_keys(apply_filters('presspermit_disabled_default_privacy_types', ['forum', 'topic', 'reply']), true));
+            $opt_values = array_merge(array_fill_keys($pp->getEnabledPostTypes(), 0), $ui->getOptionArray($option_name));  // add enabled types whose settings have never been stored
+            $opt_values = array_intersect_key($opt_values, array_fill_keys($pp->getEnabledPostTypes(), 0));  // skip stored types that are not enabled
+            $opt_values = array_diff_key($opt_values, array_fill_keys(apply_filters('presspermit_disabled_default_privacy_types', ['forum', 'topic', 'reply']), true));
 
-                        // todo: force default status in Gutenberg
-                        if (defined('PRESSPERMIT_STATUSES_VERSION')) {
-                            $do_force_option = true;
-                            $ui->all_otype_options[] = 'force_default_privacy';
-                            $force_values = array_merge(array_fill_keys($pp->getEnabledPostTypes(), 0), $ui->getOptionArray('force_default_privacy'));  // add enabled types whose settings have never been stored
-                        } else {
-                            $do_force_option = false;
-                        }
-                        ?>
+            // todo: force default status in Gutenberg
+            if (defined('PRESSPERMIT_STATUSES_VERSION')) {
+                $do_force_option = true;
+                $ui->all_otype_options[] = 'force_default_privacy';
+                $force_values = array_merge(array_fill_keys($pp->getEnabledPostTypes(), 0), $ui->getOptionArray('force_default_privacy'));  // add enabled types whose settings have never been stored
+            } else {
+                $do_force_option = false;
+            }
+        ?>
                         <table class='agp-vtight_input agp-rlabel'>
                             <?php
 
-                            foreach ($opt_values as $object_type => $setting) :
-                                if ('attachment' == $object_type) {
-                                    continue;
-                                }
+            foreach ($opt_values as $object_type => $setting) :
+                if ('attachment' == $object_type) {
+                    continue;
+                }
 
-                                $id = $option_name . '-' . $object_type;
-                                $name = "{$option_name}[$object_type]";
-                                ?>
+                $id = $option_name . '-' . $object_type;
+                $name = "{$option_name}[$object_type]";
+                ?>
                                 <tr>
                                     <td class="rlabel">
                                         <input name='<?php echo esc_attr($name); ?>' type='hidden' value='' />
                                         <label for='<?php echo esc_attr($id); ?>'><?php if ($type_obj = get_post_type_object($object_type)) {
                                             echo esc_html($type_obj->labels->name);
-                                                    } else {
-                                                        echo esc_html($object_type);
-                                                    } ?></label>
+                                        } else {
+                                            echo esc_html($object_type);
+                                        } ?></label>
                                     </td>
 
                                     <td><select name='<?php echo esc_attr($name); ?>' id='<?php echo esc_attr($id); ?>' autocomplete='off'>
@@ -140,28 +140,28 @@ class SettingsTabEditing
                                                 <option value='<?php echo esc_attr($status_obj->name); ?>' <?php echo esc_attr($selected); ?>><?php echo esc_html($status_obj->label); ?></option>
                                             <?php endforeach; ?>
                                         </select>
-                                        <?php
-                                        if ($do_force_option) :
-                                            $id = 'force_default_privacy-' . $object_type;
-                                            $name = "force_default_privacy[$object_type]";
-                                            $style = ($setting) ? '' : 'display:none';
-                                            $checked = (!empty($force_values[$object_type]) || PWP::isBlockEditorActive($object_type)) ? ' checked ' : '';
-                                            $disabled = (PWP::isBlockEditorActive($object_type)) ? " disabled " : '';
-                                            ?>
+                                                        <?php
+                                                        if ($do_force_option) :
+                                                            $id = 'force_default_privacy-' . $object_type;
+                                                            $name = "force_default_privacy[$object_type]";
+                                                            $style = ($setting) ? '' : 'display:none';
+                                                            $checked = (!empty($force_values[$object_type]) || PWP::isBlockEditorActive($object_type)) ? ' checked ' : '';
+                                                            $disabled = (PWP::isBlockEditorActive($object_type)) ? " disabled " : '';
+                                                            ?>
                                             <input name='<?php echo esc_attr($name); ?>' type='hidden' value='0' />
                                             &nbsp;<label style='<?php echo esc_attr($style); ?>' for="<?php echo esc_attr($id); ?>"><input
                                                     type="checkbox" <?php echo esc_attr($checked); ?><?php echo esc_attr($disabled); ?>id="<?php echo esc_attr($id); ?>"
                                                     name="<?php echo esc_attr($name); ?>"
                                                     value="1" /><?php if ($do_force_option) :
-                                                        ?>&nbsp;<?php esc_html_e('lock', 'press-permit-core'); ?><?php 
-                                                                endif; ?>
+                                                        ?>&nbsp;<?php esc_html_e('lock', 'press-permit-core'); ?><?php
+                                                    endif; ?>
                                             </label>
-                                        <?php endif; ?>
+                                                        <?php endif; ?>
 
                                     </td>
                                 </tr>
                             <?php endforeach;
-                            ?>
+        ?>
                         </table>
                     </div>
 
@@ -180,13 +180,13 @@ class SettingsTabEditing
                     </script>
                     <?php
                     $ui->optionCheckbox('page_parent_editable_only', $tab, $section);
-                    $ui->optionCheckbox('page_parent_order', $tab, $section);
+        $ui->optionCheckbox('page_parent_order', $tab, $section);
 
-                    $hint = esc_html__("When saving a post, if the default term is not selectable, substitute first available.", 'presspermit-pro')
-                        . ' ' . esc_html__('Some term-limited editing configurations require this.', 'presspermit=pro');
+        $hint = esc_html__("When saving a post, if the default term is not selectable, substitute first available.", 'presspermit-pro')
+        . ' ' . esc_html__('Some term-limited editing configurations require this.', 'presspermit=pro');
 
-                    $ui->optionCheckbox('auto_assign_available_term', $tab, $section, $hint, '', ['hint_class' => 'pp-subtext-show']);
-                    ?>
+        $ui->optionCheckbox('auto_assign_available_term', $tab, $section, $hint, '', ['hint_class' => 'pp-subtext-show']);
+        ?>
                 </td>
             </tr>
         <?php endif; // any options accessable in this section
@@ -201,7 +201,7 @@ class SettingsTabEditing
                     if (!defined('PP_ADMIN_READONLY_LISTABLE') || ($pp->getOption('admin_hide_uneditable_posts') && !defined('PP_ADMIN_POSTS_NO_FILTER'))) {
                         $ui->optionCheckbox('list_others_uneditable_posts', $tab, $section, true);
                     }
-                    ?>
+            ?>
                 </td>
             </tr>
         <?php endif; // any options accessable in this section
@@ -225,20 +225,20 @@ class SettingsTabEditing
                             </span></div><br />
                     <?php endif;
 
-                    $ret = $ui->optionCheckbox('admin_others_unattached_files', $tab, $section, true, '');
+        $ret = $ui->optionCheckbox('admin_others_unattached_files', $tab, $section, true, '');
 
-                    $ret = $ui->optionCheckbox('admin_others_attached_to_readable', $tab, $section, true, '');
+        $ret = $ui->optionCheckbox('admin_others_attached_to_readable', $tab, $section, true, '');
 
-                    $ret = $ui->optionCheckbox('admin_others_attached_files', $tab, $section, true, '');
+        $ret = $ui->optionCheckbox('admin_others_attached_files', $tab, $section, true, '');
 
-                    echo '<br />';
+        echo '<br />';
 
-                    $ret = $ui->optionCheckbox('edit_others_attached_files', $tab, $section, true, '');
+        $ret = $ui->optionCheckbox('edit_others_attached_files', $tab, $section, true, '');
 
-                    $ret = $ui->optionCheckbox('attachment_edit_requires_parent_access', $tab, $section, true, '');
+        $ret = $ui->optionCheckbox('attachment_edit_requires_parent_access', $tab, $section, true, '');
 
-                    $ret = $ui->optionCheckbox('own_attachments_always_editable', $tab, $section, true, '');
-                    ?>
+        $ret = $ui->optionCheckbox('own_attachments_always_editable', $tab, $section, true, '');
+        ?>
                 </td>
             </tr>
         <?php endif; // any options accessable in this section
@@ -303,28 +303,28 @@ class SettingsTabEditing
                                 <?php
                                 esc_html_e('Specified element IDs also require the following site-wide Role:', 'press-permit-core');
 
-                                $admin_caption = (!empty($custom_content_admin_cap)) ? esc_html__('Content Administrator', 'press-permit-core') : PWP::__wp('Administrator');
+                            $admin_caption = (!empty($custom_content_admin_cap)) ? esc_html__('Content Administrator', 'press-permit-core') : PWP::__wp('Administrator');
 
-                                $captions = [
-                                    '0' => esc_html__('no requirement', 'press-permit-core'),
-                                    '1' => esc_html__('Contributor / Author / Editor', 'press-permit-core'),
-                                    'author' => esc_html__('Author / Editor', 'press-permit-core'),
-                                    'editor' => PWP::__wp('Editor'),
-                                    'admin_content' => esc_html__('Content Administrator', 'press-permit-core'),
-                                    'admin_user' => esc_html__('User Administrator', 'press-permit-core'),
-                                    'admin_option' => esc_html__('Option Administrator', 'press-permit-core')
-                                ];
+                            $captions = [
+                            '0' => esc_html__('no requirement', 'press-permit-core'),
+                            '1' => esc_html__('Contributor / Author / Editor', 'press-permit-core'),
+                            'author' => esc_html__('Author / Editor', 'press-permit-core'),
+                            'editor' => PWP::__wp('Editor'),
+                            'admin_content' => esc_html__('Content Administrator', 'press-permit-core'),
+                            'admin_user' => esc_html__('User Administrator', 'press-permit-core'),
+                            'admin_option' => esc_html__('Option Administrator', 'press-permit-core')
+                            ];
 
-                                foreach ($captions as $key => $value) {
-                                    $key = strval($key);
-                                    echo "<div style='margin: 0 0 0.5em 2em;'><label for='" . esc_attr("{$id}_{$key}") . "'>";
-                                    $checked = ($current_setting === $key) ? ' checked ' : '';
+                            foreach ($captions as $key => $value) {
+                                $key = strval($key);
+                                echo "<div style='margin: 0 0 0.5em 2em;'><label for='" . esc_attr("{$id}_{$key}") . "'>";
+                                $checked = ($current_setting === $key) ? ' checked ' : '';
 
-                                    echo "<input name='" . esc_attr($id) . "' type='radio' id='" . esc_attr("{$id}_{$key}") . "' value='" . esc_attr($key) . "' " . esc_attr($checked) . " /> ";
-                                    echo esc_html($value);
-                                    echo '</label></div>';
-                                }
-                                ?>
+                                echo "<input name='" . esc_attr($id) . "' type='radio' id='" . esc_attr("{$id}_{$key}") . "' value='" . esc_attr($key) . "' " . esc_attr($checked) . " /> ";
+                                echo esc_html($value);
+                                echo '</label></div>';
+                            }
+                            ?>
                             </div>
                         <?php endif; ?>
 
