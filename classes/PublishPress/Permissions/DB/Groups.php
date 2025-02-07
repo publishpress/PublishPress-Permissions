@@ -83,8 +83,9 @@ class Groups
         foreach (array_keys($results) as $key) {
             $results[$key]->name = stripslashes($results[$key]->name);
 
-            if (isset($results[$key]->group_description))
+            if (isset($results[$key]->group_description)) {
                 $results[$key]->group_description = stripslashes($results[$key]->group_description);
+            }
 
             // strip out Revisionary metagroups if we're not using them (todo: API)
             if ($results[$key]->metagroup_type) {
@@ -114,15 +115,17 @@ class Groups
             if (is_object($first)) {
                 $actual_ids = [];
 
-                foreach ($group_id as $group)
+                foreach ($group_id as $group) {
                     $actual_ids[] = $group->ID;
+                }
 
                 $group_id = $actual_ids;
             }
         }
 
-        if ('any' == $status)
+        if ('any' == $status) {
             $status = '';
+        }
 
         $wpdb->members_table = apply_filters('presspermit_use_group_members_table', $wpdb->pp_group_members, $agent_type);
 
@@ -138,14 +141,15 @@ class Groups
         if ('id' == $cols) {
             // phpcs Note: groups IN clause, status clause constructed and sanitized above.
 
-            if (!$results = $wpdb->get_col(
-                $wpdb->prepare(
-                    "SELECT u2g.user_id FROM $wpdb->members_table AS u2g"
+            if (
+                !$results = $wpdb->get_col(
+                    $wpdb->prepare(
+                        "SELECT u2g.user_id FROM $wpdb->members_table AS u2g"
                         . " WHERE u2g.group_id IN ('$groups_csv') AND u2g.group_id > 0 AND member_type = %s $status_clause",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
-                    $member_type
+                        $member_type
+                    )
                 )
-            )) {
+            ) {
                 $results = [];
             }
         } elseif ('count' == $cols) {
@@ -155,7 +159,6 @@ class Groups
                 $wpdb->prepare(
                     "SELECT COUNT(u2g.user_id) FROM $wpdb->members_table AS u2g"
                         . " WHERE u2g.group_id IN ('$groups_csv') AND u2g.group_id > 0 AND member_type = %s $status_clause",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
                     $member_type
                 )
             );
@@ -172,7 +175,6 @@ class Groups
                                 . " INNER JOIN $wpdb->members_table AS u2g ON u2g.user_id = u.ID AND member_type = %s $status_clause"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                                 . " AND u2g.group_id IN ('$groups_csv') ORDER BY u.display_name",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
                             $member_type
                         ),
                         OBJECT_K
@@ -192,7 +194,6 @@ class Groups
                                 . " INNER JOIN $wpdb->members_table AS u2g ON u2g.user_id = u.ID AND member_type = %s $status_clause"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                                 . " AND u2g.group_id IN ('$groups_csv') ORDER BY u.user_login",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
                             $member_type
                         ),
                         OBJECT_K
@@ -221,7 +222,6 @@ class Groups
                                 . " INNER JOIN $wpdb->members_table AS u2g ON u2g.user_id = u.ID AND member_type = %s $status_clause"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                                 . " AND u2g.group_id IN ('$groups_csv') $orderby_clause",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
                             $member_type
                         ),
                         OBJECT_K
@@ -349,7 +349,6 @@ class Groups
                     "SELECT * FROM $wpdb->members_table $join"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                         . " WHERE member_type = %s $status_clause $metagroup_clause AND user_id IN ('$user_id_csv')",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
                     $member_type
                 )
             );

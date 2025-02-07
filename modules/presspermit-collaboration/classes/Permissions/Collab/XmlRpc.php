@@ -1,9 +1,11 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class XmlRpc
 {
-    function __construct() {
+    public function __construct()
+    {
         if (version_compare('7.0', phpversion(), '>=')) {
             // phpcs:ignore WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsRemoteFile
             $raw_post_data = file_get_contents('php://input');
@@ -23,19 +25,19 @@ class XmlRpc
         add_filter('pre_post_category', [$this, 'flt_pre_post_category']);
     }
 
-    function flt_adjust_methods($methods)
+    public function flt_adjust_methods($methods)
     {
         $methods['mt.setPostCategories'] = [$this, 'mt_set_categories'];
         return $methods;
     }
 
-    function flt_pre_post_category($catids)
+    public function flt_pre_post_category($catids)
     {
         return apply_filters('presspermit_pre_object_terms', $catids, 'category');
     }
 
     // Override default method. Otherwise categories are unfilterable.
-    function mt_set_categories($args)
+    public function mt_set_categories($args)
     {
         global $wp_xmlrpc_server;
         $wp_xmlrpc_server->escape($args);
@@ -45,11 +47,13 @@ class XmlRpc
         $password = $args[2];
         $categories = $args[3];
 
-        if (!$user = $wp_xmlrpc_server->login($username, $password))
+        if (!$user = $wp_xmlrpc_server->login($username, $password)) {
             return $wp_xmlrpc_server->error;
+        }
 
-        if (empty($categories))
+        if (empty($categories)) {
             $categories = [];
+        }
 
         $catids = [];
         foreach ($categories as $cat) {
@@ -60,18 +64,20 @@ class XmlRpc
 
         do_action('xmlrpc_call', 'mt.setPostCategories');
 
-        if (!get_post($post_ID))
+        if (!get_post($post_ID)) {
             return new IXR_Error(404, esc_html__('Invalid post ID.'));
+        }
 
-        if (!current_user_can('edit_post', $post_ID))
+        if (!current_user_can('edit_post', $post_ID)) {
             return new IXR_Error(401, esc_html__('Sorry, you cannot edit this post.'));
+        }
 
         wp_set_post_categories($post_ID, $catids);
 
         return true;
     }
 
-    function act_wlw_on_init()
+    public function act_wlw_on_init()
     {
         global $wp_xmlrpc_server;
 

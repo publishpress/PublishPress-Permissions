@@ -4,15 +4,16 @@ namespace PublishPress\Permissions\UI\Dashboard;
 
 class UsersListing
 {
-    public function __construct() {
+    public function __construct()
+    {
         add_filter('manage_users_columns', [$this, 'fltUsersColumns']);
         add_filter('manage_users_custom_column', [$this, 'fltUsersCustomColumn'], 99, 3); // filter late in case other plugin filters do not retain passed value
         add_filter('manage_users_sortable_columns', [$this, 'fltUsersColumnsSortable']);
-        
+
         add_filter('pre_user_query', [$this, 'fltUserQueryExceptions']);
-        
+
         add_action('restrict_manage_users', [$this, 'actBulkGroupsUI']);
-        
+
         $this->groupsBulk();
     }
 
@@ -24,16 +25,19 @@ class UsersListing
 
         $pp = presspermit();
 
-        if (!$pp->getOption('users_bulk_groups'))
+        if (!$pp->getOption('users_bulk_groups')) {
             return;
+        }
 
-        if (!$agent_type = apply_filters('presspermit_query_group_type', ''))
+        if (!$agent_type = apply_filters('presspermit_query_group_type', '')) {
             $agent_type = 'pp_group';
+        }
 
         $groups = $pp->groups()->getGroups($agent_type, ['include_metagroups' => false]);
 
-        if (!count($groups) || !current_user_can('list_users'))
+        if (!count($groups) || !current_user_can('list_users')) {
             return;
+        }
 
         if (!current_user_can('pp_manage_members')) {
             if (!$editable_groups = apply_filters('presspermit_admin_groups', [])) {
@@ -73,7 +77,7 @@ class UsersListing
             ['title' => esc_html__('Remove selected users from Permission Group', 'press-permit-core')]
         );
 
-        wp_nonce_field( 'pp-bulk-assign-groups', 'pp-bulk-groups-nonce' );
+        wp_nonce_field('pp-bulk-assign-groups', 'pp-bulk-groups-nonce');
     }
 
     public static function fltUsersColumns($defaults)
@@ -144,11 +148,13 @@ class UsersListing
                 $all_group_names = [];
 
                 foreach ($all_group_types as $agent_type) {
-                    if (!isset($all_groups[$agent_type]))
+                    if (!isset($all_groups[$agent_type])) {
                         $all_groups[$agent_type] = $pp_groups->getGroups($agent_type);
+                    }
 
-                    if (empty($all_groups[$agent_type]))
+                    if (empty($all_groups[$agent_type])) {
                         continue;
+                    }
 
                     // Passing WP_User objects as query_user_ids causes each of those user's wp_role metagroups to be synchronized with their WP roles
                     $group_ids = $pp_groups->getGroupsForUser(
@@ -157,7 +163,8 @@ class UsersListing
                         ['cols' => 'id', 'query_user_ids' => array_keys($wp_list_table->items)]
                     );
 
-                    if (('pp_group' == $agent_type) && in_array('pp_net_group', $all_group_types, true)
+                    if (
+                        ('pp_group' == $agent_type) && in_array('pp_net_group', $all_group_types, true)
                         && (1 == get_current_blog_id())
                     ) {
                         continue;
@@ -190,7 +197,7 @@ class UsersListing
                                 if (!empty($any_done)) {
                                     $content .= ', ';
                                 }
-                                
+
                                 if (defined('PP_USERS_UI_GROUP_FILTER_LINK') && !empty($_SERVER['REQUEST_URI'])) {
                                     $url = add_query_arg('pp_group', $_id, esc_url_raw($_SERVER['REQUEST_URI']));
                                     $content .= "<a href='" . esc_url($url) . "'>" . esc_html($name) . "</a>";
@@ -218,7 +225,7 @@ class UsersListing
 
                 if (!isset($role_info)) {
                     $role_info = \PublishPress\Permissions\API::countRoles(
-                        'user', 
+                        'user',
                         ['query_agent_ids' => array_keys($wp_list_table->items)]
                     );
                 }
@@ -233,13 +240,14 @@ class UsersListing
 
                     $hide_roles = apply_filters('presspermit_hide_roles', $hide_roles);
                 }
-                
+
                 $user_object->roles = array_diff($user_object->roles, $hide_roles);
 
                 $role_titles = [];
                 foreach ($user_object->roles as $role_name) {
-                    if (isset($wp_roles->role_names[$role_name]))
+                    if (isset($wp_roles->role_names[$role_name])) {
                         $role_titles[] = $wp_roles->role_names[$role_name];
+                    }
                 }
 
                 if (isset($role_info[$id]) && isset($role_info[$id]['roles'])) {
@@ -261,9 +269,9 @@ class UsersListing
                 $content .= '<span class="pp-group-site-roles">' . implode(', ', $role_titles) . '</span>';
 
                 if ($do_edit_link) {
-                    $content .= '</a>';	
+                    $content .= '</a>';
                 }
-				
+
                 break;
 
             case 'pp_exceptions':
@@ -288,7 +296,6 @@ class UsersListing
             $order = PWP::is_REQUEST('order', 'desc') ? 'DESC' : 'ASC';
 
             $query_obj->query_orderby = "ORDER BY g.group_name $order, $wpdb->users.display_name";                 // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__users
-
         } elseif (PWP::is_REQUEST('pp_no_group')) {
             $query_obj->query_where .= " AND $wpdb->users.ID NOT IN ( SELECT gm.user_id FROM $wpdb->pp_group_members AS gm"  // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__users
                 . " INNER JOIN $wpdb->pp_groups as g ON gm.group_id = g.ID AND g.metagroup_id='' )";
@@ -363,10 +370,11 @@ class UsersListing
             return;
         }
 
-        check_admin_referer( 'pp-bulk-assign-groups', 'pp-bulk-groups-nonce' );
+        check_admin_referer('pp-bulk-assign-groups', 'pp-bulk-groups-nonce');
 
-        if (!current_user_can('list_users'))
+        if (!current_user_can('list_users')) {
             return;
+        }
 
         if (empty($_REQUEST['pp-bulk-group' . $sfx])) {
             return;
@@ -387,10 +395,8 @@ class UsersListing
 
         if (!empty($_REQUEST['pp-add-group-members' . $sfx])) {
             presspermit()->groups()->addGroupUser($group_id, $users);
-
         } elseif (!empty($_REQUEST['pp-remove-group-members' . $sfx])) {
             presspermit()->groups()->removeGroupUser($group_id, $users);
         }
     }
-
 }

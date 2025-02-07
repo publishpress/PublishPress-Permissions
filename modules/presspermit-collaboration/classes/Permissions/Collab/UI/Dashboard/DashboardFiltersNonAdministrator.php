@@ -1,9 +1,10 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class DashboardFiltersNonAdministrator
 {
-    function __construct()
+    public function __construct()
     {
         global $pagenow;
 
@@ -21,7 +22,7 @@ class DashboardFiltersNonAdministrator
         add_action('admin_print_scripts', [$this, 'filter_add_new_button']);
     }
 
-    function header_scripts()
+    public function header_scripts()
     {
         global $current_user, $pagenow;
         // if user is allowed to view and attach files, but not upload them...
@@ -31,7 +32,7 @@ class DashboardFiltersNonAdministrator
                     display: none;
                 }
             </style>
-        <?php
+            <?php
         endif;
 
 
@@ -42,11 +43,11 @@ class DashboardFiltersNonAdministrator
                     display: none;
                 }
             </style>
-        <?php
+            <?php
         endif;
     }
 
-    function footer_scripts()
+    public function footer_scripts()
     {
         global $current_user, $pagenow;
 
@@ -57,19 +58,19 @@ class DashboardFiltersNonAdministrator
                 jQuery(document).ready(function ($) {
                     $('#menu-appearance .wp-submenu-wrap a[href!="nav-menus.php"]').not('[class*="wp-has-submenu"]').parent().remove();
 
-                    <?php if ( defined('PP_SUPPRESS_APPEARANCE_LINK') ): ?>
+                    <?php if (defined('PP_SUPPRESS_APPEARANCE_LINK')) : ?>
                     $('#menu-appearance .wp-submenu-wrap a[href="nav-menus.php"]').closest('li.menu-top').find('a.menu-top').attr('href', 'javascript:blank()');
-                    <?php else: ?>
+                    <?php else : ?>
                     $('#menu-appearance .wp-submenu-wrap a[href="nav-menus.php"]').closest('li.menu-top').find('a.menu-top').attr('href', 'nav-menus.php');
                     <?php endif;?>
                 });
                 /* ]]> */
             </script>
-        <?php
+            <?php
         endif;  // limited nav menu manager?
     } // end function footer_scripts
 
-    function flt_posts_request_bypass($bypass, $request, $args)
+    public function flt_posts_request_bypass($bypass, $request, $args)
     {
         // if Media Library filtering is disabled, don't filter listing for TinyMCE popup either
         if (defined('PP_MEDIA_LIB_UNFILTERED') && (isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'wp-admin/media-upload.php'))) {
@@ -79,7 +80,7 @@ class DashboardFiltersNonAdministrator
         return $bypass;
     }
 
-    function filter_add_new_button()
+    public function filter_add_new_button()
     {
         global $pagenow;
 
@@ -101,7 +102,7 @@ class DashboardFiltersNonAdministrator
                             display: none;
                         }
                     </style>
-                <?php
+                    <?php
                 endif;
             }
         }

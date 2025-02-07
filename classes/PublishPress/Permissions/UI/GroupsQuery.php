@@ -95,7 +95,6 @@ class GroupQuery
             }
 
             $this->query_fields = implode(',', $this->query_fields);
-
         } elseif ('all' == $qv['fields']) {
             $this->query_fields = "$groups_table.*";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         } else {
@@ -185,7 +184,7 @@ class GroupQuery
         }
 
         if ('ID' == $qv['orderby'] || 'id' == $qv['orderby']) {
-        	$this->query_orderby = "ORDER BY $orderby $order";                      // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            $this->query_orderby = "ORDER BY $orderby $order";                      // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         } else {
             $this->query_orderby = "ORDER BY metagroup_type ASC, $orderby $order";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
@@ -250,7 +249,6 @@ class GroupQuery
         if (!empty($qv['include'])) {
             $id_csv = implode("','", wp_parse_id_list($qv['include']));
             $this->query_where .= " AND $groups_table.ID IN ('$id_csv')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-            
         } elseif (!empty($qv['exclude'])) {
             $id_csv = implode("','", wp_parse_id_list($qv['exclude']));
             $this->query_where .= " AND $groups_table.ID NOT IN ('$id_csv')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -273,7 +271,6 @@ class GroupQuery
             $this->results = $wpdb->get_results(
                 "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             );
-
         } else {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $this->results = $wpdb->get_col(
@@ -281,7 +278,7 @@ class GroupQuery
             );
         }
 
-        foreach($this->results as $k => $row) {
+        foreach ($this->results as $k => $row) {
             if (empty($row->ID) && !empty($row->id)) {
                 $this->results[$k]->ID = $this->results[$k]->id;
             }

@@ -1,9 +1,10 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI\Gutenberg;
 
 class PostEdit
 {
-    function __construct() 
+    public function __construct()
     {
         // Gutenberg Block Editor support
         //

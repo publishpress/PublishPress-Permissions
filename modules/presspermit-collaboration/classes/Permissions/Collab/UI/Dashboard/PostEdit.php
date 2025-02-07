@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class PostEdit
 {
-    function __construct()
+    public function __construct()
     {
         add_action('admin_head', [$this, 'ui_hide_admin_divs']);
         add_action('admin_print_scripts', [$this, 'ui_add_js']);
@@ -28,7 +28,7 @@ class PostEdit
         }
     }
 
-    function fltGetPages_clauses($clauses, $post_type, $args)
+    public function fltGetPages_clauses($clauses, $post_type, $args)
     {
         global $wpdb, $post;
 
@@ -51,11 +51,13 @@ class PostEdit
 
             $required_operation = (presspermit()->getOption('page_parent_editable_only')) ? 'edit' : 'associate';
 
-            if ($restriction_where = \PublishPress\Permissions\PageFilters::getRestrictionClause(
-                $required_operation,
-                $post_type,
-                compact('col_id')
-            )) {
+            if (
+                $restriction_where = \PublishPress\Permissions\PageFilters::getRestrictionClause(
+                    $required_operation,
+                    $post_type,
+                    compact('col_id')
+                )
+            ) {
                 $clauses['where'] .= $restriction_where;
             }
 
@@ -82,7 +84,7 @@ class PostEdit
         return $clauses;
     }
 
-    function flt_post_updated_messages($messages)
+    public function flt_post_updated_messages($messages)
     {
         if (!presspermit()->isUserUnfiltered()) {
             if ($type_obj = presspermit()->getTypeObject('post', PWP::findPostType())) {
@@ -96,7 +98,7 @@ class PostEdit
         return $messages;
     }
 
-    function ui_hide_admin_divs()
+    public function ui_hide_admin_divs()
     {
         global $pagenow;
         if (!in_array($pagenow, ['post.php', 'post-new.php'])) {
@@ -114,7 +116,7 @@ class PostEdit
         }
     }
 
-    function ui_add_js()
+    public function ui_add_js()
     {
         global $wp_scripts;
 
@@ -131,7 +133,7 @@ class PostEdit
         wp_enqueue_script('presspermit-collab-post-edit', PRESSPERMIT_COLLAB_URLPATH . "/common/js/post-edit{$suffix}.js", [], PRESSPERMIT_COLLAB_VERSION);
     }
 
-    function default_privacy_js()
+    public function default_privacy_js()
     {
         global $post, $typenow;
 
@@ -150,7 +152,7 @@ class PostEdit
         if (is_numeric($set_visibility) || !get_post_status_object($set_visibility)) {
             $set_visibility = 'private';
         }
-?>
+        ?>
         <script type="text/javascript">
             /* <![CDATA[ */
             jQuery(document).ready(function($) {
@@ -182,7 +184,7 @@ class PostEdit
         <?php
     }
 
-    function suppress_upload_ui()
+    public function suppress_upload_ui()
     {
         $user = presspermit()->getUser();
 
@@ -201,7 +203,7 @@ class PostEdit
                 });
                 //]]>
             </script>
-        <?php
+            <?php
         endif;
 
         if (empty($user->allcaps['upload_files']) && !empty($user->allcaps['edit_files'])) : ?>
@@ -223,7 +225,7 @@ class PostEdit
         endif;
     }
 
-    function suppress_add_category_ui()
+    public function suppress_add_category_ui()
     {
         if (presspermit()->isContentAdministrator()) {
             return;
@@ -246,10 +248,12 @@ class PostEdit
                 || $user->getExceptionTerms('edit', 'include', $post_type, $taxonomy, ['merge_universals' => true])
             ) {
                 $disallow_add_term = true;
-            } elseif ($tt_ids = array_merge(
-                $user->getExceptionTerms('assign', 'exclude', $post_type, $taxonomy, ['merge_universals' => true]),
-                $user->getExceptionTerms('edit', 'exclude', $post_type, $taxonomy, ['merge_universals' => true])
-            )) {
+            } elseif (
+                $tt_ids = array_merge(
+                    $user->getExceptionTerms('assign', 'exclude', $post_type, $taxonomy, ['merge_universals' => true]),
+                    $user->getExceptionTerms('edit', 'exclude', $post_type, $taxonomy, ['merge_universals' => true])
+                )
+            ) {
                 $tt_ids = array_diff($tt_ids, $additional_tt_ids);
                 if (count($tt_ids)) {
                     $disallow_add_term = true;
@@ -263,21 +267,23 @@ class PostEdit
             }
 
             if ($disallow_add_term) :
-            ?>
+                ?>
                 <style type="text/css">
                     #<?php echo esc_attr($taxonomy); ?>-adder {
                         display: none;
                     }
                 </style>
-            <?php
+                <?php
             endif;
         }
     }
 
-    function ui_add_author_link()
+    public function ui_add_author_link()
     {
         static $done;
-        if (!empty($done)) return;
+        if (!empty($done)) {
+            return;
+        }
         $done = true;
 
         global $post;
@@ -320,7 +326,7 @@ class PostEdit
                 });
                 /* ]]> */
             </script>
-<?php
+            <?php
         endif;
     }
 }

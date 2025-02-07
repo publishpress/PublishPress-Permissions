@@ -1,12 +1,14 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class RESTInit
 {
-    var $post_terms = [];
-    var $post_updated = [];
+    public $post_terms = [];
+    public $post_updated = [];
 
-    function __construct() {
+    public function __construct()
+    {
         add_action('init', [$this, 'add_post_type_filters'], 99);
 
         add_filter("rest_post_collection_params", [$this, 'post_collection_params'], 1, 2);
@@ -14,7 +16,8 @@ class RESTInit
         add_action('post_updated', [$this, 'actLogPostUpdated']);
     }
 
-    function add_post_type_filters() {
+    public function add_post_type_filters()
+    {
         foreach (presspermit()->getEnabledPostTypes() as $post_type) {
             add_filter("rest_{$post_type}_collection_params", [$this, 'post_collection_params'], 99, 2);
 
@@ -27,11 +30,12 @@ class RESTInit
         }
     }
 
-    function actLogPostUpdated($post_id) {
+    public function actLogPostUpdated($post_id)
+    {
         $this->post_updated[$post_id] = true;
     }
 
-    function post_collection_params($params, $post_type_obj)
+    public function post_collection_params($params, $post_type_obj)
     {
         if (!presspermit()->isContentAdministrator()) {
             if (PWP::is_REQUEST('context', 'edit')) {
@@ -43,19 +47,21 @@ class RESTInit
     }
 
     // log post terms already stored prior to REST action
-    function actLogPostTerms($post, $request) {
+    public function actLogPostTerms($post, $request)
+    {
         if (!isset($this->post_terms[$post->ID])) {
             $this->post_terms[$post->ID] = [];
         }
 
-        foreach(get_object_taxonomies($post->post_type, 'objects') as $tx) {
+        foreach (get_object_taxonomies($post->post_type, 'objects') as $tx) {
             $this->post_terms[$tx->rest_base] = wp_get_object_terms($post->ID, $tx->name, ['fields' => 'ids']);
         }
     }
 
     // prevent unauthorized term assignment or removal
-    function actFilterPostTerms($post, $request) {
-        foreach(get_object_taxonomies($post->post_type, 'objects') as $tx) {
+    public function actFilterPostTerms($post, $request)
+    {
+        foreach (get_object_taxonomies($post->post_type, 'objects') as $tx) {
             if (!isset($request[$tx->rest_base])) {
                 continue;
             }
@@ -75,20 +81,21 @@ class RESTInit
         }
     }
 
-    function page_parent_query_args($args, $request) {
+    public function page_parent_query_args($args, $request)
+    {
         $params = $request->get_params();
 
         if (is_array($params) && !empty($params['parent_exclude']) && !empty($params['context'] && ('edit' == $params['context']))) {
             $post_statuses = apply_filters(
-                'presspermit_guten_parent_statuses', 
+                'presspermit_guten_parent_statuses',
                 PWP::getPostStatuses(['internal' => false, 'post_type' => $args['post_type']], 'names'),
                 $args,
                 $request
             );
-            
+
             if ($is_administrator = presspermit()->isContentAdministrator()) {
                 $pages = get_pages(
-                    ['post_type' => $args['post_type'], 
+                    ['post_type' => $args['post_type'],
                     'no_pp_filter' => 1,
                     'post_status' => $post_statuses,
                     ]
@@ -96,9 +103,9 @@ class RESTInit
             } else {
                 require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/PostEdit.php');
                 new \PublishPress\Permissions\Collab\UI\Dashboard\PostEdit();
-                
+
                 $pages = get_pages(
-                    ['post_type' => $args['post_type'], 
+                    ['post_type' => $args['post_type'],
                     'exclude' => (!empty($params['exclude'])) ? $params['exclude'] : [],    // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                     'parent_exclude' => (!empty($params['parent_exclude'])) ? $params['parent_exclude'] : [],
                     'required_operation' => (presspermit()->getOption('page_parent_editable_only')) ? 'edit' : 'associate',
@@ -110,8 +117,8 @@ class RESTInit
             }
 
             $include_page_ids = [];
-            foreach($pages as $page) {
-            	$include_page_ids []= $page->ID;
+            foreach ($pages as $page) {
+                $include_page_ids [] = $page->ID;
             }
 
             // always include existing page parent value as a dropdown option
@@ -126,7 +133,7 @@ class RESTInit
 
             if ($post_id) {
                 if ($current_parent = get_post_field('post_parent', $post_id)) {
-                    $include_page_ids []= $current_parent;
+                    $include_page_ids [] = $current_parent;
                 }
             }
 
@@ -134,8 +141,8 @@ class RESTInit
             $args['post_status'] = $post_statuses;
 
             if (defined('PP_PAGE_PARENT_NOPAGING')) {
-            	$args['nopaging'] = 1;
-			}
+                $args['nopaging'] = 1;
+            }
 
             $args['orderby'] = presspermit()->getOption('page_parent_order') ? 'post_title' : 'menu_order';
 
@@ -152,13 +159,14 @@ class RESTInit
         return $args;
     }
 
-    function page_parent_results($results, $query_obj) {
+    public function page_parent_results($results, $query_obj)
+    {
         if (!$results) {
             return $results;
         }
 
         require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Ancestry.php');
-        
+
         $post_type = (isset($query_obj->query_vars['post_type'])) ? $query_obj->query_vars['post_type'] : 'page';
 
         $ancestors = \PressShack\Ancestry::getPageAncestors(0, $post_type); // array of all ancestor IDs for keyed page_id, with direct parent first

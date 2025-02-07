@@ -1,13 +1,15 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class Capabilities
 {
-    var $all_taxonomy_caps = [];  // $all_taxonomy_caps = array of cap names
+    public $all_taxonomy_caps = [];  // $all_taxonomy_caps = array of cap names
     private $processed_taxonomies = [];
     private static $instance = null;
 
-    public static function instance() {
+    public static function instance()
+    {
         if (is_null(self::$instance)) {
             self::$instance = new Capabilities();
         }
@@ -26,24 +28,25 @@ class Capabilities
         add_action('presspermit_refresh_capabilities', [$this, 'forceDistinctTaxonomyCaps']);
     }
 
-    function fltAdministratorCaps($caps)
+    public function fltAdministratorCaps($caps)
     {
         return array_merge($caps, array_fill_keys(array_keys($this->all_taxonomy_caps), true));
     }
 
-    function fltExcludeArbitraryCaps($exclude_caps)
+    public function fltExcludeArbitraryCaps($exclude_caps)
     {
         return array_merge($exclude_caps, $this->all_taxonomy_caps);
     }
 
-    function forceDistinctTaxonomyCaps()
+    public function forceDistinctTaxonomyCaps()
     {
         global $wp_taxonomies, $wp_roles;
 
         // Work around bug in More Taxonomies (and possibly other plugins) where category taxonomy is overriden without setting it public
         foreach (['category', 'post_tag'] as $taxonomy) {
-            if (isset($wp_taxonomies[$taxonomy]))
+            if (isset($wp_taxonomies[$taxonomy])) {
                 $wp_taxonomies[$taxonomy]->public = true;
+            }
         }
 
         $use_taxonomies = array_diff($this->getAssistedTaxonomies(), $this->processed_taxonomies);
@@ -91,15 +94,17 @@ class Capabilities
             if ('yes' == $wp_taxonomies[$taxonomy]->public) {
                 $wp_taxonomies[$taxonomy]->public = true;
 
-            // clean up a More Taxonomies quirk (otherwise wp_get_taxonomy_object will fail when filtering for public => true)
+                // clean up a More Taxonomies quirk (otherwise wp_get_taxonomy_object will fail when filtering for public => true)
             } elseif (('' === $wp_taxonomies[$taxonomy]->public) && (!empty($wp_taxonomies[$taxonomy]->query_var_bool))) {
                 $wp_taxonomies[$taxonomy]->public = true;
             }
 
             $tx_caps = (array)$wp_taxonomies[$taxonomy]->cap;
 
-            if ((!in_array($taxonomy, $use_taxonomies, true) || empty($wp_taxonomies[$taxonomy]->public))
-                && ('nav_menu' != $taxonomy)) {
+            if (
+                (!in_array($taxonomy, $use_taxonomies, true) || empty($wp_taxonomies[$taxonomy]->public))
+                && ('nav_menu' != $taxonomy)
+            ) {
                 continue;
             }
 
@@ -126,17 +131,17 @@ class Capabilities
                 }
 
                 // First, force taxonomy-specific capabilities.
-                // (Don't allow any capability defined for this taxonomy to match any capability defined for category or post tag 
+                // (Don't allow any capability defined for this taxonomy to match any capability defined for category or post tag
                 // (unless this IS category or post tag)
                 foreach ($tx_specific_caps as $cap_property => $replacement_cap_format) {
                     // If this capability is also defined as another taxonomy cap, replace it
                     // note: greater than check is on array value, not count
                     if (!empty($tx_caps[$cap_property]) && ($this->all_taxonomy_caps[$tx_caps[$cap_property]] > 1)) {
-
                         // ... but leave it alone if it is a standard taxonomy-specific cap for this taxonomy
-                        if (($tx_caps[$cap_property] != str_replace('_terms', "_{$plural_type}", $cap_property))
-                            && ($tx_caps[$cap_property] != str_replace('_terms', "_{$taxonomy}s", $cap_property))) {
-
+                        if (
+                            ($tx_caps[$cap_property] != str_replace('_terms', "_{$plural_type}", $cap_property))
+                            && ($tx_caps[$cap_property] != str_replace('_terms', "_{$taxonomy}s", $cap_property))
+                        ) {
                             $wp_taxonomies[$taxonomy]->cap->$cap_property = str_replace('_terms', "_{$plural_type}", $replacement_cap_format);
                         }
                     }
@@ -182,14 +187,14 @@ class Capabilities
         if (current_user_can('administrator') || current_user_can('pp_administer_content')) {  // @ todo: support restricted administrator
             global $current_user;
             $current_user->allcaps = array_merge(
-                $current_user->allcaps, 
+                $current_user->allcaps,
                 array_fill_keys(array_keys($this->all_taxonomy_caps), true)
             );
 
             $user = presspermit()->getUser();
             if (!empty($user)) {
                 $user->allcaps = array_merge(
-                    $user->allcaps, 
+                    $user->allcaps,
                     array_fill_keys(array_keys($this->all_taxonomy_caps), true)
                 );
             }
@@ -201,8 +206,9 @@ class Capabilities
         $this->processed_taxonomies = array_merge($this->processed_taxonomies, $use_taxonomies);
     }
 
-    function getAssistedTaxonomies()
-    {     // apply CME filter only if CME is active
+    public function getAssistedTaxonomies()
+    {
+        // apply CME filter only if CME is active
         $tx_args = ['public' => true];
 
         return (defined('CAPSMAN_VERSION'))
@@ -210,7 +216,7 @@ class Capabilities
             : presspermit()->getEnabledTaxonomies($tx_args);
     }
 
-    function getDetailedTaxonomies()
+    public function getDetailedTaxonomies()
     {
         if (!defined('CAPSMAN_VERSION')) { // currently relying on CME settings UI
             return [];

@@ -26,8 +26,9 @@ class PluginUpdated
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'buffer_metagroup_id_%'");
 
-            if (version_compare($prev_version, '2.7-beta', '>=')
-            && version_compare($prev_version, '2.7-beta3', '<')
+            if (
+                version_compare($prev_version, '2.7-beta', '>=')
+                && version_compare($prev_version, '2.7-beta3', '<')
             ) {
                 // Previous 2.7 betas added wrong capabilities
                 // (todo: possibly migrate all capabilities, but not yet)
@@ -37,7 +38,7 @@ class PluginUpdated
                     $role->add_cap('pp_create_groups');
                     $role->add_cap('pp_delete_groups');
                 }
-        
+
                 if ($role = @get_role('editor')) {
                     $role->remove_cap('presspermit_create_groups');
                     $role->remove_cap('presspermit_delete_groups');
@@ -48,20 +49,22 @@ class PluginUpdated
                 // Delete any invalid user metagroup relationships from bad buffer_metagroup_id values
                 self::syncWordPressRoles();
             }
-        
-        	do_action('presspermit_version_updated', $prev_version);
+
+            do_action('presspermit_version_updated', $prev_version);
 
             if (version_compare($prev_version, '3.11.3', '<')) {
                 if (false === get_option('presspermit_pattern_roles_include_generic_rolecaps')) {
                     // If any type-specific supplemental roles are already stored, default to previous behavior of including many generic capabilities from Pattern Role
-                    
+
                     // Direct query on plugin table for version update operation
                     // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                     if ($wpdb->get_row("SELECT assignment_id FROM $wpdb->ppc_roles WHERE role_name LIKE '%:%'")) {
                         update_option('presspermit_pattern_roles_include_generic_rolecaps', 1);
                     }
                 }
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '3.8-beta2', '<')) {
                 // Restore taxonomy_children option arrays now that an alternate filtering mechanism is in place
@@ -75,7 +78,9 @@ class PluginUpdated
                 }
 
                 presspermit()->flags['disable_term_filtering'] = false;
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '3.3.3', '<')) {
                 // Activation of invalid "Custom permissions for Authors" setting on Edit Author screen broke Authors > Authors listing and editing access
@@ -85,38 +90,48 @@ class PluginUpdated
                         update_option('presspermit_enabled_taxonomies', $taxs);
                     }
                 }
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '2.7-beta', '<')) {
                 require_once(PRESSPERMIT_CLASSPATH . '/DB/Migration.php');
                 DB\Migration::migrateOptions();
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '2.3.19-dev', '<')) {
                 require_once(PRESSPERMIT_CLASSPATH . '/DB/Migration.php');
                 DB\Migration::remove_group_members_pk();
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '2.1.47-dev', '<')) {
                 if (!get_option('presspermit_post_blockage_priority')) {
                     // previously, post-assigned reading/editing blockages could be overriden by category-assigned additions
                     update_option('presspermit_legacy_exception_handling', true);
                 }
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '2.1.35', '<')) {
                 require_once(PRESSPERMIT_CLASSPATH . '/DB/Migration.php');
 
                 // Previously, page exceptions were propagated to all descendents, including attachments (but this is unnecessary and potentially undesirable)
                 DB\Migration::delete_propagated_attachment_exceptions();
-                DB\Migration::expose_attachment_exception_items();  // "include" exceptions for Read/Edit operations are exposed but not deleted, since they affect access to other media 
+                DB\Migration::expose_attachment_exception_items();  // "include" exceptions for Read/Edit operations are exposed but not deleted, since they affect access to other media
 
                 // Previously, propagated exceptions were not removed when parent exception assign_for was changed to item only.  Expose them by setting inherited_from to 0
                 //DB\Migration::expose_orphaned_exception_items();
 
                 require_once(PRESSPERMIT_CLASSPATH . '/DB/Permissions.php');
                 \PublishPress\Permissions\DB\Permissions::expose_orphaned_exception_items();
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '2.1.33', '<')) {
                 if ($enabled_taxonomies = get_option('presspermit_enabled_taxonomies')) {
@@ -124,21 +139,26 @@ class PluginUpdated
                     $enabled_taxonomies['post_tag'] = true;
                     update_option('presspermit_enabled_taxonomies', $enabled_taxonomies);
                 }
-            } else break;
+            } else {
+                break;
+            }
 
             if (version_compare($prev_version, '2.1.16-beta', '<')) {
                 // Direct query on plugin table for version update operation
                 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $wpdb->query("UPDATE $wpdb->ppc_exceptions SET for_item_source = 'post' WHERE for_item_source = 'all'");
-            } else break;
+            } else {
+                break;
+            }
         } while (0); // end single-pass version check loop
     }
 
-    public static function deactivateModules($args = []) {
-        $deactivated = (isset($args['current_deactivations'])) 
-        ? $args['current_deactivations'] 
+    public static function deactivateModules($args = [])
+    {
+        $deactivated = (isset($args['current_deactivations']))
+        ? $args['current_deactivations']
         : get_option('presspermit_deactivated_modules');
-        
+
         if (!$deactivated) {
             $deactivations = [];
         }
@@ -148,8 +168,8 @@ class PluginUpdated
         } else {
             // default deactivations
             $new_deactivations = [
-                'presspermit-circles', 
-                'presspermit-file-access', 
+                'presspermit-circles',
+                'presspermit-file-access',
                 'presspermit-membership'
             ];
         }
@@ -167,10 +187,10 @@ class PluginUpdated
         }
 
         $deactivated = array_merge(
-            $deactivated, 
+            $deactivated,
             array_fill_keys($new_deactivations, (object)[])
         );
-        
+
         update_option('presspermit_deactivated_modules', $deactivated);
     }
 
@@ -178,15 +198,15 @@ class PluginUpdated
     {
         $administrator_caps = array_fill_keys(
             [
-            'pp_manage_settings', 
-            'pp_administer_content', 
-            'pp_create_groups', 
-            'pp_edit_groups', 
-            'pp_delete_groups', 
-            'pp_manage_members', 
-            'pp_assign_roles', 
+            'pp_manage_settings',
+            'pp_administer_content',
+            'pp_create_groups',
+            'pp_edit_groups',
+            'pp_delete_groups',
+            'pp_manage_members',
+            'pp_assign_roles',
             'pp_set_read_exceptions'
-            ], 
+            ],
             true
         );
 
@@ -230,11 +250,13 @@ class PluginUpdated
 
         // Direct query on plugin table for version update operation
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        if ($orphan_ids = $wpdb->get_col(
-            "SELECT eitem_id FROM $wpdb->ppc_exception_items AS i INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id "
-            . "WHERE ( e.via_item_source = 'post' AND i.item_id NOT IN ( SELECT ID FROM $wpdb->posts ) )"
-            . " OR ( e.via_item_source = 'term' AND i.item_id NOT IN ( SELECT term_taxonomy_id FROM $wpdb->term_taxonomy ) )"
-        )) {
+        if (
+            $orphan_ids = $wpdb->get_col(
+                "SELECT eitem_id FROM $wpdb->ppc_exception_items AS i INNER JOIN $wpdb->ppc_exceptions AS e ON e.exception_id = i.exception_id "
+                . "WHERE ( e.via_item_source = 'post' AND i.item_id NOT IN ( SELECT ID FROM $wpdb->posts ) )"
+                . " OR ( e.via_item_source = 'term' AND i.item_id NOT IN ( SELECT term_taxonomy_id FROM $wpdb->term_taxonomy ) )"
+            )
+        ) {
             $orphan_id_csv = implode("','", array_map('intval', $orphan_ids));
 
             $wpdb->query(

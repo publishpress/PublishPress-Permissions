@@ -4,7 +4,8 @@ namespace PublishPress\Permissions;
 
 class CommentFiltersAdministrator
 {
-    public function __construct() {
+    public function __construct()
+    {
         add_filter('comments_clauses', [$this, 'fltCommentsClauses']);
     }
 
@@ -14,8 +15,9 @@ class CommentFiltersAdministrator
 
         $stati = get_post_stati(['public' => true, 'private' => true], 'names', 'or');
 
-        if (!defined('PP_NO_ATTACHMENT_COMMENTS'))
+        if (!defined('PP_NO_ATTACHMENT_COMMENTS')) {
             $stati[] = 'inherit';
+        }
 
         $status_csv = "'" . implode("','", array_map('sanitize_key', $stati)) . "'";
         $clauses['where'] = preg_replace(

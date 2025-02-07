@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\UI\Dashboard;
 
 class PostsListing
@@ -24,19 +25,21 @@ class PostsListing
         add_filter('postsFields', [$this, 'fltPostsFields']); // perf
     }
 
-    public function fltCountPosts($counts) {
+    public function fltCountPosts($counts)
+    {
         // don't count posts that are stored with a status that's no longer registered
         $counts = array_intersect_key((array) $counts, array_fill_keys(get_post_stati(), true));
 
         return (object) $counts;
     }
 
-    public function fltCountPostsQuery($query) {
+    public function fltCountPostsQuery($query)
+    {
         global $typenow;
 
         if (!empty($typenow)) {
             if (strpos($query, "ELECT COUNT( 1 )")) {
-                $statuses_clause = " AND post_status IN ('" . implode("','", get_post_stati()) . "')"; 
+                $statuses_clause = " AND post_status IN ('" . implode("','", get_post_stati()) . "')";
                 $query = str_replace("WHERE post_type = '$typenow'", "WHERE post_type = '$typenow' $statuses_clause", $query);
             }
         }

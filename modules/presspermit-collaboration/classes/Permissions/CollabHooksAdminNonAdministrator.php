@@ -1,9 +1,10 @@
 <?php
+
 namespace PublishPress\Permissions;
 
 class CollabHooksAdminNonAdministrator
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('get_terms_args', [$this, 'fltGetTermsArgs'], 50, 2);
         add_filter('terms_clauses', [$this, 'fltGetTermsClauses'], 2, 3);
@@ -20,24 +21,25 @@ class CollabHooksAdminNonAdministrator
         new Collab\CommentFiltersAdmin();
     }
 
-    function fltIsFront($is_front)
+    public function fltIsFront($is_front)
     {
         if (defined('REST_REQUEST') && presspermit()->doingREST()) {
             // rest_pre_dispatch filter only allows with matching rest method (GET, etc)
-            if ('read' == \PublishPress\Permissions\REST::instance()->operation)
+            if ('read' == \PublishPress\Permissions\REST::instance()->operation) {
                 return true;
+            }
         }
 
         return $is_front;
     }
 
-    function fltAjaxEditActions($actions)
-    { 
+    public function fltAjaxEditActions($actions)
+    {
         $actions = array_merge($actions, ['query-attachments', 'mla-query-attachments']);
         return $actions;
     }
 
-    function fltGetPostsOperation($required_operation, $args)
+    public function fltGetPostsOperation($required_operation, $args)
     {
         if (defined('REST_REQUEST') && presspermit()->doingREST()) {
             // rest_pre_dispatch filter only allows with matching rest method (GET, etc)
@@ -49,7 +51,7 @@ class CollabHooksAdminNonAdministrator
         return $required_operation;
     }
 
-    function fltGetTermsOperation($required_operation, $taxonomies, $args)
+    public function fltGetTermsOperation($required_operation, $taxonomies, $args)
     {
         global $pagenow;
 
@@ -61,15 +63,15 @@ class CollabHooksAdminNonAdministrator
                 return ('edit' == $rest->operation) ? 'manage' : $rest->operation;
             }
         } elseif (in_array($pagenow, ['edit-tags.php', 'nav-menus.php'])) {
-            $required_operation = (!PWP::empty_REQUEST('tag_ID') && (empty($args['name']) || ('parent' != $args['name']))) 
-            ? 'manage' 
+            $required_operation = (!PWP::empty_REQUEST('tag_ID') && (empty($args['name']) || ('parent' != $args['name'])))
+            ? 'manage'
             : 'associate';
         }
 
         return $required_operation;
     }
 
-    function fltGetTermsArgs($args, $taxonomies)
+    public function fltGetTermsArgs($args, $taxonomies)
     {
         // terms query should be limited to a single object type for post.php, post-new.php, so only return caps for that object type
         global $pagenow;
@@ -85,15 +87,16 @@ class CollabHooksAdminNonAdministrator
                     $args['required_operation'] = 'assign';
                 }
             }
-        } elseif (in_array($pagenow, ['post.php', 'post-new.php', 'press-this.php']))
+        } elseif (in_array($pagenow, ['post.php', 'post-new.php', 'press-this.php'])) {
             $args['object_type'] = PWP::findPostType();
+        }
 
         return $args;
     }
 
-    function fltGetTermsClauses($clauses, $taxonomies, $args)
+    public function fltGetTermsClauses($clauses, $taxonomies, $args)
     {
-        // If we are dealing with a post taxonomy on a Post Edit Form, include currently stored terms.  
+        // If we are dealing with a post taxonomy on a Post Edit Form, include currently stored terms.
         // User will still not be able to remove them without proper editing roles for object.
         global $pagenow;
 
@@ -106,13 +109,15 @@ class CollabHooksAdminNonAdministrator
 
                 $tx_name = (is_object($taxonomies[0]) && isset($taxonomies[0]->name)) ? $taxonomies[0]->name : $taxonomies[0];
 
-                if (!presspermit()->isTaxonomyEnabled($tx_name))
+                if (!presspermit()->isTaxonomyEnabled($tx_name)) {
                     return $clauses;
+                }
                 //---------------------------------------------------------
 
                 // Don't filter get_terms() call in edit_post(), which invalidates entry term selection if existing term is detected
-                if (!empty($args['name']) && !PWP::empty_POST())
+                if (!empty($args['name']) && !PWP::empty_POST()) {
                     return $clauses;
+                }
 
                 if ($tt_ids = Collab::getObjectTerms($object_id, $taxonomies[0], ['fields' => 'tt_ids', 'pp_no_filter' => true])) {
                     $clauses['where'] = "( {$clauses['where']} OR tt.term_taxonomy_id IN ('" . implode("','", $tt_ids) . "') )";
@@ -123,7 +128,7 @@ class CollabHooksAdminNonAdministrator
         return $clauses;
     }
 
-    function fltGetTermsUniversalExceptions($universal, $required_operation, $taxonomy, $args)
+    public function fltGetTermsUniversalExceptions($universal, $required_operation, $taxonomy, $args)
     {
         if ('assign' == $required_operation) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/TermFiltersAdmin.php');
@@ -133,7 +138,7 @@ class CollabHooksAdminNonAdministrator
         return $universal;
     }
 
-    function fltGetTermsExceptions($tt_ids, $required_operation, $mod_type, $post_type, $taxonomy, $args = [])
+    public function fltGetTermsExceptions($tt_ids, $required_operation, $mod_type, $post_type, $taxonomy, $args = [])
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/TermFiltersAdmin.php');
         return Collab\TermFiltersAdmin::fltGetTermsExceptions($tt_ids, $required_operation, $mod_type, $post_type, $taxonomy, $args);
@@ -141,11 +146,12 @@ class CollabHooksAdminNonAdministrator
         return $tt_ids;
     }
 
-    function fltGetTermsAdditional($additional_tt_ids, $required_operation, $post_type, $taxonomy, $args)
+    public function fltGetTermsAdditional($additional_tt_ids, $required_operation, $post_type, $taxonomy, $args)
     {
         if ('assign' == $required_operation) {
-            if ($_edit_tt_ids = presspermit()->getUser()->getExceptionTerms('edit', 'additional', $post_type, $taxonomy, ['status' => true]))
+            if ($_edit_tt_ids = presspermit()->getUser()->getExceptionTerms('edit', 'additional', $post_type, $taxonomy, ['status' => true])) {
                 $additional_tt_ids = array_merge($additional_tt_ids, Arr::flatten($_edit_tt_ids));
+            }
         }
 
         return $additional_tt_ids;

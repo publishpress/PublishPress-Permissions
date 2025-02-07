@@ -1,4 +1,28 @@
-path: ./dist/publishpress-statuses
 jobs: 10
 extensions:
   - php
+paths:
+  - ./classes
+  - ./includes
+  - ./library
+  - ./modules
+  - ./press-permit-core.php
+  - ./activation.php
+  - ./db-config.php
+  - ./functions.php
+  - ./uninstall.php
+exclude:
+  - ./vendor
+  - ./node_modules
+  - ./dist
+  - ./tests
+  - ./dev-workspace
+  - ./cache
+  - ./.cache
+  - ./.github
+  - ./.vscode
+  - ./.idea
+  - ./.wordpress-org
+  - ./bin
+  - ./languages
+cache: .phplint.cache

@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\DB;
 
 class DatabaseSetup
 {
-    function __construct($last_db_ver = false)
+    public function __construct($last_db_ver = false)
     {
         self::updateSchema($last_db_ver);
     }
@@ -18,15 +18,17 @@ class DatabaseSetup
 
         $charset_collate = '';
 
-        if (!empty($wpdb->charset))
+        if (!empty($wpdb->charset)) {
             $charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
+        }
 
-        if (!empty($wpdb->collate))
+        if (!empty($wpdb->collate)) {
             $charset_collate .= " COLLATE $wpdb->collate";
+        }
 
         // note: dbDelta requires two spaces after PRIMARY KEY, no spaces between KEY columns
 
-        // Groups table def 
+        // Groups table def
         $tabledefs = "CREATE TABLE $wpdb->pp_groups (
          ID bigint(20) NOT NULL auto_increment,
          group_name text NOT NULL,
@@ -59,7 +61,7 @@ class DatabaseSetup
         ;
         ";
 
-        /*  ppc_roles: 
+        /*  ppc_roles:
         // note: dbDelta requires two spaces after PRIMARY KEY, no spaces between KEY columns
         //
             agent_type: user / pp_group / bp_group / etc.
@@ -116,7 +118,7 @@ class DatabaseSetup
         ";
 
         /* ppc_exception_items:
-        
+
             exception_id: foreign key to ppc_exceptions
             item_id: post ID or term_id
             assign_for: exception applies to item or its children?
@@ -142,13 +144,16 @@ class DatabaseSetup
     } //end updateSchema function
 
     public static function dbDelta($queries, $execute = true)
-    {  // lifted from WP because forced inclusion of schema.php interferes with site creation
+    {
+        // lifted from WP because forced inclusion of schema.php interferes with site creation
         global $wpdb;
 
         // Separate individual queries into an array
         if (!is_array($queries)) {
             $queries = explode(';', $queries);
-            if ('' == $queries[count($queries) - 1]) array_pop($queries);
+            if ('' == $queries[count($queries) - 1]) {
+                array_pop($queries);
+            }
         }
 
         $cqueries = []; // Creation Queries
@@ -160,11 +165,11 @@ class DatabaseSetup
             if (preg_match("|CREATE TABLE (?:IF NOT EXISTS )?([^ ]*)|", $qry, $matches)) {
                 $cqueries[trim(strtolower($matches[1]), '`')] = $qry;
                 $for_update[$matches[1]] = 'Created table ' . $matches[1];
-            } else if (preg_match("|CREATE DATABASE ([^ ]*)|", $qry, $matches)) {
+            } elseif (preg_match("|CREATE DATABASE ([^ ]*)|", $qry, $matches)) {
                 array_unshift($cqueries, $qry);
-            } else if (preg_match("|INSERT INTO ([^ ]*)|", $qry, $matches)) {
+            } elseif (preg_match("|INSERT INTO ([^ ]*)|", $qry, $matches)) {
                 $iqueries[] = $qry;
-            } else if (preg_match("|UPDATE ([^ ]*)|", $qry, $matches)) {
+            } elseif (preg_match("|UPDATE ([^ ]*)|", $qry, $matches)) {
                 $iqueries[] = $qry;
             } else {
                 // Unrecognized query type
@@ -218,7 +223,7 @@ class DatabaseSetup
                     $table = sanitize_key($table);
 
                     // Fetch the table column structure from the database (NOTE: table variable is not to be quoted, so sanitized above)
-                    
+
                     $tablefields = $wpdb->get_results("DESCRIBE {$table};");  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                     // For every field in the table
@@ -264,7 +269,7 @@ class DatabaseSetup
 
                     // Index stuff goes here
                     // Fetch the table index structure from the database  (NOTE: table variable is not to be quoted, so sanitized above)
-                    
+
                     $tableindices = $wpdb->get_results("SHOW INDEX FROM {$table};"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                     if ($tableindices) {
@@ -285,7 +290,7 @@ class DatabaseSetup
                             $index_string = '';
                             if ($index_name == 'PRIMARY') {
                                 $index_string .= 'PRIMARY ';
-                            } else if ($index_data['unique']) {
+                            } elseif ($index_data['unique']) {
                                 $index_string .= 'UNIQUE ';
                             }
                             $index_string .= 'KEY ';
@@ -295,7 +300,9 @@ class DatabaseSetup
                             $index_columns = '';
                             // For each column in the index
                             foreach ($index_data['columns'] as $column_data) {
-                                if ($index_columns != '') $index_columns .= ',';
+                                if ($index_columns != '') {
+                                    $index_columns .= ',';
+                                }
                                 // Add the field to the column list string
                                 $index_columns .= $column_data['fieldname'];
                                 if ($column_data['subpart'] != '') {

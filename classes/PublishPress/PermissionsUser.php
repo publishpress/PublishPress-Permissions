@@ -11,14 +11,14 @@ namespace PublishPress;
  */
 class PermissionsUser extends \WP_User
 {
-    var $groups = [];       // USAGE: groups [agent_type] [group id] = 1
-    var $site_roles = [];
+    public $groups = [];       // USAGE: groups [agent_type] [group id] = 1
+    public $site_roles = [];
 
-                            // note: nullstring for_item_type means all post types
-                            
-                            // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-    var $except = [];       // USAGE: except [{operation}_{for_item_source}] [via_item_source] [via_item_type] ['include' or 'exclude'] [for_item_type] [for_item_status] = array of stored IDs / term_taxonomy_ids
-    var $cfg = [];
+    // note: nullstring for_item_type means all post types
+
+    // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+    public $except = [];       // USAGE: except [{operation}_{for_item_source}] [via_item_source] [via_item_type] ['include' or 'exclude'] [for_item_type] [for_item_status] = array of stored IDs / term_taxonomy_ids
+    public $cfg = [];
 
     public function __construct($id = 0, $name = '', $args = [])
     {
@@ -49,7 +49,7 @@ class PermissionsUser extends \WP_User
         }
 
         global $current_user;
-        
+
         if ($id == $current_user->ID) {
             add_filter('map_meta_cap', [$this, 'reinstateCaps'], 99, 3);
         }
@@ -82,7 +82,7 @@ class PermissionsUser extends \WP_User
     public function getUsergroupsClause($table_alias, $args = [])
     {
         global $wpdb;
-        
+
         $args = array_merge(['context' => '', $args]);
 
         $table_alias = ($table_alias) ? sanitize_key($table_alias) . '.' : '';
@@ -91,9 +91,9 @@ class PermissionsUser extends \WP_User
         $pp_groups = $pp->groups();
 
         $arr = [$wpdb->prepare(
-                    "{$table_alias}agent_type = 'user' AND {$table_alias}agent_id = %d",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                    $this->ID
-                )];
+            "{$table_alias}agent_type = 'user' AND {$table_alias}agent_id = %d",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            $this->ID
+        )];
 
         foreach ($pp_groups->getGroupTypes([], 'names') as $agent_type) {
             if (('pp_net_group' == $agent_type) && !get_site_option('presspermit_netwide_groups')) {
@@ -173,7 +173,7 @@ class PermissionsUser extends \WP_User
         } else {
             // Passing user object causes this user's wp_role metagroups to be synchronized with their WP roles
             $user_groups = $pp_groups->getGroupsForUser($this, $args['agent_type'], $args);
-            
+
             if (isset($this->roles)) {
                 if ($pp->getOption('dynamic_wp_roles') || defined('PP_FORCE_DYNAMIC_ROLES')) {
                     $have_role_group_names = [];
@@ -230,9 +230,11 @@ class PermissionsUser extends \WP_User
         // phpcs Note: ug_clause constructed and sanitized by getUsergroupsClause()
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        if ($results = $wpdb->get_results(
-            "SELECT role_name FROM $wpdb->ppc_roles AS uro WHERE 1=1 $u_g_clause"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        )) {
+        if (
+            $results = $wpdb->get_results(
+                "SELECT role_name FROM $wpdb->ppc_roles AS uro WHERE 1=1 $u_g_clause"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            )
+        ) {
             foreach ($results as $row) {
                 $this->site_roles[$row->role_name] = true;
             }
@@ -299,7 +301,8 @@ class PermissionsUser extends \WP_User
         if ($post_type) {
             $for_item_src = post_type_exists($post_type) ? 'post' : 'term';
 
-            if (('post' == $for_item_src) && $taxonomy
+            if (
+                ('post' == $for_item_src) && $taxonomy
                 && !in_array($taxonomy, presspermit()->getEnabledTaxonomies(['object_type' => $post_type]), true)
             ) {
                 return [];
@@ -357,7 +360,7 @@ class PermissionsUser extends \WP_User
     public function reinstateCaps($wp_blogcaps, $orig_reqd_caps, $args)
     {
         global $current_user;
-        							// todo: review (Add New Media)
+        // todo: review (Add New Media)
         if (empty($current_user) || !did_action('presspermit_init') || did_action('presspermit_user_reload')) {
             return $wp_blogcaps;
         }
@@ -366,11 +369,13 @@ class PermissionsUser extends \WP_User
 
         if ($user->ID == $current_user->ID) {
             if ((!isset($args[1]) || $args[1] == $user->ID) && array_diff_key(array_filter($user->allcaps), array_filter($current_user->allcaps))) {
-            	if (defined('PRESSPERMIT_LEGACY_USER_CAPS')) {
-            		$current_user->allcaps = array_merge(array_filter($current_user->allcaps), array_filter($user->allcaps));
-            	} else {
-            		$current_user->allcaps = array_merge(array_filter($current_user->allcaps), array_filter($user->allcaps, function ($x) {return $x === true;}));
-            	}
+                if (defined('PRESSPERMIT_LEGACY_USER_CAPS')) {
+                    $current_user->allcaps = array_merge(array_filter($current_user->allcaps), array_filter($user->allcaps));
+                } else {
+                    $current_user->allcaps = array_merge(array_filter($current_user->allcaps), array_filter($user->allcaps, function ($x) {
+                        return $x === true;
+                    }));
+                }
             }
         }
 

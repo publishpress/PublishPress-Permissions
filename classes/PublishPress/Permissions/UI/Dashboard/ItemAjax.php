@@ -4,32 +4,32 @@ namespace PublishPress\Permissions\UI\Dashboard;
 
 class ItemAjax
 {
-    public function __construct() {
+    public function __construct()
+    {
         check_ajax_referer('pp-ajax');
 
         if (!$via_item_source = PWP::GET_key('via_item_source')) {
             exit;
-		}
-        
+        }
+
         if (!$pp_ajax_item = PWP::GET_key('pp_ajax_item')) {
             exit;
         }
-        
+
         $item_id = PWP::GET_int('item_id');
 
         $html = '';
 
         switch ($pp_ajax_item) {
-
             case 'get_agent_exception_ui':
                 if (!is_user_logged_in()) {
                     echo '<option>' . esc_html__('(login timed out)', 'press-permit-core') . '</option>';
                     exit;
                 }
 
-				if (!current_user_can('pp_assign_roles')) {
-					exit;	
-				}
+                if (!current_user_can('pp_assign_roles')) {
+                    exit;
+                }
 
                 $id_sfx = (!empty($_GET['id_sfx'])) ? sanitize_text_field($_GET['id_sfx']) : '';
 
@@ -47,7 +47,7 @@ class ItemAjax
                 $for_item_source = (taxonomy_exists($for_item_type)) ? 'term' : 'post';
 
                 $via_item_type = PWP::GET_key('via_item_type');
-                
+
                 $agent_ids = (!empty($_GET['agent_ids'])) ? array_map('intval', explode(',', sanitize_text_field($_GET['agent_ids']))) : [];
 
                 if (('post' == $via_item_source) && $item_id && !current_user_can('edit_post', $item_id)) {
@@ -105,8 +105,9 @@ class ItemAjax
                 $exc_render->setOptions($agent_type);
 
                 foreach ($agent_ids as $agent_id) {
-                    if (!$agent_id)
+                    if (!$agent_id) {
                         continue;
+                    }
 
                     $exc_render->drawRow(
                         $agent_type,

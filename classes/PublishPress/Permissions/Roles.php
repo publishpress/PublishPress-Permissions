@@ -4,13 +4,14 @@ namespace PublishPress\Permissions;
 
 class Roles
 {
-    var $anon_user_caps = [];
-    var $pattern_roles = [];
-    var $direct_roles = [];
-    var $disabled_pattern_role_types = [];
+    public $anon_user_caps = [];
+    public $pattern_roles = [];
+    public $direct_roles = [];
+    public $disabled_pattern_role_types = [];
 
     public function __construct()
-    {  // note: PressPermit::registerPatternRole() also available
+    {
+        // note: PressPermit::registerPatternRole() also available
         $this->pattern_roles = ['subscriber' => (object)[], 'contributor' => (object)[], 'author' => (object)[], 'editor' => (object)[]];
 
         add_action('plugins_loaded', [$this, 'actPluginsLoaded'], 15);
@@ -40,17 +41,20 @@ class Roles
 
     public function actPluginsLoaded()
     {
-        if (!presspermit()->moduleActive('status-control') 
-        || !presspermit()->moduleActive('collaboration')) {
+        if (
+            !presspermit()->moduleActive('status-control')
+            || !presspermit()->moduleActive('collaboration')
+        ) {
             add_filter('presspermit_unfiltered_post_types', [$this, 'fltPostTypesNoBBpress'], 1);  // requires additional code, avoid appearance of support
         } else {
             add_filter('presspermit_unfiltered_post_types', [$this, 'fltPostTypesBBpressForumOnly'], 1);  // requires additional code, avoid appearance of support
         }
-        
+
         $this->pattern_roles = apply_filters('presspermit_pattern_roles_raw', $this->pattern_roles);
     }
 
-    public function actLoadPatternRoleLabels() {
+    public function actLoadPatternRoleLabels()
+    {
         $this->pattern_roles = apply_filters('presspermit_pattern_roles', $this->pattern_roles);
     }
 

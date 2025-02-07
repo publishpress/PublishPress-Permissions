@@ -4,8 +4,9 @@ namespace PublishPress\Permissions;
 
 class FrontFilters
 {
-    public function __construct() {
-        if ( $this->isActiveWidgetPrefix('calendar-')) {
+    public function __construct()
+    {
+        if ($this->isActiveWidgetPrefix('calendar-')) {
             add_filter('query', [$this, 'fltCalendar']);
         }
 
@@ -44,7 +45,7 @@ class FrontFilters
     {
         // For hierarchical custom nav menus, hide sub-lists for which all items are unreadable
         // Note: this does not apply to Nav Menus that follow standard structure and class naming convention
-        if (!defined('PRESSPERMIT_NO_NAV_MENU_SCRIPTS')):?>
+        if (!defined('PRESSPERMIT_NO_NAV_MENU_SCRIPTS')) :?>
         <script type="text/javascript">
             /* <![CDATA[ */
            document.querySelectorAll("ul.nav-menu").forEach(
@@ -52,7 +53,7 @@ class FrontFilters
                     if (ulist.querySelectorAll("li").length == 0) {
                         ulist.style.display = "none";
 
-                        <?php if (defined('PRESSPERMIT_HIDE_EMPTY_NAV_MENU_DIV')) /* legacy nav menu support */ :?>
+                        <?php if (defined('PRESSPERMIT_HIDE_EMPTY_NAV_MENU_DIV')) : /* legacy nav menu support */ ?>
                             if (ulist.parentElement.nodeName == "DIV") {
                                 ulist.parentElement.style.display = "none";
                             }

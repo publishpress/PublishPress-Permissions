@@ -38,7 +38,6 @@ class AgentRolesAjax
         }
 
         switch ($pp_ajax_agent_roles) {
-
             case 'get_role_options':
                 if (!is_user_logged_in()) {
                     echo '<option>' . esc_html__('(login timed out)', 'press-permit-core') . '</option>';
@@ -47,13 +46,13 @@ class AgentRolesAjax
 
                 global $wp_roles;
 
-                require_once(PRESSPERMIT_CLASSPATH.'/RoleAdmin.php');
+                require_once(PRESSPERMIT_CLASSPATH . '/RoleAdmin.php');
 
                 if ($roles = \PublishPress\Permissions\RoleAdmin::getTypeRoles($for_item_source, $for_item_type)) {
                     foreach ($roles as $_role_name => $role_title) {
                         if ($pp_admin->userCanAdminRole($_role_name, $for_item_type)) {
                             $selected = ($_role_name == $role_name) ? ' selected ' : '';
-                            echo "<option value='" . esc_attr($_role_name) . "'" . esc_attr($selected) . ">". esc_html($role_title) . "</option>";
+                            echo "<option value='" . esc_attr($_role_name) . "'" . esc_attr($selected) . ">" . esc_html($role_title) . "</option>";
                         }
                     }
                 } else {

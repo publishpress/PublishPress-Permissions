@@ -1,9 +1,10 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class CapabilityFilters
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('presspermit_has_post_cap_vars', [$this, 'fltHasPostCapVars'], 10, 4);
 
@@ -16,8 +17,8 @@ class CapabilityFilters
             add_action('presspermit_has_post_cap_pre', [$this, 'actSavePostPreAssignTerms'], 10, 4);
         }
     }
-    
-    function fltUserHasCapParams($params, $orig_reqd_caps, $args)
+
+    public function fltUserHasCapParams($params, $orig_reqd_caps, $args)
     {
         $defaults = ['orig_cap' => '', 'item_id' => 0];
         $args = array_merge($defaults, $args);
@@ -35,8 +36,9 @@ class CapabilityFilters
                         $return['item_status'] = $_post->post_status;
                     }
                 }
-            } else
+            } else {
                 $return['item_id'] = 0;
+            }
         } elseif ($post_type = PWP::findPostType()) {
             if ($type_obj = get_post_type_object($post_type)) {
                 if (!empty($type_obj->cap->publish_posts) && ($orig_cap == $type_obj->cap->publish_posts)) {
@@ -46,13 +48,14 @@ class CapabilityFilters
             }
         }
 
-        if ($return)
+        if ($return) {
             return (is_array($params)) ? array_merge($params, $return) : $return;
-        else
+        } else {
             return $params;
+        }
     }
 
-    function fltExceptionStati($stati, $item_status, $op, $args = [])
+    public function fltExceptionStati($stati, $item_status, $op, $args = [])
     {
         $status_obj = get_post_status_object($item_status);
 
@@ -65,7 +68,7 @@ class CapabilityFilters
 
                 if (!$item_status || $status_obj->public) {
                     $stati['post_status:publish'] = true;
-            	}
+                }
 
                 return $stati;
             }
@@ -78,10 +81,11 @@ class CapabilityFilters
         return $stati;
     }
 
-    function fltCapOperation($op, $base_cap, $item_type)
+    public function fltCapOperation($op, $base_cap, $item_type)
     {
-        if (!$type_obj = get_post_type_object($item_type))
+        if (!$type_obj = get_post_type_object($item_type)) {
             return '';
+        }
 
         switch ($base_cap) {
             case $type_obj->cap->edit_posts:
@@ -99,7 +103,7 @@ class CapabilityFilters
         return $op;
     }
 
-    function fltHasPostCapVars($force_vars, $wp_sitecaps, $pp_reqd_caps, $vars)
+    public function fltHasPostCapVars($force_vars, $wp_sitecaps, $pp_reqd_caps, $vars)
     {
         $defaults = ['post_type' => '', 'post_id' => 0, 'user_id' => 0, 'required_operation' => ''];
         $vars = array_merge($defaults, $vars);
@@ -153,11 +157,12 @@ class CapabilityFilters
                     $return['return_caps'] = array_merge($wp_sitecaps, $pp_reqd_caps);
                 }
             } // endif retrieved post
-
         } else { // post_id is not a revision
-            if (('read' == $required_operation) && (
-                (isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'wp-admin/revision.php')) || (defined('DOING_AJAX') && DOING_AJAX 
-                && PWP::is_REQUEST('action', 'get-revision-diffs')))
+            if (
+                ('read' == $required_operation) && (
+                    (isset($_SERVER['SCRIPT_NAME']) && strpos(sanitize_text_field($_SERVER['SCRIPT_NAME']), 'wp-admin/revision.php')) || (defined('DOING_AJAX') && DOING_AJAX
+                && PWP::is_REQUEST('action', 'get-revision-diffs'))
+                )
             ) {
                 $return['required_operation'] = 'edit';
             }
@@ -172,13 +177,11 @@ class CapabilityFilters
                 $require_cap = (presspermit()->doingEmbed()) ? apply_filters('presspermit_embed_capability', 'upload_files') : 'upload_files';
 
                 if (!empty($wp_sitecaps[$require_cap])) {
-
                     $_post = ($post_id) ? get_post($post_id) : false;
 
                     if (!$_post || ('attachment' == $_post->post_type)) {
                         if (in_array('edit_posts', $pp_reqd_caps, true)) {
                             $return['return_caps'] = array_merge($wp_sitecaps, ['edit_posts' => true]);
-
                         } elseif (in_array('edit_post', $pp_reqd_caps, true)) {
                             $return['return_caps'] = array_merge($wp_sitecaps, ['edit_post' => true]);
                         }
@@ -192,17 +195,18 @@ class CapabilityFilters
         // note: CapabilityFilters::fltUserHasCap() filters return array to allowed variables before extracting
     }
 
-    function actSavePostPreAssignTerms($pp_reqd_caps, $source_name, $object_type, $post_id)
+    public function actSavePostPreAssignTerms($pp_reqd_caps, $source_name, $object_type, $post_id)
     {
         // Workaround to deal with WP core's checking of publish cap prior to storing categories:
         // Store terms to DB in advance of any cap-checking query which may use those terms to qualify an operation.
-        if (('post' != $source_name) 
-        || !is_admin() 
-        || PWP::empty_REQUEST('action') 
-        || !in_array(PWP::REQUEST_key('action'), ['editpost', 'autosave'])
+        if (
+            ('post' != $source_name)
+            || !is_admin()
+            || PWP::empty_REQUEST('action')
+            || !in_array(PWP::REQUEST_key('action'), ['editpost', 'autosave'])
 
-        // Only pre-assign terms if capability check is for the original post being added or edited. But on new post creation, getPostID() could return zero
-        || (($post_id != PWP::getPostID()) && (PWP::getPostID() || !presspermit()->isInsertedPost($post_id)) && !defined('PRESSPERMIT_LEGACY_PREASSIGN_TERMS'))
+            // Only pre-assign terms if capability check is for the original post being added or edited. But on new post creation, getPostID() could return zero
+            || (($post_id != PWP::getPostID()) && (PWP::getPostID() || !presspermit()->isInsertedPost($post_id)) && !defined('PRESSPERMIT_LEGACY_PREASSIGN_TERMS'))
         ) {
             return;
         }

@@ -15,26 +15,25 @@ class Groups
         require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsHelper.php');
         \PublishPress\Permissions\UI\GroupsHelper::getUrlProperties($url, $referer, $redirect);
 
-        if (!$agent_type = apply_filters('presspermit_query_group_type', ''))
+        if (!$agent_type = apply_filters('presspermit_query_group_type', '')) {
             $agent_type = 'pp_group';
+        }
 
         if (!PWP::empty_REQUEST('action2')) {
             $action = PWP::REQUEST_key('action2');
-
         } elseif (!PWP::empty_REQUEST('action')) {
             $action = PWP::REQUEST_key('action');
-
         } elseif (!$action = PWP::REQUEST_key('pp_action')) {
             $action = '';
         }
 
         switch ($action) {
-
             case 'dodelete':
                 check_admin_referer('pp-bulk-groups');
 
-                if (!current_user_can('pp_delete_groups'))
+                if (!current_user_can('pp_delete_groups')) {
                     wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
+                }
 
                 $group_variant = (! empty($_REQUEST['group_variant'])) ? sanitize_key($_REQUEST['group_variant']) : 'pp_group';
                 $redirect = add_query_arg('group_variant', $group_variant, $redirect);
@@ -69,8 +68,9 @@ class Groups
                     $delete_ids[] = $id;
                 }
 
-                if (!$delete_ids)
+                if (!$delete_ids) {
                     wp_die(esc_html__('You can&#8217;t delete that group.', 'press-permit-core'));
+                }
 
                 $redirect = add_query_arg(['delete_count' => count($delete_ids), 'update' => $update], $redirect);
 
@@ -88,8 +88,9 @@ class Groups
             case 'delete':
                 check_admin_referer('pp-bulk-groups');
 
-                if (!current_user_can('pp_delete_groups'))
+                if (!current_user_can('pp_delete_groups')) {
                     wp_die(esc_html__('You are not permitted to do that.', 'press-permit-core'));
+                }
 
                 if (!empty($_REQUEST['groups'])) {
                     $redirect = esc_url_raw(add_query_arg([

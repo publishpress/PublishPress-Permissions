@@ -13,8 +13,9 @@ class Cloner
 
         check_admin_referer('pp-update-clone_' . $agent_id, '_pp_nonce_clone');
 
-        if ('pp_group' != $agent_type)
+        if ('pp_group' != $agent_type) {
             return false;
+        }
 
         $current_user_id = $current_user->ID;
 
@@ -30,8 +31,9 @@ class Cloner
             $source_agent = presspermit()->groups()->getGroup($source_agent);
         }
 
-        if (!$source_agent || ($source_agent->metagroup_type != 'wp_role'))
+        if (!$source_agent || ($source_agent->metagroup_type != 'wp_role')) {
             return false;
+        }
 
         $source_agent_id = $source_agent->ID;
 
@@ -48,7 +50,6 @@ class Cloner
                     . " ( SELECT %s AS a, %s AS b, %s AS c, %s AS d ) AS tmp WHERE NOT EXISTS"
                     . " (SELECT 1 FROM $wpdb->ppc_roles WHERE agent_type = %s AND agent_id = %s AND role_name = %s)"
                     . " LIMIT 1",
-                    
                     $agent_id,
                     $agent_type,
                     $role_name,
@@ -91,7 +92,6 @@ class Cloner
                     . " ( SELECT %s AS a, %s AS b, %d AS c, %d AS d ) AS tmp"
                     . " WHERE NOT EXISTS (SELECT 1 FROM $wpdb->ppc_exception_items WHERE assign_for = %s"
                     . " AND exception_id = %d AND item_id = %d) LIMIT 1",
-
                     trim($row->assign_for),
                     $target_exception_id,
                     $current_user_id,

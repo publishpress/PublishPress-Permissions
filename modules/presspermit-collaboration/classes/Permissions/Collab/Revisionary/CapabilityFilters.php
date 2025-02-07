@@ -1,9 +1,10 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\Revisionary;
 
 class CapabilityFilters
 {
-    function __construct()
+    public function __construct()
     {
         add_filter('presspermit_has_post_cap_vars', [$this, 'has_post_cap_vars'], 10, 4);
 
@@ -16,33 +17,36 @@ class CapabilityFilters
         add_filter('presspermit_query_post_statuses', [$this, 'fltPostStatuses'], 10, 2);
     }
 
-    function fltPostStatuses($statuses, $args) {
+    public function fltPostStatuses($statuses, $args)
+    {
         global $pagenow;
 
-        if (!empty($args['has_cap_check']) || !PWP::empty_REQUEST('preview') || 'revision.php' == $pagenow 
+        if (
+            !empty($args['has_cap_check']) || !PWP::empty_REQUEST('preview') || 'revision.php' == $pagenow
         ) {
             if (rvy_get_option('pending_revisions')) {
-                $statuses ['pending-revision']= get_post_status_object('pending-revision');
+                $statuses ['pending-revision'] = get_post_status_object('pending-revision');
             }
 
             if (rvy_get_option('scheduled_revisions')) {
-                $statuses ['future-revision']= get_post_status_object('future-revision');
+                $statuses ['future-revision'] = get_post_status_object('future-revision');
             }
         }
 
         return $statuses;
     }
 
-    function fltRevisionaryBlockEditorClearance($missing_caps, $reqd_caps, $post_type, $meta_cap)
+    public function fltRevisionaryBlockEditorClearance($missing_caps, $reqd_caps, $post_type, $meta_cap)
     {
         global $revisionary;
 
         // Prevent improper blockage submitting pending revision from Gutenberg editor
 
-        if (('edit_post' == $meta_cap) && defined('REST_REQUEST') && REST_REQUEST 
-        && !empty($revisionary) && empty($revisionary->skip_revision_allowance)
+        if (
+            ('edit_post' == $meta_cap) && defined('REST_REQUEST') && REST_REQUEST
+            && !empty($revisionary) && empty($revisionary->skip_revision_allowance)
         ) {
-            if ( $type_obj = get_post_type_object($post_type) ) {
+            if ($type_obj = get_post_type_object($post_type)) {
                 $missing_caps = array_diff($missing_caps, (array) $type_obj->cap->edit_published_posts);
             }
         }
@@ -51,7 +55,7 @@ class CapabilityFilters
     }
 
     // hooks to map_meta_cap
-    function fltAdjustReqdCaps($reqd_caps, $orig_cap, $user_id, $args)
+    public function fltAdjustReqdCaps($reqd_caps, $orig_cap, $user_id, $args)
     {
         global $pagenow, $current_user;
 
@@ -73,17 +77,18 @@ class CapabilityFilters
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/Revisionary/Admin{$legacy_suffix}.php");
             $admin_class = "\PublishPress\Permissions\Collab\Revisionary\Admin{$legacy_suffix}";
 
-            if (!empty($_SERVER['REQUEST_URI']) && false !== strpos( urldecode(esc_url_raw($_SERVER['REQUEST_URI'])), 'admin.php?page=rvy-revisions') ) {
+            if (!empty($_SERVER['REQUEST_URI']) && false !== strpos(urldecode(esc_url_raw($_SERVER['REQUEST_URI'])), 'admin.php?page=rvy-revisions')) {
                 $object_type = $this->postTypeFromCaps($reqd_caps);
             } else {
                 $object_type = PWP::findPostType($args[0]); // $args[0] is object id; type property will be pulled from object
             }
 
 
-            // ensure proper cap requirements when a non-Administrator Quick-Edits or Bulk-Edits Posts/Pages 
+            // ensure proper cap requirements when a non-Administrator Quick-Edits or Bulk-Edits Posts/Pages
             // (which may be included in the edit listing only for revision submission)
-            if (in_array($pagenow, ['edit.php', 'edit-tags.php', 'admin-ajax.php']) && !PWP::empty_REQUEST('action') 
-            && (-1 != PWP::REQUEST_key('action') || (PWP::is_REQUEST('action2') && -1 != PWP::REQUEST_key('action2')))
+            if (
+                in_array($pagenow, ['edit.php', 'edit-tags.php', 'admin-ajax.php']) && !PWP::empty_REQUEST('action')
+                && (-1 != PWP::REQUEST_key('action') || (PWP::is_REQUEST('action2') && -1 != PWP::REQUEST_key('action2')))
             ) {
                 $reqd_caps = $admin_class::fix_table_edit_reqd_caps($reqd_caps, $orig_cap, get_post($args[0]), get_post_type_object($object_type));
             }
@@ -102,8 +107,8 @@ class CapabilityFilters
     private function postTypeFromCaps($caps)
     {
         foreach (get_post_types(['public' => true, 'show_ui' => true], 'object', 'or') as $post_type => $type_obj) {
-            $caps = array_diff($caps, ['edit_posts', 'edit_pages']); // ignore generic caps defined for extraneous properties (assign_term, etc.) 
-            if (array_intersect((array)$type_obj->cap,  $caps)) {
+            $caps = array_diff($caps, ['edit_posts', 'edit_pages']); // ignore generic caps defined for extraneous properties (assign_term, etc.)
+            if (array_intersect((array)$type_obj->cap, $caps)) {
                 return $post_type;
             }
         }
@@ -111,13 +116,15 @@ class CapabilityFilters
         return false;
     }
 
-    function has_post_cap_vars($force_vars, $wp_sitecaps, $pp_reqd_caps, $vars)
+    public function has_post_cap_vars($force_vars, $wp_sitecaps, $pp_reqd_caps, $vars)
     {
         $return = [];
 
         if (('read_post' == reset($pp_reqd_caps))) {
-            if (!is_admin() && PWP::is_REQUEST('post_type', 'revision') 
-            && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))) {
+            if (
+                !is_admin() && PWP::is_REQUEST('post_type', 'revision')
+                && (!PWP::empty_REQUEST('preview') || !PWP::empty_REQUEST('preview_id'))
+            ) {
                 $return['pp_reqd_caps'] = ['edit_post'];
             }
         }

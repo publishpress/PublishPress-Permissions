@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class MediaQuery
@@ -26,14 +27,17 @@ class MediaQuery
 
         $pp = presspermit();
 
-        if ('read' == $required_operation)
+        if ('read' == $required_operation) {
             return $where;
+        }
 
-        if (!$limit_statuses)
+        if (!$limit_statuses) {
             $skip_stati_usage_clause = true;
+        }
 
-        if (!$src_table)
+        if (!$src_table) {
             $src_table = ($source_alias) ? $source_alias : $wpdb->posts;
+        }
 
         $comment_query = isset($query_contexts) && in_array('comments', (array)$query_contexts, true);
 
@@ -41,30 +45,34 @@ class MediaQuery
             $admin_others_attached = $pp->getOption('admin_others_attached_files');
         } else {
             if ($admin_others_attached = $pp->getOption('edit_others_attached_files')) {
-                if ($comment_query && ('read' != $required_operation))
+                if ($comment_query && ('read' != $required_operation)) {
                     $admin_others_attached = !empty($current_user->allcaps['edit_others_files']);
+                }
             }
         }
 
         $type_obj = get_post_type_object('attachment');
 
-        if ('delete' == $required_operation)
+        if ('delete' == $required_operation) {
             $reqd_cap = ($type_obj->cap->delete_others_posts != 'edit_others_posts') ? $type_obj->cap->delete_others_posts : 'delete_others_files';
-        else
+        } else {
             $reqd_cap = ($type_obj->cap->edit_others_posts != 'edit_others_posts') ? $type_obj->cap->edit_others_posts : 'edit_others_files';
+        }
 
         // edit_others_unattached_files
-        $admin_others_unattached = (!$has_cap_check || !empty($current_user->allcaps[$reqd_cap])) 
-        && ($pp->getOption('admin_others_unattached_files') 
-            || !empty($current_user->allcaps['list_others_unattached_files']) 
+        $admin_others_unattached = (!$has_cap_check || !empty($current_user->allcaps[$reqd_cap]))
+        && (
+            $pp->getOption('admin_others_unattached_files')
+            || !empty($current_user->allcaps['list_others_unattached_files'])
             || !empty($current_user->allcaps['edit_others_files'])
         );  // PP Setting effectively eliminates cap requirement
 
         $can_edit_others_sitewide = false;
 
         if (!$admin_others_attached || !$admin_others_unattached) {
-            if ($pp->isContentAdministrator())
+            if ($pp->isContentAdministrator()) {
                 $can_edit_others_sitewide = true;
+            }
         }
 
         // optionally hide other users' unattached uploads, but not from site-wide Editors
@@ -97,14 +105,14 @@ class MediaQuery
 
             $author_clause = PWP::postAuthorClause($args);
 
-            $attached_clause = ($admin_others_attached || $can_edit_others_sitewide || $admin_others_attached_to_readable) 
-            ? '' 
+            $attached_clause = ($admin_others_attached || $can_edit_others_sitewide || $admin_others_attached_to_readable)
+            ? ''
             : "AND $author_clause";
 
-            $own_clause = ($pp->getOption('own_attachments_always_editable') || !empty($current_user->allcaps['edit_own_attachments'])) 
-            ? "$author_clause OR " 
+            $own_clause = ($pp->getOption('own_attachments_always_editable') || !empty($current_user->allcaps['edit_own_attachments']))
+            ? "$author_clause OR "
             : '';
-            
+
             $where .= " AND ( {$own_clause}$unattached_clause ( $parent_subquery $attached_clause ) )";
         }
 

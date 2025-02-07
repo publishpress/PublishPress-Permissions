@@ -4,7 +4,7 @@ namespace PublishPress\Permissions;
 
 class PostFiltersFront
 {
-    var $archives_where = '';
+    public $archives_where = '';
 
     public function __construct()
     {
@@ -29,8 +29,9 @@ class PostFiltersFront
 
     public function fltAttsGallery($out, $pairs, $atts)
     {
-        if (!empty($atts['include'])) // force subsequent get_posts() query to be filtered for PP exceptions
+        if (!empty($atts['include'])) { // force subsequent get_posts() query to be filtered for PP exceptions
             add_action('pre_get_posts', [$this, 'actGetGalleryPosts']);
+        }
 
         return $out;
     }
@@ -41,7 +42,7 @@ class PostFiltersFront
         remove_action('pre_get_posts', [$this, 'actGetGalleryPosts']);
     }
 
-    // custom wrapper to clean up after get_previous_post_where, get_next_post_where nonstandard arg syntax 
+    // custom wrapper to clean up after get_previous_post_where, get_next_post_where nonstandard arg syntax
     // (uses alias p for post table, passes "WHERE post_type=...)
     public function fltAdjacentPostWhere($where)
     {

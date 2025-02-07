@@ -1,16 +1,18 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI\Dashboard;
 
 class DashboardFilters
 {
-    function __construct()
+    public function __construct()
     {
         global $pagenow;
 
         define('PRESSPERMIT_COLLAB_URLPATH', plugins_url('', PRESSPERMIT_COLLAB_FILE));
 
-        if (('nav-menus.php' == $pagenow) 
-        || (defined('DOING_AJAX') && DOING_AJAX && PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
+        if (
+            ('nav-menus.php' == $pagenow)
+            || (defined('DOING_AJAX') && DOING_AJAX && PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search']))
         ) {  // Administrators also need this, to add private posts to available items list
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/NavMenuQuery.php');
             new NavMenuQuery();
@@ -40,13 +42,12 @@ class DashboardFilters
 
         add_filter('presspermit_term_include_clause', [$this, 'flt_term_include_clause'], 10, 2);
 
-		// Used only by Permissions Pro < 4.0
+        // Used only by Permissions Pro < 4.0
         add_filter('presspermit_post_status_types', [$this, 'flt_status_links'], 5);
 
         if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisions/PostFilters.php');
             new \PublishPress\Permissions\Collab\Revisions\PostFilters();
-
         } elseif (defined('REVISIONARY_VERSION')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Revisionary/PostFilters.php');
             new \PublishPress\Permissions\Collab\Revisionary\PostFilters();
@@ -58,7 +59,7 @@ class DashboardFilters
         }
     }
 
-    function flt_term_include_clause($clause, $args = [])
+    public function flt_term_include_clause($clause, $args = [])
     {
         if (empty($args['required_operation']) || ('read' == $args['required_operation'])) {
             $defaults = ['src_table' => '', 'required_operation' => ''];
@@ -75,10 +76,10 @@ class DashboardFilters
         return $clause;
     }
 
-    function menu_handler($pp_page)
+    public function menu_handler($pp_page)
     {
         if (in_array($pp_page, ['presspermit-role-usage', 'presspermit-role-usage-edit'], true)) {
-            $class_name = str_replace('-', '', ucwords( str_replace('presspermit-', '', $pp_page), '-') );
+            $class_name = str_replace('-', '', ucwords(str_replace('presspermit-', '', $pp_page), '-'));
 
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . "/UI/{$class_name}.php");
             $load_class = "\\PublishPress\Permissions\\Collab\\UI\\$class_name";
@@ -86,35 +87,35 @@ class DashboardFilters
         }
     }
 
-    function permissions_menu($pp_options_menu, $handler)
+    public function permissions_menu($pp_options_menu, $handler)
     {
         if (presspermit()->moduleActive('collaboration')) {
-	    	// Register a submenu item for these screens, but only if they are accessed
-	            if ('presspermit-role-usage' == presspermitPluginPage() && !did_action('pp_added_role_usage_submenu')) {
-	            add_submenu_page(
-	                $pp_options_menu,
-	                esc_html__('Role Usage', 'press-permit-core'),
-	                esc_html__('Role Usage', 'press-permit-core'),
-	                'read',
-	                'presspermit-role-usage',
-	                $handler
-	            );
-	        }
+            // Register a submenu item for these screens, but only if they are accessed
+            if ('presspermit-role-usage' == presspermitPluginPage() && !did_action('pp_added_role_usage_submenu')) {
+                add_submenu_page(
+                    $pp_options_menu,
+                    esc_html__('Role Usage', 'press-permit-core'),
+                    esc_html__('Role Usage', 'press-permit-core'),
+                    'read',
+                    'presspermit-role-usage',
+                    $handler
+                );
+            }
 
             if ('presspermit-role-usage-edit' == presspermitPluginPage() && !did_action('pp_added_edit_role_usage_submenu')) {
-	            add_submenu_page(
-	                $pp_options_menu,
-	                esc_html__('Edit Role Usage', 'press-permit-core'),
-	                esc_html__('Edit Role Usage', 'press-permit-core'),
-	                'read',
-	                'presspermit-role-usage-edit',
-	                $handler
-	            );
+                add_submenu_page(
+                    $pp_options_menu,
+                    esc_html__('Edit Role Usage', 'press-permit-core'),
+                    esc_html__('Edit Role Usage', 'press-permit-core'),
+                    'read',
+                    'presspermit-role-usage-edit',
+                    $handler
+                );
             }
         }
     }
 
-    function actAdminHead()
+    public function actAdminHead()
     {
         if (PWP::is_REQUEST('page', 'presspermit-role-usage')) {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/RoleUsageListTable.php');
@@ -122,10 +123,11 @@ class DashboardFilters
         }
     }
 
-    function quickpress_workaround()
-    {  // need this for multiple qp entries by limited user
+    public function quickpress_workaround()
+    {
+        // need this for multiple qp entries by limited user
         if (!presspermit()->isUserUnfiltered() && isset($_SERVER['HTTP_USER_AGENT'])) :
-        ?>
+            ?>
             <script type="text/javascript">
                 /* <![CDATA[ */
                 if (typeof wp == 'undefined') {
@@ -141,17 +143,17 @@ class DashboardFilters
                 }
                 /* ]]> */
             </script>
-        <?php
+            <?php
         endif;
     }
 
-    function optionsUI()
+    public function optionsUI()
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/SettingsTabEditing.php');
         new \PublishPress\Permissions\Collab\UI\SettingsTabEditing();
     }
 
-    function post_listing_ui()
+    public function post_listing_ui()
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/PostsListing.php');
         new PostsListing();
@@ -163,7 +165,7 @@ class DashboardFilters
         }
     }
 
-    function post_edit_ui()
+    public function post_edit_ui()
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/PostEdit.php');
         new PostEdit();
@@ -174,20 +176,20 @@ class DashboardFilters
         }
     }
 
-    function term_edit_ui()
+    public function term_edit_ui()
     {
         require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/UI/Dashboard/TermEdit.php');
         new TermEdit();
     }
 
-	// Used only by Permissions Pro < 4.0
-    function flt_status_links($links)
+    // Used only by Permissions Pro < 4.0
+    public function flt_status_links($links)
     {
         if (current_user_can('pp_define_post_status') || current_user_can('pp_define_moderation')) {
             $links = array_merge(
                 [(object)[
-                    'attrib_type' => 'moderation', 
-                    'url' => "admin.php?page=presspermit-statuses&attrib_type=moderation", 
+                    'attrib_type' => 'moderation',
+                    'url' => "admin.php?page=presspermit-statuses&attrib_type=moderation",
                     'label' => esc_html__('Workflow', 'press-permit-core')
                     ]
                 ],

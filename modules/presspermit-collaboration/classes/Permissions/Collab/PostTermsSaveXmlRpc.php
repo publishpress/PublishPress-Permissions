@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab;
 
 class PostTermsSaveXmlRpc
@@ -7,13 +8,15 @@ class PostTermsSaveXmlRpc
     {
         global $wp_xmlrpc_server;
 
-        if (empty($wp_xmlrpc_server->message))
+        if (empty($wp_xmlrpc_server->message)) {
             return [];
+        }
 
         $xmlrpc_method = $wp_xmlrpc_server->message->methodName;
 
-        if (empty($wp_xmlrpc_server->message->params))
+        if (empty($wp_xmlrpc_server->message->params)) {
             return [];
+        }
 
         if (in_array($xmlrpc_method, ['metaWeblog.newPost', 'metaWeblog.editPost'], true)) {
             if (!empty($wp_xmlrpc_server->message->params[3])) {
@@ -32,8 +35,9 @@ class PostTermsSaveXmlRpc
                     if (!empty($data['mt_keywords'])) {
                         $tags = $data['mt_keywords'];
                         $comma = _x(',', 'tag delimiter');
-                        if (',' !== $comma)
+                        if (',' !== $comma) {
                             $tags = str_replace($comma, ',', $tags);
+                        }
                         $tags = explode(',', trim($tags, " \n\t\r\0\x0B,"));
                         return $tags;
                     }
@@ -68,7 +72,7 @@ class PostTermsSaveXmlRpc
                 if (isset($post_data['terms_names']) && is_array($post_data['terms_names'])) {
                     foreach ($post_data['terms_names'][$taxonomy] as $term_name) {
                         // term creation is outside the scope of this usage
-                        if ($term = get_term_by('name', $term_name, $taxonomy)) { 
+                        if ($term = get_term_by('name', $term_name, $taxonomy)) {
                             $terms[] = (int)$term->term_id;
                         }
                     }

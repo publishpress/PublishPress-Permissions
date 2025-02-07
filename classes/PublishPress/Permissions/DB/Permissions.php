@@ -41,8 +41,9 @@ class Permissions
         }
 
         if (!isset($agent_roles[$agent_id]) || ($last_query_key !== $query_key)) {
-            foreach ($query_agent_ids as $_id)
+            foreach ($query_agent_ids as $_id) {
                 $agent_roles[$_id] = [];
+            }
 
             $agent_id_csv = implode("','", array_map('intval', $query_agent_ids));
 
@@ -52,7 +53,6 @@ class Permissions
                 $wpdb->prepare(
                     "SELECT assignment_id, role_name, agent_id FROM $wpdb->ppc_roles WHERE agent_type = %s"
                     . " AND agent_id IN ('$agent_id_csv') ORDER BY role_name",  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-
                     $agent_type
                 )
             );
@@ -185,7 +185,6 @@ class Permissions
 
         foreach (array_keys($for_item_sources) as $for_source_name) {
             if (isset($valid_src_types[$for_source_name])) {
-
                 foreach ($operations as $op) {
                     $except["{$op}_{$for_source_name}"] = $valid_src_types[$for_source_name];
                 }
@@ -201,7 +200,6 @@ class Permissions
                         }
 
                         $for_types = array_unique($for_types);
-
                     } elseif ('term' == $via_source_name) {
                         $for_types = ('term' == $for_source_name) ? $taxonomies : $post_types;
                     } else {
@@ -266,7 +264,6 @@ class Permissions
 
         if ('eitem_ids' == $cols) {
             $cols = "e.agent_type, e.agent_id, e.operation, e.mod_type, i.eitem_id, i.assign_for, e.for_item_type";
-
         } else {
             $cols = "*";
         }
@@ -290,7 +287,7 @@ class Permissions
         foreach ($results as $row) {
             // note: currently only additional access can be status-specific
             $except["{$row->operation}_{$row->for_item_source}"][$row->via_item_source][$row->via_item_type][$row->mod_type][$row->for_item_type][$row->for_item_status][] = $row->item_id;
-        
+
             // Mirror Edit exceptions for page parent association
             if ($page_parent_editable_only && ('edit' == $row->operation)) {
                 $except["associate_{$row->for_item_source}"][$row->via_item_source][$row->via_item_type][$row->mod_type][$row->for_item_type][$row->for_item_status][] = $row->item_id;
@@ -320,8 +317,9 @@ class Permissions
         $additional_ids = $user->getExceptionPosts($operation, 'additional', $post_type);
 
         if ($include_ids = $user->getExceptionPosts($operation, 'include', $post_type)) {
-            if ($additional_ids)
+            if ($additional_ids) {
                 $include_ids = array_unique(array_merge($include_ids, $additional_ids));
+            }
 
             // todo: how can this ever have array elements (PHP error log from one user)
             $include_ids = array_filter($include_ids, 'is_scalar');
@@ -329,8 +327,9 @@ class Permissions
             $where = " AND $col_id IN ('" . implode("','", array_unique($include_ids)) . "')";
         } elseif ($exclude_ids = array_diff($user->getExceptionPosts($operation, 'exclude', $post_type), $additional_ids)) {
             $where = " AND $col_id NOT IN ('" . implode("','", $exclude_ids) . "')";
-        } else
+        } else {
             $where = '';
+        }
 
         return $where;
     }
@@ -353,8 +352,8 @@ class Permissions
 
         $exc_post_type = apply_filters('presspermit_exception_post_type', $post_type, $required_operation, $args);
 
-        $additions = [ 
-            'post' => [], 
+        $additions = [
+            'post' => [],
             'term' => []
         ];
 
@@ -362,10 +361,11 @@ class Permissions
 
         foreach ($additional_ids as $_status => $_ids) {
             if ($_status) {  // db storage is with "post_status:" prefix to allow for implementation of other attributes
-                if (0 === strpos($_status, 'post_status:'))
+                if (0 === strpos($_status, 'post_status:')) {
                     $_status = str_replace('post_status:', '', $_status);
-                else
+                } else {
                     continue;
+                }
             }
 
             // facilitates user-add on post edit form without dealing with status caps
@@ -376,10 +376,10 @@ class Permissions
                 $required_operation,
                 $post_type,
                 [
-                    'via_item_source' => 'post', 
+                    'via_item_source' => 'post',
                     'via_item_type' => $exc_post_type,
-                    'status' => $_status, 
-                    'in_clause' => $in_clause, 
+                    'status' => $_status,
+                    'in_clause' => $in_clause,
                     'src_table' => $src_table,
                     'ids' => $_ids
                 ]
@@ -399,20 +399,20 @@ class Permissions
                 foreach (['include' => 'IN', 'exclude' => 'NOT IN'] as $mod => $logic) {
                     if ($ids = $user->getExceptionPosts($required_operation, $mod, $exc_post_type)) {
                         if (!defined('PP_RESTRICTION_PRIORITY') && !empty($additional_ids['']) && !defined('PP_LEGACY_POST_BLOCKAGE')) {
-                        	$ids = array_diff($ids, $additional_ids['']);
-                    	}
-                        
+                            $ids = array_diff($ids, $additional_ids['']);
+                        }
+
                         $_args = array_merge($args, compact('mod', 'ids', 'src_table', 'logic'));
 
                         $clause_var = ($post_blockage_priority) ? 'post_blockage_clause' : 'where';
 
                         $$clause_var .= " AND " . apply_filters(
-                                'presspermit_exception_clause',
-                                "$src_table.ID $logic ('" . implode("','", $ids) . "')",
-                                $required_operation,
-                                $post_type,
-                                $_args
-                            );
+                            'presspermit_exception_clause',
+                            "$src_table.ID $logic ('" . implode("','", $ids) . "')",
+                            $required_operation,
+                            $post_type,
+                            $_args
+                        );
 
                         break;  // don't use both include and exclude clauses
                     }
@@ -440,14 +440,16 @@ class Permissions
 
         // todo: remove revise_post merging with Revisions 3
 
-        
+
         foreach (presspermit()->getEnabledTaxonomies(['object_type' => $post_type]) as $taxonomy) {
             $tt_ids = $user->getExceptionTerms($required_operation, 'additional', $post_type, $taxonomy, ['status' => true, 'merge_universals' => true]);
 
             $type_obj = get_post_type_object($post_type);
 
-            if (('edit' == $required_operation) 
-            && ((!$type_obj || empty($type_obj->cap->edit_published_posts) || empty($user->allcaps[$type_obj->cap->edit_published_posts]))                                         // prevent Revise exceptions from allowing Authors to restore revisions
+            if (
+                ('edit' == $required_operation)
+                && (
+                    (!$type_obj || empty($type_obj->cap->edit_published_posts) || empty($user->allcaps[$type_obj->cap->edit_published_posts]))                                         // prevent Revise exceptions from allowing Authors to restore revisions
                 || ('revision.php' != $pagenow) && (!defined('DOING_AJAX') || ! DOING_AJAX || !PWP::is_REQUEST('action', 'get-revision-diffs'))
                 )
             ) {
@@ -457,7 +459,7 @@ class Permissions
                             $revise_ttids[$revise_status_key] = array_merge($revise_ttids[$revise_status_key], $user->except['revise_post']['term'][$taxonomy]['additional'][$post_type]['']);
                         }
                     }
-                    
+
                     if (!empty($user->except['copy_post']['term'][$taxonomy]['additional'][$post_type][''])) {
                         if (!empty($revisionary) && empty($revisionary->skip_revision_allowance)) {
                             $revise_ttids[$revise_status_key] = array_merge($revise_ttids[$revise_status_key], $user->except['copy_post']['term'][$taxonomy]['additional'][$post_type]['']);
@@ -486,9 +488,9 @@ class Permissions
                 "$src_table.ID $in_clause",
                 'revise',
                 $post_type,
-                [   'via_item_source' => 'term', 
-                    'status' => $revise_status_key, 
-                    'in_clause' => $in_clause, 
+                [   'via_item_source' => 'term',
+                    'status' => $revise_status_key,
+                    'in_clause' => $in_clause,
                     'src_table' => $src_table,
                     'ids' => $revise_ttids[$revise_status_key],
                     'join' => $join,
@@ -499,10 +501,11 @@ class Permissions
         if ($additional_ttids) {
             foreach ($additional_ttids as $_status => $_ttids) {
                 if ($_status) {
-                    if (0 === strpos($_status, 'post_status:'))
+                    if (0 === strpos($_status, 'post_status:')) {
                         $_status = str_replace('post_status:', '', $_status);
-                    else
+                    } else {
                         continue;
+                    }
                 }
 
                 $ttid_csv = implode("','", array_map('intval', $_ttids));
@@ -514,9 +517,9 @@ class Permissions
                     "$src_table.ID $in_clause",
                     $required_operation,
                     $post_type,
-                    [   'via_item_source' => 'term', 
-                        'status' => $_status, 
-                        'in_clause' => $in_clause, 
+                    [   'via_item_source' => 'term',
+                        'status' => $_status,
+                        'in_clause' => $in_clause,
                         'src_table' => $src_table,
                         'ids' => $_ttids,
                         'join' => $join,
@@ -536,7 +539,7 @@ class Permissions
 
                         $_status_clause = "$src_table.post_status IN ('" . implode("','", $_stati) . "') AND ";
                         break;
-                    
+
                     case '':
                         $_status_clause = '';
                         break;
@@ -551,6 +554,7 @@ class Permissions
                             $_status_clause = "$src_table.post_status NOT IN ('" . implode("','", $_stati) . "') AND ";
                             break;
                         }
+                        // no break
                     default:
                         $_status_clause = "$src_table.post_status = '$_status' AND ";
                         break;
@@ -566,13 +570,13 @@ class Permissions
         if (!empty($additions['post']) || !empty($additions['term'])) {
             $where = "( $where )";
 
-			if (!empty($additions['post'])) {
-				$where .= " OR ( " . Arr::implode(' OR ', $additions['post']) . " )";
-			}
-		
-			if (!empty($additions['term'])) {
-				$where .= " OR ( " . Arr::implode(' OR ', $additions['term']) . " )";
-			}
+            if (!empty($additions['post'])) {
+                $where .= " OR ( " . Arr::implode(' OR ', $additions['post']) . " )";
+            }
+
+            if (!empty($additions['term'])) {
+                $where .= " OR ( " . Arr::implode(' OR ', $additions['term']) . " )";
+            }
 
             if (defined('PP_RESTRICTION_PRIORITY') && PP_RESTRICTION_PRIORITY) {  // this constant forces exclusions to take priority over additions
                 if ($ids = $user->getExceptionPosts($required_operation, 'exclude', $exc_post_type)) {
@@ -587,35 +591,33 @@ class Permissions
                     );
                 } else {
                     $restriction_clause = '1=1';
-            	}
+                }
 
                 if ($apply_term_restrictions) {
-                	$restriction_clause .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table, ['mod_types' => 'exclude']);
-            	}
+                    $restriction_clause .= self::addTermRestrictionsClause($required_operation, $post_type, $src_table, ['mod_types' => 'exclude']);
+                }
 
-	            if ($restriction_clause != '1=1') {
-	                $where = "( $where ) AND ( $restriction_clause )";
-	            }
-
+                if ($restriction_clause != '1=1') {
+                    $where = "( $where ) AND ( $restriction_clause )";
+                }
             }
 
             if (!empty($post_blockage_clause)) {
-            	if (!empty($additions['post']) || defined('PP_LEGACY_POST_BLOCKAGE')) {
+                if (!empty($additions['post']) || defined('PP_LEGACY_POST_BLOCKAGE')) {
                     $post_blockage_clause = "AND ( ( 1=1 $post_blockage_clause ) OR ( " . Arr::implode(' OR ', $additions['post']) . " ) )";
-
-            	} else {
-                	$post_blockage_clause = "AND ( 1=1 $post_blockage_clause )";
-            	}
+                } else {
+                    $post_blockage_clause = "AND ( 1=1 $post_blockage_clause )";
+                }
             }
         }
 
         if (!empty($post_blockage_clause)) {
             $where = "( $where ) $post_blockage_clause";
-		}
+        }
 
         if ($append_post_type_clause) {
             $where = "$src_table.post_type = '$post_type' AND ( $where )";
-		}
+        }
 
         return $where;
     }
@@ -641,7 +643,7 @@ class Permissions
 
         $tx_args = ($post_type) ? ['object_type' => $post_type] : [];
 
-        // This argument is passed by PostFilters::getPostsWhere() to allow universal term restrictions to be overridden 
+        // This argument is passed by PostFilters::getPostsWhere() to allow universal term restrictions to be overridden
         // by other taxonomy exceptions (possibly based on a different taxonomy than the restrictions).
         //
         // Type-specific term restrictions are offset by additions applied by Permissions::addExceptionClauses()
@@ -653,9 +655,9 @@ class Permissions
                 "$src_table.ID $in_clause",
                 $required_operation,
                 $post_type,
-                [   'via_item_source' => 'term', 
-                    'status' => '', 
-                    'in_clause' => $in_clause, 
+                [   'via_item_source' => 'term',
+                    'status' => '',
+                    'in_clause' => $in_clause,
                     'src_table' => $src_table,
                     'ids' => $additional_ttids,
                     'join' => $join,
@@ -674,11 +676,13 @@ class Permissions
         // Type-specific term restrictions are offset by additions applied by Permissions::addExceptionClauses()
         $post_additions_clause = '';
         if ($apply_object_additions) {
-            if ($post_additions_clause = self::addExceptionClauses(
-                '1=2',
-                $required_operation, 
-                $apply_object_additions, 
-                ['additions_only' => true, 'apply_term_restrictions' => false, 'src_table' => $src_table, 'join' => $join]) 
+            if (
+                $post_additions_clause = self::addExceptionClauses(
+                    '1=2',
+                    $required_operation,
+                    $apply_object_additions,
+                    ['additions_only' => true, 'apply_term_restrictions' => false, 'src_table' => $src_table, 'join' => $join]
+                )
             ) {
                 $post_additions_clause = "OR ( $post_additions_clause )";
             }
@@ -696,7 +700,7 @@ class Permissions
                         if (!empty($excluded_ttids) && defined('PP_RESTRICTION_PRIORITY')) {
                             $tt_ids = array_diff($tt_ids, $excluded_ttids);
                         }
-                        
+
                         if ($tx_additional_ids) {
                             $tt_ids = array_merge($tt_ids, $tx_additional_ids);
                         }
@@ -713,8 +717,9 @@ class Permissions
 
                         continue 2;
                     } else {
-                        if ($tx_additional_ids)
+                        if ($tx_additional_ids) {
                             $tt_ids = array_diff($tt_ids, $tx_additional_ids);
+                        }
 
                         $excluded_ttids = array_merge($excluded_ttids, $tt_ids);
                     }
@@ -733,20 +738,20 @@ class Permissions
         }
 
         $args = compact(
-            'required_operation', 
-            'post_type', 
-            'src_table', 
-            'merge_additions', 
-            'exempt_post_types', 
-            'mod_types', 
+            'required_operation',
+            'post_type',
+            'src_table',
+            'merge_additions',
+            'exempt_post_types',
+            'mod_types',
             'tx_args',
-            'additional_ttids', 
-            'apply_object_additions', 
-            'term_additions_clause', 
-            'post_additions_clause', 
+            'additional_ttids',
+            'apply_object_additions',
+            'term_additions_clause',
+            'post_additions_clause',
             'type_exemption_clause'
         );
-       
+
         return apply_filters('presspermit_term_restrictions_clause', $where, $args);
     }
 
@@ -777,8 +782,9 @@ class Permissions
             );
 
             // keep a log in case questions arise
-            if (!$arr = get_option('ppc_exposed_eitem_orphans'))
+            if (!$arr = get_option('ppc_exposed_eitem_orphans')) {
                 $arr = [];
+            }
 
             $arr = array_merge($arr, $eitem_ids);
             update_option('ppc_exposed_eitem_orphans', $arr);

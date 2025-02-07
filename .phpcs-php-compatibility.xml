@@ -11,7 +11,31 @@
     <arg name="parallel" value="20"/>
     <arg value="ps"/>
 
-    <file>./dist/press-permit-core</file>
+    <file>.</file>
+    <exclude-pattern>*/\.github/*</exclude-pattern>
+    <exclude-pattern>/\.vscode/*</exclude-pattern>
+    <exclude-pattern>/\.idea/*</exclude-pattern>
+    <exclude-pattern>/tests/*</exclude-pattern>
+    <exclude-pattern>/tests-old/*</exclude-pattern>
+    <exclude-pattern>/.wordpress-org/*</exclude-pattern>
+    <exclude-pattern>/bin/*</exclude-pattern>
+    <exclude-pattern>/vendor/*</exclude-pattern>
+    <exclude-pattern>/dist/*</exclude-pattern>
+    <exclude-pattern>/languages/*</exclude-pattern>
+    <exclude-pattern>/node_modules/*</exclude-pattern>
+    <exclude-pattern>/dev-workspace/*</exclude-pattern>
+    <exclude-pattern>/cache/*</exclude-pattern>
+    <exclude-pattern>/.cache/*</exclude-pattern>
 
+    <rule ref="PSR12"/>
+    <rule ref="WordPressVIPMinimum">
+        <exclude name="WordPress.DateTime.RestrictedFunctions.date_date" />
+        <exclude name="WordPress.WP.GlobalVariablesOverride.Prohibited" />
+        <exclude name="WordPress.DB.DirectDatabaseQuery.SchemaChange" />
+        <exclude name="WordPress.DB.DirectDatabaseQuery.DirectQuery" />
+    </rule>
+    <rule ref="WordPress-VIP-Go"/>
+    <rule ref="VariableAnalysis"/>
+    <rule ref="PublishPressStandards"/>
     <rule ref="PHPCompatibility"/>
 </ruleset>

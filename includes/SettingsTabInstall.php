@@ -9,7 +9,9 @@ class SettingsTabInstall
     public function __construct()
     {
         // This class is called in pro version only
-        if (!defined('PRESSPERMIT_PRO_VERSION')) return;
+        if (!defined('PRESSPERMIT_PRO_VERSION')) {
+            return;
+        }
         add_filter('presspermit_option_tabs', [$this, 'optionTabs'], 90);
         add_filter('presspermit_section_captions', [$this, 'sectionCaptions']);
         add_filter('presspermit_option_captions', [$this, 'optionCaptions']);
@@ -68,7 +70,7 @@ class SettingsTabInstall
                     <strong><?php esc_html_e('Version info was refreshed.', 'press-permit-core'); ?>&nbsp;</strong>
                 </p>
             </div>
-            <?php endif;
+        <?php endif;
     }
 
     public function optionsUI()
@@ -122,7 +124,7 @@ class SettingsTabInstall
                         <h4><?php esc_html_e('Further details for your installation:', 'press-permit-core'); ?></h4>
                         <ul id="presspermit-pro-install-details" class="pp-bullet-list">
 
-                            <?php if (($expired && $expire_days < 365) || get_option('presspermitpro_version') || $activated): ?>
+                            <?php if (($expired && $expire_days < 365) || get_option('presspermitpro_version') || $activated) : ?>
                                 <li>
                                     <?php
                                     if ($expired) {
@@ -142,24 +144,25 @@ class SettingsTabInstall
                                             esc_url($url)
                                         );
                                     }
-                                    ?>
+            ?>
                                 </li>
                             <?php endif; ?>
 
-                            <?php if ($key_string): ?>
+                            <?php if ($key_string) : ?>
                                 <li>
                                     <?php
-                                    if ($expire_date)
-                                        echo esc_html(sprintf(__("Original presspermit.com support key hash: <strong>%s</strong> (expires %s)"), esc_html($key_string), esc_html($expire_date)));
-                                    else
-                                        echo esc_html(sprintf(__("Original presspermit.com support key hash: <strong>%s</strong>"), esc_html($key_string), esc_html($expire_date)));
-                                    ?>
+            if ($expire_date) {
+                echo esc_html(sprintf(__("Original presspermit.com support key hash: <strong>%s</strong> (expires %s)"), esc_html($key_string), esc_html($expire_date)));
+            } else {
+                echo esc_html(sprintf(__("Original presspermit.com support key hash: <strong>%s</strong>"), esc_html($key_string), esc_html($expire_date)));
+            }
+        ?>
                                 </li>
                             <?php endif; ?>
                         </ul>
                     </td>
                 </tr>
-        <?php
+                <?php
             endif; // any options accessable in this section
         endif; // any status messages to display
 
@@ -176,43 +179,41 @@ class SettingsTabInstall
                 <?php
                 $update_info = [];
 
-                if (!$suppress_updates) {
-                    $wp_plugin_updates = get_site_transient('update_plugins');
-                    if (
-                        $wp_plugin_updates && isset($wp_plugin_updates->response[plugin_basename(PRESSPERMIT_FILE)])
-                        && !empty($wp_plugin_updates->response[plugin_basename(PRESSPERMIT_FILE)]->new_version)
-                        && version_compare($wp_plugin_updates->response[plugin_basename(PRESSPERMIT_FILE)]->new_version, PRESSPERMIT_VERSION, '>')
-                    ) {
-                        $slug = 'press-permit-core';
+        if (!$suppress_updates) {
+            $wp_plugin_updates = get_site_transient('update_plugins');
+            if (
+                $wp_plugin_updates && isset($wp_plugin_updates->response[plugin_basename(PRESSPERMIT_FILE)])
+                && !empty($wp_plugin_updates->response[plugin_basename(PRESSPERMIT_FILE)]->new_version)
+                && version_compare($wp_plugin_updates->response[plugin_basename(PRESSPERMIT_FILE)]->new_version, PRESSPERMIT_VERSION, '>')
+            ) {
+                $slug = 'press-permit-core';
 
-                        $_url = "plugin-install.php?tab=plugin-information&plugin=$slug&section=changelog&TB_iframe=true&width=600&height=800";
-                        $info_url = ($use_network_admin) ? network_admin_url($_url) : admin_url($_url);
+                $_url = "plugin-install.php?tab=plugin-information&plugin=$slug&section=changelog&TB_iframe=true&width=600&height=800";
+                $info_url = ($use_network_admin) ? network_admin_url($_url) : admin_url($_url);
 
-                        $do_info_link = true;
-                    }
-                }
+                $do_info_link = true;
+            }
+        }
 
-                ?>
+        ?>
                 <p>
                     <?php
-                    if (!empty($do_info_link)) {
-                        printf(
-                            esc_html__('PublishPress Permissions Version: %1$s %2$s', 'press-permit-core'),
-
-                            esc_html(PRESSPERMIT_VERSION),
-
-                            "<span class='update-message'> &bull; <a href='" . esc_url($info_url) . "' class='thickbox'>"
-                                . sprintf(esc_html__('%s&nbsp;details', 'press-permit-core'), esc_html($wp_plugin_updates->response[plugin_basename(PRESSPERMIT_FILE)]->new_version))
-                                . '</a></span>'
-                        );
-                    } else {
-                        printf(
-                            esc_html__('PublishPress Permissions Version: %1$s %2$s', 'press-permit-core'),
-                            esc_html(PRESSPERMIT_VERSION),
-                            ''
-                        );
-                    }
-                    ?>
+            if (!empty($do_info_link)) {
+                printf(
+                    esc_html__('PublishPress Permissions Version: %1$s %2$s', 'press-permit-core'),
+                    esc_html(PRESSPERMIT_VERSION),
+                    "<span class='update-message'> &bull; <a href='" . esc_url($info_url) . "' class='thickbox'>"
+                    . sprintf(esc_html__('%s&nbsp;details', 'press-permit-core'), esc_html($wp_plugin_updates->response[plugin_basename(PRESSPERMIT_FILE)]->new_version))
+                    . '</a></span>'
+                );
+            } else {
+                printf(
+                    esc_html__('PublishPress Permissions Version: %1$s %2$s', 'press-permit-core'),
+                    esc_html(PRESSPERMIT_VERSION),
+                    ''
+                );
+            }
+        ?>
                 </p>
 
                 <?php
@@ -220,39 +221,39 @@ class SettingsTabInstall
                     <br />
                     <div>
                         <?php
-                        if ($ver_history = (array) json_decode($ver_history)) :
-                            $ver_history = array_reverse($ver_history, true);
-                        ?>
+            if ($ver_history = (array) json_decode($ver_history)) :
+                $ver_history = array_reverse($ver_history, true);
+                ?>
                             <div class="agp-vtight"><?php esc_html_e('Installation History', 'press-permit-core'); ?></div>
                             <?php
-                            echo '<textarea id="pp_version_history" name="pp_version_history" rows="5" cols="30" style="width: 250px; height: 85px" readonly="readonly">';
+                echo '<textarea id="pp_version_history" name="pp_version_history" rows="5" cols="30" style="width: 250px; height: 85px" readonly="readonly">';
 
-                            for ($i = 0; $i < count($ver_history); $i++) {
-                                if ($i) {
-                                    echo "\r\n";
-                                }
+                for ($i = 0; $i < count($ver_history); $i++) {
+                    if ($i) {
+                        echo "\r\n";
+                    }
 
-                                $ver_data = current($ver_history);
-                                next($ver_history);
+                    $ver_data = current($ver_history);
+                    next($ver_history);
 
-                                if (!is_object($ver_data) || empty($ver_data->version)) {
-                                    continue;
-                                }
+                    if (!is_object($ver_data) || empty($ver_data->version)) {
+                        continue;
+                    }
 
-                                $version = (!empty($ver_data->isPro)) ? $ver_data->version . ' Pro' : $ver_data->version;
+                    $version = (!empty($ver_data->isPro)) ? $ver_data->version . ' Pro' : $ver_data->version;
 
-                                if (!empty($ver_data->date)) {
-                                    echo esc_html($version) . ' : ' .  esc_html($ver_data->date);
-                                } else {
-                                    printf(
-                                        esc_html__('%s (previous install)', 'press-permit-core'),
-                                        esc_html($version)
-                                    );
-                                }
-                            }
+                    if (!empty($ver_data->date)) {
+                        echo esc_html($version) . ' : ' .  esc_html($ver_data->date);
+                    } else {
+                        printf(
+                            esc_html__('%s (previous install)', 'press-permit-core'),
+                            esc_html($version)
+                        );
+                    }
+                }
 
-                            echo '</textarea>';
-                            ?>
+                    echo '</textarea>';
+                    ?>
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
@@ -262,15 +263,15 @@ class SettingsTabInstall
                     <?php
 
                     global $wp_version;
-                    printf(esc_html__("WordPress Version: %s", 'press-permit-core'), esc_html($wp_version));
-                    ?>
+        printf(esc_html__("WordPress Version: %s", 'press-permit-core'), esc_html($wp_version));
+        ?>
                 </p>
                 <p>
                     <?php printf(esc_html__("PHP Version: %s", 'press-permit-core'), esc_html(phpversion())); ?>
                 </p>
             </td>
         </tr>
-<?php
+        <?php
     }
 
     private function useNetworkUpdates()

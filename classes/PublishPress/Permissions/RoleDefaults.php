@@ -33,10 +33,11 @@ class RoleDefaults
 
                 break;
             default:
-                if ($def_caps = apply_filters('presspermit_default_rolecaps', [], $role, $cap))
+                if ($def_caps = apply_filters('presspermit_default_rolecaps', [], $role, $cap)) {
                     return $def_caps;
-                else
+                } else {
                     return ($return_default) ? ['read' => true, PRESSPERMIT_READ_PUBLIC_CAP => true] : [];
+                }
         }
     }
 }

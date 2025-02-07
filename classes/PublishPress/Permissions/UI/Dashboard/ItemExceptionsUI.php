@@ -5,7 +5,7 @@ namespace PublishPress\Permissions\UI\Dashboard;
 class ItemExceptionsUI
 {
     private $render;
-    var $data;
+    public $data;
 
     public function __construct()
     {
@@ -108,8 +108,9 @@ class ItemExceptionsUI
 
             // list all WP roles
             if ('wp_role' == $agent_type) {
-                if (!isset($current_exceptions[$op][$agent_type]))
+                if (!isset($current_exceptions[$op][$agent_type])) {
                     $current_exceptions[$op][$agent_type] = [];
+                }
 
                 foreach ($this->data->agent_info['wp_role'] as $agent_id => $role) {
                     if (
@@ -144,48 +145,51 @@ class ItemExceptionsUI
                             // Select Groups / Users UI
 
                             echo '<div>';
-                            echo '<div class="pp-agent-select">';
+                        echo '<div class="pp-agent-select">';
 
-                            $args = array_merge($args, [
-                                'suppress_extra_prefix' => true,
-                                'ajax_selection' => true,
-                                'display_stored_selections' => false,
-                                'create_dropdowns' => true,
-                                'op' => $op,
-                                'via_item_type' => $via_item_type,
-                            ]);
+                        $args = array_merge($args, [
+                        'suppress_extra_prefix' => true,
+                        'ajax_selection' => true,
+                        'display_stored_selections' => false,
+                        'create_dropdowns' => true,
+                        'op' => $op,
+                        'via_item_type' => $via_item_type,
+                        ]);
 
-                            $pp_admin->agents()->agentsUI($agent_type, [], "{$op}:{$for_item_type}:{$agent_type}", [], $args);
-                            echo '</div>';
-                            echo '</div>';
+                        $pp_admin->agents()->agentsUI($agent_type, [], "{$op}:{$for_item_type}:{$agent_type}", [], $args);
+                        echo '</div>';
+                        echo '</div>';
 
-                            $colspan = '2';
-                            ?>
+                        $colspan = '2';
+                        ?>
                         </td>
                     <?php else :
                         $colspan = '';
                     endif;
-                    ?>
+            ?>
 
                     <?php
-                    $any_stored = empty($current_exceptions[$op][$agent_type])
-                        ? 0
-                        : count($current_exceptions[$op][$agent_type]);
-                    ?>
+            $any_stored = empty($current_exceptions[$op][$agent_type])
+            ? 0
+            : count($current_exceptions[$op][$agent_type]);
+            ?>
                     <td class="pp-current-item-exceptions" style="width:100%">
                         <div class="pp-exc-wrap" style="overflow:auto;">
-                            <table <?php if (!$any_stored) echo 'style="display:none"'; ?>>
+                            <table <?php if (!$any_stored) {
+                                echo 'style="display:none"';
+                            } ?>>
                                 <?php if ($hierarchical) : ?>
                                     <thead>
                                         <tr>
                                             <th></th>
                                             <th><?php printf(esc_html__('This %s', 'press-permit-core'), esc_html($type_obj->labels->singular_name)); ?></th>
                                             <th><?php
-                                                if ($caption = apply_filters('presspermit_item_assign_for_children_caption', '', $via_item_type))
-                                                    printf(esc_html($caption));
-                                                else
-                                                    printf(esc_html__('Sub-%s', 'press-permit-core'), esc_html($type_obj->labels->name));
-                                                ?></th>
+                                     if ($caption = apply_filters('presspermit_item_assign_for_children_caption', '', $via_item_type)) {
+                                         printf(esc_html($caption));
+                                     } else {
+                                         printf(esc_html__('Sub-%s', 'press-permit-core'), esc_html($type_obj->labels->name));
+                                     }
+            ?></th>
                                         </tr>
                                     </thead>
                                 <?php endif; ?>
@@ -222,13 +226,15 @@ class ItemExceptionsUI
                                             }
                                         }
                                     }
-                                    ?>
+            ?>
                                 </tbody>
 
-                                <tfoot<?php if ($any_stored < 2) echo ' style="display:none;"'; ?>>
+                                <tfoot<?php if ($any_stored < 2) {
+                                    echo ' style="display:none;"';
+                                } ?>>
                                     <?php
                                     $link_caption = ('wp_role' == $agent_type) ? esc_html__('default all', 'press-permit-core') : esc_html__('clear all', 'press-permit-core');
-                                    ?>
+            ?>
                                     <tr>
                                         <td></td>
                                         <td style="text-align:center"><a
@@ -249,14 +255,16 @@ class ItemExceptionsUI
                             $op_label = (!empty($op_obj->noun_label)) ? $op_obj->noun_label : $op_obj->label;
                             $agent_label = (!empty($agent_types[$agent_type]->labels)) ? $agent_types[$agent_type]->labels->singular_name : $agent_types[$agent_type]->label;
                             $caption = sprintf(esc_html__('%s permissions have not been added or blocked for any %s.', 'press-permit-core'), $op_label, $agent_label);
-                        ?>
+                            ?>
                             <div class="pp-no-exceptions"><?php echo esc_html($caption); ?></div>
                         <?php endif; ?>
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="pp-exception-actions" <?php if (!empty($colspan)) echo 'colspan="' . esc_attr($colspan) . '"'; ?>>
+                    <td class="pp-exception-actions" <?php if (!empty($colspan)) {
+                        echo 'colspan="' . esc_attr($colspan) . '"';
+                    } ?>>
                         <?php if ('wp_role' != $agent_type) : ?>
                             <a class="pp-select-exception-agents" href="#">
                                 <?php ('user' == $agent_type) ? esc_html_e('select users', 'press-permit-core') : esc_html_e('select groups', 'press-permit-core'); ?>
@@ -264,10 +272,10 @@ class ItemExceptionsUI
 
                             <a class="pp-close-select-exception-agents" href="#"
                                 style="display:none;"><?php esc_html_e('close', 'press-permit-core'); ?></a>
-                        <?php
+                            <?php
                         endif;
-                        if ($pp_groups->groupTypeEditable($agent_type) && $pp_groups->userCan('pp_create_groups', 0, $agent_type)) :
-                        ?>
+            if ($pp_groups->groupTypeEditable($agent_type) && $pp_groups->userCan('pp_create_groups', 0, $agent_type)) :
+                ?>
                             &nbsp;&bull;&nbsp;
                             <a class="pp-create-exception-agent" href="admin.php?page=presspermit-group-new"
                                 target="_blank">
@@ -279,15 +287,17 @@ class ItemExceptionsUI
             </table>
 
             </div>
-<?php
+            <?php
         } // end foreach group type caption
 
         echo '</div>'; // class pp-agents
 
-        if (('read' == $op) && $pp->getOption('display_extension_hints')
+        if (
+            ('read' == $op) && $pp->getOption('display_extension_hints')
             && (
                 (('attachment' == $for_item_type) && !$pp->moduleActive('file-access'))
-                || ! $pp->moduleActive('collaboration'))
+                || ! $pp->moduleActive('collaboration')
+            )
         ) {
             require_once(PRESSPERMIT_CLASSPATH . '/UI/HintsItemExceptions.php');
             \PublishPress\Permissions\UI\HintsItemExceptions::itemHints($for_item_type);

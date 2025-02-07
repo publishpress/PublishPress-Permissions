@@ -15,7 +15,7 @@ class PostSave
             if (!$post_id) {
                 return;
             }
-            
+
             if (!$post = get_post($post_id)) {
                 return;
             }
@@ -75,14 +75,14 @@ class PostSave
             $post_obj = get_post($post_id);
         }
 
-        if ( empty($post_obj) ) {  
-			global $wp_query;
-			if ( empty($wp_query->queried_object) ) { // Revisionary: pending revision submission with WPML active
-				return false;	
-			} else {
+        if (empty($post_obj)) {
+            global $wp_query;
+            if (empty($wp_query->queried_object)) { // Revisionary: pending revision submission with WPML active
+                return false;
+            } else {
                 return true;
             }
-		}
+        }
 
         if ('auto-draft' == $post_obj->post_status) {
             return true;

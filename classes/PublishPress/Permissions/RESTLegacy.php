@@ -7,8 +7,9 @@ class RESTLegacy
     // Block unpermitted read requests (WP does not trigger a REST capability check for viewing single public posts)
     public static function fltPreDispatch($rest_response, $rest_server, $request)
     {
-        if (!is_wp_error($rest_response) && !in_array($request->get_method(), [\WP_REST_Server::READABLE, 'GET'], true))
+        if (!is_wp_error($rest_response) && !in_array($request->get_method(), [\WP_REST_Server::READABLE, 'GET'], true)) {
             return $rest_response;
+        }
 
         $pp = presspermit();
 

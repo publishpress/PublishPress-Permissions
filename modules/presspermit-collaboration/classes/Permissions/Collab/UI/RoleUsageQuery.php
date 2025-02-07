@@ -1,4 +1,5 @@
 <?php
+
 namespace PublishPress\Permissions\Collab\UI;
 
 class RoleUsageQuery
@@ -9,7 +10,7 @@ class RoleUsageQuery
      * @access private
      * @var array
      */
-    var $results;
+    public $results;
 
     /**
      * Total number of found roles for the current query
@@ -17,14 +18,14 @@ class RoleUsageQuery
      * @access private
      * @var int
      */
-    var $total_roles = 0;
+    public $total_roles = 0;
 
     /**
      *
      * @param string|array $args The query variables
      * @return WP_Group_Query
      */
-    function __construct($query = null)
+    public function __construct($query = null)
     {
         // phpcs Note: This exclude arg has nothing to do with the Posts query
 
@@ -44,7 +45,7 @@ class RoleUsageQuery
         $this->query();
     }
 
-    function prepare_query()
+    public function prepare_query()
     {
     }
 
@@ -54,7 +55,7 @@ class RoleUsageQuery
      * @since 3.1.0
      * @access private
      */
-    function query()
+    public function query()
     {
         global $wp_roles;
 
@@ -86,17 +87,17 @@ class RoleUsageQuery
     {
         $pp = presspermit();
 
-        if (isset($pp->role_defs->pattern_roles[$role_name]))
+        if (isset($pp->role_defs->pattern_roles[$role_name])) {
             return 'pattern';
-
-        elseif (isset($pp->role_defs->direct_roles[$role_name]))
+        } elseif (isset($pp->role_defs->direct_roles[$role_name])) {
             return 'direct';
-        else
+        } else {
             return false;
+        }
     }
 
     // obsolete
-    function get_search_sql($string, $cols, $wild = false)
+    public function get_search_sql($string, $cols, $wild = false)
     {
         return '';
     }
@@ -108,7 +109,7 @@ class RoleUsageQuery
      *
      * @return array
      */
-    function get_results()
+    public function get_results()
     {
         return $this->results;
     }
@@ -120,7 +121,7 @@ class RoleUsageQuery
      *
      * @return array
      */
-    function get_total()
+    public function get_total()
     {
         return $this->total_roles;
     }

@@ -14,12 +14,13 @@ class PostFilters
 {
     private static $instance;
 
-    var $skip_teaser;  // for use by templates making a direct call to query_posts for non-teased results
-    var $doing_unfiltered_shortcode = false;
-    var $anon_results = [];
+    public $skip_teaser;  // for use by templates making a direct call to query_posts for non-teased results
+    public $doing_unfiltered_shortcode = false;
+    public $anon_results = [];
 
-    public static function instance($args = []) {
-        if ( ! isset(self::$instance)) {
+    public static function instance($args = [])
+    {
+        if (! isset(self::$instance)) {
             self::$instance = new PostFilters();
             self::$instance->init();
         }
@@ -29,7 +30,6 @@ class PostFilters
 
     private function __construct()
     {
-        
     }
 
     private function init()
@@ -42,34 +42,34 @@ class PostFilters
         add_filter('the_posts', [$this, 'fltThePosts'], 50, 2);
 
         add_action('parse_query', [$this, 'actParseQueryFollowup'], 99);
-        
+
         add_filter('presspermit_posts_clauses', [$this, 'fltDoPostsClauses'], 50, 2);
         add_filter('presspermit_posts_request', [$this, 'fltDoPostsRequest'], 2, 2);
         add_filter('presspermit_posts_where', [$this, 'fltPostsWhere'], 10, 2);
-        
+
         add_filter('posts_distinct', [$this, 'fltPostsDistinct'], 10, 2);
 
         add_filter('presspermit_force_post_metacap_check', [$this, 'fltForcePostMetacapCheck'], 10, 2);
 
-        add_filter('pre_do_shortcode_tag', function($do_tag, $tag, $attr, $m) {
-			$this->doing_unfiltered_shortcode = in_array(
-				$tag, 
-				apply_filters('presspermit_unfiltered_shortcodes', ['fl_builder_insert_layout']),
-				true
-			);
+        add_filter('pre_do_shortcode_tag', function ($do_tag, $tag, $attr, $m) {
+            $this->doing_unfiltered_shortcode = in_array(
+                $tag,
+                apply_filters('presspermit_unfiltered_shortcodes', ['fl_builder_insert_layout']),
+                true
+            );
 
             if ($this->doing_unfiltered_shortcode) {
                 $this->doing_unfiltered_shortcode = apply_filters('presspermit_is_unfiltered_shortcode', $this->doing_unfiltered_shortcode, $tag, $attr, $m);
             }
-			
-			return $do_tag;
-		}, 10, 4);
-			
-		add_filter('do_shortcode_tag', function($output, $tag, $attr, $m) {
-			$this->doing_unfiltered_shortcode = false;
-			
-			return $output;
-		}, 10, 4);
+
+            return $do_tag;
+        }, 10, 4);
+
+        add_filter('do_shortcode_tag', function ($output, $tag, $attr, $m) {
+            $this->doing_unfiltered_shortcode = false;
+
+            return $output;
+        }, 10, 4);
 
         do_action('presspermit_post_filters');
     }
@@ -86,8 +86,8 @@ class PostFilters
         global $wp_query;
         if ($wp_query->is_single || $wp_query->is_page) {
             if ($this->anon_results) {
-            	$posts = $this->anon_results;
-			}
+                $posts = $this->anon_results;
+            }
         }
 
         return $posts;
@@ -110,7 +110,8 @@ class PostFilters
         }
     }
 
-    public function fltPostsDistinct($distinct, $query_obj) {
+    public function fltPostsDistinct($distinct, $query_obj)
+    {
         if (!$distinct && defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION')) {
             $distinct = 'DISTINCT';
         }
@@ -148,8 +149,8 @@ class PostFilters
     private function getTeaserPostTypes($post_types, $args = [])
     {
         if (
-        	(is_admin() && (!defined('DOING_AJAX') || ! DOING_AJAX))
-        	|| presspermit()->isContentAdministrator() || !empty($args['skip_teaser'])
+            (is_admin() && (!defined('DOING_AJAX') || ! DOING_AJAX))
+            || presspermit()->isContentAdministrator() || !empty($args['skip_teaser'])
             || defined('XMLRPC_REQUEST') || (defined('REST_REQUEST') && REST_REQUEST)
         ) {
             return [];
@@ -163,19 +164,20 @@ class PostFilters
         global $pagenow, $current_user;
 
         if ($this->doing_unfiltered_shortcode) {
-			return $clauses;
-		}
+            return $clauses;
+        }
 
         if (defined('REST_REQUEST')) {
-        	if (class_exists('PublishPress\Permissions\REST') && !empty(\PublishPress\Permissions\REST::instance()->params['getpages_filtering'])) {
-        		$rest_getpages_filtering = true;	
-        	}
+            if (class_exists('PublishPress\Permissions\REST') && !empty(\PublishPress\Permissions\REST::instance()->params['getpages_filtering'])) {
+                $rest_getpages_filtering = true;
+            }
         }
 
         // Gallery block in Gutenberg editor: error loading Image Size dropdown options
-        if (defined('REST_REQUEST') && empty($rest_getpages_filtering)
-        && empty($_POST) && (!isset($_SERVER['REQUEST_METHOD']) || ('GET' == $_SERVER['REQUEST_METHOD']))  // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
-        && !PWP::empty_REQUEST('context') && ('edit' == PWP::REQUEST_key('context'))
+        if (
+            defined('REST_REQUEST') && empty($rest_getpages_filtering)
+            && empty($_POST) && (!isset($_SERVER['REQUEST_METHOD']) || ('GET' == $_SERVER['REQUEST_METHOD']))  // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing
+            && !PWP::empty_REQUEST('context') && ('edit' == PWP::REQUEST_key('context'))
         ) {
             return $clauses;
         }
@@ -183,8 +185,8 @@ class PostFilters
         $pp = presspermit();
 
         if (defined('PUBLISHPRESS_VERSION') && did_action('publishpress_notifications_trigger_workflows')) {
-			return $clauses;
-		}
+            return $clauses;
+        }
 
         $args['query_obj'] = $_wp_query;
 
@@ -192,9 +194,10 @@ class PostFilters
             return $clauses;
         }
 
-        if ($pp->isUserUnfiltered($current_user->ID, $args) && 
+        if (
+            $pp->isUserUnfiltered($current_user->ID, $args) &&
             (
-            !is_admin() || 
+                !is_admin() ||
             (($pagenow != 'nav-menus.php') && (!defined('DOING_AJAX') || !DOING_AJAX || !PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search'])))
             )
         ) { // need to make private items selectable for nav menus
@@ -211,7 +214,7 @@ class PostFilters
         }
 
         if (
-            // This solution is deprecated in favor of capability support for list_posts, list_others_pages, etc.  
+            // This solution is deprecated in favor of capability support for list_posts, list_others_pages, etc.
             // But with removal of settings checkbox, need to maintain support for sites that rely on this previous workaround, which was enabled by constant PP_ADMIN_READONLY_LISTABLE
             //  (1) Sites that have the admin_hide_uneditable_posts option stored with false value
             //  (2) Sites that inadvertantly set options to defaults but want to restore this workaround. Now supporting an additional constant definition (disclosed by support as needed) rather than the checkbox UI.
@@ -310,10 +313,11 @@ class PostFilters
         // On one test site, WP 6.6 stripped unpublished pages out of Gutenberg Page Parent selection results.
         // This only occurred with "Page Parent selection for Editable Pages only" enabled.
         // It may have been a quirk with the test site, but this workaround is left for activation by constant if needed.
-        if (!empty($rest_getpages_filtering) 
-        && defined('PP_PARENT_SELECTION_STATUS_WORKAROUND')
+        if (
+            !empty($rest_getpages_filtering)
+            && defined('PP_PARENT_SELECTION_STATUS_WORKAROUND')
         ) {
-            add_filter('posts_results', function($results) {
+            add_filter('posts_results', function ($results) {
                 foreach ($results as $k => $row) {
                     if (!in_array($results[$k]->post_status, ['publish'])) {
                         $results[$k]->post_status = 'publish';
@@ -405,8 +409,8 @@ class PostFilters
 
         $args['required_operation'] = $required_operation;
 
-        // Avoid superfluous clauses by limiting object types to those already specified in the query 
-        if (preg_match("/post_type\s*=/", $where) || preg_match("/post_type\s*IN/", $where)) {  // post_type clause present? 
+        // Avoid superfluous clauses by limiting object types to those already specified in the query
+        if (preg_match("/post_type\s*=/", $where) || preg_match("/post_type\s*IN/", $where)) {  // post_type clause present?
             foreach ($post_types as $key => $type) {
                 if (
                     !preg_match("/post_type\s*=\s*'$type'/", $where)
@@ -417,13 +421,15 @@ class PostFilters
             }
         }
 
-        if (!$force_types)
+        if (!$force_types) {
             $post_types = array_intersect($post_types, presspermit()->getEnabledPostTypes());
+        }
 
         if (
             defined('PP_UNFILTERED_FRONT') && (
                 ('read' == $required_operation)
-                || (!$required_operation && PWP::isFront() && !presspermit_is_preview()))
+                || (!$required_operation && PWP::isFront() && !presspermit_is_preview())
+            )
         ) {
             if (defined('PP_UNFILTERED_FRONT_TYPES')) {
                 $unfiltered_types = str_replace(' ', '', PP_UNFILTERED_FRONT_TYPES);
@@ -484,9 +490,10 @@ class PostFilters
         }
 
         if (1 == $num_matches) {
-            // Eliminate a primary plugin incompatibility by skipping this preservation of existing single status requirements if we're on the front end and the requirement is 'publish'.  
-            // (i.e. include private posts that this user has access to via PP roles or exceptions).  
-            if ((!PWP::isFront() && (!defined('REST_REQUEST') || !REST_REQUEST) && (!defined('DOING_AJAX') || !DOING_AJAX || !PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search'])))
+            // Eliminate a primary plugin incompatibility by skipping this preservation of existing single status requirements if we're on the front end and the requirement is 'publish'.
+            // (i.e. include private posts that this user has access to via PP roles or exceptions).
+            if (
+                (!PWP::isFront() && (!defined('REST_REQUEST') || !REST_REQUEST) && (!defined('DOING_AJAX') || !DOING_AJAX || !PWP::is_REQUEST('action', ['menu-get-metabox', 'menu-quick-search'])))
                 || ('publish' != $matches[1][0]) || $retain_status || defined('PP_RETAIN_PUBLISH_FILTER')
             ) {
                 $limit_statuses = [];
@@ -558,15 +565,17 @@ class PostFilters
         return "SELECT $found_rows $distinct $fields FROM $wpdb->posts $join WHERE 1=1 $where $groupby $orderby $limits";
     }
 
-    public function fltPostsJoin($join, $args = []) {
-        if (!defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION') 
-        || !version_compare(PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION, '3.8.0', '>=') 
-        || defined('PRESSPERMIT_DISABLE_AUTHORS_JOIN')
-        || (!empty($args['context']) && ('tally_term_counts' == $args['context']))
+    public function fltPostsJoin($join, $args = [])
+    {
+        if (
+            !defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION')
+            || !version_compare(PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION, '3.8.0', '>=')
+            || defined('PRESSPERMIT_DISABLE_AUTHORS_JOIN')
+            || (!empty($args['context']) && ('tally_term_counts' == $args['context']))
         ) {
             return $join;
         }
-        
+
         $defaults = [
             'source_alias' => false,
             'src_table' => '',
@@ -584,7 +593,7 @@ class PostFilters
             $src_table = ($source_alias) ? $source_alias : $wpdb->posts;
         }
 
-        $ppma_join = 
+        $ppma_join =
             " LEFT JOIN $wpdb->term_relationships AS ppma_tr ON ppma_tr.object_id = $src_table.ID"
           . " LEFT JOIN $wpdb->term_taxonomy AS ppma_tt ON ppma_tt.term_taxonomy_id = ppma_tr.term_taxonomy_id AND ppma_tt.taxonomy = 'author'"
           . " LEFT JOIN $wpdb->terms AS ppma_t ON ppma_t.term_id = ppma_tt.term_id AND ppma_t.slug = '$user->user_nicename'";
@@ -629,8 +638,9 @@ class PostFilters
             $args['src_table'] = $src_table;
         }
 
-        if (!$force_types)
+        if (!$force_types) {
             $post_types = array_intersect((array)$post_types, presspermit()->getEnabledPostTypes());
+        }
 
         $tease_otypes = array_intersect($post_types, self::$instance->getTeaserPostTypes($post_types, $args));
 
@@ -642,9 +652,9 @@ class PostFilters
                     $required_operation = (presspermit_is_preview()) ? 'edit' : 'read';
                 }
             } else {
-                $required_operation = (PWP::isFront() && (!presspermit_is_preview() || (count($post_types) == 1 && ('attachment' == reset($post_types))) )) ? 'read' : 'edit';
+                $required_operation = (PWP::isFront() && (!presspermit_is_preview() || (count($post_types) == 1 && ('attachment' == reset($post_types))))) ? 'read' : 'edit';
             }
-            
+
             $args['required_operation'] = $required_operation;
         }
 
@@ -655,7 +665,7 @@ class PostFilters
             } else {
                 $post_id = PWP::getPostID();
             }
-            
+
             if ($post_id) {
                 $caps = (array) map_meta_cap('read_post', $user->ID, $post_id);
 
@@ -663,7 +673,7 @@ class PostFilters
                     $edit_caps = [$type_obj->cap->edit_posts];
 
                     if (!empty($type_obj->cap->edit_others_posts)) {
-                        $edit_caps []= $type_obj->cap->edit_others_posts;
+                        $edit_caps [] = $type_obj->cap->edit_others_posts;
                     }
 
                     if (array_intersect($caps, $edit_caps)) {
@@ -704,7 +714,7 @@ class PostFilters
             $use_statuses = PWP::getPostStatuses(['internal' => false, 'post_type' => $post_types], 'object', 'and', ['context' => 'edit']);
         }
 
-        $use_statuses = apply_filters('presspermit_query_post_statuses', $use_statuses, $args );
+        $use_statuses = apply_filters('presspermit_query_post_statuses', $use_statuses, $args);
 
         global $wp_query;
 
@@ -732,10 +742,10 @@ class PostFilters
 
         $caps = class_exists('\PublishPress\StatusCapabilities\CapabilityFilters') ? \PublishPress\StatusCapabilities\CapabilityFilters::instance() : false;
 
-		// legacy support
-		if (!$caps) {
-			$caps = class_exists('\PublishPress\Permissions\Statuses\CapabilityFilters') ? \PublishPress\Permissions\Statuses\CapabilityFilters::instance() : false;
-		}
+        // legacy support
+        if (!$caps) {
+            $caps = class_exists('\PublishPress\Permissions\Statuses\CapabilityFilters') ? \PublishPress\Permissions\Statuses\CapabilityFilters::instance() : false;
+        }
 
         $flag_meta_caps = !empty($caps);
 
@@ -756,9 +766,9 @@ class PostFilters
         }
 
         foreach ($post_types as $post_type) {
-            if (in_array($post_type, $tease_otypes, true) && empty($skip_teaser))
+            if (in_array($post_type, $tease_otypes, true) && empty($skip_teaser)) {
                 $where_arr[$post_type] = "$src_table.post_type = '$post_type' AND 1=1";
-            else {
+            } else {
                 $have_site_caps = [];
 
                 $type_obj = get_post_type_object($post_type);
@@ -789,16 +799,18 @@ class PostFilters
                     }
 
                     if ($reqd_caps) {  // note: this function is called only for listing query filters (not for user_has_cap filter)
-                        if ($missing_caps = apply_filters(
-                            'presspermit_query_missing_caps',
-                            array_diff($reqd_caps, array_keys(array_filter($user->allcaps))),
-                            $reqd_caps,
-                            $post_type,
-                            $meta_cap
-                        )) {
+                        if (
+                            $missing_caps = apply_filters(
+                                'presspermit_query_missing_caps',
+                                array_diff($reqd_caps, array_keys(array_filter($user->allcaps))),
+                                $reqd_caps,
+                                $post_type,
+                                $meta_cap
+                            )
+                        ) {
                             // Support list_posts, list_others_posts, list_pitch_pages etc. for listing uneditable posts on Posts screen
                             if (('edit' == $required_operation) && empty($args['has_cap_check']) && empty(presspermit()->flags['cap_filter_in_process'])) {
-                                foreach($reqd_caps as $key => $cap) {
+                                foreach ($reqd_caps as $key => $cap) {
                                     if (in_array($cap, $missing_caps)) {
                                         $list_cap = str_replace('edit_', 'list_', $cap);
 
@@ -840,7 +852,8 @@ class PostFilters
 
                 if ($include_trash) {
                     if ($type_obj = get_post_type_object($post_type)) {
-                        if ((('edit_post' == $meta_cap) && !empty($user->allcaps[$type_obj->cap->edit_posts]))
+                        if (
+                            (('edit_post' == $meta_cap) && !empty($user->allcaps[$type_obj->cap->edit_posts]))
                             || (('delete_post' == $meta_cap) && !empty($user->allcaps[$type_obj->cap->delete_posts]))
                         ) {
                             if (!isset($type_obj->cap->delete_others_posts) || !empty($user->allcaps[$type_obj->cap->delete_others_posts])) {
@@ -872,7 +885,6 @@ class PostFilters
                         && !array_diff_key($use_statuses, array_flip($have_site_caps['owner']))
                     ) {
                         $where_arr[$post_type]['owner'] = "$parent_clause ( " . PWP::postAuthorClause($args) . " )";
-                        
                     } else {
                         $where_arr[$post_type]['owner'] = "$parent_clause ( " . PWP::postAuthorClause($args) . " )"
                             . " AND $src_table.post_status IN ('" . implode("','", array_unique($have_site_caps['owner'])) . "')";
@@ -890,8 +902,9 @@ class PostFilters
                     }
                 }
 
-                if ($modified = apply_filters('presspermit_adjust_posts_where_clause', false, $where_arr[$post_type], $post_type, $args))
+                if ($modified = apply_filters('presspermit_adjust_posts_where_clause', false, $where_arr[$post_type], $post_type, $args)) {
                     $where_arr[$post_type] = $modified;
+                }
 
                 if ('attachment' == $post_type) {
                     if (('read' == $required_operation) || apply_filters('presspermit_force_attachment_parent_clause', false, $args)) {
@@ -901,20 +914,21 @@ class PostFilters
 
                 if ('delete' == $required_operation) {
                     $const = "PP_EDIT_EXCEPTIONS_ALLOW_" . strtoupper($post_type) . "_DELETION";
-                    if (defined('PP_EDIT_EXCEPTIONS_ALLOW_DELETION') || defined($const))
+                    if (defined('PP_EDIT_EXCEPTIONS_ALLOW_DELETION') || defined($const)) {
                         $required_operation = 'edit';
+                    }
                 }
 
                 $where_arr[$post_type] = DB\Permissions::addExceptionClauses($where_arr[$post_type], $required_operation, $post_type, $args);
             }
         } // end foreach post_type
 
-        if (!$pp_where = Arr::implode('OR', $where_arr))
+        if (!$pp_where = Arr::implode('OR', $where_arr)) {
             $pp_where = '1=1';
+        }
 
         // term restrictions which apply to any post type
         if ($apply_term_restrictions && !did_action('presspermit_bypass_term_restrictions')) {
-
             // account for term additions which apply to any post type (possibly based on a different taxonomy than restrictions)
             $additional_ttids = [];
 
@@ -927,18 +941,20 @@ class PostFilters
                 }
             }
 
-            if ($term_exc_where = DB\Permissions::addTermRestrictionsClause(
-                $required_operation,
-                '',
-                $src_table,
-                [   'merge_universals' => true, 
-                    'merge_additions' => true, 
-                    'exempt_post_types' => $tease_otypes, 
-                    'additional_ttids' => $additional_ttids, 
+            if (
+                $term_exc_where = DB\Permissions::addTermRestrictionsClause(
+                    $required_operation,
+                    '',
+                    $src_table,
+                    [   'merge_universals' => true,
+                    'merge_additions' => true,
+                    'exempt_post_types' => $tease_otypes,
+                    'additional_ttids' => $additional_ttids,
                     'apply_object_additions' => defined('PP_RESTRICTION_PRIORITY') ? false : PWP::findPostType(),
                     'join' => $join,
-                ]
-            )) {
+                    ]
+                )
+            ) {
                 $pp_where = "( $pp_where ) $term_exc_where";
             }
         }
@@ -969,8 +985,9 @@ class PostFilters
     public function appendAttachmentClause($where, $clauses, $args)
     {
         static $busy = false;
-        if ($busy) // recursion sanity check
+        if ($busy) { // recursion sanity check
             return '1=2';
+        }
 
         $busy = true;
         require_once(PRESSPERMIT_CLASSPATH . '/MediaQuery.php');
@@ -994,8 +1011,9 @@ class PostFilters
     // wrapper for WP map_meta_cap, for use in determining caps for a specific post_status and user class (owner/non-owner), without a specific post id
     private function mapMetaCap($cap_name, $user_id = 0, $post_id = 0, $args = [])
     {
-        if ($post_id)
+        if ($post_id) {
             return map_meta_cap($cap_name, $user_id, $post_id);
+        }
 
         $defaults = ['is_author' => false, 'post_type' => '', 'status' => '', 'query_contexts' => []];
         $args = array_merge($defaults, $args);
@@ -1005,19 +1023,22 @@ class PostFilters
 
         global $current_user;
 
-        if (!$post_type)  // sanity check
+        if (!$post_type) {  // sanity check
             return (array)$cap_name;
+        }
 
-        if (!$user_id)
+        if (!$user_id) {
             $user_id = $current_user->ID;
+        }
 
         // force desired status caps and others caps by passing a fake post into map_meta_cap
         $post_author = ($is_author) ? $user_id : -1;
 
-        if (!$status)
+        if (!$status) {
             $status = (in_array($cap_name, ['read_post', 'read_page'], true)) ? 'publish' : 'draft';  // default to draft editing caps, published reading caps
-        elseif ('auto-draft' == $status)
+        } elseif ('auto-draft' == $status) {
             $status = 'draft';
+        }
 
         $_post = (object)[
             'ID' => -1,
@@ -1030,21 +1051,21 @@ class PostFilters
 
         wp_cache_set(-1, $_post, 'posts');  // prevent querying for fake post
         presspermit()->meta_cap_post = $_post;
-        
+
         // Avoid conflict with the combination of PublishPress Authors and WP_Privacy_Policy_Content check
         if (is_admin() && class_exists('WP_Privacy_Policy_Content')) {
-            remove_action( 'admin_init', array( 'WP_Privacy_Policy_Content', 'text_change_check' ), 100 );
+            remove_action('admin_init', array( 'WP_Privacy_Policy_Content', 'text_change_check' ), 100);
         }
 
         $return = array_diff(map_meta_cap($cap_name, $user_id, $_post->ID), [null]);  // post types which leave some basic cap properties undefined result in nulls
         wp_cache_delete(-1, 'posts');
         presspermit()->meta_cap_post = false;
 
-		foreach($return as $k => $val) {
-			if ('read' == $val) {
-				$return[$k] = PRESSPERMIT_READ_PUBLIC_CAP;
-			}	
-		}
+        foreach ($return as $k => $val) {
+            if ('read' == $val) {
+                $return[$k] = PRESSPERMIT_READ_PUBLIC_CAP;
+            }
+        }
 
         if ((1 == count($return)) && ('do_not_allow' == reset($return)) && in_array($cap_name, ['read_post', 'read_page']) && ('publish' == $status)) {
             if ($type_obj = get_post_type_object($post_type)) {
@@ -1060,10 +1081,11 @@ class PostFilters
     public static function postTypeFromCaps($caps)
     {
         foreach (presspermit()->getEnabledPostTypes([], 'object') as $post_type => $type_obj) {
-            if (array_intersect((array)$type_obj->cap, $caps))
+            if (array_intersect((array)$type_obj->cap, $caps)) {
                 return $post_type;
+            }
         }
-    
+
         return false;
     }
 
@@ -1075,8 +1097,9 @@ class PostFilters
         if ($type_obj = get_post_type_object($post_type)) {
             $replace_caps = [];
 
-            if (isset($type_obj->cap->read_private_posts))
+            if (isset($type_obj->cap->read_private_posts)) {
                 $replace_caps[$type_obj->cap->read_private_posts] = PRESSPERMIT_READ_PUBLIC_CAP;
+            }
 
             $cap_match = [
                 'edit_others_posts' => 'edit_posts',
@@ -1107,7 +1130,7 @@ class PostFilters
                     // todo: API?
                     if (defined('PUBLISHPRESS_REVISIONS_VERSION')) {
                         $revise_cap = str_replace('edit_', 'revise_', $type_obj->cap->edit_posts);
-                        
+
                         if (!empty($current_user->allcaps[$revise_cap])) {
                             $require_cap = $revise_cap;
                         }
@@ -1136,5 +1159,4 @@ class PostFilters
 
         return $reqd_caps;
     }
-
 } // end class PostFilters
