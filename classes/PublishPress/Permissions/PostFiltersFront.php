@@ -88,7 +88,12 @@ class PostFiltersFront
                     ]
                     )
                 ) {
-                    $wp_query->is_404 = true;
+                    if ($teased_types = apply_filters('presspermit_teased_post_types', [], ['post'], [])) {
+                        $term = $wp_query->get_queried_object();
+                        do_action('presspermit_force_term_teaser', $term);
+                    } else {
+                        $wp_query->is_404 = true;
+                    }
                 }
             }
         }
