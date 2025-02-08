@@ -60,6 +60,7 @@ class SettingsTabAdvanced
             'delete_settings_on_uninstall'           => esc_html__('Delete settings on plugin deletion', 'press-permit-core'),
             'post_blockage_priority'                 => esc_html__('Post-specific Permissions take priority', 'press-permit-core'),
             'media_search_results'                   => esc_html__('Search Results include Media', 'press-permit-core'),
+            'regulate_category_archive_page'         => esc_html__('Regulate access to Category archive pages', 'press-permit-core'),
             'term_counts_unfiltered'                 => esc_html__("Performance: Don't filter category / tag counts", 'press-permit-core'),
             'force_nav_menu_filter'                  => esc_html__('Filter Menu Items', 'press-permit-core'),
             'page_parent_editable_only'              => esc_html__('Page Parent selection for editable pages only', 'press-permit-core'),
@@ -153,7 +154,7 @@ class SettingsTabAdvanced
             'post_editor'       => ['lock_top_pages', 'page_parent_order', 'page_parent_editable_only', 'auto_assign_available_term'],
             'permissions'       => ['post_blockage_priority', 'suppress_administrator_metagroups', 'publish_exceptions', 'non_admins_set_read_exceptions', 'non_admins_set_edit_exceptions'],
             'user_management'   => ['new_user_groups_ui', 'display_user_profile_groups', 'display_user_profile_roles', 'users_bulk_groups', 'add_author_pages', 'publish_author_pages'],
-            'front_end'         => ['media_search_results', 'anonymous_unfiltered', 'limit_front_end_term_filtering', 'term_counts_unfiltered', 'strip_private_caption', 'force_nav_menu_filter'],
+            'front_end'         => ['media_search_results', 'anonymous_unfiltered', 'regulate_category_archive_page', 'limit_front_end_term_filtering', 'term_counts_unfiltered', 'strip_private_caption', 'force_nav_menu_filter'],
             'role_integration'  =>  ['pattern_roles_include_generic_rolecaps', 'dynamic_wp_roles'],
             'nav_menu_management' => ['admin_nav_menu_partial_editing', 'admin_nav_menu_lock_custom'],
             'misc'              => ['force_taxonomy_cols'],
@@ -351,6 +352,8 @@ class SettingsTabAdvanced
                     <div style="margin-top:30px">
                     <?php
                     $ui->optionCheckbox('anonymous_unfiltered', $tab, $section, true);
+
+                    $ui->optionCheckbox('regulate_category_archive_page', $tab, $section, true);
 
                     $ui->optionCheckbox('limit_front_end_term_filtering', $tab, $section, true);
 
