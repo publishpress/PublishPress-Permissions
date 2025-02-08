@@ -36,3 +36,11 @@ function presspermit_is_preview() {
 
     return apply_filters('presspermit_is_preview', $is_preview);
 }
+
+function publishpress_is_post_teaser($post_id = 0) {
+    return class_exists('PublishPress\Permissions\Teaser') && \PublishPress\Permissions\Teaser::isTeasedPost($post_id);
+}
+
+function publishpress_is_archive_teaser() {
+    return class_exists('PublishPress\Permissions\Teaser') && \PublishPress\Permissions\Teaser::isArchiveTeaser();
+}
