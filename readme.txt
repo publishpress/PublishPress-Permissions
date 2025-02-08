@@ -240,6 +240,13 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 4.1.2 - 10 Feb 2025 =
+* Feature : Option to apply Category restrictions to archive page (Settings > Advanced > Front End)
+* Fixed : User Profile - User could not be removed from all groups
+* Fixed : If a role has a Specific Permissions assigned as "Limit to > (none)", the default post editor metabox selection for new posts was "Unblocked"
+* Compat : PublishPress Revisions - Avoid conflict with implementation of list_others_revisions, preview_others_revisions capabilities (with Revisions 3.6.1)
+* Compat : PublishPress Revisions - "Limit to" permissions for Revision Submission also blocked the editing of regular draft posts
+
 = 4.1.1 - 30 January 2025 =
 * Enhancement: Cleaner, better organized plugin settings tabs
 * Enhancement: Sync Posts UI fits 1080px screens
