@@ -37,7 +37,13 @@ class AgentsAjax
         $agent_id = PWP::GET_int('pp_agent_id');
         $topic = str_replace(':', ',', $topic);
 
-        $omit_admins = !PWP::empty_GET('pp_omit_admins');
+        $omit_admins = apply_filters(
+            'presspermit_group_omit_administrators',
+            !PWP::empty_GET('pp_omit_admins') && (!defined('PRESSPERMIT_ADMINS_IN_GROUP') || !PRESSPERMIT_ADMINS_IN_GROUP),
+            $agent_id, 
+            $topic
+        );
+
         $context = PWP::GET_key('pp_context');
         
         if (strpos($topic, ',')) {
