@@ -260,8 +260,20 @@ class AgentsDynamicUI
         wp_enqueue_script('presspermit-listbox', PRESSPERMIT_URLPATH . "/common/js/listbox{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
         $wp_scripts->in_footer[] = 'presspermit-listbox'; // otherwise it will not be printed in footer
 
+        if ('user' == $agent_type) {
+            // note: agent_id in this context is the group ID for which we are querying users for possible group membership
+            $allow_administrator_members = !apply_filters('presspermit_group_omit_administrators', !defined('PP_ADMINS_IN_PERMISSION_GROUPS') || !PP_ADMINS_IN_PERMISSION_GROUPS, $agent_id);
+        }
+
         if (!empty($args['create_dropdowns'])) {
-            wp_localize_script('presspermit-listbox', 'ppListbox', ['omit_admins' => '1', 'metagroups' => 1]);
+            wp_localize_script(
+                'presspermit-listbox', 
+                'ppListbox', 
+                [
+                    'omit_admins' => !empty($allow_administrator_members) ? '0' : '1', 
+                    'metagroups' => 1
+                ]
+            );
 
             wp_enqueue_script('presspermit-agent-select', PRESSPERMIT_URLPATH . "/common/js/agent-exception-select{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
 
@@ -269,7 +281,7 @@ class AgentsDynamicUI
             wp_localize_script('presspermit-agent-select', 'ppException', $arr);
         } else {
         	// @todo: API
-            $_args = ['omit_admins' => '1', 'metagroups' => 0];
+            $_args = ['omit_admins' => $allow_administrator_members ? '0' : '1', 'metagroups' => 0];
 
             if (!PWP::empty_REQUEST('page') && PWP::REQUEST_key_match('page', 'presspermit-edit-permissions')) {   
                 if ($group = presspermit()->groups()->getGroupByName('[Pending Revision Monitors]')) {
