@@ -182,6 +182,7 @@ class CapabilityFilters
         && (('edit_posts' != reset($orig_reqd_caps)) || !presspermit()->doingEmbed())
         ) { 
             $item_type = '';
+            $item_status = '';
 
             // If we would fail a straight post cap check, pass it if appropriate additions stored
             if (array_diff($orig_reqd_caps, array_keys(array_filter($wp_sitecaps)))) {
