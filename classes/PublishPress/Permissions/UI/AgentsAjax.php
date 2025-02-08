@@ -39,7 +39,7 @@ class AgentsAjax
 
         $omit_admins = apply_filters(
             'presspermit_group_omit_administrators',
-            !PWP::empty_GET('pp_omit_admins') && (!defined('PRESSPERMIT_ADMINS_IN_GROUP') || !PRESSPERMIT_ADMINS_IN_GROUP),
+            !PWP::empty_GET('pp_omit_admins') && (!defined('PP_ADMINS_IN_PERMISSION_GROUPS') || !PP_ADMINS_IN_PERMISSION_GROUPS),
             $agent_id, 
             $topic
         );
