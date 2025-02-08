@@ -54,7 +54,7 @@ class Agents
 
             echo "<div class='pp_agents_ui_wrapper'>";
 
-            echo "<input type='hidden' name='{$agent_type}[]' value='' />";
+            echo "<input type='hidden' name='" . esc_attr($agent_type) . "[]' value='' />";
 
             if ($item_assignments) {
                 AgentsChecklist::display('current', $agent_type, $all_agents, $id_suffix, $item_assignments, $args);
