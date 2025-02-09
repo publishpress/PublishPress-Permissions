@@ -5,6 +5,7 @@ namespace PublishPress\Permissions\UI;
 class SettingsTabAdvanced
 {
     private $enabled;
+    private $advanced_option_captions = [];
 
     public function __construct()
     {
@@ -101,24 +102,26 @@ class SettingsTabAdvanced
             }
         }
 
-        // Settings that are displayed only if "Display all" is enabled
+        // Settings that are displayed only if "Display all" is enabled 
+        $this->advanced_option_captions = [
+            'anonymous_unfiltered'                   => sprintf(esc_html__('%1$sDisable%2$s all filtering for anonymous users', 'press-permit-core'), '', ''),
+            'suppress_administrator_metagroups'      => sprintf(esc_html__('%1$sDo not apply%2$s metagroup permissions for Administrators', 'press-permit-core'), '', ''),
+            'limit_front_end_term_filtering'         => sprintf(esc_html__('Limit front-end category / term filtering', 'press-permit-core')),
+            'user_search_by_role'                    => esc_html__('User Search: Filter by WP role', 'press-permit-core'),
+            'display_hints'                          => esc_html__('Display Administrative Hints', 'press-permit-core'),
+            'display_extension_hints'                => esc_html__('Display Module Hints', 'press-permit-core'),
+            'dynamic_wp_roles'                       => esc_html__('Detect Dynamically Mapped WP Roles', 'press-permit-core'),
+            'non_admins_set_read_exceptions'         => esc_html__('Non-Administrators can set Reading Permissions for their editable posts', 'press-permit-core'),
+            'users_bulk_groups'                      => esc_html__('Bulk Add / Remove Groups on Users Screen', 'press-permit-core'),
+            'list_all_constants'                     => esc_html__('Display all available constant definitions'),
+            'non_admins_set_edit_exceptions'         => esc_html__('Non-Administrators can set Editing Permissions for their editable posts', 'press-permit-core'),
+            'publish_exceptions'                     => esc_html__('Assign Publish Permissions separate from Edit Permissions', 'press-permit-core'),
+            'limit_user_edit_by_level'               => 'limit_user_edit_by_level', // not actually displayed; include to regulate display of setting
+            'user_permissions'                       => 'user_permissions'          // not actually displayed; include to regulate display of setting
+        ];
+
         if ($this->enabled) {
-            $opt = array_merge($opt, [
-                'anonymous_unfiltered'                   => sprintf(esc_html__('%1$sDisable%2$s all filtering for anonymous users', 'press-permit-core'), '', ''),
-                'suppress_administrator_metagroups'      => sprintf(esc_html__('%1$sDo not apply%2$s metagroup permissions for Administrators', 'press-permit-core'), '', ''),
-                'limit_front_end_term_filtering'         => sprintf(esc_html__('Limit front-end category / term filtering', 'press-permit-core')),
-                'user_search_by_role'                    => esc_html__('User Search: Filter by WP role', 'press-permit-core'),
-                'display_hints'                          => esc_html__('Display Administrative Hints', 'press-permit-core'),
-                'display_extension_hints'                => esc_html__('Display Module Hints', 'press-permit-core'),
-                'dynamic_wp_roles'                       => esc_html__('Detect Dynamically Mapped WP Roles', 'press-permit-core'),
-                'non_admins_set_read_exceptions'         => esc_html__('Non-Administrators can set Reading Permissions for their editable posts', 'press-permit-core'),
-                'users_bulk_groups'                      => esc_html__('Bulk Add / Remove Groups on Users Screen', 'press-permit-core'),
-                'list_all_constants'                     => esc_html__('Display all available constant definitions'),
-                'non_admins_set_edit_exceptions'         => esc_html__('Non-Administrators can set Editing Permissions for their editable posts', 'press-permit-core'),
-                'publish_exceptions'                     => esc_html__('Assign Publish Permissions separate from Edit Permissions', 'press-permit-core'),
-                'limit_user_edit_by_level'               => 'limit_user_edit_by_level', // not actually displayed; include to regulate display of setting
-                'user_permissions'                       => 'user_permissions'          // not actually displayed; include to regulate display of setting
-            ]);
+            $opt = array_merge($opt, $this->advanced_option_captions);
         }
 
         // Suppress the display of settings specific to a module which is disabled
@@ -220,7 +223,76 @@ class SettingsTabAdvanced
                     $hint = '';
                     $ui->optionCheckbox('advanced_options', $tab, $section, $hint);
 
+                    $caution_option_names = [];
+
+                    $option_captions = $ui->option_captions;
+
+                    if (!$this->enabled) {
+                        $option_captions = array_merge($option_captions, $this->advanced_option_captions);
+                    }
+
+                    // Use option_captions array for ordering
+                    $advanced_options = array_merge (
+                        array_intersect_key($option_captions, $pp->default_advanced_options),
+                        array_diff_key($pp->default_advanced_options, $option_captions)         // uncaptioned advanced options
+                    );
+
+                    foreach (array_keys($advanced_options) as $option_name) {
+                        $default_val = (isset($pp->default_advanced_options[$option_name])) ? $pp->default_advanced_options[$option_name] : '';
+                        $stored_val = get_option("presspermit_{$option_name}", $default_val);
+
+                        if (($stored_val != $default_val) 
+                        && (!is_scalar($stored_val) 
+                            || !is_scalar($default_val))
+                            || (is_numeric($default_val) && (is_numeric($stored_val) || ('' === $stored_val)) && (intval($stored_val) != intval($default_val)))
+                            || (!is_numeric($default_val) && (string) $default_val != (string) $stored_val)
+                        ) {
+                            if (isset($option_captions[$option_name])) {
+                                $caution_option_names []= $option_captions[$option_name];
+                            } else {
+                                $caution_option_names []= ucwords(str_replace('_', ' ', $option_name));
+                            }
+                        }
+                    }
                     ?>
+
+                    <?php if ($caution_option_names) :?>
+                        <div class="pp-advanced-caution" style="display:none">
+                        <span class="pp-caution">
+                        <?php
+                        if ($this->enabled) {
+                            esc_html_e('The following would revert to default settings:', 'press-permit-core');
+                        } else {
+                            esc_html_e('The following would change from defaults to previously stored settings:', 'press-permit-core');
+                        }
+                        ?>
+                        </span>
+
+                        <ul>
+                            <?php foreach ($caution_option_names as $_opt_name) :?>
+                                <li>
+                                <?php esc_html_e($_opt_name);?>
+                                </li>
+                            <?php endforeach;?>
+                        </ul>
+                        </div>
+
+                        <script type="text/javascript">
+                            /* <![CDATA[ */
+                            jQuery(document).ready(function ($) {
+                                $('input#advanced_options').on('click', function() {
+                                    <?php if ($this->enabled) :?>
+                                        $(this).closest('td').find('div.pp-advanced-caution').slideToggle($(this).prop('checked'));
+                                    <?php else:?>
+                                        $(this).closest('td').find('div.pp-advanced-caution').slideToggle(!$(this).prop('checked'));
+                                    <?php endif;?>
+                                });
+                            });
+                            /* ]]> */
+                        </script>
+
+                    <?php endif;?>
+
                     <div>
                         <?php
                         $hint = esc_html__('note: Plugin settings and configuration data will be deleted, but only after the last copy of Permissions / Permissions Pro is deleted.', 'press-permit-core');
@@ -264,12 +336,12 @@ class SettingsTabAdvanced
                             echo '</label></div>';
                         }
 
-                        echo '<span class="pp-subtext">';
+                        echo '<div class="pp-subtext">';
                         if ($ui->display_hints) {
                             SettingsAdmin::echoStr('lock_top_pages');
                         }
 
-                        echo '</span><br>';
+                        echo '</div><br>';
                     endif; ?>
 
                     <?php
