@@ -243,9 +243,9 @@ class SettingsTabAdvanced
 
                         if (($stored_val != $default_val) 
                         && (!is_scalar($stored_val) 
-                            || !is_scalar($default_val))
+                            || !is_scalar($default_val)
                             || (is_numeric($default_val) && (is_numeric($stored_val) || ('' === $stored_val)) && (intval($stored_val) != intval($default_val)))
-                            || (!is_numeric($default_val) && (string) $default_val != (string) $stored_val)
+                            || (!is_numeric($default_val) && (string) $default_val != (string) $stored_val))
                         ) {
                             if (isset($option_captions[$option_name])) {
                                 $caution_option_names []= $option_captions[$option_name];
