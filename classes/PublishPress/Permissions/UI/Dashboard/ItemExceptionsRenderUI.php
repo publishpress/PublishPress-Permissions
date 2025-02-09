@@ -22,6 +22,10 @@ class ItemExceptionsRenderUI
             'unblocked' => esc_html__('Unblocked', 'press-permit-core'),
         ];
 
+        foreach ($this->opt_labels as $k => $val) {
+            $this->opt_labels[$k] = str_replace(['(', ')'], '', $val);
+        }
+
         $this->opt_class = ['' => "pp-def", 0 => "pp-no2", 1 => "pp-yes", 2 => "pp-yes2"];
     }
 
