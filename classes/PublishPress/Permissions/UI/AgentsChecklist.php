@@ -112,7 +112,7 @@ class AgentsChecklist
                 . "<ul class='pp-agents-list " . esc_attr($ul_class) . "' id='" . esc_attr("list_{$agents_subset}_{$name_attrib}") . "'>";
         } else {
             $ul_class = "pp-agents-list_auto";
-            echo "<div class='pp-{" . esc_attr($agent_type) . "'>"
+            echo "<div class='pp-" . esc_attr($agent_type) . "'>"
                 . "<ul class='pp-agents-list " . esc_attr($ul_class) . "' id='" . esc_attr("list_{$agents_subset}_{$name_attrib}") . "'>";
         }
 
