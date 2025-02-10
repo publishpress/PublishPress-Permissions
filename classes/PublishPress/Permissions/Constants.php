@@ -120,6 +120,7 @@ $consts = [
     'PP_ADMIN_TERMS_READONLY_LISTABLE' => esc_html__("Unlock Permissions > Settings > Core > Admin Back End > 'Hide non-editable posts'", 'press-permit-core-hints'),
     'PP_UPLOADS_FORCE_FILTERING' => esc_html__("Within the async-upload.php script, filter author's retrieval of the attachment they just uploaded", 'press-permit-core-hints'),
     'PP_NO_COMMENT_FILTERING' => esc_html__("Don't filter comment display or moderation within wp-admin", 'press-permit-core-hints'),
+    'PP_ADMINS_IN_PERMISSION_GROUPS' => esc_html__("Allow Administrators to be added to Permission Groups, even though they are not restricted", 'press-permit-core-hints'),
 ];
 foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 'type' => $type];
 
