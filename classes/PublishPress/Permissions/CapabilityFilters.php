@@ -87,6 +87,8 @@ class CapabilityFilters
     //
     public function fltUserHasCap($wp_sitecaps, $orig_reqd_caps, $args)
     {
+        global $pagenow;
+        
         if ($this->in_process || !isset($args[0]))
             return $wp_sitecaps;
 
@@ -111,6 +113,16 @@ class CapabilityFilters
             $item_id = 0;
 
         $item_id = (isset($args[2])) ? (int) $args[2] : 0;
+
+        // Apply presspermit_skip_postmeta_filtering filter under limited conditions to avoid perf issues with main queries
+        if ($item_id && in_array($orig_cap, ['read_post', 'read_page']) && is_admin() 
+        && !empty($pagenow) && !in_array($pagenow, ['edit.php', 'post.php', 'post-new.php'])
+        && (!defined('REST_REQUEST') || !REST_REQUEST)
+        && (!defined('DOING_AJAX') || !DOING_AJAX)
+        && apply_filters('presspermit_skip_postmeta_filtering', false, $item_id, $orig_cap)
+        ) {
+            return $wp_sitecaps;
+        }
 
         if ('read_document' == $orig_cap)  // todo: api
             $orig_cap = 'read_post';
