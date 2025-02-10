@@ -240,12 +240,28 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 4.1.2 - 10 Feb 2025 =
-* Feature : Option to apply Category restrictions to archive page (Settings > Advanced > Front End)
-* Fixed : User Profile - User could not be removed from all groups
-* Fixed : If a role has a Specific Permissions assigned as "Limit to > (none)", the default post editor metabox selection for new posts was "Unblocked"
-* Compat : PublishPress Revisions - Avoid conflict with implementation of list_others_revisions, preview_others_revisions capabilities (with Revisions 3.6.1)
-* Compat : PublishPress Revisions - "Limit to" permissions for Revision Submission also blocked the editing of regular draft posts
+= 4.1.2 - 10 February 2025 =
+* Added: Template function for the Teaser module (Pro). #1423
+* Added: "Limit to" permissions for Revision Submission now also block draft post editing. #1407
+* Feature: Option to apply Category restrictions to archive page (Settings > Advanced > Front End)
+* Fixed: User Profile issue preventing removal of a user from all groups. #1403
+* Fixed: If a role has a Specific Permissions assigned as "Limit to > (none)", the default post editor metabox selection for new posts was "Unblocked"
+* Fixed: Invalid classname in User/Groups selection. #1421
+* Fixed: Role Usage could not update role's setting. #1420
+* Fixed: PHP Warning for undefined variable `$item_status`. #1419
+* Fixed: Default settings in the Permissions metabox on Add New Post. #1401
+* Fixed: Group membership selection incorrectly allowed Administrators when Access Circles were active. #1399
+* Fixed: Parentheses removed from editor metaboxes for cleaner display. #1387
+* Compat: PublishPress Revisions - Avoid conflict with implementation of list_others_revisions, preview_others_revisions capabilities (with Revisions 3.6.1)
+* Compat: PublishPress Revisions - "Limit to" permissions for Revision Submission also blocked the editing of regular draft posts
+* Updated: Clarified the effect of enabling/disabling Advanced Options in Plugin Settings. #1435
+* Updated: SettingsTabAdvanced.php to improve the Advanced settings interface. #1437
+* Updated: PostFiltersFront.php to apply Category restrictions to the Category archive page. #1425
+* Updated: AgentsAjax.php for improved Access Circles functionality. #1424
+* Updated: Revisions compatibility to support reduced filtering for certain use cases. #1407
+* Updated: Copyright year to 2025. #1390
+* Updated: Language files (.pot and .mo), including FR translations. #1392
+* Updated: Composer dependencies.
 
 = 4.1.1 - 30 January 2025 =
 * Enhancement: Cleaner, better organized plugin settings tabs
