@@ -245,6 +245,7 @@ class Permissions
             'supplemental_role_defs' => [], // stored by Capability Manager Enhanced
             'customized_roles' => [],       // stored by Capability Manager Enhanced
             'pattern_roles_include_generic_rolecaps' => 0, // This is exposed on the Advanced tab, but intentionally excluded from the default_advanced_options array
+            'regulate_category_archive_page' => 0,
         ];
 
         // need these keyed in separate array to force defaults if advanced options are disabled

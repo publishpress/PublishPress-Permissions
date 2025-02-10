@@ -24,7 +24,81 @@ class PostFiltersFront
             add_filter('wp_link_pages_link', [$this, 'fltPagesLink']);
         }
 
+        add_action('template_redirect', [$this, 'actRegulateTaxonomyArchivePage']);
+
         do_action('presspermit_post_filters_front');
+    }
+
+    function actRegulateTaxonomyArchivePage() {
+        global $wp_query;
+
+        if (empty($wp_query) || presspermit()->isContentAdministrator()) {
+            return;
+        }
+
+        if (!empty($wp_query->is_category) && !empty($wp_query->query_vars['cat']) 
+        && in_array('category', presspermit()->getEnabledTaxonomies())
+        && presspermit()->getOption('regulate_category_archive_page')
+        ) {
+            $user = presspermit()->getUser();
+
+            // Make sure the user has term restrictions. Otherwise, treat empty result set as due to no posts being assigned to this category.
+            foreach ($user->except['read_post']['term'] as $exception_taxonomy => $exceptions) {
+                $query_term_ids = (!empty($wp_query->query_vars['cat'])) ? (array) $wp_query->query_vars['cat'] : [];
+                
+                if ($query_term_ids && in_array($exception_taxonomy, ['category', ''])) {
+                    foreach ($exceptions as $modification => $exceptions_by_post_type) {
+                        
+                        if (in_array($modification, ['exclude'])) {
+                            $matched_term = false;
+
+                            foreach ($exceptions_by_post_type as $_post_type => $term_exceptions_by_status) {
+                                if (isset($term_exceptions_by_status[''])) {
+                                    if (array_intersect($query_term_ids, $term_exceptions_by_status[''])) {
+                                        $any_term_exceptions = true;
+                                        break 3;
+                                    }
+                                }
+                            }
+                        } elseif ('include' == $modification) {
+                            $matched_term = false;
+
+                            foreach ($exceptions_by_post_type as $_post_type => $term_exceptions_by_status) {
+                                if (isset($term_exceptions_by_status[''])) {
+
+                                    if (!array_intersect($query_term_ids, $term_exceptions_by_status[''])) {
+                                        $any_term_exceptions = true;
+                                        break 3;
+                                    }
+                                }
+                            }
+                        }
+                    } 
+                }
+            }
+            
+            if (!empty($any_term_exceptions)) {
+                if (!get_terms(
+                    'category', 
+                    [
+                        'fields' => 'ids', 
+                        'required_operation' => 'read', 
+                        'hide_empty' => true, 
+                        'term_taxonomy_id' => PWP::termidToTtid((array) $wp_query->query_vars['cat'], 'category')
+                    ]
+                    )
+                ) {
+                    if ($teased_types = apply_filters('presspermit_teased_post_types', [], ['post'], [])) {
+                        $term = $wp_query->get_queried_object();
+                        do_action('presspermit_force_term_teaser', $term);
+                    } else {
+                        $wp_query->is_404 = true;
+                    }
+                }
+            }
+        }
+
+        // @todo: is_tag: query_vars['post_tag'], is_tax: query_vars['tax_query']
     }
 
     public function fltAttsGallery($out, $pairs, $atts)
