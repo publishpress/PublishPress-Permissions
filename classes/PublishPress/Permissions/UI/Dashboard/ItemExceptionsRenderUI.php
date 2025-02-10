@@ -215,7 +215,7 @@ class ItemExceptionsRenderUI
                             continue;
                         }
                     ?>
-                    <option value=' <?php echo esc_attr("$val") . "' class='" . esc_attr($this->opt_class[$val]) . "' ";
+                    <option value='<?php echo esc_attr("$val") . "' class='" . esc_attr($this->opt_class[$val]) . "' ";
                                     selected($val, $current_val); ?>>
                         <?php echo esc_html($lbl); ?>
                         </option>
