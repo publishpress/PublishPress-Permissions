@@ -22,6 +22,10 @@ class ItemExceptionsRenderUI
             'unblocked' => esc_html__('Unblocked', 'press-permit-core'),
         ];
 
+        foreach ($this->opt_labels as $k => $val) {
+            $this->opt_labels[$k] = str_replace(['(', ')'], '', $val);
+        }
+
         $this->opt_class = ['' => "pp-def", 0 => "pp-no2", 1 => "pp-yes", 2 => "pp-yes2"];
     }
 
@@ -215,7 +219,7 @@ class ItemExceptionsRenderUI
                             continue;
                         }
                     ?>
-                    <option value=' <?php echo esc_attr("$val") . "' class='" . esc_attr($this->opt_class[$val]) . "' ";
+                    <option value='<?php echo esc_attr("$val") . "' class='" . esc_attr($this->opt_class[$val]) . "' ";
                                     selected($val, $current_val); ?>>
                         <?php echo esc_html($lbl); ?>
                         </option>

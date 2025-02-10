@@ -218,7 +218,7 @@ class Admin
 
         global $revisionary;
 
-        if (empty($revisionary->skip_revision_allowance)) {
+        if (empty($revisionary->skip_revision_allowance) && ('include' != $mod_type)) {
             $defaults = ['via_item_source' => 'post', 'via_item_type' => '', 'status' => ''];
             $args = array_merge($defaults, $args);
             foreach (array_keys($defaults) as $var) {

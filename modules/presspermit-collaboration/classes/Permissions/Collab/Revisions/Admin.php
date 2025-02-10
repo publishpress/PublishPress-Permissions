@@ -102,8 +102,9 @@ class Admin
     {
         global $revisionary;
 
-        if ('edit' != $operation)
+        if (('edit' != $operation) || ('include' == $mod_type)) {
             return $exception_items;
+        }
 
         // Modify Posts listing, but not 'edit_post' capability check
         if ((presspermit()->doing_cap_check && empty($args['merge_related_operations'])) || (!empty($args['has_cap_check']) && !defined('PRESSPERMIT_NO_REVISIONS_EXCEPTION_BYPASS'))) {

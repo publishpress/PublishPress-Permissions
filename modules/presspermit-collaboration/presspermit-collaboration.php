@@ -56,6 +56,7 @@ if (!defined('PRESSPERMIT_COLLAB_FILE')) {
                 class_alias('\PressShack\LibWP', '\PublishPress\Permissions\Collab\UI\PWP');
                 class_alias('\PressShack\LibWP', '\PublishPress\Permissions\Collab\UI\Dashboard\PWP');
                 class_alias('\PressShack\LibWP', '\PublishPress\Permissions\Collab\UI\Gutenberg\PWP');
+                class_alias('\PressShack\LibWP', '\PublishPress\Permissions\Collab\UI\Handlers\PWP');
 
                 require_once(__DIR__ . '/classes/Permissions/Collab.php');
                 class_alias('\PublishPress\Permissions\Collab', '\PublishPress\Permissions\Collab\Collab');

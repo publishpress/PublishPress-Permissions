@@ -121,7 +121,14 @@ class PostEdit
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
         wp_enqueue_script('presspermit-listbox', PRESSPERMIT_URLPATH . "/common/js/listbox{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
         $wp_scripts->in_footer[] = 'presspermit-listbox';
-        wp_localize_script('presspermit-listbox', 'ppListbox', ['omit_admins' => '1', 'metagroups' => 1]);
+        wp_localize_script(
+            'presspermit-listbox', 
+            'ppListbox', 
+            [
+                'omit_admins' => !defined('PP_ADMINS_IN_PERMISSION_GROUPS') || !PP_ADMINS_IN_PERMISSION_GROUPS ? '1' : 0, 
+                'metagroups' => 1
+            ]
+        );
 
         wp_enqueue_script('presspermit-agent-select', PRESSPERMIT_URLPATH . "/common/js/agent-exception-select{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
         $wp_scripts->in_footer[] = 'presspermit-agent-select';

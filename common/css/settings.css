@@ -137,6 +137,24 @@ table.pp-options-table .pp-optionhint {
     opacity: 50%;
 }
 
+#pp_settings_form div.pp-advanced-caution {
+    color: #777;
+    font-style: italic;
+    margin-top: 5px;
+    padding-top: 8px;
+    padding-left: 8px;
+}
+
+#pp_settings_form div.pp-advanced-caution span.pp-caution {
+    font-weight: bold;
+}
+
+#pp_settings_form div.pp-advanced-caution ul {
+    list-style-type: disc;
+    padding: 0 0 10px 25px;
+    margin-top: 8px
+}
+
 /* --- Install Tab --- */
 #pp-modules_table span.publishpress, #pp-install_table span.publishpress a, #pp-install_table span.publishpress a:visited {
     color: #655997;
