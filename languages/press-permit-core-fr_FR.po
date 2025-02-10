@@ -6,7 +6,7 @@ msgstr ""
 "for Posts, Pages, Categories, Tags - Stable (latest release)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
 "POT-Creation-Date: 2025-01-25T22:31:20+00:00\n"
-"PO-Revision-Date: 2025-01-30 12:23+0100\n"
+"PO-Revision-Date: 2025-02-02 17:51+0100\n"
 "Last-Translator: \n"
 "Language-Team: French (France)\n"
 "Language: fr_FR\n"
@@ -1969,7 +1969,7 @@ msgstr "Présentation des publications"
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:49
 msgid "Prevent editing uploads if attached to a non-editable post"
 msgstr ""
-"Empêcher la modification des téléchargements s’ils sont joints à une "
+"Empêcher la modification des téléversements s’ils sont joints à une "
 "publication non modifiable"
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:226
@@ -2758,7 +2758,7 @@ msgstr "Mettre à jour le groupe"
 
 #: classes/PublishPress/Permissions/UI/Settings.php:187
 msgid "Upgrade to Permissions Pro"
-msgstr "Passer en version Permissions Pro"
+msgstr "Mettre à niveau vers Permissions Pro"
 
 #: classes/PublishPress/Permissions/UI/PromoBanner.php:225
 #: includes/CoreAdmin.php:120 includes/CoreAdmin.php:121
