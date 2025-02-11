@@ -68,6 +68,11 @@ class ItemExceptionsData
             $agents_by_type = [];
         }
 
+        // prevent loading post ID 0 exception for "(none)" as an explicit assignment
+        if (empty($args['item_id'])) {
+            $args['item_id'] = -1;
+        }
+
         $exc = $pp->getExceptions($args);
 
         foreach ($exc as $row) {

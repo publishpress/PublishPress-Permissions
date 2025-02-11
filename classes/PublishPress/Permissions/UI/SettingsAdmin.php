@@ -61,6 +61,9 @@ class SettingsAdmin
         case 'strip_private_caption' :
         return __('Remove the "Private:" and "Protected" prefix from Post, Page titles', 'press-permit-core-hints');
 
+        case 'regulate_category_archive_page' :
+        return __("If the user is blocked from reading posts in a category, also block access to category archive page.", 'press-permit-core-hints');
+
         case 'force_nav_menu_filter' :
         return __('Remove unreadable Menu Items. If menu rendering problems occur with a third party plugin, disable this setting.', 'press-permit-core-hints');
 
