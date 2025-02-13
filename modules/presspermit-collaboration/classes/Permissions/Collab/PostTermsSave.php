@@ -475,9 +475,10 @@ class PostTermsSave
                     }
                 }
 
-                $selected_terms = $default_terms;
+                $selected_terms = array_unique(array_map('intval', $default_terms));
+
             } elseif (!empty($stored_terms)) {
-                $selected_terms = $stored_terms; // fallback is to currently stored terms
+                $selected_terms = array_unique(array_map('intval', $stored_terms)); // fallback is to currently stored terms
             }
         }
 
