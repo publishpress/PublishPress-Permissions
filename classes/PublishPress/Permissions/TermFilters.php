@@ -15,6 +15,7 @@ class TermFilters
 {
     private $parent_remap_enabled = true;
     private $count_filters_obj;
+    private $disable_next_count_filtering = false;
 
     public function __construct()
     {
@@ -33,6 +34,14 @@ class TermFilters
         // By default, don't remap term parent when get_terms() was called by wp_get_object_terms()
         add_filter('wp_get_object_terms_args', [$this, 'fltDisableTermRemap']);
         add_filter('get_object_terms', [$this, 'fltEnableTermRemap']);
+
+        add_filter('acf/fields/taxonomy/query', [$this, 'fltFlagACFtaxonomyQuery'], 10, 3);
+    }
+
+    public function fltFlagACFtaxonomyQuery($args, $unused = [], $also_unused = []) {
+        // Term count filtering is unneccessary for ACF Taxonomy fields, and causes them to prevent the selection of subcategories
+        $this->disable_next_count_filtering = true;
+        return $args;
     }
 
     public function fltDisableTermRemap($arg) {
@@ -208,13 +217,15 @@ class TermFilters
         $defaults = ['skip_teaser' => false, 'post_type' => '', 'required_operation' => ''];
         $args = wp_parse_args($args, $defaults);
 
-        if (('all' == $args['fields']) || $args['hide_empty'] || $args['pad_counts']) {
-            if (apply_filters('presspermit_apply_term_count_filters', true, $args, $taxonomies) 
-            && (empty($pagenow) || ('edit-tags.php' != $pagenow) || defined('PRESSPERMIT_LEGACY_ADMIN_TERM_COUNT_FILTER'))
-            ) {
-                require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
-                $this->count_filters_obj = TermFiltersCount::instance(['parent_remap_enabled' => $this->parent_remap_enabled]);
-                $args = $this->count_filters_obj->fltGetTermsArgs($args);
+        if (!$this->disable_next_count_filtering) {
+            if (('all' == $args['fields']) || $args['hide_empty'] || $args['pad_counts']) {
+                if (apply_filters('presspermit_apply_term_count_filters', true, $args, $taxonomies) 
+                && (empty($pagenow) || ('edit-tags.php' != $pagenow) || defined('PRESSPERMIT_LEGACY_ADMIN_TERM_COUNT_FILTER'))
+                ) {
+                    require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
+                    $this->count_filters_obj = TermFiltersCount::instance(['parent_remap_enabled' => $this->parent_remap_enabled]);
+                    $args = $this->count_filters_obj->fltGetTermsArgs($args);
+                }
             }
         }
 
@@ -258,12 +269,16 @@ class TermFilters
 
         $user = presspermit()->getUser();
 
-        if (('all' == $args['fields']) || $args['hide_empty'] || $args['pad_counts']) {
-            // adds get_terms filter to adjust post counts based on current user's access and pad_counts setting
-            if (apply_filters('presspermit_apply_term_count_filters', true, $args, $taxonomies)) {
-                require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
-                $this->count_filters_obj = TermFiltersCount::instance(['parent_remap_enabled' => $this->parent_remap_enabled]);
-                $clauses = $this->count_filters_obj->fltTermsClauses($clauses, $args);
+        if ($this->disable_next_count_filtering) {
+            $this->disable_next_count_filtering = false;
+        } else {
+            if (('all' == $args['fields']) || $args['hide_empty'] || $args['pad_counts']) {
+                // adds get_terms filter to adjust post counts based on current user's access and pad_counts setting
+                if (apply_filters('presspermit_apply_term_count_filters', true, $args, $taxonomies)) {
+                    require_once(PRESSPERMIT_CLASSPATH . '/TermFiltersCount.php');
+                    $this->count_filters_obj = TermFiltersCount::instance(['parent_remap_enabled' => $this->parent_remap_enabled]);
+                    $clauses = $this->count_filters_obj->fltTermsClauses($clauses, $args);
+                }
             }
         }
 
