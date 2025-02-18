@@ -765,7 +765,7 @@ class SettingsTabAdvanced
 
                         <?php if ($this->enabled) : // Unless debugging, only list defined constants and available constants in the same section ?>
                         <br />
-                        <table id="pp_available_constants" style="display:none;" class="pp_cap_descripts<?php if (!presspermit()->getOption('list_all_constants') && (!defined('PRESSPERMIT_DEBUG') || ! PRESSPERMIT_DEBUG)) echo ' pp-hint'; ?>" style="width: 99%">
+                        <table id="pp_available_constants" <?php if (!presspermit()->getOption('list_all_constants')) echo 'style="display:none;"';?> class="pp_cap_descripts<?php if (!presspermit()->getOption('list_all_constants') && (!defined('PRESSPERMIT_DEBUG') || ! PRESSPERMIT_DEBUG)) echo ' pp-hint'; ?>" style="width: 99%">
                             <thead>
                                 <tr>
                                     <th class="cap-name" style="width:40%"><?php esc_html_e('Available Constant', 'press-permit-core'); ?></th>
@@ -833,6 +833,16 @@ class SettingsTabAdvanced
                     <?php endif; ?>
                 </td>
             </tr>
+
+            <script type="text/javascript">
+                /* <![CDATA[ */
+                jQuery(document).ready(function ($) {
+                    $('input#list_all_constants').on('click', function() {
+                        $('#pp_available_constants').toggle($(this).prop('checked'));
+                    });
+                });
+                /* ]]> */
+            </script>
         <?php endif;
 
         if (is_multisite()) {
