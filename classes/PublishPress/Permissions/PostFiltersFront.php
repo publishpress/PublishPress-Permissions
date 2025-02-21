@@ -32,21 +32,43 @@ class PostFiltersFront
     function actRegulateTaxonomyArchivePage() {
         global $wp_query;
 
-        if (empty($wp_query) || presspermit()->isContentAdministrator()) {
+        if (empty($wp_query) || presspermit()->isContentAdministrator() || !presspermit()->getOption('regulate_category_archive_page')) {
             return;
         }
 
+        $tax_query = [];
+
         if (!empty($wp_query->is_category) && !empty($wp_query->query_vars['cat']) 
         && in_array('category', presspermit()->getEnabledTaxonomies())
-        && presspermit()->getOption('regulate_category_archive_page')
         ) {
+            $tax_query['category'] = (array) $wp_query->query_vars['cat'];
+
+        } elseif (!empty($wp_query->is_tax) && !empty($wp_query->tax_query) && !empty($wp_query->tax_query->queries)) {
+            foreach ($wp_query->tax_query->queries as $vars) {
+                if (isset($vars['taxonomy']) && isset($vars['terms'])) {
+                    $tax_query[$vars['taxonomy']] = $vars['terms'];
+                }
+            }
+        }
+
+        foreach ($tax_query as $archive_taxonomy => $query_term_ids) {
             $user = presspermit()->getUser();
+ 
+            foreach ($query_term_ids as $k => $_term) {
+                if (!is_numeric($_term)) {
+                    if ($term = get_term_by('slug', $_term, $archive_taxonomy)) {
+                        $query_term_ids[$k] = $term->term_taxonomy_id;
+                    } else {
+                        unset($query_term_ids[$k]);
+                    }
+                } else {
+                    $query_term_ids[$k] = PWP::termidToTtid($_term, $archive_taxonomy);
+                }
+            }
 
             // Make sure the user has term restrictions. Otherwise, treat empty result set as due to no posts being assigned to this category.
             foreach ($user->except['read_post']['term'] as $exception_taxonomy => $exceptions) {
-                $query_term_ids = (!empty($wp_query->query_vars['cat'])) ? (array) $wp_query->query_vars['cat'] : [];
-                
-                if ($query_term_ids && in_array($exception_taxonomy, ['category', ''])) {
+                if ($query_term_ids && in_array($exception_taxonomy, [$archive_taxonomy, ''])) {
                     foreach ($exceptions as $modification => $exceptions_by_post_type) {
                         
                         if (in_array($modification, ['exclude'])) {
@@ -79,12 +101,12 @@ class PostFiltersFront
             
             if (!empty($any_term_exceptions)) {
                 if (!get_terms(
-                    'category', 
+                    $archive_taxonomy, 
                     [
                         'fields' => 'ids', 
                         'required_operation' => 'read', 
                         'hide_empty' => true, 
-                        'term_taxonomy_id' => PWP::termidToTtid((array) $wp_query->query_vars['cat'], 'category')
+                        'term_taxonomy_id' => PWP::termidToTtid($query_term_ids, $archive_taxonomy)
                     ]
                     )
                 ) {
