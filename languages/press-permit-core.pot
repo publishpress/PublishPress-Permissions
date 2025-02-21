@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-09T04:41:39+00:00\n"
+"POT-Creation-Date: 2025-02-21T13:52:59+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.10.0\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: press-permit-core\n"
 
 #. Plugin Name of the plugin
@@ -591,11 +591,11 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:64
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:756
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:295
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:297
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:576
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:296
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:298
 #: classes/PublishPress/Permissions/UI/ItemsMetabox.php:578
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:584
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:580
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:586
 msgid "(none)"
 msgstr ""
 
@@ -1114,7 +1114,7 @@ msgid "Please upgrade PublishPress Authors to version 3.8.0 or later for Permiss
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:77
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:312
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:314
 #: classes/PublishPress/Permissions/UI/Settings.php:83
 msgid "Permissions Settings"
 msgstr ""
@@ -1132,7 +1132,7 @@ msgid "Permissions: %s this %s"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:165
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:336
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:338
 msgid "enable custom permissions for %s"
 msgstr ""
 
@@ -1206,7 +1206,7 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:371
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:373
 msgid "Displayed permissions are those assigned for the \"%1$s\" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s."
 msgstr ""
 
@@ -1485,9 +1485,13 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:357
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:526
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:803
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:295
+msgid "None. All %ss will be hidden."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:359
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:528
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:805
 msgid "Add Selected"
 msgstr ""
 

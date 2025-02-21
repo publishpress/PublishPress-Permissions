@@ -292,7 +292,8 @@ class ItemsMetabox extends \Walker_Nav_Menu
                     $args['walker'] = $walker;
 
                     // kevinB: add "(none)" item for include exceptions
-                    $front_page_obj = (object)['ID' => 0, 'post_parent' => 0, 'post_content' => '', 'post_excerpt' => '', 'post_title' => esc_html__('(none)', 'press-permit-core'), 'object_id' => 0, 'title' => esc_html__('(none)', 'press-permit-core'), 'menu_item_parent' => 0, 'db_id' => 0];
+                    $override_none = sprintf(esc_html__('None. All %ss will be hidden.', 'press-permit-core'), ucwords($post_type_name));
+                    $front_page_obj = (object)['ID' => 0, 'post_parent' => 0, 'post_content' => '', 'post_excerpt' => '', 'post_title' => esc_html__('(none)', 'press-permit-core'), 'object_id' => 0, 'title' => $override_none, 'menu_item_parent' => 0, 'db_id' => 0];
                     $front_page_obj->_add_to_top = true;
                     $front_page_obj->label = esc_html__('(none)', 'press-permit-core');
                     array_unshift($posts, $front_page_obj);
@@ -321,7 +322,8 @@ class ItemsMetabox extends \Walker_Nav_Menu
                     }
 
                     $checkbox_items = walk_nav_menu_tree(array_map([__CLASS__, 'setup_nav_menu_item'], $posts), 0, (object)$args);
-
+                    error_log('checkbox_items: ' . print_r($checkbox_items, true));
+                    // $checkbox_items = null;
                     if ('all' == $current_tab && !PWP::empty_REQUEST('selectall')) {
                         $checkbox_items = preg_replace('/(type=(.)checkbox(\2))/', '$1 checked=$2checked$2', $checkbox_items);
                     }
