@@ -40,6 +40,8 @@ class PermissionsHooksAdmin
         add_action('pp_inserted_exception_item', [$this, 'actPluginSettingsUpdated']);
         add_action('presspermit_removed_exception_items', [$this, 'actPluginSettingsUpdated']);
 
+        add_filter('cme_presspermit_capabilities', [$this, 'fltFlagPermissionsCapabilities']);
+
         add_action('presspermit_trigger_cache_flush', [$this, 'wpeCacheFlush']);
         add_action('presspermit_activate', [$this, 'actPluginSettingsUpdated']);
         add_action('shutdown', [$this, 'actConfigUpdateFollowup']);
@@ -113,6 +115,22 @@ class PermissionsHooksAdmin
         if ($this->config_updated) {
             $this->wpeCacheFlush();
         }
+    }
+
+    public function fltFlagPermissionsCapabilities($caps) {
+        if (false !== array_search('pp_assign_bulk_roles', $caps)) {
+            die('dfsaafsd');
+        }
+
+        if ($k = array_search('pp_assign_roles', $caps)) {
+            $caps = array_merge(
+                array_slice($caps, 0, $k + 1),
+                ['pp_assign_bulk_roles'],
+                array_slice($caps, $k + 1)
+            );
+        }
+        
+        return $caps;
     }
 
     /**
