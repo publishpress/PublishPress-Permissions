@@ -6,6 +6,13 @@ jQuery(document).ready(function ($) {
 
     $('ul.categorychecklist ul.children li[style="display:none"]').parent().prevAll('input.menu-item-checkbox').next('span').html(' + ');
 
+    $('.menu-item-checkbox').on('click', function () {
+        const clickedCheckbox = $(this);
+        if (clickedCheckbox.val() === "0" && clickedCheckbox.closest('li').find('label').text().includes("None")) {
+            clickedCheckbox.closest('ul').find('.menu-item-checkbox').not(clickedCheckbox).prop('checked', false).prop('disabled', clickedCheckbox.is(':checked'));
+        }
+    });
+
     $('input.menu-item-checkbox').nextAll('span').on('click', function (e) {
         $(this).parent().children('ul.children').children('li').toggle();
 
