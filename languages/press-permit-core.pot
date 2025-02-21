@@ -209,7 +209,7 @@ msgid "Scheduled Revision Monitors"
 msgstr ""
 
 #: classes/PublishPress/Permissions/DB/Groups.php:486
-msgid "Authenticated site users (logged in)"
+msgid "Authenticated site users, except for Administrators"
 msgstr ""
 
 #: classes/PublishPress/Permissions/DB/Groups.php:488
