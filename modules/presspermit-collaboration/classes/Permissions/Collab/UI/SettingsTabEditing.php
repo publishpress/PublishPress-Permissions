@@ -14,26 +14,31 @@ class SettingsTabEditing
         add_filter('presspermit_option_sections', [$this, 'optionSections'], 15);
 
         add_action('presspermit_editing_options_ui', [$this, 'optionsUI']);
+        add_action('presspermit_media_library_options_ui', [$this, 'optionsUIMediaLibrary']);
     }
 
     function optionTabs($tabs)
     {
         $tabs['editing'] = esc_html__('Editing', 'press-permit-core');
+        $tabs['media_library'] = esc_html__('Media Library', 'press-permit-core'); // Add new tab
         return $tabs;
     }
 
     function sectionCaptions($sections)
     {
-        $new = [
+        $new_editing = [
             'post_editor'              => esc_html__('Editor Options', 'press-permit-core'),
             'content_management'       => esc_html__('Posts / Pages Listing', 'press-permit-core'),
             'limited_editing_elements' => esc_html__('Limited Editing Elements', 'press-permit-core'),
+        ];
+
+        $new_media_library = [
             'media_library'            => esc_html__('Media Library', 'press-permit-core'),
         ];
 
+        $sections['editing'] = (isset($sections['editing'])) ? array_merge($sections['editing'], $new_editing) : $new_editing;
+        $sections['media_library'] = (isset($sections['media_library'])) ? array_merge($sections['media_library'], $new_media_library) : $new_media_library;
 
-        $key = 'editing';
-        $sections[$key] = (isset($sections[$key])) ? array_merge($sections[$key], $new) : $new;
         return $sections;
     }
 
@@ -58,21 +63,25 @@ class SettingsTabEditing
     function optionSections($sections)
     {
         // Editing tab
-        $new = [
+        $new_editing = [
             'post_editor'         => ['default_privacy', 'force_default_privacy'],
             'content_management'  => ['list_others_uneditable_posts'],
-            'media_library'       => ['admin_others_attached_files', 'admin_others_attached_to_readable', 'admin_others_unattached_files', 'edit_others_attached_files', 'attachment_edit_requires_parent_access', 'own_attachments_always_editable'],
         ];
 
         if (!PWP::isBlockEditorActive()) {
             if (presspermit()->getOption('advanced_options')) {
-                $new['limited_editing_elements'] = ['editor_hide_html_ids', 'editor_ids_sitewide_requirement'];
+                $new_editing['limited_editing_elements'] = ['editor_hide_html_ids', 'editor_ids_sitewide_requirement'];
             }
         }
 
-        $tab = 'editing';
-        $sections[$tab] = (isset($sections[$tab])) ? array_merge($sections[$tab], $new) : $new;
+        // Media Library tab
+        $new_media_library = [
+            'media_library'       => ['admin_others_attached_files', 'admin_others_attached_to_readable', 'admin_others_unattached_files', 'edit_others_attached_files', 'attachment_edit_requires_parent_access', 'own_attachments_always_editable'],
+        ];
 
+        $sections['editing'] = (isset($sections['editing'])) ? array_merge($sections['editing'], $new_editing) : $new_editing;
+        $sections['media_library'] = (isset($sections['media_library'])) ? array_merge($sections['media_library'], $new_media_library) : $new_media_library;
+        error_log(print_r($sections, true));
         return $sections;
     }
 
@@ -82,7 +91,6 @@ class SettingsTabEditing
 
         $ui = \PublishPress\Permissions\UI\SettingsAdmin::instance();
         $tab = 'editing';
-
         $section = 'post_editor';                        // --- EDITOR OPTIONS SECTION ---
         if (!empty($ui->form_options[$tab][$section])) :
         ?>
@@ -198,43 +206,6 @@ class SettingsTabEditing
             </tr>
         <?php endif; // any options accessable in this section
 
-        $section = 'media_library';                                        // --- MEDIA LIBRARY SECTION ---
-        if (!empty($ui->form_options[$tab][$section])) :
-            ?>
-            <tr>
-                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
-                <td>
-                    <?php
-
-                    if (defined('PP_MEDIA_LIB_UNFILTERED')) :
-                    ?>
-                        <div><span class="pp-important">
-                                <?php SettingsAdmin::echoStr('media_lib_unfiltered'); ?>
-                            </span></div><br />
-                    <?php else : ?>
-                        <div><span style="font-weight:bold">
-                                <?php esc_html_e('The following settings apply to users who have the upload_files or edit_files capability:', 'press-permit-core'); ?>
-                            </span></div><br />
-                    <?php endif;
-
-                    $ret = $ui->optionCheckbox('admin_others_unattached_files', $tab, $section, true, '');
-
-                    $ret = $ui->optionCheckbox('admin_others_attached_to_readable', $tab, $section, true, '');
-
-                    $ret = $ui->optionCheckbox('admin_others_attached_files', $tab, $section, true, '');
-
-                    echo '<br />';
-
-                    $ret = $ui->optionCheckbox('edit_others_attached_files', $tab, $section, true, '');
-
-                    $ret = $ui->optionCheckbox('attachment_edit_requires_parent_access', $tab, $section, true, '');
-
-                    $ret = $ui->optionCheckbox('own_attachments_always_editable', $tab, $section, true, '');
-                    ?>
-                </td>
-            </tr>
-        <?php endif; // any options accessable in this section
-
         if (!PWP::isBlockEditorActive()) {
             $section = 'limited_editing_elements';                            // --- LIMITED EDITING ELEMENTS SECTION ---
             if (!empty($ui->form_options[$tab][$section])) : ?>
@@ -324,5 +295,50 @@ class SettingsTabEditing
                 </tr>
             <?php endif; // any options accessable in this section
         }
+    }
+
+    // i need move code media_library from optionsUI to optionsUIMediaLibrary
+    function optionsUIMediaLibrary()
+    {
+        $pp = presspermit();
+
+        $ui = \PublishPress\Permissions\UI\SettingsAdmin::instance();
+        $tab = 'media_library';
+        $section = 'media_library';                                        // --- MEDIA LIBRARY SECTION ---
+        if (!empty($ui->form_options[$tab][$section])) :
+        ?>
+            <tr>
+                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
+                <td>
+                    <?php
+
+                    if (defined('PP_MEDIA_LIB_UNFILTERED')) :
+                    ?>
+                        <div><span class="pp-important">
+                                <?php SettingsAdmin::echoStr('media_lib_unfiltered'); ?>
+                            </span></div><br />
+                    <?php else : ?>
+                        <div><span style="font-weight:bold">
+                                <?php esc_html_e('The following settings apply to users who have the upload_files or edit_files capability:', 'press-permit-core'); ?>
+                            </span></div><br />
+                    <?php endif;
+
+                    $ret = $ui->optionCheckbox('admin_others_unattached_files', $tab, $section, true, '');
+
+                    $ret = $ui->optionCheckbox('admin_others_attached_to_readable', $tab, $section, true, '');
+
+                    $ret = $ui->optionCheckbox('admin_others_attached_files', $tab, $section, true, '');
+
+                    echo '<br />';
+
+                    $ret = $ui->optionCheckbox('edit_others_attached_files', $tab, $section, true, '');
+
+                    $ret = $ui->optionCheckbox('attachment_edit_requires_parent_access', $tab, $section, true, '');
+
+                    $ret = $ui->optionCheckbox('own_attachments_always_editable', $tab, $section, true, '');
+                    ?>
+                </td>
+            </tr>
+        <?php endif; // any options accessable in this section// --- MEDIA LIBRARY SECTION ---
     }
 }
