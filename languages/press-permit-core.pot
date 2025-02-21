@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-21T13:52:59+00:00\n"
+"POT-Creation-Date: 2025-02-21T16:02:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: press-permit-core\n"
@@ -1101,10 +1101,6 @@ msgstr ""
 msgid "create group"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:298
-msgid "To customize for a specific post status, edit the desired role / group / user permissions directly (Permissions > Groups or Users)"
-msgstr ""
-
 #: classes/PublishPress/Permissions/UI/Dashboard/PluginAdmin.php:35
 msgid "PublishPress Permissions needs directions. Please go to %1$sPermissions > Settings%2$s and indicate which Post Types and Taxonomies should be filtered."
 msgstr ""
@@ -1114,7 +1110,7 @@ msgid "Please upgrade PublishPress Authors to version 3.8.0 or later for Permiss
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:77
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:314
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:316
 #: classes/PublishPress/Permissions/UI/Settings.php:83
 msgid "Permissions Settings"
 msgstr ""
@@ -1132,7 +1128,7 @@ msgid "Permissions: %s this %s"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:165
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:338
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:340
 msgid "enable custom permissions for %s"
 msgstr ""
 
@@ -1180,33 +1176,33 @@ msgstr ""
 msgid "Supplemental roles and specific permissions assigned to a user's primary role or other Permission Groups are usually the cleanest way to customize permissions.  You can also %1$scustomize this user directly%2$s."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:145
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:147
 msgid "Permissions: Assign this %2$s to %3$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:151
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:153
 msgid "Permissions: Assign this %2$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:158
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:171
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:160
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:173
 msgid "Permissions: %1$s %2$s in this %3$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:164
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:166
 msgid "Permissions: %1$s all content in this %2$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:177
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:179
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/TermEdit.php:46
 msgid "Permissions: %1$s this %2$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:263
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:265
 msgid "Update"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:373
+#: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:375
 msgid "Displayed permissions are those assigned for the \"%1$s\" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s."
 msgstr ""
 
@@ -1825,19 +1821,19 @@ msgstr ""
 msgid "Available Constant"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:847
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:857
 msgid "To modify one or more default settings network-wide, <strong>copy</strong> the following code into your theme's <strong>functions.php</strong> file (or some other file which is always executed and not auto-updated) and modify as desired:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:868
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:878
 msgid "To force the value of one or more settings network-wide, <strong>copy</strong> the following code into your theme's <strong>functions.php</strong> file (or some other file which is always executed and not auto-updated) and modify as desired:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:903
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:913
 msgid "All settings in this form (including those on undisplayed tabs) will be reset to DEFAULTS.  Are you sure?"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:906
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:916
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsage.php:95
 msgid "Revert to Defaults"
 msgstr ""
@@ -1930,19 +1926,19 @@ msgstr ""
 msgid "Inactive Modules:"
 msgstr ""
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:199
+#: classes/PublishPress/PermissionsHooksAdmin.php:217
 msgid "Subscribers"
 msgstr ""
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:200
+#: classes/PublishPress/PermissionsHooksAdmin.php:218
 msgid "Contributors"
 msgstr ""
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:201
+#: classes/PublishPress/PermissionsHooksAdmin.php:219
 msgid "Authors"
 msgstr ""
 
-#: classes/PublishPress/PermissionsHooksAdmin.php:202
+#: classes/PublishPress/PermissionsHooksAdmin.php:220
 msgid "Editors"
 msgstr ""
 

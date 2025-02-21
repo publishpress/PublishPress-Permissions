@@ -2605,15 +2605,6 @@ msgstr ""
 "Per personalizzare le modifiche delle autorizzazioni, abilita il modulo "
 "\"Modifica autorizzazioni\"."
 
-#: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:298
-msgid ""
-"To customize for a specific post status, edit the desired role / group / "
-"user permissions directly (Permissions > Groups or Users)"
-msgstr ""
-"Per personalizzare lo stato specifico di un articolo, modifica le "
-"autorizzazioni di ruolo/gruppo/utente desiderato direttamente in "
-"(Autorizzazioni > Gruppi o utenti)"
-
 #: classes/PublishPress/Permissions/UI/HintsPostEdit.php:52
 msgid ""
 "To customize publication workflow, %1$sinstall PublishPress Statuses%2$s."

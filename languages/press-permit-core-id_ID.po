@@ -2853,14 +2853,6 @@ msgid ""
 "To customize editing permissions, enable the Editing Permissions module."
 msgstr "Untuk menyesuaikan izin pengeditan, aktifkan modul Izin Pengeditan."
 
-#: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:298
-msgid ""
-"To customize for a specific post status, edit the desired role / group / "
-"user permissions directly (Permissions > Groups or Users)"
-msgstr ""
-"Untuk menyesuaikan dengan status pos tertentu, edit izin peran/grup/pengguna "
-"yang diinginkan langsung (Permissions > Groups atau Users)"
-
 #: classes/PublishPress/Permissions/UI/HintsPostEdit.php:52
 #, php-format
 msgid ""

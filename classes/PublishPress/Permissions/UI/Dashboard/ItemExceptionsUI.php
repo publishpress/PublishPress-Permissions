@@ -292,11 +292,5 @@ class ItemExceptionsUI
             require_once(PRESSPERMIT_CLASSPATH . '/UI/HintsItemExceptions.php');
             \PublishPress\Permissions\UI\HintsItemExceptions::itemHints($for_item_type);
         }
-
-        if (('term' == $via_item_source) && in_array($op, ['read', 'edit'], true)) {
-            echo "<div class='pp-exc-notes'>";
-            esc_html_e('To customize for a specific post status, edit the desired role / group / user permissions directly (Permissions > Groups or Users)', 'press-permit-core');
-            echo "</div>";
-        }
     }
 }
