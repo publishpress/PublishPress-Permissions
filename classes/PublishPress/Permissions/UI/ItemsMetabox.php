@@ -322,8 +322,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
                     }
 
                     $checkbox_items = walk_nav_menu_tree(array_map([__CLASS__, 'setup_nav_menu_item'], $posts), 0, (object)$args);
-                    error_log('checkbox_items: ' . print_r($checkbox_items, true));
-                    // $checkbox_items = null;
+
                     if ('all' == $current_tab && !PWP::empty_REQUEST('selectall')) {
                         $checkbox_items = preg_replace('/(type=(.)checkbox(\2))/', '$1 checked=$2checked$2', $checkbox_items);
                     }
