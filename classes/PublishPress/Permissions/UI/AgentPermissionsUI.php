@@ -120,7 +120,8 @@ class AgentPermissionsUI
 
         // Discourage anon/all metagroups having read exceptions for specific posts. Normally, that's what post visibility is for.
         $is_all_anon = (isset($args['agent']) && !empty($args['agent']->metagroup_id) && in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all']));
-?>
+        $is_anon = (isset($args['agent']) && !empty($args['agent']->metagroup_id) && $args['agent']->metagroup_id === 'wp_anon');
+        ?>
         <img id="pp_add_exception_waiting" class="waiting" style="display:none;position:absolute" src="<?php echo esc_url(admin_url('images/wpspin_light.gif')) ?>" alt="" />
         <table id="pp_add_exception">
             <thead>
@@ -140,9 +141,12 @@ class AgentPermissionsUI
                         <select name="pp_select_x_for_type" autocomplete="off">
                             <?php
                             $type_objects = apply_filters('presspermit_append_exception_types', $pp->admin()->orderTypes(apply_filters('presspermit_exception_types', $type_objects)));
-
+                            
                             if (!empty($args['external']))
                                 $type_objects = array_merge($type_objects, $args['external']);
+
+                            if ($is_anon)
+                                unset($type_objects['attachment']);
 
                             self::drawTypeOptions($type_objects, ['option_any' => true]);
                             do_action('presspermit_exception_types_dropdown', $args);
