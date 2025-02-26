@@ -2624,12 +2624,6 @@ msgid ""
 "To customize editing permissions, enable the Editing Permissions module."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:298
-msgid ""
-"To customize for a specific post status, edit the desired role / group / "
-"user permissions directly (Permissions > Groups or Users)"
-msgstr ""
-
 #: classes/PublishPress/Permissions/UI/HintsPostEdit.php:52
 #, php-format
 msgid ""

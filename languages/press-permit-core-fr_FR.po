@@ -2653,15 +2653,6 @@ msgstr ""
 "Pour personnaliser la modification des droits, activer le module "
 "« Modifications des droits »."
 
-#: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:298
-msgid ""
-"To customize for a specific post status, edit the desired role / group / "
-"user permissions directly (Permissions > Groups or Users)"
-msgstr ""
-"Pour personnaliser un état de publication spécifique, modifiez directement "
-"les droits du rôle, du groupe ou de l’utilisateur (Droits > Groupes ou "
-"Utilisateurs)."
-
 #: classes/PublishPress/Permissions/UI/HintsPostEdit.php:52
 msgid ""
 "To customize publication workflow, %1$sinstall PublishPress Statuses%2$s."

@@ -2897,15 +2897,6 @@ msgstr ""
 "Чтобы настроить разрешения на редактирование, включите модуль «Разрешения на "
 "редактирование»."
 
-#: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:298
-msgid ""
-"To customize for a specific post status, edit the desired role / group / "
-"user permissions directly (Permissions > Groups or Users)"
-msgstr ""
-"Чтобы настроить определенный статус сообщения, отредактируйте разрешения "
-"нужной роли/группы/пользователя напрямую (Разрешения > Группы или "
-"Пользователи)"
-
 #: classes/PublishPress/Permissions/UI/HintsPostEdit.php:52
 #, php-format
 msgid ""
