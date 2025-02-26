@@ -81,7 +81,7 @@ class SettingsTabEditing
 
         $sections['editing'] = (isset($sections['editing'])) ? array_merge($sections['editing'], $new_editing) : $new_editing;
         $sections['media_library'] = (isset($sections['media_library'])) ? array_merge($sections['media_library'], $new_media_library) : $new_media_library;
-        error_log(print_r($sections, true));
+
         return $sections;
     }
 
