@@ -137,8 +137,8 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
         $walker = new ItemsMetabox($db_fields);
 
-        if (!in_array($current_tab, ['all', 'search'])) {
-            $current_tab = 'most-recent';
+        if (!in_array($current_tab, ['most-recent', 'search'])) {
+            $current_tab = 'all';
         }
 
         if (!PWP::empty_REQUEST('quick-search-posttype-' . $post_type_name)) {
@@ -161,18 +161,18 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
             <ul id="posttype-<?php echo esc_attr($post_type_name); ?>-tabs" class="posttype-tabs add-menu-item-tabs">
 
-                <li <?php if ('most-recent' == $current_tab) echo ' class="tabs"'; ?>>
-                    <a class="nav-tab-link" href="<?php if ($nav_menu_selected_id) {
-                        echo esc_url(add_query_arg($post_type_name . '-tab', 'most-recent', remove_query_arg($removed_args)));
-                    }
-                    ?>#tabs-panel-posttype-<?php echo esc_attr($post_type_name); ?>-most-recent"><?php esc_html_e('Most Recent'); ?>
-                    </a></li>
-
                 <li <?php if ('all' == $current_tab) echo ' class="tabs"'; ?>>
                     <a class="nav-tab-link" href="<?php if ($nav_menu_selected_id) {
                         echo esc_url(add_query_arg($post_type_name . '-tab', 'all', remove_query_arg($removed_args)));
                     }
                     ?>#<?php echo esc_attr($post_type_name); ?>-all"><?php esc_html_e('View All'); ?>
+                    </a></li>
+                
+                <li <?php if ('most-recent' == $current_tab) echo ' class="tabs"'; ?>>
+                    <a class="nav-tab-link" href="<?php if ($nav_menu_selected_id) {
+                        echo esc_url(add_query_arg($post_type_name . '-tab', 'most-recent', remove_query_arg($removed_args)));
+                    }
+                    ?>#tabs-panel-posttype-<?php echo esc_attr($post_type_name); ?>-most-recent"><?php esc_html_e('Most Recent'); ?>
                     </a></li>
 
                 <li <?php if ('search' == $current_tab) echo ' class="tabs"'; ?>>
@@ -413,8 +413,8 @@ class ItemsMetabox extends \Walker_Nav_Menu
         $db_fields = ['parent' => 'post_parent', 'id' => 'ID'];
         $walker = new ItemsMetabox($db_fields);
 
-        if (!in_array($current_tab, ['all', 'search'])) {
-            $current_tab = 'most-recent';
+        if (!in_array($current_tab, ['most-recent', 'search'])) {
+            $current_tab = 'all';
         }
 
         $removed_args = [
@@ -446,18 +446,18 @@ class ItemsMetabox extends \Walker_Nav_Menu
         <div id="posttype-<?php echo esc_attr($post_type_name); ?>" class="posttypediv">
 
             <ul id="posttype-<?php echo esc_attr($post_type_name); ?>-tabs" class="posttype-tabs add-menu-item-tabs">
-                <li <?php if ('most-recent' == $current_tab) echo ' class="tabs"';?>>
-                    <a class="nav-tab-link" href="<?php if ($nav_menu_selected_id) {
-                        echo esc_url(add_query_arg($post_type_name . '-tab', 'most-recent', remove_query_arg($removed_args)));
-                    }
-                    ?>#tabs-panel-posttype-<?php echo esc_attr($post_type_name); ?>-most-recent"><?php esc_html_e('Most Recent'); ?>
-                    </a></li>
-
                 <li <?php if ('all' == $current_tab) echo ' class="tabs"'; ?>>
                     <a class="nav-tab-link" href="<?php if ($nav_menu_selected_id) {
                         echo esc_url(add_query_arg($post_type_name . '-tab', 'all', remove_query_arg($removed_args)));
                     }
                     ?>#<?php echo esc_attr($post_type_name); ?>-all"><?php esc_html_e('View All'); ?>
+                    </a></li>
+
+                <li <?php if ('most-recent' == $current_tab) echo ' class="tabs"';?>>
+                    <a class="nav-tab-link" href="<?php if ($nav_menu_selected_id) {
+                        echo esc_url(add_query_arg($post_type_name . '-tab', 'most-recent', remove_query_arg($removed_args)));
+                    }
+                    ?>#tabs-panel-posttype-<?php echo esc_attr($post_type_name); ?>-most-recent"><?php esc_html_e('Most Recent'); ?>
                     </a></li>
             </ul>
 
