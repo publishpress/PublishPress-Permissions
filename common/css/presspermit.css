@@ -99,6 +99,8 @@
 .agp-vtight_input {
   margin-top: 2px;
   margin-bottom: 4px;
+  display: flex;
+  gap: 4px;
 }
 span.pp-key-expired {
   font-weight: bold;

@@ -1,0 +1,84 @@
+/* Tooltip container */
+[data-toggle='tooltip'] {
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  /* Tooltip text */
+  /* Tooltip arrow */
+  /* Tooltip positioning */
+  /* Show tooltip on hover */
+}
+[data-toggle='tooltip']::after {
+  content: attr(title);
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 100;
+}
+[data-toggle='tooltip']::before {
+  content: '';
+  position: absolute;
+  border-width: 5px;
+  border-style: solid;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 99;
+}
+[data-toggle='tooltip'][data-placement='top']::after {
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+[data-toggle='tooltip'][data-placement='top']::before {
+  bottom: 115%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+}
+[data-toggle='tooltip'][data-placement='bottom']::after {
+  top: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+[data-toggle='tooltip'][data-placement='bottom']::before {
+  top: 115%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-color: transparent transparent rgba(0, 0, 0, 0.8) transparent;
+}
+[data-toggle='tooltip'][data-placement='left']::after {
+  right: 125%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+[data-toggle='tooltip'][data-placement='left']::before {
+  right: 115%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-color: transparent rgba(0, 0, 0, 0.8) transparent transparent;
+}
+[data-toggle='tooltip'][data-placement='right']::after {
+  left: 125%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+[data-toggle='tooltip'][data-placement='right']::before {
+  left: 115%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-color: transparent transparent transparent rgba(0, 0, 0, 0.8);
+}
+[data-toggle='tooltip']:hover::after,
+[data-toggle='tooltip']:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
