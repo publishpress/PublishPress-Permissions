@@ -37,7 +37,7 @@ class AgentPermissionsUI
     public static function exceptionAssignmentScripts()
     {
         $vars = [
-            'addExceptions' => esc_html__('Set Specific Permissions', 'press-permit-core'),
+            'addExceptions' => esc_html__('Add Specific Permissions', 'press-permit-core'),
             'clearException' => esc_html__('clear', 'press-permit-core'),
             'pleaseReview' => esc_html__('Review the selection below, and then click <strong>Save Permissions</strong>. Saved permissions can be mirrored to other operations by bulk edit.', 'press-permit-core'),
             'alreadyException' => esc_html__('Permission already selected!', 'press-permit-core'),
@@ -462,10 +462,10 @@ class AgentPermissionsUI
                 if (('pp_group' == $agent_type) && ($group = $pp->groups()->getGroup($agent_id)))
                     $is_wp_role = ('wp_role' == $group->metagroup_type);
 
+                $perms['exceptions'] = esc_html__('Add Specific Permissions', 'press-permit-core');
+
                 if (empty($group) || !in_array($group->metagroup_id, ['wp_anon', 'wp_all']) || defined('PP_ALL_ANON_ROLES'))
                     $perms['roles'] = esc_html__('Add Supplemental Roles', 'press-permit-core');
-
-                $perms['exceptions'] = esc_html__('Set Specific Permissions', 'press-permit-core');
 
                 if (!isset($perms['roles']))
                     $current_tab = 'pp-add-exceptions';
