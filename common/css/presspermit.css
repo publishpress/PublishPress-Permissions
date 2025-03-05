@@ -175,7 +175,7 @@ p.pp-bulk-user-perm {
 .pp-current-roles-note {
   color: #777;
   margin-top: 0.4em;
-  margin-left: 4em;
+  text-transform: uppercase;
 }
 option.pp-new-selection {
   color: #00c;
