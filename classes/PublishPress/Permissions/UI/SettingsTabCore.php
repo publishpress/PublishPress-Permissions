@@ -188,7 +188,7 @@ class SettingsTabCore
                                         echo '</label>';
 
                                         if(!empty($locked_types[$key]) && isset($key) && $key == 'attachment') {
-                                            echo $this->generateTooltip('This feature allows you to restrict access to Media Library files when they are accessed via WordPress. To restrict viewing of files when they are visited directly via the URL, use the "File Access" feature.', '', 'top', true);
+                                            echo esc_html($this->generateTooltip('This feature allows you to restrict access to Media Library files when they are accessed via WordPress. To restrict viewing of files when they are visited directly via the URL, use the "File Access" feature.', '', 'top', true));
                                         }
 
                                         if (!empty($enabled[$key]) && isset($obj->capability_type) && !in_array($obj->capability_type, [$obj->name, 'post', 'page'])) {
