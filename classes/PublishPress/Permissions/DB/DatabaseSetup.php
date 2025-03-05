@@ -218,7 +218,6 @@ class DatabaseSetup
                     $table = sanitize_key($table);
 
                     // Fetch the table column structure from the database (NOTE: table variable is not to be quoted, so sanitized above)
-                    
                     $tablefields = $wpdb->get_results("DESCRIBE {$table};");  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                     // For every field in the table
@@ -264,7 +263,6 @@ class DatabaseSetup
 
                     // Index stuff goes here
                     // Fetch the table index structure from the database  (NOTE: table variable is not to be quoted, so sanitized above)
-                    
                     $tableindices = $wpdb->get_results("SHOW INDEX FROM {$table};"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
                     if ($tableindices) {
@@ -311,10 +309,14 @@ class DatabaseSetup
                     }
 
                     // For every remaining index specified for the table
-                    foreach ((array)$indices as $index) {
-                        // Push a query line into $cqueries that adds the index to that table
-                        $cqueries[] = "ALTER TABLE {$table} ADD $index";
-                        $for_update[$table . '.' . $fieldname] = 'Added index ' . $table . ' ' . $index;
+                    foreach ((array) $indices as $index) {
+                        // Check if the index already exists
+                        $index_name = preg_match('/KEY\s+([^\s]+)/', $index, $matches) ? $matches[1] : '';
+                        if ($index_name && !isset($index_ary[$index_name])) {
+                            // Push a query line into $cqueries that adds the index to that table
+                            $cqueries[] = "ALTER TABLE {$table} ADD $index";
+                            $for_update[$table . '.' . $index_name] = 'Added index ' . $table . ' ' . $index;
+                        }
                     }
 
                     // Remove the original table creation query from processing
