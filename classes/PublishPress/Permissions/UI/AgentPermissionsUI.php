@@ -38,8 +38,8 @@ class AgentPermissionsUI
     {
         $vars = [
             'addExceptions' => esc_html__('Add Specific Permissions', 'press-permit-core'),
-            'clearException' => esc_html__('clear', 'press-permit-core'),
-            'pleaseReview' => esc_html__('Review the selection below, and then click <strong>Save Permissions</strong>. Saved permissions can be mirrored to other operations by bulk edit.', 'press-permit-core'),
+            'clearException' => esc_html__('remove', 'press-permit-core'),
+            'pleaseReview' => esc_html__('Review the selection below, and then click <strong>Save Permissions</strong>.', 'press-permit-core'),
             'alreadyException' => esc_html__('Permission already selected!', 'press-permit-core'),
             'noAction' => esc_html__('No Action selected!', 'press-permit-core'),
             'submissionMsg' => esc_html__('Permissions submission in progress...', 'press-permit-core'),
@@ -104,7 +104,7 @@ class AgentPermissionsUI
         }
 
         if ($option_any) {
-            echo "<option value='(all)'>" . esc_html__('(all)', 'press-permit-core') . '</option>';
+            echo "<option value='(all)'>" . esc_html__('All Statuses', 'press-permit-core') . '</option>';
         }
 
         if ($option_na) {
@@ -171,7 +171,7 @@ class AgentPermissionsUI
                     <td class="pp-select-x-status" style="display:none">
                         <p class="pp-checkbox">
                             <input type="checkbox" id="pp_select_x_cond_" name="pp_select_x_cond[]" checked="checked" value="" />
-                            <label id="lbl_pp_select_x_cond_" for="pp_select_x_cond_"> <?php esc_html_e('(all)', 'press-permit-core'); ?></label>
+                            <label id="lbl_pp_select_x_cond_" for="pp_select_x_cond_"> <?php esc_html_e('All Statuses', 'press-permit-core'); ?></label>
                         </p>
                     </td>
 
@@ -421,7 +421,7 @@ class AgentPermissionsUI
                         <th><?php esc_html_e('Qualification', 'press-permit-core'); ?></th>
                         <th></th>
                         <th><?php esc_html_e('Status', 'press-permit-core'); ?></th>
-                        <th><a class="pp_clear_all" href="javascript:void(0)"><?php esc_html_e('clear', 'press-permit-core'); ?></a></th>
+                        <th><a class="pp_clear_all" href="javascript:void(0)"><?php esc_html_e('Remove', 'press-permit-core'); ?></a></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1040,7 +1040,7 @@ class AgentPermissionsUI
                                             $cb_id = "pp_check_all_{$via_src}_{$via_type}_{$for_type}_{$operation}_{$status}";
 
                                             echo "<div><label for='" . esc_attr($cb_id) . "'><input type='checkbox' id='" . esc_attr($cb_id) . "' class='pp_check_all'> "
-                                                . esc_html__('(all)', 'press-permit-core')  . '</label></div>';
+                                                . esc_html__('All Statuses', 'press-permit-core')  . '</label></div>';
                                         }
 
                                         echo '</div></div>';   // pp-role-terms, pp-role-terms-wrapper

@@ -224,7 +224,7 @@ jQuery(document).ready(function ($) {
                 $(conds).each(function () {
                     id = presspermitEscapeID(this.id);
                     var lbl = $('#pp_add_exception label[for="' + id + '"]');
-
+                    var lblStatus = lbl.html() === '(all)' ? 'All Statuses' : lbl.html();
                     trackdata = for_type
                         + '|' + op
                         + '|' + via_type
@@ -250,7 +250,7 @@ jQuery(document).ready(function ($) {
                             + '<td>' + mod_type_caption + '</td>'
                             + '<td>' + selected_caption + '</td>'
                             + '<td>' + item_caption + '</td>'
-                            + '<td>' + lbl.html() + '</td>'
+                            + '<td>' + lblStatus + '</td>'
                             + '<td><div class="pp_clear">' + ' <a href="javascript:void(0)" class="pp_clear">' + ppRestrict.clearException + '</a></div>'
                             + '<input type="hidden" name="pp_presspermitXid[]" value="' + presspermitXid + '" />'
                             + '<input type="hidden" name="pp_add_exception[' + presspermitXid + '][for_type]" value="' + for_type + '" />'
