@@ -422,6 +422,43 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   vertical-align: baseline;
 }
 
+// Pagination CSS
+.add-menu-item-pagelinks {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+
+  .page-numbers {
+    padding: 4px 10px;
+    border: 1px solid #ddd;
+    background: #f7f7f7;
+    color: #0073aa;
+    text-decoration: none;
+    border-radius: 4px;
+    min-width: 8px!important;
+
+    &:hover {
+      background: #0073aa;
+      color: #fff !important;
+      font-weight: bold;
+    }
+  }
+
+  .current {
+    background: #0073aa;
+    color: #fff;
+    font-weight: bold;
+    border: 1px solid #0073aa;
+  }
+
+  .next,
+  .prev {
+    font-weight: bold;
+  }
+}
+
 // Design consistency
 #pp-permissions-wrapper {
   .ppTables();

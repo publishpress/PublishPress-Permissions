@@ -84,9 +84,9 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
         // paginate browsing for large numbers of post objects
         if (is_post_type_hierarchical($post_type_name)) {
-            $per_page = defined('PP_ITEM_MENU_HIERARCHICAL_PER_PAGE') ? PP_ITEM_MENU_HIERARCHICAL_PER_PAGE : 1000;
+            $per_page = defined('PP_ITEM_MENU_HIERARCHICAL_PER_PAGE') ? PP_ITEM_MENU_HIERARCHICAL_PER_PAGE : 25;
         } else {
-            $per_page = defined('PP_ITEM_MENU_PER_PAGE') ? PP_ITEM_MENU_PER_PAGE : 100;
+            $per_page = defined('PP_ITEM_MENU_PER_PAGE') ? PP_ITEM_MENU_PER_PAGE : 25;
         }
 
         $current_tab = PWP::REQUEST_key($post_type_name . '-tab');
