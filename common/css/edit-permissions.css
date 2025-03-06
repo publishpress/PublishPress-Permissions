@@ -382,6 +382,10 @@ label.pp_faded {
 #nav-menus-frame #menu-settings-column.pp-menu-settings-column {
   width: 100% !important;
 }
+ul.categorychecklist li.highlight-none {
+  font-style: italic;
+  font-weight: 600;
+}
 ul.categorychecklist label {
   vertical-align: top;
 }

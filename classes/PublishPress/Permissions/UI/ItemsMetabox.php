@@ -52,7 +52,10 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
         $hide = ($depth > $default_depth_display - 1) ? ' style="display:none"' : '';
 
-        $output .= $indent . "<li{$hide}>";
+        // Add custom class if input value is 0
+        $custom_class = ($item->object_id == 0) ? ' class="highlight-none"' : '';
+
+        $output .= $indent . "<li{$hide}{$custom_class}>";
 
         $output .= '<input type="checkbox" class="menu-item-checkbox" value="' . esc_attr($item->object_id) . '" /> ';
 
@@ -292,8 +295,9 @@ class ItemsMetabox extends \Walker_Nav_Menu
                     $args['walker'] = $walker;
 
                     // kevinB: add "(none)" item for include exceptions
-                    $override_none = sprintf(esc_html__('None. All %ss will be hidden.', 'press-permit-core'), ucwords($post_type_name));
+                    $override_none = sprintf(esc_html__('None. All Pages will be hidden by default.', 'press-permit-core'), ucwords($post_type_name));
                     $front_page_obj = (object)['ID' => 0, 'post_parent' => 0, 'post_content' => '', 'post_excerpt' => '', 'post_title' => esc_html__('(none)', 'press-permit-core'), 'object_id' => 0, 'title' => $override_none, 'menu_item_parent' => 0, 'db_id' => 0];
+                    // $front_page_obj = (object)['ID' => 0, 'post_parent' => 0, 'post_content' => '', 'post_excerpt' => '', 'post_title' => esc_html__('(none)', 'press-permit-core'), 'object_id' => 0, 'title' => esc_html__('(none)', 'press-permit-core'), 'menu_item_parent' => 0, 'db_id' => 0];
                     $front_page_obj->_add_to_top = true;
                     $front_page_obj->label = esc_html__('(none)', 'press-permit-core');
                     array_unshift($posts, $front_page_obj);
