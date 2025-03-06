@@ -241,6 +241,8 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 == Changelog ==
 
 = 4.1.3 - 6 March 2025 =
+* Added: Media tab to permissions settings. #1328
+* Added: Classified `pp_assign_bulk_roles` capability on the Capabilities tab and documented it in Permissions > Settings. #1450
 * Fixed: Pagination issue in specific areas. #1351
 * Fixed: Database error caused by duplicate key. #1455
 * Fixed: Tooltip position issue. #1468
@@ -256,6 +258,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Fixed: Category archive restriction now also applies to custom taxonomy archives. #1452
 * Fixed: On Post update, numerically named category was created incorrectly. #1448
 * Fixed: ACF Taxonomy Field did not include subcategories. #1395
+* Fixed: Fatal error with some third party plugins. #1486
 * Updated: Moved "Set Permissions" tab to be the first tab. #1354
 * Updated: Moved "View All" tab for better accessibility. #1350
 * Updated: Permissions text for better readability in groups. #1352
@@ -263,8 +266,6 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Updated: Design improvements for specific areas. #1353
 * Updated: Translations for Spanish, French, and Italian. #1446
 * Updated: Composer dependencies.
-* Added: Media tab to permissions settings. #1328
-* Added: Classified `pp_assign_bulk_roles` capability on the Capabilities tab and documented it in Permissions > Settings. #1450
 
 = 4.1.2 - 10 February 2025 =
 * Added: Template function for the Teaser module (Pro). #1423
