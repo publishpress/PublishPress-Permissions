@@ -148,24 +148,26 @@ class AgentPermissions
                     ?>
                 </h1>
                 <?php
-                if (defined('PUBLISHPRESS_CAPS_VERSION')) {
-                    printf(
-                        esc_html__('%sEdit WordPress Role%s', 'press-permit-core'),
-                        '<a href="' . esc_url(admin_url("admin.php?page=capsman&action=edit&role={$agent->metagroup_id}")) . '" class="page-title-action" title="' . esc_attr(esc_html__('Edit role capabilities directly', 'press-permit-core')) . '">',
-                        '</a>'
-                    );
-                }
-                $gvar = ($group_variant) ? $group_variant : 'pp_group';
-
-                if ($pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')) :
-                    $_url = admin_url('admin.php?page=presspermit-group-new');
-                    if ($agent_type) {
-                        $_url = add_query_arg(['agent_type' => $agent_type], $_url);
+                $is_debug_mode = defined('PRESSPERMIT_DEBUG') && PRESSPERMIT_DEBUG;
+                if($is_debug_mode){
+                    if (defined('PUBLISHPRESS_CAPS_VERSION')) {
+                        printf(
+                            esc_html__('%sEdit WordPress Role%s', 'press-permit-core'),
+                            '<a href="' . esc_url(admin_url("admin.php?page=capsman&action=edit&role={$agent->metagroup_id}")) . '" class="page-title-action" title="' . esc_attr(esc_html__('Edit role capabilities directly', 'press-permit-core')) . '">',
+                            '</a>'
+                        );
                     }
-                ?>
-                    <a href="<?php echo esc_url($_url); ?>" class="page-title-action"><?php esc_html_e('Add New', 'press-permit-core'); ?></a>
-                <?php endif; ?>
+                    $gvar = ($group_variant) ? $group_variant : 'pp_group';
 
+                    if ($pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')) :
+                        $_url = admin_url('admin.php?page=presspermit-group-new');
+                        if ($agent_type) {
+                            $_url = add_query_arg(['agent_type' => $agent_type], $_url);
+                        }
+                        ?>
+                        <a href="<?php echo esc_url($_url); ?>" class="page-title-action"><?php esc_html_e('Add New', 'press-permit-core'); ?></a>
+                    <?php endif;
+                } ?>
             </header>
 
             <div id="pp_cred_wrap">

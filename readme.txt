@@ -5,7 +5,7 @@ Tags: restrict, access, user, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.7
 Requires PHP: 7.2.5
-Stable tag: 4.1.2
+Stable tag: 4.1.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,33 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.1.3 - 6 March 2025 =
+* Added: Media tab to permissions settings. #1328
+* Added: Classified `pp_assign_bulk_roles` capability on the Capabilities tab and documented it in Permissions > Settings. #1450
+* Fixed: Pagination issue in specific areas. #1351
+* Fixed: Database error caused by duplicate key. #1455
+* Fixed: Tooltip position issue. #1468
+* Fixed: Tooltip display issue in media settings. #1332
+* Fixed: Removed header elements on the Permissions screen. #1355
+* Fixed: Removed media option for users who are not logged in. #1331
+* Fixed: "Show all available constants" checkbox in Advanced Settings was not working. #1454
+* Fixed: PHP Warning on the Edit Term screen. #1453
+* Fixed: Posts query error on Multisite setups with abnormal site switching. #1451
+* Fixed: Logged-in user description updated for better clarity. #1330
+* Fixed: Message tags removed from the category screen. #1326
+* Fixed: Improved "None" text for better clarity. #1349
+* Fixed: Category archive restriction now also applies to custom taxonomy archives. #1452
+* Fixed: On Post update, numerically named category was created incorrectly. #1448
+* Fixed: ACF Taxonomy Field did not include subcategories. #1395
+* Fixed: Fatal error with some third party plugins. #1486
+* Updated: Moved "Set Permissions" tab to be the first tab. #1354
+* Updated: Moved "View All" tab for better accessibility. #1350
+* Updated: Permissions text for better readability in groups. #1352
+* Updated: Promo banner content. #1470
+* Updated: Design improvements for specific areas. #1353
+* Updated: Translations for Spanish, French, and Italian. #1446
+* Updated: Composer dependencies.
 
 = 4.1.2 - 10 February 2025 =
 * Added: Template function for the Teaser module (Pro). #1423

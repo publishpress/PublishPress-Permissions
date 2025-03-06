@@ -472,7 +472,7 @@ class AgentPermissionsUI
                 elseif (!isset($perms['roles']))
                     $current_tab = 'pp-add-roles';
                 elseif (!$current_tab = get_user_option('pp-permissions-tab'))
-                    $current_tab = (isset($perms['roles'])) ? 'pp-add-roles' : 'pp-add-exceptions';
+                    $current_tab = (!isset($perms['roles'])) ? 'pp-add-roles' : 'pp-add-exceptions';
 
                 if (($args['agent']->metagroup_type != 'wp_role') || !in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all'])) {
                     $perms['clone'] = esc_html__('Copy', 'press-permit-core');
@@ -1222,7 +1222,7 @@ class AgentPermissionsUI
                                     if (PWP::empty_REQUEST('show_propagated')) {
                                         echo '<div class="pp-current-roles-note">'
                                             . sprintf(
-                                                esc_html__('Note: Permissions inherited from parent %1$s are not displayed. %2$sshow all%3$s', 'press-permit-core'),
+                                                esc_html__('Note: Permissions inherited from parent %1$s are not displayed. %2$sShow All%3$s', 'press-permit-core'),
                                                 esc_html($_caption),
                                                 "&nbsp;&nbsp;<a href='" . esc_url($show_all_url) . "'>",
                                                 '</a>'
@@ -1234,7 +1234,7 @@ class AgentPermissionsUI
 
                                     if (PWP::empty_REQUEST('show_propagated')) {
                                         printf(
-                                            esc_html__('Note: Permissions inherited from parent %1$s or terms are not displayed. %2$sshow all%3$s', 'press-permit-core'),
+                                            esc_html__('Note: Permissions inherited from parent %1$s or terms are not displayed. %2$sShow All%3$s', 'press-permit-core'),
                                             esc_html($_caption),
                                             "&nbsp;&nbsp;<a href='" . esc_url($show_all_url) . "'>",
                                             '</a>'
@@ -1251,7 +1251,7 @@ class AgentPermissionsUI
                                         }
 
                                         printf(
-                                            esc_html__(' %1$sfix sub-%2$s permissions %3$s', 'press-permit-core'),
+                                            esc_html__(' %1$sFix Sub-%2$s Permissions %3$s', 'press-permit-core'),
                                             "&nbsp;&nbsp;<a href='" . esc_url($fix_child_url) . "'>",
                                             esc_html(strtolower($via_type_obj->labels->name)),
                                             '</a>'
