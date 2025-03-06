@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-03-05T16:13:17+00:00\n"
+"POT-Creation-Date: 2025-03-06T20:42:11+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: press-permit-core\n"
@@ -587,11 +587,11 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:64
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:760
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:296
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:298
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:577
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:579
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:585
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:299
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:301
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:580
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:582
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:588
 msgid "(none)"
 msgstr ""
 
@@ -1484,13 +1484,13 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:295
-msgid "None. All %ss will be hidden."
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:298
+msgid "None. All %ss will be hidden by default."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:358
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:527
-#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:804
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:361
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:530
+#: classes/PublishPress/Permissions/UI/ItemsMetabox.php:807
 msgid "Add Selected"
 msgstr ""
 
@@ -1885,6 +1885,10 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:178
 msgid "Nav Menus (Block)"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabCore.php:191
+msgid "This feature allows you to restrict access to Media Library files when they are accessed via WordPress. To restrict viewing of files when they are visited directly via the URL, use the \"File Access\" feature."
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:215
