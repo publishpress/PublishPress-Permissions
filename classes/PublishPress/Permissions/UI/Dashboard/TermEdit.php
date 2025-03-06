@@ -6,6 +6,8 @@ require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/ItemEdit.php');
 
 class TermEdit
 {
+    public $item_exceptions_ui = false;
+
     public function __construct()
     {
         if (!did_action('presspermit_term_edit_ui')) {

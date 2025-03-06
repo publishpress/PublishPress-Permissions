@@ -187,6 +187,10 @@ class SettingsTabCore
 
                                         echo '</label>';
 
+                                        if (!empty($locked_types[$key]) && isset($key) && $key == 'attachment') {
+                                            $this->generateTooltip(esc_html__('This feature allows you to restrict access to Media Library files when they are accessed via WordPress. To restrict viewing of files when they are visited directly via the URL, use the "File Access" feature.', 'press-permit-core'),'','top');
+                                        }
+
                                         if (!empty($enabled[$key]) && isset($obj->capability_type) && !in_array($obj->capability_type, [$obj->name, 'post', 'page'])) {
                                             if ($cap_type_obj = get_post_type_object($obj->capability_type)) {
                                                 echo '&nbsp;(' . esc_html(sprintf(__('%s capabilities'), $cap_type_obj->labels->singular_name)) . ')';
@@ -346,5 +350,21 @@ class SettingsTabCore
     function flt_cap_descriptions($pp_caps)
     {
         return SettingsAdmin::setCapabilityDescriptions($pp_caps);
+    }
+
+    function generateTooltip($tooltip, $text = '', $position = 'top', $useIcon = true)
+    {
+        ?>
+        <span data-toggle="tooltip" data-placement="<?php esc_attr_e($position); ?>" title="<?php esc_attr_e($tooltip); ?>">
+        <?php 
+        esc_html_e($text);
+        if ($useIcon) : ?>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 50 50" style="margin-left: 4px; vertical-align: text-bottom;">
+                <path d="M 25 2 C 12.264481 2 2 12.264481 2 25 C 2 37.735519 12.264481 48 25 48 C 37.735519 48 48 37.735519 48 25 C 48 12.264481 37.735519 2 25 2 z M 25 4 C 36.664481 4 46 13.335519 46 25 C 46 36.664481 36.664481 46 25 46 C 13.335519 46 4 36.664481 4 25 C 4 13.335519 13.335519 4 25 4 z M 25 11 A 3 3 0 0 0 25 17 A 3 3 0 0 0 25 11 z M 21 21 L 21 23 L 23 23 L 23 36 L 21 36 L 21 38 L 29 38 L 29 36 L 27 36 L 27 21 L 21 21 z"></path>
+            </svg>
+        <?php
+        endif; ?>
+        </span>
+        <?php
     }
 }

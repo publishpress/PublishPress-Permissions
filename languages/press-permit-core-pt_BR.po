@@ -2878,14 +2878,6 @@ msgstr ""
 "Para personalizar as permissões de edição, ative o módulo Permissões de "
 "edição."
 
-#: classes/PublishPress/Permissions/UI/Dashboard/ItemExceptionsUI.php:298
-msgid ""
-"To customize for a specific post status, edit the desired role / group / "
-"user permissions directly (Permissions > Groups or Users)"
-msgstr ""
-"Para personalizar um status de postagem específico, edite as permissões de "
-"função/grupo/usuário desejadas diretamente (Permissões > Grupos ou Usuários)"
-
 #: classes/PublishPress/Permissions/UI/HintsPostEdit.php:52
 #, php-format
 msgid ""

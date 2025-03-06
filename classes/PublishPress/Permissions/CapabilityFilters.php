@@ -171,7 +171,7 @@ class CapabilityFilters
         $meta_caps = $this->meta_caps;
 
         // Google Analytics for WordPress by MonsterInsights
-        if (isset($args[3]) && (false !== strpos($args[3], 'monsterinsights'))) {
+        if (isset($args[3]) && is_string($args[3]) && (false !== strpos($args[3], 'monsterinsights'))) {
             if (!apply_filters('presspermit_force_postmeta_filtering', false, $args)) {
                 unset($meta_caps['edit_post_meta']);
                 unset($meta_caps['delete_post_meta']);

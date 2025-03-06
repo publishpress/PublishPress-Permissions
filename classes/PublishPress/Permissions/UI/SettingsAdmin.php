@@ -265,12 +265,13 @@ class SettingsAdmin
     static function setCapabilityDescriptions($pp_caps) {
         $pp_caps['pp_manage_settings'] = esc_html__('Modify these Permissions settings', 'press-permit-core-hints');
         $pp_caps['pp_unfiltered'] = esc_html__('PublishPress Permissions does not apply any Supplemental Roles or Specific Permissions to limit or expand viewing or editing access', 'press-permit-core-hints');
-        $pp_caps['pp_administer_content'] = esc_html__('PublishPress Permissions implicitly grants capabilities for all post types and statuses, but does not apply Specific Permissions', 'press-permit-core-hints');
+        $pp_caps['pp_administer_content'] = esc_html__('Manage other user\'s permissions. Also implicitly grants capabilities for all post types and statuses, but does not apply Specific Permissions', 'press-permit-core-hints');
         $pp_caps['pp_create_groups'] = esc_html__('Can create Permission Groups', 'press-permit-core-hints');
         $pp_caps['pp_edit_groups'] = esc_html__('Can edit all Permission Groups (barring Specific Permissions)', 'press-permit-core-hints');
         $pp_caps['pp_delete_groups'] = esc_html__('Can delete Permission Groups', 'press-permit-core-hints');
         $pp_caps['pp_manage_members'] = esc_html__('If group editing is allowed, can also modify group membership', 'press-permit-core-hints');
         $pp_caps['pp_assign_roles'] = esc_html__('Assign Supplemental Roles or Specific Permissions. Other capabilities may also be required.', 'press-permit-core-hints');
+        $pp_caps['pp_assign_bulk_roles'] = esc_html__('Assign Supplemental Roles or Specific Permissions on the Edit Group Permissions screen, without having own access exempted from Specific Permissions', 'press-permit-core-hints');
         $pp_caps['pp_set_read_exceptions'] = esc_html__('Set Read Permissions for specific posts on Edit Post/Term screen (for non-Administrators lacking edit_users capability; may be disabled by Permissions Settings)', 'press-permit-core-hints');
 
 		if (presspermit()->moduleActive('collaboration')) {

@@ -483,7 +483,7 @@ class Groups
     public static function getMetagroupDescript($metagroup_type, $meta_id, $default_descript = '')
     {
         if ('wp_auth' == $meta_id) {
-            return esc_html__('Authenticated site users (logged in)', 'press-permit-core');
+            return esc_html__('Authenticated site users, except for Administrators', 'press-permit-core');
         } elseif ('wp_anon' == $meta_id) {
             return esc_html__('Anonymous users (not logged in)', 'press-permit-core');
         } elseif ('wp_all' == $meta_id) {

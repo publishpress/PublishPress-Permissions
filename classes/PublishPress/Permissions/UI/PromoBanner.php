@@ -208,36 +208,36 @@ class PromoBanner
       <div class="advertisement-box-content postbox ppch-advert">
         <div class="postbox-header ppch-advert">
           <h3 class="advertisement-box-header hndle is-non-sortable">
-            <span><?php echo $this->title; ?></span>
+            <span><?php echo esc_html($this->title); ?></span>
           </h3>
         </div>
 
         <div class="inside ppch-advert">
           <p>
-            <?php echo $this->subtitle; ?>
+            <?php echo esc_html($this->subtitle); ?>
           </p>
           <ul>
             <?php foreach ($this->features as $feature) : ?>
-              <li><?php echo $feature; ?></li>
+              <li><?php echo esc_html($feature); ?></li>
             <?php endforeach; ?>
           </ul>
           <div class="upgrade-btn">
-            <a href="<?php echo $this->pluginUrl; ?>" target="__blank"><?php echo esc_html__('Upgrade to Pro', 'press-permit-core'); ?></a>
+            <a href="<?php echo esc_url($this->pluginUrl); ?>" target="__blank"><?php echo esc_html__('Upgrade to Pro', 'press-permit-core'); ?></a>
           </div>
         </div>
       </div>
       <div class="advertisement-box-content postbox ppch-advert">
         <div class="postbox-header ppch-advert">
           <h3 class="advertisement-box-header hndle is-non-sortable">
-            <span><?php echo $this->supportTitle; ?></span>
+            <span><?php echo esc_html($this->supportTitle); ?></span>
           </h3>
         </div>
 
         <div class="inside ppch-advert">
           <p>
-            <?php echo $this->supportSubtitle; ?>
+            <?php echo esc_html($this->supportSubtitle); ?>
             <a
-              class="advert-link" href="<?php echo $this->pluginSupportUrl; ?>" target="_blank">
+              class="advert-link" href="<?php echo esc_url($this->pluginSupportUrl); ?>" target="_blank">
               <?php echo esc_html__('Request Support', 'press-permit-core'); ?>
               <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="24" height="24" class="linkIcon">
                 <path d="M18.2 17c0 .7-.6 1.2-1.2 1.2H7c-.7 0-1.2-.6-1.2-1.2V7c0-.7.6-1.2 1.2-1.2h3.2V4.2H7C5.5 4.2 4.2 5.5 4.2 7v10c0 1.5 1.2 2.8 2.8 2.8h10c1.5 0 2.8-1.2 2.8-2.8v-3.6h-1.5V17zM14.9 3v1.5h3.7l-6.4 6.4 1.1 1.1 6.4-6.4v3.7h1.5V3h-6.3z"></path>
@@ -247,7 +247,7 @@ class PromoBanner
           <p>
             <?php echo esc_html__('Detailed documentation is also available on the plugin website.', 'press-permit-core'); ?>
             <a
-              class="advert-link" href="<?php echo $this->pluginDocsUrl; ?>" target="_blank">
+              class="advert-link" href="<?php echo esc_url($this->pluginDocsUrl); ?>" target="_blank">
               <?php echo esc_html__('View Knowledge Base', 'press-permit-core'); ?>
               <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" width="24" height="24" class="linkIcon">
                 <path d="M18.2 17c0 .7-.6 1.2-1.2 1.2H7c-.7 0-1.2-.6-1.2-1.2V7c0-.7.6-1.2 1.2-1.2h3.2V4.2H7C5.5 4.2 4.2 5.5 4.2 7v10c0 1.5 1.2 2.8 2.8 2.8h10c1.5 0 2.8-1.2 2.8-2.8v-3.6h-1.5V17zM14.9 3v1.5h3.7l-6.4 6.4 1.1 1.1 6.4-6.4v3.7h1.5V3h-6.3z"></path>

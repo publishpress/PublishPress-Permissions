@@ -222,7 +222,7 @@ div.mirror-confirm {
 /*---- Bulk Edit Exceptions ----*/
 .pp-role-bulk-edit,
 .pp-exception-bulk-edit {
-  margin: 0.5em 0 2em 2em;
+  margin: 0.5em 0 2em 0;
 }
 .pp-role-bulk-edit select,
 .pp-exception-bulk-edit select {
@@ -268,6 +268,13 @@ label span.pp_nolink,
   margin-bottom: 0.4em;
   color: black;
 }
+.pp-role-container {
+  display: flex;
+  flex-direction: row;
+}
+.pp-role-container label {
+  flex: 1;
+}
 .pp-readonly .pp-current-site-roles label {
   margin: 0 0 0 6px;
 }
@@ -282,12 +289,6 @@ label span.pp_nolink,
 }
 .pp-current-exceptions table tbody tr th {
   border-top: 1px solid #f2f2f2;
-}
-div.pp-current-type-roles {
-  padding-left: 0.5em;
-}
-.pp-current-roles-tbl-wrapper {
-  padding-left: 1em;
 }
 #pp_current_exceptions .pp-current-roles-tbl-wrapper td {
   border-right: 1px solid #777;
@@ -306,7 +307,6 @@ div.pp-current-type-roles {
 }
 div.pp-current-type-roles a {
   margin-left: 5px;
-  display: none;
 }
 #pp_current_exceptions .pp_check_all {
   margin-left: 1.5em;
@@ -328,9 +328,6 @@ label.role_both:after {
 input.exc-copied {
   background-color: #afa !important;
   border: 1px solid black !important;
-}
-#pp_current_exceptions input.submit-edit-item-exception {
-  margin-top: 5px;
 }
 label.role_ch:after {
   content: " *";
@@ -385,6 +382,10 @@ label.pp_faded {
 #nav-menus-frame #menu-settings-column.pp-menu-settings-column {
   width: 100% !important;
 }
+ul.categorychecklist li.highlight-none {
+  font-style: italic;
+  font-weight: 600;
+}
 ul.categorychecklist label {
   vertical-align: top;
 }
@@ -403,6 +404,37 @@ ul.categorychecklist span {
 }
 td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   vertical-align: baseline;
+}
+.add-menu-item-pagelinks {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+.add-menu-item-pagelinks .page-numbers {
+  padding: 4px 10px;
+  border: 1px solid #ddd;
+  background: #f7f7f7;
+  color: #0073aa;
+  text-decoration: none;
+  border-radius: 4px;
+  min-width: 8px!important;
+}
+.add-menu-item-pagelinks .page-numbers:hover {
+  background: #0073aa;
+  color: #fff !important;
+  font-weight: bold;
+}
+.add-menu-item-pagelinks .current {
+  background: #0073aa;
+  color: #fff;
+  font-weight: bold;
+  border: 1px solid #0073aa;
+}
+.add-menu-item-pagelinks .next,
+.add-menu-item-pagelinks .prev {
+  font-weight: bold;
 }
 #pp-permissions-wrapper table {
   border-collapse: collapse;

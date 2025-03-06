@@ -37,9 +37,9 @@ class AgentPermissionsUI
     public static function exceptionAssignmentScripts()
     {
         $vars = [
-            'addExceptions' => esc_html__('Set Specific Permissions', 'press-permit-core'),
-            'clearException' => esc_html__('clear', 'press-permit-core'),
-            'pleaseReview' => esc_html__('Review the selection below, and then click <strong>Save Permissions</strong>. Saved permissions can be mirrored to other operations by bulk edit.', 'press-permit-core'),
+            'addExceptions' => esc_html__('Add Specific Permissions', 'press-permit-core'),
+            'clearException' => esc_html__('remove', 'press-permit-core'),
+            'pleaseReview' => esc_html__('Review the selection below, and then click <strong>Save Permissions</strong>.', 'press-permit-core'),
             'alreadyException' => esc_html__('Permission already selected!', 'press-permit-core'),
             'noAction' => esc_html__('No Action selected!', 'press-permit-core'),
             'submissionMsg' => esc_html__('Permissions submission in progress...', 'press-permit-core'),
@@ -104,7 +104,7 @@ class AgentPermissionsUI
         }
 
         if ($option_any) {
-            echo "<option value='(all)'>" . esc_html__('(all)', 'press-permit-core') . '</option>';
+            echo "<option value='(all)'>" . esc_html__('All Statuses', 'press-permit-core') . '</option>';
         }
 
         if ($option_na) {
@@ -120,7 +120,8 @@ class AgentPermissionsUI
 
         // Discourage anon/all metagroups having read exceptions for specific posts. Normally, that's what post visibility is for.
         $is_all_anon = (isset($args['agent']) && !empty($args['agent']->metagroup_id) && in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all']));
-?>
+        $is_anon = (isset($args['agent']) && !empty($args['agent']->metagroup_id) && $args['agent']->metagroup_id === 'wp_anon');
+        ?>
         <img id="pp_add_exception_waiting" class="waiting" style="display:none;position:absolute" src="<?php echo esc_url(admin_url('images/wpspin_light.gif')) ?>" alt="" />
         <table id="pp_add_exception">
             <thead>
@@ -140,9 +141,12 @@ class AgentPermissionsUI
                         <select name="pp_select_x_for_type" autocomplete="off">
                             <?php
                             $type_objects = apply_filters('presspermit_append_exception_types', $pp->admin()->orderTypes(apply_filters('presspermit_exception_types', $type_objects)));
-
+                            
                             if (!empty($args['external']))
                                 $type_objects = array_merge($type_objects, $args['external']);
+
+                            if ($is_anon)
+                                unset($type_objects['attachment']);
 
                             self::drawTypeOptions($type_objects, ['option_any' => true]);
                             do_action('presspermit_exception_types_dropdown', $args);
@@ -167,7 +171,7 @@ class AgentPermissionsUI
                     <td class="pp-select-x-status" style="display:none">
                         <p class="pp-checkbox">
                             <input type="checkbox" id="pp_select_x_cond_" name="pp_select_x_cond[]" checked="checked" value="" />
-                            <label id="lbl_pp_select_x_cond_" for="pp_select_x_cond_"> <?php esc_html_e('(all)', 'press-permit-core'); ?></label>
+                            <label id="lbl_pp_select_x_cond_" for="pp_select_x_cond_"> <?php esc_html_e('All Statuses', 'press-permit-core'); ?></label>
                         </p>
                     </td>
 
@@ -417,7 +421,7 @@ class AgentPermissionsUI
                         <th><?php esc_html_e('Qualification', 'press-permit-core'); ?></th>
                         <th></th>
                         <th><?php esc_html_e('Status', 'press-permit-core'); ?></th>
-                        <th><a class="pp_clear_all" href="javascript:void(0)"><?php esc_html_e('clear', 'press-permit-core'); ?></a></th>
+                        <th><a class="pp_clear_all" href="javascript:void(0)"><?php esc_html_e('Remove', 'press-permit-core'); ?></a></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -458,17 +462,17 @@ class AgentPermissionsUI
                 if (('pp_group' == $agent_type) && ($group = $pp->groups()->getGroup($agent_id)))
                     $is_wp_role = ('wp_role' == $group->metagroup_type);
 
+                $perms['exceptions'] = esc_html__('Add Specific Permissions', 'press-permit-core');
+
                 if (empty($group) || !in_array($group->metagroup_id, ['wp_anon', 'wp_all']) || defined('PP_ALL_ANON_ROLES'))
                     $perms['roles'] = esc_html__('Add Supplemental Roles', 'press-permit-core');
-
-                $perms['exceptions'] = esc_html__('Set Specific Permissions', 'press-permit-core');
 
                 if (!isset($perms['roles']))
                     $current_tab = 'pp-add-exceptions';
                 elseif (!isset($perms['roles']))
                     $current_tab = 'pp-add-roles';
                 elseif (!$current_tab = get_user_option('pp-permissions-tab'))
-                    $current_tab = (isset($perms['roles'])) ? 'pp-add-roles' : 'pp-add-exceptions';
+                    $current_tab = (!isset($perms['roles'])) ? 'pp-add-roles' : 'pp-add-exceptions';
 
                 if (($args['agent']->metagroup_type != 'wp_role') || !in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all'])) {
                     $perms['clone'] = esc_html__('Copy', 'press-permit-core');
@@ -1028,7 +1032,7 @@ class AgentPermissionsUI
                                                 } else {
                                                     $edit_url = admin_url("post.php?post=$item_id&action=edit");
                                                 }
-                                                echo "<div><label for='" . esc_attr($cb_id) . "' class='" . esc_attr($lbl_class) . "'><input id='" . esc_attr($cb_id) . "' type='checkbox' name='pp_edit_exception[]' value='" . esc_attr($ass_id) . "' class='" . esc_attr($class) . "' autocomplete='off'> " . esc_html($item_path) . '</label><a href="' . esc_url($edit_url) . '">' . esc_html__('edit') . '</a></div>';
+                                                echo "<div class='pp-role-container'><label for='" . esc_attr($cb_id) . "' class='" . esc_attr($lbl_class) . "'><input id='" . esc_attr($cb_id) . "' type='checkbox' name='pp_edit_exception[]' value='" . esc_attr($ass_id) . "' class='" . esc_attr($class) . "' autocomplete='off'> " . esc_html($item_path) . '</label><a href="' . esc_url($edit_url) . '">' . esc_html__('edit') . '</a></div>';
                                             }
                                         } // end foreach item
 
@@ -1036,7 +1040,7 @@ class AgentPermissionsUI
                                             $cb_id = "pp_check_all_{$via_src}_{$via_type}_{$for_type}_{$operation}_{$status}";
 
                                             echo "<div><label for='" . esc_attr($cb_id) . "'><input type='checkbox' id='" . esc_attr($cb_id) . "' class='pp_check_all'> "
-                                                . esc_html__('(all)', 'press-permit-core')  . '</label></div>';
+                                                . esc_html__('All Statuses', 'press-permit-core')  . '</label></div>';
                                         }
 
                                         echo '</div></div>';   // pp-role-terms, pp-role-terms-wrapper
@@ -1218,7 +1222,7 @@ class AgentPermissionsUI
                                     if (PWP::empty_REQUEST('show_propagated')) {
                                         echo '<div class="pp-current-roles-note">'
                                             . sprintf(
-                                                esc_html__('Note: Permissions inherited from parent %1$s are not displayed. %2$sshow all%3$s', 'press-permit-core'),
+                                                esc_html__('Note: Permissions inherited from parent %1$s are not displayed. %2$sShow All%3$s', 'press-permit-core'),
                                                 esc_html($_caption),
                                                 "&nbsp;&nbsp;<a href='" . esc_url($show_all_url) . "'>",
                                                 '</a>'
@@ -1230,7 +1234,7 @@ class AgentPermissionsUI
 
                                     if (PWP::empty_REQUEST('show_propagated')) {
                                         printf(
-                                            esc_html__('Note: Permissions inherited from parent %1$s or terms are not displayed. %2$sshow all%3$s', 'press-permit-core'),
+                                            esc_html__('Note: Permissions inherited from parent %1$s or terms are not displayed. %2$sShow All%3$s', 'press-permit-core'),
                                             esc_html($_caption),
                                             "&nbsp;&nbsp;<a href='" . esc_url($show_all_url) . "'>",
                                             '</a>'
@@ -1247,7 +1251,7 @@ class AgentPermissionsUI
                                         }
 
                                         printf(
-                                            esc_html__(' %1$sfix sub-%2$s permissions %3$s', 'press-permit-core'),
+                                            esc_html__(' %1$sFix Sub-%2$s Permissions %3$s', 'press-permit-core'),
                                             "&nbsp;&nbsp;<a href='" . esc_url($fix_child_url) . "'>",
                                             esc_html(strtolower($via_type_obj->labels->name)),
                                             '</a>'

@@ -6,6 +6,13 @@ jQuery(document).ready(function ($) {
 
     $('ul.categorychecklist ul.children li[style="display:none"]').parent().prevAll('input.menu-item-checkbox').next('span').html(' + ');
 
+    $('.menu-item-checkbox').on('click', function () {
+        const clickedCheckbox = $(this);
+        if (clickedCheckbox.val() === "0" && clickedCheckbox.closest('li').find('label').text().includes("None")) {
+            clickedCheckbox.closest('ul').find('.menu-item-checkbox').not(clickedCheckbox).prop('checked', false).prop('disabled', clickedCheckbox.is(':checked'));
+        }
+    });
+
     $('input.menu-item-checkbox').nextAll('span').on('click', function (e) {
         $(this).parent().children('ul.children').children('li').toggle();
 
@@ -217,7 +224,7 @@ jQuery(document).ready(function ($) {
                 $(conds).each(function () {
                     id = presspermitEscapeID(this.id);
                     var lbl = $('#pp_add_exception label[for="' + id + '"]');
-
+                    var lblStatus = lbl.html() === '(all)' ? 'All Statuses' : lbl.html();
                     trackdata = for_type
                         + '|' + op
                         + '|' + via_type
@@ -243,7 +250,7 @@ jQuery(document).ready(function ($) {
                             + '<td>' + mod_type_caption + '</td>'
                             + '<td>' + selected_caption + '</td>'
                             + '<td>' + item_caption + '</td>'
-                            + '<td>' + lbl.html() + '</td>'
+                            + '<td>' + lblStatus + '</td>'
                             + '<td><div class="pp_clear">' + ' <a href="javascript:void(0)" class="pp_clear">' + ppRestrict.clearException + '</a></div>'
                             + '<input type="hidden" name="pp_presspermitXid[]" value="' + presspermitXid + '" />'
                             + '<input type="hidden" name="pp_add_exception[' + presspermitXid + '][for_type]" value="' + for_type + '" />'

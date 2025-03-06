@@ -686,11 +686,11 @@ class PermissionsHooks
 
         // @todo: require an Advanced setting to be enabled
 		
-        if (preg_match('/SELECT[\s\r\n]+' . $wpdb->base_prefix . '([^\s\r\n]*)posts./', $query, $matches)) {
+        if (preg_match('/FROM[\s\r\n]+' . $wpdb->base_prefix . '([^\s\r\n]*)posts/', $query, $matches)) {
             $posts_table = $wpdb->base_prefix . $matches[1] . 'posts';
 
             // Bypass the safeguard if join clause includes any other posts table
-            if (defined('ADMIN_QUERY_SAFEGUARD_JOIN_PRECAUTION') && !preg_match("/(?!{$posts_table})(" . $wpdb->base_prefix . '[^\s\r\n]*posts)/', $query)) {
+            if (defined('ADMIN_QUERY_SAFEGUARD_JOIN_PRECAUTION') && !preg_match("/JOIN (?!{$posts_table})(" . $wpdb->base_prefix . '[^\s\r\n]*posts)/', $query)) {
                 $query = preg_replace("/$wpdb->base_prefix([^\s\r\n]*)posts\./", $posts_table . '.', $query);
             }
         }
