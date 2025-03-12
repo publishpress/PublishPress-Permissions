@@ -1,6 +1,6 @@
 function presspermitLoadAgentsJS(id_sfx, agent_type, context, agent_id, selection_only) {
     jQuery(document).ready(function ($) {
-        id_sfx = id_sfx.replace(/:/g, '\\:');
+        id_sfx = CSS.escape(id_sfx);
 
         $("#select_agents_" + id_sfx).on('click', function (e) {
             e.preventDefault();
