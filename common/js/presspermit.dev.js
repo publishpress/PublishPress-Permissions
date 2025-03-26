@@ -30,10 +30,6 @@ jQuery(document).ready(function ($) {
     });
 });
 
-function presspermitPrepareID(selector) {
-    return selector.replace(/:/g, '\\:');
-}
-
 jQuery(document).ready(function ($) {
     $(".pp-hidden-subdiv h3").on('click', function (e) {
         e.preventDefault();
@@ -49,7 +45,7 @@ jQuery(document).ready(function ($) {
 });
 
 function presspermitEscapeID(myid) {
-    return myid.replace(/(:|\.)/g, '\\$1');
+    return CSS.escape(myid);
 }
 
 function presspermitShowElement(classAttrib, $) {
