@@ -1,4 +1,18 @@
 (function ($) {
+    function resetSelectItem(selectElementId) {
+        // Reset the Select2 dropdown
+        $(selectElementId).val(null).trigger('change');
+        const [_, identifier] = selectElementId.split(/(?<=#v2_agent_search_text_)/);
+        const [op, forItemType, agentType] = identifier.replace(/\\:/g, ':').split(':');
+
+        // Update all hidden inputs to have empty values
+        $(`input[name^="pp_exceptions[${forItemType}][${op}][${agentType}][item]"]`).each(function () {
+            $(this).val(''); // Set the value to empty
+        });
+    }
+    // Expose the function to the global window object
+    window.resetSelectItem = resetSelectItem;
+
     $.fn.DynamicListbox = function (args) {
         /*
         var args = {
@@ -14,6 +28,111 @@
         };
         */
 
+        var initializeSelect2 = function (args2) {
+            let selector = "#v2_" + args2.search_id;
+            const [op, forItemType, agentType] = args2.topic.replace(/\\:/g, ':').split(':');
+            const selectedValues = $(selector).val() || [];
+
+            // Clear all existing hidden inputs for this agent type
+            $(`input[name^="pp_exceptions[${forItemType}][${op}][${agentType}][item]"]`).remove();
+    
+            // Add hidden inputs for each selected value
+            selectedValues.forEach(function (value) {
+                $('<input>')
+                    .attr('type', 'hidden')
+                    .attr('name', `pp_exceptions[${forItemType}][${op}][${agentType}][item][${value}]`)
+                    .val('2') // Default value for selected items
+                    .appendTo($(selector).parent());
+            });
+
+            $(selector).select2({
+              placeholder: "Search for an item",
+              dropdownAutoWidth : true,
+              width: '550px',
+              ajax: {
+                url: args2.ajaxurl,
+                dataType: "html",
+                delay: 250,
+                data: function (params) {
+                  let roletext = "";
+                  if ($("#pp_search_role_" + args2.topic).length) {
+                    roletext = $("#pp_search_role_" + args2.topic).val();
+                  }
+          
+                  const umkey = [];
+                  const umval = [];
+                  for (let i = 0; i < 6; i++) {
+                    if ($("#pp_search_user_meta_key_" + i + "_" + args2.topic).length) {
+                      umkey[i] = $(
+                        "#pp_search_user_meta_key_" + i + "_" + args2.topic
+                      ).val();
+                      umval[i] = $(
+                        "#pp_search_user_meta_val_" + i + "_" + args2.topic
+                      ).val();
+                    } else {
+                      umkey[i] = "";
+                      umval[i] = "";
+                    }
+                  }
+          
+                  return {
+                    pp_agent_search: params.term || "",
+                    pp_role_search: roletext,
+                    pp_agent_type: args2.agent_type,
+                    pp_agent_id: args2.agent_id,
+                    pp_topic: args2.topic,
+                    pp_usermeta_key: umkey,
+                    pp_usermeta_val: umval,
+                    pp_omit_admins: ppListbox.omit_admins,
+                    pp_metagroups: ppListbox.metagroups,
+                    pp_operation: args2.op,
+                    pp_context: args2.pp_context,
+                  };
+                },
+                processResults: function (data) {
+                    // Parse the HTML response and convert it to Select2 format
+                    const options = [];
+                    $(data)
+                    .filter("option")
+                    .each(function () {
+                        options.push({
+                        id: $(this).val(),
+                        text: $(this).text(),
+                        });
+                    });
+
+                    return {
+                        results: options,
+                    };
+                },
+                cache: true,
+              },
+            }).on('select2:select select2:unselect', function (e) {
+                const [op, forItemType, agentType] = args2.topic.replace(/\\:/g, ':').split(':');
+                const selectedValues = $(this).val() || [];
+        
+                // Add hidden inputs for each selected value
+                selectedValues.forEach(function (value) {
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', `pp_exceptions[${forItemType}][${op}][${agentType}][item][${value}]`)
+                        .val('2') // Default value for selected items
+                        .appendTo($(selector).parent());
+                });
+        
+                // Add hidden input for the unselected value with an empty value
+                if (e.type === 'select2:unselect') {
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', `pp_exceptions[${forItemType}][${op}][${agentType}][item][${e.params.data.id}]`)
+                        .val('') // Empty value for unselected items
+                        .appendTo($(selector).parent());
+                }
+            });
+        }
+
+        initializeSelect2(args);
+          
         $('#' + args.search_id).on('keydown', function (e) {
             // this will catch pressing enter and call find function
             if (e.keyCode == 13) {

@@ -68,7 +68,7 @@ class AgentsDynamicUI
         <div>
 
         </div>
-        <table id="pp-agent-selection_<?php echo esc_attr($id_suffix); ?>-wrapper" class="pp-agents-selection">
+        <table id="pp-agent-selection_<?php echo esc_attr($id_suffix); ?>-wrapper" class="pp-agents-selection" style="display:none">
             <tr>
                 <td id="pp-agent-selection_<?php echo esc_attr($id_suffix); ?> " style="vertical-align:top">
                     <div class="pp-search-box-with-icon-wrapper">
