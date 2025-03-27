@@ -134,7 +134,9 @@ class ItemExceptionsUI
                 } else {
                     $reqd_caps = false;
                 }
-            } ?>
+            } 
+            $any_stored = empty($current_exceptions[$op][$agent_type]) ? 0 : count($current_exceptions[$op][$agent_type]);
+            ?>
 
             <table class="pp-item-exceptions-ui pp-exc-<?php echo esc_attr($agent_type); ?>" style="width:100%">
                 <tr>
@@ -161,17 +163,31 @@ class ItemExceptionsUI
 
                             $colspan = '2';
                             ?>
+                            <select multiple="multiple" id="v2_agent_search_text_<?php echo "{$op}:{$for_item_type}:{$agent_type}"; ?>" name="_select-<?php echo esc_attr("$for_item_type-$op-$agent_type"); ?>[]">
+                                <?php
+                                if ($any_stored) {
+                                    if ('wp_role' == $agent_type) {
+                                        foreach ($current_exceptions[$op][$agent_type] as $agent_id => $agent_exceptions) {
+                                            if ($agent_id && isset($this->data->agent_info[$agent_type][$agent_id])) {
+                                                if ((false === strpos($this->data->agent_info[$agent_type][$agent_id]->name, '[WP ')) || defined('PRESSPERMIT_DELETED_ROLE_EXCEPTIONS_UI')) {
+                                                    echo  "<option selected value='" . esc_attr($agent_id) . "'>" . esc_html($this->data->agent_info[$agent_type][$agent_id]->name) . "</option>";
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        foreach (array_keys($this->data->agent_info[$agent_type]) as $agent_id) {  // order by agent name
+                                            if ($agent_id && isset($current_exceptions[$op][$agent_type][$agent_id])) {
+                                                echo "<option selected value='" . esc_attr($agent_id) . "'>" . esc_html($this->data->agent_info[$agent_type][$agent_id]->name) . "</option>";
+                                            }
+                                        }
+                                    }
+                                }
+                                ?>
+                            </select>
                         </td>
                     <?php else :
                         $colspan = '';
-                    endif;
-                    ?>
-
-                    <?php
-                    $any_stored = empty($current_exceptions[$op][$agent_type])
-                        ? 0
-                        : count($current_exceptions[$op][$agent_type]);
-                    ?>
+                    endif; ?>
                     <td class="pp-current-item-exceptions" style="width:100%">
                         <div class="pp-exc-wrap" style="overflow:auto;">
                             <table <?php if (!$any_stored) echo 'style="display:none"'; ?>>
@@ -207,27 +223,15 @@ class ItemExceptionsUI
                                                     }
                                                 }
                                             }
-                                        } else {
-                                            foreach (array_keys($this->data->agent_info[$agent_type]) as $agent_id) {  // order by agent name
-                                                if ($agent_id && isset($current_exceptions[$op][$agent_type][$agent_id])) {
-                                                    $this->render->drawRow(
-                                                        $agent_type,
-                                                        $agent_id,
-                                                        $current_exceptions[$op][$agent_type][$agent_id],
-                                                        $this->data->inclusions_active,
-                                                        $this->data->agent_info[$agent_type][$agent_id],
-                                                        compact('for_item_type', 'op', 'reqd_caps', 'hierarchical')
-                                                    );
-                                                }
-                                            }
                                         }
                                     }
                                     ?>
                                 </tbody>
 
-                                <tfoot<?php if ($any_stored < 2) echo ' style="display:none;"'; ?>>
+                                <tfoot <?php if ($any_stored < 2) echo 'style="display:none;"'; ?>>
                                     <?php
-                                    $link_caption = ('wp_role' == $agent_type) ? esc_html__('default all', 'press-permit-core') : esc_html__('clear all', 'press-permit-core');
+                                    $link_caption = ('wp_role' == $agent_type) ? esc_html__('default all', 'press-permit-core') : '';
+                                    if(!empty($link_caption)) :
                                     ?>
                                     <tr>
                                         <td></td>
@@ -238,6 +242,7 @@ class ItemExceptionsUI
                                                     href="#clear-sub-exc"><?php echo esc_html($link_caption); ?></a></td>
                                         <?php endif; ?>
                                     </tr>
+                                    <?php endif; ?>
                                     </tfoot>
 
                             </table>
@@ -256,14 +261,14 @@ class ItemExceptionsUI
                 </tr>
 
                 <tr>
-                    <td class="pp-exception-actions" <?php if (!empty($colspan)) echo 'colspan="' . esc_attr($colspan) . '"'; ?>>
-                        <?php if ('wp_role' != $agent_type) : ?>
-                            <a class="pp-select-exception-agents" href="#">
-                                <?php ('user' == $agent_type) ? esc_html_e('select users', 'press-permit-core') : esc_html_e('select groups', 'press-permit-core'); ?>
+                    <td class="pp-exception-actions" <?php if (!empty($colspan)) echo 'colspan="' . esc_attr($colspan) . '"'; ?> <?php if ($any_stored == 0) echo 'style="display:none;"'; ?>>
+                        <?php if ('wp_role' != $agent_type) :
+                        $link_caption = ('wp_role' == $agent_type) ? esc_html__('default all', 'press-permit-core') : esc_html__('clear all', 'press-permit-core');
+                        $clear_selector = "v2_agent_search_text_{$op}:{$for_item_type}:{$agent_type}";
+                            ?>
+                            <a class="pp-select-exception-agents" href="javascript:void(0)" onclick="resetSelectItem('#' + jQuery.escapeSelector('<?php echo esc_attr($clear_selector)?>'));">
+                                <?php echo esc_html($link_caption); ?>
                             </a>
-
-                            <a class="pp-close-select-exception-agents" href="#"
-                                style="display:none;"><?php esc_html_e('close', 'press-permit-core'); ?></a>
                         <?php
                         endif;
                         if ($pp_groups->groupTypeEditable($agent_type) && $pp_groups->userCan('pp_create_groups', 0, $agent_type)) :
