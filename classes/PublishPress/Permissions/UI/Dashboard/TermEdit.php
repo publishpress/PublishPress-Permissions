@@ -182,7 +182,28 @@ class TermEdit
                             $tx->labels->singular_name
                         );
                 }
-                $title_with_icon = $this->generateTooltip('Displayed permissions are those assigned for the "Post" type. You can also define universal Category permissions which apply to all related post types.', $title);
+
+                if (!$referer = wp_get_original_referer()) $referer = wp_get_referer();
+    
+                $url = esc_url_raw(
+                    add_query_arg(
+                        '_wp_original_http_referer',
+                        urlencode($referer),
+                        "term.php?taxonomy=$taxonomy&amp;tag_ID=$tag_id&amp;pp_universal=1"
+                    )
+                );
+
+                $title_with_icon = sprintf(
+                    '<div>%s&nbsp;<div data-toggle="tooltip" class="click"><span class="dashicons dashicons-info"></span><div class="tooltip-text"><span>%s</span><i></i></div></div></div>',
+                    esc_attr($title),
+                    sprintf(
+                        esc_html__('Displayed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
+                        esc_html($type_obj->labels->singular_name),
+                        '<a href="' . esc_url($url) . '"><strong>',
+                        esc_html($tx->labels->singular_name),
+                        '</strong></a>'
+                    )
+                );
 
                 Arr::setElem($boxes, [$op, "pp_{$op}_{$post_type}_exceptions"]);
                 $boxes[$op]["pp_{$op}_{$post_type}_exceptions"]['for_item_type'] = $post_type;
@@ -392,17 +413,5 @@ class TermEdit
 
         $taxonomy = PWP::REQUEST_key('taxonomy');
         ItemEdit::scriptItemEdit($taxonomy);
-    }
-
-    function generateTooltip($tooltip, $text = '', $position = 'top', $useIcon = true)
-    {
-        $tooltipHtml = '<span data-toggle="tooltip" data-placement="' . $position . '" title="' . htmlspecialchars($tooltip) . '">';
-        $tooltipHtml .= htmlspecialchars($text);
-        if ($useIcon) {
-            $tooltipHtml .= '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="16" height="16" viewBox="0 0 50 50"><path d="M 25 2 C 12.264481 2 2 12.264481 2 25 C 2 37.735519 12.264481 48 25 48 C 37.735519 48 48 37.735519 48 25 C 48 12.264481 37.735519 2 25 2 z M 25 4 C 36.664481 4 46 13.335519 46 25 C 46 36.664481 36.664481 46 25 46 C 13.335519 46 4 36.664481 4 25 C 4 13.335519 13.335519 4 25 4 z M 25 11 A 3 3 0 0 0 25 17 A 3 3 0 0 0 25 11 z M 21 21 L 21 23 L 23 23 L 23 36 L 21 36 L 21 38 L 29 38 L 29 36 L 27 36 L 27 21 L 21 21 z"></path></svg>';
-        }
-        $tooltipHtml .= '</span>';
-
-        return $tooltipHtml;
     }
 }
