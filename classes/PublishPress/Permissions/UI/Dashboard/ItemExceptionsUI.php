@@ -163,7 +163,7 @@ class ItemExceptionsUI
 
                             $colspan = '2';
                             ?>
-                            <select multiple="multiple" id="v2_agent_search_text_<?php echo "{$op}:{$for_item_type}:{$agent_type}"; ?>" name="_select-<?php echo esc_attr("$for_item_type-$op-$agent_type"); ?>[]">
+                            <select multiple="multiple" id="v2_agent_search_text_<?php echo esc_attr("{$op}:{$for_item_type}:{$agent_type}"); ?>" name="_select-<?php echo esc_attr("$for_item_type-$op-$agent_type"); ?>[]">
                                 <?php
                                 if ($any_stored) {
                                     if ('wp_role' == $agent_type) {
