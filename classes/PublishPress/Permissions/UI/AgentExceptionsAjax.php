@@ -123,11 +123,11 @@ class AgentExceptionsAjax
                         <?php 
                         $tooltip_text = '';
                         if($title === 'Enable:') {
-                            $tooltip_text = 'Expand access to allow specified items regardless of role capabilities or restrictions.';
+                            $tooltip_text = esc_html__('Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core');
                         } elseif($title === 'Block:') {
-                            $tooltip_text = 'Restrict access by blocking specified items unless an "Enabled" exception is also stored.';
+                            $tooltip_text = esc_html__('Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core');
                         } elseif($title === 'Limit to:') {
-                            $tooltip_text = 'Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.';
+                            $tooltip_text = esc_html__('Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.', 'press-permit-core');
                         }
                         if(!empty($tooltip_text)) {
                             $this->generateTooltip($tooltip_text, $title, 'top', true);

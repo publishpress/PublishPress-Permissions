@@ -960,11 +960,11 @@ class AgentPermissionsUI
                                         echo "<tr class='" . esc_attr($tr_class) . "'><td class='pp_item_role_caption'>";
                                         // echo "<tr class='" . esc_attr($tr_class) . "'><td class='pp_item_role_caption'>" . esc_html($mod_caption) . "</td>";
                                         if($mod_caption === 'Enable:') {
-                                            $tooltip_text = 'Expand access to allow specified items regardless of role capabilities or restrictions.';
+                                            $tooltip_text = esc_html__('Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core');
                                         } elseif($mod_caption === 'Block:') {
-                                            $tooltip_text = 'Restrict access by blocking specified items unless an "Enabled" exception is also stored.';
+                                            $tooltip_text = esc_html__('Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core');
                                         } elseif($mod_caption === 'Limit to:') {
-                                            $tooltip_text = 'Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.';
+                                            $tooltip_text = esc_html__('Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.', 'press-permit-core');
                                         }
                                         ?>
                                         <span data-toggle="tooltip" data-placement="top">
