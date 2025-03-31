@@ -242,7 +242,7 @@ class SettingsTabCore
 
                                             $caption = ($define_create_posts_cap)
                                                 ? esc_html__(
-                                                    'Post creation capabilities will also be enforced for all Filtered Post Types. To adjuist this, install %3$sPublishPress Capabilities%4$s.',
+                                                    'Post creation capabilities will also be enforced for all Filtered Post Types. To adjust this, install %3$sPublishPress Capabilities%4$s.',
                                                     'press-permit-core'
                                                 )
                                                 : esc_html__(
