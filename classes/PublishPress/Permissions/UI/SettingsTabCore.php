@@ -280,7 +280,7 @@ class SettingsTabCore
                                 }
 
                                 if (in_array('attachment', presspermit()->getEnabledPostTypes(), true)) {
-                                    echo '<div>';
+                                    echo '<br><div>';
 
                                     if (!presspermit()->isPro()) {
                                         $hint = SettingsAdmin::getStr('define_media_post_caps_pro');
