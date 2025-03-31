@@ -248,15 +248,6 @@ class ItemExceptionsUI
                             </table>
 
                         </div>
-
-                        <?php if (!$any_stored) :
-                            $op_obj = presspermit()->admin()->getOperationObject($op, $for_item_type);
-                            $op_label = (!empty($op_obj->noun_label)) ? $op_obj->noun_label : $op_obj->label;
-                            $agent_label = (!empty($agent_types[$agent_type]->labels)) ? $agent_types[$agent_type]->labels->singular_name : $agent_types[$agent_type]->label;
-                            $caption = sprintf(esc_html__('%s permissions have not been added or blocked for any %s.', 'press-permit-core'), $op_label, $agent_label);
-                        ?>
-                            <div class="pp-no-exceptions"><?php echo esc_html($caption); ?></div>
-                        <?php endif; ?>
                     </td>
                 </tr>
 
