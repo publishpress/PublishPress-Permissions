@@ -328,7 +328,7 @@ class GroupsListTable extends GroupsListTableBase
 
                             break;
                         case '':
-                            esc_html_e('Custom Permission', 'press-permit-core');
+                            esc_html_e('Custom Group', 'press-permit-core');
                             break;
                         case 'rvy_notice':
                             esc_html_e('Workflow', 'press-permit-core');
