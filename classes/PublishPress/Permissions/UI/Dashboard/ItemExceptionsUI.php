@@ -197,20 +197,6 @@ class ItemExceptionsUI
                     <td class="pp-current-item-exceptions" style="width:100%">
                         <div class="pp-exc-wrap" style="overflow:auto;">
                             <table <?php if (!$any_stored) echo 'style="display:none"'; ?>>
-                                <?php if ($hierarchical) : ?>
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th><?php printf(esc_html__('This %s', 'press-permit-core'), esc_html($type_obj->labels->singular_name)); ?></th>
-                                            <th><?php
-                                                if ($caption = apply_filters('presspermit_item_assign_for_children_caption', '', $via_item_type))
-                                                    printf(esc_html($caption));
-                                                else
-                                                    printf(esc_html__('Sub-%s', 'press-permit-core'), esc_html($type_obj->labels->name));
-                                                ?></th>
-                                        </tr>
-                                    </thead>
-                                <?php endif; ?>
                                 <tbody>
                                     <?php // todo: why is agent_id=0 in current_exceptions array?
                                     if ($any_stored) {
@@ -254,28 +240,6 @@ class ItemExceptionsUI
                             </table>
 
                         </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="pp-exception-actions" <?php if (!empty($colspan)) echo 'colspan="' . esc_attr($colspan) . '"'; ?> <?php if ($any_stored == 0) echo 'style="display:none;"'; ?>>
-                        <?php if ('wp_role' != $agent_type) :
-                        $link_caption = ('wp_role' == $agent_type) ? esc_html__('default all', 'press-permit-core') : esc_html__('clear all', 'press-permit-core');
-                        $clear_selector = "v2_agent_search_text_{$op}:{$for_item_type}:{$agent_type}";
-                            ?>
-                            <a class="pp-select-exception-agents" href="javascript:void(0)" onclick="resetSelectItem('#' + jQuery.escapeSelector('<?php echo esc_attr($clear_selector)?>'));">
-                                <?php echo esc_html($link_caption); ?>
-                            </a>
-                        <?php
-                        endif;
-                        if ($pp_groups->groupTypeEditable($agent_type) && $pp_groups->userCan('pp_create_groups', 0, $agent_type)) :
-                        ?>
-                            &nbsp;&bull;&nbsp;
-                            <a class="pp-create-exception-agent" href="admin.php?page=presspermit-group-new"
-                                target="_blank">
-                                <?php esc_html_e('create group', 'press-permit-core'); ?>
-                            </a>
-                        <?php endif; ?>
                     </td>
                 </tr>
             </table>
