@@ -192,18 +192,20 @@ class TermEdit
                         "term.php?taxonomy=$taxonomy&amp;tag_ID=$tag_id&amp;pp_universal=1"
                     )
                 );
-
-                $title_with_icon = sprintf(
-                    '<div>%s&nbsp;<div data-toggle="tooltip" class="click"><span class="dashicons dashicons-info"></span><div class="tooltip-text"><span>%s</span><i></i></div></div></div>',
-                    esc_attr($title),
-                    sprintf(
-                        esc_html__('Displayed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
-                        esc_html($type_obj->labels->singular_name),
-                        '<a href="' . esc_url($url) . '"><strong>',
-                        esc_html($tx->labels->singular_name),
-                        '</strong></a>'
-                    )
-                );
+                $title_with_icon = $title;
+                if(!empty($type_obj) && !empty($tx)) {
+                    $title_with_icon = sprintf(
+                        '<div>%s&nbsp;<div data-toggle="tooltip" class="click"><span class="dashicons dashicons-info"></span><div class="tooltip-text"><span>%s</span><i></i></div></div></div>',
+                        esc_attr($title),
+                        sprintf(
+                            esc_html__('Displayed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
+                            esc_html($type_obj->labels->singular_name),
+                            '<a href="' . esc_url($url) . '"><strong>',
+                            esc_html($tx->labels->singular_name),
+                            '</strong></a>'
+                        )
+                    );
+                }
 
                 Arr::setElem($boxes, [$op, "pp_{$op}_{$post_type}_exceptions"]);
                 $boxes[$op]["pp_{$op}_{$post_type}_exceptions"]['for_item_type'] = $post_type;
