@@ -163,33 +163,7 @@ class ItemExceptionsUI
 
                             $colspan = '2';
                             ?>
-                            <select multiple="multiple" id="v2_agent_search_text_<?php echo esc_attr("{$op}:{$for_item_type}:{$agent_type}"); ?>" name="_select-<?php echo esc_attr("$for_item_type-$op-$agent_type"); ?>[]">
-                                <?php
-                                if ($any_stored) {
-                                    if ('wp_role' == $agent_type) {
-                                        foreach ($current_exceptions[$op][$agent_type] as $agent_id => $agent_exceptions) {
-                                            if ($agent_id && isset($this->data->agent_info[$agent_type][$agent_id])) {
-                                                if ((false === strpos($this->data->agent_info[$agent_type][$agent_id]->name, '[WP ')) || defined('PRESSPERMIT_DELETED_ROLE_EXCEPTIONS_UI')) {
-                                                    echo  "<option selected value='" . esc_attr($agent_id) . "'>" . esc_html($this->data->agent_info[$agent_type][$agent_id]->name) . "</option>";
-                                                }
-                                            }
-                                        }
-                                    } else if('user' == $agent_type) {
-                                        foreach (array_keys($this->data->agent_info[$agent_type]) as $agent_id) {  // order by agent name
-                                            if ($agent_id && isset($current_exceptions[$op][$agent_type][$agent_id])) {
-                                                echo "<option selected value='" . esc_attr($agent_id) . "'>" . esc_html($this->data->agent_info[$agent_type][$agent_id]->formatted_name) . "</option>";
-                                            }
-                                        }
-                                    } else {
-                                        foreach (array_keys($this->data->agent_info[$agent_type]) as $agent_id) {  // order by agent name
-                                            if ($agent_id && isset($current_exceptions[$op][$agent_type][$agent_id])) {
-                                                echo "<option selected value='" . esc_attr($agent_id) . "'>" . esc_html($this->data->agent_info[$agent_type][$agent_id]->name) . "</option>";
-                                            }
-                                        }
-                                    }
-                                }
-                                ?>
-                            </select>
+                            
                         </td>
                     <?php else :
                         $colspan = '';
@@ -197,6 +171,20 @@ class ItemExceptionsUI
                     <td class="pp-current-item-exceptions" style="width:100%">
                         <div class="pp-exc-wrap" style="overflow:auto;">
                             <table <?php if (!$any_stored) echo 'style="display:none"'; ?>>
+                                <?php if ($hierarchical) : ?>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th><?php printf(esc_html__('This %s', 'press-permit-core'), esc_html($type_obj->labels->singular_name)); ?></th>
+                                            <th><?php
+                                                if ($caption = apply_filters('presspermit_item_assign_for_children_caption', '', $via_item_type))
+                                                    printf(esc_html($caption));
+                                                else
+                                                    printf(esc_html__('Sub-%s', 'press-permit-core'), esc_html($type_obj->labels->name));
+                                                ?></th>
+                                        </tr>
+                                    </thead>
+                                <?php endif; ?>
                                 <tbody>
                                     <?php // todo: why is agent_id=0 in current_exceptions array?
                                     if ($any_stored) {
@@ -213,6 +201,19 @@ class ItemExceptionsUI
                                                             compact('for_item_type', 'op', 'reqd_caps', 'hierarchical')
                                                         );
                                                     }
+                                                }
+                                            }
+                                        } else {
+                                            foreach (array_keys($this->data->agent_info[$agent_type]) as $agent_id) {  // order by agent name
+                                                if ($agent_id && isset($current_exceptions[$op][$agent_type][$agent_id])) {
+                                                    $this->render->drawRow(
+                                                        $agent_type,
+                                                        $agent_id,
+                                                        $current_exceptions[$op][$agent_type][$agent_id],
+                                                        $this->data->inclusions_active,
+                                                        $this->data->agent_info[$agent_type][$agent_id],
+                                                        compact('for_item_type', 'op', 'reqd_caps', 'hierarchical')
+                                                    );
                                                 }
                                             }
                                         }

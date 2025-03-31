@@ -575,3 +575,6 @@ div#profile-page.wrap div.pp-group-box h3:first-of-type,
   pointer-events: none;
   color: #888;
 }
+.select2-container--default .select2-search--inline .select2-search__field {
+  width: auto !important;
+}

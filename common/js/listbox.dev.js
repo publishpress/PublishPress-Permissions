@@ -47,7 +47,7 @@
 
             $(selector).select2({
               placeholder: "Search for an item",
-              dropdownAutoWidth : true,
+              dropdownAutoWidth: true,
               width: '550px',
               ajax: {
                 url: args2.ajaxurl,
@@ -92,13 +92,25 @@
                 processResults: function (data) {
                     // Parse the HTML response and convert it to Select2 format
                     const options = [];
+                    const currentValues = [];
+
+                    // Extract the current values from the hidden inputs
+                    $(selector).closest('table.pp-item-exceptions-ui').find('td.pp-current-item-exceptions td input[type="hidden"]').each(function (i, item) {
+                        currentValues.push($(item).val());
+                    });
+
+                    // Parse the HTML response to extract options
                     $(data)
                     .filter("option")
                     .each(function () {
-                        options.push({
-                        id: $(this).val(),
-                        text: $(this).text(),
-                        });
+                        const id = $(this).val();
+                        // Omit already selected values
+                        if (!currentValues.includes(id)) {
+                            options.push({
+                                id: id,
+                                text: $(this).text(),
+                            });
+                        }
                     });
 
                     return {
