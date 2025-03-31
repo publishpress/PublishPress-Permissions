@@ -44,7 +44,6 @@ class SettingsTabCore
             'enabled_taxonomies' => esc_html__('Filtered Taxonomies', 'press-permit-core'),
             'enabled_post_types' => esc_html__('Filtered Post Types', 'press-permit-core'),
             'define_media_post_caps' => esc_html__('Enforce distinct edit, delete capability requirements for Media', 'press-permit-core'),
-            'define_create_posts_cap' => esc_html__('Use create_posts capability', 'press-permit-core'),
         ];
 
         return array_merge($captions, $opt);
@@ -54,7 +53,7 @@ class SettingsTabCore
     {
         $new = [
             'taxonomies' => ['enabled_taxonomies'],
-            'post_types' => ['enabled_post_types', 'define_media_post_caps', 'define_create_posts_cap'],
+            'post_types' => ['enabled_post_types', 'define_media_post_caps'],
             'admin' => [],
         ];
 
