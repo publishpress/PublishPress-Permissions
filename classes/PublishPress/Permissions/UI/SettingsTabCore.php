@@ -235,7 +235,7 @@ class SettingsTabCore
                                                 '<a href="' . esc_url($url) . '">',
                                                 '</a>'
                                             );
-                                        } else {
+                                        } elseif (!(defined('PUBLISHPRESS_CAPS_VERSION'))) {
                                             echo ' ';
 
                                             $url = Settings::pluginInfoURL('capability-manager-enhanced');
