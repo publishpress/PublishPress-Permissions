@@ -174,6 +174,12 @@ class ItemExceptionsUI
                                                 }
                                             }
                                         }
+                                    } else if('user' == $agent_type) {
+                                        foreach (array_keys($this->data->agent_info[$agent_type]) as $agent_id) {  // order by agent name
+                                            if ($agent_id && isset($current_exceptions[$op][$agent_type][$agent_id])) {
+                                                echo "<option selected value='" . esc_attr($agent_id) . "'>" . esc_html($this->data->agent_info[$agent_type][$agent_id]->formatted_name) . "</option>";
+                                            }
+                                        }
                                     } else {
                                         foreach (array_keys($this->data->agent_info[$agent_type]) as $agent_id) {  // order by agent name
                                             if ($agent_id && isset($current_exceptions[$op][$agent_type][$agent_id])) {
