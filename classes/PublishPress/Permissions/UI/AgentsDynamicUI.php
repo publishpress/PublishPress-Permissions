@@ -385,7 +385,7 @@ class AgentsDynamicUI
 
             </tr>
             <tr>
-                <td><select multiple="multiple" id="v2_agent_search_text_<?php echo esc_attr("{$op}:{$for_item_type}:{$agent_type}"); ?>" name="_select-<?php echo esc_attr("$for_item_type-$op-$agent_type"); ?>[]"></select></td>
+                <td><select multiple="multiple" id="v2_agent_search_text_<?php echo esc_attr("{$op}:{$for_item_type}:{$agent_type}"); ?>" name="_select-<?php echo esc_attr("$op-$for_item_type-$agent_type"); ?>[]"></select></td>
                 <td style="display: none;">
                     <h4>
                         <?php esc_html_e('Search Results:', 'press-permit-core'); ?>
@@ -581,6 +581,8 @@ class AgentsDynamicUI
 
     public function actAjaxSelectionScripts()
     {
+        global $pp_plugin_page;
+
         // $args: agent_id supports contextual filtering of search results (e.g. group search omits groups which specified user is already a member of)
 
         // todo: clean up js loading logic
@@ -599,8 +601,11 @@ class AgentsDynamicUI
             <script type="text/javascript">
                 /* <![CDATA[ */
                 <?php foreach ($this->agents_js_queue as $args) : ?>
-                    presspermitLoadAgentsJS('<?php echo esc_attr($args['id_sfx']); ?>', '<?php echo esc_attr($args['agent_type']); ?>', '<?php echo esc_attr($args['context']); ?>', '<?php echo esc_attr($args['agent_id']); ?>', '<?php echo esc_attr($args['suppress_selection_js']); ?>', <?php if ($author_selection_only) echo 'true';
-                                                                                                                                                                                                                                                                                                else echo 'false'; ?>);
+                    presspermitLoadAgentsJS('<?php echo esc_attr($args['id_sfx']); ?>', '<?php echo esc_attr($args['agent_type']); ?>', '<?php echo esc_attr($args['context']); ?>', '<?php echo esc_attr($args['agent_id']); ?>', '<?php echo esc_attr($args['suppress_selection_js']); ?>', <?php if ($author_selection_only) echo 'true'; else echo 'false'; ?>);
+                    
+                    <?php if ((empty($pp_plugin_page) || in_array($pp_plugin_page, ['presspermit-edit-permissions', 'presspermit-group-new']))  && ('select-author' != $args['id_sfx'])) :?>
+                        presspermitLoadSelect2AgentsJS('<?php echo esc_attr($args['id_sfx']); ?>', '<?php echo esc_attr($args['agent_type']); ?>', '<?php echo esc_attr($args['context']); ?>', '<?php echo esc_attr($args['agent_id']); ?>', '<?php echo esc_attr($args['suppress_selection_js']); ?>', <?php if ($author_selection_only) echo 'true';                                                                                                                                                                                                                                                                  else echo 'false'; ?>);
+                    <?php endif;?>
                 <?php endforeach; ?>
                 /* ]]> */
             </script>
