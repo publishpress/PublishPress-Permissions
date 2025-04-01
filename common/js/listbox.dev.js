@@ -52,7 +52,7 @@
             $(selector).select2({
               placeholder: "Search for a " + agent_type_lbl,
               dropdownAutoWidth: true,
-              width: '550px',
+              width: '325px',
               ajax: {
                 url: args2.ajaxurl,
                 dataType: "html",

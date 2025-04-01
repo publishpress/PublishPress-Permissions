@@ -29,6 +29,19 @@ function presspermitLoadAgentsJS(id_sfx, agent_type, context, agent_id, suppress
     });
 }
 
+function presspermitLoadSelect2AgentsJS(id_sfx, agent_type, context, agent_id, selection_only) {
+    jQuery(document).ready(function ($) {
+        var id_sfx_dashed = id_sfx.replace(':', '-').replace(':', '-');
+
+        $('select[name="_select-' + id_sfx_dashed + '\\[\\]"]').on('select2:select', function (e) {
+            $('select[name="_select-' + id_sfx_dashed + '\\[\\]"]').val(null).trigger('change');
+            
+            presspermitEagentAjaxRequest(e.params.data.id, id_sfx);
+            return false;
+        });
+    });
+}
+
 function presspermitSelectAgents(id_sfx) {
     jQuery(document).ready(function ($) {
         var agent_ids = '';
