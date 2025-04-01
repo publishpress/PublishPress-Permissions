@@ -37,7 +37,7 @@ class Capabilities
             'read' => PRESSPERMIT_READ_PUBLIC_CAP,
         ];
 
-        if ($pp->getOption('define_create_posts_cap')) {
+        if (get_option('presspermit_define_create_posts_cap')) {
             foreach (['post', 'page'] as $post_type) {
                 if ($wp_post_types[$post_type]->cap->create_posts == $wp_post_types[$post_type]->cap->edit_posts) {
                     $wp_post_types[$post_type]->cap->create_posts = "create_{$post_type}s";

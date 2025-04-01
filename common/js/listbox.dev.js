@@ -32,6 +32,10 @@
             let selector = "#v2_" + args2.search_id;
             const [op, forItemType, agentType] = args2.topic.replace(/\\:/g, ':').split(':');
             const selectedValues = $(selector).val() || [];
+            let agent_type_lbl = args2.agent_type;
+            if (args2.agent_type == 'pp_group') {
+                agent_type_lbl = 'group';
+            }
 
             // Clear all existing hidden inputs for this agent type
             $(`input[name^="pp_exceptions[${forItemType}][${op}][${agentType}][item]"]`).remove();
@@ -46,9 +50,9 @@
             });
 
             $(selector).select2({
-              placeholder: "Search for an item",
-              dropdownAutoWidth : true,
-              width: '550px',
+              placeholder: "Search for a " + agent_type_lbl,
+              dropdownAutoWidth: true,
+              width: '325px',
               ajax: {
                 url: args2.ajaxurl,
                 dataType: "html",
@@ -92,13 +96,25 @@
                 processResults: function (data) {
                     // Parse the HTML response and convert it to Select2 format
                     const options = [];
+                    const currentValues = [];
+
+                    // Extract the current values from the hidden inputs
+                    $(selector).closest('table.pp-item-exceptions-ui').find('td.pp-current-item-exceptions td input[type="hidden"]').each(function (i, item) {
+                        currentValues.push($(item).val());
+                    });
+
+                    // Parse the HTML response to extract options
                     $(data)
                     .filter("option")
                     .each(function () {
-                        options.push({
-                        id: $(this).val(),
-                        text: $(this).text(),
-                        });
+                        const id = $(this).val();
+                        // Omit already selected values
+                        if (!currentValues.includes(id)) {
+                            options.push({
+                                id: id,
+                                text: $(this).text(),
+                            });
+                        }
                     });
 
                     return {

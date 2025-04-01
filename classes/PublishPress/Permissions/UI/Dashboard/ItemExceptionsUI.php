@@ -69,6 +69,26 @@ class ItemExceptionsUI
             ? $this->data->current_exceptions[$for_item_type]
             : [];
 
+        // Check for blockage of Everyone, Logged In metagroups
+        $metagroup_exclude = [];
+        $is_auth_metagroup = [];
+
+        if ($current_exceptions && !empty($current_exceptions[$op]) && !empty($current_exceptions[$op]['wp_role'])) {
+            foreach ($this->data->agent_info['wp_role'] as $agent_id => $role) {
+                if (!empty($role->metagroup_id) && in_array($role->metagroup_id, ['wp_auth', 'wp_all', 'wp_anon'])) {
+                    $is_auth_metagroup[$agent_id] = true;
+
+                    if (in_array($role->metagroup_id, ['wp_auth', 'wp_all'])
+                        && !empty($current_exceptions[$op]['wp_role'][$agent_id]) 
+                        && !empty($current_exceptions[$op]['wp_role'][$agent_id]['item'])
+                        && !empty($current_exceptions[$op]['wp_role'][$agent_id]['item']['exclude'])
+                    ) {
+                        $metagroup_exclude[$role->metagroup_id] = true;
+                    }
+                }
+            }
+        }
+
         // ========== OBJECT / TERM EXCEPTION DROPDOWNS ============
         $toggle_agents = count($agent_types) > 1;
         if ($toggle_agents) {
@@ -163,27 +183,7 @@ class ItemExceptionsUI
 
                             $colspan = '2';
                             ?>
-                            <select multiple="multiple" id="v2_agent_search_text_<?php echo "{$op}:{$for_item_type}:{$agent_type}"; ?>" name="_select-<?php echo esc_attr("$for_item_type-$op-$agent_type"); ?>[]">
-                                <?php
-                                if ($any_stored) {
-                                    if ('wp_role' == $agent_type) {
-                                        foreach ($current_exceptions[$op][$agent_type] as $agent_id => $agent_exceptions) {
-                                            if ($agent_id && isset($this->data->agent_info[$agent_type][$agent_id])) {
-                                                if ((false === strpos($this->data->agent_info[$agent_type][$agent_id]->name, '[WP ')) || defined('PRESSPERMIT_DELETED_ROLE_EXCEPTIONS_UI')) {
-                                                    echo  "<option selected value='" . esc_attr($agent_id) . "'>" . esc_html($this->data->agent_info[$agent_type][$agent_id]->name) . "</option>";
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        foreach (array_keys($this->data->agent_info[$agent_type]) as $agent_id) {  // order by agent name
-                                            if ($agent_id && isset($current_exceptions[$op][$agent_type][$agent_id])) {
-                                                echo "<option selected value='" . esc_attr($agent_id) . "'>" . esc_html($this->data->agent_info[$agent_type][$agent_id]->name) . "</option>";
-                                            }
-                                        }
-                                    }
-                                }
-                                ?>
-                            </select>
+                            
                         </td>
                     <?php else :
                         $colspan = '';
@@ -209,9 +209,25 @@ class ItemExceptionsUI
                                     <?php // todo: why is agent_id=0 in current_exceptions array?
                                     if ($any_stored) {
                                         if ('wp_role' == $agent_type) {
+
+                                            // Buffer original reqd_caps value
+                                            $_reqd_caps = (is_array($reqd_caps)) ? array_values($reqd_caps) : $reqd_caps;
+
                                             foreach ($current_exceptions[$op][$agent_type] as $agent_id => $agent_exceptions) {
                                                 if ($agent_id && isset($this->data->agent_info[$agent_type][$agent_id])) {
                                                     if ((false === strpos($this->data->agent_info[$agent_type][$agent_id]->name, '[WP ')) || defined('PRESSPERMIT_DELETED_ROLE_EXCEPTIONS_UI')) {
+                                                        
+                                                        // If Everyone / Logged In metagroup is blocked, indicate effect on other roles
+                                                        if ((!empty($metagroup_exclude['wp_all']) || !empty($metagroup_exclude['wp_auth'])) && empty($is_auth_metagroup[$agent_id])) {
+                                                            if (is_array($_reqd_caps)) {
+                                                                $reqd_caps = array_merge($_reqd_caps, ['pp_administer_content']);
+                                                            } else {
+                                                                $reqd_caps = ['pp_administer_content'];
+                                                            }
+                                                        } else {
+                                                            $reqd_caps = $_reqd_caps;
+                                                        }
+
                                                         $this->render->drawRow(
                                                             $agent_type,
                                                             $agent_id,
@@ -221,6 +237,23 @@ class ItemExceptionsUI
                                                             compact('for_item_type', 'op', 'reqd_caps', 'hierarchical')
                                                         );
                                                     }
+                                                }
+                                            }
+
+                                            // Restore original reqd_caps value
+                                            $reqd_caps = $_reqd_caps;
+
+                                        } else {
+                                            foreach (array_keys($this->data->agent_info[$agent_type]) as $agent_id) {  // order by agent name
+                                                if ($agent_id && isset($current_exceptions[$op][$agent_type][$agent_id])) {
+                                                    $this->render->drawRow(
+                                                        $agent_type,
+                                                        $agent_id,
+                                                        $current_exceptions[$op][$agent_type][$agent_id],
+                                                        $this->data->inclusions_active,
+                                                        $this->data->agent_info[$agent_type][$agent_id],
+                                                        compact('for_item_type', 'op', 'reqd_caps', 'hierarchical')
+                                                    );
                                                 }
                                             }
                                         }
@@ -248,37 +281,6 @@ class ItemExceptionsUI
                             </table>
 
                         </div>
-
-                        <?php if (!$any_stored) :
-                            $op_obj = presspermit()->admin()->getOperationObject($op, $for_item_type);
-                            $op_label = (!empty($op_obj->noun_label)) ? $op_obj->noun_label : $op_obj->label;
-                            $agent_label = (!empty($agent_types[$agent_type]->labels)) ? $agent_types[$agent_type]->labels->singular_name : $agent_types[$agent_type]->label;
-                            $caption = sprintf(esc_html__('%s permissions have not been added or blocked for any %s.', 'press-permit-core'), $op_label, $agent_label);
-                        ?>
-                            <div class="pp-no-exceptions"><?php echo esc_html($caption); ?></div>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="pp-exception-actions" <?php if (!empty($colspan)) echo 'colspan="' . esc_attr($colspan) . '"'; ?> <?php if ($any_stored == 0) echo 'style="display:none;"'; ?>>
-                        <?php if ('wp_role' != $agent_type) :
-                        $link_caption = ('wp_role' == $agent_type) ? esc_html__('default all', 'press-permit-core') : esc_html__('clear all', 'press-permit-core');
-                        $clear_selector = "v2_agent_search_text_{$op}:{$for_item_type}:{$agent_type}";
-                            ?>
-                            <a class="pp-select-exception-agents" href="javascript:void(0)" onclick="resetSelectItem('#' + jQuery.escapeSelector('<?php echo esc_attr($clear_selector)?>'));">
-                                <?php echo esc_html($link_caption); ?>
-                            </a>
-                        <?php
-                        endif;
-                        if ($pp_groups->groupTypeEditable($agent_type) && $pp_groups->userCan('pp_create_groups', 0, $agent_type)) :
-                        ?>
-                            &nbsp;&bull;&nbsp;
-                            <a class="pp-create-exception-agent" href="admin.php?page=presspermit-group-new"
-                                target="_blank">
-                                <?php esc_html_e('create group', 'press-permit-core'); ?>
-                            </a>
-                        <?php endif; ?>
                     </td>
                 </tr>
             </table>

@@ -44,7 +44,6 @@ class SettingsTabCore
             'enabled_taxonomies' => esc_html__('Filtered Taxonomies', 'press-permit-core'),
             'enabled_post_types' => esc_html__('Filtered Post Types', 'press-permit-core'),
             'define_media_post_caps' => esc_html__('Enforce distinct edit, delete capability requirements for Media', 'press-permit-core'),
-            'define_create_posts_cap' => esc_html__('Use create_posts capability', 'press-permit-core'),
         ];
 
         return array_merge($captions, $opt);
@@ -54,7 +53,7 @@ class SettingsTabCore
     {
         $new = [
             'taxonomies' => ['enabled_taxonomies'],
-            'post_types' => ['enabled_post_types', 'define_media_post_caps', 'define_create_posts_cap'],
+            'post_types' => ['enabled_post_types', 'define_media_post_caps'],
             'admin' => [],
         ];
 
@@ -207,16 +206,57 @@ class SettingsTabCore
 
                             if ('object' == $scope) {
                                 if ($pp->getOption('display_hints')) {
+                                    $define_create_posts_cap = get_option('presspermit_define_create_posts_cap');
+
                                     ?>
-                                    <div class="pp-subtext pp-no-hide">
+                                    <div class="pp-subtext pp-no-hide" style="margin-top: 15px">
                                         <?php
                                         printf(
-                                            esc_html__('%1$sNote%2$s: This causes type-specific capabilities to be required for editing ("edit_things" instead of "edit_posts"). You can %3$sassign supplemental roles%4$s for the post type or add the capabilities directly to a WordPress role.', 'press-permit-core'),
+                                            esc_html__('%1$sNote%2$s: This causes type-specific capabilities to be required for editing ("edit_things" instead of "edit_posts").', 'press-permit-core'),
                                             '<span class="pp-important">',
                                             '</span>',
                                             "<a href='" . esc_url(admin_url('?page=presspermit-groups')) . "'>",
                                             '</a>'
                                         );
+
+                                        if (defined('PUBLISHPRESS_CAPS_VERSION') && $define_create_posts_cap) {
+                                            echo ' ';
+
+                                            $url = admin_url('admin.php?page=pp-capabilities');
+
+                                            printf(
+                                                esc_html__(
+                                                    'Post creation capabilities will also be enforced for all Filtered Post Types. To adjust this, see %3$sRole Capabilities%4$s.',
+                                                    'press-permit-core'
+                                                ),
+                                                '<span class="pp-important">',
+                                                '</span>',
+                                                '<a href="' . esc_url($url) . '">',
+                                                '</a>'
+                                            );
+                                        } elseif (!(defined('PUBLISHPRESS_CAPS_VERSION'))) {
+                                            echo ' ';
+
+                                            $url = Settings::pluginInfoURL('capability-manager-enhanced');
+
+                                            $caption = ($define_create_posts_cap)
+                                                ? esc_html__(
+                                                    'Post creation capabilities will also be enforced for all Filtered Post Types. To adjust this, install %3$sPublishPress Capabilities%4$s.',
+                                                    'press-permit-core'
+                                                )
+                                                : esc_html__(
+                                                    'To enforce capability requirements for post creation, install %3$sPublishPress Capabilities%4$s.',
+                                                    'press-permit-core'
+                                                );
+                                            
+                                            printf(
+                                                $caption,
+                                                '<span class="pp-important">',
+                                                '</span>',
+                                                '<span class="plugins update-message"><a href="' . esc_url($url) . '" class="thickbox" title=" PublishPress Capabilities">',
+                                                '</a></span>'
+                                            );
+                                        }
                                         ?>
                                     </div>
 
@@ -238,9 +278,9 @@ class SettingsTabCore
                                     endif;
                                 }
 
-                                echo '<div>';
-
                                 if (in_array('attachment', presspermit()->getEnabledPostTypes(), true)) {
+                                    echo '<br><div>';
+
                                     if (!presspermit()->isPro()) {
                                         $hint = SettingsAdmin::getStr('define_media_post_caps_pro');
                                     } else {
@@ -250,41 +290,9 @@ class SettingsTabCore
                                     }
 
                                     $ret = $ui->optionCheckbox('define_media_post_caps', $tab, $section, $hint, '');
+
+                                    echo '</div>';
                                 }
-
-                                $ret = $ui->optionCheckbox('define_create_posts_cap', $tab, $section, '', '', ['hint_class' => 'pp-no-hide']);
-
-                                echo '<div class="pp-subtext pp-no-hide">';
-
-                                if (defined('PUBLISHPRESS_CAPS_VERSION')) {
-                                    $url = admin_url('admin.php?page=pp-capabilities');
-
-                                    printf(
-                                        esc_html__(
-                                            '%1$sNote:%2$s If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types. You can %3$sadd these capabilities to any role%4$s that needs it.',
-                                            'press-permit-core'
-                                        ),
-                                        '<span class="pp-important">',
-                                        '</span>',
-                                        '<a href="' . esc_url($url) . '">',
-                                        '</a>'
-                                    );
-                                } else {
-                                    $url = Settings::pluginInfoURL('capability-manager-enhanced');
-
-                                    printf(
-                                        esc_html__(
-                                            '%1$sNote:%2$s If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types. You can use a WordPress role editor like %3$sPublishPress Capabilities%4$s to add these capabilities to any role that needs it.',
-                                            'press-permit-core'
-                                        ),
-                                        '<span class="pp-important">',
-                                        '</span>',
-                                        '<span class="plugins update-message"><a href="' . esc_url($url) . '" class="thickbox" title=" PublishPress Capabilities">',
-                                        '</a></span>'
-                                    );
-                                }
-
-                                echo '</div></div>';
                             }
                             ?>
                 </td>

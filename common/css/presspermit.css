@@ -1,6 +1,108 @@
 /* PressPermit. Copyright (c) 2020 PublishPress.
  * This file is licensed under the GNU GPL.
  */
+[data-toggle="tooltip"] {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  /* Tooltip Box */
+  /* Placements */
+}
+[data-toggle="tooltip"] .tooltip-text {
+  display: none;
+  position: absolute;
+  min-width: 250px;
+  padding: 16px;
+  font-size: 13px;
+  font-weight: normal;
+  text-align: left;
+  color: #fff;
+  background-color: #000c0c;
+  border: 1px solid #d5d5d5;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1), 0 0 56px rgba(0, 0, 0, 0.08);
+  z-index: 99999999;
+  box-sizing: border-box;
+  transform: translate(-50%, -100%);
+  transition: all 0.65s cubic-bezier(0.84, -0.18, 0.31, 1.26);
+  white-space: normal;
+  /* Arrow */
+}
+[data-toggle="tooltip"] .tooltip-text a {
+  color: #a0e0ff;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+[data-toggle="tooltip"] .tooltip-text a:hover {
+  color: #39b6f5;
+}
+[data-toggle="tooltip"] .tooltip-text i {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 24px;
+  height: 12px;
+  margin-left: -6px;
+  overflow: hidden;
+}
+[data-toggle="tooltip"] .tooltip-text i::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 50%;
+  background-color: #000c0c;
+  transform: translate(-50%, -50%) rotate(45deg);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+[data-toggle="tooltip"]:not(.click):hover .tooltip-text,
+[data-toggle="tooltip"]:not(.click):focus-within .tooltip-text {
+  display: block;
+}
+[data-toggle="tooltip"].click.is-active .tooltip-text {
+  display: block;
+}
+[data-toggle="tooltip"]:not([data-placement]) .tooltip-text,
+[data-toggle="tooltip"][data-placement="top"] .tooltip-text {
+  top: -20px;
+  left: 50%;
+  transform: translate(-50%, -100%);
+}
+[data-toggle="tooltip"]:not([data-placement]) .tooltip-text i,
+[data-toggle="tooltip"][data-placement="top"] .tooltip-text i {
+  margin-left: -12px;
+}
+[data-toggle="tooltip"][data-placement="bottom"] .tooltip-text {
+  top: 100%;
+  left: 25%;
+  transform: translate(-50%, 0);
+  margin-top: 10px;
+}
+[data-toggle="tooltip"][data-placement="bottom"] .tooltip-text i {
+  top: -12px;
+  transform: rotate(180deg);
+}
+[data-toggle="tooltip"][data-placement="left"] .tooltip-text {
+  top: 50%;
+  left: -10px;
+  transform: translate(-100%, -50%);
+}
+[data-toggle="tooltip"][data-placement="left"] .tooltip-text i {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%) rotate(-90deg);
+}
+[data-toggle="tooltip"][data-placement="right"] .tooltip-text {
+  top: 50%;
+  left: 100%;
+  transform: translate(0, -50%);
+  margin-left: 10px;
+}
+[data-toggle="tooltip"][data-placement="right"] .tooltip-text i {
+  top: 50%;
+  left: -12px;
+  transform: translateY(-50%) rotate(90deg);
+}
 /* Vars */
 /* Buttons */
 /* Input fields */
@@ -460,4 +562,19 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
 div#profile-page.wrap div.pp-group-box h3:first-of-type,
 #pp_current_user_exceptions_ui {
   margin-top: 5px !important;
+}
+/* Custom CSS for Select2 */
+.select2-container:after {
+  content: "\f179";
+  font-family: dashicons;
+  font-size: 18px;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #888;
+}
+.select2-container--default .select2-search--inline .select2-search__field {
+  width: auto !important;
 }

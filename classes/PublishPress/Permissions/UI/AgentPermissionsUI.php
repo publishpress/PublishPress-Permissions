@@ -958,6 +958,7 @@ class AgentPermissionsUI
                                             $tr_class = '';
 
                                         echo "<tr class='" . esc_attr($tr_class) . "'><td class='pp_item_role_caption'>";
+                                        $tooltip_text = '';
                                         if($mod_caption === 'Enable:') {
                                             $tooltip_text = esc_html__('Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core');
                                         } elseif($mod_caption === 'Block:') {
