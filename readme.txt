@@ -5,7 +5,7 @@ Tags: restrict, access, user, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.7
 Requires PHP: 7.2.5
-Stable tag: 4.1.3
+Stable tag: 4.1.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,18 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.1.4 - 28 March 2025 =
+* Fixed: Menu link renamed to "Permissions" for better clarity. #754
+* Fixed: Moved the "Tags" option to the Advanced tab. #1250
+* Fixed: Moved explanatory text into a tooltip for cleaner UI. #1217
+* Fixed: Display a message when no Groups or Users are available in Select2 fields. #1500
+* Fixed: Integrated Select2 for Group and User selection for improved usability. #1196
+* Fixed: Removed unnecessary message from Tags screen. #1327
+* Fixed: Double "Update" button issue. #1496
+* Fixed: Notes item was incorrectly shown in the Core tab. #1251
+* Fixed: Incomplete string escaping in CSA. #1494
+* Fixed: Updated translations for 4.1.3 release. #1493
 
 = 4.1.3 - 6 March 2025 =
 * Added: Media tab to permissions settings. #1328

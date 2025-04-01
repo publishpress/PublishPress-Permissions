@@ -68,6 +68,7 @@ class SettingsTabAdvanced
             'auto_assign_available_term'             => esc_html__("Auto-assign available term if default term is unavailable", 'press-permit-core'),
             'list_others_uneditable_posts'           => esc_html__('List other user\'s uneditable posts', 'press-permit-core'),
             'lock_top_pages'                         => esc_html__('Pages can be set or removed from Top Level by: ', 'press-permit-core'),
+            'create_tag_require_edit_cap'            => esc_html__('Tag creation requires Tag edit capability', 'press-permit-core'),
         ];
 
         // Settings that are displayed if already set to a non-default value, or if "Display all" is enabled
@@ -154,7 +155,7 @@ class SettingsTabAdvanced
     {
         $new = [
             'enable' => ['advanced_options', 'delete_settings_on_uninstall'],
-            'post_editor'       => ['lock_top_pages', 'page_parent_order', 'page_parent_editable_only', 'auto_assign_available_term'],
+            'post_editor'       => ['lock_top_pages', 'page_parent_order', 'page_parent_editable_only', 'auto_assign_available_term', 'create_tag_require_edit_cap'],
             'permissions'       => ['post_blockage_priority', 'suppress_administrator_metagroups', 'publish_exceptions', 'non_admins_set_read_exceptions', 'non_admins_set_edit_exceptions'],
             'user_management'   => ['new_user_groups_ui', 'display_user_profile_groups', 'display_user_profile_roles', 'users_bulk_groups', 'add_author_pages', 'publish_author_pages'],
             'front_end'         => ['media_search_results', 'anonymous_unfiltered', 'regulate_category_archive_page', 'limit_front_end_term_filtering', 'term_counts_unfiltered', 'strip_private_caption', 'force_nav_menu_filter'],
@@ -356,6 +357,18 @@ class SettingsTabAdvanced
                         . ' ' . esc_html__('Some term-limited editing configurations require this.', 'presspermit=pro');
 
                     $ui->optionCheckbox('auto_assign_available_term', $tab, $section, $hint);
+
+                    if (defined('PRESSPERMIT_COLLAB_VERSION')) {
+                        $url = Settings::pluginInfoURL('capability-manager-enhanced');
+    
+                        $hint = esc_html__('If enabled, users cannot add previously non-existent tags to a post unless their role includes the Edit capability for its taxonomy. You can use a WordPress role editor like PublishPress Capabilities to add these capabilities to any role that needs it.', 'press-permit-core');
+                        if (defined('PUBLISHPRESS_CAPS_VERSION')) {
+                            $url = admin_url('admin.php?page=pp-capabilities');
+    
+                            $hint = esc_html__('If enabled, users cannot add previously non-existant tags to a post unless their role includes the Edit capability for its taxonomy. You can add these capabilities to Capabilities > Capabilities > Taxonomies for any role that needs it.', 'press-permit-core');
+                        }
+                        $ui->optionCheckbox('create_tag_require_edit_cap', $tab, $section, $hint);
+                    }
 
                     do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
                     ?>

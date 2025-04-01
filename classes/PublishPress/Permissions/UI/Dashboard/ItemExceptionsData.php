@@ -111,8 +111,13 @@ class ItemExceptionsData
 
                 if ($results = $user_search->get_results()) {
                     foreach ($results as $row) {
+                        $first_name = get_user_meta($row->ID, 'first_name', true);
+                        $last_name = get_user_meta($row->ID, 'last_name', true);
+                        $formatted_name = trim($first_name . ' ' . $last_name. ' (' . $row->display_name . ')');
+
                         $this->agent_info['user'][$row->ID] = $row;
                         $this->agent_info['user'][$row->ID]->name = $row->user_login;
+                        $this->agent_info['user'][$row->ID]->formatted_name = $formatted_name;
                     }
                 }
 

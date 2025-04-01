@@ -10,7 +10,7 @@ jQuery(document).ready(function ($) {
 
 // ensure selected dropdown option is styled according to its css class
 jQuery(document).ready(function ($) {
-    $(document).on('change', '.pp-exceptions select', function (e) {
+    $(document).on('change', '.pp-exceptions select:not([id^="v2_"])', function (e) {
         $(e.target.options).filter(":selected").each(function () {
             var elemclass = $(this).attr('class');
             if (elemclass)
@@ -37,13 +37,13 @@ jQuery(document).ready(function ($) {
         return false;
     });
 
-    $(document).on('change', 'td.pp-exc-item select', function () {
+    $(document).on('change', 'td.pp-exc-item select:not([id^="v2_"])', function () {
         $(this).closest('tr').find('td.pp-exc-children select[disabled="disabled"]').val($(this).val()).trigger('change');
         $(this).closest('tr').find('td.pp-exc-children input[type="hidden"]').val($(this).val());
     });
 
     // remove search result items for agents who have item exception UI dropdowns
-    $('.pp-agents-selection select').on('jchange', function () {
+    $('.pp-agents-selection select:not([id^="v2_"])').on('jchange', function () {
         var tree = $("<div>" + $(this).html() + "</div>");
 
         $(this).closest('table.pp-item-exceptions-ui').find('td.pp-current-item-exceptions td input[type="hidden"]').each(function (i, item) {

@@ -176,7 +176,7 @@ class AgentsAjax
 
             $args = [
                 'fields' => ['ID', 'user_login', 'display_name'],
-                'search' => $search_str,
+                'search' => '*' . $search_str . '*',
                 'search_columns' => ['user_login', 'user_nicename', 'display_name', 'user_email'],
                 'include' => $include_ids,
                 'role' => $role_filter,
@@ -213,12 +213,17 @@ class AgentsAjax
             if ($results) {
                 foreach ($results as $row) {
                     if (!in_array($row->ID, $omit_users)) {
+                        $first_name = get_user_meta($row->ID, 'first_name', true);
+                        $last_name = get_user_meta($row->ID, 'last_name', true);
+                        
                         if (defined('PP_USER_RESULTS_DISPLAY_NAME')) {
                             $title = ($row->user_login != $row->display_name) ? $row->user_login : '';
-                            echo "<option value='" . esc_attr($row->ID) . "' class='pp-new-selection' title='" . esc_attr($title) . "'>" . esc_html($row->display_name) . "</option>";
+                            $formatted_name = trim($first_name . ' ' . $last_name. ' (' . $row->display_name . ')');
+                            echo "<option value='" . esc_attr($row->ID) . "' class='pp-new-selection' title='" . esc_attr($title) . "'>" . esc_html($formatted_name) . "</option>";
                         } else {
                             $title = ($row->user_login != $row->display_name) ? $row->display_name : '';
-                            echo "<option value='" . esc_attr($row->ID) . "' class='pp-new-selection title='" . esc_attr($title) . "'>" . esc_html($row->user_login) . "</option>";
+                            $formatted_name = trim($first_name . ' ' . $last_name. ' (' . $row->user_login . ')');
+                            echo "<option value='" . esc_attr($row->ID) . "' class='pp-new-selection title='" . esc_attr($title) . "'>" . esc_html($formatted_name) . "</option>";
                         }
                     }
                 }

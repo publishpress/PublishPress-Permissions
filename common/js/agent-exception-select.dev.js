@@ -1,6 +1,6 @@
 function presspermitLoadAgentsJS(id_sfx, agent_type, context, agent_id, suppress_selection_js) {
     jQuery(document).ready(function ($) {
-        id_sfx = id_sfx.replace(/:/g, '\\:');
+        id_sfx = CSS.escape(id_sfx);
 
         if (!suppress_selection_js) {
             $("#select_agents_" + id_sfx).on('click', function (e) {
@@ -25,6 +25,19 @@ function presspermitLoadAgentsJS(id_sfx, agent_type, context, agent_id, suppress
             pp_context: context,
             topic: id_sfx,
             agent_id: agent_id
+        });
+    });
+}
+
+function presspermitLoadSelect2AgentsJS(id_sfx, agent_type, context, agent_id, selection_only) {
+    jQuery(document).ready(function ($) {
+        var id_sfx_dashed = id_sfx.replace(':', '-').replace(':', '-');
+
+        $('select[name="_select-' + id_sfx_dashed + '\\[\\]"]').on('select2:select', function (e) {
+            $('select[name="_select-' + id_sfx_dashed + '\\[\\]"]').val(null).trigger('change');
+            
+            presspermitEagentAjaxRequest(e.params.data.id, id_sfx);
+            return false;
         });
     });
 }

@@ -957,7 +957,21 @@ class AgentPermissionsUI
                                         } else
                                             $tr_class = '';
 
-                                        echo "<tr class='" . esc_attr($tr_class) . "'><td class='pp_item_role_caption'>" . esc_html($mod_caption) . "</td>";
+                                        echo "<tr class='" . esc_attr($tr_class) . "'><td class='pp_item_role_caption'>";
+                                        $tooltip_text = '';
+                                        if($mod_caption === 'Enable:') {
+                                            $tooltip_text = esc_html__('Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core');
+                                        } elseif($mod_caption === 'Block:') {
+                                            $tooltip_text = esc_html__('Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core');
+                                        } elseif($mod_caption === 'Limit to:') {
+                                            $tooltip_text = esc_html__('Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.', 'press-permit-core');
+                                        }
+                                        ?>
+                                        <span data-toggle="tooltip" data-placement="top">
+                                        <?php esc_html_e($mod_caption);?>
+                                        <span class="tooltip-text"><span><?php esc_html_e($tooltip_text);?></span><i></i></span>
+                                        </span>
+                                        <?php
                                         echo '<td>';
 
                                         echo "<div class='pp-role-terms-wrapper pp-role-terms-" . esc_attr($via_type) . "'>";

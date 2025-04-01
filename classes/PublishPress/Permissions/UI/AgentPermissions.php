@@ -387,24 +387,7 @@ class AgentPermissions
                         }
                         ?>
                     </div>
-                <?php endif;
-
-                if ($pp_admin->bulkRolesEnabled()) {
-                    echo '<div class="pp_exceptions_notes">';
-                    echo '<div><strong>' . esc_html__('Specific Permissions Explained:', 'press-permit-core') . '</strong>';
-                    echo "<ul>";
-                    echo "<li>" . esc_html__('"Block" : Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core') . '</li>';
-                    echo "<li>" . esc_html__('"Limit to" : Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.', 'press-permit-core') . '</li>';
-                    echo "<li>" . esc_html__('"Enable" : Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core') . '</li>';
-                    echo "</ul>";
-                    echo '</div>';
-
-                    echo '<div>';
-                    esc_html_e('Keep in mind that Roles and Specific Permissions can be assigned to WP Roles, BuddyPress Groups, Custom Groups and/or individual Users.  "Enable" and "Limit to" adjustments are unavailable for groups in some contexts.', 'press-permit-core');
-                    echo '</div>';
-                    echo '</div>';
-                }
-                ?>
+                <?php endif; ?>
 
                 <?php if ('user' == $agent_type) : ?>
                     <!-- </div> -->

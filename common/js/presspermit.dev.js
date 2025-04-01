@@ -1,4 +1,25 @@
 jQuery(document).ready(function ($) {
+    $('.postbox-header').each(function () {
+        if ($(this).find('[data-toggle="tooltip"]').length > 0) {
+            $(this).find('.hndle, .handlediv').off('click.postboxes');
+
+            $(document).on('click', '.hndle, .handlediv', function(e) {
+                if ($(e.target).closest('[data-toggle="tooltip"].click').length === 0) {
+                    var postbox = $(this).closest('.postbox');
+                    postbox.toggleClass('closed');
+                }
+            });
+        
+            $(document).on('click', '[data-toggle="tooltip"].click', function (event) {
+                if ($(event.target).is('[data-toggle="tooltip"].click') || $(event.target).closest('[data-toggle="tooltip"].click').length) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $(this).toggleClass('is-active');
+                }
+            });
+        }
+    });
+
     $("div.pp-user-meta-search select").each(function () {  // deal with browser retention of dropdown selection prior to page reload
         if ($(this).val()) {
             $(this).parent().show();
@@ -30,10 +51,6 @@ jQuery(document).ready(function ($) {
     });
 });
 
-function presspermitPrepareID(selector) {
-    return selector.replace(/:/g, '\\:');
-}
-
 jQuery(document).ready(function ($) {
     $(".pp-hidden-subdiv h3").on('click', function (e) {
         e.preventDefault();
@@ -49,7 +66,7 @@ jQuery(document).ready(function ($) {
 });
 
 function presspermitEscapeID(myid) {
-    return myid.replace(/(:|\.)/g, '\\$1');
+    return CSS.escape(myid);
 }
 
 function presspermitShowElement(classAttrib, $) {

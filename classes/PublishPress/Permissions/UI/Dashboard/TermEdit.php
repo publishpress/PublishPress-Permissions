@@ -7,6 +7,7 @@ require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/ItemEdit.php');
 class TermEdit
 {
     public $item_exceptions_ui = false;
+    private $icon = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 50 50"><path d="M 25 2 C 12.264481 2 2 12.264481 2 25 C 2 37.735519 12.264481 48 25 48 C 37.735519 48 48 37.735519 48 25 C 48 12.264481 37.735519 2 25 2 z M 25 4 C 36.664481 4 46 13.335519 46 25 C 46 36.664481 36.664481 46 25 46 C 13.335519 46 4 36.664481 4 25 C 4 13.335519 13.335519 4 25 4 z M 25 11 A 3 3 0 0 0 25 17 A 3 3 0 0 0 25 11 z M 21 21 L 21 23 L 23 23 L 23 36 L 21 36 L 21 38 L 29 38 L 29 36 L 27 36 L 27 21 L 21 21 z"></path></svg>';
 
     public function __construct()
     {
@@ -182,9 +183,33 @@ class TermEdit
                         );
                 }
 
+                if (!$referer = wp_get_original_referer()) $referer = wp_get_referer();
+    
+                $url = esc_url_raw(
+                    add_query_arg(
+                        '_wp_original_http_referer',
+                        urlencode($referer),
+                        "term.php?taxonomy=$taxonomy&amp;tag_ID=$tag_id&amp;pp_universal=1"
+                    )
+                );
+                $title_with_icon = $title;
+                if(!empty($type_obj) && !empty($tx)) {
+                    $title_with_icon = sprintf(
+                        '<div>%s&nbsp;<div data-toggle="tooltip" class="click"><span class="dashicons dashicons-info"></span><div class="tooltip-text"><span>%s</span><i></i></div></div></div>',
+                        esc_attr($title),
+                        sprintf(
+                            esc_html__('Displayed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
+                            esc_html($type_obj->labels->singular_name),
+                            '<a href="' . esc_url($url) . '"><strong>',
+                            esc_html($tx->labels->singular_name),
+                            '</strong></a>'
+                        )
+                    );
+                }
+
                 Arr::setElem($boxes, [$op, "pp_{$op}_{$post_type}_exceptions"]);
                 $boxes[$op]["pp_{$op}_{$post_type}_exceptions"]['for_item_type'] = $post_type;
-                $boxes[$op]["pp_{$op}_{$post_type}_exceptions"]['title'] = $title;
+                $boxes[$op]["pp_{$op}_{$post_type}_exceptions"]['title'] = $title_with_icon;
             }
         }
 
@@ -259,18 +284,7 @@ class TermEdit
         ) {
             return;
         }
-
-        if ((current_user_can('pp_administer_content') || defined('PRESSPERMIT_EDIT_TERM_EXTRA_BUTTON')) && !defined('PRESSPERMIT_EDIT_TERM_SUPPRESS_EXTRA_BUTTON')) :?>
-	        <div class="edit-tag-actions">
-	            <input class="button button-primary" value="<?php esc_attr_e('Update', 'press-permit-core'); ?>" type="submit">
-	        </div>
-	        <?php
-	
-	        if ($post_type) {
-	            echo '<br />';
-	            self::universalExceptionsNote($tag, $taxonomy, $post_type);
-	        }
-        endif; ?>
+        ?>
         <div id="poststuff" class="metabox-holder">
             <div id="post-body">
                 <div id="post-body-content">
@@ -288,10 +302,6 @@ class TermEdit
             </div> <!-- post-body -->
         </div> <!-- poststuff -->
         <?php
-
-        if ($post_type) {
-            self::universalExceptionsNote($tag, $taxonomy, $post_type);
-        }
     }
 
     public function actTaxonomyEnableUI($tag)
@@ -355,31 +365,30 @@ class TermEdit
         $tx_obj = get_taxonomy($taxonomy);
         $type_obj = get_post_type_object($post_type);
         ?>
-        <div class="form-wrap">
-            <p>
-                <?php
-                // if _wp_original_http_referer is not passed, redirect will be from universal exceptions edit form to type-specific exceptions edit form
-                if (!$referer = wp_get_original_referer()) {
-                    $referer = wp_get_referer();
-                }
+        <div class="alert alert-secondary" role="alert">
+            <?php
+            // if _wp_original_http_referer is not passed, redirect will be from universal exceptions edit form to type-specific exceptions edit form
+            if (!$referer = wp_get_original_referer()) {
+                $referer = wp_get_referer();
+            }
 
-                $url = esc_url_raw(
-                    add_query_arg(
-                        '_wp_original_http_referer',
-                        urlencode($referer),
-                        "term.php?taxonomy=$taxonomy&amp;tag_ID={$tag->term_id}&amp;pp_universal=1"
-                    )
-                );
+            $url = esc_url_raw(
+                add_query_arg(
+                    '_wp_original_http_referer',
+                    urlencode($referer),
+                    "term.php?taxonomy=$taxonomy&amp;tag_ID={$tag->term_id}&amp;pp_universal=1"
+                )
+            );
 
-                printf(
-                    esc_html__('Displayed permissions are those assigned for the "%1$s" type. You can also %2$sdefine universal %3$s permissions which apply to all related post types%4$s.', 'press-permit-core'),
-                    esc_html($type_obj->labels->singular_name),
-                    "<a href='" . esc_url($url) . "'>",
-                    esc_html($tx_obj->labels->singular_name),
-                    '</a>'
-                );
-                ?>
-            </p>
+            printf(
+                esc_html__('Displayed permissions are those assigned for the "%1$s" type.%2$sYou can also %3$sdefine universal %4$s permissions which apply to all related post types%5$s.', 'press-permit-core'),
+                esc_html($type_obj->labels->singular_name),
+                '<br>',
+                "<a href='" . esc_url($url) . "' class='alert-link'>",
+                esc_html($tx_obj->labels->singular_name),
+                '</a>'
+            );
+            ?>
         </div>
         <?php
     }

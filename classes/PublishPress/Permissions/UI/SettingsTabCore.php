@@ -42,10 +42,8 @@ class SettingsTabCore
     {
         $opt = [
             'enabled_taxonomies' => esc_html__('Filtered Taxonomies', 'press-permit-core'),
-            'create_tag_require_edit_cap' => esc_html__('Tag creation requires Tag edit capability', 'press-permit-core'),
             'enabled_post_types' => esc_html__('Filtered Post Types', 'press-permit-core'),
             'define_media_post_caps' => esc_html__('Enforce distinct edit, delete capability requirements for Media', 'press-permit-core'),
-            'define_create_posts_cap' => esc_html__('Use create_posts capability', 'press-permit-core'),
         ];
 
         return array_merge($captions, $opt);
@@ -54,8 +52,8 @@ class SettingsTabCore
     public function optionSections($sections)
     {
         $new = [
-            'taxonomies' => ['enabled_taxonomies', 'create_tag_require_edit_cap'],
-            'post_types' => ['enabled_post_types', 'define_media_post_caps', 'define_create_posts_cap'],
+            'taxonomies' => ['enabled_taxonomies'],
+            'post_types' => ['enabled_post_types', 'define_media_post_caps'],
             'admin' => [],
         ];
 
@@ -208,16 +206,57 @@ class SettingsTabCore
 
                             if ('object' == $scope) {
                                 if ($pp->getOption('display_hints')) {
+                                    $define_create_posts_cap = get_option('presspermit_define_create_posts_cap');
+
                                     ?>
-                                    <div class="pp-subtext pp-no-hide">
+                                    <div class="pp-subtext pp-no-hide" style="margin-top: 15px">
                                         <?php
                                         printf(
-                                            esc_html__('%1$sNote%2$s: This causes type-specific capabilities to be required for editing ("edit_things" instead of "edit_posts"). You can %3$sassign supplemental roles%4$s for the post type or add the capabilities directly to a WordPress role.', 'press-permit-core'),
+                                            esc_html__('%1$sNote%2$s: This causes type-specific capabilities to be required for editing ("edit_things" instead of "edit_posts").', 'press-permit-core'),
                                             '<span class="pp-important">',
                                             '</span>',
                                             "<a href='" . esc_url(admin_url('?page=presspermit-groups')) . "'>",
                                             '</a>'
                                         );
+
+                                        if (defined('PUBLISHPRESS_CAPS_VERSION') && $define_create_posts_cap) {
+                                            echo ' ';
+
+                                            $url = admin_url('admin.php?page=pp-capabilities');
+
+                                            printf(
+                                                esc_html__(
+                                                    'Post creation capabilities will also be enforced for all Filtered Post Types. To adjust this, see %3$sRole Capabilities%4$s.',
+                                                    'press-permit-core'
+                                                ),
+                                                '<span class="pp-important">',
+                                                '</span>',
+                                                '<a href="' . esc_url($url) . '">',
+                                                '</a>'
+                                            );
+                                        } elseif (!(defined('PUBLISHPRESS_CAPS_VERSION'))) {
+                                            echo ' ';
+
+                                            $url = Settings::pluginInfoURL('capability-manager-enhanced');
+
+                                            $caption = ($define_create_posts_cap)
+                                                ? esc_html__(
+                                                    'Post creation capabilities will also be enforced for all Filtered Post Types. To adjust this, install %3$sPublishPress Capabilities%4$s.',
+                                                    'press-permit-core'
+                                                )
+                                                : esc_html__(
+                                                    'To enforce capability requirements for post creation, install %3$sPublishPress Capabilities%4$s.',
+                                                    'press-permit-core'
+                                                );
+                                            
+                                            printf(
+                                                $caption,
+                                                '<span class="pp-important">',
+                                                '</span>',
+                                                '<span class="plugins update-message"><a href="' . esc_url($url) . '" class="thickbox" title=" PublishPress Capabilities">',
+                                                '</a></span>'
+                                            );
+                                        }
                                         ?>
                                     </div>
 
@@ -239,9 +278,9 @@ class SettingsTabCore
                                     endif;
                                 }
 
-                                echo '<div>';
-
                                 if (in_array('attachment', presspermit()->getEnabledPostTypes(), true)) {
+                                    echo '<br><div>';
+
                                     if (!presspermit()->isPro()) {
                                         $hint = SettingsAdmin::getStr('define_media_post_caps_pro');
                                     } else {
@@ -251,78 +290,8 @@ class SettingsTabCore
                                     }
 
                                     $ret = $ui->optionCheckbox('define_media_post_caps', $tab, $section, $hint, '');
-                                }
 
-                                $ret = $ui->optionCheckbox('define_create_posts_cap', $tab, $section, '', '', ['hint_class' => 'pp-no-hide']);
-
-                                echo '<div class="pp-subtext pp-no-hide">';
-
-                                if (defined('PUBLISHPRESS_CAPS_VERSION')) {
-                                    $url = admin_url('admin.php?page=pp-capabilities');
-
-                                    printf(
-                                        esc_html__(
-                                            '%1$sNote:%2$s If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types. You can %3$sadd these capabilities to any role%4$s that needs it.',
-                                            'press-permit-core'
-                                        ),
-                                        '<span class="pp-important">',
-                                        '</span>',
-                                        '<a href="' . esc_url($url) . '">',
-                                        '</a>'
-                                    );
-                                } else {
-                                    $url = Settings::pluginInfoURL('capability-manager-enhanced');
-
-                                    printf(
-                                        esc_html__(
-                                            '%1$sNote:%2$s If enabled, the create_posts, create_pages, etc. capabilities will be enforced for all Filtered Post Types. You can use a WordPress role editor like %3$sPublishPress Capabilities%4$s to add these capabilities to any role that needs it.',
-                                            'press-permit-core'
-                                        ),
-                                        '<span class="pp-important">',
-                                        '</span>',
-                                        '<span class="plugins update-message"><a href="' . esc_url($url) . '" class="thickbox" title=" PublishPress Capabilities">',
-                                        '</a></span>'
-                                    );
-                                }
-
-                                echo '</div></div>';
-                            } else {
-                                if (defined('PRESSPERMIT_COLLAB_VERSION')) {
-                                    echo '<div><br />';
-
-                                    $ret = $ui->optionCheckbox('create_tag_require_edit_cap', $tab, $section, '', '', ['hint_class' => 'pp-no-hide']);
-
-                                    echo '<div class="pp-subtext pp-no-hide">';
-
-                                    if (defined('PUBLISHPRESS_CAPS_VERSION')) {
-                                        $url = admin_url('admin.php?page=pp-capabilities');
-
-                                        printf(
-                                            esc_html__(
-                                                '%1$sNote:%2$s If enabled, users cannot add previously non-existant tags to a post unless their role includes the Edit capability for its taxonomy. You can %3$sadd these capabilities to Capabilities > Capabilities > Taxonomies%4$s for any role that needs it.',
-                                                'press-permit-core'
-                                            ),
-                                            '<span class="pp-important">',
-                                            '</span>',
-                                            '<a href="' . esc_url($url) . '">',
-                                            '</a>'
-                                        );
-                                    } else {
-                                        $url = Settings::pluginInfoURL('capability-manager-enhanced');
-
-                                        printf(
-                                            esc_html__(
-                                                '%1$sNote:%2$s If enabled, users cannot add previously non-existent tags to a post unless their role includes the Edit capability for its taxonomy. You can use a WordPress role editor like %3$sPublishPress Capabilities%4$s to add these capabilities to any role that needs it.',
-                                                'press-permit-core'
-                                            ),
-                                            '<span class="pp-important">',
-                                            '</span>',
-                                            '<span class="plugins update-message"><a href="' . esc_url($url) . '" class="thickbox" title=" PublishPress Capabilities">',
-                                            '</a></span>'
-                                        );
-                                    }
-
-                                    echo '</div></div>';
+                                    echo '</div>';
                                 }
                             }
                             ?>
@@ -355,9 +324,10 @@ class SettingsTabCore
     function generateTooltip($tooltip, $text = '', $position = 'top', $useIcon = true)
     {
         ?>
-        <span data-toggle="tooltip" data-placement="<?php esc_attr_e($position); ?>" title="<?php esc_attr_e($tooltip); ?>">
+        <span data-toggle="tooltip" data-placement="<?php esc_attr_e($position); ?>">
+        <?php esc_html_e($text);?>
+        <span class="tooltip-text"><span><?php esc_html_e($tooltip);?></span><i></i></span>
         <?php 
-        esc_html_e($text);
         if ($useIcon) : ?>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 50 50" style="margin-left: 4px; vertical-align: text-bottom;">
                 <path d="M 25 2 C 12.264481 2 2 12.264481 2 25 C 2 37.735519 12.264481 48 25 48 C 37.735519 48 48 37.735519 48 25 C 48 12.264481 37.735519 2 25 2 z M 25 4 C 36.664481 4 46 13.335519 46 25 C 46 36.664481 36.664481 46 25 46 C 13.335519 46 4 36.664481 4 25 C 4 13.335519 13.335519 4 25 4 z M 25 11 A 3 3 0 0 0 25 17 A 3 3 0 0 0 25 11 z M 21 21 L 21 23 L 23 23 L 23 36 L 21 36 L 21 38 L 29 38 L 29 36 L 27 36 L 27 21 L 21 21 z"></path>
