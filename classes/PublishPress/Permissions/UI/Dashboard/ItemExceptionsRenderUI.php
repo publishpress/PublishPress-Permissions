@@ -147,7 +147,16 @@ class ItemExceptionsRenderUI
 
         $_inclusions_active = isset($inclusions_active[$for_item_type][$op][$agent_type][$agent_id]);
 
-        $_name = (('user' == $agent_type) && defined('PP_USER_RESULTS_DISPLAY_NAME')) ? $agent_info->display_name : $agent_info->name;
+        $_name = $agent_info->name;
+        if('user' == $agent_type) {
+            if (!empty($agent_info->formatted_name)) {
+                // formatted_name contains "First Name Last Name (user_login)"
+                $_name = $agent_info->formatted_name;
+            }
+            if(defined('PP_USER_RESULTS_DISPLAY_NAME')) {
+                $_name = $agent_info->display_name;
+            }
+        }
 
         if ('wp_role' == $agent_type) {
             require_once(PRESSPERMIT_CLASSPATH . '/DB/Groups.php');
