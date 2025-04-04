@@ -52,6 +52,7 @@
             $(selector).select2({
               placeholder: "Search for a " + agent_type_lbl,
               dropdownAutoWidth: true,
+              dropdownCssClass: 'pp-select2-dropdown',
               width: '325px',
               ajax: {
                 url: args2.ajaxurl,
