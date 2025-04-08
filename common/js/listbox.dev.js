@@ -48,6 +48,9 @@
                     .val('2') // Default value for selected items
                     .appendTo($(selector).parent());
             });
+            if(args2.topic === 'member') {
+                selector += ", #v2_" + CSS.escape(args2.search_id + '::' + args2.agent_type);
+            }
 
             $(selector).select2({
               placeholder: "Search for a " + agent_type_lbl,

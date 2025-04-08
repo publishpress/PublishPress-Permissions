@@ -495,6 +495,7 @@ class AgentsDynamicUI
         // note: this is also done in AdminFiltersItemUI() constructor
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
         wp_enqueue_script('presspermit-listbox', PRESSPERMIT_URLPATH . "/common/js/listbox{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
+        wp_enqueue_script('presspermit-agent-select', PRESSPERMIT_URLPATH . "/common/js/agent-exception-select{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
         $wp_scripts->in_footer[] = 'presspermit-listbox'; // otherwise it will not be printed in footer
 
         if ('user' == $agent_type) {
@@ -511,8 +512,6 @@ class AgentsDynamicUI
                     'metagroups' => 1
                 ]
             );
-
-            wp_enqueue_script('presspermit-agent-select', PRESSPERMIT_URLPATH . "/common/js/agent-exception-select{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
 
             $arr = array_merge($args, ['agent_type' => $agent_type, 'ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax')]);
             wp_localize_script('presspermit-agent-select', 'ppException', $arr);
