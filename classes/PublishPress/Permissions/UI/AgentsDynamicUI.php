@@ -385,7 +385,7 @@ class AgentsDynamicUI
 
             </tr>
             <tr>
-                <td><select multiple="multiple" id="v2_agent_search_text_<?php echo esc_attr("{$op}:{$for_item_type}:{$agent_type}"); ?>" name="_select-<?php echo esc_attr("$op-$for_item_type-$agent_type"); ?>[]"></select></td>
+                <td><select <?php echo $multi_select ? 'multiple="multiple"' : '' ; ?> id="v2_agent_search_text_<?php echo esc_attr("{$op}:{$for_item_type}:{$agent_type}"); ?>" name="_select-<?php echo esc_attr("$op-$for_item_type-$agent_type"); ?>[]"></select></td>
                 <td style="display: none;">
                     <h4>
                         <?php esc_html_e('Search Results:', 'press-permit-core'); ?>
