@@ -193,7 +193,7 @@ table.pp-agent-profile {
 div.pp-group_members {
   margin: 0 0 20px;
 }
-#agent-profile div.pp-group_members span {
+#agent-profile div.pp-group_members span:not(.select2):not(.select2 span) {
   border: none;
   border-bottom: none;
 }
