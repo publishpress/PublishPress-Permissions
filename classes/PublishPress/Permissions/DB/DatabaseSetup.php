@@ -13,6 +13,11 @@ class DatabaseSetup
     {
         global $wpdb;
 
+        // Prevent concurrent redundant execution
+        if (did_action('presspermit_activate')) {
+            return;
+        }
+
         // Direct database query to create or modify plugin tables. Infrequent plugin install operation.
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 
