@@ -26,6 +26,109 @@
  * You should have received a copy of the GNU General Public License
  * along with PublishPress.  If not, see <http://www.gnu.org/licenses/>.
  */
+[data-toggle="tooltip"] {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  /* Tooltip Box */
+  /* Placements */
+}
+[data-toggle="tooltip"] .tooltip-text {
+  display: none;
+  position: absolute;
+  min-width: 250px;
+  padding: 16px;
+  font-size: 13px;
+  font-weight: normal;
+  text-align: left;
+  color: #fff;
+  background-color: #000c0c;
+  border: 1px solid #d5d5d5;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1), 0 0 56px rgba(0, 0, 0, 0.08);
+  z-index: 99999999;
+  box-sizing: border-box;
+  transform: translate(-50%, -100%);
+  transition: all 0.65s cubic-bezier(0.84, -0.18, 0.31, 1.26);
+  white-space: normal;
+  /* Arrow */
+}
+[data-toggle="tooltip"] .tooltip-text a {
+  color: #a0e0ff;
+  text-decoration: underline;
+  transition: color 0.2s;
+  font-size: 13px !important;
+}
+[data-toggle="tooltip"] .tooltip-text a:hover {
+  color: #39b6f5;
+}
+[data-toggle="tooltip"] .tooltip-text i {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 24px;
+  height: 12px;
+  margin-left: -6px;
+  overflow: hidden;
+}
+[data-toggle="tooltip"] .tooltip-text i::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 50%;
+  background-color: #000c0c;
+  transform: translate(-50%, -50%) rotate(45deg);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+[data-toggle="tooltip"]:not(.click):hover .tooltip-text,
+[data-toggle="tooltip"]:not(.click):focus-within .tooltip-text {
+  display: block;
+}
+[data-toggle="tooltip"].click.is-active .tooltip-text {
+  display: block;
+}
+[data-toggle="tooltip"]:not([data-placement]) .tooltip-text,
+[data-toggle="tooltip"][data-placement="top"] .tooltip-text {
+  top: -20px;
+  left: 50%;
+  transform: translate(-50%, -100%);
+}
+[data-toggle="tooltip"]:not([data-placement]) .tooltip-text i,
+[data-toggle="tooltip"][data-placement="top"] .tooltip-text i {
+  margin-left: -12px;
+}
+[data-toggle="tooltip"][data-placement="bottom"] .tooltip-text {
+  top: 100%;
+  left: 25%;
+  transform: translate(-50%, 0);
+  margin-top: 10px;
+}
+[data-toggle="tooltip"][data-placement="bottom"] .tooltip-text i {
+  top: -12px;
+  transform: rotate(180deg);
+}
+[data-toggle="tooltip"][data-placement="left"] .tooltip-text {
+  top: 50%;
+  left: -10px;
+  transform: translate(-100%, -50%);
+}
+[data-toggle="tooltip"][data-placement="left"] .tooltip-text i {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%) rotate(-90deg);
+}
+[data-toggle="tooltip"][data-placement="right"] .tooltip-text {
+  top: 50%;
+  left: 100%;
+  transform: translate(0, -50%);
+  margin-left: 10px;
+}
+[data-toggle="tooltip"][data-placement="right"] .tooltip-text i {
+  top: 50%;
+  left: -12px;
+  transform: translateY(-50%) rotate(90deg);
+}
 /* Vars */
 /* Buttons */
 /* Input fields */
@@ -36,24 +139,21 @@
 .pressshack-admin-wrapper a:visited,
 .pressshack-admin-wrapper a:active,
 .pressshack-admin-wrapper a:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
-
 .pressshack-admin-wrapper a,
 .pressshack-admin-wrapper button,
 .pressshack-admin-wrapper button::before {
-    -webkit-transition: all 200ms ease-in-out;
-    -moz-transition: all 200ms ease-in-out;
-    -o-transition: all 200ms ease-in-out;
-    transition: all 200ms ease-in-out;
+  -webkit-transition: all 200ms ease-in-out;
+  -moz-transition: all 200ms ease-in-out;
+  -o-transition: all 200ms ease-in-out;
+  transition: all 200ms ease-in-out;
 }
-
 .pressshack-admin-wrapper a,
 .pressshack-admin-wrapper a div,
 .pressshack-admin-wrapper a p {
-    color: #655997;
+  color: #655997;
 }
-
 .pressshack-admin-wrapper a:hover,
 .pressshack-admin-wrapper a:focus,
 .pressshack-admin-wrapper a:active,
@@ -66,83 +166,70 @@
 .pressshack-admin-wrapper a:hover .dashicons:before,
 .pressshack-admin-wrapper a:focus .dashicons:before,
 .pressshack-admin-wrapper a:active .dashicons:before {
-    color: #5A4F87;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-    -o-box-shadow: none;
+  color: #5A4F87;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  -o-box-shadow: none;
 }
-
 .pressshack-admin-wrapper > header h1 a,
 .pressshack-admin-wrapper > header h1 a:hover,
 .pressshack-admin-wrapper > header h1 a:focus,
 .pressshack-admin-wrapper > header h1 a:active {
-    color: #23282d;
+  color: #23282d;
 }
-
 .pressshack-admin-wrapper .nav-tab-wrapper .nav-tab {
-    color: inherit;
+  color: inherit;
 }
-
 .pressshack-admin-wrapper .nav-tab-wrapper .nav-tab-active,
 .pressshack-admin-wrapper .nav-tab-wrapper .nav-tab:hover,
 .pressshack-admin-wrapper .nav-tab-wrapper .nav-tab:active,
 .pressshack-admin-wrapper .nav-tab-wrapper .nav-tab:focus {
-    border-top-color: #655997;
-    color: #655997;
+  border-top-color: #655997;
+  color: #655997;
 }
-
 .pressshack-admin-wrapper > footer {
-    text-align: center;
+  text-align: center;
 }
-
 .pressshack-admin-wrapper > footer > div.pp-rating {
-    font-size: 12px;
-    margin-bottom: 10px;
-    margin-top: 30px;
+  font-size: 12px;
+  margin-bottom: 10px;
+  margin-top: 30px;
 }
-
 .pressshack-admin-wrapper > footer * {
-    color: #777;
+  color: #777;
 }
-
 .pressshack-admin-wrapper > footer > nav ul {
-    list-style: none;
+  list-style: none;
 }
-
 .pressshack-admin-wrapper > footer > nav ul > li {
-    display: inline-block;
+  display: inline-block;
 }
-
 .pressshack-admin-wrapper > footer > nav ul > li:not(:first-child) {
-    margin-left: 15px;
+  margin-left: 15px;
 }
-
 .pressshack-admin-wrapper > footer > nav ul > li > a {
-    font-weight: bold;
+  font-weight: bold;
 }
-
 .pressshack-admin-wrapper > footer .dashicons.dashicons-star-filled {
-    line-height: 18px;
-    font-size: 12px;
-    width: 12px;
-    height: 12px;
-    color: #FFB300;
-    -webkit-transition: color 200ms ease-in-out;
-    -moz-transition: color 200ms ease-in-out;
-    -o-transition: color 200ms ease-in-out;
-    transition: color 200ms ease-in-out;
+  line-height: 18px;
+  font-size: 12px;
+  width: 12px;
+  height: 12px;
+  color: #FFB300;
+  -webkit-transition: color 200ms ease-in-out;
+  -moz-transition: color 200ms ease-in-out;
+  -o-transition: color 200ms ease-in-out;
+  transition: color 200ms ease-in-out;
 }
 .pressshack-admin-wrapper .pp-pressshack-logo img {
-    width: 170px;
+  width: 170px;
 }
-
 /**
  * Fremius tweaks
  */
-
 #piframe,
 .fs-secure-notice {
-    display: none;
+  display: none;
 }
 #pp-permissions-wrapper .pp-default-button {
   border-color: #655997;
@@ -171,7 +258,7 @@
   background: #483f6b;
   color: #fff;
   border-color: #483f6b;
-  box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #483f6b;
+  box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
 }
 #pp-permissions-wrapper .pp-primary-button:hover,
 #pp-permissions-wrapper .pp-primary-button:active {
@@ -189,9 +276,9 @@
   background: #febe47;
   color: #222;
   border-color: #febe47;
-  box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #febe47;
-  -moz-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #febe47;
-  -webkit-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #febe47;
+  box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
+  -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
+  -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
 }
 #pp-permissions-wrapper .pp-pro-button:hover,
 #pp-permissions-wrapper .pp-pro-button:active {
