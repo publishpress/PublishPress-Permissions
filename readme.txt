@@ -240,7 +240,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 4.1.4 - 28 March 2025 =
+= 4.1.4 - 1 April 2025 =
 * Updated: Menu link renamed to "Permissions" for better clarity. #754
 * Updated: Moved the "Tags" option to the Advanced tab. #1250
 * Updated: Moved explanatory text into a tooltip for cleaner UI. #1217
