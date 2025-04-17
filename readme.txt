@@ -241,16 +241,16 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 == Changelog ==
 
 = 4.1.4 - 28 March 2025 =
-* Fixed: Menu link renamed to "Permissions" for better clarity. #754
-* Fixed: Moved the "Tags" option to the Advanced tab. #1250
-* Fixed: Moved explanatory text into a tooltip for cleaner UI. #1217
-* Fixed: Display a message when no Groups or Users are available in Select2 fields. #1500
-* Fixed: Integrated Select2 for Group and User selection for improved usability. #1196
-* Fixed: Removed unnecessary message from Tags screen. #1327
+* Updated: Menu link renamed to "Permissions" for better clarity. #754
+* Updated: Moved the "Tags" option to the Advanced tab. #1250
+* Updated: Moved explanatory text into a tooltip for cleaner UI. #1217
+* Updated: Display a message when no Groups or Users are available in Select2 fields. #1500
+* Updated: Integrated Select2 for Group and User selection for improved usability. #1196
+* Removed: Unnecessary message on Tags screen. #1327
 * Fixed: Double "Update" button issue. #1496
 * Fixed: Notes item was incorrectly shown in the Core tab. #1251
 * Fixed: Incomplete string escaping in CSA. #1494
-* Fixed: Updated translations for 4.1.3 release. #1493
+* Lang: Updated translations for 4.1.3 release. #1493
 
 = 4.1.3 - 6 March 2025 =
 * Added: Media tab to permissions settings. #1328
@@ -259,15 +259,15 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Fixed: Database error caused by duplicate key. #1455
 * Fixed: Tooltip position issue. #1468
 * Fixed: Tooltip display issue in media settings. #1332
-* Fixed: Removed header elements on the Permissions screen. #1355
+* Removed: Header elements on the Permissions screen. #1355
 * Fixed: Removed media option for users who are not logged in. #1331
 * Fixed: "Show all available constants" checkbox in Advanced Settings was not working. #1454
 * Fixed: PHP Warning on the Edit Term screen. #1453
 * Fixed: Posts query error on Multisite setups with abnormal site switching. #1451
-* Fixed: Logged-in user description updated for better clarity. #1330
-* Fixed: Message tags removed from the category screen. #1326
-* Fixed: Improved "None" text for better clarity. #1349
-* Fixed: Category archive restriction now also applies to custom taxonomy archives. #1452
+* Updated: Logged-in user description updated for better clarity. #1330
+* Removed: Messages on the category screen. #1326
+* Updated: Improved "None" text for better clarity. #1349
+* Feature: Category archive restriction now also applies to custom taxonomy archives. #1452
 * Fixed: On Post update, numerically named category was created incorrectly. #1448
 * Fixed: ACF Taxonomy Field did not include subcategories. #1395
 * Fixed: Fatal error with some third party plugins. #1486
@@ -275,98 +275,92 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Updated: Moved "View All" tab for better accessibility. #1350
 * Updated: Permissions text for better readability in groups. #1352
 * Updated: Promo banner content. #1470
-* Updated: Design improvements for specific areas. #1353
-* Updated: Translations for Spanish, French, and Italian. #1446
+* Updated: Edit Permissions - Design fixes in Specific Permissions area #1353
+* Lang: Translations for Spanish, French, and Italian. #1446
 * Updated: Composer dependencies.
 
 = 4.1.2 - 10 February 2025 =
 * Added: Template function for the Teaser module (Pro). #1423
 * Fixed: "Limit to" permissions for Revision Submission were blocking draft post editing. #1407
-* Feature: Option to apply Category restrictions to archive page (Settings > Advanced > Front End)
+* Feature: Option to apply Category restrictions to archive page (Settings > Advanced > Front End) #1425
 * Fixed: User Profile issue preventing removal of a user from all groups. #1403
-* Fixed: If a role has a Specific Permissions assigned as "Limit to > (none)", the default post editor metabox selection for new posts was "Unblocked"
+* Fixed: If a role has a Specific Permissions assigned as "Limit to > (none)", the default post editor metabox selection for new posts was "Unblocked" #1401
 * Fixed: Invalid classname in User/Groups selection. #1421
 * Fixed: Role Usage could not update role's setting. #1420
 * Fixed: PHP Warning for undefined variable `$item_status`. #1419
-* Fixed: Default selection in Permissions metabox on Add New Post when a "Limit to" > "(none)" Permission is active. #1401
 * Fixed: Parentheses removed from editor metaboxes for cleaner display. #1387
 * Compat: PublishPress Revisions - Avoid conflict with implementation of list_others_revisions, preview_others_revisions capabilities (with Revisions 3.6.1)
 * Compat: PublishPress Revisions - "Limit to" permissions for Revision Submission also blocked the editing of regular draft posts
-* Updated: Clarified the effect of enabling/disabling Advanced Options in Plugin Settings. #1435
-* Updated: Settings > Advanced to clarify the effect of "Display all advanced options". #1437
-* Updated: Apply Category restrictions to the Category archive page. #1425
+* Updated: Settings > Advanced to clarify the effect of "Display all advanced options". #1435, #1437
 * Updated: Access Circles: Allow Administrators to be added to a group. #1399
-* Updated: Revisions compatibility to support reduced filtering for certain use cases. #1407
-
-* Updated: Language files (.pot and .mo), including FR translations. #1392
+* Compat: PublishPress Revisions - Support reduced filtering for certain use cases. #1407
+* Lang: .pot and .mo, including FR translations. #1392
 * Updated: Composer dependencies.
 
 = 4.1.1 - 30 January 2025 =
-* Enhancement: Cleaner, better organized plugin settings tabs
-* Enhancement: Sync Posts UI fits 1080px screens
-* Fixed: Sizing of Settings tabs for smaller screns
-* Fixed: Sizing, positioning for Settings screen right sidebar
+* Updated: Cleaner, better organized plugin settings tabs
+* Updated: Sizing of Settings tabs for smaller screns
+* Updated: Sizing, positioning for Settings screen right sidebar
 * Fixed: Fatal error if other code filters pre_tax_input incorrectly. #1348
 * Fixed: PHP Notice when deleting a group. #1338
 * Fixed: PHP error under certain configurations. #1318
 * Fixed: PHP warning for undefined array index in Permissions settings under some conditions. #1340
 * Fixed: Media items were selectable even when media permissions were not enabled. #1323
 * Updated: Renamed "Collaborative Editing" to align with updated terminology. #1307
-* Updated: Translations for Spanish, French, and Italian text strings. #1316
 * Updated: Moved "Statuses" to the Advanced area for better organization. #1255
-* Updated: Updated project dependencies for improved compatibility and security.
 * Removed: Purple color from the menu for a cleaner design. #1306
 * Removed: "Import" option from the interface. #1295
+* Lang: Translations for Spanish, French, and Italian text strings. #1316
+* Updated: Project dependencies for improved compatibility and security.
 
 = 4.1.0 - 19 Dec 2024 =
-* Added: New Sidebar promotion area in the interface. #944
-* Fixed: Upcoming integration for Revision Statuses in Statuses Pro. #1286
-* Fixed: Improved design for editing groups. #1257
-* Fixed: White space removed from group list screen. #1245
-* Fixed: Updated text for the "Clone" button. #1258
-* Fixed: Permissions options moved to the "Advanced" settings area. #1247
-* Fixed: Tab "Modules" moved to the end and renamed to "Features." #1246
-* Fixed: Hide the "ID" column by default. #1244
+* Compat: PublishPress Statuses Pro - Support upcoming integration. #1286
+* Updated: Improved design for editing groups. #1257
+* Updated: White space removed from group list screen. #1245
+* Updated: Edit Permissions - Button caption and message text for Permissions clone. #1258
+* Updated: Permissions options moved to the "Advanced" settings area. #1247
+* Updated: Tab "Modules" moved to the end and renamed to "Features." #1246
+* Updated: Hide the "ID" column by default. #1244
+* Added: New sidebar promotion area on plugin screens. #944
 * Fixed: Poor query performance on highly populated sites using PublishPress Authors. #1269
 * Fixed: Posts query errors on multisite installs with abnormal site switching/caching. #1271
 * Fixed: PHP warning in the post editor under specific site configurations. #1265
 * Fixed: Fatal error with miniOrange SSO during new post creation. #1263
 * Fixed: Fatal error under some conditions when post types are abnormally registered. #1242
-* Fixed: Spam warning message removed. #1201
+* Fixed: PHP warning for undefined variable. #1201
 * Fixed: Non-Administrators cannot add new post on some sites #1303
 * Fixed : Multisite - Database error in posts query on installations with abnormal site switching / caching
 * Fixed : Multisite + PHP 8.2 - Fatal error on sub-sites created prior to Permissions install
 * Compat : miniOrange SSO - Fatal error when adding a new post
 * Compat : PublishPress Authors - poor front end query performance on highly populated sites
-* Improved: Design updates on the posts screen. #1218
-* Improved: Design for posts with enhanced group UI. #1257
-* Improved: Removed redundant text from the plugin screen. #1214
-* Improved: Updated and refined translations. #1239, #1246
-* Improved: Normalized whitespace for cleaner codebase.
-* Updated: .pot and .mo files with new and improved translations.
+* Updated: Edit Permissions - Styling of Specific Permission selections. #1218
+* Updated: Edit Permissions - Styling of Supplemental Role selections. #1257
+* Removed: Redundant text from Plugins screen. #1214
+* Updated: Normalized whitespace for cleaner codebase.
+* Lang: Updated and refined translations. #1239, #1246
+* Lang: .pot and .mo files with new and improved translations.
 
 = 4.0.34 - 14 Nov 2024 =
 * Fixed : Changes to Permissions metaboxes in Post editor were not saved
 
-= 4.0.33 - 13 Nov 2023 =
+= 4.0.33 - 13 Nov 2024 =
 * Fixed: Warning for early execution of load_plugin_textdomain() in WP 6.7 #1227
 * Fixed: WP 6.6 - Updating a page caused propagated permissions to be cleared under some configurations
 * Fixed: Specific Permissions for page editing caused incorrect page permalink to be output on Posts / Pages screen, under some configurations
 * Fixed: Updating a page could clear propagated permissions in specific configurations #1223
-* Fixed: Updated wording for "Add Group" button #1195
-* Fixed: Updated reference language strings #1195
-* Fixed: Removed note from "Add Group" option #1195
-* Fixed: Added Portuguese language hints #1202
-* Fixed: Added missing translation strings in permissions (free version) #1202
-* Fixed: Removed outdated message about status updates #1200
-* Fixed: Changed wording of "Add New" button to "Add New Group" #1194
-* Fixed: Removed social links from footer #1193
-* Fixed: Removed penguin logo from headers #1191
-* Compat: Experimental fix for Custom Post Type UI editing permissions #1221
-* Updated: Translation files #1190
-* Updated: Tested compatibility with WordPress 6.7 #527
-* Improved: Translation handling by removing translation functions on variables where unnecessary
-* Refined: Code formatting and normalized whitespace
+* Updated: Captions for "Add Group" button #1195
+* Removed: Outdated message about Status Control module #1200
+* Updated: Changed wording of "Add New" button to "Add New Group" #1194
+* Removed: Social links in footer #1193
+* Removed: Penguin logo in headers #1191
+* Compat: Custom Post Type UI - Experimental fix for editing permissions #1221
+* Updated: Compatibility with WordPress 6.7 #527
+* Updated: Improve translation handling by removing translation functions on variables where unnecessary.
+* Updated: Code formatting and normalized whitespace.
+* Lang: Updated reference language strings #1195
+* Lang: Added Portuguese language hints #1202
+* Lang: Added missing translation strings in permissions (free version) #1202
+* Lang: Translation files #1190
 
 = 4.0.32 - unreleased =
 
