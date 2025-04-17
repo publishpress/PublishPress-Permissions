@@ -76,6 +76,7 @@ class Permissions
 
     private function __construct()
     {
+        global $pagenow;
         add_filter('presspermit_unfiltered_content', [$this, 'fltPluginCompatUnfilteredContent'], 5, 1);
 
         // Log the post ID field for the sanitize_post() call by wp_insert_post(), 
@@ -112,6 +113,9 @@ class Permissions
             10,
             3
         );
+        if (in_array($pagenow, ['term.php'])) {
+            add_filter('gettext', [$this, 'flt_edit_tag'], 99, 3);
+        }
     }
 
     public function isInsertedPost($post_id)
@@ -1222,5 +1226,17 @@ class Permissions
     public function addMaintenanceTriggers()
     {
         $this->hooks->addMaintenanceTriggers();
+    }
+
+    public function flt_edit_tag($translated_text, $text, $domain )
+    {
+        // Check if we are on the specific tag edit page in the admin
+        if ( is_admin() && isset( $_GET['taxonomy'], $_GET['tag_ID'], $_GET['post_type'] ) ) {
+            if ( $_GET['taxonomy'] === 'post_tag' && $_GET['post_type'] === 'post' && $text === 'Edit Tag' ) {
+                return 'Edit Tag for Posts';
+            }
+        }
+    
+        return $translated_text;
     }
 }
