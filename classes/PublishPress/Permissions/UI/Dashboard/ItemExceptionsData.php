@@ -113,7 +113,7 @@ class ItemExceptionsData
                     foreach ($results as $row) {
                         $first_name = get_user_meta($row->ID, 'first_name', true);
                         $last_name = get_user_meta($row->ID, 'last_name', true);
-                        $formatted_name = trim($first_name . ' ' . $last_name. ' (' . $row->display_name . ')');
+                        $formatted_name = trim($first_name . ' ' . $last_name. ' (' . $row->user_login . ')');
 
                         $this->agent_info['user'][$row->ID] = $row;
                         $this->agent_info['user'][$row->ID]->name = $row->user_login;
