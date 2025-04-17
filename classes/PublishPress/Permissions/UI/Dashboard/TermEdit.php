@@ -151,7 +151,7 @@ class TermEdit
                             $type_obj->labels->name
                         )
                         : sprintf(
-                            esc_html__('Permissions: Assign this %2$s', 'press-permit-core'),
+                            esc_html__('Permissions: Assign this %2$s for All Post Types', 'press-permit-core'),
                             $op_obj->label,
                             $tx->labels->singular_name
                         );
@@ -164,7 +164,7 @@ class TermEdit
                             $tx->labels->singular_name
                         )
                         : sprintf(
-                            esc_html__('Permissions: %1$s all content in this %2$s', 'press-permit-core'),
+                            esc_html__('Permissions: %1$s all content in this %2$s for All Post Types', 'press-permit-core'),
                             $op_obj->label,
                             $tx->labels->singular_name
                         );

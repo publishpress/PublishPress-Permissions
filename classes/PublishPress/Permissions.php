@@ -1230,9 +1230,16 @@ class Permissions
 
     public function flt_edit_tag($translated_text, $text, $domain )
     {
-        // Check if we are on the specific tag edit page in the admin
-        if ( is_admin() && isset( $_GET['taxonomy'], $_GET['tag_ID'], $_GET['post_type'] ) ) {
-            if ( $_GET['taxonomy'] === 'post_tag' && $_GET['post_type'] === 'post' && $text === 'Edit Tag' ) {
+        // This code is used to override the "Edit Tag" text in the admin area
+        // to provide more context for the user.
+        if (is_admin() 
+            && isset($_GET['taxonomy'], $_GET['tag_ID'], $text) 
+            && $text === 'Edit Tag' 
+            && $_GET['taxonomy'] === 'post_tag' ) {
+            if (!empty($_GET['pp_universal'])) {
+                return 'Edit Tag for All Post Types';
+            }
+            if (isset($_GET['post_type']) && $_GET['post_type'] === 'post') {
                 return 'Edit Tag for Posts';
             }
         }
