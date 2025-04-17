@@ -87,12 +87,7 @@ class GroupsListTable extends GroupsListTableBase
         $args['group_variant'] = $this->group_variant;
         $group_search = new GroupQuery($args);
 
-        $all_items = $group_search->get_results();
-        $filtered_items = array_filter($all_items, function ($group) {
-            return !$this->is_rvy_notice_group($group);
-        });
-
-        $this->items = $filtered_items;
+        $this->items = $group_search->get_results();
         $this->listed_ids = [];
 
         foreach ($this->items as $group) {
@@ -109,9 +104,8 @@ class GroupsListTable extends GroupsListTableBase
             ['query_agent_ids' => $this->listed_ids]
         );
 
-        // Update pagination arguments to reflect the filtered count
         $this->set_pagination_args(array(
-            'total_items' => count($filtered_items),
+            'total_items' => $group_search->get_total(),
             'per_page' => $groups_per_page,
         ));
     }
@@ -226,7 +220,7 @@ class GroupsListTable extends GroupsListTableBase
         $group_id = $group->ID;
 
         if ($group->metagroup_id) {
-            if ($this->is_rvy_notice_group($group)) {
+            if (('rvy_notice' == $group->metagroup_type) && !defined('PUBLISHPRESS_REVISIONS_VERSION') && !defined('REVISIONARY_VERSION')) {
                 return;
             }
 
@@ -490,12 +484,5 @@ class GroupsListTable extends GroupsListTableBase
         }
 
         return (isset($role_count[$role_name])) ? $role_count[$role_name] : 0;
-    }
-
-    private function is_rvy_notice_group($group)
-    {
-        return ('rvy_notice' == $group->metagroup_type) 
-            && !defined('PUBLISHPRESS_REVISIONS_VERSION') 
-            && !defined('REVISIONARY_VERSION');
     }
 }
