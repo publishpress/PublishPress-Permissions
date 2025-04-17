@@ -149,7 +149,7 @@ class GroupsListTable extends GroupsListTableBase
 
         if (
             current_user_can('pp_delete_groups')
-            && !PWP::is_REQUEST('group_variant', $this->deleted_roles_listed())
+            && PWP::GET_key('group_variant') !== 'wp_role' // don't allow deletion of WP roles
         ) {
             $actions['delete'] = esc_html__('Delete', 'press-permit-core');
         }
