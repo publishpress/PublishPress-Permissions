@@ -110,6 +110,10 @@ class GroupQuery
             $this->query_where .= " AND $groups_table.metagroup_type IN ('wp_role')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
 
+        if (!defined('PUBLISHPRESS_REVISIONS_VERSION')) {
+            $this->query_where .= " AND $groups_table.metagroup_type != 'rvy_notice'";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        }
+
         $skip_meta_types = [];
         if ($this->group_variant && ('pp_net_group' != $this->group_variant) && ('wp_role' != $this->group_variant)) {
             $skip_meta_types[] = 'wp_role';
