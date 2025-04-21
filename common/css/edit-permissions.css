@@ -187,7 +187,7 @@ table.pp-agent-profile {
 }
 .pp-group_post-types,
 .pp-group-roles {
-  background-color: #E1F0F4;
+  background-color: #fff;
   border-color: #6eaebf;
 }
 div.pp-group_members {
@@ -336,6 +336,14 @@ input.submit-edit-item-role {
 }
 #pp_current_roles a:hover {
   text-decoration: underline;
+}
+#pp_current_roles .checkbox-column {
+  width: 1%;
+  text-align: center;
+}
+#pp_current_roles .pp_nolink {
+  font-weight: bold;
+  color: #000;
 }
 .pp-current-site-roles input {
   margin-left: 1em;
