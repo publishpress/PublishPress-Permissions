@@ -141,7 +141,7 @@ class AgentPermissionsUI
                         <select name="pp_select_x_for_type" autocomplete="off">
                             <?php
                             $type_objects = apply_filters('presspermit_append_exception_types', $pp->admin()->orderTypes(apply_filters('presspermit_exception_types', $type_objects)));
-                            
+
                             if (!empty($args['external']))
                                 $type_objects = array_merge($type_objects, $args['external']);
 
@@ -624,8 +624,6 @@ class AgentPermissionsUI
             <?php endif;
 
                 echo '</h3>';
-                echo '<div>';
-
                 $_class = ($read_only) ? 'pp-readonly' : '';
                 echo '<div id="pp_current_roles" class="' . esc_attr($_class) . '">';
 
@@ -669,41 +667,65 @@ class AgentPermissionsUI
                             }
                         }
 
-                        echo "<div class='type-roles-wrapper'>";
-                        echo '<h4 style="margin-bottom:0.3em">' . esc_html(sprintf(__('%s Roles', 'press-permit-core'), $type_caption)) . '</h4>';
-                        echo "<div class='pp-current-type-roles'>";
-
                         // site roles
                         if (isset($type_roles[$source_name][$object_type])) {
                             echo "<div id='pp_current_" . esc_attr($source_name) . "_" . esc_attr($object_type) . "_site_roles' class='pp-current-roles pp-current-site-roles'>";
-                            $inputs = [];
+                            echo "<div class='type-roles-wrapper'>";
+                            echo '<h4 style="margin-bottom:0.3em">' . esc_html(sprintf(__('%s Roles', 'press-permit-core'), $type_caption)) . '</h4>';
+                            echo '<table class="table table-responsive">';
+                            echo '<thead>';
+                            echo '<tr>';
+                            echo '<th class="checkbox-column">';
+                            echo '<input id="cb-select-all-' . esc_attr($source_name . '_' . $object_type) . '" type="checkbox" />';
+                            echo '</th>';
+                            echo '<th style="width: 70%;">Role</th>';
+                            echo '<th>Remove</th>';
+                            echo '</tr>';
+                            echo '</thead>';
+                            echo '<tbody>';
+                            echo "<div class='pp-current-type-roles'>";
 
                             $_arr = $type_roles[$source_name][$object_type];
                             ksort($_arr);
                             foreach (array_keys($_arr) as $role_name) {
+                                echo '<tr class="checkbox-row">';
+                                echo '<td class="checkbox-column">';
                                 if ($read_only) {
                                     if (!empty($any_done)) echo ',&nbsp; ';
-                                    echo '<label>';
-                                    $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true]);
-                                    echo "</label>";
+                                    // echo '<label>';
+                                    // $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true]);
+                                    // echo "</label>";
                                     $any_done = true;
                                 } else {
                                     $ass_id = $roles[$role_name];
                                     $cb_id = 'pp_edit_role_' . str_replace(',', '_', $ass_id);
 
-                                    echo "<label for='" . esc_attr($cb_id) . "'><input id='" . esc_attr($cb_id) . "' type='checkbox' name='pp_edit_role[]' value='" . esc_attr($ass_id) . "'>&nbsp;";
-                                    $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true]);
-                                    echo '</label> ';
+                                    // echo "<label for='" . esc_attr($cb_id) . "'><input id='" . esc_attr($cb_id) . "' type='checkbox' name='pp_edit_role[]' value='" . esc_attr($ass_id) . "'>&nbsp;";
+                                    // $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true]);
+                                    // echo '</label> ';
                                 }
+                                echo '<input id="' . esc_attr($cb_id) . '" type="checkbox" name="pp_edit_role[]" value="' . esc_attr($ass_id) . '">';
+                                echo '</td>';
+                                echo '<td>';
+                                $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true]);
+                                echo '</td>';
+                                echo '<td>';
+                                echo '<div class="pp_clear">';
+                                echo '<a href="javascript:void(0)" class="pp_clear" onclick="event.stopPropagation();">remove</a>';
+                                echo '</div>';
+                                echo '</td>';
+                                echo '</tr>';
                             }
 
                             echo '</div>';
                         }
 
-                        echo '</div></div>';
+                        echo '</tbody>';
+                        echo '</table>';
+                        echo '</div>'; // end type-roles-wrapper
+                        echo '</div>'; // end pp_current_site_roles
                     } // end foreach object_type
                 } // end foreach source_name
-
                 echo '<br /><div class="pp-role-bulk-edit" style="display:none">';
 
                 echo "<select><option value=''>" . esc_html(PWP::__wp('Bulk Actions')) . "</option><option value='remove'>"
@@ -713,11 +735,9 @@ class AgentPermissionsUI
             <?php
 
                 echo '<img class="waiting" style="display:none;" src="' . esc_url(admin_url('images/wpspin_light.gif')) . '" alt="" />';
-                echo '</div>';
-
-                echo '</div>';
-
-                echo '</div></div>';
+                echo '</div>'; // end pp-role-bulk-edit
+                echo '</div>'; // end pp_current_roles
+                echo '</div>'; // end pp_current_roles_header
 
                 return true;
             }
