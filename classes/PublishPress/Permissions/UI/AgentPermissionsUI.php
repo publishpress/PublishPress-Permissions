@@ -548,7 +548,7 @@ class AgentPermissionsUI
 
                 $args['class'] = ('user' == $agent_type) ? 'pp-user-roles' : 'pp-group-roles';
                 $args['agent_type'] = $agent_type;
-                self::currentRolesUI($roles, $args);
+                self::currentRolesUIV2($roles, $args);
 
                 $post_types[''] = ''; // also retrieve exceptions for (all) post type
 
@@ -578,6 +578,151 @@ class AgentPermissionsUI
             }
 
             public static function currentRolesUI($roles, $args = [])
+            {
+                $defaults = ['read_only' => false, 'caption' => '', 'class' => 'pp-group-roles', 'link' => '', 'agent_type' => '', 'show_groups_link' => false];
+                $args = array_merge($defaults, $args);
+                foreach (array_keys($defaults) as $var) {
+                    $$var = $args[$var];
+                }
+
+                if (!$caption) {
+                    $caption = ('user' == $agent_type)
+                        ? sprintf(esc_html__('Supplemental Roles %1$s(for user)%2$s', 'press-permit-core'), '', '')
+                        : esc_html__('Supplemental Roles', 'press-permit-core');
+                }
+
+                $type_roles = [];
+
+                if (!$roles)
+                    return;
+
+                // todo: still necessary?
+                $has_roles = false;
+                foreach (array_keys($roles) as $key) {
+                    if (!empty($roles[$key]))
+                        $has_roles = true;
+                }
+
+                if (!$has_roles)
+                    return;
+
+                $pp = presspermit();
+                $pp_admin = $pp->admin();
+
+                echo '<div style="clear:both;"></div>'
+                    . "<div id='pp_current_roles_header' class='pp-group-box " . esc_attr($class) . "'>"
+                    . '<h3>';
+
+                if ($link) {
+                    echo "<a href='" . esc_url($link) . "'>" . esc_html($caption) . "</a>";
+                } else {
+                    esc_html_e($caption);
+                }
+
+                if ($show_groups_link) : ?>
+                &nbsp;&bull;&nbsp;<small><a class='pp-show-groups' href='#'><?php _e('Show Groups', 'press-permit-core'); ?></a></small>
+            <?php endif;
+
+                echo '</h3>';
+                echo '<div>';
+
+                $_class = ($read_only) ? 'pp-readonly' : '';
+                echo '<div id="pp_current_roles" class="' . esc_attr($_class) . '">';
+
+                foreach (array_keys($roles) as $role_name) {
+                    if (strpos($role_name, ':')) {
+                        $arr = explode(':', $role_name);
+                        $source_name = $arr[1];
+                        $object_type = $arr[2];
+                    } else {
+                        $object_type = '';
+
+                        $source_name = (0 === strpos($role_name, 'pp_') && strpos($role_name, '_manager')) ? 'term' : 'post';
+                    }
+
+                    $type_roles[$source_name][$object_type][$role_name] = true;
+                }
+
+                foreach (array_keys($type_roles) as $source_name) {
+                    ksort($type_roles[$source_name]);
+
+                    foreach (array_keys($type_roles[$source_name]) as $object_type) {
+                        $any_done = false;
+
+                        if ($type_obj = $pp->getTypeObject($source_name, $object_type)) {
+                            $type_caption = $type_obj->labels->singular_name;
+                        } elseif ('term' == $source_name) {
+                            // term management roles will not be applied without editing permissions module, so do not display
+                            if (!$pp->moduleActive('collaboration')) {
+                                continue;
+                            }
+
+                            $type_caption = esc_html__('Term Management', 'press-permit-core');
+                        } else {
+                            $_role_name = key($type_roles[$source_name][$object_type]);
+                            if (false === strpos($_role_name, ':')) {
+                                $type_obj = (object)['labels' => (object)['name' => esc_html__('objects', 'press-permit-core'), 'singular_name' => esc_html__('objects', 'press-permit-core')]];
+                                $type_caption = esc_html__('Direct-Assigned', 'press-permit-core');
+                            } else {
+                                $type_obj = (object)['labels' => (object)['name' => esc_html__('objects', 'press-permit-core'), 'singular_name' => esc_html__('objects', 'press-permit-core')]];
+                                $type_caption = esc_html__('Disabled Type', 'press-permit-core');
+                            }
+                        }
+
+                        echo "<div class='type-roles-wrapper'>";
+                        echo '<h4 style="margin-bottom:0.3em">' . esc_html(sprintf(__('%s Roles', 'press-permit-core'), $type_caption)) . '</h4>';
+                        echo "<div class='pp-current-type-roles'>";
+
+                        // site roles
+                        if (isset($type_roles[$source_name][$object_type])) {
+                            echo "<div id='pp_current_" . esc_attr($source_name) . "_" . esc_attr($object_type) . "_site_roles' class='pp-current-roles pp-current-site-roles'>";
+                            $inputs = [];
+
+                            $_arr = $type_roles[$source_name][$object_type];
+                            ksort($_arr);
+                            foreach (array_keys($_arr) as $role_name) {
+                                if ($read_only) {
+                                    if (!empty($any_done)) echo ',&nbsp; ';
+                                    echo '<label>';
+                                    $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true]);
+                                    echo "</label>";
+                                    $any_done = true;
+                                } else {
+                                    $ass_id = $roles[$role_name];
+                                    $cb_id = 'pp_edit_role_' . str_replace(',', '_', $ass_id);
+
+                                    echo "<label for='" . esc_attr($cb_id) . "'><input id='" . esc_attr($cb_id) . "' type='checkbox' name='pp_edit_role[]' value='" . esc_attr($ass_id) . "'>&nbsp;";
+                                    $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true]);
+                                    echo '</label> ';
+                                }
+                            }
+
+                            echo '</div>';
+                        }
+
+                        echo '</div></div>';
+                    } // end foreach object_type
+                } // end foreach source_name
+
+                echo '<br /><div class="pp-role-bulk-edit" style="display:none">';
+
+                echo "<select><option value=''>" . esc_html(PWP::__wp('Bulk Actions')) . "</option><option value='remove'>"
+                    . esc_html(PWP::__wp('Remove')) . '</option></select>';
+            ?>
+            <input type="submit" name="" class="button submit-edit-item-role" value="<?php esc_attr_e('Apply', 'press-permit-core'); ?>" />
+            <?php
+
+                echo '<img class="waiting" style="display:none;" src="' . esc_url(admin_url('images/wpspin_light.gif')) . '" alt="" />';
+                echo '</div>';
+
+                echo '</div>';
+
+                echo '</div></div>';
+
+                return true;
+            }
+
+            public static function currentRolesUIV2($roles, $args = [])
             {
                 $defaults = ['read_only' => false, 'caption' => '', 'class' => 'pp-group-roles', 'link' => '', 'agent_type' => '', 'show_groups_link' => false];
                 $args = array_merge($defaults, $args);
