@@ -207,7 +207,7 @@ jQuery(document).ready(function ($) {
     }
     
     // Handle checkbox clicks table rows
-    $('.checkbox-row').on('click', function (e) {
+    $('#pp_current_roles .checkbox-row').on('click', function (e) {
         if (!$(e.target).is('input[type="checkbox"]')) {
             const checkbox = $(this).find('input[type="checkbox"]');
             checkbox.prop('checked', !checkbox.prop('checked')).trigger('change');
@@ -216,21 +216,21 @@ jQuery(document).ready(function ($) {
     });
     
     // Handle "Select All" checkbox
-    $('input[id^="cb-select-all-"]').on('change', function () {
+    $('#pp_current_roles input[id^="cb-select-all-"]').on('change', function () {
         const type = $(this).attr('id').split('cb-select-all-')[1];
         $(`#pp_current_${type}_site_roles input[type="checkbox"]`).prop('checked', $(this).is(':checked'));
         toggleBulkEditVisibility();
     });
     
     // Handle individual checkbox behavior
-    $('.checkbox-row input[type="checkbox"]').on('change', function () {
+    $('#pp_current_roles .checkbox-row input[type="checkbox"]').on('change', function () {
         const type = $(this).closest('.pp-current-roles').attr('id').split('pp_current_')[1].split('_site_roles')[0];
         const allCheckboxes = $(`#pp_current_${type}_site_roles input[type="checkbox"]:not([id^="cb-select-all-"])`);
         $(`#cb-select-all-${type}`).prop('checked', allCheckboxes.length === allCheckboxes.filter(':checked').length);
         toggleBulkEditVisibility();
     });
 
-    $('.checkbox-row .pp_clear').on('click', function (e) {
+    $('#pp_current_roles .checkbox-row .pp_clear').on('click', function (e) {
         e.stopPropagation();
         const roleId = $(this).closest('tr').find('input[type="checkbox"]').val();
         if (roleId) presspermitAjaxSubmit('roles_remove', presspermitRemoveRolesDone, roleId);

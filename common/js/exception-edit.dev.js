@@ -648,6 +648,47 @@ jQuery(document).ready(function ($) {
 
 
     // ========== Begin "Edit Exception" Submission scripts ==========
+    // Handle expansion/collapse of sections
+    $('#pp_current_exceptions .section-header').on('click', function(e) {
+        // Only proceed if the click wasn't on the search box or its children
+        if (!$(e.target).closest('.search-box').length) {
+            const $section = $(this).closest('.permission-section');
+            $section.find('.section-content').slideToggle(200);
+            $section.toggleClass('collapsed');
+        }
+    });
+
+    // Handle "Select All" checkbox
+    $('#pp_current_exceptions input[id^="cb-select-all-"]').on('change', function () {
+        const isChecked = $(this).is(':checked');
+        const table = $(this).closest('table');
+        
+        // Check/uncheck all checkboxes in the table
+        table.find(`input[name="pp_edit_exception[]"][disabled!="true"]`).prop('checked', isChecked);
+        
+        // Show or hide the bulk edit section based on the checkbox state
+        table.closest('.permission-type').find('.pp-exception-bulk-edit').toggle(isChecked);
+    });
+    
+    // Handle individual checkbox behavior
+    $('#pp_current_exceptions .checkbox-row input[type="checkbox"]').on('change', function () {
+        const isChecked = $(this).is(':checked');
+        const table = $(this).closest('table');
+        const selectAllCheckbox = table.find('thead input[type="checkbox"]');
+        const allCheckboxes = table.find('tbody input[type="checkbox"]:not([disabled])');
+        const checkedCheckboxes = allCheckboxes.filter(':checked');
+
+        // Update "Select All" checkbox state
+        if (checkedCheckboxes.length === allCheckboxes.length) {
+            selectAllCheckbox.prop('checked', true);
+        } else {
+            selectAllCheckbox.prop('checked', false);
+        }
+
+        // Show or hide the bulk edit section based on the checkbox state
+        table.closest('.permission-type').find('.pp-exception-bulk-edit').toggle(isChecked);
+    });
+
     $('#pp_current_exceptions input').on('click', function (e) {
         $(this).closest('div.pp-current-type-roles').find('div.pp-exception-bulk-edit').show();
     });
@@ -679,7 +720,11 @@ jQuery(document).ready(function ($) {
 
         $.each(deleted_ass_ids, function (index, value) {
             cbid = $('#pp_current_exceptions input[name="pp_edit_exception[]"][value="' + value + '"]').attr('id');
-            $('#' + cbid).closest('label').parent().remove();
+            if ($('#' + cbid).closest('tr.checkbox-row').length) {
+                $('#' + cbid).closest('tr.checkbox-row').remove();
+            } else {
+                $('#' + cbid).closest('label').parent().remove();
+            }
 
             var ass_ids = value.split(','); // some checkboxes represent both an item and child exception_item
             for (i = 0; i < ass_ids.length; ++i) {
@@ -736,7 +781,11 @@ jQuery(document).ready(function ($) {
             if (('exceptions_mirror' == operation) || ('exceptions_convert' == operation)) {
                 $('#' + cbid).closest('div').find('label input').attr('class', set_class);
                 $('#' + cbid).prop('checked', false);
-                $('#' + cbid).closest('div.pp-current-type-roles').find('div.pp-exception-bulk-edit div.mirror-confirm').html(set_message).show();
+                if ($('#' + cbid).closest('div.permission-type').length) {
+                    $('#' + cbid).closest('div.permission-type').find('div.pp-exception-bulk-edit div.mirror-confirm').html(set_message).show();
+                } else {
+                    $('#' + cbid).closest('div.pp-current-type-roles').find('div.pp-exception-bulk-edit div.mirror-confirm').html(set_message).show();
+                }
             } else {
                 $('#' + cbid).closest('div').find('label').attr('class', set_class);
 
@@ -751,21 +800,29 @@ jQuery(document).ready(function ($) {
     }
 
     $('#pp_current_exceptions input.submit-edit-item-exception').on('click', function (e) {
-        var action = $(this).closest('div.pp-current-type-roles').find('div.pp-exception-bulk-edit select').first().val();
+        var action = $(this).closest('div.pp-exception-bulk-edit').find('select').first().val();
 
         if (!action) {
             alert(ppRestrict.noAction);
             return false;
         }
 
-        var selected_ids = new Array();
-        $(this).closest('div.pp-current-exceptions').find('input[type="checkbox"]:checked').each(function () {
-            selected_ids.push($(this).attr('value'));
-        });
+        var selected_ids = [];
+        if ($(this).closest('div.permission-type').length) {
+            $(this).closest('div.permission-type').find('input[name="pp_edit_exception[]"]:checked').each(function () {
+                selected_ids.push($(this).val());
+            });
+        } else {
+            $(this).closest('div.pp-current-exceptions').find('input[type="checkbox"]:checked').each(function () {
+                selected_ids.push($(this).val());
+            });
+        }
+
 
         var rids = selected_ids.join('|');
 
         if (!rids) {
+            alert(ppRestrict.noItems);
             return false;
         }
 
@@ -775,10 +832,10 @@ jQuery(document).ready(function ($) {
         switch (action) {
             case 'remove':
                 presspermitAjaxSubmit('exceptions_remove', presspermitRemoveExceptionsDone, rids);
-                break
+                break;
             default:
                 presspermitAjaxSubmit('exceptions_' + action, presspermitEditExceptionsDone, rids);
-                break
+                break;
         }
 
         return false;
