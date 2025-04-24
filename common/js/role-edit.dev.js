@@ -201,6 +201,10 @@ jQuery(document).ready(function ($) {
 
 
     // ========== Begin "Edit Roles" Submission scripts ==========
+    $('#pp_current_roles .type-roles-wrapper input').on('click', function (e) {
+        //$(this).closest('div.pp-current-roles').find('div.pp-role-bulk-edit').show();
+        $('div.pp-role-bulk-edit').show();
+    });
     function toggleBulkEditVisibility() {
         const anyChecked = $('#pp_current_roles input[type="checkbox"]:checked').length > 0;
         $('div.pp-role-bulk-edit').toggle(anyChecked);
@@ -261,12 +265,17 @@ jQuery(document).ready(function ($) {
 
         var deleted_ass_ids = data.split('|');
 
-        deleted_ass_ids.forEach(value => {
+        $.each(deleted_ass_ids, function (index, value) {
             const row = $(`#pp_current_roles input[name="pp_edit_role[]"][value="${value}"]`).closest('tr');
-            const table = row.closest('table');
-            row.remove();
-            if (!table.find('tbody tr').length) {
-                table.closest('.pp-current-site-roles').remove();
+            if (!row.length){
+                cbid = $('#pp_current_roles input[name="pp_edit_role[]"][value="' + value + '"]').attr('id');
+                $('#' + cbid).closest('label').remove();
+            } else {
+                const table = row.closest('table');
+                row.remove();
+                if (!table.find('tbody tr').length) {
+                    table.closest('.pp-current-site-roles').remove();
+                }
             }
         });
     }
