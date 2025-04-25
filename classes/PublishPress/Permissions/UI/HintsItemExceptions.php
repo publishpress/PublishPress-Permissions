@@ -15,7 +15,7 @@ class HintsItemExceptions
                 esc_html_e('To block direct access to unreadable files, activate the File Access feature.', 'press-permit-core');
             } else {
                 printf(
-                    esc_html__('To block direct access to unreadable files, %1$supgrade to Permissions Pro%2$s and install the File Access feature.', 'press-permit-core'),
+                    esc_html__('To block direct access to unreadable files, %1$supgrade to Permissions Pro%2$s and enable the File Access feature.', 'press-permit-core'),
                     '<a href="https://publishpress.com/pricing/">',
                     '</a>'
                 );
