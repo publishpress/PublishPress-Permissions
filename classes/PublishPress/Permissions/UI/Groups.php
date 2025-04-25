@@ -261,10 +261,10 @@ class Groups
                         echo "<div class='pp-ext-promo'>";
 
                         if (presspermit()->isPro()) {
-                            echo esc_html__('To assign roles or permissions to BuddyPress groups, activate the Compatibility Pack module', 'press-permit-core');
+                            echo esc_html__('To assign roles or permissions to BuddyPress groups, activate the Compatibility Pack feature', 'press-permit-core');
                         } else {
                             printf(
-                                esc_html__('To assign roles or permissions to BuddyPress groups, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                                esc_html__('To assign roles or permissions to BuddyPress groups, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack feature.', 'press-permit-core'),
                                 '<a href="https://publishpress.com/pricing/">',
                                 '</a>'
                             );

@@ -47,10 +47,10 @@ class SettingsAdmin
         return __("If enabled, corresponding Media edit and delete capabilities must be added to existing roles.", 'press-permit-core-hints');
 
         case 'define_media_post_caps_collab_prompt' :
-        return  __("For specialized Media Library permissions, enable the Editing Permissions module.", 'press-permit-core-hints');
+        return  __("For specialized Media Library permissions, enable the Editing Permissions feature.", 'press-permit-core-hints');
 
         case 'bbp_compat_prompt' :
-        return __('To customize bbPress forum permissions, activate the Compatibility Pack module.', 'press-permit-core-hints');
+        return __('To customize bbPress forum permissions, activate the Compatibility Pack feature.', 'press-permit-core-hints');
 
         case 'bbp_pro_prompt' :
         return __('To customize bbPress forum permissions, activate your Permissions Pro license key.', 'press-permit-core-hints');
@@ -218,7 +218,7 @@ class SettingsAdmin
         return esc_html__("If auto-assign term setting is enabled, apply it even if user does not have term assignment limitations", 'press-permit-core-hints');
 
         case 'PP_NO_MODERATION' :
-		return esc_html__("Don't define an 'Approved' status, even if Status Control module is active", 'press-permit-core-hints');
+		return esc_html__("Don't define an 'Approved' status, even if Status Control feature is active", 'press-permit-core-hints');
 
 
         // 'nav-menu-manage'

@@ -17,10 +17,10 @@ class HintsPostEdit
                     + '<span class="pp-ext-promo" style="display:none;"><br />'
                     + '<?php 
                     if ($pp->moduleExists('status-control')) {
-                        esc_html_e('To define custom privacy statuses, activate the Status Control module.', 'press-permit-core');
+                        esc_html_e('To define custom privacy statuses, activate the Status Control feature.', 'press-permit-core');
                     } else {
                         printf(
-                            esc_html__('To define custom privacy statuses, %1$supgrade to Permissions Pro%2$s and enable the Status Control module.', 'press-permit-core'),
+                            esc_html__('To define custom privacy statuses, %1$supgrade to Permissions Pro%2$s and enable the Status Control feature.', 'press-permit-core'),
                             '<a href="https://publishpress.com/pricing/">',
                             '</a>'
                         );
