@@ -281,13 +281,9 @@ class SettingsTabCore
                                 if (in_array('attachment', presspermit()->getEnabledPostTypes(), true)) {
                                     echo '<br><div>';
 
-                                    if (!presspermit()->isPro()) {
-                                        $hint = SettingsAdmin::getStr('define_media_post_caps_pro');
-                                    } else {
-                                        $hint = defined('PRESSPERMIT_COLLAB_VERSION')
-                                            ? SettingsAdmin::getStr('define_media_post_caps')
-                                            : SettingsAdmin::getStr('define_media_post_caps_collab_prompt');
-                                    }
+                                    $hint = defined('PRESSPERMIT_COLLAB_VERSION')
+                                        ? SettingsAdmin::getStr('define_media_post_caps')
+                                        : SettingsAdmin::getStr('define_media_post_caps_collab_prompt');
 
                                     $ret = $ui->optionCheckbox('define_media_post_caps', $tab, $section, $hint, '');
 
