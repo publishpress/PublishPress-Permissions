@@ -73,7 +73,7 @@ class SettingsTabAdvanced
 
         // Settings that are displayed if already set to a non-default value, or if "Display all" is enabled
         $de_emphasized_settings = [
-            'pattern_roles_include_generic_rolecaps' => esc_html__('Type-specific Supplemental Roles grant all general capabilities in Pattern Role', 'press-permit-core'),
+            'pattern_roles_include_generic_rolecaps' => esc_html__('Type-specific Supplemental Roles grant all capabilities in Pattern Role', 'press-permit-core'),
             'strip_private_caption'                  => esc_html__('Suppress "Private: " Caption', 'press-permit-core'),
             'new_user_groups_ui'                     => esc_html__('Select Permission Groups at User creation', 'press-permit-core'),
             'display_user_profile_groups'            => esc_html__('Permission Groups on User Profile', 'press-permit-core'),
@@ -361,11 +361,11 @@ class SettingsTabAdvanced
                     if (defined('PRESSPERMIT_COLLAB_VERSION')) {
                         $url = Settings::pluginInfoURL('capability-manager-enhanced');
     
-                        $hint = esc_html__('If enabled, users cannot add previously non-existent tags to a post unless their role includes the Edit capability for its taxonomy. You can use a WordPress role editor like PublishPress Capabilities to add these capabilities to any role that needs it.', 'press-permit-core');
+                        $hint = esc_html__('If enabled, users cannot create new tags for a post unless they have the edit_tags capability. You can manage this with a WordPress role editor like PublishPress Capabilities.', 'press-permit-core');
                         if (defined('PUBLISHPRESS_CAPS_VERSION')) {
                             $url = admin_url('admin.php?page=pp-capabilities');
     
-                            $hint = esc_html__('If enabled, users cannot add previously non-existant tags to a post unless their role includes the Edit capability for its taxonomy. You can add these capabilities to Capabilities > Capabilities > Taxonomies for any role that needs it.', 'press-permit-core');
+                            $hint = esc_html__('If enabled, users cannot create new tags for a post unless they have the edit_tags capability. You can manage this with Capabilities > Capabilities > Taxonomies for any role.', 'press-permit-core');
                         }
                         $ui->optionCheckbox('create_tag_require_edit_cap', $tab, $section, $hint);
                     }
@@ -551,18 +551,7 @@ class SettingsTabAdvanced
                         </ul>
                     </div>
 
-                    <?php if (presspermit()->getOption('display_hints')) : ?>
-                    <span class="pp-subtext">
-                        <?php
-                        printf(
-                            esc_html__("%sNote%s: If you don't see the Roles column on the Users screen, make sure it is enabled in Screen Options. ", 'press-permit-core'),
-                            '<strong>',
-                            '</strong>'
-                        );
-                        ?>
-                    </span>
-                    <?php endif; 
-                    
+                    <?php
                     do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
                     ?>
                 </td>

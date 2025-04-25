@@ -217,7 +217,7 @@ class AgentPermissionsUI
             if (!$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) : ?>
                 <div>
                     <?php
-                    esc_html_e('To assign page-specific Permissions for editing, parent selection or term assignment, enable the Editing Permissions module.', 'press-permit-core');
+                    esc_html_e('To assign page-specific Permissions for editing, parent selection or term assignment, enable the Editing Permissions feature.', 'press-permit-core');
                     ?>
                 </div>
             <?php endif;
@@ -229,10 +229,10 @@ class AgentPermissionsUI
                 <div>
                     <?php
                     if (presspermit()->isPro())
-                        esc_html_e('To assign forum-specific Permissions for bbPress, activate the Compatibility Pack module.', 'press-permit-core');
+                        esc_html_e('To assign forum-specific Permissions for bbPress, activate the Compatibility Pack feature.', 'press-permit-core');
                     else
                         printf(
-                            esc_html__('To assign forum-specific Permissions for bbPress, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                            esc_html__('To assign forum-specific Permissions for bbPress, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack feature.', 'press-permit-core'),
                             '<a href="https://publishpress.com/pricing/">',
                             '</a>'
                         );
@@ -295,7 +295,7 @@ class AgentPermissionsUI
                 <div>
                     <?php
                     if (presspermit()->isPro()) {
-                        esc_html_e('To assign roles for custom post statuses, activate the Status Control module.', 'press-permit-core');
+                        esc_html_e('To assign roles for custom post statuses, activate the Status Control feature.', 'press-permit-core');
                     }
                     ?>
                 </div>
@@ -304,10 +304,10 @@ class AgentPermissionsUI
                     <?php
                     if (function_exists('bbp_get_version') && !$pp->moduleActive('compatibility') && $pp->getOption('display_extension_hints')) {
                         if (presspermit()->isPro()) {
-                            esc_html_e('To assign roles for bbPress forums, activate the Compatibility Pack module.', 'press-permit-core');
+                            esc_html_e('To assign roles for bbPress forums, activate the Compatibility Pack feature.', 'press-permit-core');
                         } else {
                             printf(
-                                esc_html__('To assign roles for bbPress forums, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack module.', 'press-permit-core'),
+                                esc_html__('To assign roles for bbPress forums, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack feature.', 'press-permit-core'),
                                 '<a href="https://publishpress.com/pricing/">',
                                 '</a>'
                             );
@@ -319,7 +319,7 @@ class AgentPermissionsUI
 
                 if ((defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION')) && !$pp->moduleActive('collaboration') && $pp->getOption('display_extension_hints')) : ?>
                 <div>
-                    <?php esc_html_e('To assign page-specific PublishPress Revision permissions, enable the Editing Permissions module.', 'press-permit-core'); ?>
+                    <?php esc_html_e('To assign page-specific PublishPress Revision permissions, enable the Editing Permissions feature.', 'press-permit-core'); ?>
                 </div>
             <?php endif; ?>
         </div><?php
