@@ -274,6 +274,7 @@ class AgentsDynamicUI
         }
 
         $pp = presspermit();
+        $pp_plugin_page = presspermitPluginPage();
 
         $width = ($width) ? "width:{$width}px;" : '';
 
@@ -385,7 +386,20 @@ class AgentsDynamicUI
 
             </tr>
             <tr>
-                <td><select <?php echo $multi_select ? 'multiple="multiple"' : '' ; ?> id="v2_agent_search_text_<?php echo esc_attr("{$op}:{$for_item_type}:{$agent_type}"); ?>" name="_select-<?php echo esc_attr("$op-$for_item_type-$agent_type"); ?>[]"></select></td>
+                <td style="padding-top: <?php echo $display_stored_selections ? '3em' : '0';?>;">
+                    <select multiple="multiple" id="v2_agent_search_text_<?php echo esc_attr("{$op}:{$for_item_type}:{$agent_type}"); ?>" name="_select-<?php echo esc_attr("$op-$for_item_type-$agent_type"); ?>[]"></select>
+                    <br>
+                    <br>
+                    <?php do_action('presspermit_agents_selection_ui_select_pre', $id_suffix); ?>
+                    <?php if (defined('PRESSPERMIT_MEMBERSHIP_VERSION') && in_array($pp_plugin_page, ['presspermit-edit-permissions', 'presspermit-group-new'], true)) : ?>
+                    <br>
+                    <button type="button" id="select_agents_<?php echo esc_attr($id_suffix); ?>" class="pp_add button pp-default-button"
+                        style="<?php if (!$multi_select) : ?>display:none;<?php endif; ?>margin-top:8px;">
+
+                        <?php echo esc_html($label_select); ?>
+                    </button>
+                    <?php endif; ?>
+                </td>
                 <td style="display: none;">
                     <h4>
                         <?php esc_html_e('Search Results:', 'press-permit-core'); ?>
@@ -426,6 +440,9 @@ class AgentsDynamicUI
 
                             foreach ($current_selections as $agent) : ?>
                                 <?php
+                                $first_name = get_user_meta($agent->ID, 'first_name', true);
+                                $last_name = get_user_meta($agent->ID, 'last_name', true);
+                                $agent->$display_property = trim($first_name . ' ' . $last_name. ' (' . $agent->display_name . ')');
                                 $title = (isset($agent->display_name) && ($agent->user_login != $agent->display_name))
                                     ? esc_attr($agent->display_name)
                                     : '';
@@ -448,31 +465,11 @@ class AgentsDynamicUI
                             <?php endforeach; ?>
 
                         </select><br />
-                    </td>
-
-                <?php endif; ?>
-            </tr>
-
-            <?php do_action('_presspermit_agents_selection_ui_select_pre', $id_suffix); ?>
-            <tr style="display: none;">
-                <?php do_action('presspermit_agents_selection_ui_select_pre', $id_suffix); ?>
-
-                <td>
-                    <button type="button" id="select_agents_<?php echo esc_attr($id_suffix); ?>" class="pp_add button pp-default-button"
-                        style="<?php if (!$multi_select) : ?>display:none;<?php endif; ?>">
-
-                        <?php echo esc_html($label_select); ?>
-                    </button>
-                </td>
-
-                <?php if ($display_stored_selections) : ?>
-                    <td class="pp-members-current">
                         <button type="button" id="unselect_agents_<?php echo esc_attr($id_suffix); ?>" class="pp_remove button pp-default-button"
-                            style="margin-left: 24px;">
-                            <?php echo esc_html($label_unselect); ?></button>
+                            style="margin: 8px 0 0 8px;"><?php echo esc_html($label_unselect); ?></button>
                     </td>
-                <?php endif; ?>
 
+                <?php endif; ?>
             </tr>
         </table>
         <?php
@@ -495,7 +492,6 @@ class AgentsDynamicUI
         // note: this is also done in AdminFiltersItemUI() constructor
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
         wp_enqueue_script('presspermit-listbox', PRESSPERMIT_URLPATH . "/common/js/listbox{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
-        wp_enqueue_script('presspermit-agent-select', PRESSPERMIT_URLPATH . "/common/js/agent-exception-select{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
         $wp_scripts->in_footer[] = 'presspermit-listbox'; // otherwise it will not be printed in footer
 
         if ('user' == $agent_type) {
@@ -512,6 +508,8 @@ class AgentsDynamicUI
                     'metagroups' => 1
                 ]
             );
+
+            wp_enqueue_script('presspermit-agent-select', PRESSPERMIT_URLPATH . "/common/js/agent-exception-select{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_VERSION, true);
 
             $arr = array_merge($args, ['agent_type' => $agent_type, 'ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax')]);
             wp_localize_script('presspermit-agent-select', 'ppException', $arr);
@@ -580,9 +578,8 @@ class AgentsDynamicUI
 
     public function actAjaxSelectionScripts()
     {
-        global $pp_plugin_page;
-
-        // $args: agent_id supports contextual filtering of search results (e.g. group search omits groups which specified user is already a member of)
+        global $pagenow;
+        $is_post_page = in_array($pagenow, ['post.php', 'post-new.php']);
 
         // todo: clean up js loading logic
         if ($this->agents_js_queue) {
@@ -602,7 +599,8 @@ class AgentsDynamicUI
                 <?php foreach ($this->agents_js_queue as $args) : ?>
                     presspermitLoadAgentsJS('<?php echo esc_attr($args['id_sfx']); ?>', '<?php echo esc_attr($args['agent_type']); ?>', '<?php echo esc_attr($args['context']); ?>', '<?php echo esc_attr($args['agent_id']); ?>', '<?php echo esc_attr($args['suppress_selection_js']); ?>', <?php if ($author_selection_only) echo 'true'; else echo 'false'; ?>);
                     
-                    <?php if ((empty($pp_plugin_page) || in_array($pp_plugin_page, ['presspermit-edit-permissions', 'presspermit-group-new']))  && ('select-author' != $args['id_sfx'])) :?>
+                    <?php
+                    if ($is_post_page && ('select-author' != $args['id_sfx'])) :?>
                         presspermitLoadSelect2AgentsJS('<?php echo esc_attr($args['id_sfx']); ?>', '<?php echo esc_attr($args['agent_type']); ?>', '<?php echo esc_attr($args['context']); ?>', '<?php echo esc_attr($args['agent_id']); ?>', '<?php echo esc_attr($args['suppress_selection_js']); ?>', <?php if ($author_selection_only) echo 'true';                                                                                                                                                                                                                                                                  else echo 'false'; ?>);
                     <?php endif;?>
                 <?php endforeach; ?>

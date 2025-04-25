@@ -108,6 +108,12 @@
                         currentValues.push($(item).val());
                     });
 
+                    if (args2.topic === 'member') {
+                        $(selector).closest('table').find('.pp-members-current').find('select#member option').each(function (i, item) {
+                            currentValues.push($(item).val());
+                        });
+                    }
+
                     // Parse the HTML response to extract options
                     $(data)
                     .filter("option")
