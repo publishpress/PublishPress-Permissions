@@ -572,7 +572,12 @@ class AgentPermissionsUI
                 $exc = $pp->getExceptions($_args);
                 $args['class'] = ('user' == $agent_type) ? 'pp-user-roles' : 'pp-group-roles';
 
-                self::currentExceptionsUIV2($exc, $args);
+                ?>
+                <div style="display: flex;">
+                    <div><?php self::currentExceptionsUI($exc, $args); ?></div>
+                    <div><?php self::currentExceptionsUIV2($exc, $args); ?></div>
+                </div>
+                <?php
 
                 do_action('presspermit_group_roles_ui', $agent_type, $agent_id);
             }
