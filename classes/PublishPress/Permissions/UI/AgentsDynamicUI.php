@@ -580,6 +580,7 @@ class AgentsDynamicUI
     {
         global $pagenow;
         $is_post_page = in_array($pagenow, ['post.php', 'post-new.php']);
+        $is_membership_activated = defined('PRESSPERMIT_MEMBERSHIP_VERSION') && in_array(presspermitPluginPage(), ['presspermit-edit-permissions', 'presspermit-group-new'], true);
 
         // todo: clean up js loading logic
         if ($this->agents_js_queue) {
@@ -600,7 +601,7 @@ class AgentsDynamicUI
                     presspermitLoadAgentsJS('<?php echo esc_attr($args['id_sfx']); ?>', '<?php echo esc_attr($args['agent_type']); ?>', '<?php echo esc_attr($args['context']); ?>', '<?php echo esc_attr($args['agent_id']); ?>', '<?php echo esc_attr($args['suppress_selection_js']); ?>', <?php if ($author_selection_only) echo 'true'; else echo 'false'; ?>);
                     
                     <?php
-                    if ($is_post_page && ('select-author' != $args['id_sfx'])) :?>
+                    if (($is_post_page && ('select-author' != $args['id_sfx'])) || !$is_membership_activated) :?>
                         presspermitLoadSelect2AgentsJS('<?php echo esc_attr($args['id_sfx']); ?>', '<?php echo esc_attr($args['agent_type']); ?>', '<?php echo esc_attr($args['context']); ?>', '<?php echo esc_attr($args['agent_id']); ?>', '<?php echo esc_attr($args['suppress_selection_js']); ?>', <?php if ($author_selection_only) echo 'true';                                                                                                                                                                                                                                                                  else echo 'false'; ?>);
                     <?php endif;?>
                 <?php endforeach; ?>
