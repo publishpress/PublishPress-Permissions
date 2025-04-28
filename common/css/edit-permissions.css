@@ -445,7 +445,7 @@ label.role_ch:after {
 }
 tr.pp_faded td,
 label.pp_faded {
-  color: #aaa;
+  color: #aa8d8d;
 }
 #pp_current_exceptions .inherited {
   font-style: italic;

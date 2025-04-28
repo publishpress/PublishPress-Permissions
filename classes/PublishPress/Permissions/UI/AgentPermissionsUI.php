@@ -823,7 +823,8 @@ class AgentPermissionsUI
                             echo '<th class="checkbox-column">';
                             echo '<input id="cb-select-all-' . esc_attr($source_name . '_' . $object_type) . '" type="checkbox" />';
                             echo '</th>';
-                            echo '<th style="width: 70%;">Role</th>';
+                            echo '<th style="width: 60%;">Role</th>';
+                            echo '<th>Status</th>';
                             echo '<th>Remove</th>';
                             echo '</tr>';
                             echo '</thead>';
@@ -854,6 +855,7 @@ class AgentPermissionsUI
                                 echo '<td>';
                                 $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true]);
                                 echo '</td>';
+                                echo '<td>' . self::getRoleStatusLabel($pp, $role_name, $source_name, $object_type) . ' </td>';
                                 echo '<td>';
                                 echo '<div class="pp_clear">';
                                 echo '<a href="javascript:void(0)" class="pp_clear" onclick="event.stopPropagation();">remove</a>';
@@ -2202,5 +2204,36 @@ class AgentPermissionsUI
                             }
                         }
                         return (isset($mod_types[$mod_type])) ? $mod_types[$mod_type] : (object)[];
+                    }
+
+                    private static function getRoleStatusLabel($pp, $role_name, $source_name, $object_type)
+                    {
+                        $type_obj = $pp->getTypeObject($source_name, $object_type);
+                        $type_caps = $pp->getRoleCaps($role_name);
+                        $direct_assignment = (false === strpos($role_name, ':'));
+                        $lbl_status = '';
+
+                        if (!empty($type_caps['edit_posts']) || $direct_assignment) {
+                            $do_standard_statuses_ui = true;
+                        } else {
+                            if (empty($type_caps)) {
+                                $arr_role_name = explode(':', $role_name);
+                                if (in_array($arr_role_name[0], ['contributor', 'author', 'editor', 'revisor'], true)) {
+                                    $do_standard_statuses_ui = true;
+                                }
+                            }
+                        }
+
+                        if (!empty($do_standard_statuses_ui)) {
+                            $lbl_status = esc_html__('Standard statuses', 'press-permit-core');
+                        }
+
+                        // edit_private, delete_private caps are normally cast from pattern role
+                        if ((isset($type_caps['read']) || isset($type_caps[PRESSPERMIT_READ_PUBLIC_CAP])) && (empty($type_caps['edit_posts']) || $direct_assignment)) {
+                            $pvt_obj = get_post_status_object('private');
+                            $lbl_status = sprintf(esc_html__('%s Visibility', 'press-permit-core'), esc_html($pvt_obj->label));
+                        }
+
+                        return $lbl_status;
                     }
                 }
