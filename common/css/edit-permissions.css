@@ -147,6 +147,22 @@
 .table-hover tbody tr:hover td {
   background-color: rgba(0, 0, 0, 0.075) !important;
 }
+.table .sortable {
+  cursor: pointer;
+}
+.table .sortable:after {
+  content: " ▼";
+  /* Default sort indicator */
+  font-size: 0.8em;
+}
+.table .sortable.asc:after {
+  content: " ▲";
+  /* Ascending sort indicator */
+}
+.table .sortable.desc:after {
+  content: " ▼";
+  /* Descending sort indicator */
+}
 @media (max-width: 768px) {
   .table-responsive {
     display: block;
@@ -596,6 +612,13 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   border: 1px solid #e5e7eb;
   font-size: 14px;
   width: 200px;
+}
+#pp_current_exceptions .icon-guidance {
+  padding: 12px 24px;
+}
+#pp_current_exceptions .checkbox-column {
+  width: 1%;
+  text-align: center;
 }
 #pp_current_exceptions .permission-type {
   padding: 12px 24px;
