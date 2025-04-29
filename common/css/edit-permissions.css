@@ -353,7 +353,8 @@ input.submit-edit-item-role {
 #pp_current_roles a:hover {
   text-decoration: underline;
 }
-#pp_current_roles .checkbox-column {
+#pp_current_roles .checkbox-column,
+#pp_current_roles .action-column {
   width: 1%;
   text-align: center;
 }
@@ -616,7 +617,8 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
 #pp_current_exceptions .icon-guidance {
   padding: 12px 24px;
 }
-#pp_current_exceptions .checkbox-column {
+#pp_current_exceptions .checkbox-column,
+#pp_current_exceptions .action-column {
   width: 1%;
   text-align: center;
 }

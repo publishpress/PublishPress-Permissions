@@ -825,7 +825,7 @@ class AgentPermissionsUI
                             echo '</th>';
                             echo '<th style="width: 60%;">Role</th>';
                             echo '<th>Status</th>';
-                            echo '<th>Remove</th>';
+                            echo '<th class="action-column">Remove</th>';
                             echo '</tr>';
                             echo '</thead>';
                             echo '<tbody>';
@@ -1661,7 +1661,7 @@ class AgentPermissionsUI
                                 echo '<th>';
                                 echo esc_html(sprintf(__('%s', 'press-permit-core'), $tx_caption));
                                 echo '</th>';
-                                echo '<th>Action</th>';
+                                echo '<th class="action-column">Action</th>';
                                 echo '</tr>';
                                 echo '</thead>';
                                 echo '<tbody>';
@@ -1797,7 +1797,7 @@ class AgentPermissionsUI
                                                 echo '<td>'
                                                     . '<span>' . $icon . ' ' . $item_with_status . '</span>'
                                                     . '</td>';
-                                                echo '<td>'
+                                                echo '<td class="action-column">'
                                                     . '<a href="' . esc_url($edit_url) . '">' . esc_html__('edit') . '</a>'
                                                     . '</td>';
                                             }

@@ -658,6 +658,17 @@ jQuery(document).ready(function ($) {
         }
     });
 
+    // Handle row click to toggle checkbox
+    $('#pp_current_exceptions .checkbox-row').on('click', function (e) {
+        // Prevent triggering the event if the user clicks directly on the checkbox or an anchor
+        if ($(e.target).is('input[type="checkbox"]') || $(e.target).is('a')) {
+            return;
+        }
+
+        const checkbox = $(this).find('input[type="checkbox"]');
+        checkbox.prop('checked', !checkbox.prop('checked')).trigger('change');
+    });
+
     // Handle "Select All" checkbox
     $('#pp_current_exceptions input[id^="cb-select-all-"]').on('change', function () {
         const isChecked = $(this).is(':checked');
@@ -672,21 +683,17 @@ jQuery(document).ready(function ($) {
     
     // Handle individual checkbox behavior
     $('#pp_current_exceptions .checkbox-row input[type="checkbox"]').on('change', function () {
-        const isChecked = $(this).is(':checked');
         const table = $(this).closest('table');
         const selectAllCheckbox = table.find('thead input[type="checkbox"]');
         const allCheckboxes = table.find('tbody input[type="checkbox"]:not([disabled])');
         const checkedCheckboxes = allCheckboxes.filter(':checked');
 
         // Update "Select All" checkbox state
-        if (checkedCheckboxes.length === allCheckboxes.length) {
-            selectAllCheckbox.prop('checked', true);
-        } else {
-            selectAllCheckbox.prop('checked', false);
-        }
+        selectAllCheckbox.prop('checked', checkedCheckboxes.length === allCheckboxes.length);
 
         // Show or hide the bulk edit section based on the checkbox state
-        table.closest('.permission-type').find('.pp-exception-bulk-edit').toggle(isChecked);
+        const anyChecked = checkedCheckboxes.length > 0;
+        table.closest('.permission-type').find('.pp-exception-bulk-edit').toggle(anyChecked);
     });
 
     $('#pp_current_exceptions input').on('click', function (e) {
