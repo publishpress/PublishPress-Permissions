@@ -302,7 +302,10 @@ class AgentEdit
             $group = $pp->groups()->getGroup($group_id, $agent_type);
         } else {
             $update = false;
-            $group = (object)[];
+            $group = (object)[
+                'group_name' => '',
+                'group_description' => '',
+            ];
         }
 
         if (!$members_only) {
