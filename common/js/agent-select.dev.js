@@ -47,12 +47,22 @@ function presspermitBuildSelectionCSV(list_id, $) {
 
 function presspermitSelectAgents(id_sfx, select_into, hierarchical) {
     jQuery(document).ready(function ($) {
-        $("#agent_results_" + id_sfx + " option:selected").each(function (i) {
-            if ($("#" + id_sfx + " option[value='" + $(this).attr("value") + "']").length == 0) {
-                $("#" + id_sfx).append('<option value="' + $(this).attr("value") + '" title="' + $(this).html() + '" class="pp-new-selection">' + $(this).html() + '</option>');
-                $(this).remove();
-            }
-        });
+        var selector = '#' + CSS.escape('v2_agent_search_text_' + id_sfx + '::' + select_into);
+        if ($(selector).length) {
+            $(selector).select2('data').forEach(function (item) {
+                if ($("#" + id_sfx + " option[value='" + item.id + "']").length === 0) {
+                    $("#" + id_sfx).append('<option value="' + item.id + '" title="' + item.text + '" class="pp-new-selection">' + item.text + '</option>');
+                }
+            });
+            $(selector).val(null).trigger('change');
+        } else {
+            $("#agent_results_" + id_sfx + " option:selected").each(function (i) {
+                if ($("#" + id_sfx + " option[value='" + $(this).attr("value") + "']").length == 0) {
+                    $("#" + id_sfx).append('<option value="' + $(this).attr("value") + '" title="' + $(this).html() + '" class="pp-new-selection">' + $(this).html() + '</option>');
+                    $(this).remove();
+                }
+            });
+        }
 
         presspermitBuildSelectionCSV(id_sfx, $);
     });
@@ -65,3 +75,12 @@ function presspermitUnselectListAgents(id_sfx) {
     });
 }
 
+function presspermitLoadSelect2AgentsJS(id_sfx, agent_type, context, agent_id, selection_only) {
+    jQuery(document).ready(function ($) {
+        var id_sfx_dashed = `${id_sfx}::${agent_type}`.replace(':', '-').replace(':', '-');
+        $('select[name="_select-' + id_sfx_dashed + '\\[\\]"]').on('select2:select', function (e) {
+            presspermitSelectAgents(id_sfx, agent_type);
+            return false;
+        });
+    });
+}
