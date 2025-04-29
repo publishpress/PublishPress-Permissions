@@ -870,7 +870,7 @@ class AgentPermissionsUI
                         echo '</tbody>';
                         echo '</table>';
                         echo '</div>'; // end type-roles-wrapper
-                        echo '</div>'; // end pp_current_site_roles
+                        echo '</div>'; // end pp-current-site-roles
                     } // end foreach object_type
                 } // end foreach source_name
                 echo '<br /><div class="pp-role-bulk-edit" style="display:none">';
@@ -1554,7 +1554,6 @@ class AgentPermissionsUI
 
                 echo "<div id='pp_current_exceptions' class='container'>"; // wrapper div for all exceptions
                 echo '<h3>' . ($link ? "<a href='" . esc_url($link) . "'>" . esc_html($caption) . "</a>" : esc_html($caption)) . '</h3>';
-                echo '<div>'; // inner div for all exceptions
 
                 if (PWP::empty_REQUEST('all_types') && !empty($exceptions['post'])) {
                     $all_types = array_fill_keys(array_merge($post_types, $taxonomies, ['']), true);
@@ -1656,10 +1655,13 @@ class AgentPermissionsUI
                                 echo '<tr>';
                                 echo '<th class="checkbox-column">';
                                 echo '<label for="cb-select-all-' . esc_attr($operation) . '_' . esc_attr($for_src) . '_' . esc_attr($via_src) . '_' . esc_attr($via_type) . '">';
-                                echo '<input id="cb-select-all-' . esc_attr($operation) . '_' . esc_attr($for_src) . '_' . esc_attr($via_src) . '_' . esc_attr($via_type) . '" type="checkbox" />&nbsp;';
-                                echo esc_html(sprintf(__('%s', 'press-permit-core'), $tx_caption));
+                                echo '<input id="cb-select-all-' . esc_attr($operation) . '_' . esc_attr($for_src) . '_' . esc_attr($via_src) . '_' . esc_attr($via_type) . '" type="checkbox" />';
                                 echo '</label>';
                                 echo '</th>';
+                                echo '<th>';
+                                echo esc_html(sprintf(__('%s', 'press-permit-core'), $tx_caption));
+                                echo '</th>';
+                                echo '<th>Action</th>';
                                 echo '</tr>';
                                 echo '</thead>';
                                 echo '<tbody>';
@@ -1739,11 +1741,11 @@ class AgentPermissionsUI
                                             if (isset($assignment['children'])) {
                                                 if (isset($assignment['item'])) {
                                                     $ass_id = $assignment['item'] . ',' . $assignment['children'];
-                                                    $classes[] = 'role_both';
+                                                    // $classes[] = 'role_both';
                                                     $any_both = true;
                                                 } else {
                                                     $ass_id = '0,' . $assignment['children'];
-                                                    $classes[] = 'role_ch';
+                                                    // $classes[] = 'role_ch';
                                                     $any_child_only = true;
                                                 }
                                             } else {
@@ -1788,9 +1790,16 @@ class AgentPermissionsUI
                                                 } elseif (strpos($mod_caption, 'Limit to') !== false) {
                                                     $icon = '<i class="dashicons dashicons-warning" style="color:#f59e0b;"></i>';
                                                 }
-                                                echo "<tr class='checkbox-row " . esc_attr($tr_class) . "'><td>";
-                                                echo "<div class='pp-role-container'><label for='" . esc_attr($cb_id) . "' class='" . esc_attr($lbl_class) . "'><input id='" . esc_attr($cb_id) . "' type='checkbox' name='pp_edit_exception[]' value='" . esc_attr($ass_id) . "' class='" . esc_attr($class) . "' autocomplete='off'> " . $item_with_status . $icon . '</label><a href="' . esc_url($edit_url) . '">' . esc_html__('edit') . '</a></div>';
-                                                echo '</td>';
+                                                echo '<tr class="checkbox-row ' . esc_attr($tr_class) . '">';
+                                                echo '<td class="checkbox-column"><label for="' . esc_attr($cb_id) . '" class="' . esc_attr($lbl_class) . '">'
+                                                    . '<input id="' . esc_attr($cb_id) . '" type="checkbox" name="pp_edit_exception[]" value="' . esc_attr($ass_id) . '" class="' . esc_attr($class) . '" autocomplete="off"> ' . '</label>'
+                                                    . '</td>';
+                                                echo '<td>'
+                                                    . '<span>' . $icon . ' ' . $item_with_status . '</span>'
+                                                    . '</td>';
+                                                echo '<td>'
+                                                    . '<a href="' . esc_url($edit_url) . '">' . esc_html__('edit') . '</a>'
+                                                    . '</td>';
                                             }
                                         } // end foreach item
 
@@ -1935,8 +1944,15 @@ class AgentPermissionsUI
                                 echo '</div>';  // pp-exception-bulk-edit
                                 echo '</div>';  // type-roles-wrapper
                             } // end foreach operation
-                            // echo '</div>';  // pp-current-type-roles
                         } // end foreach for_type
+                        echo '<div class="notes">';
+                        echo '<h4>Permission Icons Legend</h4>';
+                        echo '<ul>';
+                        echo '<li><i class="dashicons dashicons-yes-alt" style="color:#10b981;"></i> Enable - ' . esc_html__('Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core') . '</li>';
+                        echo '<li><i class="dashicons dashicons-no-alt" style="color:#ef4444;"></i> Block - ' . esc_html__('Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core') . '</li>';
+                        echo '<li><i class="dashicons dashicons-warning" style="color:#f59e0b;"></i> Limit to - ' . esc_html__('Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.', 'press-permit-core') . '</li>';
+                        echo '</ul>';
+                        echo '</div>';
 
                         if ($any_redundant) {
                             echo '<div class="notes">'
@@ -2018,14 +2034,13 @@ class AgentPermissionsUI
                                 }
                             }
                         }
-                        echo '</div>';  // pp-current-type-roles
-                        echo '</div>';  // pp-current-exceptions
+                        echo '</div>';  // section-content
+                        echo '</div>';  // permission-section
 
                     } // end foreach via_type
 
                 } // end foreach via_src
 
-                echo '</div>';  // pp_current_exceptions_inner
                 echo '</div>';  // pp_current_exceptions
             }
             
