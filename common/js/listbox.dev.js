@@ -48,6 +48,9 @@
                     .val('2') // Default value for selected items
                     .appendTo($(selector).parent());
             });
+            if(args2.topic === 'member') {
+                selector += ", #v2_" + CSS.escape(args2.search_id + '::' + args2.agent_type);
+            }
 
             $(selector).select2({
               placeholder: "Search for a " + agent_type_lbl,
@@ -104,6 +107,12 @@
                     $(selector).closest('table.pp-item-exceptions-ui').find('td.pp-current-item-exceptions td input[type="hidden"]').each(function (i, item) {
                         currentValues.push($(item).val());
                     });
+
+                    if (args2.topic === 'member') {
+                        $(selector).closest('table').find('.pp-members-current').find('select#member option').each(function (i, item) {
+                            currentValues.push($(item).val());
+                        });
+                    }
 
                     // Parse the HTML response to extract options
                     $(data)

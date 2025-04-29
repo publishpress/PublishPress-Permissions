@@ -63,6 +63,23 @@
       background-color: @hover-bg-color !important;
     }
   }
+
+  .sortable {
+    cursor: pointer;
+  
+    &:after {
+      content: " ▼"; /* Default sort indicator */
+      font-size: 0.8em;
+    }
+  
+    &.asc:after {
+      content: " ▲"; /* Ascending sort indicator */
+    }
+  
+    &.desc:after {
+      content: " ▼"; /* Descending sort indicator */
+    }
+  }
 }
 
 @media (max-width: 768px) {

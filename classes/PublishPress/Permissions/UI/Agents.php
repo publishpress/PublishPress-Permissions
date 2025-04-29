@@ -45,10 +45,8 @@ class Agents
             echo '<div class="pp_agents_ajax_wrapper">';
             if ('presspermit-edit-permissions' == presspermitPluginPage()) {
                 $args['width'] = 180;
-                $agents_ajax->display($agent_type, $id_suffix, $item_assignments, $args);
-            } else {
-                $agents_ajax->display_select2($agent_type, $id_suffix, $item_assignments, $args);
             }
+            $agents_ajax->display_select2($agent_type, $id_suffix, $item_assignments, $args);
             echo '</div>';
         } else {
             require_once(PRESSPERMIT_CLASSPATH . '/UI/AgentsChecklist.php');
