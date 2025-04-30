@@ -253,7 +253,7 @@ class SettingsTabCore
                                                 esc_html($caption),
                                                 '<span class="pp-important">',
                                                 '</span>',
-                                                '<span class="plugins update-message"><a href="' . esc_url($url) . '" class="thickbox" title="' . esc_attr__('PublishPress Capabilities', 'press-permit-core') . '">',
+                                                '<span class="plugins update-message"><a href="' . esc_url($url) . '" class="thickbox" title="' . esc_attr('PublishPress Capabilities') . '">',
                                                 '</a></span>'
                                             );
                                         }
