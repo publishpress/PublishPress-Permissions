@@ -657,6 +657,16 @@ jQuery(document).ready(function ($) {
             $section.toggleClass('collapsed');
         }
     });
+    
+    // Handle expansion/collapse of subsections
+    $('#pp_current_exceptions .subsection-header').on('click', function(e) {
+        // Only proceed if the click wasn't on the search box or its children
+        if (!$(e.target).closest('.search-box').length) {
+            const $section = $(this).closest('.permission-type');
+            $section.find('.section-content').slideToggle(200);
+            $section.toggleClass('collapsed');
+        }
+    });
 
     // Handle row click to toggle checkbox
     $('#pp_current_exceptions .checkbox-row').on('click', function (e) {
