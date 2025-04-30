@@ -353,14 +353,23 @@ input.submit-edit-item-role {
 #pp_current_roles a:hover {
   text-decoration: underline;
 }
-#pp_current_roles .checkbox-column,
-#pp_current_roles .action-column {
+#pp_current_roles .checkbox-column {
   width: 1%;
   text-align: center;
 }
 #pp_current_roles .pp_nolink {
   font-weight: bold;
   color: #000;
+}
+#pp_current_roles .role-column {
+  width: 40%;
+}
+#pp_current_roles .edit-column {
+  width: 5%;
+}
+#pp_current_roles td label,
+#pp_current_roles td input {
+  vertical-align: text-top;
 }
 .pp-current-site-roles input {
   margin-left: 1em;
@@ -443,12 +452,6 @@ div.pp-current-type-roles a {
   font-weight: bold;
   color: #120FAF;
 }
-span.role_both {
-  padding-right: 20px;
-}
-label.role_both:after {
-  content: ' ...';
-}
 .role_ch {
   font-weight: bold;
   color: #777;
@@ -456,9 +459,6 @@ label.role_both:after {
 input.exc-copied {
   background-color: #afa !important;
   border: 1px solid black !important;
-}
-label.role_ch:after {
-  content: " *";
 }
 tr.pp_faded td,
 label.pp_faded {
@@ -564,6 +564,10 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
 .add-menu-item-pagelinks .prev {
   font-weight: bold;
 }
+#pp_current_exceptions {
+  margin-top: 36px;
+  margin-bottom: 80px;
+}
 #pp_current_exceptions .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -581,20 +585,28 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
 #pp_current_exceptions .permission-section {
   background: white;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 24px;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 36px;
 }
 #pp_current_exceptions .section-header {
   padding: 16px 24px;
-  background-color: #f9fafb;
+  background-color: #dedfe0;
   border-bottom: 1px solid #e5e7eb;
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  user-select: none;
 }
 #pp_current_exceptions .section-header:hover {
-  background-color: #f0f1f3;
+  background-color: #e3e4e5;
+}
+#pp_current_exceptions .subsection-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
 }
 #pp_current_exceptions .section-title {
   font-weight: 600;
@@ -617,25 +629,29 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
 #pp_current_exceptions .icon-guidance {
   padding: 12px 24px;
 }
-#pp_current_exceptions .checkbox-column,
-#pp_current_exceptions .action-column {
+#pp_current_exceptions .checkbox-column {
   width: 1%;
   text-align: center;
 }
 #pp_current_exceptions .permission-type {
-  padding: 12px 24px;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 12px 24px 0 24px;
+  margin-bottom: 6px;
 }
 #pp_current_exceptions .permission-type:last-child {
   border-bottom: none;
+}
+#pp_current_exceptions .permission-type thead tr th {
+  border-top: none;
 }
 #pp_current_exceptions .permission-type-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 #pp_current_exceptions .permission-type-title {
+  margin-top: 6px;
+  margin-bottom: 0;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -708,6 +724,9 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   font-size: 12px;
   font-weight: 500;
 }
+#pp_current_exceptions .for-type .badge {
+  padding: 2px 8px 1px 8px;
+}
 #pp_current_exceptions .badge-info {
   background-color: rgba(79, 70, 229, 0.1);
   color: #4f46e5;
@@ -716,15 +735,27 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   background-color: rgba(107, 114, 128, 0.1);
   color: #6b7280;
 }
+#pp_current_exceptions .mod-type-key {
+  padding-right: 50px !important;
+}
 #pp_current_exceptions .notes {
   padding: 16px 24px;
   font-size: 13px;
   color: #6b7280;
   border-top: 1px solid #e5e7eb;
   background-color: #f9fafb;
+  text-align: center;
+}
+#pp_current_exceptions .notes span {
+  padding-right: 20px;
+  white-space: nowrap;
 }
 #pp_current_exceptions .notes strong {
   color: #374151;
+}
+#pp_current_exceptions .notes-main {
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 #pp_current_exceptions .footer-actions {
   display: flex;
@@ -777,8 +808,44 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   color: #6b7280;
   font-style: italic;
 }
+#pp_current_exceptions table tr td {
+  vertical-align: middle;
+}
+#pp_current_exceptions .checkbox-column,
+#pp_current_exceptions .icon-column {
+  width: 20px;
+}
+#pp_current_exceptions .status-column {
+  width: 20%;
+}
+#pp_current_exceptions .assign-for-column {
+  width: 25px;
+}
+#pp_current_exceptions td.assign-for-column {
+  text-align: right;
+  padding-right: 0;
+}
+#pp_current_exceptions i.assign-child {
+  color: #999;
+  border: 1px dashed #999;
+  padding: 0 1px;
+}
+#pp_current_exceptions i.assign-both {
+  color: #120faf;
+  font-style: bold;
+  padding: 0 1px;
+}
+#pp_current_exceptions .icon-column {
+  vertical-align: bottom;
+}
+#pp_current_exceptions .edit-column {
+  width: 5%;
+}
 #pp-permissions-wrapper table {
   border-collapse: collapse;
+}
+#pp-permissions-wrapper table tr th {
+  vertical-align: middle;
 }
 #pp-permissions-wrapper table tr th,
 #pp-permissions-wrapper table tr td {

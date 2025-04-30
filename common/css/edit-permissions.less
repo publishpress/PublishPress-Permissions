@@ -209,13 +209,29 @@ input.submit-edit-item-role {
 }
 
 #pp_current_roles {
-  .checkbox-column, .action-column {
+  .checkbox-column {
     width: 1%;
     text-align: center;
   }
+
   .pp_nolink{
     font-weight: bold;
     color: #000;
+  }
+
+  .role-column {
+    width: 40%;
+  }
+
+  .edit-column {
+    width: 5%;
+  }
+
+  td {
+    label,
+    input {
+      vertical-align: text-top;
+    }
   }
 }
 
@@ -325,14 +341,6 @@ div.pp-current-type-roles a {
   color: #120FAF;
 }
 
-span.role_both {
-  padding-right: 20px;
-}
-
-label.role_both:after {
-  content: ' ...';
-}
-
 .role_ch {
   font-weight: bold;
   color: #777;
@@ -345,10 +353,6 @@ input.exc-copied {
 
 #pp_current_exceptions input.submit-edit-item-exception {
   // margin-top:5px;
-}
-
-label.role_ch:after {
-  content: " *";
 }
 
 tr.pp_faded td, label.pp_faded {
@@ -475,6 +479,8 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
 }
 
 #pp_current_exceptions {
+  margin-top: 36px;
+  margin-bottom: 80px;
   .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -495,22 +501,31 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   .permission-section {
     background: white;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    margin-bottom: 24px;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 36px;
   }
 
   .section-header {
     padding: 16px 24px;
-    background-color: #f9fafb;
+    background-color: #dedfe0;
     border-bottom: 1px solid #e5e7eb;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+    user-select: none;
   }
 
   .section-header:hover {
-    background-color: #f0f1f3;
+    background-color: #e3e4e5;
+  }
+
+  .subsection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
   }
 
   .section-title {
@@ -538,28 +553,34 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
     padding: 12px 24px;
   }
 
-  .checkbox-column, .action-column {
+  .checkbox-column {
     width: 1%;
     text-align: center;
   }
 
   .permission-type {
-    padding: 12px 24px;
-    border-bottom: 1px solid #e5e7eb;
+    padding: 12px 24px 0 24px;
+    margin-bottom: 6px;
   }
 
   .permission-type:last-child {
     border-bottom: none;
   }
 
+  .permission-type thead tr th {
+    border-top: none;
+  }
+
   .permission-type-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
   }
 
   .permission-type-title {
+    margin-top: 6px;
+    margin-bottom: 0;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -647,6 +668,10 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
     font-weight: 500;
   }
 
+  .for-type .badge {
+    padding: 2px 8px 1px 8px;
+  }
+
   .badge-info {
     background-color: rgba(79, 70, 229, 0.1);
     color: #4f46e5;
@@ -657,16 +682,31 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
     color: #6b7280;
   }
 
+  .mod-type-key {
+    padding-right: 50px !important;
+  }
+
   .notes {
     padding: 16px 24px;
     font-size: 13px;
     color: #6b7280;
     border-top: 1px solid #e5e7eb;
     background-color: #f9fafb;
+    text-align: center;
+  }
+
+  .notes span {
+    padding-right: 20px;
+    white-space: nowrap;
   }
 
   .notes strong {
     color: #374151;
+  }
+  
+  .notes-main {
+    padding-top: 30px;
+    padding-bottom: 30px;
   }
 
   .footer-actions {
@@ -728,6 +768,48 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
     padding: 16px;
     color: #6b7280;
     font-style: italic;
+  }
+
+  table tr td {
+    vertical-align: middle;
+  }
+
+  .checkbox-column,
+  .icon-column {
+    width: 20px;
+  }
+
+  .status-column {
+    width: 20%;
+  }
+
+  .assign-for-column {
+    width: 25px;
+  }
+
+  td.assign-for-column {
+    text-align: right;
+    padding-right: 0;
+  }
+
+  i.assign-child {
+    color: #999;
+    border: 1px dashed #999;
+    padding: 0 1px;
+  }
+
+  i.assign-both {
+    color: #120faf;
+    font-style: bold;
+    padding: 0 1px;
+  }
+
+  .icon-column {
+    vertical-align: bottom;
+  }
+
+  .edit-column {
+    width: 5%;
   }
 }
 // Design consistency
