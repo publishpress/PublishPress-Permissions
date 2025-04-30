@@ -54,12 +54,9 @@ function presspermitSelectAgents(id_sfx, select_into, hierarchical) {
                     $("#" + id_sfx).append('<option value="' + item.id + '" title="' + item.text + '" class="pp-new-selection">' + item.text + '</option>');
                 }
             });
-            if ($("#agent_results_" + id_sfx).is(":visible")) {
-                console.log("#agent_results_" + id_sfx + " is visible");
-            } else {
-                console.log("#agent_results_" + id_sfx + " is not visible");
+            if ($("#" + id_sfx).length && $("#" + id_sfx).is(":visible")) {
+                $(selector).val(null).trigger('change');
             }
-            // $(selector).val(null).trigger('change');
         } else {
             $("#agent_results_" + id_sfx + " option:selected").each(function (i) {
                 if ($("#" + id_sfx + " option[value='" + $(this).attr("value") + "']").length == 0) {
