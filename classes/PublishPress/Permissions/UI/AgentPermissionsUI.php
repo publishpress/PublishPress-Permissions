@@ -1577,11 +1577,11 @@ class AgentPermissionsUI
                 }
 
                 foreach (array_keys($exceptions) as $via_src) {
-                    $have_mod_type = [];
-
                     ksort($exceptions[$via_src]);
 
                     foreach (array_keys($exceptions[$via_src]) as $via_type) {
+                        $have_mod_type = [];
+
                         $section_item_count = 0;
 
                         if ($via_type_obj = $pp->getTypeObject($via_src, $via_type)) {
