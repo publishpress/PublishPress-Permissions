@@ -38,6 +38,22 @@
 .table-hover tbody tr:hover td {
   background-color: rgba(0, 0, 0, 0.075) !important;
 }
+.table .sortable {
+  cursor: pointer;
+}
+.table .sortable:after {
+  content: " ▼";
+  /* Default sort indicator */
+  font-size: 0.8em;
+}
+.table .sortable.asc:after {
+  content: " ▲";
+  /* Ascending sort indicator */
+}
+.table .sortable.desc:after {
+  content: " ▼";
+  /* Descending sort indicator */
+}
 @media (max-width: 768px) {
   .table-responsive {
     display: block;

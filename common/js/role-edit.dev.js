@@ -201,9 +201,43 @@ jQuery(document).ready(function ($) {
 
 
     // ========== Begin "Edit Roles" Submission scripts ==========
-    $('#pp_current_roles input').on('click', function (e) {
+    $('#pp_current_roles .type-roles-wrapper input').on('click', function (e) {
         //$(this).closest('div.pp-current-roles').find('div.pp-role-bulk-edit').show();
         $('div.pp-role-bulk-edit').show();
+    });
+    function toggleBulkEditVisibility() {
+        const anyChecked = $('#pp_current_roles input[type="checkbox"]:checked').length > 0;
+        $('div.pp-role-bulk-edit').toggle(anyChecked);
+    }
+    
+    // Handle checkbox clicks table rows
+    $('#pp_current_roles .checkbox-row').on('click', function (e) {
+        if (!$(e.target).is('input[type="checkbox"]')) {
+            const checkbox = $(this).find('input[type="checkbox"]');
+            checkbox.prop('checked', !checkbox.prop('checked')).trigger('change');
+        }
+        toggleBulkEditVisibility();
+    });
+    
+    // Handle "Select All" checkbox
+    $('#pp_current_roles input[id^="cb-select-all-"]').on('change', function () {
+        const type = $(this).attr('id').split('cb-select-all-')[1];
+        $(`#pp_current_${type}_site_roles input[type="checkbox"]`).prop('checked', $(this).is(':checked'));
+        toggleBulkEditVisibility();
+    });
+    
+    // Handle individual checkbox behavior
+    $('#pp_current_roles .checkbox-row input[type="checkbox"]').on('change', function () {
+        const type = $(this).closest('.pp-current-roles').attr('id').split('pp_current_')[1].split('_site_roles')[0];
+        const allCheckboxes = $(`#pp_current_${type}_site_roles input[type="checkbox"]:not([id^="cb-select-all-"])`);
+        $(`#cb-select-all-${type}`).prop('checked', allCheckboxes.length === allCheckboxes.filter(':checked').length);
+        toggleBulkEditVisibility();
+    });
+
+    $('#pp_current_roles .checkbox-row .pp_clear').on('click', function (e) {
+        e.stopPropagation();
+        const roleId = $(this).closest('tr').find('input[type="checkbox"]').val();
+        if (roleId) presspermitAjaxSubmit('roles_remove', presspermitRemoveRolesDone, roleId);
     });
 
     $('#pp_current_roles .pp_check_all').on('click', function (e) {
@@ -232,8 +266,17 @@ jQuery(document).ready(function ($) {
         var deleted_ass_ids = data.split('|');
 
         $.each(deleted_ass_ids, function (index, value) {
-            cbid = $('#pp_current_roles input[name="pp_edit_role[]"][value="' + value + '"]').attr('id');
-            $('#' + cbid).closest('label').remove();
+            const row = $(`#pp_current_roles input[name="pp_edit_role[]"][value="${value}"]`).closest('tr');
+            if (!row.length){
+                cbid = $('#pp_current_roles input[name="pp_edit_role[]"][value="' + value + '"]').attr('id');
+                $('#' + cbid).closest('label').remove();
+            } else {
+                const table = row.closest('table');
+                row.remove();
+                if (!table.find('tbody tr').length) {
+                    table.closest('.pp-current-site-roles').remove();
+                }
+            }
         });
     }
 
