@@ -242,30 +242,29 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 = 4.2.0 - 30 April 2025 =
 
-* Fixed: Handle undefined group names properly in UI. #1568
-* Fixed: Select2 dropdown displayed across the entire screen. #1519
-* Fixed: "Select Other" field not working as expected. #1540
-* Fixed: Hide parent option in non-hierarchical taxonomy. #1509
-* Fixed: Broken icon in search Select2 field. #1542
-* Fixed: UI lost active menu state after interaction. #1510
-* Fixed: Improved handling for missing metabox when Yoast SEO is active. #1554
-* Fixed: Show bulk action options in custom roles. #1548
-* Fixed: Show all notes in Permissions screen without requiring user action. #1530
-* Fixed: Increased font size in anchor tooltips. #1526
-* Fixed: Translation updates for Spanish, French, Italian. #1532
-* Fixed: Translation update for Brazilian Portuguese. #1528
-* Fixed: Query now ignores Revisions meta groups if Revisions module is inactive. #1500
-* Fixed: Duplicate WordPress Role groups on install. #1545
-* Fixed: Menu link renamed to "Permissions". #754
-* Updated: Composer dependencies. #1574
-* Updated: Improved the Universal Tag display. #1508
-* Updated: User display names now formatted with login. #1529
-* Updated: Applied Select2 to add member UI in Group edit screen. #1511
-* Updated: Translation improvements for release 4.2.0. #1532
-* Improved: Shortened and clarified hint messages in the Settings screen. #1530
-* Improved: Recaptioned “module” to “feature” in hints and notices. #1530
-* Improved: Changes to group screen UI layout and settings. #1319
-* Improved: Edit Permissions UI with better support for stored permissions. #1573
+* Fixed: Group names now display correctly when no name was set. #1568  
+* Fixed: Dropdown menu using Select2 no longer covers the entire screen. #1519  
+* Fixed: "Select Other" option in dropdowns works properly again. #1540  
+* Fixed: Parent selection is now hidden for non-hierarchical taxonomies. #1509  
+* Fixed: Icon in Select2 search box is now visible and aligned correctly. #1542  
+* Fixed: Sidebar menu item stays highlighted on the Permissions screen, improving navigation clarity. #1510  
+* Fixed: Permissions metabox no longer disappears when using Yoast SEO. #1554  
+* Fixed: Bulk actions now show up for users with custom roles. #1548  
+* Fixed: All permission notes are now visible without requiring user interaction. #1530  
+* Fixed: Tooltip anchor text is now easier to read with larger font size. #1526  
+* Fixed: Language translations updated for Spanish, French, Italian, and Brazilian Portuguese. #1532, #1528  
+* Fixed: Revisions-related groups are now excluded from queries if the Revisions feature is turned off. #1500  
+* Fixed: Duplicate role-based user groups are no longer created during setup. #1545  
+* Fixed: Renamed sidebar menu label to “Permissions” for better clarity. #754  
+* Updated: Composer dependencies refreshed for better compatibility and stability. #1574  
+* Updated: Improved appearance and behavior of the universal tag feature. #1508  
+* Updated: User display names now include their login for easier identification. #1529  
+* Updated: Group and user member selectors now use Select2 for improved usability. #1511  
+* Updated: Refined translation files for improved accuracy. #1532  
+* Improved: Hint texts on the Settings screen are now shorter and more understandable. #1530  
+* Improved: “Module” terminology replaced with “Feature” in all hints and notices. #1530  
+* Improved: Settings layout on the Group screen reorganized for easier access. #1319  
+* Improved: New stored permissions interface provides a more intuitive and flexible editing experience. #1573  
 
 = 4.1.4 - 1 April 2025 =
 * Updated: Menu link renamed to "Permissions" for better clarity. #754
