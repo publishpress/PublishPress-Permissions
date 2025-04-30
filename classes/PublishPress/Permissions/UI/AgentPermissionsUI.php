@@ -1834,7 +1834,7 @@ class AgentPermissionsUI
                                                 
                                                 } elseif ('exclude' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('Blockage: Prevent %1$s of %2$s within %3$s (unless enabled by another Permission).', 'press-permit-core'),
+                                                        esc_html__('Blocked: Prevent %1$s of %2$s within %3$s (unless enabled by another Permission).', 'press-permit-core'),
                                                         $op_label, 
                                                         $for_type_obj->labels->name, 
                                                         $via_caption
@@ -1859,7 +1859,7 @@ class AgentPermissionsUI
                                                 
                                                 } elseif ('exclude' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('Blockage: Prevent %1$s of %2$s (unless enabled by another Permission).', 'press-permit-core'),
+                                                        esc_html__('Blocked: Prevent %1$s of %2$s (unless enabled by another Permission).', 'press-permit-core'),
                                                         $op_label, 
                                                         $via_caption
                                                     );
@@ -2168,7 +2168,7 @@ class AgentPermissionsUI
                         if (!empty($have_mod_type['exclude'])) {
                             echo '<span class="mod-exclude">'
                             . '<i class="dashicons dashicons-no-alt" style="color:#ef4444;"></i>'
-                            . esc_html__('= Blockage', 'press-permit-core')
+                            . esc_html__('= Blocked', 'press-permit-core')
                             . '</span>';
                         } 
                         
