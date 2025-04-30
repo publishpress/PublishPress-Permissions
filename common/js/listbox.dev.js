@@ -37,17 +37,20 @@
                 agent_type_lbl = 'group';
             }
 
-            // Clear all existing hidden inputs for this agent type
-            $(`input[name^="pp_exceptions[${forItemType}][${op}][${agentType}][item]"]`).remove();
-    
-            // Add hidden inputs for each selected value
-            selectedValues.forEach(function (value) {
-                $('<input>')
-                    .attr('type', 'hidden')
-                    .attr('name', `pp_exceptions[${forItemType}][${op}][${agentType}][item][${value}]`)
-                    .val('2') // Default value for selected items
-                    .appendTo($(selector).parent());
-            });
+            if (args2.topic !== 'member') {
+                // Clear all existing hidden inputs for this agent type
+                $(`input[name^="pp_exceptions[${forItemType}][${op}][${agentType}][item]"]`).remove();
+        
+                // Add hidden inputs for each selected value
+                selectedValues.forEach(function (value) {
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', `pp_exceptions[${forItemType}][${op}][${agentType}][item][${value}]`)
+                        .val('2') // Default value for selected items
+                        .appendTo($(selector).parent());
+                });
+            }
+
             if(args2.topic === 'member') {
                 selector += ", #v2_" + CSS.escape(args2.search_id + '::' + args2.agent_type);
             }
@@ -138,22 +141,24 @@
                 const [op, forItemType, agentType] = args2.topic.replace(/\\:/g, ':').split(':');
                 const selectedValues = $(this).val() || [];
         
-                // Add hidden inputs for each selected value
-                selectedValues.forEach(function (value) {
-                    $('<input>')
-                        .attr('type', 'hidden')
-                        .attr('name', `pp_exceptions[${forItemType}][${op}][${agentType}][item][${value}]`)
-                        .val('2') // Default value for selected items
-                        .appendTo($(selector).parent());
-                });
-        
-                // Add hidden input for the unselected value with an empty value
-                if (e.type === 'select2:unselect') {
-                    $('<input>')
-                        .attr('type', 'hidden')
-                        .attr('name', `pp_exceptions[${forItemType}][${op}][${agentType}][item][${e.params.data.id}]`)
-                        .val('') // Empty value for unselected items
-                        .appendTo($(selector).parent());
+                if (args2.topic !== 'member') {
+                    // Add hidden inputs for each selected value
+                    selectedValues.forEach(function (value) {
+                        $('<input>')
+                            .attr('type', 'hidden')
+                            .attr('name', `pp_exceptions[${forItemType}][${op}][${agentType}][item][${value}]`)
+                            .val('2') // Default value for selected items
+                            .appendTo($(selector).parent());
+                    });
+            
+                    // Add hidden input for the unselected value with an empty value
+                    if (e.type === 'select2:unselect') {
+                        $('<input>')
+                            .attr('type', 'hidden')
+                            .attr('name', `pp_exceptions[${forItemType}][${op}][${agentType}][item][${e.params.data.id}]`)
+                            .val('') // Empty value for unselected items
+                            .appendTo($(selector).parent());
+                    }
                 }
             });
         }

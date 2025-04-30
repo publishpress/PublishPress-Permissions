@@ -54,7 +54,12 @@ function presspermitSelectAgents(id_sfx, select_into, hierarchical) {
                     $("#" + id_sfx).append('<option value="' + item.id + '" title="' + item.text + '" class="pp-new-selection">' + item.text + '</option>');
                 }
             });
-            $(selector).val(null).trigger('change');
+            if ($("#agent_results_" + id_sfx).is(":visible")) {
+                console.log("#agent_results_" + id_sfx + " is visible");
+            } else {
+                console.log("#agent_results_" + id_sfx + " is not visible");
+            }
+            // $(selector).val(null).trigger('change');
         } else {
             $("#agent_results_" + id_sfx + " option:selected").each(function (i) {
                 if ($("#" + id_sfx + " option[value='" + $(this).attr("value") + "']").length == 0) {
@@ -80,6 +85,11 @@ function presspermitLoadSelect2AgentsJS(id_sfx, agent_type, context, agent_id, s
         var id_sfx_dashed = `${id_sfx}::${agent_type}`.replace(':', '-').replace(':', '-');
         $('select[name="_select-' + id_sfx_dashed + '\\[\\]"]').on('select2:select', function (e) {
             presspermitSelectAgents(id_sfx, agent_type);
+            return false;
+        }).on('select2:unselect', function (e) {
+            var data = e.params.data;
+            $("#" + id_sfx + " option[value='" + data.id + "']").remove(); // Remove the option matching data.id
+            presspermitBuildSelectionCSV(id_sfx, $); // Update the CSV after removal
             return false;
         });
     });

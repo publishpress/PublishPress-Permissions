@@ -387,7 +387,37 @@ class AgentsDynamicUI
             </tr>
             <tr>
                 <td style="padding-top: <?php echo $display_stored_selections ? '3em' : '0';?>;">
-                    <select multiple="multiple" id="v2_agent_search_text_<?php echo esc_attr("{$op}:{$for_item_type}:{$agent_type}"); ?>" name="_select-<?php echo esc_attr("$op-$for_item_type-$agent_type"); ?>[]"></select>
+                    <select multiple="multiple" id="v2_agent_search_text_<?php echo esc_attr("{$op}:{$for_item_type}:{$agent_type}"); ?>" name="_select-<?php echo esc_attr("$op-$for_item_type-$agent_type"); ?>[]">
+                        <?php
+                        // Show the option if user has current selections and not active membership feature
+                        if ($display_stored_selections 
+                            && !defined('PRESSPERMIT_MEMBERSHIP_VERSION') 
+                            && in_array($pp_plugin_page, ['presspermit-edit-permissions', 'presspermit-group-new'], true)) :
+                            foreach ($current_selections as $agent) :
+                                $first_name = get_user_meta($agent->ID, 'first_name', true);
+                                $last_name = get_user_meta($agent->ID, 'last_name', true);
+                                $formatted_name = trim($first_name . ' ' . $last_name. ' (' . $agent->user_login . ')');
+                                $title = (isset($agent->display_name) && ($agent->user_login != $agent->display_name))
+                                    ? esc_attr($agent->display_name)
+                                    : '';
+
+                                $data = apply_filters(
+                                    'presspermit_agents_selection_ui_attribs',
+                                    ['title' => $title, 'user_caption' => $formatted_name],
+                                    $agent_type,
+                                    $id_suffix,
+                                    $agent
+                                );
+                                ?>
+                                <option value="<?php echo esc_attr($agent->ID); ?>" title="<?php echo esc_attr($data['title']); ?>" selected
+                                    <?php if (!empty($data['class']))           echo ' class="' . esc_attr($data['class']) . '"'; ?>
+                                    <?php if (!empty($data['data-startdate']))  echo ' data-startdate="' . esc_attr($data['data-startdate']) . '"'; ?>
+                                    <?php if (!empty($data['data-enddate']))    echo ' data-enddate="' . esc_attr($data['data-enddate']) . '"'; ?>>
+                                    <?php echo esc_html($data['user_caption']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
                     <br>
                     <br>
                     <?php do_action('presspermit_agents_selection_ui_select_pre', $id_suffix); ?>
@@ -419,9 +449,10 @@ class AgentsDynamicUI
                     <?php if ($width_current) {
                         $width = "width:{$width_current}px;";
                     }
-
+                    // Hide current selections if user not active membership feature
+                    $is_show_current_selection = !defined('PRESSPERMIT_MEMBERSHIP_VERSION') && in_array($pp_plugin_page, ['presspermit-edit-permissions', 'presspermit-group-new'], true) ? 'display:none;' : '';
                     ?>
-                    <td class="pp-members-current">
+                    <td class="pp-members-current" style="<?php echo esc_attr($is_show_current_selection); ?>">
                         <h4>
                             <?php if (!apply_filters('presspermit_suppress_agents_selection_label', false, $id_suffix, $args)):
                                 esc_html_e('Current Selections:', 'press-permit-core');
@@ -442,7 +473,7 @@ class AgentsDynamicUI
                                 <?php
                                 $first_name = get_user_meta($agent->ID, 'first_name', true);
                                 $last_name = get_user_meta($agent->ID, 'last_name', true);
-                                $agent->$display_property = trim($first_name . ' ' . $last_name. ' (' . $agent->display_name . ')');
+                                $agent->$display_property = trim($first_name . ' ' . $last_name. ' (' . $agent->user_login . ')');
                                 $title = (isset($agent->display_name) && ($agent->user_login != $agent->display_name))
                                     ? esc_attr($agent->display_name)
                                     : '';
