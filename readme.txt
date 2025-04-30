@@ -242,29 +242,29 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 = 4.2.0 - 30 April 2025 =
 
-* Fixed: Group names now display correctly when no name was set. #1568  
-* Fixed: Dropdown menu using Select2 no longer covers the entire screen. #1519  
-* Fixed: "Select Other" option in dropdowns works properly again. #1540  
-* Fixed: Parent selection is now hidden for non-hierarchical taxonomies. #1509  
-* Fixed: Icon in Select2 search box is now visible and aligned correctly. #1542  
-* Fixed: Sidebar menu item stays highlighted on the Permissions screen, improving navigation clarity. #1510  
-* Fixed: Permissions metabox no longer disappears when using Yoast SEO. #1554  
-* Fixed: Bulk actions now show up for users with custom roles. #1548  
-* Fixed: All permission notes are now visible without requiring user interaction. #1530  
-* Fixed: Tooltip anchor text is now easier to read with larger font size. #1526  
-* Fixed: Language translations updated for Spanish, French, Italian, and Brazilian Portuguese. #1532, #1528  
-* Fixed: Revisions-related groups are now excluded from queries if the Revisions feature is turned off. #1500  
-* Fixed: Duplicate role-based user groups are no longer created during setup. #1545  
-* Fixed: Renamed sidebar menu label to “Permissions” for better clarity. #754  
-* Updated: Composer dependencies refreshed for better compatibility and stability. #1574  
-* Updated: Improved appearance and behavior of the universal tag feature. #1508  
-* Updated: User display names now include their login for easier identification. #1529  
-* Updated: Group and user member selectors now use Select2 for improved usability. #1511  
-* Updated: Refined translation files for improved accuracy. #1532  
-* Improved: Hint texts on the Settings screen are now shorter and more understandable. #1530  
-* Improved: “Module” terminology replaced with “Feature” in all hints and notices. #1530  
-* Improved: Settings layout on the Group screen reorganized for easier access. #1319  
-* Improved: New stored permissions interface provides a more intuitive and flexible editing experience. #1573  
+* Fixed: Group names now display correctly when no name was set. #1568
+* Fixed: Dropdown menu using Select2 no longer covers the entire screen. #1519
+* Fixed: "Select Other" option in dropdowns works properly again. #1540
+* Fixed: Parent selection is now hidden for non-hierarchical taxonomies. #1509
+* Fixed: Icon in Select2 search box is now visible and aligned correctly. #1542
+* Fixed: Sidebar menu item stays highlighted on the Permissions screen, improving navigation clarity. #1510
+* Fixed: Permissions metabox no longer disappears when using Yoast SEO. #1554
+* Fixed: Bulk actions now show up for users with custom roles. #1548
+* Fixed: All permission notes are now visible without requiring user interaction. #1530
+* Fixed: Tooltip anchor text is now easier to read with larger font size. #1526
+* Fixed: Language translations updated for Spanish, French, Italian, and Brazilian Portuguese. #1532, #1528
+* Fixed: Revisions-related groups are now excluded from queries if the Revisions feature is turned off. #1500
+* Fixed: Duplicate role-based user groups are no longer created during setup. #1545
+* Fixed: Renamed sidebar menu label to “Permissions” for better clarity. #754
+* Updated: Composer dependencies refreshed for better compatibility and stability. #1574
+* Updated: Improved appearance and behavior of the universal tag feature. #1508
+* Updated: User display names now include their login for easier identification. #1529
+* Updated: Group and user member selectors now use Select2 for improved usability. #1511
+* Updated: Refined translation files for improved accuracy. #1532
+* Improved: Hint texts on the Settings screen are now shorter and more understandable. #1530
+* Improved: “Module” terminology replaced with “Feature” in all hints and notices. #1530
+* Improved: Settings layout on the Group screen reorganized for easier access. #1319
+* Improved: New stored permissions interface provides a more intuitive and flexible editing experience. #1573
 
 = 4.1.4 - 1 April 2025 =
 * Updated: Menu link renamed to "Permissions" for better clarity. #754
