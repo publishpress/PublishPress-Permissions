@@ -239,12 +239,18 @@ class SettingsTabCore
 
                                             $url = Settings::pluginInfoURL('capability-manager-enhanced');
 
-                                            $caption = $define_create_posts_cap
-                                                ? 'Post creation capabilities will also be enforced for all Filtered Post Types. To adjust this, install %3$sPublishPress Capabilities%4$s.'
-                                                : 'To enforce capability requirements for post creation, install %3$sPublishPress Capabilities%4$s.';
+                                            $caption = ($define_create_posts_cap)
+                                                ? __(
+                                                    'Post creation capabilities will also be enforced for all Filtered Post Types. To adjust this, install %3$sPublishPress Capabilities%4$s.',
+                                                    'press-permit-core'
+                                                )
+                                                : __(
+                                                    'To enforce capability requirements for post creation, install %3$sPublishPress Capabilities%4$s.',
+                                                    'press-permit-core'
+                                                );
                                             
                                             printf(
-                                                esc_html__($caption, 'press-permit-core'),
+                                                esc_html($caption),
                                                 '<span class="pp-important">',
                                                 '</span>',
                                                 '<span class="plugins update-message"><a href="' . esc_url($url) . '" class="thickbox" title="' . esc_attr__('PublishPress Capabilities', 'press-permit-core') . '">',
