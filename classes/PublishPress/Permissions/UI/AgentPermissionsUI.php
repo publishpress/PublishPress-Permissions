@@ -2345,7 +2345,7 @@ class AgentPermissionsUI
 
                     ?>
                     <span class="<?php echo esc_attr($link_class); ?> pp-member-type pp-$member_type">
-                        <a href="#" class="<?php echo "pp-" . esc_attr($member_type); ?>"><?php echo esc_html($captions[$member_type]); ?></a>
+                        <?php echo esc_html($captions[$member_type]); ?>
                     </span>
                 <?php
 
