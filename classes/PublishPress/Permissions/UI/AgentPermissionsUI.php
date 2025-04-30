@@ -1866,7 +1866,7 @@ class AgentPermissionsUI
                                                 
                                                 } elseif ('include' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('Limitation: The user\'s %1$s %2$s role capabilities apply only for %2$s, and other specified %3$s.', 'press-permit-core'),
+                                                        esc_html__('Limitation: The user\'s %1$s %2$s role capabilities apply only for %3$s, and other specified %4$s.', 'press-permit-core'),
                                                         $op_label, 
                                                         $for_type_obj->labels->singular_name,
                                                         $via_caption,
