@@ -198,7 +198,7 @@
   text-decoration: underline;
 }
 table.pp-agent-profile {
-  width: 96%;
+  width: 100%;
   margin-bottom: 20px;
 }
 .pp-group_post-types,
@@ -843,9 +843,6 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
 }
 #pp-permissions-wrapper table {
   border-collapse: collapse;
-}
-#pp-permissions-wrapper table tr th {
-  vertical-align: middle;
 }
 #pp-permissions-wrapper table tr th,
 #pp-permissions-wrapper table tr td {
