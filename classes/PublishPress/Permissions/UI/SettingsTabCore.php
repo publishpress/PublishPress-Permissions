@@ -239,21 +239,15 @@ class SettingsTabCore
 
                                             $url = Settings::pluginInfoURL('capability-manager-enhanced');
 
-                                            $caption = ($define_create_posts_cap)
-                                                ? esc_html__(
-                                                    'Post creation capabilities will also be enforced for all Filtered Post Types. To adjust this, install %3$sPublishPress Capabilities%4$s.',
-                                                    'press-permit-core'
-                                                )
-                                                : esc_html__(
-                                                    'To enforce capability requirements for post creation, install %3$sPublishPress Capabilities%4$s.',
-                                                    'press-permit-core'
-                                                );
+                                            $caption = $define_create_posts_cap
+                                                ? 'Post creation capabilities will also be enforced for all Filtered Post Types. To adjust this, install %3$sPublishPress Capabilities%4$s.'
+                                                : 'To enforce capability requirements for post creation, install %3$sPublishPress Capabilities%4$s.';
                                             
                                             printf(
-                                                $caption,
+                                                esc_html__($caption, 'press-permit-core'),
                                                 '<span class="pp-important">',
                                                 '</span>',
-                                                '<span class="plugins update-message"><a href="' . esc_url($url) . '" class="thickbox" title=" PublishPress Capabilities">',
+                                                '<span class="plugins update-message"><a href="' . esc_url($url) . '" class="thickbox" title="' . esc_attr__('PublishPress Capabilities', 'press-permit-core') . '">',
                                                 '</a></span>'
                                             );
                                         }

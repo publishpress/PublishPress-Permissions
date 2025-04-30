@@ -857,7 +857,7 @@ class AgentPermissionsUI
                                 echo '<td>';
                                 $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true, 'status_suffix' => false]);
                                 echo '</td>';
-                                echo '<td>' . self::getRoleStatusLabel($role_name) . ' </td>';
+                                echo '<td>' . esc_html(self::getRoleStatusLabel($role_name)) . ' </td>';
                                 echo '<td>';
                                 echo '<div class="pp_clear">';
                                 echo '<a href="javascript:void(0)" class="pp_clear" onclick="event.stopPropagation();">' . esc_html__('Delete') . '</a>';
@@ -1616,7 +1616,7 @@ class AgentPermissionsUI
                         //$item_label = $item_count === 1 ? __('item', 'press-permit-core') : __('items', 'press-permit-core');
 
                         echo '<div class="section-header">';
-                        echo '<h2 class="section-title">' . sprintf(esc_html__('%s Permissions', 'press-permit-core'), $via_type_obj->labels->singular_name) . ' <span class="badge badge-count" style="display:none"><span class="count-num">0</span> ' . __('item(s)', 'press-permit-core') . '</span></h2>';
+                        echo '<h2 class="section-title">' . sprintf(esc_html__('%s Permissions', 'press-permit-core'), esc_html($via_type_obj->labels->singular_name)) . ' <span class="badge badge-count" style="display:none"><span class="count-num">0</span> ' . esc_html__('item(s)', 'press-permit-core') . '</span></h2>';
                         echo '<div class="section-controls">';
                         echo '<span class="expand-icon">▼</span>';
                         echo '</div>';
@@ -1701,7 +1701,7 @@ class AgentPermissionsUI
                                 <div class='permission-type op-<?php echo esc_attr($operation);?>'>
                                 <?php
                                 echo '<div class="subsection-header permission-type-header">';
-                                echo '<h3 class="section-title permission-type-title">' . esc_html($op_caption) . ' <span class="badge badge-count" style="display:none"><span class="count-num">0</span> ' . __('item(s)', 'press-permit-core') . '</span></h3>';
+                                echo '<h3 class="section-title permission-type-title">' . esc_html($op_caption) . ' <span class="badge badge-count" style="display:none"><span class="count-num">0</span> ' . esc_html__('item(s)', 'press-permit-core') . '</span></h3>';
                                 echo '<div class="section-controls">';
                                 echo '<span class="expand-icon">▼</span>';
                                 echo '</div>';
@@ -1723,7 +1723,7 @@ class AgentPermissionsUI
                                 echo '<th class="assign-for-column"></th>';
 
                                 echo '<th>';
-                                echo $via_type_obj->labels->name;
+                                echo esc_html($via_type_obj->labels->name);
                                 echo '</th>';
 
                                 echo '<th class="edit-column"></th>';
@@ -1938,7 +1938,7 @@ class AgentPermissionsUI
                                                 echo "</td>";
                                                 
                                                 if (!empty($any_status_captions)) {
-                                                    echo "<td>$status_label</td>";
+                                                    echo "<td>" . esc_html($status_label) . "</td>";
                                                 }
 
                                                 echo '<td class="assign-for-column">';
@@ -1947,7 +1947,7 @@ class AgentPermissionsUI
                                                     <span data-toggle="tooltip" data-placement="top">
                                                     <i class="dashicons dashicons-networking assign-child"></i> 
                                                     <span class="tooltip-text"><span>
-                                                    <?php printf(esc_html__('Assigned for sub-%s only.', 'press-permit-core'), $via_type_obj->labels->name);?>
+                                                    <?php printf(esc_html__('Assigned for sub-%s only.', 'press-permit-core'), esc_html($via_type_obj->labels->name));?>
                                                     </span><i></i></span></span>
                                                     <?php
                                                 } elseif ($assign_both) {
@@ -1955,7 +1955,7 @@ class AgentPermissionsUI
                                                     <span data-toggle="tooltip" data-placement="top">
                                                     <i class="dashicons dashicons-networking assign-both"></i> 
                                                     <span class="tooltip-text"><span>
-                                                    <?php printf(esc_html__('Assigned for %s and sub-%s.', 'press-permit-core'), $via_type_obj->labels->singular_name, $via_type_obj->labels->name);?>
+                                                    <?php printf(esc_html__('Assigned for %s and sub-%s.', 'press-permit-core'), esc_html($via_type_obj->labels->singular_name), esc_html($via_type_obj->labels->name));?>
                                                     </span><i></i></span></span>
                                                     <?php
                                                 }
@@ -1963,7 +1963,7 @@ class AgentPermissionsUI
 
                                                 echo "<td>";
 
-                                                echo "<label for='" . esc_attr($cb_id) . "' class='" . esc_attr($lbl_class) . "'>$item_label</label>";
+                                                echo "<label for='" . esc_attr($cb_id) . "' class='" . esc_attr($lbl_class) . "'>" . esc_html($item_label) . "</label>";
 
                                                 if ($is_redundant) {
                                                     ?>
@@ -2131,8 +2131,8 @@ class AgentPermissionsUI
                                 <script type="text/javascript">
                                     /* <![CDATA[ */
                                     jQuery(document).ready(function ($) {
-                                        $('#<?php echo $permissions_section_id;?> div.for-type-<?php echo esc_attr($for_type);?> div.op-<?php echo esc_attr($operation);?> h3 span.count-num').html('<?php echo $item_count;?>');
-                                        $('#<?php echo $permissions_section_id;?> div.for-type-<?php echo esc_attr($for_type);?> div.op-<?php echo esc_attr($operation);?> span.badge-count').show();
+                                        $('#<?php echo esc_attr($permissions_section_id);?> div.for-type-<?php echo esc_attr($for_type);?> div.op-<?php echo esc_attr($operation);?> h3 span.count-num').html('<?php echo esc_attr($item_count);?>');
+                                        $('#<?php echo esc_attr($permissions_section_id);?> div.for-type-<?php echo esc_attr($for_type);?> div.op-<?php echo esc_attr($operation);?> span.badge-count').show();
                                     });
                                     /* ]]> */
                                 </script>
@@ -2261,8 +2261,8 @@ class AgentPermissionsUI
                         <script type="text/javascript">
                             /* <![CDATA[ */
                             jQuery(document).ready(function ($) {
-                                $('#<?php echo $permissions_section_id;?> h2 span.count-num').html('<?php echo $section_item_count;?>');
-                                $('#<?php echo $permissions_section_id;?> h2 span.badge-count').show();
+                                $('#<?php echo esc_attr($permissions_section_id);?> h2 span.count-num').html('<?php echo esc_attr($section_item_count);?>');
+                                $('#<?php echo esc_attr($permissions_section_id);?> h2 span.badge-count').show();
                             });
                             /* ]]> */
                         </script>
