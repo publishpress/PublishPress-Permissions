@@ -1963,7 +1963,15 @@ class AgentPermissionsUI
 
                                                 echo "<td>";
 
-                                                echo "<label for='" . esc_attr($cb_id) . "' class='" . esc_attr($lbl_class) . "'>" . esc_html($item_label) . "</label>";
+                                                $allowed_html = [
+                                                    'i' => [],
+                                                    'span' => [
+                                                        'data-toggle'    => true,
+                                                        'data-placement' => true,
+                                                        'class'          => true,
+                                                    ],
+                                                ];
+                                                echo "<label for='" . esc_attr($cb_id) . "' class='" . esc_attr($lbl_class) . "'>" . wp_kses($item_label, $allowed_html) . "</label>";
 
                                                 if ($is_redundant) {
                                                     ?>
