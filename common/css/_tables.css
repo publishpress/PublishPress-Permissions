@@ -42,16 +42,16 @@
   cursor: pointer;
 }
 .table .sortable:after {
-  content: " ▼";
+  content: " ?";
   /* Default sort indicator */
   font-size: 0.8em;
 }
 .table .sortable.asc:after {
-  content: " ▲";
+  content: " ?";
   /* Ascending sort indicator */
 }
 .table .sortable.desc:after {
-  content: " ▼";
+  content: " ?";
   /* Descending sort indicator */
 }
 @media (max-width: 768px) {
