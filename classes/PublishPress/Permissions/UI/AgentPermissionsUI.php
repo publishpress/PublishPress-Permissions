@@ -1625,6 +1625,9 @@ class AgentPermissionsUI
 
                         ksort($exceptions[$via_src][$via_type]);
                         foreach (array_keys($exceptions[$via_src][$via_type]) as $for_type) {
+                            $any_both = false;
+                            $any_child_only = false;
+                            
                             if ($pp_groups->groupTypeExists($for_type))
                                 $for_src = $for_type;
                             else
@@ -2204,8 +2207,9 @@ class AgentPermissionsUI
 
                         echo '</div>';  // notes
 
-                        if (!empty($via_type_obj->hierarchical) && !empty($_SERVER['REQUEST_URI'])) {
+                        if (!empty($via_type_obj->hierarchical) && (!empty($any_child_only) || !empty($any_both)) && !empty($_SERVER['REQUEST_URI'])) {
                             $show_all_url = add_query_arg('show_propagated', '1', esc_url_raw($_SERVER['REQUEST_URI']));
+                            $_caption = $via_type_obj->labels->singular_name;
 
                             if ('term' == $via_src) {
                                 if (PWP::empty_REQUEST('show_propagated')) {
@@ -2214,7 +2218,7 @@ class AgentPermissionsUI
                                             '<strong>%s</strong> %s <a href="%s" class="btn btn-link">%s</a>',
                                             esc_html__('Note:', 'press-permit-core'),
                                             sprintf(
-                                                esc_html__('Permissions inherited from parent %1$s are not displayed.', 'press-permit-core'),
+                                                esc_html__('Sub-%1$s Permissions are not separately listed.', 'press-permit-core'),
                                                 esc_html($_caption)
                                             ),
                                             esc_url($show_all_url),
@@ -2229,7 +2233,7 @@ class AgentPermissionsUI
                                         '<strong>%s</strong> %s <a href="%s" class="btn btn-link">%s</a>',
                                         esc_html__('Note:', 'press-permit-core'),
                                         sprintf(
-                                            esc_html__('Permissions inherited from parent %1$s or terms are not displayed.', 'press-permit-core'),
+                                            esc_html__('Sub-%1$s Permissions are not separately listed.', 'press-permit-core'),
                                             esc_html($_caption)
                                         ),
                                         esc_url($show_all_url),
@@ -2250,8 +2254,8 @@ class AgentPermissionsUI
 
                                     printf(
                                         esc_html__(' %1$sFix Sub-%2$s Permissions %3$s', 'press-permit-core'),
-                                        "&nbsp;&nbsp;<a href='" . esc_url($fix_child_url) . "' class='btn btn-link'>",
-                                        esc_html(strtolower($via_type_obj->labels->name)),
+                                        "&nbsp;<a href='" . esc_url($fix_child_url) . "' class='btn btn-link'>",
+                                        esc_html($via_type_obj->labels->singular_name),
                                         '</a>'
                                     );
                                 }
