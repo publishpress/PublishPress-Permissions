@@ -241,7 +241,6 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 == Changelog ==
 
 = 4.2.0 - 30 April 2025 =
-
 * Fixed: Group names now display correctly when no name was set. #1568
 * Fixed: Dropdown menu using Select2 no longer covers the entire screen. #1519
 * Fixed: "Select Other" option in dropdowns works properly again. #1540
