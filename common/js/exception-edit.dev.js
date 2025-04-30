@@ -658,6 +658,16 @@ jQuery(document).ready(function ($) {
         }
     });
 
+    // Handle expansion/collapse of subsections
+    $('#pp_current_exceptions .subsection-header').on('click', function(e) {
+        // Only proceed if the click wasn't on the search box or its children
+        if (!$(e.target).closest('.search-box').length) {
+            const $section = $(this).closest('.permission-type');
+            $section.find('.section-content').slideToggle(200);
+            $section.toggleClass('collapsed');
+        }
+    });
+
     // Handle "Select All" checkbox
     $('#pp_current_exceptions input[id^="cb-select-all-"]').on('change', function () {
         const isChecked = $(this).is(':checked');
