@@ -3,9 +3,9 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, user, privacy, capabilities
 Requires at least: 5.5
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.2.5
-Stable tag: 4.1.4
+Stable tag: 4.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,33 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.2.0 - 30 April 2025 =
+
+* Fixed: Handle undefined group names properly in UI. #1568
+* Fixed: Select2 dropdown displayed across the entire screen. #1519
+* Fixed: "Select Other" field not working as expected. #1540
+* Fixed: Hide parent option in non-hierarchical taxonomy. #1509
+* Fixed: Broken icon in search Select2 field. #1542
+* Fixed: UI lost active menu state after interaction. #1510
+* Fixed: Improved handling for missing metabox when Yoast SEO is active. #1554
+* Fixed: Show bulk action options in custom roles. #1548
+* Fixed: Show all notes in Permissions screen without requiring user action. #1530
+* Fixed: Increased font size in anchor tooltips. #1526
+* Fixed: Translation updates for Spanish, French, Italian. #1532
+* Fixed: Translation update for Brazilian Portuguese. #1528
+* Fixed: Query now ignores Revisions meta groups if Revisions module is inactive. #1500
+* Fixed: Duplicate WordPress Role groups on install. #1545
+* Fixed: Menu link renamed to "Permissions". #754
+* Updated: Composer dependencies. #1574
+* Updated: Improved the Universal Tag display. #1508
+* Updated: User display names now formatted with login. #1529
+* Updated: Applied Select2 to add member UI in Group edit screen. #1511
+* Updated: Translation improvements for release 4.2.0. #1532
+* Improved: Shortened and clarified hint messages in the Settings screen. #1530
+* Improved: Recaptioned “module” to “feature” in hints and notices. #1530
+* Improved: Changes to group screen UI layout and settings. #1319
+* Improved: Edit Permissions UI with better support for stored permissions. #1573
 
 = 4.1.4 - 1 April 2025 =
 * Updated: Menu link renamed to "Permissions" for better clarity. #754
