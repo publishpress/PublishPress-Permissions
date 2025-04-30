@@ -1826,25 +1826,25 @@ class AgentPermissionsUI
                                             if ('term' == $via_src) {
                                                 if ('additional' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('Enable %1$s of %2$s within %3$s (without need for role capabilities).', 'press-permit-core'), 
+                                                        esc_html__('%1$s access (%2$s) is ENABLED within %3$s, regardless of role capabilities.', 'press-permit-core'), 
+                                                        $for_type_obj->labels->singular_name, 
                                                         $op_label, 
-                                                        $for_type_obj->labels->name, 
                                                         $via_caption
                                                     );
                                                 
                                                 } elseif ('exclude' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('Blocked: Prevent %1$s of %2$s within %3$s (unless enabled by another Permission).', 'press-permit-core'),
+                                                        esc_html__('%1$s access (%2$s) is BLOCKED within %3$s, unless enabled by another Permission.', 'press-permit-core'),
+                                                        $for_type_obj->labels->singular_name,
                                                         $op_label, 
-                                                        $for_type_obj->labels->name, 
                                                         $via_caption
                                                     );
                                                 
                                                 } elseif ('include' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('Limitation: The user\'s %1$s %2$s role capabilities apply only within %3$s and other specified %4$s.', 'press-permit-core'),
-                                                        $op_label, 
+                                                        esc_html__('Limitation: The user\'s role capabilities for %1$s %2$s apply only within %3$s and other specified %4$s.', 'press-permit-core'),
                                                         $for_type_obj->labels->singular_name,
+                                                        $op_label, 
                                                         $via_caption,
                                                         $via_type_obj->labels->name
                                                     );
@@ -1852,23 +1852,23 @@ class AgentPermissionsUI
                                             } else {
                                                 if ('additional' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('Enable %1$s of %2$s (without need for role capabilities).', 'press-permit-core'), 
+                                                        esc_html__('%1$s access to %2$s is ENABLED, regardless of role capabilities.', 'press-permit-core'), 
                                                         $op_label, 
                                                         $via_caption
                                                     );
                                                 
                                                 } elseif ('exclude' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('Blocked: Prevent %1$s of %2$s (unless enabled by another Permission).', 'press-permit-core'),
+                                                        esc_html__('%1$s access to %2$s is BLOCKED, unless enabled by another Permission.', 'press-permit-core'),
                                                         $op_label, 
                                                         $via_caption
                                                     );
                                                 
                                                 } elseif ('include' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('Limitation: The user\'s %1$s %2$s role capabilities apply only for %3$s, and other specified %4$s.', 'press-permit-core'),
-                                                        $op_label, 
+                                                        esc_html__('Limitation: The user\'s role capabilities for %1$s %2$s apply only for %3$s, and other specified %4$s.', 'press-permit-core'),
                                                         $for_type_obj->labels->singular_name,
+                                                        $op_label, 
                                                         $via_caption,
                                                         $for_type_obj->labels->name
                                                     );
