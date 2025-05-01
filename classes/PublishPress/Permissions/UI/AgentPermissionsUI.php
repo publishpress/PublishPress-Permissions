@@ -1989,7 +1989,7 @@ class AgentPermissionsUI
 
                                                 echo '</td>';
                                             
-                                                echo '<td><a href="' . esc_url($edit_url) . '">' . esc_html__('Edit') . '</a></td>';
+                                                echo '<td class="edit-column"><a href="' . esc_url($edit_url) . '">' . sprintf(esc_html__('Edit %s', 'press-permit-core'), $via_type_obj->labels->singular_name) . '</a></td>';
 
                                                 $item_count++;
                                                 $section_item_count++;
