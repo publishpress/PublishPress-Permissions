@@ -3,9 +3,9 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, user, privacy, capabilities
 Requires at least: 5.5
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.2.5
-Stable tag: 4.1.4
+Stable tag: 4.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,29 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.2.0 - 1 May 2025 =
+* Improved: Edit Permissions screen reorganized for easier access. #1319
+* Improved: Stored Permissions interface redesigned for a more intuitive and flexible editing experience. #1573
+* Fixed: "Select Other" option in Author metabox works properly again. #1540
+* Fixed: Renamed sidebar menu label to “Permissions” for better clarity. #754
+* Fixed: Sidebar Permissions menu item stays highlighted on the Edit Permissions screen, improving navigation clarity. #1510
+* Fixed: Permissions Settings - If hints are enabled, they are displayed without requiring user interaction. #1530
+* Fixed: Tooltip links are now easier to read with larger font size. #1526
+* Compat: PublishPress Checklists - Icon in Select2 search box is now visible and aligned correctly. #1542
+* Fixed: Dropdown menu using Select2 no longer covers the entire screen. #1519
+* Updated: Group membership selection is now done by Select2 for improved usability. #1511
+* Fixed: Permission Groups bulk actions now displayed when listing custom roles. #1548
+* Fixed: Group names now display correctly when no name was set. #1568
+* Fixed: Groups defined by PublishPress Revisions are now excluded from group count if the Revisions plugin is not active. #1500
+* Fixed: Duplicate role-based user groups are no longer created during setup. #1545
+* Updated: Permissions metaboxes now show both User display name and user_login for easier identification. #1529
+* Fixed: Permissions metabox for Parent selection is now hidden on Term Edit screen for non-hierarchical taxonomies. #1509
+* Fixed: Permissions metaboxes on Term Edit screen no longer disappear when using Yoast SEO. #1554
+* Updated: Term Edit - When editing as a universal tag, some captions are adjusted to say "for All Post Types". #1508
+* Lang: Refined translation files for improved accuracy. #1532
+* Lang: Language translations updated for Spanish, French, Italian, and Brazilian Portuguese. #1532, #1528
+* Updated: Composer dependencies refreshed for better compatibility and stability. #1574
 
 = 4.1.4 - 1 April 2025 =
 * Updated: Menu link renamed to "Permissions" for better clarity. #754
