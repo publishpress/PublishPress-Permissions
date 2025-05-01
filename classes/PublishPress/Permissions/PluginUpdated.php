@@ -261,11 +261,18 @@ class PluginUpdated
             return;
         }
 
+        // Prevent concurrent redundant execution
+        if (did_action('presspermit_activate')) {
+            return;
+        }
+
         // Direct query on options table to use LIKE clause for this plugin update operation
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'presspermit_buffer_metagroup%'");
 
-        $metagroups = $stored_metagroups = $all_role_metagroups = [];
+        $metagroups = [];
+        $stored_metagroups = [];
+        $all_role_metagroups = [];
 
         $wpdb->members_table = $wpdb->pp_group_members;
 

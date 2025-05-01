@@ -32,6 +32,7 @@ class Settings
 
         $vars = [
             'displayHints' => presspermit()->getOption('display_hints'),
+            'forceDisplayHints' => presspermit()->getOption('force_display_hints'),
             'hintImg' => plugins_url('', PRESSPERMIT_FILE) . "/common/img/comment-grey-bubble.png"
         ];
         wp_localize_script('presspermit-settings', 'ppCoreSettings', $vars);
@@ -56,6 +57,7 @@ class Settings
         $ui->form_options = apply_filters('presspermit_option_sections', []);
 
         $ui->display_hints = presspermit()->getOption('display_hints');
+        $is_force_display_hints = presspermit()->getOption('force_display_hints') ? 'force-display-hints' : '';
 
         if ($_hidden = apply_filters('presspermit_hide_options', [])) {
             $hidden = [];
@@ -71,7 +73,7 @@ class Settings
         } ?>
         <div class="pressshack-admin-wrapper wrap" id="pp-permissions-wrapper">
             <?php
-            echo '<form id="pp_settings_form" action="" method="post">';
+            echo '<form id="pp_settings_form" action="" method="post" class="' . esc_attr($is_force_display_hints) . '">';
             wp_nonce_field('pp-update-options');
 
             do_action('presspermit_options_form');

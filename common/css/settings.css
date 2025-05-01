@@ -29,6 +29,7 @@
   color: #a0e0ff;
   text-decoration: underline;
   transition: color 0.2s;
+  font-size: 13px !important;
 }
 [data-toggle="tooltip"] .tooltip-text a:hover {
   color: #39b6f5;
@@ -199,7 +200,7 @@ table.pp-options-table .pp-optionhint {
 #pp_settings_form div.pp-subtext {
   margin-bottom: 20px !important;
 }
-#pp_settings_form .pp-subtext {
+#pp_settings_form:not(.force-display-hints) .pp-subtext {
   display: none;
 }
 #pp_settings_form .pp-subtext-show {

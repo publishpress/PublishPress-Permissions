@@ -76,6 +76,7 @@ class Permissions
 
     private function __construct()
     {
+        global $pagenow;
         add_filter('presspermit_unfiltered_content', [$this, 'fltPluginCompatUnfilteredContent'], 5, 1);
 
         // Log the post ID field for the sanitize_post() call by wp_insert_post(), 
@@ -112,6 +113,9 @@ class Permissions
             10,
             3
         );
+        if (in_array($pagenow, ['term.php'])) {
+            add_filter('gettext', [$this, 'flt_edit_tag'], 99, 3);
+        }
     }
 
     public function isInsertedPost($post_id)
@@ -251,6 +255,7 @@ class Permissions
         // need these keyed in separate array to force defaults if advanced options are disabled
         $this->default_advanced_options = [
             'display_hints' => 1,
+            'force_display_hints' => 1,
             'display_extension_hints' => 1,
             'dynamic_wp_roles' => 0,
             'non_admins_set_read_exceptions' => 1,
@@ -1222,5 +1227,24 @@ class Permissions
     public function addMaintenanceTriggers()
     {
         $this->hooks->addMaintenanceTriggers();
+    }
+
+    public function flt_edit_tag($translated_text, $text, $domain )
+    {
+        // This code is used to override the "Edit Tag" text in the admin area
+        // to provide more context for the user.
+        if (is_admin() 
+            && isset($_GET['taxonomy'], $_GET['tag_ID'], $text) 
+            && $text === 'Edit Tag' 
+            && $_GET['taxonomy'] === 'post_tag' ) {
+            if (!empty($_GET['pp_universal'])) {
+                return 'Edit Tag for All Post Types';
+            }
+            if (isset($_GET['post_type']) && $_GET['post_type'] === 'post') {
+                return 'Edit Tag for Posts';
+            }
+        }
+    
+        return $translated_text;
     }
 }

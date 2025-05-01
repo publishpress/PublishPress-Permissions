@@ -32,18 +32,23 @@ class TermEdit
     {
         if (!$use_post_type) {  // term management / association exceptions UI only displed when editing "Universal Exceptions" (empty post type)
             $tx = get_taxonomy($taxonomy);
+            $is_pp_universal = !PWP::empty_REQUEST('pp_universal');
             $add_boxes = [];
 
             foreach (['manage', 'associate'] as $op) {
                 if ($op_obj = presspermit()->admin()->getOperationObject($op, $use_post_type)) {
+                    // Skip "associate" for non-hierarchical taxonomies
+                    if ($is_pp_universal && $op === 'associate' && !is_taxonomy_hierarchical($taxonomy)) {
+                        continue;
+                    }
 
                     $caption = ('associate' == $op) 
                     ? sprintf(
-                        esc_html__('Permissions: Select this %1$s as Parent', 'press-permit-core'), 
+                        esc_html__('Permissions: Select this %1$s as Parent for All Post Types', 'press-permit-core'), 
                         $tx->labels->singular_name
                     )
                     : sprintf(
-                        esc_html__('Permissions: %1$s this %2$s', 'press-permit-core'), 
+                        esc_html__('Permissions: %1$s this %2$s for All Post Types', 'press-permit-core'), 
                         $op_obj->label, 
                         $tx->labels->singular_name
                     );

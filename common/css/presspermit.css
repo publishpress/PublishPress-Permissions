@@ -32,6 +32,7 @@
   color: #a0e0ff;
   text-decoration: underline;
   transition: color 0.2s;
+  font-size: 13px !important;
 }
 [data-toggle="tooltip"] .tooltip-text a:hover {
   color: #39b6f5;
@@ -564,7 +565,17 @@ div#profile-page.wrap div.pp-group-box h3:first-of-type,
   margin-top: 5px !important;
 }
 /* Custom CSS for Select2 */
-.select2-container:after {
+/* Target only Select2 instances with your custom class */
+.pp-select2-dropdown {
+  width: fit-content !important;
+}
+.pp-select2-container {
+  position: relative;
+  padding-right: 30px;
+  /* Make space for the icon */
+}
+/* Add the Dashicon */
+.pp-select2-container:after {
   content: "\f179";
   font-family: dashicons;
   font-size: 18px;
@@ -575,6 +586,27 @@ div#profile-page.wrap div.pp-group-box h3:first-of-type,
   pointer-events: none;
   color: #888;
 }
-.select2-container--default .select2-search--inline .select2-search__field {
+/* Search field width adjustment */
+.pp-select2-container .select2-search--inline {
   width: auto !important;
+  flex-grow: 1;
+}
+.pp-select2-container .select2-search__field {
+  min-width: 150px !important;
+  /* Prevent field from collapsing */
+}
+/* Hide default dropdown arrow if present */
+.pp-select2-container .select2-selection__arrow {
+  display: none;
+}
+/* Adjust for when dropdown is open */
+.select2-container--open .pp-select2-container:after {
+  transform: translateY(-50%) rotate(180deg);
+  /* Flip icon if needed */
+}
+/* Better mobile responsiveness */
+@media (max-width: 768px) {
+  .pp-select2-container .select2-search__field {
+    min-width: 100px !important;
+  }
 }

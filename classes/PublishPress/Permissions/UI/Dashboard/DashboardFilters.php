@@ -262,7 +262,7 @@ class DashboardFilters
         $handler = [__CLASS__, 'actMenuHandler'];
 
         if ($do_groups) {
-            add_submenu_page($pp_cred_menu, esc_html__('Groups', 'press-permit-core'), esc_html__('Groups', 'press-permit-core'), 'read', 'presspermit-groups', $handler);
+            add_submenu_page($pp_cred_menu, esc_html__('Permissions', 'press-permit-core'), esc_html__('Permissions', 'press-permit-core'), 'read', 'presspermit-groups', $handler);
 
             if (current_user_can('pp_create_groups') && ('presspermit-group-new' == presspermitPluginPage())) {
                 add_submenu_page(
@@ -317,7 +317,7 @@ class DashboardFilters
 
         if (in_array($pp_plugin_page, ['presspermit-edit-permissions'], true)) {
             $titles = ['presspermit-edit-permissions' => esc_html__('Edit Permissions', 'press-permit-core')];
-            add_submenu_page(sanitize_key($permissions_title), $titles[$pp_plugin_page], '', 'read', $pp_plugin_page, $handler);
+            add_submenu_page($pp_cred_menu, $titles[$pp_plugin_page], '', 'read', $pp_plugin_page, $handler);
         }
 
         do_action('presspermit_admin_menu');

@@ -12,7 +12,7 @@ jQuery(document).ready(function ($) {
     });
 
     // todo: pass img url variable, title
-    if (ppCoreSettings.displayHints) {
+    if (ppCoreSettings.displayHints == 1 && ppCoreSettings.forceDisplayHints != 1) {
         $('.pp-options-table tr').each(function (i,e) {
             var $row = $(this); // Cache the current row for better performance
 

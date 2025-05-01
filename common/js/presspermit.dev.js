@@ -3,14 +3,14 @@ jQuery(document).ready(function ($) {
         if ($(this).find('[data-toggle="tooltip"]').length > 0) {
             $(this).find('.hndle, .handlediv').off('click.postboxes');
 
-            $(document).on('click', '.hndle, .handlediv', function(e) {
+            $(this).on('click', '.hndle, .handlediv', function(e) {
                 if ($(e.target).closest('[data-toggle="tooltip"].click').length === 0) {
                     var postbox = $(this).closest('.postbox');
                     postbox.toggleClass('closed');
                 }
             });
         
-            $(document).on('click', '[data-toggle="tooltip"].click', function (event) {
+            $(this).on('click', '[data-toggle="tooltip"].click', function (event) {
                 if ($(event.target).is('[data-toggle="tooltip"].click') || $(event.target).closest('[data-toggle="tooltip"].click').length) {
                     event.preventDefault();
                     event.stopPropagation();

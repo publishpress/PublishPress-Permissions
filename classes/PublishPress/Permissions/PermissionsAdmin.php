@@ -67,7 +67,7 @@ class PermissionsAdmin
     {
         global $wp_roles;
 
-        $defaults = ['plural' => false, 'show_disabled' => true, 'slug_fallback' => true, 'include_warnings' => false, 'echo' => false];
+        $defaults = ['plural' => false, 'show_disabled' => true, 'slug_fallback' => true, 'include_warnings' => false, 'echo' => false, 'status_suffix' => true];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -113,27 +113,29 @@ class PermissionsAdmin
 
                 $cond_caption = '';
 
-                if (isset($arr_name[4])) {
-                    if (!$show_disabled && ('post_status' == $arr_name[3])) {
-                        $status_obj = get_post_status_object($arr_name[4]);
+                if (!empty($args['status_suffix'])) {
+                    if (isset($arr_name[4])) {
+                        if (!$show_disabled && ('post_status' == $arr_name[3])) {
+                            $status_obj = get_post_status_object($arr_name[4]);
 
-                        // Post status is undefined or disabled
-                        if (!$status_obj) {
-                            return false;
+                            // Post status is undefined or disabled
+                            if (!$status_obj) {
+                                return false;
+                            }
+
+                            // Post status is not enabled for this post type
+                            if (!empty($type_obj) && !empty($status_obj->post_type) && !in_array($type_obj->name, (array) $status_obj->post_type)) {
+                                return false;
+                            }
                         }
 
-                        // Post status is not enabled for this post type
-                        if (!empty($type_obj) && !empty($status_obj->post_type) && !in_array($type_obj->name, (array) $status_obj->post_type)) {
-                            return false;
-                        }
+                        $cond_caption = apply_filters(
+                            'presspermit_condition_caption',
+                            ucwords(str_replace('_', ' ', $arr_name[4])),
+                            $arr_name[3],
+                            $arr_name[4]
+                        );
                     }
-
-                    $cond_caption = apply_filters(
-                        'presspermit_condition_caption',
-                        ucwords(str_replace('_', ' ', $arr_name[4])),
-                        $arr_name[3],
-                        $arr_name[4]
-                    );
                 }
 
                 if ($cond_caption) {

@@ -29,6 +29,7 @@
   color: #a0e0ff;
   text-decoration: underline;
   transition: color 0.2s;
+  font-size: 13px !important;
 }
 [data-toggle="tooltip"] .tooltip-text a:hover {
   color: #39b6f5;

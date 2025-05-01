@@ -43,23 +43,20 @@ class SettingsAdmin
         case 'post_blockage_priority':
         return __('If disabled, manually "blocked" posts can be unblocked by specific Category / Term Permissions.', 'press-permit-core-hints');
 
-        case 'define_media_post_caps_pro' :
-        return __("For most installations, leave this disabled. If enabled, corresponding edit and delete capabilities must be added to existing roles.", 'press-permit-core-hints');
-
         case 'define_media_post_caps' :
-        return __("For most installations, leave this disabled. See Editing tab for specialized Media Library permissions.", 'press-permit-core-hints');
+        return __("If enabled, corresponding Media edit and delete capabilities must be added to existing roles.", 'press-permit-core-hints');
 
         case 'define_media_post_caps_collab_prompt' :
-        return  __("For most installations, leave this disabled. For specialized Media Library permissions, install the Editing Permissions module.", 'press-permit-core-hints');
+        return  __("For specialized Media Library permissions, enable the Editing Permissions feature.", 'press-permit-core-hints');
 
         case 'bbp_compat_prompt' :
-        return __('To customize bbPress forum permissions, activate the Compatibility Pack module.', 'press-permit-core-hints');
+        return __('To customize bbPress forum permissions, activate the Compatibility Pack feature.', 'press-permit-core-hints');
 
         case 'bbp_pro_prompt' :
         return __('To customize bbPress forum permissions, activate your Permissions Pro license key.', 'press-permit-core-hints');
 
         case 'strip_private_caption' :
-        return __('Remove the "Private:" and "Protected" prefix from Post, Page titles', 'press-permit-core-hints');
+        return __('Remove the "Private:" and "Protected" prefix from Post, Page titles.', 'press-permit-core-hints');
 
         case 'regulate_category_archive_page' :
         return __("If the user is blocked from reading posts in a category, also block access to category archive page.", 'press-permit-core-hints');
@@ -71,7 +68,7 @@ class SettingsAdmin
         return __('Unmodified from WordPress default behavior. To enable filtering, remove constant definition PP_ADMIN_READONLY_LISTABLE.', 'press-permit-core-hints');
 
         case 'display_user_profile_roles' :
-        return __('Note: Groups and Roles are always displayed in "Edit User"', 'press-permit-core-hints');
+        return __('Note: Groups and Roles are always displayed on the Edit User screen.', 'press-permit-core-hints');
 
 
         // Advanced
@@ -79,7 +76,7 @@ class SettingsAdmin
         return __('Disable Permissions filtering for users who are not logged in.', 'press-permit-core-hints');
 
         case 'limit_front_end_term_filtering' :
-        return __('Legacy compatibility: front end term filters are not applied on some sites', 'press-permit-core-hints');
+        return __('Legacy compatibility: front end term filters are not applied on some sites.', 'press-permit-core-hints');
 
         case 'suppress_administrator_metagroups' :
         return __('If checked, pages blocked from the "All" or "Logged In" groups will still be listed to Administrators.', 'press-permit-core-hints');
@@ -97,7 +94,7 @@ class SettingsAdmin
         return  __('Display descriptive captions for features available in missing or deactivated modules.', 'press-permit-core-hints');
 
         case 'pattern_roles_include_generic_rolecaps':
-        return __('Supplemental roles assigned for a specific post type will always apply "_posts" capabilities in the Pattern Role (Author, Editor, etc.) for the selected post type. This setting pertains to other capabilities in the Pattern Role. For the most consistent permissions model, capabilities unrelated to a specific type should not normally be granted by a type-specific role, but some installations may require it. Enable this setting to restore previous plugin behavior; leave it disabled for more narrowly targeted Supplemental Roles.', 'press-permit-core-hints');
+        return __('Supplemental Roles cause "_posts" capabilities in the Pattern Role (Author, Editor, etc.) to be assigned for the selected post type. Enable this setting to also include all other capabilities in the Pattern Role.', 'press-permit-core-hints');
 
         case 'dynamic_wp_roles' :
         return __('Detect user roles which are appended dynamically but not stored to the WP database. May be useful for sites that sync with Active Directory or other external user registration systems.', 'press-permit-core-hints');
@@ -109,17 +106,17 @@ class SettingsAdmin
         return __('You can add Permissions capabilities to a role using %1$s:', 'press-permit-core-hints');
 
         case 'non_admins_set_read_exceptions' :
-        return __('Users also need the pp_set_read_exceptions capability in their WordPress role.', 'press-permit-core-hints');
+        return __('Regardless of this setting, the pp_set_read_exceptions capability is also required.', 'press-permit-core-hints');
 
         case 'non_admins_set_edit_exceptions' :
-        return __('Users also need the pp_set_edit_exceptions capability in their WordPress role.', 'press-permit-core-hints');
+        return __('Regardless of this setting, the pp_set_edit_exceptions capability is also required.', 'press-permit-core-hints');
 
         // Editing
         case 'collaborative-publishing' :
         return sprintf(__('Settings related to content editing permissions, provided by the %s module.', 'press-permit-core-hints'), __('Editing Permissions', 'press-permit-core-hints'));
 
         case 'list_others_uneditable_posts' :
-        return __('If this setting is disabled, a specific role can be given capabilities: list_others_posts, list_others_pages, etc.', 'press-permit-core-hints');
+        return __('If this setting is disabled, you can enable a role by giving it capabilities: list_others_posts, list_others_published_pages, etc.', 'press-permit-core-hints');
 
         case 'force_taxonomy_cols' :
         return __('Display a custom column on Edit Posts screen for all related taxonomies which are enabled for Permissions filtering.', 'press-permit-core-hints');
@@ -128,7 +125,7 @@ class SettingsAdmin
         return __('Allows creation of a new post (of any type) for each selected user, using an existing post as the pattern.', 'press-permit-core-hints');
 
         case 'lock_top_pages' :
-        return __('Users who do not meet this site-wide role requirement will not be able to publish new top-level pages (Parent = "Main Page").  They will also be unable to move a currently published page from "Main Page" to a different Page Parent.', 'press-permit-core-hints');
+        return __('Other users will be unable to publish new top-level pages (Parent = "Main Page"), or move a published page from "Main Page" to a different Parent.', 'press-permit-core-hints');
 
         case 'limited_editing_elements' :
         return __('Remove Edit Form elements with these (comma-separated) html IDs from users who do not have full editing capabilities for the post/page.', 'press-permit-core-hints');
@@ -137,7 +134,7 @@ class SettingsAdmin
         return __('The following settings are currently overridden by the constant PP_MEDIA_LIB_UNFILTERED (defined in wp-config.php or some other file you maintain). Media Library access will not be altered by Permissions.', 'press-permit-core-hints');
 
         case 'admin_others_attached_to_readable' :
-        return __("To allow a role to view all media regardless of this setting, give it the pp_list_all_files capability.", 'press-permit-core-hints');
+        return __("To allow a role to view all Media regardless of this setting, give it the pp_list_all_files capability.", 'press-permit-core-hints');
 
         case 'admin_others_attached_files' :
         return '';
@@ -221,7 +218,7 @@ class SettingsAdmin
         return esc_html__("If auto-assign term setting is enabled, apply it even if user does not have term assignment limitations", 'press-permit-core-hints');
 
         case 'PP_NO_MODERATION' :
-		return esc_html__("Don't define an 'Approved' status, even if Status Control module is active", 'press-permit-core-hints');
+		return esc_html__("Don't define an 'Approved' status, even if Status Control feature is active", 'press-permit-core-hints');
 
 
         // 'nav-menu-manage'
