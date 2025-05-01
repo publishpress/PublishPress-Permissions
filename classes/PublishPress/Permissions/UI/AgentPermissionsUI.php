@@ -2242,7 +2242,7 @@ class AgentPermissionsUI
                                     );
                                 }
 
-                                if (defined('WP_DEBUG')) {
+                                if (defined('WP_DEBUG') || defined('PRESSPERMIT_DEBUG')) {
                                     if (!PWP::empty_REQUEST('show_propagated')) {
                                         echo '<div class="notes">';
                                     }
@@ -2261,7 +2261,7 @@ class AgentPermissionsUI
                                     );
                                 }
 
-                                if (PWP::empty_REQUEST('show_propagated') || defined('WP_DEBUG')) {
+                                if (PWP::empty_REQUEST('show_propagated') || defined('WP_DEBUG') || defined('PRESSPERMIT_DEBUG')) {
                                     echo '</div>';
                                 }
                             }
