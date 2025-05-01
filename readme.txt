@@ -240,28 +240,28 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 4.2.0 - 30 April 2025 =
-* Fixed: Group names now display correctly when no name was set. #1568
-* Fixed: Dropdown menu using Select2 no longer covers the entire screen. #1519
-* Fixed: "Select Other" option in dropdowns works properly again. #1540
-* Fixed: Parent selection is now hidden for non-hierarchical taxonomies. #1509
-* Fixed: Icon in Select2 search box is now visible and aligned correctly. #1542
-* Fixed: Sidebar menu item stays highlighted on the Permissions screen, improving navigation clarity. #1510
-* Fixed: Permissions metabox no longer disappears when using Yoast SEO. #1554
-* Fixed: Bulk actions now show up for users with custom roles. #1548
-* Fixed: All hint texts are now visible without requiring user interaction. #1530
-* Fixed: Tooltip anchor text is now easier to read with larger font size. #1526
-* Fixed: Language translations updated for Spanish, French, Italian, and Brazilian Portuguese. #1532, #1528
-* Fixed: Revisions-related groups are now excluded from queries if the Revisions feature is turned off. #1500
-* Fixed: Duplicate role-based user groups are no longer created during setup. #1545
+= 4.2.0 - 1 May 2025 =
+* Improved: Edit Permissions screen reorganized for easier access. #1319
+* Improved: Stored Permissions interface redesigned for a more intuitive and flexible editing experience. #1573
+* Fixed: "Select Other" option in Author metabox works properly again. #1540
 * Fixed: Renamed sidebar menu label to “Permissions” for better clarity. #754
+* Fixed: Sidebar Permissions menu item stays highlighted on the Edit Permissions screen, improving navigation clarity. #1510
+* Fixed: Permissions Settings - If hints are enabled, they are displayed without requiring user interaction. #1530
+* Fixed: Tooltip links are now easier to read with larger font size. #1526
+* Compat: PublishPress Checklists - Icon in Select2 search box is now visible and aligned correctly. #1542
+* Fixed: Dropdown menu using Select2 no longer covers the entire screen. #1519
+* Updated: Group membership selection is now done by Select2 for improved usability. #1511
+* Fixed: Permission Groups bulk actions now displayed when listing custom roles. #1548
+* Fixed: Group names now display correctly when no name was set. #1568
+* Fixed: Groups defined by PublishPress Revisions are now excluded from group count if the Revisions plugin is not active. #1500
+* Fixed: Duplicate role-based user groups are no longer created during setup. #1545
+* Updated: Permissions metaboxes now show both User display name and user_login for easier identification. #1529
+* Fixed: Permissions metabox for Parent selection is now hidden on Term Edit screen for non-hierarchical taxonomies. #1509
+* Fixed: Permissions metaboxes on Term Edit screen no longer disappear when using Yoast SEO. #1554
+* Updated: Term Edit - When editing as a universal tag, some captions are adjusted to say "for All Post Types". #1508
+* Lang: Refined translation files for improved accuracy. #1532
+* Lang: Language translations updated for Spanish, French, Italian, and Brazilian Portuguese. #1532, #1528
 * Updated: Composer dependencies refreshed for better compatibility and stability. #1574
-* Updated: Improved appearance and behavior of the universal tag feature. #1508
-* Updated: User display names now include their login for easier identification. #1529
-* Updated: Group and user member selectors now use Select2 for improved usability. #1511
-* Updated: Refined translation files for improved accuracy. #1532
-* Improved: Settings layout on the Group screen reorganized for easier access. #1319
-* Improved: New stored permissions interface provides a more intuitive and flexible editing experience. #1573
 
 = 4.1.4 - 1 April 2025 =
 * Updated: Menu link renamed to "Permissions" for better clarity. #754
