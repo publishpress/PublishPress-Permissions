@@ -1241,7 +1241,7 @@ class AgentPermissionsUI
 
                                                 echo '</td>';
                                             
-                                                echo '<td class="edit-column"><a href="' . esc_url($edit_url) . '">' . sprintf(esc_html__('Edit %s', 'press-permit-core'), $via_type_obj->labels->singular_name) . '</a></td>';
+                                                echo '<td class="edit-column"><a href="' . esc_url($edit_url) . '">' . sprintf(esc_html__('Edit %s', 'press-permit-core'), esc_html($via_type_obj->labels->singular_name)) . '</a></td>';
 
                                                 $item_count++;
                                                 $section_item_count++;
