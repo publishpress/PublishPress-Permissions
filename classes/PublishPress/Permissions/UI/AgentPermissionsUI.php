@@ -1974,7 +1974,8 @@ class AgentPermissionsUI
                                                         'class'          => true,
                                                     ],
                                                 ];
-                                                echo "<label for='" . esc_attr($cb_id) . "' class='" . esc_attr($lbl_class) . "'>" . wp_kses($item_label, $allowed_html) . "</label>";
+                                                
+                                                echo wp_kses($item_label, $allowed_html);
 
                                                 if ($is_redundant) {
                                                     ?>
