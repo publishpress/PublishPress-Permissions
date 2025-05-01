@@ -754,8 +754,8 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   color: #374151;
 }
 #pp_current_exceptions .notes-main {
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 #pp_current_exceptions .footer-actions {
   display: flex;
