@@ -536,7 +536,7 @@ class AgentPermissionsUI
 
                 $args['class'] = ('user' == $agent_type) ? 'pp-user-roles' : 'pp-group-roles';
                 $args['agent_type'] = $agent_type;
-                self::currentRolesUIV2($roles, $args);
+                self::currentRolesUI($roles, $args);
 
                 $post_types[''] = ''; // also retrieve exceptions for (all) post type
 
@@ -560,12 +560,12 @@ class AgentPermissionsUI
                 $exc = $pp->getExceptions($_args);
                 $args['class'] = ('user' == $agent_type) ? 'pp-user-roles' : 'pp-group-roles';
 
-                self::currentExceptionsUIV2($exc, $args);
+                self::currentExceptionsUI($exc, $args);
 
                 do_action('presspermit_group_roles_ui', $agent_type, $agent_id);
             }
 
-            public static function currentRolesUIV2($roles, $args = [])
+            public static function currentRolesUI($roles, $args = [])
             {
                 $defaults = ['read_only' => false, 'caption' => '', 'class' => 'pp-group-roles', 'link' => '', 'agent_type' => '', 'show_groups_link' => false];
                 $args = array_merge($defaults, $args);
@@ -725,7 +725,7 @@ class AgentPermissionsUI
                 return true;
             }
 
-            public static function currentExceptionsUIV2($exc_results, $args = [])
+            public static function currentExceptionsUI($exc_results, $args = [])
             {
                 $defaults = [
                     'read_only' => false,

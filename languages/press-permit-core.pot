@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-01T12:06:46+00:00\n"
+"POT-Creation-Date: 2025-05-02T01:01:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: press-permit-core\n"
@@ -473,29 +473,21 @@ msgstr ""
 msgid "Update Group"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentPermissions.php:341
-msgid "Supplemental Roles %1$s(from primary role or %2$sgroup membership%3$s)%4$s"
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/AgentPermissions.php:365
-msgid "Specific Permissions %1$s(from primary role or %2$sgroup membership%3$s)%4$s"
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/AgentPermissions.php:378
+#: classes/PublishPress/Permissions/UI/AgentPermissions.php:382
 msgid "View currently stored user permissions:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentPermissions.php:382
+#: classes/PublishPress/Permissions/UI/AgentPermissions.php:386
 #: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:542
 msgid "%1$sUsers who have Supplemental Roles assigned directly%2$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentPermissions.php:383
+#: classes/PublishPress/Permissions/UI/AgentPermissions.php:387
 #: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:543
 msgid "%1$sUsers who have Specific Permissions assigned directly%2$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentPermissions.php:384
+#: classes/PublishPress/Permissions/UI/AgentPermissions.php:388
 #: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:544
 msgid "%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s"
 msgstr ""

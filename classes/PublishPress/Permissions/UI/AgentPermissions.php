@@ -309,6 +309,9 @@ class AgentPermissions
                 if ('user' == $agent_type) : ?>
                     <div>
                         <?php if ($agent_id) {
+                            // @todo: Consider how to reinstate a read-only summary of the Supplemental Roles and Permissions the user has from Group membership
+
+                            /*
                             $roles = [];
                             $user = $pp->getUser($agent_id);
                             $user->retrieveExtraGroups();
@@ -370,6 +373,7 @@ class AgentPermissions
                             );
 
                             AgentPermissionsUI::currentExceptionsUI($exceptions, ['read_only' => true, 'class' => 'pp-group-roles', 'caption' => $role_group_caption, 'show_groups_link' => true]);
+                            */
                         } else {
                         ?>
                             <h4>
