@@ -3,9 +3,9 @@
 Contributors: publishpress, kevinB, stevejburge, andergmartins
 Tags: restrict, access, user, privacy, capabilities
 Requires at least: 5.5
-Tested up to: 6.8
+Tested up to: 6.8.1
 Requires PHP: 7.2.5
-Stable tag: 4.2.0
+Stable tag: 4.2.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,10 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.2.1 - 2 May 2025 =
+* Fixed: Group Permissions on the Edit User screen now display with the correct formatting. #1601  
+* Fixed: Resolved an uncaught error that occurred on the Edit Group screen under certain conditions. #1598
 
 = 4.2.0 - 1 May 2025 =
 * Improved: Edit Permissions screen reorganized for easier access. #1319
