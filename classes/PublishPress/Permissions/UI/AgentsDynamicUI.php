@@ -387,7 +387,7 @@ class AgentsDynamicUI
             </tr>
             <tr>
                 <td style="padding-top: <?php echo $display_stored_selections ? '3em' : '0';?>;">
-                    <select multiple="multiple" id="v2_agent_search_text_<?php echo esc_attr("{$op}:{$for_item_type}:{$agent_type}"); ?>" name="_select-<?php echo esc_attr("$op-$for_item_type-$agent_type"); ?>[]">
+                    <select <?php if ($multi_select):?>multiple="multiple"<?php endif;?> id="v2_agent_search_text_<?php echo esc_attr("{$op}:{$for_item_type}:{$agent_type}"); ?>" name="_select-<?php echo esc_attr("$op-$for_item_type-$agent_type"); ?>[]">
                         <?php
                         // Show the option if user has current selections and not active membership feature
                         if ($display_stored_selections 

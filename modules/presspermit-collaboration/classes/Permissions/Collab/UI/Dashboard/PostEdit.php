@@ -317,8 +317,15 @@ class PostEdit
             <script type="text/javascript">
                 /* <![CDATA[ */
                 jQuery(document).ready(function($) {
-                    // We replace current search UI with select2 and utilize current search from classic editor
-                    $("#post_author_override").select2();
+                    var author_el = $('#pp_author_search_ui_base').html();
+                    $('#pp_author_search_ui_base').remove();
+                    $("#post_author_override").after(
+                        '<div id="pp_author_search" class="pp-select-author" style="display:none">' +
+                        author_el +
+                        '</div>&nbsp;' +
+                        '<a href="#" class="pp-add-author" style="margin-left:8px" title="<?php echo esc_attr($title); ?>"><?php esc_html_e('select other', 'press-permit-core'); ?></a>' +
+                        '<a class="pp-close-add-author" href="#" style="display:none;"><?php esc_html_e('close', 'press-permit-core'); ?></a>'
+                    );
                 });
                 /* ]]> */
             </script>
