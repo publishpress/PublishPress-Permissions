@@ -57,7 +57,7 @@ class GroupNew
             <div class="error">
                 <?php
                 foreach ($pp_admin->errors->get_error_messages() as $msg) {
-                    echo '<p>' . esc_html($msg) . '</p>';
+                    echo '<p>' . wp_kses_post($msg) . '</p>';
                 }
                 ?>
             </div>
