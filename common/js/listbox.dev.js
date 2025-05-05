@@ -163,10 +163,16 @@
 
                 // Need to update the post_author_override select if classic editor is used
                 if (args2.topic === 'select-author') {
-                    var selectedValue = $(this).val();
-            
-                    // Update the post_author_override select
-                    $('#post_author_override').val(selectedValue).trigger('change');
+                    const selectedValue = $(this).val();
+                    const selectedText = $(this).find('option:selected').text();
+
+                    // Add the selected value to the post_author_override dropdown if not present
+                    const $authorSelect = $('#post_author_override');
+                    if (selectedValue && !$authorSelect.find(`option[value="${selectedValue}"]`).length) {
+                        $authorSelect.append(new Option(selectedText, selectedValue));
+                    }
+
+                    $authorSelect.val(selectedValue).trigger('change');
                 }
             });
         }
