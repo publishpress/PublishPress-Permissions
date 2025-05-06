@@ -37,7 +37,7 @@
                 agent_type_lbl = 'group';
             }
 
-            if (args2.topic !== 'member') {
+            if (!['member', 'select-author'].includes(args2.topic)) {
                 // Clear all existing hidden inputs for this agent type
                 $(`input[name^="pp_exceptions[${forItemType}][${op}][${agentType}][item]"]`).remove();
         
@@ -51,7 +51,7 @@
                 });
             }
 
-            if(args2.topic === 'member') {
+            if (['member', 'select-author'].includes(args2.topic)) {
                 selector += ", #v2_" + CSS.escape(args2.search_id + '::' + args2.agent_type);
             }
 
@@ -137,11 +137,11 @@
                 },
                 cache: true,
               },
-            }).on('select2:select select2:unselect', function (e) {
-                const [op, forItemType, agentType] = args2.topic.replace(/\\:/g, ':').split(':');
-                const selectedValues = $(this).val() || [];
-        
-                if (args2.topic !== 'member') {
+            }).on('select2:select select2:unselect', function (e) {                
+                if (!['member', 'select-author'].includes(args2.topic)) {
+                    const [op, forItemType, agentType] = args2.topic.replace(/\\:/g, ':').split(':');
+                    const selectedValues = $(this).val() || [];
+
                     // Add hidden inputs for each selected value
                     selectedValues.forEach(function (value) {
                         $('<input>')
@@ -159,6 +159,20 @@
                             .val('') // Empty value for unselected items
                             .appendTo($(selector).parent());
                     }
+                }
+
+                // Need to update the post_author_override select if classic editor is used
+                if (args2.topic === 'select-author') {
+                    const selectedValue = $(this).val();
+                    const selectedText = $(this).find('option:selected').text();
+
+                    // Add the selected value to the post_author_override dropdown if not present
+                    const $authorSelect = $('#post_author_override');
+                    if (selectedValue && !$authorSelect.find(`option[value="${selectedValue}"]`).length) {
+                        $authorSelect.append(new Option(selectedText, selectedValue));
+                    }
+
+                    $authorSelect.val(selectedValue).trigger('change');
                 }
             });
         }
