@@ -123,16 +123,16 @@ class AgentExceptionsAjax
                 ];
                 ?>
                 <div>
-                <?php foreach ($modes as $val => $title) :?>
+                <?php foreach ($modes as $mod_type => $title) :?>
                     <label>
-                        <input type='radio' name='pp_select_x_mod_type' class='pp-select-x-mod-type' value='<?php echo esc_attr($val);?>'>
+                        <input type='radio' name='pp_select_x_mod_type' class='pp-select-x-mod-type' value='<?php echo esc_attr($mod_type);?>'>
                         <span>
                             <?php
-                            echo isset($tooltips[$val]) ? 
+                            echo isset($tooltips[$mod_type]) ? 
                                 sprintf(
                                     '<span data-toggle="tooltip" data-placement="top">%s<span class="tooltip-text"><span>%s</span><i></i></span><i class="dashicons dashicons-info-outline" style="font-size: 18px;width: 16px;height: 16px;margin-left: 1px;"></i></span>',
                                     esc_html($title),
-                                    esc_html($tooltips[$val])
+                                    esc_html($tooltips[$mod_type])
                                 ) : esc_html($title); ?>
                         </span>
                     </label>
