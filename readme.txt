@@ -243,7 +243,11 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 = 4.2.2 - 6 May 2025 =
 * Fixed: Restored the "Select Other" option for authors in the Classic Editor. #1540
 * Fixed: Ensured proper HTML escaping when adding new user groups. #1567
-* Fixed: The "All statuses" label is now correctly translated. #1609
+* Fixed: Recaption "Add Permissions > Post Type > All Statuses" to "All Post Types" #1559
+* Fixed: The "All Statuses" label is now correctly translated. #1609
+* Fixed: Reduce white space for Group Members selection #1616
+* Fixed: Membership module's Current Selections list is too narrow #1621
+* Fixed: Circles module generated PHP warning if Post is null #1617
 * Updated: Added missing Brazilian Portuguese translation. #1608
 
 = 4.2.1 - 2 May 2025 =
