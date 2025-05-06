@@ -5,7 +5,7 @@ Tags: restrict, access, user, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.8.1
 Requires PHP: 7.2.5
-Stable tag: 4.2.1
+Stable tag: 4.2.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,12 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.2.2 - 6 May 2025 =
+* Fixed: Restored the "Select Other" option for authors in the Classic Editor. #1540
+* Fixed: Ensured proper HTML escaping when adding new user groups. #1567
+* Fixed: The "All statuses" label is now correctly translated. #1609
+* Updated: Added missing Brazilian Portuguese translation. #1608
 
 = 4.2.1 - 2 May 2025 =
 * Fixed: Group Permissions on the Edit User screen now display with the correct formatting. #1601  
