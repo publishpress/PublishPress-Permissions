@@ -2,16 +2,16 @@
 # This file is distributed under the same license as the PublishPress Permissions plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: PublishPress Permissions 4.2.2\n"
+"Project-Id-Version: PublishPress Permissions 4.2.2-beta2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-06T17:42:55+00:00\n"
+"POT-Creation-Date: 2025-05-06T20:56:16+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: press-permit-core\n"
 
 #. Plugin Name of the plugin
@@ -535,7 +535,7 @@ msgid "Reload form for further changes to this role"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:40
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:453
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:452
 msgid "Add Specific Permissions"
 msgstr ""
 
@@ -728,11 +728,11 @@ msgstr ""
 msgid "Save Permissions"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:456
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:455
 msgid "Add Supplemental Roles"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:466
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:465
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:15
 msgid "Copy"
 msgstr ""
@@ -1004,69 +1004,69 @@ msgid "edit"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:23
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:259
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:253
 msgctxt "user"
 msgid "Select &gt;"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:24
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:260
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:254
 msgctxt "user"
 msgid "&lt; Unselect"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:59
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:297
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:58
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:290
 msgid "Find Users by %s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:61
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:299
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:60
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:292
 msgid "Search Users"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:64
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:302
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:63
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:295
 msgid "Search Custom Groups"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:84
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:319
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:83
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:312
 msgid "For additional fields, define constant PP_USER_SEARCH_META_FIELDS"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:86
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:321
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:85
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:314
 msgid "First Name"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:86
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:321
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:85
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:314
 msgid "Last Name"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:86
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:321
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:85
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:314
 msgid "Nickname"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:111
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:346
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:110
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:339
 msgid "(user field)"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:141
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:376
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:140
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:369
 msgid "(any WP role)"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:157
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:435
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:156
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:428
 msgid "Search Results:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:179
-#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:458
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:173
+#: classes/PublishPress/Permissions/UI/AgentsDynamicUI.php:448
 msgid "Current Selections:"
 msgstr ""
 
