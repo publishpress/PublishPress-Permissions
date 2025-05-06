@@ -25,7 +25,6 @@ class AgentsDynamicUI
             'display_stored_selections' => true,
             'create_dropdowns' => false,
             'width' => '',
-            'width_current' => '',
             'label_headline' => true,
             'multi_select' => true,
             'use_selection_js' => true,
@@ -168,11 +167,6 @@ class AgentsDynamicUI
 
                 <?php
                 if ($display_stored_selections) : ?>
-                    <?php if ($width_current) {
-                        $width = "width:{$width_current}px;";
-                    }
-
-                    ?>
                     <td class="pp-members-current">
                         <h4>
                         <?php if (!apply_filters('presspermit_suppress_agents_selection_label', false, $id_suffix, $args)):
@@ -261,7 +255,6 @@ class AgentsDynamicUI
             'display_stored_selections' => true,
             'create_dropdowns' => false,
             'width' => '',
-            'width_current' => '',
             'label_headline' => true,
             'multi_select' => true,
             'use_selection_js' => true,
@@ -445,10 +438,7 @@ class AgentsDynamicUI
                 </td>
 
                 <?php
-                if ($display_stored_selections) : ?>
-                    <?php if ($width_current) {
-                        $width = "width:{$width_current}px;";
-                    }
+                if ($display_stored_selections) :
                     // Hide current selections if user not active membership feature
                     $is_show_current_selection = !defined('PRESSPERMIT_MEMBERSHIP_VERSION') && in_array($pp_plugin_page, ['presspermit-edit-permissions', 'presspermit-group-new'], true) ? 'display:none;' : '';
                     ?>
