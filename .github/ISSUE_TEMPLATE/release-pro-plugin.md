@@ -23,7 +23,7 @@ To release the Pro plugin, ensure you complete all the tasks below.
 - [ ] Update the `.pot` file executing `composer gen:pot` and include a note in the changelog.
 - [ ] Especially for minor and patch releases, maintain backward compatibility for changes like renamed or moved classes, namespaces, functions, etc. Include deprecation comments and mention this in the changelog. Major releases may remove deprecated code, but always note this in the changelog.
 - [ ] Revise the changelog to include all changes with user-friendly descriptions and ensure the release date is accurate.
--- [ ] Update the version number in the main plugin file and `readme.txt`, adhering to specifications from our [tech documentation](https://rambleventures.slab.com/posts/version-numbers-58nmrk4b), and commit to the release branch.
+- [ ] Update the version number in the main plugin file and `readme.txt`, adhering to specifications from our [tech documentation](https://rambleventures.slab.com/posts/version-numbers-58nmrk4b), and commit to the release branch.
 - [ ] Confirm there are no uncommitted changes.
 - [ ] Build the zip package with `composer build`, creating a new package in the `./dist` directory.
 - [ ] Distribute the new package to the team for testing.
