@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the PublishPress Permissions plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: PublishPress Permissions 4.2.0\n"
+"Project-Id-Version: PublishPress Permissions 4.2.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-02T01:01:22+00:00\n"
+"POT-Creation-Date: 2025-05-06T13:29:03+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: press-permit-core\n"
@@ -37,6 +37,14 @@ msgstr ""
 #. Author URI of the plugin
 #: press-permit-core.php
 msgid "https://publishpress.com/"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1241
+msgid "Edit Tag for All Post Types"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1244
+msgid "Edit Tag for Posts"
 msgstr ""
 
 #: classes/PublishPress/Permissions/Admin.php:100
@@ -291,9 +299,9 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:64
 #: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:91
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:146
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:208
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:250
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:149
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:211
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:253
 #: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:44
 #: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:66
 #: classes/PublishPress/Permissions/UI/Dashboard/ItemAjax.php:26
@@ -317,29 +325,29 @@ msgstr ""
 msgid "Limit to:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:126
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:120
 msgid "Expand access to allow specified items regardless of role capabilities or restrictions."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:128
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:121
 msgid "Restrict access by blocking specified items unless an \"Enabled\" exception is also stored."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:130
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:122
 msgid "Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:156
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:159
 msgid "selected:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:168
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:171
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:170
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/AjaxUI.php:125
 msgid "Nav Menus (Legacy)"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:170
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:173
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:853
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:172
 #: modules/presspermit-collaboration/classes/Permissions/Collab/AdminFilters.php:217
@@ -347,25 +355,27 @@ msgstr ""
 msgid "Legacy"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:174
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:187
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:193
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:177
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:190
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:196
 msgid "%s:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:221
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:224
 msgid "selected %s:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:228
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:231
 msgid "sub-%s:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:261
-msgid "(all)"
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:264
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:107
+#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:174
+msgid "All Statuses"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:274
+#: classes/PublishPress/Permissions/UI/AgentExceptionsAjax.php:277
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:1704
 #: classes/PublishPress/Permissions/UI/AgentRolesAjax.php:110
 msgid "%s Visibility"
@@ -598,11 +608,6 @@ msgstr ""
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:847
 #: classes/PublishPress/Permissions/UI/SettingsTabCore.php:178
 msgid "Block"
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:107
-#: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:174
-msgid "All Statuses"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissionsUI.php:112
@@ -1451,12 +1456,17 @@ msgstr ""
 msgid "Workflow"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:324
-msgid "<strong>ERROR</strong>: Please enter a group name."
+#: classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:326
+#: classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:333
+msgid "ERROR"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:329
-msgid "<strong>ERROR</strong>: This group name is already registered. Please choose another one."
+#: classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:327
+msgid "Please enter a group name."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/Handlers/AgentEdit.php:334
+msgid "This group name is already registered. Please choose another one."
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/Handlers/Groups.php:73
@@ -2204,6 +2214,14 @@ msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:298
 msgid "Author Search / Select"
+msgstr ""
+
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:326
+msgid "select other"
+msgstr ""
+
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:327
+msgid "close"
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/TermEdit.php:47
