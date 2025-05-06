@@ -116,24 +116,21 @@ class AgentExceptionsAjax
 
                 $modes = apply_filters('presspermit_exception_modes', $modes, $for_source_name, $for_type, $operation);
 
+                $tooltips = [
+                    'additional' => esc_html__('Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core'),
+                    'exclude' => esc_html__('Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core'),
+                    'include' => esc_html__('Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.', 'press-permit-core')
+                ];
                 ?>
                 <div>
                 <?php foreach ($modes as $val => $title) :?>
-                    <label><input type='radio' name='pp_select_x_mod_type' class='pp-select-x-mod-type' value='<?php echo esc_attr($val);?>'> <span>
-                        <?php 
-                        $tooltip_text = '';
-                        if($title === 'Enable:') {
-                            $tooltip_text = esc_html__('Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core');
-                        } elseif($title === 'Block:') {
-                            $tooltip_text = esc_html__('Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core');
-                        } elseif($title === 'Limit to:') {
-                            $tooltip_text = esc_html__('Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.', 'press-permit-core');
-                        }
-                        if(!empty($tooltip_text)) {
-                            $this->generateTooltip($tooltip_text, $title, 'top', true);
-                        }
-                        ?>
-                    </span></label><br />
+                    <label>
+                        <input type='radio' name='pp_select_x_mod_type' class='pp-select-x-mod-type' value='<?php echo esc_attr($val);?>'>
+                        <span>
+                            <?php echo isset($tooltips[$val]) ? $this->generateTooltip($tooltips[$val], $title, 'top', true) : esc_html($title); ?>
+                        </span>
+                    </label>
+                    <br />
                 <?php endforeach;?>
                 </div>
 
@@ -258,7 +255,7 @@ class AgentExceptionsAjax
 
                 echo '<p class="pp-checkbox">'
                     . '<input type="checkbox" id="pp_select_x_cond_post_status_" name="pp_select_x_cond[]" value=""' . esc_attr($checked) . ' /> '
-                    . '<label for="pp_select_x_cond_post_status_">' . esc_html__('(all)', 'press-permit-core') . '</label>'
+                    . '<label for="pp_select_x_cond_post_status_">' . esc_html__('All Statuses', 'press-permit-core') . '</label>'
                     . '</p>';
 
                 if (('post' != $for_source_name) || ($mod_type != 'additional')) {
