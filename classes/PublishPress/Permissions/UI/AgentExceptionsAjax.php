@@ -132,7 +132,7 @@ class AgentExceptionsAjax
                                 sprintf(
                                     '<span data-toggle="tooltip" data-placement="top">%s<span class="tooltip-text"><span>%s</span><i></i></span><i class="dashicons dashicons-info-outline" style="font-size: 18px;width: 16px;height: 16px;margin-left: 1px;"></i></span>',
                                     esc_html($title),
-                                    esc_html($tooltips[$val]),
+                                    esc_html($tooltips[$val])
                                 ) : esc_html($title); ?>
                         </span>
                     </label>
