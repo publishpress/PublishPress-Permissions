@@ -321,13 +321,18 @@ class AgentEdit
 
             /* checking that username has been typed */
             if (!$group->group_name) {
-                $errors->add('group_name', esc_html__('<strong>ERROR</strong>: Please enter a group name.', 'press-permit-core'));
+                $errors->add('group_name', sprintf(
+                    '<strong>%s</strong>: %s',
+                    esc_html__('ERROR', 'press-permit-core'),
+                    esc_html__('Please enter a group name.', 'press-permit-core')
+                ));
 
             } elseif (!$update && !\PublishPress\Permissions\DB\GroupUpdate::groupNameAvailable($group->group_name, $agent_type)) {
-                $errors->add(
-                    'user_login', 
-                    esc_html__('<strong>ERROR</strong>: This group name is already registered. Please choose another one.', 'press-permit-core')
-                );
+                $errors->add('user_login', sprintf(
+                    '<strong>%s</strong>: %s',
+                    esc_html__('ERROR', 'press-permit-core'),
+                    esc_html__('This group name is already registered. Please choose another one.', 'press-permit-core')
+                ));
             }
 
             if ($errors->get_error_codes())
