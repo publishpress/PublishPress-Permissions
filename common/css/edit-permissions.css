@@ -209,6 +209,16 @@ table.pp-agent-profile {
 div.pp-group_members {
   margin: 0 0 20px;
 }
+div.pp-group_members h3 {
+  margin-bottom: 0;
+}
+#pp-agent-selection_member-wrapper {
+  width: 100%;
+  max-width: 800px;
+}
+body.permissions_page_presspermit-edit-permissions span.select2 {
+  width: 100% !important;
+}
 #agent-profile div.pp-group_members span:not(.select2):not(.select2 span) {
   border: none;
   border-bottom: none;
@@ -491,9 +501,6 @@ label.pp_faded {
 }
 #pp_find_users_field {
   margin-left: 0;
-}
-#pp-agent-selection_member-wrapper td {
-  min-width: 230px;
 }
 #pp-all-anon-warning {
   margin-top: 10px;
