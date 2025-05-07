@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PublishPress Permissions Pro\n"
-"POT-Creation-Date: 2025-04-01 22:05-0300\n"
-"PO-Revision-Date: 2025-04-01 22:08-0300\n"
+"POT-Creation-Date: 2025-05-05 03:26-0300\n"
+"PO-Revision-Date: 2025-05-05 03:29-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -1720,7 +1720,7 @@ msgstr ""
 "vez do maior permitido)"
 
 #: lib/status-control-legacy/classes/Permissions/Statuses/UI/SettingsTabStatuses.php:156
-#: lib/status-control-legacy/classes/Permissions/Statuses/UI/SettingsTabStatuses.php:217
+#: lib/status-control-legacy/classes/Permissions/Statuses/UI/SettingsTabStatuses.php:216
 msgid "Additional Configuration:"
 msgstr "Configuração adicional:"
 
@@ -1745,11 +1745,11 @@ msgstr "Ativar o PublishPress"
 msgid "Workflow Order, Branching, Permissions"
 msgstr "Ordem de fluxo de trabalho, ramificação, permissões"
 
-#: lib/status-control-legacy/classes/Permissions/Statuses/UI/SettingsTabStatuses.php:220
+#: lib/status-control-legacy/classes/Permissions/Statuses/UI/SettingsTabStatuses.php:219
 msgid "Define Privacy Statuses"
 msgstr "Definir os status de privacidade"
 
-#: lib/status-control-legacy/classes/Permissions/Statuses/UI/SettingsTabStatuses.php:272
+#: lib/status-control-legacy/classes/Permissions/Statuses/UI/SettingsTabStatuses.php:271
 #, php-format
 msgid ""
 "%1$sNote: Requires PublishPress Planner 3.x. %2$s Legacy mode is to maintain "
@@ -1759,7 +1759,7 @@ msgstr ""
 "para manter a funcionalidade existente, antes da instalação do PublishPress "
 "Statuses."
 
-#: lib/status-control-legacy/classes/Permissions/Statuses/UI/SettingsTabStatuses.php:287
+#: lib/status-control-legacy/classes/Permissions/Statuses/UI/SettingsTabStatuses.php:286
 #, php-format
 msgid ""
 "You should probably leave this disabled and just %1$sre-activate the "
@@ -1768,7 +1768,7 @@ msgstr ""
 "É melhor deixar esta opção desativada e %1$sreativar o plugin PublishPress "
 "Statuses%2$s."
 
-#: lib/status-control-legacy/classes/Permissions/Statuses/UI/SettingsTabStatuses.php:299
+#: lib/status-control-legacy/classes/Permissions/Statuses/UI/SettingsTabStatuses.php:298
 #, php-format
 msgid ""
 "For better control of the publication workflow, add the %1$sPublishPress "
@@ -1777,7 +1777,7 @@ msgstr ""
 "Para um melhor controle do fluxo de trabalho de publicação, adicione o "
 "plugin %1$sPublishPress Statuses%2$s. %3$sSaiba mais...%4$s"
 
-#: lib/status-control-legacy/classes/Permissions/Statuses/UI/SettingsTabStatuses.php:308
+#: lib/status-control-legacy/classes/Permissions/Statuses/UI/SettingsTabStatuses.php:307
 msgid "Your current Permissions Pro version is already compatible."
 msgstr "Sua versão atual do Permissions Pro já é compatível."
 
@@ -2612,8 +2612,8 @@ msgstr "Outras respostas"
 #: modules/presspermit-compatibility/classes/Permissions/Compat/UI/Settings.php:208
 #: modules/presspermit-teaser/classes/Permissions/Teaser/UI/PostsTeaser.php:325
 #: modules/presspermit-teaser/classes/Permissions/Teaser/UI/PostsTeaser.php:896
-msgid "Anonymous Visitors"
-msgstr "Visitantes anônimos"
+msgid "Not Logged In"
+msgstr "Não conectado"
 
 #: modules/presspermit-compatibility/classes/Permissions/Compat/UI/Settings.php:208
 #: modules/presspermit-teaser/classes/Permissions/Teaser/UI/PostsTeaser.php:896
@@ -2799,51 +2799,55 @@ msgstr "%ssite %d :%s"
 msgid "Attachment Utility"
 msgstr "Utilitário de anexo"
 
-#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:77
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:81
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:92
 msgid "From:"
 msgstr "De:"
 
-#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:78
-#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:83
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:82
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:87
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:93
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:96
 msgid "date or #days"
 msgstr "data ou nº de dias"
 
-#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:82
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:86
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:95
 msgid "To:"
 msgstr "Até:"
 
-#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:104
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:115
 #, php-format
 msgid "Current Selections: %1$s refresh %2$s"
 msgstr "Seleções atuais: %1$s atualizar %2$s"
 
-#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:105
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:116
 msgid "refresh member status"
 msgstr "atualizar o status do membro"
 
-#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:172
-#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:178
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:183
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:189
 #, php-format
 msgid "%1$s (%2$s - %3$s)"
 msgstr "%1$s (%2$s - %3$s)"
 
-#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:182
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:193
 #, php-format
 msgid "SCHEDULED: %s"
 msgstr "AGENDADO: %s"
 
-#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:185
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:196
 #, php-format
 msgid "EXPIRED: %s"
 msgstr "EXPIRADO: %s"
 
-#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:187
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:198
 #, php-format
 msgid "ACTIVE with future expiration: %s"
 msgstr "ATIVO com expiração futura: %s"
 
-#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:189
-#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:193
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:200
+#: modules/presspermit-membership/classes/Permissions/Membership/UI/GroupEdit.php:204
 #, php-format
 msgid "ACTIVE: %s"
 msgstr "ATIVO: %s"
@@ -3275,8 +3279,8 @@ msgid "Page Selection"
 msgstr "Seleção de página"
 
 #: modules/presspermit-teaser/classes/Permissions/Teaser/UI/PostsTeaser.php:705
-msgid "Anonymous Visitors:"
-msgstr "Visitantes anônimos:"
+msgid "Not Logged In:"
+msgstr "Não conectado:"
 
 #: modules/presspermit-teaser/classes/Permissions/Teaser/UI/PostsTeaser.php:713
 #: modules/presspermit-teaser/classes/Permissions/Teaser/UI/PostsTeaser.php:787
@@ -3461,12 +3465,12 @@ msgstr "Salvar alterações"
 msgid "Revert to Defaults"
 msgstr "Reverter para o padrão"
 
-#: modules/presspermit-teaser/classes/Permissions/TeaserHooks.php:49
-#: modules/presspermit-teaser/classes/Permissions/TeaserHooks.php:173
+#: modules/presspermit-teaser/classes/Permissions/TeaserHooks.php:48
+#: modules/presspermit-teaser/classes/Permissions/TeaserHooks.php:172
 msgid "View the content of this <a href='%permalink%'>article</a>"
 msgstr "Ver o conteúdo deste <a href='%permalink%'>artigo</a>"
 
-#: modules/presspermit-teaser/classes/Permissions/TeaserHooks.php:66
+#: modules/presspermit-teaser/classes/Permissions/TeaserHooks.php:65
 msgid ""
 "Sorry, this content requires additional permissions.  Please contact an "
 "administrator for help."
@@ -3474,7 +3478,7 @@ msgstr ""
 "Este conteúdo exige permissões adicionais. Fale com um administrador para "
 "receber ajuda."
 
-#: modules/presspermit-teaser/classes/Permissions/TeaserHooks.php:67
+#: modules/presspermit-teaser/classes/Permissions/TeaserHooks.php:66
 msgid ""
 "Sorry, you don't have access to this content.  Please log in or contact a "
 "site administrator for help."
@@ -3482,11 +3486,11 @@ msgstr ""
 "Você não tem acesso a este conteúdo. Acesse ou fale com um administrador do "
 "site para receber ajuda."
 
-#: modules/presspermit-teaser/classes/Permissions/TeaserHooks.php:76
+#: modules/presspermit-teaser/classes/Permissions/TeaserHooks.php:75
 msgid "Note: This content requires a higher login level."
 msgstr "Observação: Este conteúdo exige um nível de acesso superior."
 
-#: modules/presspermit-teaser/classes/Permissions/TeaserHooks.php:77
+#: modules/presspermit-teaser/classes/Permissions/TeaserHooks.php:76
 msgid "Note: This content requires site login."
 msgstr "Observação: Este conteúdo exige acesso ao site."
 
@@ -3522,6 +3526,12 @@ msgstr "PublishPress"
 #. Author URI of the plugin/theme
 msgid "https://publishpress.com/"
 msgstr "https://publishpress.com/"
+
+#~ msgid "Anonymous Visitors"
+#~ msgstr "Visitantes anônimos"
+
+#~ msgid "Anonymous Visitors:"
+#~ msgstr "Visitantes anônimos:"
 
 #~ msgid "review your account info"
 #~ msgstr "revisar as informações da sua conta"

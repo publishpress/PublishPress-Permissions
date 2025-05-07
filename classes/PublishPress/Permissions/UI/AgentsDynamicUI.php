@@ -25,7 +25,6 @@ class AgentsDynamicUI
             'display_stored_selections' => true,
             'create_dropdowns' => false,
             'width' => '',
-            'width_current' => '',
             'label_headline' => true,
             'multi_select' => true,
             'use_selection_js' => true,
@@ -168,11 +167,6 @@ class AgentsDynamicUI
 
                 <?php
                 if ($display_stored_selections) : ?>
-                    <?php if ($width_current) {
-                        $width = "width:{$width_current}px;";
-                    }
-
-                    ?>
                     <td class="pp-members-current">
                         <h4>
                         <?php if (!apply_filters('presspermit_suppress_agents_selection_label', false, $id_suffix, $args)):
@@ -261,7 +255,6 @@ class AgentsDynamicUI
             'display_stored_selections' => true,
             'create_dropdowns' => false,
             'width' => '',
-            'width_current' => '',
             'label_headline' => true,
             'multi_select' => true,
             'use_selection_js' => true,
@@ -387,7 +380,7 @@ class AgentsDynamicUI
             </tr>
             <tr>
                 <td style="padding-top: <?php echo $display_stored_selections ? '3em' : '0';?>;">
-                    <select multiple="multiple" id="v2_agent_search_text_<?php echo esc_attr("{$op}:{$for_item_type}:{$agent_type}"); ?>" name="_select-<?php echo esc_attr("$op-$for_item_type-$agent_type"); ?>[]">
+                    <select <?php if ($multi_select):?>multiple="multiple"<?php endif;?> id="v2_agent_search_text_<?php echo esc_attr("{$op}:{$for_item_type}:{$agent_type}"); ?>" name="_select-<?php echo esc_attr("$op-$for_item_type-$agent_type"); ?>[]">
                         <?php
                         // Show the option if user has current selections and not active membership feature
                         if ($display_stored_selections 
@@ -445,10 +438,7 @@ class AgentsDynamicUI
                 </td>
 
                 <?php
-                if ($display_stored_selections) : ?>
-                    <?php if ($width_current) {
-                        $width = "width:{$width_current}px;";
-                    }
+                if ($display_stored_selections) :
                     // Hide current selections if user not active membership feature
                     $is_show_current_selection = !defined('PRESSPERMIT_MEMBERSHIP_VERSION') && in_array($pp_plugin_page, ['presspermit-edit-permissions', 'presspermit-group-new'], true) ? 'display:none;' : '';
                     ?>

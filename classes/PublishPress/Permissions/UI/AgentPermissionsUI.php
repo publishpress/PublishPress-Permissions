@@ -104,7 +104,7 @@ class AgentPermissionsUI
         }
 
         if ($option_any) {
-            echo "<option value='(all)'>" . esc_html__('All Statuses', 'press-permit-core') . '</option>';
+            echo "<option value='(all)'>" . esc_html__('All Post Types', 'press-permit-core') . '</option>';
         }
 
         if ($option_na) {

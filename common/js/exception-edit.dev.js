@@ -223,8 +223,7 @@ jQuery(document).ready(function ($) {
 
                 $(conds).each(function () {
                     id = presspermitEscapeID(this.id);
-                    var lbl = $('#pp_add_exception label[for="' + id + '"]');
-                    var lblStatus = lbl.html() === '(all)' ? 'All Statuses' : lbl.html();
+                    var lblStatus = $('#pp_add_exception label[for="' + id + '"]').html();
                     trackdata = for_type
                         + '|' + op
                         + '|' + via_type

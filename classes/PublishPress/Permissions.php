@@ -1238,10 +1238,10 @@ class Permissions
             && $text === 'Edit Tag' 
             && $_GET['taxonomy'] === 'post_tag' ) {
             if (!empty($_GET['pp_universal'])) {
-                return 'Edit Tag for All Post Types';
+                return esc_html__('Edit Tag for All Post Types', 'press-permit-core');
             }
             if (isset($_GET['post_type']) && $_GET['post_type'] === 'post') {
-                return 'Edit Tag for Posts';
+                return esc_html__('Edit Tag for Posts', 'press-permit-core');
             }
         }
     
