@@ -123,11 +123,17 @@ class AgentExceptionsAjax
                 ];
                 ?>
                 <div>
-                <?php foreach ($modes as $val => $title) :?>
+                <?php foreach ($modes as $mod_type => $title) :?>
                     <label>
-                        <input type='radio' name='pp_select_x_mod_type' class='pp-select-x-mod-type' value='<?php echo esc_attr($val);?>'>
+                        <input type='radio' name='pp_select_x_mod_type' class='pp-select-x-mod-type' value='<?php echo esc_attr($mod_type);?>'>
                         <span>
-                            <?php echo isset($tooltips[$val]) ? $this->generateTooltip($tooltips[$val], $title, 'top', true) : esc_html($title); ?>
+                            <?php
+                            echo isset($tooltips[$mod_type]) ? 
+                                sprintf(
+                                    '<span data-toggle="tooltip" data-placement="top">%s<span class="tooltip-text"><span>%s</span><i></i></span><i class="dashicons dashicons-info-outline" style="font-size: 18px;width: 16px;height: 16px;margin-left: 1px;"></i></span>',
+                                    esc_html($title),
+                                    esc_html($tooltips[$mod_type])
+                                ) : esc_html($title); ?>
                         </span>
                     </label>
                     <br />
@@ -294,22 +300,5 @@ class AgentExceptionsAjax
 
                 break;
         } // end switch
-    }
-
-    function generateTooltip($tooltip, $text = '', $position = 'top', $useIcon = true)
-    {
-        ?>
-        <span data-toggle="tooltip" data-placement="<?php esc_attr_e($position); ?>">
-        <?php esc_html_e($text);?>
-        <span class="tooltip-text"><span><?php esc_html_e($tooltip);?></span><i></i></span>
-        <?php 
-        if ($useIcon) : ?>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 50 50" style="margin-left: 4px; vertical-align: text-bottom;">
-                <path d="M 25 2 C 12.264481 2 2 12.264481 2 25 C 2 37.735519 12.264481 48 25 48 C 37.735519 48 48 37.735519 48 25 C 48 12.264481 37.735519 2 25 2 z M 25 4 C 36.664481 4 46 13.335519 46 25 C 46 36.664481 36.664481 46 25 46 C 13.335519 46 4 36.664481 4 25 C 4 13.335519 13.335519 4 25 4 z M 25 11 A 3 3 0 0 0 25 17 A 3 3 0 0 0 25 11 z M 21 21 L 21 23 L 23 23 L 23 36 L 21 36 L 21 38 L 29 38 L 29 36 L 27 36 L 27 21 L 21 21 z"></path>
-            </svg>
-        <?php
-        endif; ?>
-        </span>
-        <?php
     }
 }
