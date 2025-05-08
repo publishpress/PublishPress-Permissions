@@ -66,7 +66,7 @@ jQuery(document).ready(function ($) {
     });
 
     var presspermitItemCheckboxClick = function (data_var, t) {
-        var expr = data_var + '\[([^\]]*)';
+        var expr = data_var + '[([^]]*)';
         var re = new RegExp(expr);
 
         itemdata = t.closest('li').getItemData();
@@ -189,7 +189,7 @@ jQuery(document).ready(function ($) {
 
         $(items).each(function (item_index) {
             var t = $(this);
-            var expr = data_var + '\[([^\]]*)';
+            var expr = data_var + '[([^]]*)';
             var re = new RegExp(expr);
 
             // menu-item-title, menu-item-object-id
