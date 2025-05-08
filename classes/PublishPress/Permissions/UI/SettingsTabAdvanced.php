@@ -653,7 +653,7 @@ class SettingsTabAdvanced
                     <?php
                     if ($pp->getOption('display_hints')) :
                     ?>
-                        <table id="pp_cap_descripts" class="pp_cap_descripts pp-hint" style="display:none">
+                        <table id="pp_cap_descripts" class="pp_cap_descripts pp-hint">
                             <thead>
                                 <tr>
                                     <th class="cap-name"><?php esc_html_e('Capability Name', 'press-permit-core'); ?></th>
