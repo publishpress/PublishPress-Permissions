@@ -1,7 +1,7 @@
 === PublishPress Permissions: Control User Access for Posts, Pages, Categories, Tags ===
 
 Contributors: publishpress, kevinB, stevejburge, andergmartins
-Tags: restrict, access, user, privacy, capabilities
+Tags: permissions, access, user, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.8
 Requires PHP: 7.2.5
@@ -9,7 +9,7 @@ Stable tag: 4.2.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Enable or deny access to posts, pages, categories, tags and more. You can apply these permissions for roles, individual users, and even custom groups.
+The permissions plugin for posts, pages, categories, tags and more. You can control permissions for roles, individual users, and even custom groups.
 
 == Description ==
 
