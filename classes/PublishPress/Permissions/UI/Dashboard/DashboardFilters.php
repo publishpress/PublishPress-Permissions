@@ -112,7 +112,7 @@ class DashboardFilters
             wp_enqueue_style('presspermit-groups-checklist', PRESSPERMIT_URLPATH . '/common/css/groups-checklist.css', [], PRESSPERMIT_VERSION);
         } 
         
-        if (('presspermit-settings' == presspermitPluginPage()) || (('plugin-install.php' == $pagenow)
+        if (('presspermit-settings' == $pp_plugin_page) || (('plugin-install.php' == $pagenow)
             && isset($_SERVER['HTTP_REFERER']) && strpos(esc_url_raw($_SERVER['HTTP_REFERER']), 'presspermit-settings'))
         ) {
             wp_enqueue_style('presspermit-settings', PRESSPERMIT_URLPATH . '/common/css/settings.css', [], PRESSPERMIT_VERSION);
@@ -227,6 +227,7 @@ class DashboardFilters
             return;
         }
 
+        $pp_plugin_page = presspermitPluginPage();
         $admin = presspermit()->admin();
 
         $pp_cred_menu = $admin->getMenuParams('permits');
@@ -264,7 +265,7 @@ class DashboardFilters
         if ($do_groups) {
             add_submenu_page($pp_cred_menu, esc_html__('Permissions', 'press-permit-core'), esc_html__('Permissions', 'press-permit-core'), 'read', 'presspermit-groups', $handler);
 
-            if (current_user_can('pp_create_groups') && ('presspermit-group-new' == presspermitPluginPage())) {
+            if (current_user_can('pp_create_groups') && ('presspermit-group-new' == $pp_plugin_page)) {
                 add_submenu_page(
                     $pp_cred_menu,
                     esc_html__('Add New Permission Group', 'press-permit-core'),
@@ -288,7 +289,7 @@ class DashboardFilters
                 $handler
             );
 
-            if ('presspermit-role-usage-edit' == presspermitPluginPage()) {
+            if ('presspermit-role-usage-edit' == $pp_plugin_page) {
                 do_action('pp_added_edit_role_usage_submenu');
 
                 add_submenu_page(
@@ -313,11 +314,9 @@ class DashboardFilters
         }
 
         // register plugin pages not displayed as menu items
-        $pp_plugin_page = presspermitPluginPage();
-
         if (in_array($pp_plugin_page, ['presspermit-edit-permissions'], true)) {
             $titles = ['presspermit-edit-permissions' => esc_html__('Edit Permissions', 'press-permit-core')];
-            add_submenu_page($pp_cred_menu, $titles[$pp_plugin_page], '', 'read', $pp_plugin_page, $handler);
+            add_submenu_page($pp_cred_menu, $titles[$pp_plugin_page], 'Edit Permission', 'read', $pp_plugin_page, $handler);
         }
 
         do_action('presspermit_admin_menu');
