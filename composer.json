@@ -23,8 +23,8 @@
       "*": "dist"
     },
     "allow-plugins": {
-        "dealerdirect/phpcodesniffer-composer-installer": true,
-        "phpstan/extension-installer": true
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "phpstan/extension-installer": true
     }
   },
   "prefer-stable": true,
@@ -57,12 +57,12 @@
     "check:lint": "phplint",
     "check:phpcs": "phpcs",
     "check:php": [
-        "@check:php56",
-        "@check:php72",
-        "@check:php74",
-        "@check:php80",
-        "@check:php81",
-        "@check:php82"
+      "@check:php56",
+      "@check:php72",
+      "@check:php74",
+      "@check:php80",
+      "@check:php81",
+      "@check:php82"
     ],
     "check:php56": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 5.6 ./press-permit-core.php",
     "check:php72": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 7.2",
@@ -70,10 +70,10 @@
     "check:php80": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 8.0",
     "check:php81": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 8.1",
     "check:php82": "phpcs --standard=.phpcs-php-compatibility.xml --runtime-set testVersion 8.2",
-    "-pre-autoload-dump": "composer dumpautoload --working-dir=./lib",
-    "-pre-update-cmd": "composer update --working-dir=./lib",
-    "-pre-install-cmd": "composer install --working-dir=./lib",
-	"term": "cd dev-workspace && ./run"
+    "pre-autoload-dump": "composer dumpautoload --working-dir=./lib",
+    "pre-update-cmd": "composer update --working-dir=./lib",
+    "pre-install-cmd": "composer install --working-dir=./lib",
+    "term": "cd dev-workspace && ./run"
   },
   "extra": {
     "plugin-slug": "press-permit-core",
