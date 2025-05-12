@@ -453,7 +453,7 @@ class AgentPermissionsUI
                 $perms['exceptions'] = esc_html__('Add Specific Permissions', 'press-permit-core');
 
                 if (empty($group) || !in_array($group->metagroup_id, ['wp_anon', 'wp_all']) || defined('PP_ALL_ANON_ROLES'))
-                    $perms['roles'] = esc_html__('Add Supplemental Roles', 'press-permit-core');
+                    $perms['roles'] = esc_html__('Add Extra Roles', 'press-permit-core');
 
                 if (!isset($perms['roles']))
                     $current_tab = 'pp-add-exceptions';
