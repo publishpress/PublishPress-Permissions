@@ -277,6 +277,19 @@ class DashboardFilters
             }
         }
 
+        // register plugin pages not displayed as menu items
+        if (in_array($pp_plugin_page, ['presspermit-edit-permissions'], true)) {
+            $titles = ['presspermit-edit-permissions' => esc_html__('Edit Permissions', 'press-permit-core')];
+            add_submenu_page(
+                $pp_cred_menu, 
+                $titles[$pp_plugin_page], 
+                '- ' . PWP::__wp('Edit'),
+                'read', 
+                $pp_plugin_page, 
+                $handler
+            );
+        }
+
         if (presspermit()->moduleActive('collaboration') && (defined('PRESSPERMIT_ROLE_USAGE_COMPAT') || !PWP::empty_REQUEST('pp_role_usage'))) {
             do_action('pp_added_role_usage_submenu');
 
@@ -311,12 +324,6 @@ class DashboardFilters
                 : $permissions_title;
 
             add_submenu_page($pp_options_menu, $settings_caption, $settings_caption, 'read', 'presspermit-settings', $handler);
-        }
-
-        // register plugin pages not displayed as menu items
-        if (in_array($pp_plugin_page, ['presspermit-edit-permissions'], true)) {
-            $titles = ['presspermit-edit-permissions' => esc_html__('Edit Permissions', 'press-permit-core')];
-            add_submenu_page($pp_cred_menu, $titles[$pp_plugin_page], 'Edit Permission', 'read', $pp_plugin_page, $handler);
         }
 
         do_action('presspermit_admin_menu');
