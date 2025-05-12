@@ -299,7 +299,6 @@ class SettingsAdmin
                 $pp_caps,
                 [
                     'pp_define_post_status' => esc_html__('(Permissions Pro capability)', 'press-permit-core-hints'),
-                    'pp_define_moderation' => esc_html__('(Permissions Pro capability)', 'press-permit-core-hints'),
                     'pp_define_privacy' => esc_html__('(Permissions Pro capability)', 'press-permit-core-hints'),
                     'set_posts_status' => esc_html__('(Permissions Pro capability)', 'press-permit-core-hints'),
                     'pp_moderate_any' => esc_html__('(Permissions Pro capability)', 'press-permit-core-hints'),
