@@ -15,7 +15,7 @@ class API
     }
 
     /**
-     * Retrieve supplemental roles for a user or group
+     * Retrieve extra roles for a user or group
      * @param string agent_type
      * @param int agent_id
      * @param array args :
@@ -30,7 +30,7 @@ class API
     }
 
     /**
-     * Assign supplemental roles for a user or group
+     * Assign extra roles for a user or group
      * @param array roles : roles[role_name][agent_id] = true
      * @param string agent_type
      */
