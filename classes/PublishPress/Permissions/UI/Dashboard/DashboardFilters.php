@@ -269,7 +269,7 @@ class DashboardFilters
                 add_submenu_page(
                     $pp_cred_menu,
                     esc_html__('Add New Permission Group', 'press-permit-core'),
-                    '- ' . PWP::__wp('Add New'),
+                    '- ' . esc_html__('Add New', 'press-permit-core'),
                     'read',
                     'presspermit-group-new',
                     $handler
@@ -283,7 +283,7 @@ class DashboardFilters
             add_submenu_page(
                 $pp_cred_menu, 
                 $titles[$pp_plugin_page], 
-                '- ' . PWP::__wp('Edit'),
+                '- ' . esc_html__('Edit', 'press-permit-core'),
                 'read', 
                 $pp_plugin_page, 
                 $handler
