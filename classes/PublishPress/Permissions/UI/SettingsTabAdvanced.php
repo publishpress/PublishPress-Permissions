@@ -623,36 +623,34 @@ class SettingsTabAdvanced
             </tr>
         <?php endif; // any options accessable in this section
 
-        if ($this->enabled) :
-            $section = 'capabilities'; // --- PP CAPABILITIES SECTION ---
-            ?>
-            <tr>
-                <td scope="row" colspan="2"><span
-                        style="font-weight:bold"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></span>
-                    <span class="pp-capabilities-caption">
-                        <span class="pp-subtext pp-no-hide">
-                            <?php
-                            if (defined('PUBLISHPRESS_CAPS_VERSION')) {
-                                $url = admin_url('admin.php?page=capsman');
-                                printf(
-                                    esc_html(SettingsAdmin::getStr('pp_capabilities')),
-                                    '<a href="' . esc_url($url) . '">',
-                                    '</a>'
-                                );
-                            } else {
-                                printf(
-                                    esc_html(SettingsAdmin::getStr('pp_capabilities_install_prompt')),
-                                    '<span class="plugins update-message"><a href="' . esc_url(Settings::pluginInfoURL('capability-manager-enhanced'))
-                                        . '" class="thickbox" title=" PublishPress Capabilities">PublishPress&nbsp;Capabilities</a></span>'
-                                );
-                            }
-                            ?>
-                        </span>
+        $section = 'capabilities'; // --- PP CAPABILITIES SECTION ---
+        ?>
+        <tr>
+            <td scope="row" colspan="2"><span
+                    style="font-weight:bold"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></span>
+                <span class="pp-capabilities-caption">
+                    <span class="pp-subtext pp-no-hide">
+                        <?php
+                        if (defined('PUBLISHPRESS_CAPS_VERSION')) {
+                            $url = admin_url('admin.php?page=pp-capabilities&pp_caps_tab=publishpress-permissions');
+                            printf(
+                                esc_html(SettingsAdmin::getStr('pp_capabilities')),
+                                '<a href="' . esc_url($url) . '">',
+                                '</a>'
+                            );
+                        } else {
+                            printf(
+                                esc_html(SettingsAdmin::getStr('pp_capabilities_install_prompt')),
+                                '<span class="plugins update-message"><a href="' . esc_url(Settings::pluginInfoURL('capability-manager-enhanced'))
+                                    . '" class="thickbox" title=" PublishPress Capabilities">PublishPress&nbsp;Capabilities</a></span>'
+                            );
+                        }
+                        ?>
                     </span>
-                </td>
-            </tr>
-        <?php endif;
-
+                </span>
+            </td>
+        </tr>
+        <?php
 
         $section = 'constants'; // --- CONSTANTS SECTION ---
 
