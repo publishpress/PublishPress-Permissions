@@ -260,38 +260,38 @@ class SettingsAdmin
     }
 
     static function setCapabilityDescriptions($pp_caps) {
-        $pp_caps['pp_manage_settings'] = esc_html__('Modify these Permissions settings', 'press-permit-core-hints');
-        $pp_caps['pp_unfiltered'] = esc_html__('PublishPress Permissions does not apply any Extra Roles or Specific Permissions to limit or expand viewing or editing access', 'press-permit-core-hints');
-        $pp_caps['pp_administer_content'] = esc_html__('Manage other user\'s permissions. Also implicitly grants capabilities for all post types and statuses, but does not apply Specific Permissions', 'press-permit-core-hints');
-        $pp_caps['pp_create_groups'] = esc_html__('Can create Permission Groups', 'press-permit-core-hints');
-        $pp_caps['pp_edit_groups'] = esc_html__('Can edit all Permission Groups (barring Specific Permissions)', 'press-permit-core-hints');
-        $pp_caps['pp_delete_groups'] = esc_html__('Can delete Permission Groups', 'press-permit-core-hints');
-        $pp_caps['pp_manage_members'] = esc_html__('If group editing is allowed, can also modify group membership', 'press-permit-core-hints');
-        $pp_caps['pp_assign_roles'] = esc_html__('Assign Extra Roles or Specific Permissions. Other capabilities may also be required.', 'press-permit-core-hints');
-        $pp_caps['pp_assign_bulk_roles'] = esc_html__('Assign Extra Roles or Specific Permissions on the Edit Group Permissions screen, without having own access exempted from Specific Permissions', 'press-permit-core-hints');
-        $pp_caps['pp_set_read_exceptions'] = esc_html__('Set Read Permissions for specific posts on Edit Post/Term screen (for non-Administrators lacking edit_users capability; may be disabled by Permissions Settings)', 'press-permit-core-hints');
+        $pp_caps['pp_manage_settings'] = esc_html__('Manage PublishPress Permissions plugin settings.', 'press-permit-core-hints');
+        $pp_caps['pp_unfiltered'] = esc_html__('PublishPress Permissions will not apply any Extra Roles or Permissions to limit or expand viewing or editing access.', 'press-permit-core-hints');
+        $pp_caps['pp_administer_content'] = esc_html__('Manage other user\'s Permissions. Also grants capabilities for all post types and statuses.', 'press-permit-core-hints');
+        $pp_caps['pp_create_groups'] = esc_html__('Create new Permission Groups and set the name and description.', 'press-permit-core-hints');
+        $pp_caps['pp_edit_groups'] = esc_html__('Edit the name and description of existing Permission Groups.', 'press-permit-core-hints');
+        $pp_caps['pp_delete_groups'] = esc_html__('Delete Permission Groups.', 'press-permit-core-hints');
+        $pp_caps['pp_manage_members'] = esc_html__('If group editing is allowed, can also modify group membership.', 'press-permit-core-hints');
+        $pp_caps['pp_assign_roles'] = esc_html__('Assign Extra Roles or Permissions.', 'press-permit-core-hints');
+        $pp_caps['pp_assign_bulk_roles'] = esc_html__('Assign Extra Roles or Permissions on the Edit Permissions screen.', 'press-permit-core-hints');
+        $pp_caps['pp_set_read_exceptions'] = esc_html__('Set Viewing Permissions for specific Posts, Categories or Terms.', 'press-permit-core-hints');
 
 		if (presspermit()->moduleActive('collaboration')) {
-            $pp_caps['pp_set_edit_exceptions'] =            esc_html__('Set Editing Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
+            $pp_caps['pp_set_edit_exceptions'] =            esc_html__('Set Editing Permissions for specific Posts, Categories or Terms.', 'press-permit-core-hints');
 
             if ((defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION'))) {
-	            $pp_caps['pp_set_revise_exceptions'] = esc_html__('Set Revision Permissions on Edit Post/Term screen (where applicable)', 'press-permit-core-hints');
+	            $pp_caps['pp_set_revise_exceptions'] = esc_html__('Set Revision Permissions for specific Posts, Categories or Terms.', 'press-permit-core-hints');
 	        }
 	
-	        $pp_caps['pp_set_associate_exceptions'] =       esc_html__('Set Association (Parent) Permissions on Edit Post screen (where applicable)', 'press-permit-core-hints');
-	        $pp_caps['pp_set_term_assign_exceptions'] =     esc_html__('Set Term Assignment Permissions on Edit Term screen (in relation to an editable post type)', 'press-permit-core-hints');
-	        $pp_caps['pp_set_term_manage_exceptions'] =     esc_html__('Set Term Management Permissions on Edit Term screen', 'press-permit-core-hints');
-	        $pp_caps['pp_set_term_associate_exceptions'] =  esc_html__('Set Term Association (Parent) Permissions on Edit Term screen', 'press-permit-core-hints');
+	        $pp_caps['pp_set_associate_exceptions'] =       esc_html__('Set "Set as Parent" Permissions for specific Posts.', 'press-permit-core-hints');
+	        $pp_caps['pp_set_term_assign_exceptions'] =     esc_html__('Set Term Assignment Permissions.', 'press-permit-core-hints');
+	        $pp_caps['pp_set_term_manage_exceptions'] =     esc_html__('Set Term Management Permissions.', 'press-permit-core-hints');
+	        $pp_caps['pp_set_term_associate_exceptions'] =  esc_html__('Set "Set as Parent" Permissions for specific Categories or Terms.', 'press-permit-core-hints');
 	
-	        $pp_caps['edit_own_attachments'] =          esc_html__('Edit own file uploads, even if they become attached to an uneditable post', 'press-permit-core-hints');
-	        $pp_caps['list_others_unattached_files'] =  esc_html__("See other user's unattached file uploads in Media Library", 'press-permit-core-hints');
-	        $pp_caps['pp_associate_any_page'] =         esc_html__('Disregard association permissions (for all hierarchical post types)', 'press-permit-core-hints');
+	        $pp_caps['edit_own_attachments'] =          esc_html__('Edit own file uploads, even if they become attached to an uneditable post.', 'press-permit-core-hints');
+	        $pp_caps['list_others_unattached_files'] =  esc_html__("See other user's unattached file uploads in Media Library.", 'press-permit-core-hints');
+	        $pp_caps['pp_associate_any_page'] =         esc_html__('Can bypass restrictive "Set as Parent" Permissions (for all hierarchical post types).', 'press-permit-core-hints');
 	
-	        $pp_caps['pp_list_all_files'] =     esc_html__('Do not alter the Media Library listing provided by WordPress', 'press-permit-core-hints');
-	        $pp_caps['list_posts'] =            esc_html__('On the Posts screen, satisfy a missing edit_posts capability by listing uneditable drafts', 'press-permit-core-hints');
-	        $pp_caps['list_others_posts'] =     esc_html__("On the Posts screen, satisfy a missing edit_others_posts capability by listing other user's uneditable posts", 'press-permit-core-hints');
-	        $pp_caps['list_private_pages'] =    esc_html__('On the Pages screen, satisfy a missing edit_private_pages capability by listing uneditable private pages', 'press-permit-core-hints');
-	        $pp_caps['pp_force_quick_edit'] =   esc_html__('Make Quick Edit and Bulk Edit available to non-Administrators even though some inappropriate selections may be possible', 'press-permit-core-hints');
+	        $pp_caps['pp_list_all_files'] =     esc_html__('Do not alter the Media Library listing provided by WordPress.', 'press-permit-core-hints');
+	        $pp_caps['list_posts'] =            esc_html__('On the Posts screen, satisfy a missing edit_posts capability by listing uneditable drafts.', 'press-permit-core-hints');
+	        $pp_caps['list_others_posts'] =     esc_html__("On the Posts screen, satisfy a missing edit_others_posts capability by listing other user's uneditable posts.", 'press-permit-core-hints');
+	        $pp_caps['list_private_pages'] =    esc_html__('On the Pages screen, satisfy a missing edit_private_pages capability by listing uneditable private pages.', 'press-permit-core-hints');
+	        $pp_caps['pp_force_quick_edit'] =   esc_html__('Allow non-Administrators to Quick Edit or Bulk Edit (possibly allowing them to bypass restrictions).', 'press-permit-core-hints');
 		}
 
         if (!defined('PRESSPERMIT_PRO_VERSION') && !presspermit()->moduleActive('status-control') && !presspermit()->keyActive()) {
