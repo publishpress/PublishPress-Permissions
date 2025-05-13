@@ -1058,7 +1058,7 @@ class Permissions
     }
 
     /**
-     * Assign supplemental roles for a user or group
+     * Assign extra roles for a user or group
      * @param array roles : roles[role_name][agent_id] = true
      * @param string agent_type
      */

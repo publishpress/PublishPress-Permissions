@@ -92,7 +92,7 @@ class UsersListing
 
         $defaults['pp_groups'] = esc_html__('Groups', 'press-permit-core');
 
-        $title = esc_html__('Click to show only users who have supplemental roles', 'press-permit-core');
+        $title = esc_html__('Click to show only users who have extra roles', 'press-permit-core');
         $style = (!PWP::empty_REQUEST('pp_has_roles')) ? 'style="font-weight:bold; color:black"' : '';
 
         $defaults['pp_roles'] = sprintf(

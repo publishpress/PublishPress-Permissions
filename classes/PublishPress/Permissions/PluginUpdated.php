@@ -53,7 +53,7 @@ class PluginUpdated
 
             if (version_compare($prev_version, '3.11.3', '<')) {
                 if (false === get_option('presspermit_pattern_roles_include_generic_rolecaps')) {
-                    // If any type-specific supplemental roles are already stored, default to previous behavior of including many generic capabilities from Pattern Role
+                    // If any type-specific extra roles are already stored, default to previous behavior of including many generic capabilities from Pattern Role
                     
                     // Direct query on plugin table for version update operation
                     // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching

@@ -163,7 +163,7 @@ class CapabilityCaster
             $type_obj->cap->read = PRESSPERMIT_READ_PUBLIC_CAP;
         } 
 
-        // disregard stored Supplemental Roles for Media when Media is no longer enabled for PP filtering (otherwise Post editing caps are granted)
+        // disregard stored Extra Roles for Media when Media is no longer enabled for PP filtering (otherwise Post editing caps are granted)
         if (('attachment' == $object_type)) {
             static $media_filtering_enabled;
 
@@ -194,7 +194,7 @@ class CapabilityCaster
         if (!empty($arr_name[3])) {
             if (empty($arr_name[4])) { // disregard stored roles with invalid status
                 return [];
-            } elseif ('post_status' == $arr_name[3]) {  // ignore supplemental roles for statuses which are no longer active for this post type
+            } elseif ('post_status' == $arr_name[3]) {  // ignore extra roles for statuses which are no longer active for this post type
                 if (!PWP::getPostStatuses(['name' => $arr_name[4], 'post_type' => $object_type]))
                     return [];
             }

@@ -91,7 +91,7 @@ class ItemExceptionsRenderUI
 
                 global $wpdb;
 
-                // One locally cached direct query of plugin tables to retrieve supplemental roles for all WP metagroups
+                // One locally cached direct query of plugin tables to retrieve extra roles for all WP metagroups
                 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $results = $wpdb->get_results(
                     "SELECT g.metagroup_id AS wp_rolename, r.role_name AS supplemental_role FROM $wpdb->ppc_roles AS r"

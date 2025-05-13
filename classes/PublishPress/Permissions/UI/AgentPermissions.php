@@ -309,7 +309,7 @@ class AgentPermissions
                 if ('user' == $agent_type) : ?>
                     <div>
                         <?php if ($agent_id) {
-                            // @todo: Consider how to reinstate a read-only summary of the Supplemental Roles and Permissions the user has from Group membership
+                            // @todo: Consider how to reinstate a read-only summary of the extra Roles and Permissions the user has from Group membership
 
                             /*
                             $roles = [];
@@ -341,7 +341,7 @@ class AgentPermissions
                             );
 
                             $role_group_caption = sprintf(
-                                esc_html__('Supplemental Roles %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
+                                esc_html__('Extra Roles %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
                                 '',
                                 '',
                                 '',
@@ -383,9 +383,9 @@ class AgentPermissions
                                 ?>
                             </h4>
                             <ul class="pp-notes">
-                                <li><?php printf(esc_html__('%1$sUsers who have Supplemental Roles assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_roles=1") . "'>", '</a>'); ?></li>
+                                <li><?php printf(esc_html__('%1$sUsers who have Extra Roles assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_roles=1") . "'>", '</a>'); ?></li>
                                 <li><?php printf(esc_html__('%1$sUsers who have Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_exceptions=1") . "'>", '</a>'); ?></li>
-                                <li><?php printf(esc_html__('%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_perms=1") . "'>", '</a>'); ?></li>
+                                <li><?php printf(esc_html__('%1$sUsers who have Extra Roles or Specific Permissions directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_perms=1") . "'>", '</a>'); ?></li>
                             </ul>
                         <?php
                         }

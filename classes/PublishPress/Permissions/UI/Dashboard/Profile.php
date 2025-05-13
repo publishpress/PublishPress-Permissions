@@ -28,7 +28,7 @@ class Profile
             $roles,
             [
                 'read_only' => true,
-                'caption' => sprintf(esc_html__('Supplemental Roles %1$s(for this user)%2$s', 'press-permit-core'), '', ''),
+                'caption' => sprintf(esc_html__('Extra Roles %1$s(for this user)%2$s', 'press-permit-core'), '', ''),
                 'class' => 'pp-user-roles',
                 'link' => $edit_url
             ]
@@ -77,7 +77,7 @@ class Profile
             [
                 'read_only' => true,
                 'link' => '',
-                'caption' => sprintf(esc_html__('Supplemental Roles %1$s(from primary role or group membership)%2$s', 'press-permit-core'), '', '')
+                'caption' => sprintf(esc_html__('Extra Roles %1$s(from primary role or group membership)%2$s', 'press-permit-core'), '', '')
             ]
         );
 
@@ -372,7 +372,7 @@ class Profile
                     <p>
                         <?php
                         printf(
-                            esc_html__('Supplemental roles and specific permissions assigned to a user\'s primary role or other Permission Groups are usually the cleanest way to customize permissions.  You can also %1$scustomize this user directly%2$s.', 'press-permit-core'),
+                            esc_html__('Extra roles and specific permissions assigned to a user\'s primary role or other Permission Groups are usually the cleanest way to customize permissions.  You can also %1$scustomize this user directly%2$s.', 'press-permit-core'),
                             "<a href='" . esc_url($edit_url) . "'>",
                             '</a>'
                         );

@@ -85,7 +85,7 @@ class CollabHooksCompat
         if (!empty($cap_caster->pattern_role_arbitrary_caps[$base_role_name]) && post_type_exists($type_obj->name)) {
             $arbitrary_caps = $cap_caster->pattern_role_arbitrary_caps[$base_role_name];
 
-            // these caps will be added only for supplemental roles with no status specified
+            // these caps will be added only for extra roles with no status specified
             if (!empty($arr_name[4])) {
                 $arbitrary_caps = array_diff_key(
                     $arbitrary_caps, 
