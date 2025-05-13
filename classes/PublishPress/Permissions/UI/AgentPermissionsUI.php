@@ -14,7 +14,7 @@ class AgentPermissionsUI
 
         $vars = [
             'addRoles' => esc_html__('Add Roles', 'press-permit-core'),
-            'clearRole' => esc_html__('clear', 'press-permit-core'),
+            'clearRole' => esc_html__('Clear', 'press-permit-core'),
             'noConditions' => esc_html__('No statuses selected!', 'press-permit-core'),
             'pleaseReview' => esc_html__('Review the selection below, and then click <strong>Save Roles</strong>.', 'press-permit-core'),
             'alreadyRole' => esc_html__('Role already selected!', 'press-permit-core'),
@@ -38,7 +38,7 @@ class AgentPermissionsUI
     {
         $vars = [
             'addExceptions' => esc_html__('Add Specific Permissions', 'press-permit-core'),
-            'clearException' => esc_html__('remove', 'press-permit-core'),
+            'clearException' => esc_html__('Remove', 'press-permit-core'),
             'pleaseReview' => esc_html__('Review the selection below, and then click <strong>Save Permissions</strong>.', 'press-permit-core'),
             'alreadyException' => esc_html__('Permission already selected!', 'press-permit-core'),
             'noAction' => esc_html__('No Action selected!', 'press-permit-core'),
