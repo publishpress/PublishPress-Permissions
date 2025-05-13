@@ -45,7 +45,13 @@ class DatabaseSetup
         ";
 
         // For existing installations, don't risk existing data violating unique key requirement
-        $unique = ($last_db_ver && defined('PRESSPERMIT_LEGACY_DB_SETUP')) ? '' : 'UNIQUE ';
+        if ($last_db_ver && defined('PRESSPERMIT_LEGACY_DB_SETUP')) {
+            $key_clause = 'KEY pp_group_user';
+        } elseif (defined('PRESSPERMIT_GROUP_MEMBERS_NO_PRIMARY_KEY')) {
+            $key_clause = 'UNIQUE KEY pp_group_user';
+        } else {
+            $key_clause = 'PRIMARY KEY ';
+        }
 
         // User2Group table def
         $tabledefs .= "CREATE TABLE $wpdb->pp_group_members (
@@ -57,7 +63,7 @@ class DatabaseSetup
          date_limited tinyint(2) NOT NULL default '0',
          start_date_gmt datetime NOT NULL default '0000-00-00 00:00:00',
          end_date_gmt datetime NOT NULL default '2035-01-01 00:00:00',
-            {$unique}KEY pp_group_user (group_id,user_id),
+            {$key_clause} (group_id,user_id),
             KEY pp_member_status (status,member_type),
             KEY pp_member_date (start_date_gmt,end_date_gmt,date_limited,user_id,group_id) )
             $charset_collate
