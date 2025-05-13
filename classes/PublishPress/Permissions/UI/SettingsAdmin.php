@@ -100,10 +100,10 @@ class SettingsAdmin
         return __('Detect user roles which are appended dynamically but not stored to the WP database. May be useful for sites that sync with Active Directory or other external user registration systems.', 'press-permit-core-hints');
 
         case 'pp_capabilities' :
-        return  __('You can also %1$s add Permissions administration capabilities to a WordPress role%2$s:', 'press-permit-core-hints');
+        return  __('You can adjust some Permissions behavior by %1$s adding capabilities to a WordPress role%2$s.', 'press-permit-core-hints');
 
         case 'pp_capabilities_install_prompt' :
-        return __('You can add Permissions capabilities to a role using %1$s:', 'press-permit-core-hints');
+        return __('You can add Permissions capabilities to a role using the %1$s plugin.', 'press-permit-core-hints');
 
         case 'non_admins_set_read_exceptions' :
         return __('Regardless of this setting, the pp_set_read_exceptions capability is also required.', 'press-permit-core-hints');
