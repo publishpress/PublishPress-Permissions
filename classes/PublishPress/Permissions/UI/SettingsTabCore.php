@@ -13,8 +13,6 @@ class SettingsTabCore
 
         add_action('presspermit_core_options_pre_ui', [$this, 'optionsPreUI']);
         add_action('presspermit_core_options_ui', [$this, 'optionsUI']);
-
-        add_filter('presspermit_cap_descriptions', [$this, 'flt_cap_descriptions'], 3);  // priority 3 for ordering before PPS and PPCC additions in caps list
     }
 
     public function optionTabs($tabs)
@@ -310,11 +308,6 @@ class SettingsTabCore
 <?php
         endif; // any options accessable in this section
 
-    }
-
-    function flt_cap_descriptions($pp_caps)
-    {
-        return SettingsAdmin::setCapabilityDescriptions($pp_caps);
     }
 
     function generateTooltip($tooltip, $text = '', $position = 'top', $useIcon = true)

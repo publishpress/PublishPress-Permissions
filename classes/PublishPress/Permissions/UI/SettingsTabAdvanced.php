@@ -649,33 +649,6 @@ class SettingsTabAdvanced
                             ?>
                         </span>
                     </span>
-
-                    <?php
-                    if ($pp->getOption('display_hints')) :
-                    ?>
-                        <table id="pp_cap_descripts" class="pp_cap_descripts pp-hint">
-                            <thead>
-                                <tr>
-                                    <th class="cap-name"><?php esc_html_e('Capability Name', 'press-permit-core'); ?></th>
-                                    <th><?php echo esc_html__('Description', 'press-permit-core'); ?></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                <?php
-                                $pp_caps = apply_filters('presspermit_cap_descriptions', []);
-
-                                foreach ($pp_caps as $cap_name => $descript) :
-                                ?>
-                                    <tr>
-                                        <td class="cap-name"><?php echo esc_html($cap_name); ?></td>
-                                        <td><?php echo esc_html($descript); ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-
-                    <?php endif; ?>
                 </td>
             </tr>
         <?php endif;
