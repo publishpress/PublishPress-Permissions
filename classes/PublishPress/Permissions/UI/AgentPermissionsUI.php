@@ -597,23 +597,14 @@ class AgentPermissionsUI
                 $pp = presspermit();
                 $pp_admin = $pp->admin();
 
-                echo '<div style="clear:both;"></div>'
-                    . "<div id='pp_current_roles_header' class='pp-group-box " . esc_attr($class) . "'>"
-                    . '<h3>';
-
-                if ($link) {
-                    echo "<a href='" . esc_url($link) . "'>" . esc_html($caption) . "</a>";
-                } else {
-                    esc_html_e($caption);
-                }
+                echo '<div id="pp_current_roles" class="container">';
 
                 if ($show_groups_link) : ?>
                 &nbsp;&bull;&nbsp;<small><a class='pp-show-groups' href='#'><?php _e('Show Groups', 'press-permit-core'); ?></a></small>
             <?php endif;
 
-                echo '</h3>';
                 $_class = ($read_only) ? 'pp-readonly' : '';
-                echo '<div id="pp_current_roles" class="' . esc_attr($_class) . '">';
+                // echo '<div id="pp_current_roles" class="' . esc_attr($_class) . '">';
 
                 foreach (array_keys($roles) as $role_name) {
                     if (strpos($role_name, ':')) {
@@ -657,7 +648,19 @@ class AgentPermissionsUI
 
                         // site roles
                         if (isset($type_roles[$source_name][$object_type])) {
-                            echo "<div id='pp_current_" . esc_attr($source_name) . "_" . esc_attr($object_type) . "_site_roles' class='pp-current-roles pp-current-site-roles'>";
+                            echo "<div id='pp_current_" . esc_attr($source_name) . "_" . esc_attr($object_type) . "_site_roles' class='permission-section'>";
+                            echo '<div class="section-header">'
+                                . '<h2 class="section-title">';
+                            if ($link) {
+                                echo "<a href='" . esc_url($link) . "'>" . esc_html($caption) . "</a>";
+                            } else {
+                                esc_html_e($caption);
+                            }
+                            echo '<span class="badge badge-count"><span class="count-num">5</span> item(s)</span>';
+                            echo '</h2>';
+                            echo '<div class="section-controls"><span class="expand-icon">▼</span></div>';
+                            echo '</div>'; // end section-header
+                            echo '<div class="section-content">';
                             echo "<div class='type-roles-wrapper'>";
                             echo '<h4 style="margin-bottom:0.3em">' . esc_html(sprintf(__('%s Roles', 'press-permit-core'), $type_caption)) . '</h4>';
                             echo '<table class="table table-responsive">';
@@ -706,9 +709,10 @@ class AgentPermissionsUI
                         echo '</tbody>';
                         echo '</table>';
                         echo '</div>'; // end type-roles-wrapper
-                        echo '</div>'; // end pp-current-site-roles
+                        echo '</div>'; // end section-content
                     } // end foreach object_type
                 } // end foreach source_name
+                echo '</div>'; // end pp_current_roles
                 echo '<br /><div class="pp-role-bulk-edit" style="display:none">';
 
                 echo "<select><option value=''>" . esc_html(PWP::__wp('Bulk Actions')) . "</option><option value='remove'>"
@@ -719,7 +723,7 @@ class AgentPermissionsUI
 
                 echo '<img class="waiting" style="display:none;" src="' . esc_url(admin_url('images/wpspin_light.gif')) . '" alt="" />';
                 echo '</div>'; // end pp-role-bulk-edit
-                echo '</div>'; // end pp_current_roles
+                // echo '</div>'; // end pp_current_roles
                 echo '</div>'; // end pp_current_roles_header
 
                 return true;
