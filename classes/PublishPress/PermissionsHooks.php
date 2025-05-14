@@ -124,6 +124,12 @@ class PermissionsHooks
     }
 
     function actCreatedEventCategory() {
+        global $wp_query, $wpdb;
+
+        if (empty($wpdb)) {
+            return;
+        }
+
         if (function_exists('_get_term_hierarchy') && taxonomy_exists('event-categories')) {
             if (!$term_children = _get_term_hierarchy('event-categories')) {
                 presspermit()->flags['disable_term_filtering'] = true;
@@ -134,8 +140,6 @@ class PermissionsHooks
                 do_action('presspermit_restored_term_children_cache');
 
                 presspermit()->flags['disable_term_filtering'] = false;
-
-                global $wp_query, $wpdb;
 
                 if ($term_children 
                 || !$wpdb->get_col("SELECT term_id FROM $wpdb->term_taxonomy WHERE taxonomy = 'event-categories' AND parent > 0")   // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
