@@ -218,38 +218,6 @@ input.submit-edit-item-role {
   margin-left: 1em;
 }
 
-#pp_current_roles a:hover {
-  text-decoration: underline;
-}
-
-#pp_current_roles {
-  .checkbox-column {
-    width: 1%;
-    text-align: center;
-  }
-
-  .pp_nolink{
-    font-weight: bold;
-    color: #000;
-  }
-
-  .role-column {
-    width: 40%;
-  }
-
-  .edit-column {
-    width: 10%;
-    text-align: right;
-  }
-
-  td {
-    label,
-    input {
-      vertical-align: text-top;
-    }
-  }
-}
-
 .pp-current-site-roles input {
   margin-left: 1em;
 }
@@ -315,25 +283,6 @@ label span.pp_nolink, .pp_item_role_caption span.pp_nolink {
   border-top: 1px solid #f2f2f2;
 }
 
-div.pp-current-type-roles {
-  // padding-left: 0.5em;
-}
-
-.pp-current-roles-tbl-wrapper {
-  // padding-left: 1em;
-}
-
-#pp_current_exceptions .pp-current-roles-tbl-wrapper td {
-  border-right: 1px solid #777;
-}
-
-#pp_current_exceptions td.pp_item_role_caption {
-  padding-top: 0.2em;
-  text-align: right;
-  background-color: #f2f2f2;
-  border-right: 1px solid #777;
-}
-
 .pp-role-terms-wrapper {
   padding-top: 0.2em;
 }
@@ -345,10 +294,6 @@ div.pp-current-type-roles {
 div.pp-current-type-roles a {
   margin-left: 5px;
   // display: none;
-}
-
-#pp_current_exceptions .pp_check_all {
-  margin-left: 1.5em;
 }
 
 .role_both {
@@ -366,20 +311,8 @@ input.exc-copied {
   border: 1px solid black !important;
 }
 
-#pp_current_exceptions input.submit-edit-item-exception {
-  // margin-top:5px;
-}
-
 tr.pp_faded td, label.pp_faded {
   color: #aa8d8d;
-}
-
-#pp_current_exceptions .inherited {
-  font-style: italic;
-}
-
-#pp_current_exceptions table td.pp_item_role_caption {
-  padding-top: 5px;
 }
 
 .pp_exceptions_notes {
@@ -489,9 +422,7 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   }
 }
 
-#pp_current_exceptions, #pp_current_roles {
-  margin-top: 36px;
-  margin-bottom: 80px;
+.sectionSubsection(){
   .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -824,6 +755,50 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
     text-align: right;
   }
 }
+
+#pp_current_exceptions {
+  margin-top: 36px;
+  margin-bottom: 80px;
+  .sectionSubsection();
+}
+
+#pp_current_roles {
+  margin-top: 12px;
+  margin-bottom: 16px;
+
+  .sectionSubsection();
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .checkbox-column {
+    width: 1%;
+    text-align: center;
+  }
+
+  .pp_nolink{
+    font-weight: bold;
+    color: #000;
+  }
+
+  .role-column {
+    width: 40%;
+  }
+
+  .edit-column {
+    width: 10%;
+    text-align: right;
+  }
+
+  td {
+    label,
+    input {
+      vertical-align: text-top;
+    }
+  }
+}
+
 // Design consistency
 #pp-permissions-wrapper {
   .ppTables();
