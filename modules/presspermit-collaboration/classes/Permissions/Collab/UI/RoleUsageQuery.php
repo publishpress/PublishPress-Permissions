@@ -19,6 +19,8 @@ class RoleUsageQuery
      */
     var $total_roles = 0;
 
+    var $query_vars;
+
     /**
      *
      * @param string|array $args The query variables
