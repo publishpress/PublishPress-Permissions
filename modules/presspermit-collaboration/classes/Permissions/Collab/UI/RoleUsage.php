@@ -75,7 +75,7 @@ class RoleUsage
                 . '</li>';
                 
                 echo '<li>' 
-                . esc_html__("With Direct Assignment, capabilities are applied without modification (leaving you responsible to add custom type caps to the WP Role Definitions).", 'press-permit-core') 
+                . esc_html__("With Direct Assignment, capabilities are applied without modification.", 'press-permit-core') 
                 . '</li></ul>';
                 
                 echo '</div>';

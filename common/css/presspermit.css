@@ -561,6 +561,10 @@ div#profile-page.wrap div.pp-group-box h3:first-of-type,
 #pp_current_user_exceptions_ui {
   margin-top: 5px !important;
 }
+/* Role Usage */
+body.permissions_page_presspermit-role-usage table.roles {
+  margin-top: 20px;
+}
 /* Custom CSS for Select2 */
 /* Target only Select2 instances with your custom class */
 .pp-select2-dropdown {
