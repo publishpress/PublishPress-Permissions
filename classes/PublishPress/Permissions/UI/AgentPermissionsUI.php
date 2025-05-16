@@ -707,10 +707,8 @@ class AgentPermissionsUI
                                 $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true, 'status_suffix' => false]);
                                 echo '</td>';
                                 echo '<td>' . esc_html(self::getRoleStatusLabel($role_name)) . ' </td>';
-                                echo '<td>';
-                                echo '<div class="pp_clear">';
+                                echo '<td class="edit-column">';
                                 echo '<a href="javascript:void(0)" class="pp_clear" onclick="event.stopPropagation();">' . esc_html__('Delete') . '</a>';
-                                echo '</div>';
                                 echo '</td>';
                                 echo '</tr>';
                                 $item_count++;
@@ -720,7 +718,7 @@ class AgentPermissionsUI
                             echo '</div>';
                             echo '</tbody>';
                             echo '</table>';
-                            echo '<div class="pp-role-bulk-edit" style="display:none">';
+                            echo '<div class="pp-role-bulk-edit" style="margin-top:12px;display:none">';
                             echo "<select><option value=''>" . esc_html(PWP::__wp('Bulk Actions')) . "</option><option value='remove'>"
                                 . esc_html(PWP::__wp('Delete')) . '</option></select>'; 
                             echo '<input type="submit" name="" class="button submit-edit-item-role" value="' . esc_attr__('Apply', 'press-permit-core') . '" />';
@@ -737,15 +735,13 @@ class AgentPermissionsUI
                                 /* ]]> */
                             </script>
                             <?php
+                            echo '</div>'; // end permission-type
+                            echo '</div>'; // end for-type
                             echo '</div>'; // end section-content
-                            echo '</div>'; // end 
-                            echo '</div>'; // end permission-section
                         }
                     } // end foreach object_type
                 } // end foreach source_name
-                // echo '</div>'; // end 
                 echo '</div>'; // end permission-section
-
                 echo '</div>'; // end container
 
                 ?>
@@ -1292,7 +1288,7 @@ class AgentPermissionsUI
                                 echo '</tbody>';
                                 echo '</table>';
 
-                                echo '<div class="pp-exception-bulk-edit" style="display:none">';
+                                echo '<div class="pp-exception-bulk-edit" style="margin-top:12px;display:none">';
 
                                 echo "<select autocomplete='off'>"
                                     . "<option value='' autocomplete='off'>" . esc_html(PWP::__wp('Bulk Actions')) . "</option>"

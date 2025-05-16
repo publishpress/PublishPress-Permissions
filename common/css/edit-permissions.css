@@ -351,7 +351,7 @@ div.mirror-confirm {
 /*---- Bulk Edit Exceptions ----*/
 .pp-role-bulk-edit,
 .pp-exception-bulk-edit {
-  margin: 0.5em 0 2em 0;
+  margin: 1em 0 0 0;
 }
 .pp-role-bulk-edit select,
 .pp-exception-bulk-edit select {
@@ -541,6 +541,9 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   margin: 0 auto;
   padding: 24px;
 }
+#pp_current_exceptions .table {
+  margin-bottom: 0;
+}
 #pp_current_exceptions .header {
   margin-bottom: 32px;
 }
@@ -559,7 +562,6 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
 #pp_current_exceptions .section-header {
   padding: 16px 24px;
   background-color: #dedfe0;
-  border-bottom: 1px solid #e5e7eb;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -602,7 +604,7 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   text-align: center;
 }
 #pp_current_exceptions .permission-type {
-  padding: 12px 24px 0 24px;
+  padding: 12px 24px 12px 24px;
   margin-bottom: 6px;
 }
 #pp_current_exceptions .permission-type:last-child {
@@ -819,6 +821,9 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   margin: 0 auto;
   padding: 24px;
 }
+#pp_current_roles .table {
+  margin-bottom: 0;
+}
 #pp_current_roles .header {
   margin-bottom: 32px;
 }
@@ -837,7 +842,6 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
 #pp_current_roles .section-header {
   padding: 16px 24px;
   background-color: #dedfe0;
-  border-bottom: 1px solid #e5e7eb;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -880,7 +884,7 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   text-align: center;
 }
 #pp_current_roles .permission-type {
-  padding: 12px 24px 0 24px;
+  padding: 12px 24px 12px 24px;
   margin-bottom: 6px;
 }
 #pp_current_roles .permission-type:last-child {

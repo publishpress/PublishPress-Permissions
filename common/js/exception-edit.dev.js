@@ -647,27 +647,6 @@ jQuery(document).ready(function ($) {
 
 
     // ========== Begin "Edit Exception" Submission scripts ==========
-    // Handle expansion/collapse of sections roles
-    $('#pp_current_roles .section-header').on('click', function(e) {
-        // Only proceed if the click wasn't on the search box or its children
-        if (!$(e.target).closest('.search-box').length) {
-            const $section = $(this).closest('.permission-section');
-            $section.find('.section-content').slideToggle(200);
-            $section.toggleClass('collapsed');
-        }
-    });
-    
-    // Handle expansion/collapse of subsections roles
-    $('#pp_current_roles .subsection-header').on('click', function(e) {
-        // Only proceed if the click wasn't on the search box or its children
-        if (!$(e.target).closest('.search-box').length) {
-            console.log('Subsection header clicked');
-            const $section = $(this).closest('.permission-type');
-            $section.find('.subsection-content').slideToggle(200);
-            $section.toggleClass('collapsed');
-        }
-    });
-
     // Handle expansion/collapse of sections exceptions
     $('#pp_current_exceptions .section-header').on('click', function(e) {
         // Only proceed if the click wasn't on the search box or its children

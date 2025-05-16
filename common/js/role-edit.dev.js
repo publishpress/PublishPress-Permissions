@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
-    $(".pp_group-profile div.pp-group_members, .pp_net_group-profile div.pp-group_members, .permissions_page_presspermit-edit-permissions div.pp-group_members").show();
-    $("#pp-add-permissions").show();
-    $("#pp_current_roles").show();
+    $('.pp_group-profile div.pp-group_members, .pp_net_group-profile div.pp-group_members, .permissions_page_presspermit-edit-permissions div.pp-group_members').show();
+    $('#pp-add-permissions').show();
+    $('#pp_current_roles').show();
 
     $("a.pp-show-groups").on('click', function () {
         $('#userprofile_groupsdiv_pp').show();
@@ -201,37 +201,68 @@ jQuery(document).ready(function ($) {
 
 
     // ========== Begin "Edit Roles" Submission scripts ==========
+    // Handle expansion/collapse of sections roles
+    $('#pp_current_roles .section-header').on('click', function(e) {
+        // Only proceed if the click wasn't on the search box or its children
+        if (!$(e.target).closest('.search-box').length) {
+            const $section = $(this).closest('.permission-section');
+            $section.find('.section-content').slideToggle(200);
+            $section.toggleClass('collapsed');
+        }
+    });
+    
+    // Handle expansion/collapse of subsections roles
+    $('#pp_current_roles .subsection-header').on('click', function(e) {
+        // Only proceed if the click wasn't on the search box or its children
+        if (!$(e.target).closest('.search-box').length) {
+            console.log('Subsection header clicked');
+            const $section = $(this).closest('.permission-type');
+            $section.find('.subsection-content').slideToggle(200);
+            $section.toggleClass('collapsed');
+        }
+    });
+
+    // Handle row click to toggle checkbox
+    $('#pp_current_roles .checkbox-row').on('click', function (e) {
+        // Prevent triggering the event if the user clicks directly on the checkbox or an anchor
+        if ($(e.target).is('input[type="checkbox"]') || $(e.target).is('a')) {
+            return;
+        }
+
+        const checkbox = $(this).find('input[type="checkbox"]');
+        checkbox.prop('checked', !checkbox.prop('checked')).trigger('change');
+    });
+
+    // Handle "Select All" checkbox
+    $('#pp_current_roles input[id^="cb-select-all-"]').on('change', function () {
+        const isChecked = $(this).is(':checked');
+        const table = $(this).closest('table');
+        
+        // Check/uncheck all checkboxes in the table
+        table.find(`input[name="pp_edit_role[]"][disabled!="true"]`).prop('checked', isChecked);
+        
+        // Show or hide the bulk edit section based on the checkbox state
+        table.closest('.permission-type').find('.pp-role-bulk-edit').toggle(isChecked);
+    });
+
+    // Handle individual checkbox behavior
+    $('#pp_current_roles .checkbox-row input[type="checkbox"]').on('change', function () {
+        const table = $(this).closest('table');
+        const selectAllCheckbox = table.find('thead input[type="checkbox"]');
+        const allCheckboxes = table.find('tbody input[type="checkbox"]:not([disabled])');
+        const checkedCheckboxes = allCheckboxes.filter(':checked');
+
+        // Update "Select All" checkbox state
+        selectAllCheckbox.prop('checked', checkedCheckboxes.length === allCheckboxes.length);
+
+        // Show or hide the bulk edit section based on the checkbox state
+        const anyChecked = checkedCheckboxes.length > 0;
+        table.closest('.permission-type').find('.pp-role-bulk-edit').toggle(anyChecked);
+    });
+
     $('#pp_current_roles .type-roles-wrapper input').on('click', function (e) {
         //$(this).closest('div.pp-current-roles').find('div.pp-role-bulk-edit').show();
         $('div.pp-role-bulk-edit').show();
-    });
-    function toggleBulkEditVisibility() {
-        const anyChecked = $('#pp_current_roles input[type="checkbox"]:checked').length > 0;
-        $('div.pp-role-bulk-edit').toggle(anyChecked);
-    }
-    
-    // Handle checkbox clicks table rows
-    $('#pp_current_roles .checkbox-row').on('click', function (e) {
-        if (!$(e.target).is('input[type="checkbox"]')) {
-            const checkbox = $(this).find('input[type="checkbox"]');
-            checkbox.prop('checked', !checkbox.prop('checked')).trigger('change');
-        }
-        toggleBulkEditVisibility();
-    });
-    
-    // Handle "Select All" checkbox
-    $('#pp_current_roles input[id^="cb-select-all-"]').on('change', function () {
-        const type = $(this).attr('id').split('cb-select-all-')[1];
-        $(`#pp_current_${type}_site_roles input[type="checkbox"]`).prop('checked', $(this).is(':checked'));
-        toggleBulkEditVisibility();
-    });
-    
-    // Handle individual checkbox behavior
-    $('#pp_current_roles .checkbox-row input[type="checkbox"]').on('change', function () {
-        const type = $(this).closest('.pp-current-roles').attr('id').split('pp_current_')[1].split('_site_roles')[0];
-        const allCheckboxes = $(`#pp_current_${type}_site_roles input[type="checkbox"]:not([id^="cb-select-all-"])`);
-        $(`#cb-select-all-${type}`).prop('checked', allCheckboxes.length === allCheckboxes.filter(':checked').length);
-        toggleBulkEditVisibility();
     });
 
     $('#pp_current_roles .checkbox-row .pp_clear').on('click', function (e) {
