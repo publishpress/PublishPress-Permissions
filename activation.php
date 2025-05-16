@@ -19,4 +19,6 @@ if (!class_exists('PublishPress\Permissions\PluginUpdated')) {
 \PublishPress\Permissions\PluginUpdated::syncWordPressRoles();
 
 update_option('presspermit_activation', true);
+update_option('presspermit_refresh_role_usage', true);
+
 do_action('presspermit_activate');

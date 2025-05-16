@@ -35,7 +35,7 @@ class CapabilityCaster
     }
 
     // If one of the standard WP roles is missing, define it for use as a template for type-specific role assignments
-    public function definePatternCaps()
+    public function definePatternCaps($args = [])
     {
         global $wp_roles;
 
@@ -65,7 +65,9 @@ class CapabilityCaster
         $type_caps = [];
         $type_caps['post'] = array_diff_key(get_object_vars($type_obj->cap), array_fill_keys(['read_post', 'edit_post', 'delete_post'], true));
 
-        if ($use_strict_rolecaps = !presspermit()->getOption('pattern_roles_include_generic_rolecaps')) {
+        $use_strict_rolecaps = !empty($args['force_strict']) || !presspermit()->getOption('pattern_roles_include_generic_rolecaps');
+
+        if ($use_strict_rolecaps) {
             $include_caps = array_fill_keys(
                 apply_filters(
                     'presspermit_include_arbitrary_caps',
