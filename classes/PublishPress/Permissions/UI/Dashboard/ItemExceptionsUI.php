@@ -263,7 +263,7 @@ class ItemExceptionsUI
 
                                 <tfoot <?php if ($any_stored < 2) echo 'style="display:none;"'; ?>>
                                     <?php
-                                    $link_caption = ('wp_role' == $agent_type) ? esc_html__('default all', 'press-permit-core') : '';
+                                    $link_caption = ('wp_role' == $agent_type) ? esc_html__('Default All', 'press-permit-core') : '';
                                     if(!empty($link_caption)) :
                                     ?>
                                     <tr>
