@@ -248,7 +248,9 @@ class SettingsTabAdvanced
                             || (is_numeric($default_val) && (is_numeric($stored_val) || ('' === $stored_val)) && (intval($stored_val) != intval($default_val)))
                             || (!is_numeric($default_val) && (string) $default_val != (string) $stored_val))
                         ) {
-                            if (isset($option_captions[$option_name])) {
+                            if ('role_usage' == $option_name) {
+                                continue;
+                            } elseif (isset($option_captions[$option_name])) {
                                 $caution_option_names []= $option_captions[$option_name];
                             } else {
                                 $caution_option_names []= ucwords(str_replace('_', ' ', $option_name));
@@ -575,7 +577,7 @@ class SettingsTabAdvanced
         <?php endif; // any options accessable in this section
 
         $section = 'role_integration'; // --- ROLE INTEGRATION SECTION ---
-        if (!empty($ui->form_options[$tab][$section])) : ?>
+        ?>
             <tr>
                 <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
@@ -587,7 +589,7 @@ class SettingsTabAdvanced
 
                     <div style="font-style: italic">
                         <?php printf(
-                            esc_html__('To control the makeup of Extra Roles, see %1$sRole Usage%2$s.', 'press-permit-core'),
+                            esc_html__('To control how Extra Roles are applied, see %1$sRole Usage%2$s.', 'press-permit-core'),
                             '<strong><a href="' . esc_url(admin_url('admin.php?page=presspermit-role-usage')) . '">',
                             '</a></strong>'
                         );
@@ -603,7 +605,7 @@ class SettingsTabAdvanced
                     </div>
                 </td>
             </tr>
-        <?php endif; // any options accessable in this section
+        <?php
 
         $section = 'misc'; // --- MISC SECTION ---
         if (!empty($ui->form_options[$tab][$section])) : ?>
