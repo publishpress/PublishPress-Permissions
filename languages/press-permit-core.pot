@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-16T20:14:47+00:00\n"
+"POT-Creation-Date: 2025-05-16T20:56:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: press-permit-core\n"
@@ -490,17 +490,17 @@ msgid "View currently stored user permissions:"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:386
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:542
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:544
 msgid "%1$sUsers who have Extra Roles assigned directly%2$s"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:387
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:543
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:545
 msgid "%1$sUsers who have Specific Permissions assigned directly%2$s"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:388
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:544
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:546
 msgid "%1$sUsers who have Extra Roles or Specific Permissions directly%2$s"
 msgstr ""
 
@@ -1342,8 +1342,8 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/GroupNew.php:103
 #: classes/PublishPress/Permissions/UI/GroupsListTable.php:173
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:693
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:746
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:695
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:748
 msgid "Description"
 msgstr ""
 
@@ -1792,116 +1792,116 @@ msgstr ""
 msgid "Assign Publish Permissions separate from Edit Permissions"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:265
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:267
 msgid "The following would revert to default settings:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:267
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:269
 msgid "The following would change from defaults to previously stored settings:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:299
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:301
 msgid "note: Plugin settings and configuration data will be deleted, but only after the last copy of Permissions / Permissions Pro is deleted."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:328
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:330
 msgid "no Page Parent filter"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:328
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:330
 msgid "Page Authors, Editors and Administrators"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:328
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:330
 msgid "Page Editors and Administrators"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:328
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:330
 msgid "Administrators"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:364
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:366
 msgid "If enabled, users cannot create new tags for a post unless they have the edit_tags capability. You can manage this with a WordPress role editor like PublishPress Capabilities."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:368
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:370
 msgid "If enabled, users cannot create new tags for a post unless they have the edit_tags capability. You can manage this with Capabilities > Capabilities > Taxonomies for any role."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:415
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:417
 msgid "%sPosts / Pages Listing:%s %s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:499
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:501
 msgid "User editing capabilities apply for"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:502
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:504
 msgid "any user"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:502
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:504
 msgid "equal or lower role levels"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:502
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:504
 msgid "lower role levels"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:522
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:524
 msgid "For user-specific Extra Roles and Permissions, click a \"Roles\" cell on the %1$sUsers%2$s screen."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:533
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:535
 msgid "To filter the Users list by Permissions, follow a link below:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:538
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:540
 msgid "%1$sUsers who have no custom Permission Group membership%2$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:548
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:550
 msgid "%1$sUsers who have Extra Roles (directly or via group)%2$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:549
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:551
 msgid "%1$sUsers who have Specific Permissions (directly or via group)%2$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:550
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:552
 msgid "%1$sUsers who have Extra Roles or Specific Permissions (directly or via group)%2$s"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:590
-msgid "To control the makeup of Extra Roles, see %1$sRole Usage%2$s."
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:592
+msgid "To control how Extra Roles are applied, see %1$sRole Usage%2$s."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:691
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:693
 msgid "Defined Constant"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:692
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:745
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:694
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:747
 msgid "Setting"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:744
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:746
 msgid "Available Constant"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:830
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:832
 msgid "To modify one or more default settings network-wide, <strong>copy</strong> the following code into your theme's <strong>functions.php</strong> file (or some other file which is always executed and not auto-updated) and modify as desired:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:851
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:853
 msgid "To force the value of one or more settings network-wide, <strong>copy</strong> the following code into your theme's <strong>functions.php</strong> file (or some other file which is always executed and not auto-updated) and modify as desired:"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:886
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:888
 msgid "All settings in this form (including those on undisplayed tabs) will be reset to DEFAULTS.  Are you sure?"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:889
+#: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:891
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/RoleUsage.php:95
 msgid "Revert to Defaults"
 msgstr ""
