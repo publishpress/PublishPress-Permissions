@@ -201,8 +201,10 @@ class Groups
 
                     $group_types = [];
 
-                    if (current_user_can('pp_administer_content'))
+                    if (current_user_can('pp_administer_content')) {
                         $group_types['wp_role'] = (object)['labels' => (object)['singular_name' => esc_html__('WordPress Role', 'press-permit-core'), 'plural_name' => esc_html__('WordPress Roles', 'press-permit-core')]];
+                        $group_types['login_state'] = (object)['labels' => (object)['singular_name' => esc_html__('Login State', 'press-permit-core'), 'plural_name' => esc_html__('Login State', 'press-permit-core')]];
+                    }
 
                     $group_types['pp_group'] = (object)['labels' => (object)['singular_name' => esc_html__('Custom Group', 'press-permit-core'), 'plural_name' => esc_html__('Custom Groups', 'press-permit-core')]];
 
@@ -218,7 +220,7 @@ class Groups
 
                     $i = 0;
                     foreach ($group_types as $_group_type => $gtype_obj) {
-                        $agent_type_str = ('wp_role' == $_group_type) ? "&agent_type=pp_group" : "&agent_type=$_group_type";
+                        $agent_type_str = (in_array($_group_type, ['wp_role', 'login_state'], true)) ? "&agent_type=pp_group" : "&agent_type=$_group_type";
                         $gvar_str = "&group_variant=$_group_type";
                         $class = strpos($agent_type_str, $agent_type) && ($group_variant && strpos($gvar_str, $group_variant)) ? 'current' : '';
 

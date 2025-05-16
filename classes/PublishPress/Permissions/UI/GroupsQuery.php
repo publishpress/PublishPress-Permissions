@@ -107,7 +107,9 @@ class GroupQuery
         $this->query_where = "WHERE 1=1";
 
         if ('wp_role' == $this->group_variant) {
-            $this->query_where .= " AND $groups_table.metagroup_type IN ('wp_role')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            $this->query_where .= " AND $groups_table.metagroup_type IN ('wp_role') AND $groups_table.metagroup_id NOT IN ('wp_anon', 'wp_auth', 'wp_all')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        } else if ('login_state' == $this->group_variant) {
+            $this->query_where .= " AND $groups_table.metagroup_type IN ('wp_role') AND $groups_table.metagroup_id IN ('wp_anon', 'wp_auth', 'wp_all')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
 
         if (!defined('PUBLISHPRESS_REVISIONS_VERSION')) {
@@ -115,7 +117,7 @@ class GroupQuery
         }
 
         $skip_meta_types = [];
-        if ($this->group_variant && ('pp_net_group' != $this->group_variant) && ('wp_role' != $this->group_variant)) {
+        if ($this->group_variant && !in_array($this->group_variant, ['pp_net_group', 'wp_role', 'login_state'], true)) {
             $skip_meta_types[] = 'wp_role';
         } else {
             $pp_only_roles = (array) $pp->getOption('supplemental_role_defs');
