@@ -103,11 +103,67 @@ class PermissionsHooksAdmin
             }
         }
 
+        if (get_option('presspermit_refresh_role_usage')) {
+            $this->actApplyDefaultRoleUsage();
+            delete_option('presspermit_refresh_role_usage');
+        }
+
         if (PWP::is_GET('pp_agent_search')) {
             require_once(PRESSPERMIT_CLASSPATH . '/UI/AgentsAjax.php');
             new Permissions\UI\AgentsAjax();
             exit;
         }
+    }
+
+    public function actApplyDefaultRoleUsage() {
+        add_action('init', function() {
+            global $wp_roles;
+
+            $pp = presspermit();
+
+            if (!$role_usage = $pp->getOption('role_usage')) {
+                $role_usage = [];
+            }
+
+            $cap_caster = $pp->capCaster();
+            $cap_caster->definePatternCaps(['force_strict' => true]);
+
+            $type_obj = get_post_type_object('post');
+            $post_caps = array_diff_key(get_object_vars($type_obj->cap), array_fill_keys(['read_post', 'edit_post', 'delete_post'], true));
+
+            foreach ($wp_roles->roles as $role_name => $_role) {
+                if (isset($role_usage[$role_name]) || !empty($cap_caster->pattern_role_type_caps[$role_name])) {
+                    continue;
+                }
+
+                if (!$role_post_caps = array_intersect_key(
+                    $post_caps,
+                    $_role['capabilities']
+                )) {
+                    continue;
+                }
+
+                $ignore_caps = array_fill_keys(
+                    ['set_posts_status', 'create_posts', 'list_posts', 'list_published_posts', 'list_private_posts', 'list_others_posts'],
+                    true
+                );
+
+                foreach ($cap_caster->pattern_role_type_caps as $pattern_role_name => $pattern_role_caps) {
+                    if (!array_diff_key($pattern_role_caps, $role_post_caps, $ignore_caps)
+                    && !array_diff_key($role_post_caps, $pattern_role_caps, $ignore_caps)
+                    ) {
+                        continue 2;
+                    }
+                }
+
+                $any_updated = true;
+                $role_usage[$role_name] = 'pattern';
+            }
+
+            if (!empty($any_updated)) {
+                update_option('presspermit_role_usage', $role_usage);
+            }
+        }, 100);
     }
 
     public function actPluginSettingsUpdated() {
