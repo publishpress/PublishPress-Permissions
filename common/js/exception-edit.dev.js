@@ -647,7 +647,7 @@ jQuery(document).ready(function ($) {
 
 
     // ========== Begin "Edit Exception" Submission scripts ==========
-    // Handle expansion/collapse of sections
+    // Handle expansion/collapse of sections exceptions
     $('#pp_current_exceptions .section-header').on('click', function(e) {
         // Only proceed if the click wasn't on the search box or its children
         if (!$(e.target).closest('.search-box').length) {
@@ -657,12 +657,12 @@ jQuery(document).ready(function ($) {
         }
     });
     
-    // Handle expansion/collapse of subsections
+    // Handle expansion/collapse of subsections exceptions
     $('#pp_current_exceptions .subsection-header').on('click', function(e) {
         // Only proceed if the click wasn't on the search box or its children
         if (!$(e.target).closest('.search-box').length) {
             const $section = $(this).closest('.permission-type');
-            $section.find('.section-content').slideToggle(200);
+            $section.find('.subsection-content').slideToggle(200);
             $section.toggleClass('collapsed');
         }
     });

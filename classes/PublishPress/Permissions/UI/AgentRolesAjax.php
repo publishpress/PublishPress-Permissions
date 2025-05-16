@@ -75,7 +75,7 @@ class AgentRolesAjax
                 if (('post' != $for_item_source) || ('attachment' == $for_item_type)) {
                     echo '<p class="pp-checkbox">'
                     . '<input type="checkbox" id="pp_select_cond_" name="pp_select_cond[]" value=""' . esc_attr($checked) . ' /> '
-                    . '<label id="lbl_pp_select_cond_" for="pp_select_cond_">' . esc_html__('Standard statuses', 'press-permit-core') . '</label>'
+                    . '<label id="lbl_pp_select_cond_" for="pp_select_cond_">' . esc_html__('Standard Statuses', 'press-permit-core') . '</label>'
                     . '</p>';
                 } elseif ($role_name) {
                     $type_obj = $pp->getTypeObject($for_item_source, $for_item_type);
@@ -97,7 +97,7 @@ class AgentRolesAjax
                     if (!empty($do_standard_statuses_ui)) {
                         echo '<p class="pp-checkbox">'
                         . '<input type="checkbox" id="pp_select_cond_" name="pp_select_cond[]" value=""' . esc_attr($checked) . ' /> '
-                        . '<label id="lbl_pp_select_cond_" for="pp_select_cond_">' . esc_html__('Standard statuses', 'press-permit-core') . '</label>'
+                        . '<label id="lbl_pp_select_cond_" for="pp_select_cond_">' . esc_html__('Standard Statuses', 'press-permit-core') . '</label>'
                         . '</p>';
                     }
 
