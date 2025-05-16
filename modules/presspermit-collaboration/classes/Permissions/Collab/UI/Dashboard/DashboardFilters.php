@@ -90,7 +90,7 @@ class DashboardFilters
     {
         if (presspermit()->moduleActive('collaboration')) {
 	    	// Register a submenu item for these screens, but only if they are accessed
-	            if ('presspermit-role-usage' == presspermitPluginPage() && !did_action('pp_added_role_usage_submenu')) {
+	        if (in_array(presspermitPluginPage(), ['presspermit-role-usage', 'presspermit-role-usage-edit']) && !did_action('pp_added_role_usage_submenu')) {
 	            add_submenu_page(
 	                $pp_options_menu,
 	                esc_html__('Role Usage', 'press-permit-core'),
