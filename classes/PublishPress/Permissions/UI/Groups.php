@@ -48,19 +48,7 @@ class Groups
         $agent_type = PluginPage::getAgentType($agent_type);
         $group_variant = PluginPage::getGroupVariant();
 
-        if (! empty(PluginPage::instance()->table)) {
-            $groups_list_table = PluginPage::instance()->table;
-        } else {
-            require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsListTable.php');
-            $groups_list_table = new GroupsListTable(compact('agent_type', 'group_variant'));
-        }
-
-        $pagenum = $groups_list_table->get_pagenum();
-
-        $url = $referer = $redirect = $update = '';
-
-        require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsHelper.php');
-        GroupsHelper::getUrlProperties($url, $referer, $redirect);
+        
 
         switch ($action) {
 
@@ -78,8 +66,7 @@ class Groups
                 } else {
                     $groupids = (PWP::is_REQUEST('group')) ? [PWP::REQUEST_int('group')] : [];
                 }
-
-?>
+                ?>
                 <form action="" method="post" name="updategroups" id="updategroups">
                     <?php wp_nonce_field('pp-bulk-groups'); ?>
 
@@ -119,11 +106,22 @@ class Groups
                         <?php endif; ?>
                     </div>
                 </form>
-            <?php
+                <?php
 
                 break;
 
             default:
+                $url = $referer = $redirect = $update = '';
+                if (! empty(PluginPage::instance()->table)) {
+                    $groups_list_table = PluginPage::instance()->table;
+                } else {
+                    require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsListTable.php');
+                    $groups_list_table = new GroupsListTable(compact('agent_type', 'group_variant'));
+                }
+
+                require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsHelper.php');
+                GroupsHelper::getUrlProperties($url, $referer, $redirect);
+
                 $groups_list_table->prepare_items();
                 $total_pages = $groups_list_table->get_pagination_arg('total_pages');
 
@@ -143,9 +141,6 @@ class Groups
                             break;
                     }
                 endif;
-            ?>
-
-                <?php
                 $pp = presspermit();
 
                 if (isset($pp_admin->errors) && is_wp_error($pp_admin->errors)) :
@@ -162,127 +157,161 @@ class Groups
                 endif;
 
                 ?>
+                <ul class="nav-tab-wrapper" style="margin-bottom: -0.1em; border-bottom: unset">
+                    <li class="nav-tab<?php echo (empty($_GET['tab']) || $_GET['tab'] === 'user-group') ? ' nav-tab-active' : ''; ?>">
+                        <a href="<?php echo esc_url(add_query_arg('tab', 'user-group')); ?>"><?php esc_html_e('User Group', 'press-permit-core'); ?></a>
+                    </li>
+                    <li class="nav-tab<?php echo (!empty($_GET['tab']) && $_GET['tab'] === 'users') ? ' nav-tab-active' : ''; ?>">
+                        <a href="<?php echo esc_url(add_query_arg('tab', 'users')); ?>"><?php esc_html_e('Users', 'press-permit-core'); ?></a>
+                    </li>
+                </ul>
+                <?php $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'user-group'; ?>
+                <div id="user-group" class="tab-content" style="<?php echo ($active_tab === 'user-group') ? 'display:block;' : 'display:none;'; ?>">
+                    <div class="wrap pressshack-admin-wrapper presspermit-groups" id="pp-permissions-wrapper">
+                        <?php PluginPage::icon(); ?>
+                        <h1 class="wp-heading-inline">
+                            <?php
+                            if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type))
+                                $groups_caption = (defined('PP_GROUPS_CAPTION')) ? PP_GROUPS_CAPTION : __('Permission Groups', 'press-permit-core');
+                            else
+                                $groups_caption = $group_type_obj->labels->name;
 
-                <div class="wrap pressshack-admin-wrapper presspermit-groups" id="pp-permissions-wrapper">
-                    <?php PluginPage::icon(); ?>
-                    <h1 class="wp-heading-inline">
+                            echo esc_html($groups_caption);
+                            ?>
+                        </h1>
                         <?php
-                        if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type))
-                            $groups_caption = (defined('PP_GROUPS_CAPTION')) ? PP_GROUPS_CAPTION : __('Permission Groups', 'press-permit-core');
-                        else
-                            $groups_caption = $group_type_obj->labels->name;
 
-                        echo esc_html($groups_caption);
+                        $gvar = ($group_variant) ? $group_variant : 'pp_group';
+
+                        if ($pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')) :
+                            $_url = admin_url('admin.php?page=presspermit-group-new');
+                            if ($agent_type) {
+                                $_url = add_query_arg(['agent_type' => $agent_type], $_url);
+                            }
                         ?>
-                    </h1>
-                    <?php
+                            <a href="<?php echo esc_url($_url); ?>" class="page-title-action"><?php esc_html_e('Add New Group', 'press-permit-core'); ?></a>
+                            <hr class="wp-header-end" />
+                        <?php endif;
 
-                    $gvar = ($group_variant) ? $group_variant : 'pp_group';
+                        if ($pp->getOption('display_hints')) {
+                            echo '<div class="pp-hint pp-no-hide">';
 
-                    if ($pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')) :
-                        $_url = admin_url('admin.php?page=presspermit-group-new');
-                        if ($agent_type) {
-                            $_url = add_query_arg(['agent_type' => $agent_type], $_url);
-                        }
-                    ?>
-                        <a href="<?php echo esc_url($_url); ?>" class="page-title-action"><?php esc_html_e('Add New Group', 'press-permit-core'); ?></a>
-                        <hr class="wp-header-end" />
-                    <?php endif;
+                            if (defined('PP_GROUPS_HINT')) {
+                                echo esc_html(PP_GROUPS_HINT);
+                            }
 
-                    if ($pp->getOption('display_hints')) {
-                        echo '<div class="pp-hint pp-no-hide">';
-
-                        if (defined('PP_GROUPS_HINT')) {
-                            echo esc_html(PP_GROUPS_HINT);
+                            echo '</div>';
                         }
 
-                        echo '</div>';
-                    }
+                        $group_types = [];
 
-                    $group_types = [];
-
-                    if (current_user_can('pp_administer_content')) {
-                        $group_types['wp_role'] = (object)['labels' => (object)['singular_name' => esc_html__('WordPress Role', 'press-permit-core'), 'plural_name' => esc_html__('WordPress Roles', 'press-permit-core')]];
-                        $group_types['login_state'] = (object)['labels' => (object)['singular_name' => esc_html__('Login State', 'press-permit-core'), 'plural_name' => esc_html__('Login State', 'press-permit-core')]];
-                    }
-
-                    $group_types['pp_group'] = (object)['labels' => (object)['singular_name' => esc_html__('Custom Group', 'press-permit-core'), 'plural_name' => esc_html__('Custom Groups', 'press-permit-core')]];
-
-                    // currently faking WP Role as a "group type", but want it listed before BuddyPress Group
-                    $group_types = apply_filters('presspermit_list_group_types', array_merge($group_types, $pp_groups->getGroupTypes([], 'object')));
-
-                    echo '<ul class="subsubsub">';
-                    printf(esc_html__('%1$sGroup Type:%2$s %3$s', 'press-permit-core'), '<li class="pp-gray">', '</li>', '');
-
-                    $class = (!$group_variant) ? 'current' : '';
-
-                    echo "<li><a href='admin.php?page=presspermit-groups' class='" . esc_attr($class) . "'>" . esc_html__('All', 'press-permit-core') . "</a>&nbsp;|&nbsp;</li>";
-
-                    $i = 0;
-                    foreach ($group_types as $_group_type => $gtype_obj) {
-                        $agent_type_str = (in_array($_group_type, ['wp_role', 'login_state'], true)) ? "&agent_type=pp_group" : "&agent_type=$_group_type";
-                        $gvar_str = "&group_variant=$_group_type";
-                        $class = strpos($agent_type_str, $agent_type) && ($group_variant && strpos($gvar_str, $group_variant)) ? 'current' : '';
-
-                        $group_label = (!empty($gtype_obj->labels->plural_name)) ? $gtype_obj->labels->plural_name : $gtype_obj->labels->singular_name;
-
-                        $i++;
-
-                        echo "<li><a href='" . esc_url("admin.php?page=presspermit-groups{$agent_type_str}{$gvar_str}") . "' class='" . esc_attr($class) . "'>" . esc_html($group_label) . "</a>";
-
-                        if ($i < count($group_types)) {
-                            echo "&nbsp;|&nbsp;";
+                        if (current_user_can('pp_administer_content')) {
+                            $group_types['wp_role'] = (object)['labels' => (object)['singular_name' => esc_html__('WordPress Role', 'press-permit-core'), 'plural_name' => esc_html__('WordPress Roles', 'press-permit-core')]];
+                            $group_types['login_state'] = (object)['labels' => (object)['singular_name' => esc_html__('Login State', 'press-permit-core'), 'plural_name' => esc_html__('Login State', 'press-permit-core')]];
                         }
 
-                        echo '</li>';
-                    }
+                        $group_types['pp_group'] = (object)['labels' => (object)['singular_name' => esc_html__('Custom Group', 'press-permit-core'), 'plural_name' => esc_html__('Custom Groups', 'press-permit-core')]];
 
-                    echo '</ul>';
+                        // currently faking WP Role as a "group type", but want it listed before BuddyPress Group
+                        $group_types = apply_filters('presspermit_list_group_types', array_merge($group_types, $pp_groups->getGroupTypes([], 'object')));
 
-                    if (!empty($groupsearch))
-                        printf('<span class="subtitle">' . esc_html__('Search Results for &#8220;%s&#8221;', 'press-permit-core') . '</span>', esc_html($groupsearch)); ?>
+                        echo '<ul class="subsubsub">';
+                        printf(esc_html__('%1$sGroup Type:%2$s %3$s', 'press-permit-core'), '<li class="pp-gray">', '</li>', '');
 
-                    <form action="<?php echo esc_url($url); ?>" method="get">
-                        <input type="hidden" name="page" value="presspermit-groups" />
-                        <input type="hidden" name="agent_type" value="<?php echo esc_attr($agent_type); ?>" />
+                        $class = (!$group_variant) ? 'current' : '';
+
+                        echo "<li><a href='admin.php?page=presspermit-groups' class='" . esc_attr($class) . "'>" . esc_html__('All', 'press-permit-core') . "</a>&nbsp;|&nbsp;</li>";
+
+                        $i = 0;
+                        foreach ($group_types as $_group_type => $gtype_obj) {
+                            $agent_type_str = (in_array($_group_type, ['wp_role', 'login_state'], true)) ? "&agent_type=pp_group" : "&agent_type=$_group_type";
+                            $gvar_str = "&group_variant=$_group_type";
+                            $class = strpos($agent_type_str, $agent_type) && ($group_variant && strpos($gvar_str, $group_variant)) ? 'current' : '';
+
+                            $group_label = (!empty($gtype_obj->labels->plural_name)) ? $gtype_obj->labels->plural_name : $gtype_obj->labels->singular_name;
+
+                            $i++;
+
+                            echo "<li><a href='" . esc_url("admin.php?page=presspermit-groups{$agent_type_str}{$gvar_str}") . "' class='" . esc_attr($class) . "'>" . esc_html($group_label) . "</a>";
+
+                            if ($i < count($group_types)) {
+                                echo "&nbsp;|&nbsp;";
+                            }
+
+                            echo '</li>';
+                        }
+
+                        echo '</ul>';
+
+                        if (!empty($groupsearch))
+                            printf('<span class="subtitle">' . esc_html__('Search Results for &#8220;%s&#8221;', 'press-permit-core') . '</span>', esc_html($groupsearch)); ?>
+
+                        <form action="<?php echo esc_url($url); ?>" method="get">
+                            <input type="hidden" name="page" value="presspermit-groups" />
+                            <input type="hidden" name="agent_type" value="<?php echo esc_attr($agent_type); ?>" />
+                            <input type="hidden" name="group_variant" value="<?php echo esc_attr($group_variant); ?>" />
+                            <?php
+                            $groups_list_table->search_box(esc_html__('Search Groups', 'press-permit-core'), 'group', '', 2);
+                            ?>
+
+                            <?php $groups_list_table->display(); ?>
+
+                        </form>
+
+                        <br class="clear" />
+
                         <?php
-                        $groups_list_table->search_box(esc_html__('Search Groups', 'press-permit-core'), 'group', '', 2);
+                        if (
+                            defined('BP_VERSION') && !$pp->moduleActive('compatibility')
+                            && $pp->getOption('display_extension_hints')
+                        ) {
+                            echo "<div class='pp-ext-promo'>";
+
+                            if (presspermit()->isPro()) {
+                                echo esc_html__('To assign roles or permissions to BuddyPress groups, activate the Compatibility Pack feature', 'press-permit-core');
+                            } else {
+                                printf(
+                                    esc_html__('To assign roles or permissions to BuddyPress groups, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack feature.', 'press-permit-core'),
+                                    '<a href="https://publishpress.com/pricing/">',
+                                    '</a>'
+                                );
+                            }
+
+                            echo "</div>";
+                        }
                         ?>
 
-                        <?php $groups_list_table->display(); ?>
+                        <?php
+                        presspermit()->admin()->publishpressFooter();
+                        ?>
 
-                    </form>
-
-                    <br class="clear" />
-
-                    <?php
-                    if (
-                        defined('BP_VERSION') && !$pp->moduleActive('compatibility')
-                        && $pp->getOption('display_extension_hints')
-                    ) {
-                        echo "<div class='pp-ext-promo'>";
-
-                        if (presspermit()->isPro()) {
-                            echo esc_html__('To assign roles or permissions to BuddyPress groups, activate the Compatibility Pack feature', 'press-permit-core');
-                        } else {
-                            printf(
-                                esc_html__('To assign roles or permissions to BuddyPress groups, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack feature.', 'press-permit-core'),
-                                '<a href="https://publishpress.com/pricing/">',
-                                '</a>'
-                            );
-                        }
-
-                        echo "</div>";
-                    }
-                    ?>
-
-                    <?php
-                    presspermit()->admin()->publishpressFooter();
-                    ?>
-
+                    </div>
                 </div>
-<?php
-
+                <?php
+                require_once PRESSPERMIT_CLASSPATH . '/UI/UsersListTable.php';
+                $users_list_table = new \PP_Users_List_Table();
+                $users_list_table->prepare_items();
+                ?>
+                <div id="users" class="tab-content" style="<?php echo ($active_tab === 'users') ? 'display:block;' : 'display:none;'; ?>">
+                    <h3><?php esc_html_e('Users', 'press-permit-core'); ?></h3>
+                    <form method="get">
+                        <input type="hidden" name="page" value="presspermit-groups" />
+                        <?php $users_list_table->search_box(__('Search Users'), 'user'); ?>
+                        <?php $users_list_table->display(); ?>
+                    </form>
+                </div>
+                <script>
+                document.querySelectorAll('.nav-tab').forEach(tab => {
+                    tab.onclick = e => {
+                        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('nav-tab-active'));
+                        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+                        tab.classList.add('nav-tab-active');
+                        const target = document.querySelector(tab.querySelector('a').getAttribute('href'));
+                        if (target) target.style.display = 'block';
+                    };
+                });
+                </script>
+                <?php
                 break;
         } // end of the $doaction switch
     }

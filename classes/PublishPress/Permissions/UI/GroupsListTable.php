@@ -46,6 +46,11 @@ class GroupsListTable extends GroupsListTableBase
         return $this->agent_type;
     }
 
+    // public function getGroupVariant()
+    // {
+    //     return $this->group_variant;
+    // }
+
     public function ajax_user_can()
     {
         return current_user_can('pp_edit_groups') || presspermit()->groups()->anyGroupManager();
@@ -149,7 +154,7 @@ class GroupsListTable extends GroupsListTableBase
 
         if (
             current_user_can('pp_delete_groups')
-            && PWP::GET_key('group_variant') !== 'wp_role' // don't allow deletion of WP roles
+            && !in_array(PWP::GET_key('group_variant'), ['wp_role', 'login_state'], true) // don't allow deletion of WP roles
         ) {
             $actions['delete'] = esc_html__('Delete', 'press-permit-core');
         }
@@ -159,7 +164,7 @@ class GroupsListTable extends GroupsListTableBase
 
     public function get_columns()
     {
-        $bulk_check_all = !PWP::is_REQUEST('group_variant', 'wp_role') || $this->deleted_roles_listed()
+        $bulk_check_all = !PWP::is_REQUEST('group_variant', ['wp_role', 'login_state']) || $this->deleted_roles_listed()
             ? '<input type="checkbox" />'
             : '';
 
@@ -174,7 +179,7 @@ class GroupsListTable extends GroupsListTableBase
         ];
 
         $c = apply_filters('presspermit_manage_groups_columns', $c);
-
+        error_log('GroupsListTable::get_columns()' . print_r($c, true));
         return $c;
     }
 
@@ -436,7 +441,7 @@ class GroupsListTable extends GroupsListTableBase
         if ($detached = PWP::REQUEST_int('detached')) {
             echo '<input type="hidden" name="detached" value="' . esc_attr($detached) . '" />';
         }
-?>
+        ?>
         <p class="search-box">
             <label class="screen-reader-text" for="<?php echo esc_attr($input_id); ?>"><?php echo esc_html($text); ?>:</label>
 
