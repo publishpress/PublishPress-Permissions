@@ -692,6 +692,14 @@ class AgentPermissionsUI
                             $_arr = $type_roles[$source_name][$object_type];
                             ksort($_arr);
                             foreach (array_keys($_arr) as $role_name) {
+                                $arr_role_name = explode(':', $role_name);
+
+                                if (!empty($arr_role_name[3]) && ('post_status' == $arr_role_name[3]) && !empty($arr_role_name[4])) {
+                                    if (!$status_obj = get_post_status_object($arr_role_name[4])) {
+                                        continue;
+                                    }
+                                }
+
                                 echo '<tr class="checkbox-row">';
                                 echo '<td class="checkbox-column">';
                                 if ($read_only) {
