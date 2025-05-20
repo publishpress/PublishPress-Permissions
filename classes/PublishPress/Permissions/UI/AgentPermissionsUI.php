@@ -682,7 +682,7 @@ class AgentPermissionsUI
                             echo '<th class="checkbox-column">';
                             echo '<input id="cb-select-all-' . esc_attr($source_name . '_' . $object_type) . '" type="checkbox" />';
                             echo '</th>';
-                            echo '<th class="role-column">Role</th>';
+                            echo '<th class="role-column">' . esc_html__('Role', 'press-permit-core') . '</th>';
                             echo '<th class="status-column">' . esc_html__('Status', 'press-permit-core') . '</th>';
                             echo '<th class="edit-column"></th>';
                             echo '</tr>';
