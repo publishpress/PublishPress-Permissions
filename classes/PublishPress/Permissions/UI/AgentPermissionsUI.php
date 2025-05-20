@@ -628,7 +628,7 @@ class AgentPermissionsUI
                 } else {
                     esc_html_e($caption);
                 }
-                echo ' <span class="badge badge-count" style="display:none"><span class="count-num">5</span> item(s)</span>';
+                echo ' <span class="badge badge-count" style="display:none"><span class="count-num">0</span> ' . esc_html__('item(s)', 'press-permit-core') . '</span>';
                 echo '</h2>';
                 echo '<div class="section-controls"><span class="expand-icon">▼</span></div>';
                 echo '</div>'; // end section-header
@@ -670,7 +670,7 @@ class AgentPermissionsUI
                             <div class="subsection-header permission-type-header">
                             <h3 class="section-title permission-type-title">
                                 <?php esc_html_e(sprintf(__('%s Roles', 'press-permit-core'), $type_caption)); ?>
-                                <span class="badge badge-count" style=""><span class="count-num">2</span> item(s)</span>
+                                <span class="badge badge-count" style=""><span class="count-num">0</span> <?php esc_html_e('item(s)', 'press-permit-core');?></span>
                             </h3>
                             <div class="section-controls"><span class="expand-icon">▼</span></div>
                             </div>
