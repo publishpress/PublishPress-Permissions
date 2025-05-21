@@ -293,7 +293,8 @@ class Groups
                 <div id="users" class="tab-content"
                     style="<?php echo ($active_tab === 'users') ? 'display:block;' : 'display:none;'; ?>">
                     <div class="wrap pressshack-admin-wrapper presspermit-groups" id="pp-permissions-wrapper">
-                        <h3><?php esc_html_e('Users', 'press-permit-core'); ?></h3>
+                        <h1 class="wp-heading-inline"><?php esc_html_e('Users', 'press-permit-core'); ?></h1>
+                        <hr class="wp-header-end">
                         <form method="get">
                             <input type="hidden" name="page" value="presspermit-groups" />
                             <?php
