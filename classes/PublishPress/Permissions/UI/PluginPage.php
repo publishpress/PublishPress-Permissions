@@ -75,8 +75,14 @@ class PluginPage
             $group_variant = self::getGroupVariant();
 
             if ( ! $this->table = apply_filters('presspermit_groups_list_table', false, $agent_type) ) {
-                require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsListTable.php' );
-                $this->table = new GroupsListTable(compact('agent_type', 'group_variant'));
+                $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'user-group';
+                if ($active_tab === 'users') {
+                    require_once(PRESSPERMIT_CLASSPATH . '/UI/UsersListTable.php' );
+                    $this->table = new \PP_Users_List_Table();
+                } else {
+                    require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsListTable.php' );
+                    $this->table = new GroupsListTable(compact('agent_type', 'group_variant'));
+                }
             }
 
             add_screen_option(

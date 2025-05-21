@@ -46,11 +46,6 @@ class GroupsListTable extends GroupsListTableBase
         return $this->agent_type;
     }
 
-    // public function getGroupVariant()
-    // {
-    //     return $this->group_variant;
-    // }
-
     public function ajax_user_can()
     {
         return current_user_can('pp_edit_groups') || presspermit()->groups()->anyGroupManager();
@@ -179,7 +174,7 @@ class GroupsListTable extends GroupsListTableBase
         ];
 
         $c = apply_filters('presspermit_manage_groups_columns', $c);
-        error_log('GroupsListTable::get_columns()' . print_r($c, true));
+
         return $c;
     }
 

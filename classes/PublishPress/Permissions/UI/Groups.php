@@ -48,8 +48,6 @@ class Groups
         $agent_type = PluginPage::getAgentType($agent_type);
         $group_variant = PluginPage::getGroupVariant();
 
-        
-
         switch ($action) {
 
             case 'delete':
@@ -112,18 +110,14 @@ class Groups
 
             default:
                 $url = $referer = $redirect = $update = '';
-                if (! empty(PluginPage::instance()->table)) {
+                $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'user-group';
+                if (!empty(PluginPage::instance()->table)) {
                     $groups_list_table = PluginPage::instance()->table;
-                } else {
-                    require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsListTable.php');
-                    $groups_list_table = new GroupsListTable(compact('agent_type', 'group_variant'));
+                    $groups_list_table->prepare_items();
                 }
 
                 require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsHelper.php');
                 GroupsHelper::getUrlProperties($url, $referer, $redirect);
-
-                $groups_list_table->prepare_items();
-                $total_pages = $groups_list_table->get_pagination_arg('total_pages');
 
                 if ($update = PWP::GET_key('update')) :
                     switch ($update) {
@@ -165,7 +159,7 @@ class Groups
                         <a href="<?php echo esc_url(add_query_arg('tab', 'users')); ?>"><?php esc_html_e('Users', 'press-permit-core'); ?></a>
                     </li>
                 </ul>
-                <?php $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'user-group'; ?>
+
                 <div id="user-group" class="tab-content" style="<?php echo ($active_tab === 'user-group') ? 'display:block;' : 'display:none;'; ?>">
                     <div class="wrap pressshack-admin-wrapper presspermit-groups" id="pp-permissions-wrapper">
                         <?php PluginPage::icon(); ?>
@@ -251,11 +245,11 @@ class Groups
                             <input type="hidden" name="agent_type" value="<?php echo esc_attr($agent_type); ?>" />
                             <input type="hidden" name="group_variant" value="<?php echo esc_attr($group_variant); ?>" />
                             <?php
-                            $groups_list_table->search_box(esc_html__('Search Groups', 'press-permit-core'), 'group', '', 2);
+                            if (isset($groups_list_table)) {
+                                $groups_list_table->search_box(esc_html__('Search Groups', 'press-permit-core'), 'group', '', 2);
+                                $groups_list_table->display();
+                            }
                             ?>
-
-                            <?php $groups_list_table->display(); ?>
-
                         </form>
 
                         <br class="clear" />
@@ -288,16 +282,18 @@ class Groups
                     </div>
                 </div>
                 <?php
-                require_once PRESSPERMIT_CLASSPATH . '/UI/UsersListTable.php';
-                $users_list_table = new \PP_Users_List_Table();
-                $users_list_table->prepare_items();
+                
                 ?>
                 <div id="users" class="tab-content" style="<?php echo ($active_tab === 'users') ? 'display:block;' : 'display:none;'; ?>">
                     <h3><?php esc_html_e('Users', 'press-permit-core'); ?></h3>
                     <form method="get">
                         <input type="hidden" name="page" value="presspermit-groups" />
-                        <?php $users_list_table->search_box(__('Search Users'), 'user'); ?>
-                        <?php $users_list_table->display(); ?>
+                        <?php
+                        if (isset($groups_list_table)) {
+                            $groups_list_table->search_box(__('Search Users'), 'user'); 
+                            $groups_list_table->display();
+                        }
+                        ?>
                     </form>
                 </div>
                 <script>

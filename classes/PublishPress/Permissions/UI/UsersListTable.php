@@ -1,10 +1,19 @@
 <?php
 if (!class_exists('WP_List_Table')) {
-    require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+    require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
 }
 
 class PP_Users_List_Table extends WP_List_Table {
     public function __construct() {
+        global $_wp_column_headers;
+
+        $screen = get_current_screen();
+
+        // clear out empty entry from initial admin_header.php execution
+        if (isset($_wp_column_headers[$screen->id])) {
+            unset($_wp_column_headers[$screen->id]);
+        }
+
         parent::__construct([
             'singular' => 'User',
             'plural'   => 'Users',
@@ -19,7 +28,7 @@ class PP_Users_List_Table extends WP_List_Table {
           'display_name' => __('Display Name', 'press-permit-core'),
           'roles' => __('Roles', 'press-permit-core'),
       ];
-      error_log('PP_Users_List_Table::get_columns()' . print_r($columns, true));
+
       return $columns;
     }
 
