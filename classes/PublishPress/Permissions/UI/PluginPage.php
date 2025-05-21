@@ -7,6 +7,7 @@ class PluginPage
 {
     private static $instance = null;
     var $table;
+    var $table_user;
 
     public static function instance() {
         if (is_null(self::$instance)) {
@@ -78,7 +79,7 @@ class PluginPage
                 $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'user-group';
                 if ($active_tab === 'users') {
                     require_once(PRESSPERMIT_CLASSPATH . '/UI/UsersListTable.php' );
-                    $this->table = new \PP_Users_List_Table();
+                    $this->table_user = new \PP_Users_List_Table();
                 } else {
                     require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsListTable.php' );
                     $this->table = new GroupsListTable(compact('agent_type', 'group_variant'));

@@ -37,7 +37,7 @@ class Groups
             $action = '';
         }
 
-        if (! in_array($action, ['delete', 'bulkdelete'])) {
+        if (!in_array($action, ['delete', 'bulkdelete'])) {
             if (!$agent_type = PWP::REQUEST_key('agent_type')) {
                 $agent_type = 'pp_group';
             }
@@ -63,15 +63,15 @@ class Groups
                     $groupids = array_map('intval', (array) $_REQUEST['groups']);
                 } else {
                     $groupids = (PWP::is_REQUEST('group')) ? [PWP::REQUEST_int('group')] : [];
-                }
-                ?>
+                } ?>
                 <form action="" method="post" name="updategroups" id="updategroups">
                     <?php wp_nonce_field('pp-bulk-groups'); ?>
 
                     <div class="wrap pressshack-admin-wrapper" id="pp-permissions-wrapper">
                         <?php PluginPage::icon(); ?>
                         <h1><?php esc_html_e('Delete Groups'); ?></h1>
-                        <p><?php echo esc_html(_n('You have specified this group for deletion:', 'You have specified these groups for deletion:', count($groupids), 'press-permit-core')); ?></p>
+                        <p><?php echo esc_html(_n('You have specified this group for deletion:', 'You have specified these groups for deletion:', count($groupids), 'press-permit-core')); ?>
+                        </p>
                         <ul>
                             <?php
                             $go_delete = 0;
@@ -80,7 +80,7 @@ class Groups
                                 $agent_type = 'pp_group';
 
                             foreach ($groupids as $id) {
-                                $id = (int)$id;
+                                $id = (int) $id;
                                 if ($group = $pp_groups->getGroup($id, $agent_type)) {
                                     if (
                                         empty($group->metagroup_type)
@@ -96,10 +96,10 @@ class Groups
                             }
                             ?>
                         </ul>
-                        <?php if ($go_delete) : ?>
+                        <?php if ($go_delete): ?>
                             <input type="hidden" name="action" value="dodelete" />
                             <?php submit_button(esc_html__('Confirm Deletion'), 'secondary'); ?>
-                        <?php else : ?>
+                        <?php else: ?>
                             <p><?php esc_html_e('There are no valid groups selected for deletion.', 'press-permit-core'); ?></p>
                         <?php endif; ?>
                     </div>
@@ -115,11 +115,15 @@ class Groups
                     $groups_list_table = PluginPage::instance()->table;
                     $groups_list_table->prepare_items();
                 }
+                if (!empty(PluginPage::instance()->table_user)) {
+                    $users_list_table = PluginPage::instance()->table_user;
+                    $users_list_table->prepare_items();
+                }
 
                 require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsHelper.php');
                 GroupsHelper::getUrlProperties($url, $referer, $redirect);
 
-                if ($update = PWP::GET_key('update')) :
+                if ($update = PWP::GET_key('update')):
                     switch ($update) {
                         case 'del':
                         case 'del_many':
@@ -137,8 +141,8 @@ class Groups
                 endif;
                 $pp = presspermit();
 
-                if (isset($pp_admin->errors) && is_wp_error($pp_admin->errors)) :
-                ?>
+                if (isset($pp_admin->errors) && is_wp_error($pp_admin->errors)):
+                    ?>
                     <div class="error">
                         <ul>
                             <?php
@@ -147,20 +151,23 @@ class Groups
                             ?>
                         </ul>
                     </div>
-                <?php
+                    <?php
                 endif;
 
                 ?>
                 <ul class="nav-tab-wrapper" style="margin-bottom: -0.1em; border-bottom: unset">
                     <li class="nav-tab<?php echo (empty($_GET['tab']) || $_GET['tab'] === 'user-group') ? ' nav-tab-active' : ''; ?>">
-                        <a href="<?php echo esc_url(add_query_arg('tab', 'user-group')); ?>"><?php esc_html_e('User Group', 'press-permit-core'); ?></a>
+                        <a
+                            href="<?php echo esc_url(add_query_arg('tab', 'user-group')); ?>"><?php esc_html_e('User Group', 'press-permit-core'); ?></a>
                     </li>
                     <li class="nav-tab<?php echo (!empty($_GET['tab']) && $_GET['tab'] === 'users') ? ' nav-tab-active' : ''; ?>">
-                        <a href="<?php echo esc_url(add_query_arg('tab', 'users')); ?>"><?php esc_html_e('Users', 'press-permit-core'); ?></a>
+                        <a
+                            href="<?php echo esc_url(add_query_arg('tab', 'users')); ?>"><?php esc_html_e('Users', 'press-permit-core'); ?></a>
                     </li>
                 </ul>
 
-                <div id="user-group" class="tab-content" style="<?php echo ($active_tab === 'user-group') ? 'display:block;' : 'display:none;'; ?>">
+                <div id="user-group" class="tab-content"
+                    style="<?php echo ($active_tab === 'user-group') ? 'display:block;' : 'display:none;'; ?>">
                     <div class="wrap pressshack-admin-wrapper presspermit-groups" id="pp-permissions-wrapper">
                         <?php PluginPage::icon(); ?>
                         <h1 class="wp-heading-inline">
@@ -177,13 +184,14 @@ class Groups
 
                         $gvar = ($group_variant) ? $group_variant : 'pp_group';
 
-                        if ($pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')) :
+                        if ($pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')):
                             $_url = admin_url('admin.php?page=presspermit-group-new');
                             if ($agent_type) {
                                 $_url = add_query_arg(['agent_type' => $agent_type], $_url);
                             }
-                        ?>
-                            <a href="<?php echo esc_url($_url); ?>" class="page-title-action"><?php esc_html_e('Add New Group', 'press-permit-core'); ?></a>
+                            ?>
+                            <a href="<?php echo esc_url($_url); ?>"
+                                class="page-title-action"><?php esc_html_e('Add New Group', 'press-permit-core'); ?></a>
                             <hr class="wp-header-end" />
                         <?php endif;
 
@@ -200,11 +208,11 @@ class Groups
                         $group_types = [];
 
                         if (current_user_can('pp_administer_content')) {
-                            $group_types['wp_role'] = (object)['labels' => (object)['singular_name' => esc_html__('WordPress Role', 'press-permit-core'), 'plural_name' => esc_html__('WordPress Roles', 'press-permit-core')]];
-                            $group_types['login_state'] = (object)['labels' => (object)['singular_name' => esc_html__('Login State', 'press-permit-core'), 'plural_name' => esc_html__('Login State', 'press-permit-core')]];
+                            $group_types['wp_role'] = (object) ['labels' => (object) ['singular_name' => esc_html__('WordPress Role', 'press-permit-core'), 'plural_name' => esc_html__('WordPress Roles', 'press-permit-core')]];
+                            $group_types['login_state'] = (object) ['labels' => (object) ['singular_name' => esc_html__('Login State', 'press-permit-core'), 'plural_name' => esc_html__('Login State', 'press-permit-core')]];
                         }
 
-                        $group_types['pp_group'] = (object)['labels' => (object)['singular_name' => esc_html__('Custom Group', 'press-permit-core'), 'plural_name' => esc_html__('Custom Groups', 'press-permit-core')]];
+                        $group_types['pp_group'] = (object) ['labels' => (object) ['singular_name' => esc_html__('Custom Group', 'press-permit-core'), 'plural_name' => esc_html__('Custom Groups', 'press-permit-core')]];
 
                         // currently faking WP Role as a "group type", but want it listed before BuddyPress Group
                         $group_types = apply_filters('presspermit_list_group_types', array_merge($group_types, $pp_groups->getGroupTypes([], 'object')));
@@ -281,31 +289,32 @@ class Groups
 
                     </div>
                 </div>
-                <?php
-                
-                ?>
-                <div id="users" class="tab-content" style="<?php echo ($active_tab === 'users') ? 'display:block;' : 'display:none;'; ?>">
-                    <h3><?php esc_html_e('Users', 'press-permit-core'); ?></h3>
-                    <form method="get">
-                        <input type="hidden" name="page" value="presspermit-groups" />
-                        <?php
-                        if (isset($groups_list_table)) {
-                            $groups_list_table->search_box(__('Search Users'), 'user'); 
-                            $groups_list_table->display();
-                        }
-                        ?>
-                    </form>
+
+                <div id="users" class="tab-content"
+                    style="<?php echo ($active_tab === 'users') ? 'display:block;' : 'display:none;'; ?>">
+                    <div class="wrap pressshack-admin-wrapper presspermit-groups" id="pp-permissions-wrapper">
+                        <h3><?php esc_html_e('Users', 'press-permit-core'); ?></h3>
+                        <form method="get">
+                            <input type="hidden" name="page" value="presspermit-groups" />
+                            <?php
+                            if (isset($users_list_table)) {
+                                $users_list_table->search_box(__('Search Users'), 'user');
+                                $users_list_table->display();
+                            }
+                            ?>
+                        </form>
+                    </div>
                 </div>
                 <script>
-                document.querySelectorAll('.nav-tab').forEach(tab => {
-                    tab.onclick = e => {
-                        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('nav-tab-active'));
-                        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-                        tab.classList.add('nav-tab-active');
-                        const target = document.querySelector(tab.querySelector('a').getAttribute('href'));
-                        if (target) target.style.display = 'block';
-                    };
-                });
+                    document.querySelectorAll('.nav-tab').forEach(tab => {
+                        tab.onclick = e => {
+                            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('nav-tab-active'));
+                            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+                            tab.classList.add('nav-tab-active');
+                            const target = document.querySelector(tab.querySelector('a').getAttribute('href'));
+                            if (target) target.style.display = 'block';
+                        };
+                    });
                 </script>
                 <?php
                 break;
