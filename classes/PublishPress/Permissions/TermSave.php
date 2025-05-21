@@ -27,10 +27,8 @@ class TermSave
         if (isset($saved_terms[$taxonomy][$tt_id]))
             return;
 
-        $parent_arg = apply_filters('presspermit_add_term_parent_arg', 'parent', $taxonomy);
-
         // parent settings can affect the auto-assignment of propagating exceptions
-        $set_parent = (is_taxonomy_hierarchical($taxonomy) && !PWP::empty_REQUEST($parent_arg)) ? PWP::REQUEST_int($parent_arg) : 0;
+        $set_parent = (is_taxonomy_hierarchical($taxonomy) && !PWP::empty_REQUEST('parent')) ? PWP::REQUEST_int('parent') : 0;
 
         if ($set_parent < 0)
             $set_parent = 0;
