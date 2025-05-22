@@ -160,7 +160,7 @@ class Groups
                     <h1 class="wp-heading-inline">
                         <?php
                         if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type))
-                            $groups_caption = (defined('PP_GROUPS_CAPTION')) ? PP_GROUPS_CAPTION : __('Permission Groups', 'press-permit-core');
+                            $groups_caption = (defined('PP_GROUPS_CAPTION')) ? PP_GROUPS_CAPTION : __('Permissions', 'press-permit-core');
                         else
                             $groups_caption = $group_type_obj->labels->name;
 
@@ -177,7 +177,7 @@ class Groups
                         }
                         ?>
                         <a href="<?php echo esc_url($_url); ?>"
-                            class="page-title-action"><?php esc_html_e('Add New Group', 'press-permit-core'); ?></a>
+                            class="page-title-action"><?php esc_html_e('Add New', 'press-permit-core'); ?></a>
                         <hr class="wp-header-end" />
                     <?php endif; ?>
                     <ul class="nav-tab-wrapper" style="margin-bottom: -0.1em; border-bottom: unset">
