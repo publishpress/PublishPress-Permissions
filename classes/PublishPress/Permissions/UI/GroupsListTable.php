@@ -168,8 +168,8 @@ class GroupsListTable extends GroupsListTableBase
             'group_name' => esc_html__('Name', 'press-permit-core'),
             'group_type' => esc_html__('Type', 'press-permit-core'),
             'num_users' => _x('Users', 'count', 'press-permit-core'),
-            'roles' => _x('Roles', 'count', 'press-permit-core'),
             'exceptions' => _x('Permissions', 'count', 'press-permit-core'),
+            'roles' => _x('Roles', 'count', 'press-permit-core'),
             'description' => esc_html__('Description', 'press-permit-core'),
         ];
 
