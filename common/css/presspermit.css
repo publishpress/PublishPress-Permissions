@@ -600,11 +600,6 @@ body.permissions_page_presspermit-role-usage table.roles {
 .pp-select2-container .select2-selection__arrow {
   display: none;
 }
-/* Adjust for when dropdown is open */
-.select2-container--open .pp-select2-container:after {
-  transform: translateY(-50%) rotate(180deg);
-  /* Flip icon if needed */
-}
 /* Better mobile responsiveness */
 @media (max-width: 768px) {
   .pp-select2-container .select2-search__field {
