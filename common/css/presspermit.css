@@ -350,10 +350,6 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups .
 body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups:hover .dashicons-before::before {
   background-position: 0 -60px;
 }
-#toplevel_page_presspermit-groups > a.wp-menu-open,
-body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > a {
-  background: #2271b1 !important;
-}
 body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > a > div,
 body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > li:hover,
 body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > li a:focus {
