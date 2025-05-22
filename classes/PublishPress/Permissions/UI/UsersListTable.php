@@ -11,9 +11,11 @@ class UsersListTable extends \WP_List_Table
     public function __construct()
     {
         global $_wp_column_headers;
-        $screen = get_current_screen();
-        if (isset($_wp_column_headers[$screen->id])) {
-            unset($_wp_column_headers[$screen->id]);
+        if (function_exists('get_current_screen')) {
+            $screen = get_current_screen();
+            if ($screen && isset($_wp_column_headers[$screen->id])) {
+                unset($_wp_column_headers[$screen->id]);
+            }
         }
         parent::__construct([
             'singular' => 'User',
@@ -24,15 +26,43 @@ class UsersListTable extends \WP_List_Table
 
     public function get_columns()
     {
+        $column_attr = [
+            'pp_no_groups' => [
+                'title' => esc_html__('Click to show only users who have no group', 'press-permit-core'),
+                'style' => (!PWP::empty_REQUEST('pp_no_group') && !PWP::is_REQUEST('orderby', 'pp_group'))
+                    ? 'style="font-weight:bold; color:black"'
+                    : '',
+            ],
+            'pp_roles' => [
+                'title' => esc_html__('Click to show only users who have extra roles', 'press-permit-core'),
+                'style' => (!PWP::empty_REQUEST('pp_has_roles')) ? 'style="font-weight:bold; color:black"' : '',
+            ],
+            'pp_exceptions' => [
+                'title' => esc_html__('Click to show only users who have specific permissions', 'press-permit-core'),
+                'style' => (!PWP::empty_REQUEST('pp_has_exceptions')) ? 'style="font-weight:bold; color:black"' : '',
+            ],
+        ];
         $columns = [
-            'cb'            => '<input type = "checkbox" />',
-            'user_login'    => __('Username', 'press-permit-core'),
-            'name'          => __('Name', 'press-permit-core'),
-            'user_email'    => __('Email', 'press-permit-core'),
-            'pp_no_groups'  => '<a href     = "?pp_no_group = 1" title = "Click to show only users who have no group">(x)</a>',
-            'pp_groups'     => __('Groups', 'press-permit-core'),
-            'pp_roles'      => __('Roles', 'press-permit-core'),
-            'pp_exceptions' => __('Specific Permissions', 'press-permit-core'),
+            'cb' => '<input type = "checkbox" />',
+            'user_login' => __('Username', 'press-permit-core'),
+            'name' => __('Name', 'press-permit-core'),
+            'user_email' => __('Email', 'press-permit-core'),
+            'pp_no_groups' => sprintf(
+                esc_html__('%1$s(x)%2$s', 'press-permit-core'),
+                '<a href="' . esc_url(add_query_arg('pp_no_group', 1)) . '" title="' . esc_attr($column_attr['pp_no_groups']['title']) . '" ' . $column_attr['pp_no_groups']['style'] . '>',
+                '</a>'
+            ),
+            'pp_groups' => __('Groups', 'press-permit-core'),
+            'pp_roles' => sprintf(
+                esc_html__('Roles %1$s*%2$s', 'press-permit-core'),
+                '<a href="' . esc_url(add_query_arg('pp_has_roles', 1)) . '" title="' . esc_attr($column_attr['pp_roles']['title']) . '" ' . $column_attr['pp_roles']['style'] . '>',
+                '</a>'
+            ),
+            'pp_exceptions' => sprintf(
+                esc_html__('Specific Permissions %1$s*%2$s', 'press-permit-core'),
+                '<a href="' . esc_url(add_query_arg('pp_has_exceptions', 1)) . '" title="' . esc_attr($column_attr['pp_exceptions']['title']) . '" ' . $column_attr['pp_exceptions']['style'] . '>',
+                '</a>'
+            ),
         ];
         return $columns;
     }
@@ -42,9 +72,9 @@ class UsersListTable extends \WP_List_Table
         return [
             'user_login' => ['user_login', false],
             'user_email' => ['user_email', false],
-            'name'       => ['display_name', false],
-            'posts'      => ['posts', false],
-            'pp_groups'  => ['pp_groups', false],
+            'name' => ['display_name', false],
+            'posts' => ['posts', false],
+            'pp_groups' => ['pp_groups', false],
         ];
     }
 
@@ -84,7 +114,9 @@ class UsersListTable extends \WP_List_Table
         $this->items = $users_query->get_results();
 
         // Pre-fetch group memberships, roles, and permissions for all users in this page
-        $user_ids = array_map(function($u) { return $u->ID; }, $this->items);
+        $user_ids = array_map(function ($u) {
+            return $u->ID;
+        }, $this->items);
         $this->user_groups = $this->get_users_groups($user_ids);
         $this->user_exceptions = $this->get_users_exceptions($user_ids);
 
@@ -104,15 +136,15 @@ class UsersListTable extends \WP_List_Table
     // Custom column: (x) no groups
     public function column_pp_no_groups($item)
     {
-        $groups = isset($this->user_groups[$item->ID]) ? $this->user_groups[$item->ID] : [];
-        return empty($groups) ? '<span class="dashicons dashicons-no"></span>' : '';
+        return '';
     }
 
     // Custom column: Groups
     public function column_pp_groups($item)
     {
         $groups = isset($this->user_groups[$item->ID]) ? $this->user_groups[$item->ID] : [];
-        if (empty($groups)) return '';
+        if (empty($groups))
+            return '';
         $out = [];
         foreach ($groups as $group) {
             $url = add_query_arg([
@@ -129,7 +161,8 @@ class UsersListTable extends \WP_List_Table
     public function column_pp_roles($item)
     {
         $roles = $item->roles;
-        if (empty($roles)) return '';
+        if (empty($roles))
+            return '';
         $url = add_query_arg([
             'page' => 'presspermit-edit-permissions',
             'action' => 'edit',
@@ -147,7 +180,8 @@ class UsersListTable extends \WP_List_Table
     public function column_pp_exceptions($item)
     {
         $exceptions = isset($this->user_exceptions[$item->ID]) ? $this->user_exceptions[$item->ID] : [];
-        if (empty($exceptions)) return '';
+        if (empty($exceptions))
+            return '';
         $url = add_query_arg([
             'page' => 'presspermit-edit-permissions',
             'action' => 'edit',
@@ -205,7 +239,8 @@ class UsersListTable extends \WP_List_Table
     {
         global $wpdb;
         $counts = [];
-        if (empty($user_ids)) return $counts;
+        if (empty($user_ids))
+            return $counts;
         $user_ids_sql = implode(',', array_map('intval', $user_ids));
         $results = $wpdb->get_results("SELECT post_author, COUNT(*) as count FROM $wpdb->posts WHERE post_author IN ($user_ids_sql) AND post_status = 'publish' GROUP BY post_author");
         foreach ($results as $row) {

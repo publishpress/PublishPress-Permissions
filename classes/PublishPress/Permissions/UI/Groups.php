@@ -278,18 +278,6 @@ class Groups
                             </form>
                         </div>
                     </div>
-                    <script>
-                        document.querySelectorAll('.nav-tab').forEach(tab => {
-                            tab.onclick = e => {
-                                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('nav-tab-active'));
-                                document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-                                tab.classList.add('nav-tab-active');
-                                const target = document.querySelector(tab.querySelector('a').getAttribute('href'));
-                                if (target) target.style.display = 'block';
-                            };
-                        });
-                    </script>
-                    <br class="clear" />
                     <?php
                     if (
                         defined('BP_VERSION') && !$pp->moduleActive('compatibility')
