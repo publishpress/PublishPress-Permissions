@@ -97,7 +97,7 @@ class Admin
         if (!isset($operations)) {
             $op_captions = apply_filters(
                 'presspermit_operation_captions',
-                ['read' => (object)['label' => esc_html__('Read'), 'noun_label' => esc_html__('Reading', 'press-permit-core')]]
+                ['read' => (object)['label' => esc_html__('View'), 'noun_label' => esc_html__('Viewing', 'press-permit-core')]]
             );
 
             $operations = Arr::subset($op_captions, presspermit()->getOperations());
