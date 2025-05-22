@@ -1138,11 +1138,11 @@ class AgentPermissionsUI
                                                 
                                                 } elseif ('include' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('Limitation: The user\'s role capabilities for %1$s %2$s apply only within %3$s and other specified %4$s.', 'press-permit-core'),
+                                                        esc_html__('If the user has %1$s access (%2$s) to %3$s type, it will be LIMITED to only %3$s and other specified %4$s.', 'press-permit-core'),
                                                         $for_type_obj->labels->singular_name,
                                                         $op_label, 
-                                                        $via_caption,
-                                                        $via_type_obj->labels->name
+                                                        strtolower($via_caption),
+                                                        strtolower($via_type_obj->labels->name)
                                                     );
                                                 }
                                             } else {
@@ -1162,11 +1162,11 @@ class AgentPermissionsUI
                                                 
                                                 } elseif ('include' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('Limitation: The user\'s role capabilities for %1$s %2$s apply only for %3$s, and other specified %4$s.', 'press-permit-core'),
+                                                        esc_html__('If the user has %1$s access (%2$s) to %3$s type, it will be LIMITED to only %3$s and other specified %4$s.', 'press-permit-core'),
                                                         $for_type_obj->labels->singular_name,
                                                         $op_label, 
-                                                        $via_caption,
-                                                        $for_type_obj->labels->name
+                                                        strtolower($via_caption),
+                                                        strtolower($via_type_obj->labels->name)
                                                     );
                                                 }
                                             }
