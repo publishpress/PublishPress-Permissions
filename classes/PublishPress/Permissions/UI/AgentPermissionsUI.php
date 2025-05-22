@@ -1519,6 +1519,15 @@ class AgentPermissionsUI
                                             esc_html__('Show All', 'press-permit-core')
                                         )
                                         . '</div>';
+                                } else {
+                                    $back_to_normal_url = remove_query_arg('show_propagated', esc_url_raw($_SERVER['REQUEST_URI']));
+                                    echo '<div class="notes">'
+                                        . sprintf(
+                                            ' <a href="%s" class="btn btn-link">%s</a>',
+                                            esc_url($back_to_normal_url),
+                                            esc_html__('Back to Normal', 'press-permit-core')
+                                        )
+                                        . '</div>';
                                 }
                             } else {
                                 if (PWP::empty_REQUEST('show_propagated')) {
@@ -1533,12 +1542,17 @@ class AgentPermissionsUI
                                         esc_url($show_all_url),
                                         esc_html__('Show All', 'press-permit-core')
                                     );
+                                } else {
+                                    $back_to_normal_url = remove_query_arg('show_propagated', esc_url_raw($_SERVER['REQUEST_URI']));
+                                    echo '<div class="notes">'
+                                        . sprintf(
+                                            ' <a href="%s" class="btn btn-link">%s</a>',
+                                            esc_url($back_to_normal_url),
+                                            esc_html__('Back to Normal', 'press-permit-core')
+                                        );
                                 }
 
                                 if (defined('WP_DEBUG') || defined('PRESSPERMIT_DEBUG')) {
-                                    if (!PWP::empty_REQUEST('show_propagated')) {
-                                        echo '<div class="notes">';
-                                    }
 
                                     $fix_child_url = add_query_arg('pp_fix_child_exceptions', '1', esc_url_raw($_SERVER['REQUEST_URI']));
 
