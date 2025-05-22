@@ -65,7 +65,7 @@ class AgentExceptionsAjax
                     exit;
                 }
 
-                $ops = (('post' == $for_source_name) && ('attachment' != $for_type)) ? ['read' => esc_html__('Read', 'press-permit-core')] : [];
+                $ops = (('post' == $for_source_name) && ('attachment' != $for_type)) ? ['read' => esc_html__('View', 'press-permit-core')] : [];
                 $ops = apply_filters('presspermit_exception_operations', $ops, $for_source_name, $for_type);
 
                 if ('pp_group' == $agent_type) {
