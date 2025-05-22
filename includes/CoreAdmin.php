@@ -86,8 +86,8 @@ class CoreAdmin
 
         add_submenu_page(
             $pp_options_menu,
-            esc_html__('Sync Posts', 'press-permit-core'),
-            esc_html__('Sync Posts', 'press-permit-core'),
+            esc_html__('User Pages', 'press-permit-core'),
+            esc_html__('User Pages', 'press-permit-core'),
             'read',
             'presspermit-sync',
             $handler
