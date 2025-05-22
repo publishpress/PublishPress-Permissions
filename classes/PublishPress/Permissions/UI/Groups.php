@@ -160,7 +160,7 @@ class Groups
                     <h1 class="wp-heading-inline">
                         <?php
                         if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type))
-                            $groups_caption = (defined('PP_GROUPS_CAPTION')) ? PP_GROUPS_CAPTION : __('Permission Groups', 'press-permit-core');
+                            $groups_caption = (defined('PP_GROUPS_CAPTION')) ? PP_GROUPS_CAPTION : __('Permissions', 'press-permit-core');
                         else
                             $groups_caption = $group_type_obj->labels->name;
 
@@ -184,7 +184,7 @@ class Groups
                         <li
                             class="nav-tab<?php echo (empty($_GET['tab']) || $_GET['tab'] === 'user-group') ? ' nav-tab-active' : ''; ?>">
                             <a
-                                href="<?php echo esc_url(add_query_arg('tab', 'user-group')); ?>"><?php esc_html_e('User Group', 'press-permit-core'); ?></a>
+                                href="<?php echo esc_url(add_query_arg('tab', 'user-group')); ?>"><?php esc_html_e('User Groups', 'press-permit-core'); ?></a>
                         </li>
                         <li class="nav-tab<?php echo (!empty($_GET['tab']) && $_GET['tab'] === 'users') ? ' nav-tab-active' : ''; ?>">
                             <a
