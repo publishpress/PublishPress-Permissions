@@ -135,11 +135,11 @@ foreach ($consts as $k => $v) $this->constants[$k] = (object)['descript' => $v, 
 
 $type = 'permission-groups-ui';
 $consts = [
-    'PP_GROUPS_CAPTION' => esc_html__("Customize 'Permission' caption", 'press-permit-core-hints'),
-    'GROUPS_CAPTION_RS' => esc_html__("Customize 'Permission' caption on user profile", 'press-permit-core-hints'),
+    'PP_GROUPS_CAPTION' => esc_html__("Customize Permissions screen title for Groups", 'press-permit-core-hints'),
+    'GROUPS_CAPTION_RS' => esc_html__("Customize Permission Groups caption on user profile", 'press-permit-core-hints'),
     'PRESSPERMIT_ADD_USER_SINGLE_GROUP_SELECT' => esc_html__("Only one group is selectable on Add User screen", 'press-permit-core-hints'),
     'PRESSPERMIT_EDIT_USER_SINGLE_GROUP_SELECT' => esc_html__("Only one group is selectable on Edit User screen", 'press-permit-core-hints'),
-    'PP_GROUPS_HINT' => esc_html__("Customize description under 'Permission' caption ", 'press-permit-core-hints'),
+    'PP_GROUPS_HINT' => esc_html__("Display a custom hint on Permissions > User Groups", 'press-permit-core-hints'),
     'PP_ITEM_MENU_PER_PAGE' => esc_html__("Max number of non-hierarchical posts / terms to display at one time (per page)", 'press-permit-core-hints'),
     'PP_ITEM_MENU_HIERARCHICAL_PER_PAGE' => esc_html__("Max number of hierarchical posts / terms to display at one time (per page)", 'press-permit-core-hints'),
     'PP_ITEM_MENU_FORCE_DISPLAY_DEPTH' => esc_html__("Disable auto-determination of how many levels of page tree to make visble by default. Instead, use specified value.", 'press-permit-core-hints'),
