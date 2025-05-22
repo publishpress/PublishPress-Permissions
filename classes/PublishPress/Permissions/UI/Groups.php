@@ -36,17 +36,24 @@ class Groups
         } else {
             $action = '';
         }
+        
+        $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'user-group';
 
-        if (!in_array($action, ['delete', 'bulkdelete'])) {
-            if (!$agent_type = PWP::REQUEST_key('agent_type')) {
-                $agent_type = 'pp_group';
-            }
+        if ('users' == $active_tab) {
+            $agent_type = 'user';
+            $group_variant = '';
         } else {
-            $agent_type = '';
-        }
+            if (!in_array($action, ['delete', 'bulkdelete'])) {
+                if (!$agent_type = PWP::REQUEST_key('agent_type')) {
+                    $agent_type = 'pp_group';
+                }
+            } else {
+                $agent_type = '';
+            }
 
-        $agent_type = PluginPage::getAgentType($agent_type);
-        $group_variant = PluginPage::getGroupVariant();
+            $agent_type = PluginPage::getAgentType($agent_type);
+            $group_variant = PluginPage::getGroupVariant();
+        }
 
         switch ($action) {
 
@@ -110,7 +117,7 @@ class Groups
 
             default:
                 $url = $referer = $redirect = $update = '';
-                $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'user-group';
+                
                 if (!empty(PluginPage::instance()->table)) {
                     $groups_list_table = PluginPage::instance()->table;
                     $groups_list_table->prepare_items();
@@ -160,7 +167,7 @@ class Groups
                     <h1 class="wp-heading-inline">
                         <?php
                         if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type))
-                            $groups_caption = (defined('PP_GROUPS_CAPTION')) ? PP_GROUPS_CAPTION : __('Permission Groups', 'press-permit-core');
+                            $groups_caption = (defined('PP_GROUPS_CAPTION')) ? PP_GROUPS_CAPTION : __('Permissions', 'press-permit-core');
                         else
                             $groups_caption = $group_type_obj->labels->name;
 
@@ -177,7 +184,7 @@ class Groups
                         }
                         ?>
                         <a href="<?php echo esc_url($_url); ?>"
-                            class="page-title-action"><?php esc_html_e('Add New Group', 'press-permit-core'); ?></a>
+                            class="page-title-action"><?php esc_html_e('Add New', 'press-permit-core'); ?></a>
                         <hr class="wp-header-end" />
                     <?php endif; ?>
                     <ul class="nav-tab-wrapper" style="margin-bottom: -0.1em; border-bottom: unset">
