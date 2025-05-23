@@ -1103,70 +1103,70 @@ class AgentPermissionsUI
                                             if (!$assign_child_only && !$assign_both) {
                                                 $via_caption = sprintf(
                                                     esc_html__('this %1$s', 'press-permit-core'),
-                                                    $via_type_obj->labels->singular_name
+                                                    strtolower($via_type_obj->labels->singular_name)
                                                 );
                                             } elseif ($assign_child_only) {
                                                 $via_caption = sprintf(
                                                     esc_html__('sub-%1$s of this %2$s', 'press-permit-core'),
-                                                    $via_type_obj->labels->name,
-                                                    $via_type_obj->labels->singular_name
+                                                    strtolower($via_type_obj->labels->name),
+                                                    strtolower($via_type_obj->labels->singular_name)
                                                 );
                                             } elseif ($assign_both) {
                                                 $via_caption = sprintf(
                                                     esc_html__('this %1$s and its sub-%2$s', 'press-permit-core'),
-                                                    $via_type_obj->labels->singular_name,
-                                                    $via_type_obj->labels->name
+                                                    strtolower($via_type_obj->labels->singular_name),
+                                                    strtolower($via_type_obj->labels->name)
                                                 );
                                             }
 
                                             if ('term' == $via_src) {
                                                 if ('additional' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('%1$s access (%2$s) is ENABLED within %3$s, regardless of role capabilities.', 'press-permit-core'), 
-                                                        $for_type_obj->labels->singular_name, 
-                                                        $op_label, 
+                                                        esc_html__('%1$s access for %2$s is ENABLED within %3$s, regardless of role capabilities.', 'press-permit-core'), 
+                                                        $op_label,
+                                                        $for_type_obj->labels->name, 
                                                         $via_caption
                                                     );
                                                 
                                                 } elseif ('exclude' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('%1$s access (%2$s) is BLOCKED within %3$s, unless enabled by another Permission.', 'press-permit-core'),
-                                                        $for_type_obj->labels->singular_name,
-                                                        $op_label, 
+                                                        esc_html__('%1$s access for %2$s is BLOCKED within %3$s, unless enabled by another Permission.', 'press-permit-core'),
+                                                        $op_label,
+                                                        $for_type_obj->labels->name,
                                                         $via_caption
                                                     );
                                                 
                                                 } elseif ('include' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('If the user has %1$s access (%2$s) to %3$s type, it will be LIMITED to only %3$s and other specified %4$s.', 'press-permit-core'),
-                                                        $for_type_obj->labels->singular_name,
+                                                        esc_html__('Any role-based %1$s access for %2$s is LIMITED. It applies only within %3$s, along with other specified %4$s.', 'press-permit-core'),
                                                         $op_label, 
-                                                        strtolower($via_caption),
+                                                        $for_type_obj->labels->name,
+                                                        $via_caption,
                                                         strtolower($via_type_obj->labels->name)
                                                     );
                                                 }
                                             } else {
                                                 if ('additional' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('%1$s access to %2$s is ENABLED, regardless of role capabilities.', 'press-permit-core'), 
+                                                        esc_html__('%1$s access for %2$s is ENABLED, regardless of role capabilities.', 'press-permit-core'), 
                                                         $op_label, 
                                                         $via_caption
                                                     );
                                                 
                                                 } elseif ('exclude' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('%1$s access to %2$s is BLOCKED, unless enabled by another Permission.', 'press-permit-core'),
+                                                        esc_html__('%1$s access for %2$s is BLOCKED, unless enabled by another Permission.', 'press-permit-core'),
                                                         $op_label, 
                                                         $via_caption
                                                     );
                                                 
                                                 } elseif ('include' == $mod_type) {
                                                     $tooltip_text = sprintf(
-                                                        esc_html__('If the user has %1$s access (%2$s) to %3$s type, it will be LIMITED to only %3$s and other specified %4$s.', 'press-permit-core'),
-                                                        $for_type_obj->labels->singular_name,
+                                                        esc_html__('Any role-based %1$s access for %2$s is LIMITED. It applies to only %3$s, along with other specified %4$s.', 'press-permit-core'),
                                                         $op_label, 
-                                                        strtolower($via_caption),
-                                                        strtolower($via_type_obj->labels->name)
+                                                        $for_type_obj->labels->name,
+                                                        $via_caption,
+                                                        strtolower($for_type_obj->labels->name)
                                                     );
                                                 }
                                             }
