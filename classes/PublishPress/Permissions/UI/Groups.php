@@ -279,7 +279,6 @@ class Groups
                         <div class="presspermit-groups">
                             <div class="pp-hint pp-no-hide"></div>
                             <ul class="subsubsub">
-                                <li class="pp-gray">Group Type:</li>
                                 <li>
                                     <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users')); ?>"
                                         class="<?php echo empty($_GET['pp_has_perms']) ? 'current' : ''; ?>">
