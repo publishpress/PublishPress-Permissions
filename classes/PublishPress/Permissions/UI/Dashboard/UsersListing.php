@@ -326,14 +326,14 @@ class UsersListing
         }
 
         if (!PWP::empty_REQUEST('pp_has_perms')) {
-            $query_obj->query_where .= " AND ID IN ( SELECT agent_id FROM $wpdb->ppc_exceptions AS e"
+            $query_obj->query_where .= " AND ( ID IN ( SELECT agent_id FROM $wpdb->ppc_exceptions AS e"
                 . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
                 . " WHERE e.agent_type = 'user' )"
                 . " OR ID IN ( SELECT user_id FROM $wpdb->pp_group_members AS ug"
                 . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.agent_id = ug.group_id AND e.agent_type = 'pp_group' )"
                 . " OR ID IN ( SELECT agent_id FROM $wpdb->ppc_roles WHERE agent_type = 'user' )"
                 . " OR ID IN ( SELECT user_id FROM $wpdb->pp_group_members AS ug"
-                . " INNER JOIN $wpdb->ppc_roles AS r ON r.agent_id = ug.group_id AND r.agent_type = 'pp_group' )";
+                . " INNER JOIN $wpdb->ppc_roles AS r ON r.agent_id = ug.group_id AND r.agent_type = 'pp_group' ) )";
         }
 
         if ($pp_group = PWP::REQUEST_int('pp_group')) {

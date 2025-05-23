@@ -261,6 +261,7 @@ class Groups
 
                             <form action="<?php echo esc_url($url); ?>" method="get">
                                 <input type="hidden" name="page" value="presspermit-groups" />
+                                <input type="hidden" name="tab" value="user-group" />
                                 <input type="hidden" name="agent_type" value="<?php echo esc_attr($agent_type); ?>" />
                                 <input type="hidden" name="group_variant" value="<?php echo esc_attr($group_variant); ?>" />
                                 <?php
@@ -294,7 +295,11 @@ class Groups
                             </ul>
                             <form method="get">
                                 <input type="hidden" name="page" value="presspermit-groups" />
+                                <input type="hidden" name="tab" value="users" />
                                 <?php
+                                if (!empty(PWP::REQUEST_key('pp_has_perms'))) {
+                                    echo '<input type="hidden" name="pp_has_perms" value="1" />';
+                                }
                                 if (isset($users_list_table)) {
                                     $users_list_table->search_box(__('Search Users'), 'user');
                                     $users_list_table->display();
