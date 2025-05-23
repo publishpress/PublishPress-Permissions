@@ -22,6 +22,10 @@ class UsersListTable extends \WP_List_Table
             'plural' => 'Users',
             'ajax' => false,
         ]);
+
+        // Add custom query filter for users
+        require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/UsersListing.php');
+        add_filter('pre_user_query', ['\PublishPress\Permissions\UI\Dashboard\UsersListing', 'fltUserQueryExceptions']);
     }
 
     public function get_columns()
