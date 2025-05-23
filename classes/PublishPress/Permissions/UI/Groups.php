@@ -177,14 +177,14 @@ class Groups
 
                     <?php
                     $gvar = ($group_variant) ? $group_variant : 'pp_group';
-                    if ($pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')):
+                    if (('user' != $agent_type) && $pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')):
                         $_url = admin_url('admin.php?page=presspermit-group-new');
                         if ($agent_type) {
                             $_url = add_query_arg(['agent_type' => $agent_type], $_url);
                         }
                         ?>
                         <a href="<?php echo esc_url($_url); ?>"
-                            class="page-title-action"><?php esc_html_e('Add New', 'press-permit-core'); ?></a>
+                            class="page-title-action"><?php esc_html_e('Add New Group', 'press-permit-core'); ?></a>
                         <hr class="wp-header-end" />
                     <?php endif; ?>
                     <ul class="nav-tab-wrapper" style="margin-bottom: -0.1em; border-bottom: unset">

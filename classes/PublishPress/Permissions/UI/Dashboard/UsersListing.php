@@ -60,7 +60,7 @@ class UsersListing
             'secondary',
             'pp-add-group-members' . $sfx,
             false,
-            ['title' => esc_html__('Add selected users to Permissions', 'press-permit-core')]
+            ['title' => esc_html__('Add selected users to Permission Group', 'press-permit-core')]
         );
         ?>
 
@@ -70,7 +70,7 @@ class UsersListing
             'secondary',
             'pp-remove-group-members' . $sfx,
             false,
-            ['title' => esc_html__('Remove selected users from Permissions', 'press-permit-core')]
+            ['title' => esc_html__('Remove selected users from Permission Group', 'press-permit-core')]
         );
 
         wp_nonce_field( 'pp-bulk-assign-groups', 'pp-bulk-groups-nonce' );
