@@ -260,7 +260,7 @@ class UsersListing
                 if (count($role_titles) > $display_limit) {
                     $excess = count($role_titles) - $display_limit;
                     $role_titles = array_slice($role_titles, 0, $display_limit);
-                    $role_titles[] = sprintf(__('%s more', 'press-permit-core'), (int) $excess);
+                    $role_titles[] = str_replace(' ', '&nbsp;', sprintf(__('%s more', 'press-permit-core'), (int) $excess));
                 }
 
                 if ($do_edit_link = current_user_can('pp_assign_roles') && (is_multisite() || current_user_can('edit_user', $id))) {
