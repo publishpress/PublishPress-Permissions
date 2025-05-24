@@ -680,7 +680,9 @@ class AgentPermissionsUI
                             echo '<thead>';
                             echo '<tr>';
                             echo '<th class="checkbox-column">';
-                            echo '<input id="cb-select-all-' . esc_attr($source_name . '_' . $object_type) . '" type="checkbox" />';
+                            if (!$read_only) {
+                                echo '<input id="cb-select-all-' . esc_attr($source_name . '_' . $object_type) . '" type="checkbox" />';
+                            }
                             echo '</th>';
                             echo '<th class="role-column">' . esc_html__('Role', 'press-permit-core') . '</th>';
                             echo '<th class="status-column">' . esc_html__('Status', 'press-permit-core') . '</th>';
@@ -708,15 +710,17 @@ class AgentPermissionsUI
                                 } else {
                                     $ass_id = $roles[$role_name];
                                     $cb_id = 'pp_edit_role_' . str_replace(',', '_', $ass_id);
+                                    echo '<input id="' . esc_attr($cb_id) . '" type="checkbox" name="pp_edit_role[]" value="' . esc_attr($ass_id) . '">';
                                 }
-                                echo '<input id="' . esc_attr($cb_id) . '" type="checkbox" name="pp_edit_role[]" value="' . esc_attr($ass_id) . '">';
                                 echo '</td>';
                                 echo '<td>';
                                 $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true, 'status_suffix' => false]);
                                 echo '</td>';
                                 echo '<td>' . esc_html(self::getRoleStatusLabel($role_name)) . ' </td>';
                                 echo '<td class="edit-column">';
-                                echo '<a href="javascript:void(0)" class="pp_clear" onclick="event.stopPropagation();">' . esc_html__('Delete') . '</a>';
+                                if (!$read_only) {
+                                    echo '<a href="javascript:void(0)" class="pp_clear" onclick="event.stopPropagation();">' . esc_html__('Delete') . '</a>';
+                                }
                                 echo '</td>';
                                 echo '</tr>';
                                 $item_count++;
