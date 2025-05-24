@@ -38,11 +38,11 @@ class UsersListTable extends \WP_List_Table
                     : '',
             ],
             'pp_roles' => [
-                'title' => esc_html__('Click to show only users who have extra roles', 'press-permit-core'),
+                'title' => esc_html__('Click to show only users who have Extra Roles (by group or directly)', 'press-permit-core'),
                 'style' => (!PWP::empty_REQUEST('pp_has_roles')) ? 'style="font-weight:bold; color:black"' : '',
             ],
             'pp_exceptions' => [
-                'title' => esc_html__('Click to show only users who have specific permissions', 'press-permit-core'),
+                'title' => esc_html__('Click to show only users who have Specific Permissions (by group or directly)', 'press-permit-core'),
                 'style' => (!PWP::empty_REQUEST('pp_has_exceptions')) ? 'style="font-weight:bold; color:black"' : '',
             ],
         ];
@@ -57,14 +57,14 @@ class UsersListTable extends \WP_List_Table
                 '</a>'
             ),
             'pp_groups' => __('Groups', 'press-permit-core'),
-            'pp_roles' => sprintf(
-                esc_html__('Roles %1$s*%2$s', 'press-permit-core'),
-                '<a href="' . esc_url(add_query_arg('pp_has_roles', 1)) . '" title="' . esc_attr($column_attr['pp_roles']['title']) . '" ' . $column_attr['pp_roles']['style'] . '>',
-                '</a>'
-            ),
             'pp_exceptions' => sprintf(
                 esc_html__('Specific Permissions %1$s*%2$s', 'press-permit-core'),
-                '<a href="' . esc_url(add_query_arg('pp_has_exceptions', 1)) . '" title="' . esc_attr($column_attr['pp_exceptions']['title']) . '" ' . $column_attr['pp_exceptions']['style'] . '>',
+                '<a href="' . esc_url(add_query_arg('pp_has_exceptions', intval(empty($_REQUEST['pp_has_exceptions'])))) . '" title="' . esc_attr($column_attr['pp_exceptions']['title']) . '" ' . $column_attr['pp_exceptions']['style'] . '>',
+                '</a>'
+            ),
+            'pp_roles' => sprintf(
+                esc_html__('Extra Roles %1$s*%2$s', 'press-permit-core'),
+                '<a href="' . esc_url(add_query_arg('pp_has_roles', intval(empty($_REQUEST['pp_has_roles'])))) . '" title="' . esc_attr($column_attr['pp_roles']['title']) . '" ' . $column_attr['pp_roles']['style'] . '>',
                 '</a>'
             ),
         ];

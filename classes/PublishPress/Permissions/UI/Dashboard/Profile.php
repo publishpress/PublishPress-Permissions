@@ -34,7 +34,7 @@ class Profile
             ]
         );
 
-        $caption = sprintf(esc_html__('Specific Permissions %1$s(for user)%2$s', 'press-permit-core'), '', '');
+        $caption = sprintf(esc_html__('Specific Permissions %1$s(for this user)%2$s', 'press-permit-core'), '', '');
         $new_permissions_link = true;
         $maybe_display_note = !$has_user_roles;
         $display_limit = 12;
@@ -372,7 +372,7 @@ class Profile
                     <p>
                         <?php
                         printf(
-                            esc_html__('Extra roles and specific permissions assigned to a user\'s primary role or other Permission Groups are usually the cleanest way to customize permissions.  You can also %1$scustomize this user directly%2$s.', 'press-permit-core'),
+                            esc_html__('Permissions assigned to a user\'s role or custom group are usually the cleanest way to customize access. You can also %1$scustomize this user directly%2$s.', 'press-permit-core'),
                             "<a href='" . esc_url($edit_url) . "'>",
                             '</a>'
                         );

@@ -107,7 +107,7 @@ class UsersListing
             unset($defaults['bbp_user_role']);
         }
 
-        $title = esc_html__('Click to show only users who have specific permissions', 'press-permit-core');
+        $title = esc_html__('Click to show only users who have Specific Permissions assigned directly', 'press-permit-core');
         $style = (!PWP::empty_REQUEST('pp_has_exceptions')) ? 'style="font-weight:bold; color:black"' : '';
 
         $defaults['pp_exceptions'] = sprintf(

@@ -543,13 +543,13 @@ class SettingsTabAdvanced
                         <ul class="pp-notes">
                             <li><?php printf(esc_html__('%1$sUsers who have Extra Roles assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_roles=1") . "'>", '</a>'); ?></li>
                             <li><?php printf(esc_html__('%1$sUsers who have Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_exceptions=1") . "'>", '</a>'); ?></li>
-                            <li><?php printf(esc_html__('%1$sUsers who have Extra Roles or Specific Permissions directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_perms=1") . "'>", '</a>'); ?></li>
+                            <li><?php printf(esc_html__('%1$sUsers who have Extra Roles or Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_perms=1") . "'>", '</a>'); ?></li>
                         </ul>
                         <br />
                         <ul class="pp-notes">
-                            <li><?php printf(esc_html__('%1$sUsers who have Extra Roles (directly or via group)%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_has_roles=1") . "'>", '</a>'); ?></li>
-                            <li><?php printf(esc_html__('%1$sUsers who have Specific Permissions (directly or via group)%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_has_exceptions=1") . "'>", '</a>'); ?></li>
-                            <li><?php printf(esc_html__('%1$sUsers who have Extra Roles or Specific Permissions (directly or via group)%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_has_perms=1") . "'>", '</a>'); ?></li>
+                            <li><?php printf(esc_html__('%1$sUsers who have Extra Roles (by group or directly)%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_has_roles=1") . "'>", '</a>'); ?></li>
+                            <li><?php printf(esc_html__('%1$sUsers who have Specific Permissions (by group or directly)%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_has_exceptions=1") . "'>", '</a>'); ?></li>
+                            <li><?php printf(esc_html__('%1$sUsers who have Extra Roles or Specific Permissions (by group or directly)%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_has_perms=1") . "'>", '</a>'); ?></li>
                         </ul>
                     </div>
 

@@ -575,7 +575,7 @@ class AgentPermissionsUI
 
                 if (!$caption) {
                     $caption = ('user' == $agent_type)
-                        ? sprintf(esc_html__('Extra Roles %1$s(for user)%2$s', 'press-permit-core'), '', '')
+                        ? sprintf(esc_html__('Extra Roles %1$s(for this user)%2$s', 'press-permit-core'), '', '')
                         : esc_html__('Extra Roles', 'press-permit-core');
                 }
 

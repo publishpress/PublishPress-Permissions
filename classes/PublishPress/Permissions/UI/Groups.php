@@ -288,7 +288,7 @@ class Groups
                                 <li>
                                     <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_has_perms=1')); ?>"
                                         class="<?php echo !empty($_GET['pp_has_perms']) ? 'current' : ''; ?>">
-                                        <?php esc_html_e('User Permissions', 'press-permit-core'); ?>
+                                        <?php esc_html_e('Users with Permissions', 'press-permit-core'); ?>
                                     </a>
                                 </li>
                             </ul>
