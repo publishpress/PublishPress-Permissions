@@ -307,7 +307,7 @@ class UsersListing
 
             $query_obj->query_orderby = "ORDER BY g.group_name $order, $wpdb->users.display_name";                 // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__users
 
-        } elseif (PWP::is_REQUEST('pp_no_group')) {
+        } elseif (!PWP::empty_REQUEST('pp_no_group')) {
             $query_obj->query_where .= " AND $wpdb->users.ID NOT IN ( SELECT gm.user_id FROM $wpdb->pp_group_members AS gm"  // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__users
                 . " INNER JOIN $wpdb->pp_groups as g ON gm.group_id = g.ID AND g.metagroup_id='' )";
         }

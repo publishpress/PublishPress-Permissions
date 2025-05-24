@@ -54,7 +54,7 @@ class UsersListTable extends \WP_List_Table
             'user_email' => __('Email', 'press-permit-core'),
             'pp_no_groups' => sprintf(
                 esc_html__('%1$s(x)%2$s', 'press-permit-core'),
-                '<a href="' . esc_url(add_query_arg('pp_no_group', 1)) . '" title="' . esc_attr($column_attr['pp_no_groups']['title']) . '" ' . $column_attr['pp_no_groups']['style'] . '>',
+                '<a href="' . esc_url(add_query_arg('pp_no_group', intval(empty($_REQUEST['pp_no_group'])))) . '" title="' . esc_attr($column_attr['pp_no_groups']['title']) . '" ' . $column_attr['pp_no_groups']['style'] . '>',
                 '</a>'
             ),
             'pp_groups' => __('Groups', 'press-permit-core'),
