@@ -664,8 +664,20 @@ class AgentPermissionsUI
                             }
                         }
 
+                        if (!empty($type_roles[$source_name][$object_type])) {
+                            foreach (array_keys($type_roles[$source_name][$object_type]) as $role_name) {
+                                $arr_role_name = explode(':', $role_name);
+
+                                if (!empty($arr_role_name[3]) && ('post_status' == $arr_role_name[3]) && !empty($arr_role_name[4])) {
+                                    if (!$status_obj = get_post_status_object($arr_role_name[4])) {
+                                        unset($type_roles[$source_name][$object_type][$role_name]);
+                                    }
+                                }
+                            }
+                        }
+
                         // site roles
-                        if (isset($type_roles[$source_name][$object_type])) {
+                        if (!empty($type_roles[$source_name][$object_type])) {
                             $permissions_section_id = 'pp_current_' . esc_attr($source_name) . "_" . esc_attr($object_type) . '_site_roles';
                             echo '<div id="' . esc_attr($permissions_section_id) . '" class="section-content">';
                             ?>
