@@ -280,13 +280,13 @@ class Groups
                             <ul class="subsubsub">
                                 <li>
                                     <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users')); ?>"
-                                        class="<?php echo empty($_GET['pp_has_perms']) ? 'current' : ''; ?>">
+                                        class="<?php echo empty($_GET['pp_user_perms']) ? 'current' : ''; ?>">
                                         <?php esc_html_e('All Users', 'press-permit-core'); ?>
                                     </a>&nbsp;|&nbsp;
                                 </li>
                                 <li>
-                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_has_perms=1')); ?>"
-                                        class="<?php echo !empty($_GET['pp_has_perms']) ? 'current' : ''; ?>">
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_user_perms=1')); ?>"
+                                        class="<?php echo !empty($_GET['pp_user_perms']) ? 'current' : ''; ?>">
                                         <?php esc_html_e('Users with Permissions', 'press-permit-core'); ?>
                                     </a>
                                 </li>
@@ -295,8 +295,8 @@ class Groups
                                 <input type="hidden" name="page" value="presspermit-groups" />
                                 <input type="hidden" name="tab" value="users" />
                                 <?php
-                                if (!empty(PWP::REQUEST_key('pp_has_perms'))) {
-                                    echo '<input type="hidden" name="pp_has_perms" value="1" />';
+                                if (!empty(PWP::REQUEST_key('pp_user_perms'))) {
+                                    echo '<input type="hidden" name="pp_user_perms" value="1" />';
                                 }
                                 if (isset($users_list_table)) {
                                     $users_list_table->search_box(__('Search Users'), 'user');
