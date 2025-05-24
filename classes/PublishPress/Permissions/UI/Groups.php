@@ -36,7 +36,7 @@ class Groups
         } else {
             $action = '';
         }
-        
+
         $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'user-group';
 
         if ('users' == $active_tab) {
@@ -117,7 +117,7 @@ class Groups
 
             default:
                 $url = $referer = $redirect = $update = '';
-                
+
                 if (!empty(PluginPage::instance()->table)) {
                     $groups_list_table = PluginPage::instance()->table;
                     $groups_list_table->prepare_items();
@@ -177,25 +177,27 @@ class Groups
 
                     <?php
                     $gvar = ($group_variant) ? $group_variant : 'pp_group';
-                    if ($pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')):
+                    if (('user' != $agent_type) && $pp_groups->groupTypeEditable($gvar) && current_user_can('pp_create_groups')):
                         $_url = admin_url('admin.php?page=presspermit-group-new');
                         if ($agent_type) {
                             $_url = add_query_arg(['agent_type' => $agent_type], $_url);
                         }
                         ?>
                         <a href="<?php echo esc_url($_url); ?>"
-                            class="page-title-action"><?php esc_html_e('Add New', 'press-permit-core'); ?></a>
+                            class="page-title-action"><?php esc_html_e('Add New Group', 'press-permit-core'); ?></a>
                         <hr class="wp-header-end" />
                     <?php endif; ?>
                     <ul class="nav-tab-wrapper" style="margin-bottom: -0.1em; border-bottom: unset">
                         <li
                             class="nav-tab<?php echo (empty($_GET['tab']) || $_GET['tab'] === 'user-group') ? ' nav-tab-active' : ''; ?>">
-                            <a
-                                href="<?php echo esc_url(add_query_arg('tab', 'user-group')); ?>"><?php esc_html_e('User Groups', 'press-permit-core'); ?></a>
+                            <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=user-group')); ?>">
+                                <?php esc_html_e('User Groups', 'press-permit-core'); ?>
+                            </a>
                         </li>
                         <li class="nav-tab<?php echo (!empty($_GET['tab']) && $_GET['tab'] === 'users') ? ' nav-tab-active' : ''; ?>">
-                            <a
-                                href="<?php echo esc_url(add_query_arg('tab', 'users')); ?>"><?php esc_html_e('Users', 'press-permit-core'); ?></a>
+                            <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users')); ?>">
+                                <?php esc_html_e('Users', 'press-permit-core'); ?>
+                            </a>
                         </li>
                     </ul>
 
@@ -237,20 +239,19 @@ class Groups
                             foreach ($group_types as $_group_type => $gtype_obj) {
                                 $agent_type_str = (in_array($_group_type, ['wp_role', 'login_state'], true)) ? "&agent_type=pp_group" : "&agent_type=$_group_type";
                                 $gvar_str = "&group_variant=$_group_type";
-                                $class = strpos($agent_type_str, $agent_type) && ($group_variant && strpos($gvar_str, $group_variant)) ? 'current' : '';
+                                $class = strpos($agent_type_str, $agent_type) && ($group_variant && strpos($gvar_str, $group_variant) && empty($_REQUEST['pp_has_perms'])) ? 'current' : '';
 
                                 $group_label = (!empty($gtype_obj->labels->plural_name)) ? $gtype_obj->labels->plural_name : $gtype_obj->labels->singular_name;
 
                                 $i++;
 
                                 echo "<li><a href='" . esc_url("admin.php?page=presspermit-groups{$agent_type_str}{$gvar_str}") . "' class='" . esc_attr($class) . "'>" . esc_html($group_label) . "</a>";
-
-                                if ($i < count($group_types)) {
-                                    echo "&nbsp;|&nbsp;";
-                                }
-
+                                echo "&nbsp;|&nbsp;";
                                 echo '</li>';
                             }
+
+                            $class = !empty($_REQUEST['pp_has_perms']) ? 'current' : '';
+                            echo "<li><a href='" . esc_url("admin.php?page=presspermit-groups&pp_has_perms=1") . "' class='" . esc_attr($class) . "'>" . esc_html__('Groups with Permissions', 'presspermit-core') . "</a></li>";
 
                             echo '</ul>';
 
@@ -259,6 +260,7 @@ class Groups
 
                             <form action="<?php echo esc_url($url); ?>" method="get">
                                 <input type="hidden" name="page" value="presspermit-groups" />
+                                <input type="hidden" name="tab" value="user-group" />
                                 <input type="hidden" name="agent_type" value="<?php echo esc_attr($agent_type); ?>" />
                                 <input type="hidden" name="group_variant" value="<?php echo esc_attr($group_variant); ?>" />
                                 <?php
@@ -274,9 +276,28 @@ class Groups
                     <div id="users" class="tab-content"
                         style="<?php echo ($active_tab === 'users') ? 'display:block;' : 'display:none;'; ?>">
                         <div class="presspermit-groups">
+                            <div class="pp-hint pp-no-hide"></div>
+                            <ul class="subsubsub">
+                                <li>
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users')); ?>"
+                                        class="<?php echo empty($_GET['pp_user_perms']) ? 'current' : ''; ?>">
+                                        <?php esc_html_e('All Users', 'press-permit-core'); ?>
+                                    </a>&nbsp;|&nbsp;
+                                </li>
+                                <li>
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_user_perms=1')); ?>"
+                                        class="<?php echo !empty($_GET['pp_user_perms']) ? 'current' : ''; ?>">
+                                        <?php esc_html_e('Users with Permissions set directly', 'press-permit-core'); ?>
+                                    </a>
+                                </li>
+                            </ul>
                             <form method="get">
                                 <input type="hidden" name="page" value="presspermit-groups" />
+                                <input type="hidden" name="tab" value="users" />
                                 <?php
+                                if (!empty(PWP::REQUEST_key('pp_user_perms'))) {
+                                    echo '<input type="hidden" name="pp_user_perms" value="1" />';
+                                }
                                 if (isset($users_list_table)) {
                                     $users_list_table->search_box(__('Search Users'), 'user');
                                     $users_list_table->display();

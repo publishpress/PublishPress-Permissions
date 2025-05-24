@@ -76,7 +76,7 @@ class GroupNew
                     }
 
                     if (('pp_group' == $agent_type) || !$group_type_obj = $pp_groups->getGroupTypeObject($agent_type))
-                        esc_html_e('Create New Permissions', 'press-permit-core');
+                        esc_html_e('Create New Permission Group', 'press-permit-core');
                     else
                         printf(esc_html__('Create New %s', 'press-permit-core'), esc_html($group_type_obj->labels->singular_name));
                     ?></h1>

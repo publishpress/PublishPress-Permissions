@@ -268,7 +268,7 @@ class DashboardFilters
             if (current_user_can('pp_create_groups') && ('presspermit-group-new' == $pp_plugin_page)) {
                 add_submenu_page(
                     $pp_cred_menu,
-                    esc_html__('Add New Permissions', 'press-permit-core'),
+                    esc_html__('Add New Permission Group', 'press-permit-core'),
                     '- ' . esc_html__('Add New', 'press-permit-core'),
                     'read',
                     'presspermit-group-new',

@@ -139,9 +139,9 @@ class AgentPermissions
                     if ('user' == $agent_type) {
                         ($agent_id) ? esc_html_e('Edit User Permissions', 'press-permit-core') : esc_html_e('Add User Permissions', 'press-permit-core');
                     } elseif ('wp_role' == $metagroup_type) {
-                        esc_html_e('Edit Permissions', 'press-permit-core');
+                        esc_html_e('Edit Permission Group', 'press-permit-core');
                     } elseif ('pp_group' == $agent_type) {
-                        esc_html_e('Edit Permissions', 'press-permit-core');
+                        esc_html_e('Edit Permission Group', 'press-permit-core');
                     } elseif ($group_type_obj = $pp_groups->getGroupTypeObject($agent_type)) {
                         printf(esc_html__('Edit Permissions (%s)', 'press-permit-core'), esc_html($group_type_obj->labels->singular_name));
                     }

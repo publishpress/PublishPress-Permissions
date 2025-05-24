@@ -813,7 +813,7 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   text-align: right;
 }
 #pp_current_roles {
-  margin-top: 12px;
+  margin-top: 24px;
   margin-bottom: 16px;
 }
 #pp_current_roles .container {
@@ -1118,7 +1118,9 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   border-collapse: collapse;
 }
 #pp-permissions-wrapper table tr th,
-#pp-permissions-wrapper table tr td {
+#pp-permissions-wrapper table tr td,
+#pp_current_roles table tr th
+{
   text-align: left;
   vertical-align: top;
   user-select: none;
