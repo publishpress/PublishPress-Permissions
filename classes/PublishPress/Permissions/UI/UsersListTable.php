@@ -39,11 +39,17 @@ class UsersListTable extends \WP_List_Table
                     : '',
             ],
             'pp_roles' => [
-                'title' => esc_html__('Click to show only users who have Extra Roles (by group or directly)', 'press-permit-core'),
+                'title' => (empty($_REQUEST['pp_has_roles'])) 
+                ? esc_html__('Click to show only users who have Extra Roles (by group or directly)', 'press-permit-core')
+                : esc_html__('Restore normal User Roles view', 'press-permit-core'),
+
                 'style' => (!PWP::empty_REQUEST('pp_has_roles')) ? 'style="font-weight:bold; color:black"' : '',
             ],
             'pp_exceptions' => [
-                'title' => esc_html__('Click to show only users who have Specific Permissions (by group or directly)', 'press-permit-core'),
+                'title' => (empty($_REQUEST['pp_has_exceptions'])) 
+                ? esc_html__('Click to show only users who have Specific Permissions (by group or directly)', 'press-permit-core')
+                : esc_html__('Restore normal User Permissions view', 'press-permit-core'),
+
                 'style' => (!PWP::empty_REQUEST('pp_has_exceptions')) ? 'style="font-weight:bold; color:black"' : '',
             ],
         ];
@@ -59,14 +65,14 @@ class UsersListTable extends \WP_List_Table
             ),
             'pp_groups' => __('Groups', 'press-permit-core'),
             'pp_exceptions' => sprintf(
-                esc_html__('Specific Permissions %1$s*%2$s', 'press-permit-core'),
-                '<a href="' . esc_url(add_query_arg('pp_has_exceptions', intval(empty($_REQUEST['pp_has_exceptions'])))) . '" title="' . esc_attr($column_attr['pp_exceptions']['title']) . '" ' . $column_attr['pp_exceptions']['style'] . '>',
-                '</a>'
+                (empty($_REQUEST['pp_has_exceptions'])) ? esc_html__('User Permissions %1$s%2$s', 'press-permit-core') : esc_html__('Specific Permissions %1$s%2$s', 'press-permit-core'),
+                (empty($_REQUEST['pp_user_perms'])) ? '<a href="' . esc_url(add_query_arg('pp_has_exceptions', intval(empty($_REQUEST['pp_has_exceptions'])))) . '" title="' . esc_attr($column_attr['pp_exceptions']['title']) . '" ' . $column_attr['pp_exceptions']['style'] . '>*' : '',
+                (empty($_REQUEST['pp_user_perms'])) ? '</a>' : ''
             ),
             'pp_roles' => sprintf(
-                esc_html__('Extra Roles %1$s*%2$s', 'press-permit-core'),
-                '<a href="' . esc_url(add_query_arg('pp_has_roles', intval(empty($_REQUEST['pp_has_roles'])))) . '" title="' . esc_attr($column_attr['pp_roles']['title']) . '" ' . $column_attr['pp_roles']['style'] . '>',
-                '</a>'
+                (empty($_REQUEST['pp_has_roles'])) ? esc_html__('User Roles %1$s%2$s', 'press-permit-core') : esc_html__('Extra Roles %1$s%2$s', 'press-permit-core'),
+                (empty($_REQUEST['pp_user_perms'])) ? '<a href="' . esc_url(add_query_arg('pp_has_roles', intval(empty($_REQUEST['pp_has_roles'])))) . '" title="' . esc_attr($column_attr['pp_roles']['title']) . '" ' . $column_attr['pp_roles']['style'] . '>*' : '',
+                (empty($_REQUEST['pp_user_perms'])) ? '</a>' : ''
             ),
         ];
         return $columns;
@@ -150,13 +156,15 @@ class UsersListTable extends \WP_List_Table
     // Custom column: Roles (with anchor)
     public function column_pp_roles($item)
     {
-        return apply_filters('manage_users_custom_column', '', 'pp_roles', $item->ID, ['join_groups' => false, 'table_obj' => $this]);
+        $join_groups = !empty($_REQUEST['pp_has_exceptions']) || !empty($_REQUEST['pp_has_roles']);
+        return apply_filters('manage_users_custom_column', '', 'pp_roles', $item->ID, ['join_groups' => $join_groups, 'table_obj' => $this]);
     }
 
     // Custom column: Specific Permissions
     public function column_pp_exceptions($item)
     {
-        return apply_filters('manage_users_custom_column', '', 'pp_exceptions', $item->ID, ['join_groups' => false, 'table_obj' => $this]);
+        $join_groups = !empty($_REQUEST['pp_has_exceptions']) || !empty($_REQUEST['pp_has_roles']);
+        return apply_filters('manage_users_custom_column', '', 'pp_exceptions', $item->ID, ['join_groups' => $join_groups, 'table_obj' => $this]);
     }
 
     public function column_default($item, $column_name)
