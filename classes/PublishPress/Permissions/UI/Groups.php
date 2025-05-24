@@ -239,20 +239,19 @@ class Groups
                             foreach ($group_types as $_group_type => $gtype_obj) {
                                 $agent_type_str = (in_array($_group_type, ['wp_role', 'login_state'], true)) ? "&agent_type=pp_group" : "&agent_type=$_group_type";
                                 $gvar_str = "&group_variant=$_group_type";
-                                $class = strpos($agent_type_str, $agent_type) && ($group_variant && strpos($gvar_str, $group_variant)) ? 'current' : '';
+                                $class = strpos($agent_type_str, $agent_type) && ($group_variant && strpos($gvar_str, $group_variant) && empty($_REQUEST['pp_has_perms'])) ? 'current' : '';
 
                                 $group_label = (!empty($gtype_obj->labels->plural_name)) ? $gtype_obj->labels->plural_name : $gtype_obj->labels->singular_name;
 
                                 $i++;
 
                                 echo "<li><a href='" . esc_url("admin.php?page=presspermit-groups{$agent_type_str}{$gvar_str}") . "' class='" . esc_attr($class) . "'>" . esc_html($group_label) . "</a>";
-
-                                if ($i < count($group_types)) {
-                                    echo "&nbsp;|&nbsp;";
-                                }
-
+                                echo "&nbsp;|&nbsp;";
                                 echo '</li>';
                             }
+
+                            $class = !empty($_REQUEST['pp_has_perms']) ? 'current' : '';
+                            echo "<li><a href='" . esc_url("admin.php?page=presspermit-groups&pp_has_perms=1") . "' class='" . esc_attr($class) . "'>" . esc_html__('Groups with Permissions', 'presspermit-core') . "</a></li>";
 
                             echo '</ul>';
 
