@@ -6,7 +6,7 @@ class UsersListing
 {
     public function __construct() {
         add_filter('manage_users_columns', [$this, 'fltUsersColumns']);
-        add_filter('manage_users_custom_column', [$this, 'fltUsersCustomColumn'], 99, 3); // filter late in case other plugin filters do not retain passed value
+        add_filter('manage_users_custom_column', [$this, 'fltUsersCustomColumn'], 99, 4); // filter late in case other plugin filters do not retain passed value
         add_filter('manage_users_sortable_columns', [$this, 'fltUsersColumnsSortable']);
         
         add_filter('pre_user_query', [$this, 'fltUserQueryExceptions']);
@@ -125,11 +125,17 @@ class UsersListing
         return $columns;
     }
 
-    public static function fltUsersCustomColumn($content, $column_name, $id)
+    public static function fltUsersCustomColumn($content, $column_name, $id, $args = [])
     {
         $pp_groups = presspermit()->groups();
 
         global $wp_list_table, $wp_roles;
+
+        if (empty($args['table_obj'])) {
+            $table_obj = $wp_list_table;
+        } else {
+            $table_obj = $args['table_obj'];
+        }
 
         switch ($column_name) {
             case 'pp_groups':
@@ -154,7 +160,10 @@ class UsersListing
                     $group_ids = $pp_groups->getGroupsForUser(
                         new \WP_User($id),
                         $agent_type,
-                        ['cols' => 'id', 'query_user_ids' => array_keys($wp_list_table->items)]
+                        [
+                            'cols' => 'id', 
+                            'query_agent_ids' => !empty($args['table_obj']) ? $table_obj->user_ids : array_keys($table_obj->items)
+                        ]
                     );
 
                     if (('pp_group' == $agent_type) && in_array('pp_net_group', $all_group_types, true)
@@ -220,7 +229,7 @@ class UsersListing
                 if (!isset($role_info)) {
                     $role_info = \PublishPress\Permissions\API::countRoles(
                         'user', 
-                        ['query_agent_ids' => array_keys($wp_list_table->items)]
+                        ['query_agent_ids' => !empty($args['table_obj']) ? $table_obj->user_ids : array_keys($table_obj->items)]
                     );
                 }
 
@@ -268,7 +277,15 @@ class UsersListing
                 break;
 
             case 'pp_exceptions':
-                $content .= DashboardFilters::listAgentExceptions('user', $id, ['query_agent_ids' => array_keys($wp_list_table->items)]);
+                $_args = [
+                    'query_agent_ids' => !empty($args['table_obj']) ? $table_obj->user_ids : array_keys($table_obj->items)
+                ];
+
+                if (isset($args['join_groups'])) {
+                    $_args['join_groups'] = $args['join_groups'];
+                }
+                
+                $content .= DashboardFilters::listAgentExceptions('user', $id, $_args);
                 break;
         }
 

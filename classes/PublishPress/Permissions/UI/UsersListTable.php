@@ -5,8 +5,7 @@ namespace PublishPress\Permissions\UI;
 class UsersListTable extends \WP_List_Table
 {
     protected $_column_headers;
-    protected $user_groups = [];
-    protected $user_exceptions = [];
+    public $user_ids;
 
     public function __construct()
     {
@@ -25,6 +24,8 @@ class UsersListTable extends \WP_List_Table
 
         // Add custom query filter for users
         require_once(PRESSPERMIT_CLASSPATH . '/UI/Dashboard/UsersListing.php');
+        new Dashboard\UsersListing();
+
         add_filter('pre_user_query', ['\PublishPress\Permissions\UI\Dashboard\UsersListing', 'fltUserQueryExceptions']);
     }
 
@@ -117,12 +118,9 @@ class UsersListTable extends \WP_List_Table
         $users_query = new \WP_User_Query($args);
         $this->items = $users_query->get_results();
 
-        // Pre-fetch group memberships, roles, and permissions for all users in this page
-        $user_ids = array_map(function ($u) {
+        $this->user_ids = array_map(function ($u) {
             return $u->ID;
         }, $this->items);
-        $this->user_groups = $this->get_users_groups($user_ids);
-        $this->user_exceptions = $this->get_users_exceptions($user_ids);
 
         $this->set_pagination_args([
             'total_items' => $users_query->get_total(),
@@ -146,53 +144,19 @@ class UsersListTable extends \WP_List_Table
     // Custom column: Groups
     public function column_pp_groups($item)
     {
-        $groups = isset($this->user_groups[$item->ID]) ? $this->user_groups[$item->ID] : [];
-        if (empty($groups))
-            return '';
-        $out = [];
-        foreach ($groups as $group) {
-            $url = add_query_arg([
-                'page' => 'presspermit-groups',
-                'action' => 'edit',
-                'group_id' => $group['ID'],
-            ], admin_url('admin.php'));
-            $out[] = '<a href="' . esc_url($url) . '">' . esc_html($group['name']) . '</a>';
-        }
-        return implode(', ', $out);
+        return apply_filters('manage_users_custom_column', '', 'pp_groups', $item->ID, ['table_obj' => $this]);
     }
 
     // Custom column: Roles (with anchor)
     public function column_pp_roles($item)
     {
-        $roles = $item->roles;
-        if (empty($roles))
-            return '';
-        $url = add_query_arg([
-            'page' => 'presspermit-edit-permissions',
-            'action' => 'edit',
-            'agent_id' => $item->ID,
-            'agent_type' => 'user',
-        ], admin_url('admin.php'));
-        $out = [];
-        foreach ($roles as $role) {
-            $out[] = '<span class="pp-group-site-roles">' . esc_html(ucfirst($role)) . '</span>';
-        }
-        return '<a href="' . esc_url($url) . '">' . implode(', ', $out) . '</a>';
+        return apply_filters('manage_users_custom_column', '', 'pp_roles', $item->ID, ['join_groups' => false, 'table_obj' => $this]);
     }
 
     // Custom column: Specific Permissions
     public function column_pp_exceptions($item)
     {
-        $exceptions = isset($this->user_exceptions[$item->ID]) ? $this->user_exceptions[$item->ID] : [];
-        if (empty($exceptions))
-            return '';
-        $url = add_query_arg([
-            'page' => 'presspermit-edit-permissions',
-            'action' => 'edit',
-            'agent_id' => $item->ID,
-            'agent_type' => 'user',
-        ], admin_url('admin.php'));
-        return '<a href="' . esc_url($url) . '">' . esc_html__('View', 'press-permit-core') . '</a>';
+        return apply_filters('manage_users_custom_column', '', 'pp_exceptions', $item->ID, ['join_groups' => false, 'table_obj' => $this]);
     }
 
     public function column_default($item, $column_name)
@@ -213,43 +177,5 @@ class UsersListTable extends \WP_List_Table
         }
     }
 
-    // Helper: get group memberships for users
-    protected function get_users_groups($user_ids)
-    {
-        // This should use the plugin's group membership API. For now, use a placeholder.
-        $groups = [];
-        foreach ($user_ids as $user_id) {
-            // Example: $groups[$user_id] = [ ['ID' => 1, 'name' => 'Editors'], ... ];
-            $groups[$user_id] = [];
-        }
-        // TODO: Replace with real group fetching logic
-        return $groups;
-    }
 
-    // Helper: get specific permissions for users
-    protected function get_users_exceptions($user_ids)
-    {
-        // This should use the plugin's API. For now, use a placeholder.
-        $exceptions = [];
-        foreach ($user_ids as $user_id) {
-            $exceptions[$user_id] = [];
-        }
-        // TODO: Replace with real exception fetching logic
-        return $exceptions;
-    }
-
-    // Helper: get posts count for users
-    protected function get_users_posts_count($user_ids)
-    {
-        global $wpdb;
-        $counts = [];
-        if (empty($user_ids))
-            return $counts;
-        $user_ids_sql = implode(',', array_map('intval', $user_ids));
-        $results = $wpdb->get_results("SELECT post_author, COUNT(*) as count FROM $wpdb->posts WHERE post_author IN ($user_ids_sql) AND post_status = 'publish' GROUP BY post_author");
-        foreach ($results as $row) {
-            $counts[$row->post_author] = $row->count;
-        }
-        return $counts;
-    }
 }
