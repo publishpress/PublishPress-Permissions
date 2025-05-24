@@ -163,13 +163,16 @@ class UsersListTable extends \WP_List_Table
     {
         switch ($column_name) {
             case 'user_login':
-                $url = get_edit_user_link($item->ID);
+                $edit_permissions_url = esc_url(admin_url('admin.php?page=presspermit-edit-permissions&action=edit&agent_id=' . $item->ID . '&agent_type=user'));
+                $edit_user_url = get_edit_user_link($item->ID);
+
                 // $avatar = get_avatar($item->ID, 32);
                 $row_actions = $this->row_actions([
-                    'edit' => '<a href="' . esc_url($url) . '">' . esc_html__('Edit') . '</a>',
-                    'view' => '<a href="' . esc_url(get_author_posts_url($item->ID)) . '">' . esc_html__('View') . '</a>',
+                    'edit-permissions' => '<a href="' . $edit_permissions_url . '">' . esc_html__('Permissions', 'press-permit-core') . '</a>',
+                    'edit' => '<a href="' . esc_url($edit_user_url) . '">' . esc_html__('Edit User', 'presspermit-core') . '</a>',
                 ]);
-                return '<strong><a href="' . esc_url($url) . '">' . esc_html($item->user_login) . '</a></strong><br>' . $row_actions;
+
+                return '<strong><a href="' . esc_url($edit_permissions_url) . '">' . esc_html($item->user_login) . '</a></strong><br>' . $row_actions;
             case 'user_email':
                 return '<a href="mailto:' . esc_attr($item->user_email) . '">' . esc_html($item->user_email) . '</a>';
             default:
