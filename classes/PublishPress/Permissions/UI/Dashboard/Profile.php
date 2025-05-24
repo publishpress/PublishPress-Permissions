@@ -28,6 +28,7 @@ class Profile
             $roles,
             [
                 'read_only' => true,
+                'context' => 'user-edit',
                 'caption' => sprintf(esc_html__('Extra Roles %1$s(for this user)%2$s', 'press-permit-core'), '', ''),
                 'class' => 'pp-user-roles',
                 'link' => $edit_url
