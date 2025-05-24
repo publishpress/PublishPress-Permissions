@@ -620,6 +620,8 @@ class AgentPermissionsUI
                     $type_roles[$source_name][$object_type][$role_name] = true;
                 }
 
+                $show_controls = empty($args['context']) || ('edit-permissions' == $args['context']);
+
                 echo "<div class='permission-section'>";
                 echo '<div class="section-header">';
                 echo '<h2 class="section-title">';
@@ -630,7 +632,9 @@ class AgentPermissionsUI
                 }
                 echo ' <span class="badge badge-count" style="display:none"><span class="count-num">0</span> ' . esc_html__('item(s)', 'press-permit-core') . '</span>';
                 echo '</h2>';
-                echo '<div class="section-controls"><span class="expand-icon">▼</span></div>';
+                echo '<div class="section-controls">';
+                if ($show_controls) echo '<span class="expand-icon">▼</span>';
+                echo '</div>';
                 echo '</div>'; // end section-header
                 $section_item_count = 0;
                 foreach (array_keys($type_roles) as $source_name) {
@@ -672,7 +676,9 @@ class AgentPermissionsUI
                                 <?php esc_html_e(sprintf(__('%s Roles', 'press-permit-core'), $type_caption)); ?>
                                 <span class="badge badge-count" style=""><span class="count-num">0</span> <?php esc_html_e('item(s)', 'press-permit-core');?></span>
                             </h3>
-                            <div class="section-controls"><span class="expand-icon">▼</span></div>
+                            <div class="section-controls">
+                            <?php if ($show_controls) echo '<span class="expand-icon">▼</span>';?>
+                            </div>
                             </div>
                             <?php
                             echo '<div class="subsection-content">';
