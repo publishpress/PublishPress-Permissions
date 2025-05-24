@@ -197,7 +197,8 @@ class UsersListing
                                 } else {
                                     $content .= "<a href='"
                                         . esc_url("admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_type=$agent_type&amp;agent_id=$_id")
-                                        . "'>" . esc_html($name) . "</a>";
+                                        . "' title='" . esc_attr__('edit group', 'presspermit-core') . "'>"
+                                        . esc_html($name) . "</a>";
                                 }
 
                                 $any_done = true;
@@ -255,7 +256,7 @@ class UsersListing
 
                 if ($do_edit_link = current_user_can('pp_assign_roles') && (is_multisite() || current_user_can('edit_user', $id))) {
                     $edit_link = "admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_id=$id&amp;agent_type=user";
-                    $content .= "<a href='" . esc_url($edit_link) . "'>";
+                    $content .= "<a href='" . esc_url($edit_link) . "' ' title='" . esc_attr__('edit user permissions', 'presspermit-core') . "'>";
                 }
 
                 $content .= '<span class="pp-group-site-roles">' . implode(', ', $role_titles) . '</span>';
