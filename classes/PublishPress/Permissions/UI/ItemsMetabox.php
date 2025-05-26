@@ -727,6 +727,7 @@ class ItemsMetabox extends \Walker_Nav_Menu
                 <?php if (!empty($page_links)) : ?>
                     <div class="add-menu-item-pagelinks">
                         <?php 
+                                           // phpcs Note: page_links sanitized above by paginate_links() function
                         echo $page_links;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                         ?>
                     </div>
