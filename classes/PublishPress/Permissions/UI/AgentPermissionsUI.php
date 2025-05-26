@@ -462,7 +462,7 @@ class AgentPermissionsUI
                 elseif (!$current_tab = get_user_option('pp-permissions-tab'))
                     $current_tab = (!isset($perms['roles'])) ? 'pp-add-roles' : 'pp-add-exceptions';
 
-                if (($args['agent']->metagroup_type != 'wp_role') || !in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all'])) {
+                if (('user' != $agent_type) && (($args['agent']->metagroup_type != 'wp_role') || !in_array($args['agent']->metagroup_id, ['wp_anon', 'wp_all']))) {
                     $perms['clone'] = esc_html__('Copy', 'press-permit-core');
                 }
 
@@ -574,8 +574,8 @@ class AgentPermissionsUI
                 }
 
                 if (!$caption) {
-                    $caption = ('user' == $agent_type)
-                        ? sprintf(esc_html__('Extra Roles %1$s(for user)%2$s', 'press-permit-core'), '', '')
+                    $caption = (('user' == $agent_type) && (!empty($args['context']) && ('edit-user' == $args['context'])))
+                        ? sprintf(esc_html__('Extra Roles %1$s(for this user)%2$s', 'press-permit-core'), '', '')
                         : esc_html__('Extra Roles', 'press-permit-core');
                 }
 
@@ -620,6 +620,8 @@ class AgentPermissionsUI
                     $type_roles[$source_name][$object_type][$role_name] = true;
                 }
 
+                $show_controls = empty($args['context']) || ('edit-permissions' == $args['context']);
+
                 echo "<div class='permission-section'>";
                 echo '<div class="section-header">';
                 echo '<h2 class="section-title">';
@@ -630,7 +632,9 @@ class AgentPermissionsUI
                 }
                 echo ' <span class="badge badge-count" style="display:none"><span class="count-num">0</span> ' . esc_html__('item(s)', 'press-permit-core') . '</span>';
                 echo '</h2>';
-                echo '<div class="section-controls"><span class="expand-icon">▼</span></div>';
+                echo '<div class="section-controls">';
+                if ($show_controls) echo '<span class="expand-icon">▼</span>';
+                echo '</div>';
                 echo '</div>'; // end section-header
                 $section_item_count = 0;
                 foreach (array_keys($type_roles) as $source_name) {
@@ -660,8 +664,20 @@ class AgentPermissionsUI
                             }
                         }
 
+                        if (!empty($type_roles[$source_name][$object_type])) {
+                            foreach (array_keys($type_roles[$source_name][$object_type]) as $role_name) {
+                                $arr_role_name = explode(':', $role_name);
+
+                                if (!empty($arr_role_name[3]) && ('post_status' == $arr_role_name[3]) && !empty($arr_role_name[4])) {
+                                    if (!$status_obj = get_post_status_object($arr_role_name[4])) {
+                                        unset($type_roles[$source_name][$object_type][$role_name]);
+                                    }
+                                }
+                            }
+                        }
+
                         // site roles
-                        if (isset($type_roles[$source_name][$object_type])) {
+                        if (!empty($type_roles[$source_name][$object_type])) {
                             $permissions_section_id = 'pp_current_' . esc_attr($source_name) . "_" . esc_attr($object_type) . '_site_roles';
                             echo '<div id="' . esc_attr($permissions_section_id) . '" class="section-content">';
                             ?>
@@ -672,7 +688,9 @@ class AgentPermissionsUI
                                 <?php esc_html_e(sprintf(__('%s Roles', 'press-permit-core'), $type_caption)); ?>
                                 <span class="badge badge-count" style=""><span class="count-num">0</span> <?php esc_html_e('item(s)', 'press-permit-core');?></span>
                             </h3>
-                            <div class="section-controls"><span class="expand-icon">▼</span></div>
+                            <div class="section-controls">
+                            <?php if ($show_controls) echo '<span class="expand-icon">▼</span>';?>
+                            </div>
                             </div>
                             <?php
                             echo '<div class="subsection-content">';
@@ -680,7 +698,9 @@ class AgentPermissionsUI
                             echo '<thead>';
                             echo '<tr>';
                             echo '<th class="checkbox-column">';
-                            echo '<input id="cb-select-all-' . esc_attr($source_name . '_' . $object_type) . '" type="checkbox" />';
+                            if (!$read_only) {
+                                echo '<input id="cb-select-all-' . esc_attr($source_name . '_' . $object_type) . '" type="checkbox" />';
+                            }
                             echo '</th>';
                             echo '<th class="role-column">' . esc_html__('Role', 'press-permit-core') . '</th>';
                             echo '<th class="status-column">' . esc_html__('Status', 'press-permit-core') . '</th>';
@@ -708,15 +728,17 @@ class AgentPermissionsUI
                                 } else {
                                     $ass_id = $roles[$role_name];
                                     $cb_id = 'pp_edit_role_' . str_replace(',', '_', $ass_id);
+                                    echo '<input id="' . esc_attr($cb_id) . '" type="checkbox" name="pp_edit_role[]" value="' . esc_attr($ass_id) . '">';
                                 }
-                                echo '<input id="' . esc_attr($cb_id) . '" type="checkbox" name="pp_edit_role[]" value="' . esc_attr($ass_id) . '">';
                                 echo '</td>';
                                 echo '<td>';
                                 $pp_admin->getRoleTitle($role_name, ['include_warnings' => true, 'echo' => true, 'status_suffix' => false]);
                                 echo '</td>';
                                 echo '<td>' . esc_html(self::getRoleStatusLabel($role_name)) . ' </td>';
                                 echo '<td class="edit-column">';
-                                echo '<a href="javascript:void(0)" class="pp_clear" onclick="event.stopPropagation();">' . esc_html__('Delete') . '</a>';
+                                if (!$read_only) {
+                                    echo '<a href="javascript:void(0)" class="pp_clear" onclick="event.stopPropagation();">' . esc_html__('Delete') . '</a>';
+                                }
                                 echo '</td>';
                                 echo '</tr>';
                                 $item_count++;

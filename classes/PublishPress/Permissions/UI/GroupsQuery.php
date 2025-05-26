@@ -116,6 +116,17 @@ class GroupQuery
             $this->query_where .= " AND $groups_table.metagroup_type != 'rvy_notice'";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
 
+        if (!empty($_REQUEST['pp_has_perms'])) {
+            $this->query_where .= " AND ( ID IN ( SELECT agent_id FROM $wpdb->ppc_exceptions AS e"
+                . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
+                . " WHERE e.agent_type = 'user' )"
+                . " OR ID IN ( SELECT user_id FROM $wpdb->pp_group_members AS ug"
+                . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.agent_id = ug.group_id AND e.agent_type = 'pp_group' )"
+                . " OR ID IN ( SELECT agent_id FROM $wpdb->ppc_roles WHERE agent_type = 'user' )"
+                . " OR ID IN ( SELECT user_id FROM $wpdb->pp_group_members AS ug"
+                . " INNER JOIN $wpdb->ppc_roles AS r ON r.agent_id = ug.group_id AND r.agent_type = 'pp_group' ) )";
+        }
+
         $skip_meta_types = [];
         if ($this->group_variant && !in_array($this->group_variant, ['pp_net_group', 'wp_role', 'login_state'], true)) {
             $skip_meta_types[] = 'wp_role';
