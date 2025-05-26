@@ -272,7 +272,7 @@ class TermFiltersCount
 
         if ($hierarchical && !$parent && (count($taxonomies) == 1) && $this->parent_remap_enabled) {
             require_once(PRESSPERMIT_CLASSPATH_COMMON . '/Ancestry.php');
-            error_log('PressPermit: Remapping term hierarchy for ' . reset($taxonomies) . ' terms');
+
             $ancestors = \PressShack\Ancestry::getTermAncestors(reset($taxonomies)); // array of all ancestor IDs for keyed term_id, with direct parent first
 
             $remap_args = array_merge(
