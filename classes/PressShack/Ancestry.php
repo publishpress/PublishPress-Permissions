@@ -261,10 +261,25 @@ class Ancestry
         return $descendants;
     }
 
-    public static function getTermAncestors($taxonomy, $term_id = 0)
+    public static function pp_debug_stacktrace($label = '') {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        error_log("=== Stacktrace $label ===");
+        foreach ($trace as $i => $frame) {
+            $file = isset($frame['file']) ? $frame['file'] : '[internal function]';
+            $line = isset($frame['line']) ? $frame['line'] : '';
+            $func = isset($frame['function']) ? $frame['function'] : '';
+            $class = isset($frame['class']) ? $frame['class'] : '';
+            $type = isset($frame['type']) ? $frame['type'] : '';
+            error_log("#$i $file:$line $class$type$func()");
+        }
+        error_log("=== End Stacktrace $label ===");
+    }
+
+    public static function getTermAncestors($taxonomy, $term_id = 0, $terms = null)
     {
         static $ancestors;
-
+        self::pp_debug_stacktrace('getTermAncestors');
+        error_log('getTermAncestors called with term_id: ' . $term_id . ' and taxonomy: ' . $taxonomy);
         if (!isset($ancestors) || !LibWP::empty_POST())
             $ancestors = false;
 
@@ -274,7 +289,9 @@ class Ancestry
         if (!$ancestors) {
             $ancestors = [];
 
-            $terms = get_terms($taxonomy, ['pp_no_filter' => true, 'hide_empty' => false]);
+            if (!$terms) {
+                $terms = get_terms($taxonomy, ['pp_no_filter' => true, 'hide_empty' => false]);
+            }
 
             if ($terms) {
                 $parents = [];
