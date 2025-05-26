@@ -32,8 +32,7 @@ jQuery(document).ready(function ($) {
         $('input[name="member_csv"]').val($("input#member_csv").val());
         $('input[name="group_name"]').val($("input#group_name").val());
         $('input[name="description"]').val($("input#description").val());
-        $("#pp_new_submission_msg").html(ppCred.submissionMsg);
-        $("#pp_new_submission_msg").show();
+        $(this).val(ppCred.submissionMsg).addClass('is-busy');
     });
 
     $('#agent-profile #submit').on('click', function (e) {
