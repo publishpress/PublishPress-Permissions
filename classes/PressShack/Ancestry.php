@@ -261,7 +261,7 @@ class Ancestry
         return $descendants;
     }
 
-    public static function getTermAncestors($taxonomy, $term_id = 0, $terms = null)
+    public static function getTermAncestors($taxonomy, $term_id = 0)
     {
         static $ancestors;
 
