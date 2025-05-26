@@ -563,6 +563,33 @@ class AgentPermissionsUI
                 self::currentExceptionsUI($exc, $args);
 
                 do_action('presspermit_group_roles_ui', $agent_type, $agent_id);
+                ?>
+                <script type="text/javascript">
+                    /* <![CDATA[ */
+                    jQuery(document).ready(function ($) {
+                        $('table.table-sortable th.sortable').css('cursor', 'pointer').on('click', function() {
+                            var $th = $(this);
+                            var $table = $th.closest('table.table-sortable');
+                            var colIndex = $th.index();
+                            var asc = !$th.hasClass('asc');
+                            $table.find('th.sortable').removeClass('asc desc');
+                            $th.addClass(asc ? 'asc' : 'desc');
+                            var rows = $table.find('tbody > tr').get();
+                            rows.sort(function(a, b) {
+                                var aText = $(a).children('td').eq(colIndex).text().toLowerCase();
+                                var bText = $(b).children('td').eq(colIndex).text().toLowerCase();
+                                if (aText < bText) return asc ? -1 : 1;
+                                if (aText > bText) return asc ? 1 : -1;
+                                return 0;
+                            });
+                            $.each(rows, function(idx, row) {
+                                $table.children('tbody').append(row);
+                            });
+                        });
+                    });
+                    /* ]]> */
+                </script>
+                <?php
             }
 
             public static function currentRolesUI($roles, $args = [])
@@ -694,7 +721,7 @@ class AgentPermissionsUI
                             </div>
                             <?php
                             echo '<div class="subsection-content">';
-                            echo '<table class="table table-responsive">';
+                            echo '<table class="table table-responsive table-sortable">';
                             echo '<thead>';
                             echo '<tr>';
                             echo '<th class="checkbox-column">';
@@ -702,8 +729,8 @@ class AgentPermissionsUI
                                 echo '<input id="cb-select-all-' . esc_attr($source_name . '_' . $object_type) . '" type="checkbox" />';
                             }
                             echo '</th>';
-                            echo '<th class="role-column">' . esc_html__('Role', 'press-permit-core') . '</th>';
-                            echo '<th class="status-column">' . esc_html__('Status', 'press-permit-core') . '</th>';
+                            echo '<th class="role-column sortable">' . esc_html__('Role', 'press-permit-core') . '</th>';
+                            echo '<th class="status-column sortable">' . esc_html__('Status', 'press-permit-core') . '</th>';
                             echo '<th class="edit-column"></th>';
                             echo '</tr>';
                             echo '</thead>';
@@ -1026,7 +1053,7 @@ class AgentPermissionsUI
                                 echo '</div>';
                                 echo "<div class='subsection-content'>";
 
-                                echo '<table class="table table-responsive">';
+                                echo '<table class="table table-responsive table-sortable">';
                                 echo '<thead>';
                                 echo '<tr>';
                                 echo '<th class="checkbox-column">';
@@ -1035,12 +1062,12 @@ class AgentPermissionsUI
                                 echo '<th class="icon-column"></th>';
                                 
                                 if (!empty($any_status_captions)) {
-                                    echo '<th class="status-column">' . esc_html__('Status', 'press-permit-core') . '</th>';
+                                    echo '<th class="status-column sortable">' . esc_html__('Status', 'press-permit-core') . '</th>';
                                 }
                                 
                                 echo '<th class="assign-for-column"></th>';
 
-                                echo '<th>';
+                                echo '<th class="sortable">';
                                 echo esc_html($via_type_obj->labels->name);
                                 echo '</th>';
 
