@@ -571,7 +571,6 @@ class ItemsMetabox extends \Walker_Nav_Menu
         ];
 
         $terms = get_terms($taxonomy_name, $args);
-        error_log('taxonomy_meta_box get_terms(' . $taxonomy_name . ') returned ' . count($terms) . ' terms'); // Debugging line
 
         // kevinB: add "(none)" item for include exceptions
         $none_obj = (object)[
@@ -704,7 +703,6 @@ class ItemsMetabox extends \Walker_Nav_Menu
 
                             $max_visible_items = (defined('PP_ITEM_MENU_DEFAULT_MAX_VISIBLE')) ? PP_ITEM_MENU_DEFAULT_MAX_VISIBLE : 50;
 
-                            // Pass $terms to Ancestry::getTermDescendants to avoid duplicate get_terms() queries
                             for ($default_depth_display = 10; $default_depth_display > 1; $default_depth_display--) {
                                 $arr = \PressShack\Ancestry::getTermDescendants(
                                     0,
