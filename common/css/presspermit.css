@@ -598,3 +598,18 @@ div#profile-page.wrap div.pp-group-box h3:first-of-type,
     min-width: 100px !important;
   }
 }
+/* --- Busy Button Animation --- */
+@keyframes pp-button__busy-animation {
+  0% {
+    background-position: 160px 0;
+  }
+}
+.pp-button.is-busy {
+  background-image: linear-gradient(-45deg, #007cba 33%, #005a87 33%, #005a87 70%, #007cba 70%) !important;
+  background-size: 80px 100% !important;
+}
+@media not (prefers-reduced-motion) {
+  .pp-button.is-busy {
+    animation: pp-button__busy-animation 2.5s linear infinite;
+  }
+}

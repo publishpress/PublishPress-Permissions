@@ -19,7 +19,7 @@ class AgentPermissionsUI
             'pleaseReview' => esc_html__('Review the selection below, and then click <strong>Save Roles</strong>.', 'press-permit-core'),
             'alreadyRole' => esc_html__('Role already selected!', 'press-permit-core'),
             'noAction' => esc_html__('No Action selected!', 'press-permit-core'),
-            'submissionMsg' => esc_html__('Role submission in progress...', 'press-permit-core'),
+            'submissionMsg' => esc_html__('Saving Role...', 'press-permit-core'),
             'reloadRequired' => esc_html__('Reload form for further changes to this role', 'press-permit-core'),
             'ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax'),
         ];
@@ -42,7 +42,7 @@ class AgentPermissionsUI
             'pleaseReview' => esc_html__('Review the selection below, and then click <strong>Save Permissions</strong>.', 'press-permit-core'),
             'alreadyException' => esc_html__('Permission already selected!', 'press-permit-core'),
             'noAction' => esc_html__('No Action selected!', 'press-permit-core'),
-            'submissionMsg' => esc_html__('Permissions submission in progress...', 'press-permit-core'),
+            'submissionMsg' => esc_html__('Saving Permissions...', 'press-permit-core'),
             'reloadRequired' => esc_html__('Reload form for further changes to this permission', 'press-permit-core'),
             'mirrorDone' => esc_html__('Permissions mirrored. Reload form to view newly saved permissions.', 'press-permit-core'),
             'convertDone' => esc_html__('Permissions converted. Reload form to view newly saved permissions.', 'press-permit-core'),
@@ -396,13 +396,11 @@ class AgentPermissionsUI
 
             <div id="pp_save_roles">
                 <p class="submit">
-                    <input id="submit_roles" class="button button-primary pp-primary-button" type="submit" value="<?php esc_attr_e('Save Roles', 'press-permit-core'); ?>" name="submit">
+                    <input id="submit_roles" class="button button-primary pp-button" type="submit" value="<?php esc_attr_e('Save Roles', 'press-permit-core'); ?>" name="submit">
                 </p>
             </div>
         </div>
-
-        <div id="pp_new_submission_msg" style="display:none">
-        </div><?php
+        <?php
             }
 
             private static function confirmExceptionsUI()
@@ -429,13 +427,12 @@ class AgentPermissionsUI
 
             <div id="pp_save_exceptions">
                 <p class="submit">
-                    <input id="submit_exc" class="button button-primary" type="submit" value="<?php esc_attr_e('Save Permissions', 'press-permit-core'); ?>" name="submit">
+                    <input id="submit_exc" class="button button-primary pp-button" type="submit" value="<?php esc_attr_e('Save Permissions', 'press-permit-core'); ?>" name="submit">
                 </p>
 
             </div>
         </div>
-        <div id="pp_new_x_submission_msg" style="display:none">
-        </div><?php
+        <?php
             }
 
             public static function drawGroupPermissions($agent_id, $agent_type, $url, $wp_http_referer = '', $args = [])
@@ -1736,7 +1733,7 @@ class AgentPermissionsUI
 
             <br />
             <div>
-                <input id="pp_clone_permissions" class="button button-primary pp-primary-button" type="submit" name="pp_clone_permissions" value="<?php esc_attr_e('Copy Roles and Permissions', 'press-permit-core'); ?>">
+                <input id="pp_clone_permissions" class="button button-primary pp-button" type="submit" name="pp_clone_permissions" value="<?php esc_attr_e('Copy Roles and Permissions', 'press-permit-core'); ?>">
             </div>
         <?php
             }
