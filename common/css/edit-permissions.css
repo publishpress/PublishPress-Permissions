@@ -151,7 +151,7 @@
   cursor: pointer;
 }
 .table .sortable:after {
-  content: " ▼";
+  content: " ⇅";
   /* Default sort indicator */
   font-size: 0.8em;
 }
@@ -1110,6 +1110,9 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   width: 10%;
   text-align: right;
 }
+#pp_current_roles table tr th {
+  text-align: left;
+}
 #pp_current_roles td label,
 #pp_current_roles td input {
   vertical-align: text-top;
@@ -1118,9 +1121,7 @@ td.pp-select-items #nav-menu-meta div.tabs-panel ul li label {
   border-collapse: collapse;
 }
 #pp-permissions-wrapper table tr th,
-#pp-permissions-wrapper table tr td,
-#pp_current_roles table tr th
-{
+#pp-permissions-wrapper table tr td {
   text-align: left;
   vertical-align: top;
   user-select: none;
