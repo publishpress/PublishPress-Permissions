@@ -355,7 +355,7 @@ class UsersListing
             $pp_has_perms = !PWP::empty_REQUEST('pp_has_perms');
         }
 
-        if (!$pp_has_perms) {
+        if ($pp_has_perms) {
             $query_obj->query_where .= " AND ( ID IN ( SELECT agent_id FROM $wpdb->ppc_exceptions AS e"
                 . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
                 . " WHERE e.agent_type = 'user' )"
