@@ -53,6 +53,13 @@ class UsersListTable extends \WP_List_Table
                 'style' => (!PWP::empty_REQUEST('pp_has_exceptions')) ? 'style="font-weight:bold; color:black"' : '',
             ],
         ];
+
+        if (!PWP::is_REQUEST('pp_user_perms')) {
+            $pp_user_perms = get_user_option('pp_user_perms');
+        } else {
+            $pp_user_perms = !PWP::empty_REQUEST('pp_user_perms');
+        }
+
         $columns = [
             'cb' => '<input type = "checkbox" />',
             'user_login' => __('Username', 'press-permit-core'),
@@ -65,14 +72,14 @@ class UsersListTable extends \WP_List_Table
             ),
             'pp_groups' => __('Groups', 'press-permit-core'),
             'pp_exceptions' => sprintf(
-                (empty($_REQUEST['pp_has_exceptions'])) ? esc_html__('User Permissions %1$s%2$s', 'press-permit-core') : esc_html__('Specific Permissions %1$s%2$s', 'press-permit-core'),
-                (empty($_REQUEST['pp_user_perms'])) ? '<a href="' . esc_url(add_query_arg('pp_has_exceptions', intval(empty($_REQUEST['pp_has_exceptions'])))) . '" title="' . esc_attr($column_attr['pp_exceptions']['title']) . '" ' . $column_attr['pp_exceptions']['style'] . '>*' : '',
-                (empty($_REQUEST['pp_user_perms'])) ? '</a>' : ''
+                (PWP::empty_REQUEST('pp_has_exceptions')) ? esc_html__('User Permissions %1$s%2$s', 'press-permit-core') : esc_html__('Specific Permissions %1$s%2$s', 'press-permit-core'),
+                (empty($pp_user_perms)) ? '<a href="' . esc_url(add_query_arg('pp_has_exceptions', intval(PWP::empty_REQUEST('pp_has_exceptions')))) . '" title="' . esc_attr($column_attr['pp_exceptions']['title']) . '" ' . $column_attr['pp_exceptions']['style'] . '>*' : '',
+                (empty($pp_user_perms)) ? '</a>' : ''
             ),
             'pp_roles' => sprintf(
-                (empty($_REQUEST['pp_has_roles'])) ? esc_html__('User Roles %1$s%2$s', 'press-permit-core') : esc_html__('Extra Roles %1$s%2$s', 'press-permit-core'),
-                (empty($_REQUEST['pp_user_perms'])) ? '<a href="' . esc_url(add_query_arg('pp_has_roles', intval(empty($_REQUEST['pp_has_roles'])))) . '" title="' . esc_attr($column_attr['pp_roles']['title']) . '" ' . $column_attr['pp_roles']['style'] . '>*' : '',
-                (empty($_REQUEST['pp_user_perms'])) ? '</a>' : ''
+                (PWP::empty_REQUEST('pp_has_roles')) ? esc_html__('User Roles %1$s%2$s', 'press-permit-core') : esc_html__('Extra Roles %1$s%2$s', 'press-permit-core'),
+                (empty($pp_user_perms)) ? '<a href="' . esc_url(add_query_arg('pp_has_roles', intval(PWP::empty_REQUEST('pp_has_roles')))) . '" title="' . esc_attr($column_attr['pp_roles']['title']) . '" ' . $column_attr['pp_roles']['style'] . '>*' : '',
+                (empty($pp_user_perms)) ? '</a>' : ''
             ),
         ];
         return $columns;
