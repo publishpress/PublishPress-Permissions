@@ -189,12 +189,12 @@ class Groups
                     <?php endif; ?>
                     <ul class="nav-tab-wrapper" style="margin-bottom: -0.1em; border-bottom: unset">
                         <li
-                            class="nav-tab<?php echo (empty($_GET['tab']) || $_GET['tab'] === 'user-group') ? ' nav-tab-active' : ''; ?>">
+                            class="nav-tab<?php echo (PWP::empty_REQUEST('tab') || (PWP::REQUEST_key('tab') === 'user-group')) ? ' nav-tab-active' : ''; ?>">
                             <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=user-group')); ?>">
                                 <?php esc_html_e('User Groups', 'press-permit-core'); ?>
                             </a>
                         </li>
-                        <li class="nav-tab<?php echo (!empty($_GET['tab']) && $_GET['tab'] === 'users') ? ' nav-tab-active' : ''; ?>">
+                        <li class="nav-tab<?php echo (!PWP::empty_REQUEST('tab') && (PWP::REQUEST_key('tab') === 'users')) ? ' nav-tab-active' : ''; ?>">
                             <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users')); ?>">
                                 <?php esc_html_e('Users', 'press-permit-core'); ?>
                             </a>

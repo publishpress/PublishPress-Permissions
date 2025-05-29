@@ -80,7 +80,6 @@ class SettingsTabAdvanced
             'display_user_profile_roles'             => esc_html__('Extra Roles on User Profile', 'press-permit-core'),
             'page_parent_order'                      => esc_html__('Order Page Parent dropdown by Title', 'press-permit-core'),
             'force_taxonomy_cols'                    => esc_html__('Add taxonomy columns to Edit Posts screen', 'press-permit-core'),
-            //'admin_nav_menu_filter_items'            => esc_html__('List only user-editable content as available items', 'press-permit-core'),
             'admin_nav_menu_partial_editing'         => esc_html__('Allow Renaming of uneditable Items', 'press-permit-core'),
             'admin_nav_menu_lock_custom'             => esc_html__('Lock custom menu items', 'press-permit-core'),
             'add_author_pages'                       => esc_html__('Bulk Add Author Pages on Users screen', 'press-permit-core'),
@@ -188,6 +187,7 @@ class SettingsTabAdvanced
     {
         // This is intentionally left as an example for future usage
 
+        // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
         /*
         if (SettingsAdmin::instance()->display_hints) {
             echo '<div class="pp-hint pp-optionhint">';
@@ -388,9 +388,6 @@ class SettingsTabAdvanced
                     $hint = SettingsAdmin::getStr('post_blockage_priority');
                     $ui->optionCheckbox('post_blockage_priority', $tab, $section, $hint);
 
-                    // @todo: review
-                    //$ui->optionCheckbox('suppress_administrator_metagroups', $tab, $section, true);
-
                     $ui->optionCheckbox('publish_exceptions', $tab, $section, '');
 
                     ?>
@@ -566,8 +563,6 @@ class SettingsTabAdvanced
                 <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
                     <?php
-                    //$ui->optionCheckbox('admin_nav_menu_filter_items', $tab, $section, '', '', ['val' => true, 'disabled' => true]);
-
                     $ui->optionCheckbox('admin_nav_menu_partial_editing', $tab, $section, true, '');
 
                     $ui->optionCheckbox('admin_nav_menu_lock_custom', $tab, $section, true, '');

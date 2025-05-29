@@ -118,7 +118,7 @@ class AgentExceptionsAjax
 
                 $tooltips = [
                     'additional' => esc_html__('Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core'),
-                    'exclude' => esc_html__('Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core'),
+                    'exclude' => esc_html__('Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core'),      // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                     'include' => esc_html__('Restrict access by limiting role capabilities to apply only for specified items. Users still need capabilities in their main role or extra roles.', 'press-permit-core')
                 ];
                 ?>
