@@ -106,18 +106,6 @@ class AgentPermissions
 
                 </p>
             </div>
-
-        <?php elseif (PWP::is_GET('created')) : ?>
-            <div id="message" class="updated">
-                <p>
-                    <strong><?php esc_html_e('Group created.', 'press-permit-core') ?>&nbsp;</strong>
-                    <?php
-                    if ($wp_http_referer) : ?>
-                        <a href="<?php echo esc_url($groups_link); ?>"><?php esc_html_e('Back to groups list', 'press-permit-core'); ?></a>
-                    <?php endif; ?>
-                </p>
-            </div>
-
         <?php endif; ?>
 
         <?php
