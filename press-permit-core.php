@@ -4,9 +4,9 @@
  * Plugin Name: PublishPress Permissions
  * Plugin URI:  https://publishpress.com/presspermit
  * Description: Advanced yet accessible content permissions. Give users or groups type-specific roles. Enable or block access for specific posts or terms.
+ * Version: 4.3.0
  * Author: PublishPress
  * Author URI:  https://publishpress.com/
- * Version: 4.3.0
  * Text Domain: press-permit-core
  * Domain Path: /languages/
  * Requires at least: 5.5

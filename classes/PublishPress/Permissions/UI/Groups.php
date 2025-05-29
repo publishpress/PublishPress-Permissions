@@ -231,7 +231,7 @@ class Groups
                             echo '<ul class="subsubsub">';
                             printf(esc_html__('%1$sGroup Type:%2$s %3$s', 'press-permit-core'), '<li class="pp-gray">', '</li>', '');
 
-                            $class = (!$group_variant) ? 'current' : '';
+                            $class = (!$group_variant && empty($_REQUEST['pp_has_perms'])) ? 'current' : '';
 
                             echo "<li><a href='admin.php?page=presspermit-groups' class='" . esc_attr($class) . "'>" . esc_html__('All', 'press-permit-core') . "</a>&nbsp;|&nbsp;</li>";
 
