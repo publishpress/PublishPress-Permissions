@@ -174,7 +174,6 @@ class UsersListTable extends \WP_List_Table
                 $edit_permissions_url = esc_url(admin_url('admin.php?page=presspermit-edit-permissions&action=edit&agent_id=' . $item->ID . '&agent_type=user'));
                 $edit_user_url = get_edit_user_link($item->ID);
 
-                // $avatar = get_avatar($item->ID, 32);
                 $row_actions = $this->row_actions([
                     'edit-permissions' => '<a href="' . $edit_permissions_url . '">' . esc_html__('Permissions', 'press-permit-core') . '</a>',
                     'edit' => '<a href="' . esc_url($edit_user_url) . '">' . esc_html__('Edit User', 'presspermit-core') . '</a>',

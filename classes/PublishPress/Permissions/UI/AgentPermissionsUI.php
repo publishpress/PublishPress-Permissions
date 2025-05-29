@@ -677,7 +677,6 @@ class AgentPermissionsUI
                 <?php endif;
 
                 $_class = ($read_only) ? 'pp-readonly' : '';
-                // echo '<div id="pp_current_roles" class="' . esc_attr($_class) . '">';
 
                 foreach (array_keys($roles) as $role_name) {
                     if (strpos($role_name, ':')) {

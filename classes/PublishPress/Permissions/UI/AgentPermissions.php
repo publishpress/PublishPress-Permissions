@@ -311,6 +311,7 @@ class AgentPermissions
                         <?php if ($agent_id) {
                             // @todo: Consider how to reinstate a read-only summary of the extra Roles and Permissions the user has from Group membership
 
+                            // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
                             /*
                             $roles = [];
                             $user = $pp->getUser($agent_id);
