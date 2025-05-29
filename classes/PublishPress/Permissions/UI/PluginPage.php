@@ -76,7 +76,10 @@ class PluginPage
             $group_variant = self::getGroupVariant();
 
             if ( ! $this->table = apply_filters('presspermit_groups_list_table', false, $agent_type) ) {
-                $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'user-group';
+                if (!$active_tab = PWP::REQUEST_key('tab')) {
+                    $active_tab = 'user-group';
+                }
+
                 if ($active_tab === 'users') {
                     require_once(PRESSPERMIT_CLASSPATH . '/UI/UsersListTable.php' );
                     $this->table_user = new UsersListTable();
@@ -126,7 +129,16 @@ class PluginPage
         }
 
         if (empty($group_variant)) {
-            $group_variant = PWP::REQUEST_key('group_variant');
+            global $current_user;
+
+            if (!PWP::is_REQUEST('group_variant') && PWP::empty_REQUEST('pp_has_perms') && PWP::empty_REQUEST('pp_user_perms')) {
+                if (!$group_variant = get_user_option('pp_group_variant')) {
+                    $group_variant = '';
+                }
+            } else {
+                $group_variant = PWP::REQUEST_key('group_variant');
+                update_user_option($current_user->ID, 'pp_group_variant', $group_variant);
+            }
         }
 
         return sanitize_key(apply_filters('presspermit_query_group_variant', $group_variant));

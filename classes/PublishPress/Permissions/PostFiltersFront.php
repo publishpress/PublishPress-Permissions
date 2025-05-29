@@ -120,6 +120,7 @@ class PostFiltersFront
             }
         }
 
+        // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
         // @todo: is_tag: query_vars['post_tag'], is_tax: query_vars['tax_query']
     }
 

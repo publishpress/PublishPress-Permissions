@@ -294,7 +294,7 @@ class UsersListing
 
     public static function fltUserQueryExceptions($query_obj)
     {
-        global $wpdb;
+        global $wpdb, $current_user, $pagenow;
 
         // Filter the Users Query to support various group filtering / sorting parameters
 
@@ -322,7 +322,13 @@ class UsersListing
             $query_obj->query_where .= " AND ID IN ( SELECT agent_id FROM $wpdb->ppc_roles WHERE agent_type = 'user' )";
         }
 
-        if (!PWP::empty_REQUEST('pp_user_perms')) {
+        if (!PWP::is_REQUEST('pp_user_perms') && (empty($pagenow) || ('users.php' != $pagenow))) {
+            $pp_user_perms = get_user_option('pp_user_perms');
+        } else {
+            $pp_user_perms = !PWP::empty_REQUEST('pp_user_perms');
+        }
+        
+        if ($pp_user_perms) {
             $query_obj->query_where .= " AND ( ID IN ( SELECT agent_id FROM $wpdb->ppc_roles"
                 . " WHERE agent_type = 'user' ) OR ID IN ( SELECT agent_id FROM $wpdb->ppc_exceptions AS e"
                 . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
@@ -343,7 +349,13 @@ class UsersListing
                 . " INNER JOIN $wpdb->ppc_roles AS r ON r.agent_id = ug.group_id AND r.agent_type = 'pp_group' )";
         }
 
-        if (!PWP::empty_REQUEST('pp_has_perms')) {
+        if (!PWP::is_REQUEST('pp_has_perms') && (empty($pagenow) || ('users.php' != $pagenow))) {
+            $pp_has_perms = get_user_option('pp_has_perms');
+        } else {
+            $pp_has_perms = !PWP::empty_REQUEST('pp_has_perms');
+        }
+
+        if ($pp_has_perms) {
             $query_obj->query_where .= " AND ( ID IN ( SELECT agent_id FROM $wpdb->ppc_exceptions AS e"
                 . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
                 . " WHERE e.agent_type = 'user' )"
