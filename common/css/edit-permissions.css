@@ -151,7 +151,7 @@
   cursor: pointer;
 }
 .table .sortable:after {
-  content: " ▼";
+  content: " ⇅";
   /* Default sort indicator */
   font-size: 0.8em;
 }

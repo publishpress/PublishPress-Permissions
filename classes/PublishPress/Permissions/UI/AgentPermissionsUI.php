@@ -560,6 +560,82 @@ class AgentPermissionsUI
                 self::currentExceptionsUI($exc, $args);
 
                 do_action('presspermit_group_roles_ui', $agent_type, $agent_id);
+                ?>
+                <script type="text/javascript">
+                    /* <![CDATA[ */
+                    jQuery(document).ready(function ($) {
+                        // Store original order for each table
+                        $('table.table-sortable').each(function () {
+                            var $tbody = $(this).find('tbody');
+                            $tbody.data('original-order', $tbody.children('tr').toArray());
+                        });
+
+                        $('table.table-sortable th.sortable').css('cursor', 'pointer').on('click', function () {
+                            var $th = $(this);
+                            var $table = $th.closest('table.table-sortable');
+                            var colIndex = $th.index();
+                            if (!$th.data('sort-state')) {
+                                if ($th.hasClass('asc')) {
+                                    $th.data('sort-state', 'asc');
+                                } else if ($th.hasClass('desc')) {
+                                    $th.data('sort-state', 'desc');
+                                }
+                            }
+                            var state = $th.data('sort-state') || 'none'; // none, asc, desc
+
+                            // Cycle state: none -> asc -> desc -> none
+                            if (state === 'none') {
+                                state = 'asc';
+                            } else if (state === 'asc') {
+                                state = 'desc';
+                            } else {
+                                state = 'none';
+                            }
+                            $th.data('sort-state', state);
+
+                            // Remove sort classes and data from other headers
+                            $table.find('th.sortable').not($th).removeClass('asc desc').data('sort-state', 'none');
+                            $th.removeClass('asc desc');
+                            if (state === 'asc') {
+                                $th.addClass('asc');
+                            } else if (state === 'desc') {
+                                $th.addClass('desc');
+                            }
+
+                            var $tbody = $table.find('tbody');
+                            var $rows;
+                            if (state === 'none') {
+                                // Restore original order from data
+                                var originalRows = $tbody.data('original-order');
+                                if (originalRows) {
+                                    $tbody.empty();
+                                    $.each(originalRows, function (idx, row) {
+                                        $tbody.append(row);
+                                    });
+                                }
+                            } else {
+                                var asc = (state === 'asc');
+                                $rows = $tbody.children('tr').get().sort(function (a, b) {
+                                    var aCol = $(a).children('td').eq(colIndex);
+                                    var bCol = $(b).children('td').eq(colIndex);
+                                    var aText = aCol.text().toLowerCase();
+                                    var bText = bCol.text().toLowerCase();
+                                    if (aCol.data('sort')) aText = aCol.data('sort').toLowerCase();
+                                    if (bCol.data('sort')) bText = bCol.data('sort').toLowerCase();
+                                    if (aText < bText) return asc ? -1 : 1;
+                                    if (aText > bText) return asc ? 1 : -1;
+                                    return 0;
+                                });
+                                $tbody.empty();
+                                $.each($rows, function (idx, row) {
+                                    $tbody.append(row);
+                                });
+                            }
+                        });
+                    });
+                    /* ]]> */
+                </script>
+                <?php
             }
 
             public static function currentRolesUI($roles, $args = [])
@@ -691,7 +767,7 @@ class AgentPermissionsUI
                             </div>
                             <?php
                             echo '<div class="subsection-content">';
-                            echo '<table class="table table-responsive">';
+                            echo '<table class="table table-responsive table-sortable">';
                             echo '<thead>';
                             echo '<tr>';
                             echo '<th class="checkbox-column">';
@@ -699,8 +775,8 @@ class AgentPermissionsUI
                                 echo '<input id="cb-select-all-' . esc_attr($source_name . '_' . $object_type) . '" type="checkbox" />';
                             }
                             echo '</th>';
-                            echo '<th class="role-column">' . esc_html__('Role', 'press-permit-core') . '</th>';
-                            echo '<th class="status-column">' . esc_html__('Status', 'press-permit-core') . '</th>';
+                            echo '<th class="role-column sortable asc">' . esc_html__('Role', 'press-permit-core') . '</th>';
+                            echo '<th class="status-column sortable">' . esc_html__('Status', 'press-permit-core') . '</th>';
                             echo '<th class="edit-column"></th>';
                             echo '</tr>';
                             echo '</thead>';
@@ -1023,21 +1099,21 @@ class AgentPermissionsUI
                                 echo '</div>';
                                 echo "<div class='subsection-content'>";
 
-                                echo '<table class="table table-responsive">';
+                                echo '<table class="table table-responsive table-sortable">';
                                 echo '<thead>';
                                 echo '<tr>';
                                 echo '<th class="checkbox-column">';
                                 echo '<input id="cb-select-all-' . esc_attr($operation) . '_' . esc_attr($for_src) . '_' . esc_attr($via_src) . '_' . esc_attr($via_type) . '" type="checkbox" />';
                                 echo '</th>';
-                                echo '<th class="icon-column"></th>';
+                                echo '<th class="icon-column sortable"></th>';
                                 
                                 if (!empty($any_status_captions)) {
-                                    echo '<th class="status-column">' . esc_html__('Status', 'press-permit-core') . '</th>';
+                                    echo '<th class="status-column sortable">' . esc_html__('Status', 'press-permit-core') . '</th>';
                                 }
                                 
                                 echo '<th class="assign-for-column"></th>';
 
-                                echo '<th>';
+                                echo '<th class="sortable">';
                                 echo esc_html($via_type_obj->labels->name);
                                 echo '</th>';
 
@@ -1233,7 +1309,7 @@ class AgentPermissionsUI
 
                                                 echo "<td class='checkbox-column'><input id='" . esc_attr($cb_id) . "' type='checkbox' name='pp_edit_exception[]' value='" . esc_attr($ass_id) . "' class='" . esc_attr($class) . "' autocomplete='off'></td> ";
                                                 
-                                                echo "<td>";
+                                                echo "<td class='icon-column' data-sort='" . esc_attr($mod_type) . "'>";
                                                 echo '<span data-toggle="tooltip" data-placement="top">';
                                                 
                                                 if ('additional' == $mod_type) {

@@ -26,7 +26,7 @@ class AgentPermissions
         }
 
         if ($agent_id = PWP::REQUEST_int('agent_id')) {
-            $agent = $pp_groups->getAgent($agent_id, $agent_type);
+            $agent = $pp_groups->getGroup($agent_id, $agent_type);
         } else {
             $agent_id = 0;
             $agent = (object)['metagroup_type' => ''];

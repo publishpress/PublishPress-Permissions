@@ -174,6 +174,13 @@ class Groups
 
     public function getAgent($agent_id, $agent_type = 'pp_group')
     {
+        static $cache = [];
+
+        $cache_key = $agent_type . ':' . $agent_id;
+        if (isset($cache[$cache_key])) {
+            return $cache[$cache_key];
+        }
+
         if ('pp_group' == $agent_type) {
             global $wpdb;
 
@@ -194,7 +201,10 @@ class Groups
         } else
             $result = null;
 
-        return apply_filters('presspermit_get_group', $result, $agent_id, $agent_type);
+        $result = apply_filters('presspermit_get_group', $result, $agent_id, $agent_type);
+
+        $cache[$cache_key] = $result;
+        return $result;
     }
 
     /**
