@@ -5,7 +5,7 @@ Tags: permissions, access, user, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.8
 Requires PHP: 7.2.5
-Stable tag: 4.2.2
+Stable tag: 4.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,32 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.3.0 – 29 May 2025 =
+* Added: Tables in the Edit Permissions screen are now sortable for improved usability. #1580
+* Added: New "Users" tab in the Permissions screen for filtering and managing user-based permissions. #1367
+* Added: "Back to Normal View" button to make it easier to return from filtered views. #1640
+* Added: Custom submenu under Permissions for improved navigation. #1634
+* Updated: Improved UI by animating the "Save" button to show feedback during saving. #1563
+* Updated: Removed redundant “New Group created” message. #1579
+* Updated: Moved "Order" column before "Roles" column for better context in Permissions table. #1561
+* Updated: Renamed “Sync Posts” to “User Pages” for clarity. #1507
+* Updated: Changed page title and tab captions in Permissions screen for clarity. #1562
+* Updated: Replaced "Read" with "View" in various labels for consistency. #1491
+* Updated: Supplemental Roles are now labeled as “Extra Roles.” #1637
+* Updated: Layout and text improvements across the Edit Permissions interface for clarity and accessibility.
+* Updated: Composer dependencies updated and code cleanup for better performance and compatibility.
+* Updated: Language `.pot` file updated with latest translation strings.
+* Fixed: Menu color now adapts better to WordPress admin themes. #1638
+* Fixed: Tooltips are more clear and informative across various screens.
+* Fixed: Specific permissions now correctly propagate to sub-categories in BasePress. #1655
+* Fixed: Event category creation now works correctly. #1653
+* Fixed: PHP warning when updating a post under certain conditions. #1628
+* Fixed: Uncompleted regex fixed in internal processing. #1635
+* Improved: Capability descriptions are now filtered using the `cme_capability_descriptions` filter. #1639
+* Improved: Dashicons in Add Permissions screen have improved spacing. #1643
+* Improved: Captions in Permissions > Settings now more clearly describe advanced links and capabilities.
+* Improved: Created `pp_group_members` table with primary key for cleaner group-member relationships. #1646
 
 = 4.2.2 - 6 May 2025 =
 * Fixed: Restored the "Select Other" option for authors in the Classic Editor. #1540
