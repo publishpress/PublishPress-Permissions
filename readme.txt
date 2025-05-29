@@ -259,7 +259,6 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 * Fixed: Tooltips are more clear and informative across various screens.
 * Fixed: PHP warning when updating a post under certain conditions. #1628
 * Fixed: Uncompleted regex when editing Permissions. #1635
-* Compat: BasePress - Specific permissions now correctly propagate to sub-categories in BasePress. #1655
 * Compat: The Events Calendar - Event category creation now works correctly. #1653
 * Compat: PublishPress Capabilities - Use new `cme_capability_descriptions` filter for a more informative plugin capabilities tab. #1639
 * Improved: Dashicons in Add Permissions screen have improved spacing. #1643
