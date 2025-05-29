@@ -19,7 +19,7 @@ class AgentPermissionsUI
             'pleaseReview' => esc_html__('Review the selection below, and then click <strong>Save Roles</strong>.', 'press-permit-core'),
             'alreadyRole' => esc_html__('Role already selected!', 'press-permit-core'),
             'noAction' => esc_html__('No Action selected!', 'press-permit-core'),
-            'submissionMsg' => esc_html__('Saving Role...', 'press-permit-core'),
+            'submissionMsg' => esc_html__('Saving Roles...', 'press-permit-core'),
             'reloadRequired' => esc_html__('Reload form for further changes to this role', 'press-permit-core'),
             'ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax'),
         ];
