@@ -1620,7 +1620,7 @@ class AgentPermissionsUI
                                         . sprintf(
                                             ' <a href="%s" class="btn btn-link">%s</a>',
                                             esc_url($back_to_normal_url),
-                                            sprintf(esc_html__('Hide auto-assigned Sub-%s Permissions', 'press-permit-core'), $_caption)
+                                            sprintf(esc_html__('Hide auto-assigned Sub-%s Permissions', 'press-permit-core'), esc_html($_caption))
                                         )
                                         . '</div>';
                                 }
@@ -1643,7 +1643,7 @@ class AgentPermissionsUI
                                         . sprintf(
                                             ' <a href="%s" class="btn btn-link">%s</a>',
                                             esc_url($back_to_normal_url),
-                                            sprintf(esc_html__('Hide auto-assigned Sub-%s Permissions', 'press-permit-core'), $_caption)
+                                            sprintf(esc_html__('Hide auto-assigned Sub-%s Permissions', 'press-permit-core'), esc_html($_caption))
                                         );
                                 }
 
