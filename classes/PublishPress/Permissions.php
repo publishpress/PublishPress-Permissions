@@ -1233,13 +1233,15 @@ class Permissions
         // This code is used to override the "Edit Tag" text in the admin area
         // to provide more context for the user.
         if (is_admin() 
-            && isset($_GET['taxonomy'], $_GET['tag_ID'], $text) 
-            && $text === 'Edit Tag' 
-            && $_GET['taxonomy'] === 'post_tag' ) {
-            if (!empty($_GET['pp_universal'])) {
+            && PWP::is_GET('taxonomy') && PWP::is_GET('tag_ID') && isset($text) 
+            && ($text === 'Edit Tag')
+            && (PWP::GET_key('taxonomy') === 'post_tag') 
+        ) {
+            if (!PWP::empty_GET('pp_universal')) {
                 return esc_html__('Edit Tag for All Post Types', 'press-permit-core');
             }
-            if (isset($_GET['post_type']) && $_GET['post_type'] === 'post') {
+            
+            if (PWP::is_GET('post_type') && (PWP::GET_key('post_type') === 'post')) {
                 return esc_html__('Edit Tag for Posts', 'press-permit-core');
             }
         }
