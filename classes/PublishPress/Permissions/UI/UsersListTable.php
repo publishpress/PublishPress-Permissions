@@ -39,14 +39,14 @@ class UsersListTable extends \WP_List_Table
                     : '',
             ],
             'pp_roles' => [
-                'title' => (empty($_REQUEST['pp_has_roles'])) 
+                'title' => (PWP::empty_REQUEST('pp_has_roles')) 
                 ? esc_html__('Click to show only users who have Extra Roles (by group or directly)', 'press-permit-core')
                 : esc_html__('Restore normal User Roles view', 'press-permit-core'),
 
                 'style' => (!PWP::empty_REQUEST('pp_has_roles')) ? 'style="font-weight:bold; color:black"' : '',
             ],
             'pp_exceptions' => [
-                'title' => (empty($_REQUEST['pp_has_exceptions'])) 
+                'title' => (PWP::empty_REQUEST('pp_has_exceptions')) 
                 ? esc_html__('Click to show only users who have Specific Permissions (by group or directly)', 'press-permit-core')
                 : esc_html__('Restore normal User Permissions view', 'press-permit-core'),
 
@@ -60,7 +60,7 @@ class UsersListTable extends \WP_List_Table
             'user_email' => __('Email', 'press-permit-core'),
             'pp_no_groups' => sprintf(
                 esc_html__('%1$s(x)%2$s', 'press-permit-core'),
-                '<a href="' . esc_url(add_query_arg('pp_no_group', intval(empty($_REQUEST['pp_no_group'])))) . '" title="' . esc_attr($column_attr['pp_no_groups']['title']) . '" ' . $column_attr['pp_no_groups']['style'] . '>',
+                '<a href="' . esc_url(add_query_arg('pp_no_group', intval(PWP::empty_REQUEST('pp_no_group')))) . '" title="' . esc_attr($column_attr['pp_no_groups']['title']) . '" ' . $column_attr['pp_no_groups']['style'] . '>',
                 '</a>'
             ),
             'pp_groups' => __('Groups', 'press-permit-core'),
@@ -108,9 +108,9 @@ class UsersListTable extends \WP_List_Table
     {
         $per_page = 10;
         $paged = $this->get_pagenum();
-        $search = isset($_REQUEST['s']) ? sanitize_text_field($_REQUEST['s']) : '';
-        $orderby = isset($_REQUEST['orderby']) ? sanitize_text_field($_REQUEST['orderby']) : 'user_login';
-        $order = isset($_REQUEST['order']) ? sanitize_text_field($_REQUEST['order']) : 'asc';
+        $search = isset($_REQUEST['s']) ? sanitize_text_field($_REQUEST['s']) : '';                          // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $orderby = isset($_REQUEST['orderby']) ? sanitize_text_field($_REQUEST['orderby']) : 'user_login';   // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $order = isset($_REQUEST['order']) ? sanitize_text_field($_REQUEST['order']) : 'asc';                // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
         $args = [
             'number' => $per_page,
@@ -156,14 +156,14 @@ class UsersListTable extends \WP_List_Table
     // Custom column: Roles (with anchor)
     public function column_pp_roles($item)
     {
-        $join_groups = !empty($_REQUEST['pp_has_exceptions']) || !empty($_REQUEST['pp_has_roles']);
+        $join_groups = !PWP::empty_REQUEST('pp_has_exceptions') || !PWP::empty_REQUEST('pp_has_roles');
         return apply_filters('manage_users_custom_column', '', 'pp_roles', $item->ID, ['join_groups' => $join_groups, 'table_obj' => $this]);
     }
 
     // Custom column: Specific Permissions
     public function column_pp_exceptions($item)
     {
-        $join_groups = !empty($_REQUEST['pp_has_exceptions']) || !empty($_REQUEST['pp_has_roles']);
+        $join_groups = !PWP::empty_REQUEST('pp_has_exceptions') || !PWP::empty_REQUEST('pp_has_roles');
         return apply_filters('manage_users_custom_column', '', 'pp_exceptions', $item->ID, ['join_groups' => $join_groups, 'table_obj' => $this]);
     }
 
