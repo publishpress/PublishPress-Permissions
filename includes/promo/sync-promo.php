@@ -1,7 +1,7 @@
 <div class="wrap publishpress-caps-manage pressshack-admin-wrapper pp-conditions pp-permissions-menus-wrapper-promo">
     <header>
         <h1>
-            <?php esc_html_e('Sync User Posts', 'press-permit-core'); ?>
+            <?php esc_html_e('User Posts', 'press-permit-core'); ?>
         </h1>
     </header>
 
