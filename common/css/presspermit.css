@@ -225,9 +225,6 @@ div.pp-file-filtering-promo {
   max-width: 800px;
 }
 /* --- Users, Groups Listing --- */
-div.presspermit-groups .pp-group-site-roles {
-  font-weight: bold;
-}
 th.column-pp_no_groups,
 td.column-pp_no_groups,
 th.column-pp_no_groups a {
