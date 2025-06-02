@@ -31,23 +31,6 @@ class UsersListTable extends \WP_List_Table
 
     public function get_columns()
     {
-        $column_attr = [
-            'pp_roles' => [
-                'title' => (PWP::empty_REQUEST('pp_has_roles')) 
-                ? esc_html__('Click to show only users who have Extra Roles (by group or directly)', 'press-permit-core')
-                : esc_html__('Restore normal User Roles view', 'press-permit-core'),
-
-                'style' => (!PWP::empty_REQUEST('pp_has_roles')) ? 'style="font-weight:bold; color:black"' : '',
-            ],
-            'pp_exceptions' => [
-                'title' => (PWP::empty_REQUEST('pp_has_exceptions')) 
-                ? esc_html__('Click to show only users who have Specific Permissions (by group or directly)', 'press-permit-core')
-                : esc_html__('Restore normal User Permissions view', 'press-permit-core'),
-
-                'style' => (!PWP::empty_REQUEST('pp_has_exceptions')) ? 'style="font-weight:bold; color:black"' : '',
-            ],
-        ];
-
         if (!PWP::is_REQUEST('pp_user_perms')) {
             $pp_user_perms = get_user_option('pp_user_perms');
         } else {
@@ -56,21 +39,14 @@ class UsersListTable extends \WP_List_Table
 
         $columns = [
             'cb' => '<input type = "checkbox" />',
-            'user_login' => __('Username', 'press-permit-core'),
-            'name' => __('Name', 'press-permit-core'),
-            'user_email' => __('Email', 'press-permit-core'),
-            'pp_groups' => __('Groups', 'press-permit-core'),
-            'pp_exceptions' => sprintf(
-                (PWP::empty_REQUEST('pp_has_exceptions')) ? esc_html__('User Permissions %1$s%2$s', 'press-permit-core') : esc_html__('Specific Permissions %1$s%2$s', 'press-permit-core'),
-                (empty($pp_user_perms)) ? '<a href="' . esc_url(add_query_arg('pp_has_exceptions', intval(PWP::empty_REQUEST('pp_has_exceptions')))) . '" title="' . esc_attr($column_attr['pp_exceptions']['title']) . '" ' . $column_attr['pp_exceptions']['style'] . '>*' : '',
-                (empty($pp_user_perms)) ? '</a>' : ''
-            ),
-            'pp_roles' => sprintf(
-                (PWP::empty_REQUEST('pp_has_roles')) ? esc_html__('User Roles %1$s%2$s', 'press-permit-core') : esc_html__('Extra Roles %1$s%2$s', 'press-permit-core'),
-                (empty($pp_user_perms)) ? '<a href="' . esc_url(add_query_arg('pp_has_roles', intval(PWP::empty_REQUEST('pp_has_roles')))) . '" title="' . esc_attr($column_attr['pp_roles']['title']) . '" ' . $column_attr['pp_roles']['style'] . '>*' : '',
-                (empty($pp_user_perms)) ? '</a>' : ''
-            ),
+            'user_login' => esc_html__('Username', 'press-permit-core'),
+            'name' => esc_html__('Name', 'press-permit-core'),
+            'user_email' => esc_html__('Email', 'press-permit-core'),
+            'pp_groups' => esc_html__('Groups', 'press-permit-core'),
+            'pp_roles' => esc_html__('Roles', 'press-permit-core'),
+            'pp_exceptions' => esc_html__('Specific Permissions', 'press-permit-core'),
         ];
+
         return $columns;
     }
 
@@ -94,7 +70,7 @@ class UsersListTable extends \WP_List_Table
     public function get_bulk_actions()
     {
         return [
-            'delete' => __('Delete', 'press-permit-core'),
+            'delete' => esc_html__('Delete', 'press-permit-core'),
         ];
     }
 

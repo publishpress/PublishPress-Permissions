@@ -78,10 +78,10 @@ class GroupsListTable extends GroupsListTableBase
             $orderby_map = [
                 'group_name'  => 'group_name',
                 'group_type'  => 'metagroup_type',
-                'num_users'   => 'user_count', // Make sure your query supports this
-                'exceptions'  => 'exception_count', // Ditto
-                'roles'       => 'role_count', // Ditto
-                'description' => 'group_description',
+                // 'num_users'   => 'user_count', // Make sure your query supports this
+                // 'exceptions'  => 'exception_count', // Ditto
+                // 'roles'       => 'role_count', // Ditto
+                // 'description' => 'group_description',
             ];
             if (isset($orderby_map[$orderby])) {
                 $args['orderby'] = $orderby_map[$orderby];
@@ -100,10 +100,6 @@ class GroupsListTable extends GroupsListTableBase
         $args['group_variant'] = $this->group_variant;
         $group_search = new GroupQuery($args);
 
-        // Debug: log the raw SQL query if available
-        if (isset($group_search->request)) {
-            // error_log('GroupsListTable SQL: ' . $group_search->request);
-        }
         $this->items = $group_search->get_results();
         $this->listed_ids = [];
 
@@ -200,10 +196,10 @@ class GroupsListTable extends GroupsListTableBase
         return [
             'group_name'   => ['group_name', false],
             'group_type'   => ['group_type', false],
-            'num_users'    => ['num_users', false],
-            'exceptions'   => ['exceptions', false],
-            'roles'        => ['roles', false],
-            'description'  => ['description', false],
+            // 'num_users'    => ['num_users', false],
+            // 'exceptions'   => ['exceptions', false],
+            // 'roles'        => ['roles', false],
+            // 'description'  => ['description', false],
         ];
     }
 

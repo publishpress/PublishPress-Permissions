@@ -50,7 +50,7 @@ class GroupQuery
                 'include' => [],
                 'exclude' => [],                    // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                 'search' => '',
-                'orderby' => '',
+                'orderby' => 'login',
                 'order' => 'ASC',
                 'offset' => '', 'number' => '',
                 'count_total' => true,
@@ -196,10 +196,10 @@ class GroupQuery
         }
 
         // sorting
-        if (empty($qv['orderby'])) {
+        if ('ID' == $qv['orderby'] || 'id' == $qv['orderby']) {
             $orderby = 'ID';
         } else {
-            $orderby = $qv['orderby'];
+            $orderby = 'group_name';
         }
 
         $qv['order'] = strtoupper($qv['order']);
@@ -209,7 +209,7 @@ class GroupQuery
             $order = 'DESC';
         }
 
-        if (!empty($qv['orderby']) || !empty($qv['order'])) {
+        if ('ID' == $qv['orderby'] || 'id' == $qv['orderby']) {
         	$this->query_orderby = "ORDER BY $orderby $order";                      // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         } else {
             $this->query_orderby = "ORDER BY metagroup_type ASC, $orderby $order";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
