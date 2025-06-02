@@ -32,12 +32,6 @@ class UsersListTable extends \WP_List_Table
     public function get_columns()
     {
         $column_attr = [
-            'pp_no_groups' => [
-                'title' => esc_html__('Click to show only users who have no group', 'press-permit-core'),
-                'style' => (!PWP::empty_REQUEST('pp_no_group') && !PWP::is_REQUEST('orderby', 'pp_group'))
-                    ? 'style="font-weight:bold; color:black"'
-                    : '',
-            ],
             'pp_roles' => [
                 'title' => (PWP::empty_REQUEST('pp_has_roles')) 
                 ? esc_html__('Click to show only users who have Extra Roles (by group or directly)', 'press-permit-core')
@@ -65,11 +59,6 @@ class UsersListTable extends \WP_List_Table
             'user_login' => __('Username', 'press-permit-core'),
             'name' => __('Name', 'press-permit-core'),
             'user_email' => __('Email', 'press-permit-core'),
-            'pp_no_groups' => sprintf(
-                esc_html__('%1$s(x)%2$s', 'press-permit-core'),
-                '<a href="' . esc_url(add_query_arg('pp_no_group', intval(PWP::empty_REQUEST('pp_no_group')))) . '" title="' . esc_attr($column_attr['pp_no_groups']['title']) . '" ' . $column_attr['pp_no_groups']['style'] . '>',
-                '</a>'
-            ),
             'pp_groups' => __('Groups', 'press-permit-core'),
             'pp_exceptions' => sprintf(
                 (PWP::empty_REQUEST('pp_has_exceptions')) ? esc_html__('User Permissions %1$s%2$s', 'press-permit-core') : esc_html__('Specific Permissions %1$s%2$s', 'press-permit-core'),
@@ -89,10 +78,8 @@ class UsersListTable extends \WP_List_Table
     {
         return [
             'user_login' => ['user_login', false],
-            'user_email' => ['user_email', false],
             'name' => ['display_name', false],
-            'posts' => ['posts', false],
-            'pp_groups' => ['pp_groups', false],
+            'user_email' => ['user_email', false],
         ];
     }
 
@@ -146,12 +133,6 @@ class UsersListTable extends \WP_List_Table
     public function column_name($item)
     {
         return esc_html($item->display_name);
-    }
-
-    // Custom column: (x) no groups
-    public function column_pp_no_groups($item)
-    {
-        return '';
     }
 
     // Custom column: Groups

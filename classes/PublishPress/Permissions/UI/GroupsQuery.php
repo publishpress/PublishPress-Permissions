@@ -33,6 +33,8 @@ class GroupQuery
 
     public $query_vars;
 
+    public $request;
+
     /**
      *
      * @param string|array $args The query variables
@@ -48,7 +50,7 @@ class GroupQuery
                 'include' => [],
                 'exclude' => [],                    // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                 'search' => '',
-                'orderby' => 'login',
+                'orderby' => '',
                 'order' => 'ASC',
                 'offset' => '', 'number' => '',
                 'count_total' => true,
@@ -194,10 +196,10 @@ class GroupQuery
         }
 
         // sorting
-        if ('ID' == $qv['orderby'] || 'id' == $qv['orderby']) {
+        if (empty($qv['orderby'])) {
             $orderby = 'ID';
         } else {
-            $orderby = 'group_name';
+            $orderby = $qv['orderby'];
         }
 
         $qv['order'] = strtoupper($qv['order']);
@@ -207,7 +209,7 @@ class GroupQuery
             $order = 'DESC';
         }
 
-        if ('ID' == $qv['orderby'] || 'id' == $qv['orderby']) {
+        if (!empty($qv['orderby']) || !empty($qv['order'])) {
         	$this->query_orderby = "ORDER BY $orderby $order";                      // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         } else {
             $this->query_orderby = "ORDER BY metagroup_type ASC, $orderby $order";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -289,19 +291,21 @@ class GroupQuery
     {
         global $wpdb;
 
+        // Build the SQL string
+        $sql = "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit";
+
+        // Store for debugging
+        $this->request = $sql;
+
         // phpcs Note: Query clauses constructed and sanitized in prepare_query()
 
         if (is_array($this->query_vars['fields']) || 'all' == $this->query_vars['fields']) {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-            $this->results = $wpdb->get_results(
-                "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-            );
+            $this->results = $wpdb->get_results($sql);
 
         } else {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-            $this->results = $wpdb->get_col(
-                "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-            );
+            $this->results = $wpdb->get_col($sql);
         }
 
         foreach($this->results as $k => $row) {
