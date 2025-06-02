@@ -241,14 +241,14 @@ class Groups
                             echo '<ul class="subsubsub">';
                             printf(esc_html__('%1$sGroup Type:%2$s %3$s', 'press-permit-core'), '<li class="pp-gray">', '</li>', '');
 
-                            $class = (!$group_variant && PWP::empty_REQUEST('pp_has_perms')) ? 'current' : '';
-
                             if (!PWP::is_REQUEST('pp_has_perms')) {
                                 $pp_has_perms = get_user_option('pp_has_perms');
                             } else {
                                 $pp_has_perms = !PWP::empty_REQUEST('pp_has_perms');
                                 update_user_option($current_user->ID, 'pp_has_perms', $pp_has_perms);
                             }
+
+                            $class = (!$group_variant && !$pp_has_perms) ? 'current' : '';
 
                             echo "<li><a href='admin.php?page=presspermit-groups&pp_has_perms=0' class='" . esc_attr($class) . "'>" . esc_html__('All', 'press-permit-core') . "</a>&nbsp;|&nbsp;</li>";
 

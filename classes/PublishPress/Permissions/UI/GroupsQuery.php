@@ -209,7 +209,7 @@ class GroupQuery
             $order = 'DESC';
         }
 
-        if ('ID' == $qv['orderby'] || 'id' == $qv['orderby']) {
+        if ( in_array(strtolower($qv['orderby']), ['id', 'group_name'])) {
         	$this->query_orderby = "ORDER BY $orderby $order";                      // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         } else {
             $this->query_orderby = "ORDER BY metagroup_type ASC, $orderby $order";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
