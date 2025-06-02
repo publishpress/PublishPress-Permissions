@@ -300,11 +300,11 @@ class GroupQuery
         // phpcs Note: Query clauses constructed and sanitized in prepare_query()
 
         if (is_array($this->query_vars['fields']) || 'all' == $this->query_vars['fields']) {
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
             $this->results = $wpdb->get_results($sql);
 
         } else {
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
             $this->results = $wpdb->get_col($sql);
         }
 
