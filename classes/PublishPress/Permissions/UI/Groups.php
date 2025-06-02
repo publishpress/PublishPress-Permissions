@@ -295,8 +295,15 @@ class Groups
                         $pp_user_perms = get_user_option('pp_user_perms');
                     } else {
                         $pp_user_perms = !PWP::empty_REQUEST('pp_user_perms');
-            
                         update_user_option($current_user->ID, 'pp_user_perms', $pp_user_perms);
+                    }
+
+                    // Save and retrieve pp_no_group option per user
+                    if (!PWP::is_REQUEST('pp_no_group')) {
+                        $pp_no_group = get_user_option('pp_no_group') ? 1 : 0;
+                    } else {
+                        $pp_no_group = PWP::REQUEST_int('pp_no_group') ? 1 : 0;
+                        update_user_option($current_user->ID, 'pp_no_group', $pp_no_group);
                     }
                     ?>
 
@@ -306,15 +313,24 @@ class Groups
                             <div class="pp-hint pp-no-hide"></div>
                             <ul class="subsubsub">
                                 <li>
-                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_user_perms=0')); ?>"
-                                        class="<?php echo empty($pp_user_perms) ? 'current' : ''; ?>">
+                                    <?php $all_users_class = (!$pp_user_perms && !$pp_no_group) ? 'current' : ''; ?>
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_user_perms=0&pp_no_group=0')); ?>"
+                                        class="<?php esc_attr_e($all_users_class); ?>">
                                         <?php esc_html_e('All Users', 'press-permit-core'); ?>
                                     </a>&nbsp;|&nbsp;
                                 </li>
                                 <li>
-                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_user_perms=1')); ?>"
-                                        class="<?php echo !empty($pp_user_perms) ? 'current' : ''; ?>">
-                                        <?php esc_html_e('Users with Permissions set directly', 'press-permit-core'); ?>
+                                    <?php $has_perms_class = ($pp_user_perms && !$pp_no_group) ? 'current' : ''; ?>
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_user_perms=1&pp_no_group=0')); ?>"
+                                        class="<?php echo esc_attr_e($has_perms_class); ?>">
+                                        <?php esc_html_e('Has Permissions set directly', 'press-permit-core'); ?>
+                                    </a>&nbsp;|&nbsp;
+                                </li>
+                                <li>
+                                    <?php $no_group_class = $pp_no_group ? 'current' : ''; ?>
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_no_group=1')); ?>"
+                                        class="<?php echo esc_attr_e($no_group_class); ?>">
+                                        <?php esc_html_e('No custom Group', 'press-permit-core'); ?>
                                     </a>
                                 </li>
                             </ul>
@@ -324,6 +340,9 @@ class Groups
                                 <?php
                                 if ($pp_user_perms) {
                                     echo '<input type="hidden" name="pp_user_perms" value="1" />';
+                                }
+                                if ($pp_no_group) {
+                                    echo '<input type="hidden" name="pp_no_group" value="1" />';
                                 }
                                 if (isset($users_list_table)) {
                                     $users_list_table->search_box(__('Search Users'), 'user');
