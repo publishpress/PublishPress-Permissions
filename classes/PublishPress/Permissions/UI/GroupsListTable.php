@@ -181,7 +181,7 @@ class GroupsListTable extends GroupsListTableBase
     public function get_sortable_columns()
     {
         $c = [
-            'group_name'   => ['group_name', false],
+            'group_name' => 'group_name',
         ];
 
         return $c;
