@@ -512,7 +512,7 @@ class CollabHooks
         $pp = presspermit();
 
         // don't apply custom Role Usage settings if advanced options are disabled
-        $stored_usage = ($pp->getOption('advanced_options')) ? $pp->getOption('role_usage') : [];
+        $stored_usage = (!defined('PRESSPERMIT_LEGACY_ROLE_USAGE') || $pp->getOption('advanced_options')) ? $pp->getOption('role_usage') : [];
 
         if ($stored_usage) {
             $enabled_pattern_roles = array_intersect((array)$stored_usage, ['pattern']);

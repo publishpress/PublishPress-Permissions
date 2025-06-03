@@ -35,7 +35,7 @@ class CapabilityCaster
     }
 
     // If one of the standard WP roles is missing, define it for use as a template for type-specific role assignments
-    public function definePatternCaps()
+    public function definePatternCaps($args = [])
     {
         global $wp_roles;
 
@@ -65,7 +65,9 @@ class CapabilityCaster
         $type_caps = [];
         $type_caps['post'] = array_diff_key(get_object_vars($type_obj->cap), array_fill_keys(['read_post', 'edit_post', 'delete_post'], true));
 
-        if ($use_strict_rolecaps = !presspermit()->getOption('pattern_roles_include_generic_rolecaps')) {
+        $use_strict_rolecaps = !empty($args['force_strict']) || !presspermit()->getOption('pattern_roles_include_generic_rolecaps');
+
+        if ($use_strict_rolecaps) {
             $include_caps = array_fill_keys(
                 apply_filters(
                     'presspermit_include_arbitrary_caps',
@@ -163,7 +165,7 @@ class CapabilityCaster
             $type_obj->cap->read = PRESSPERMIT_READ_PUBLIC_CAP;
         } 
 
-        // disregard stored Supplemental Roles for Media when Media is no longer enabled for PP filtering (otherwise Post editing caps are granted)
+        // disregard stored Extra Roles for Media when Media is no longer enabled for PP filtering (otherwise Post editing caps are granted)
         if (('attachment' == $object_type)) {
             static $media_filtering_enabled;
 
@@ -194,7 +196,7 @@ class CapabilityCaster
         if (!empty($arr_name[3])) {
             if (empty($arr_name[4])) { // disregard stored roles with invalid status
                 return [];
-            } elseif ('post_status' == $arr_name[3]) {  // ignore supplemental roles for statuses which are no longer active for this post type
+            } elseif ('post_status' == $arr_name[3]) {  // ignore extra roles for statuses which are no longer active for this post type
                 if (!PWP::getPostStatuses(['name' => $arr_name[4], 'post_type' => $object_type]))
                     return [];
             }

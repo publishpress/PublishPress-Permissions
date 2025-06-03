@@ -220,6 +220,10 @@ class PostTermsSave
             return $terms;
         }
 
+        if (null === $terms) {
+            $terms = [];
+        }
+
         if (is_string($terms) || (!is_taxonomy_hierarchical($taxonomy))) {  // non-hierarchical taxonomy (tags)
             if (is_string($terms)) {
                 $term_info = self::parseTermNames($terms, $taxonomy);

@@ -7,6 +7,7 @@ class PluginPage
 {
     private static $instance = null;
     var $table;
+    var $table_user;
 
     public static function instance() {
         if (is_null(self::$instance)) {
@@ -75,8 +76,17 @@ class PluginPage
             $group_variant = self::getGroupVariant();
 
             if ( ! $this->table = apply_filters('presspermit_groups_list_table', false, $agent_type) ) {
-                require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsListTable.php' );
-                $this->table = new GroupsListTable(compact('agent_type', 'group_variant'));
+                if (!$active_tab = PWP::REQUEST_key('tab')) {
+                    $active_tab = 'user-group';
+                }
+
+                if ($active_tab === 'users') {
+                    require_once(PRESSPERMIT_CLASSPATH . '/UI/UsersListTable.php' );
+                    $this->table_user = new UsersListTable();
+                } else {
+                    require_once(PRESSPERMIT_CLASSPATH . '/UI/GroupsListTable.php' );
+                    $this->table = new GroupsListTable(compact('agent_type', 'group_variant'));
+                }
             }
 
             add_screen_option(
@@ -118,8 +128,20 @@ class PluginPage
             $group_variant = 'pp_group';
         }
 
-        if (empty($group_variant)) {
-            $group_variant = PWP::REQUEST_key('group_variant');
+        global $current_user;
+        if (PWP::is_REQUEST('pp_has_perms') && PWP::REQUEST_int('pp_has_perms') === 0 && PWP::empty_REQUEST('group_variant')) {
+            $group_variant = '';
+            update_user_option($current_user->ID, 'pp_group_variant', $group_variant);
+        } elseif (empty($group_variant)) {
+
+            if (!PWP::is_REQUEST('group_variant') && PWP::empty_REQUEST('pp_has_perms') && PWP::empty_REQUEST('pp_user_perms')) {
+                if (!$group_variant = get_user_option('pp_group_variant')) {
+                    $group_variant = '';
+                }
+            } else {
+                $group_variant = PWP::REQUEST_key('group_variant');
+                update_user_option($current_user->ID, 'pp_group_variant', $group_variant);
+            }
         }
 
         return sanitize_key(apply_filters('presspermit_query_group_variant', $group_variant));

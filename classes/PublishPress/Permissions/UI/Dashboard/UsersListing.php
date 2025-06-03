@@ -6,7 +6,7 @@ class UsersListing
 {
     public function __construct() {
         add_filter('manage_users_columns', [$this, 'fltUsersColumns']);
-        add_filter('manage_users_custom_column', [$this, 'fltUsersCustomColumn'], 99, 3); // filter late in case other plugin filters do not retain passed value
+        add_filter('manage_users_custom_column', [$this, 'fltUsersCustomColumn'], 99, 4); // filter late in case other plugin filters do not retain passed value
         add_filter('manage_users_sortable_columns', [$this, 'fltUsersColumnsSortable']);
         
         add_filter('pre_user_query', [$this, 'fltUserQueryExceptions']);
@@ -92,7 +92,7 @@ class UsersListing
 
         $defaults['pp_groups'] = esc_html__('Groups', 'press-permit-core');
 
-        $title = esc_html__('Click to show only users who have supplemental roles', 'press-permit-core');
+        $title = esc_html__('Click to show only users who have extra roles', 'press-permit-core');
         $style = (!PWP::empty_REQUEST('pp_has_roles')) ? 'style="font-weight:bold; color:black"' : '';
 
         $defaults['pp_roles'] = sprintf(
@@ -107,7 +107,7 @@ class UsersListing
             unset($defaults['bbp_user_role']);
         }
 
-        $title = esc_html__('Click to show only users who have specific permissions', 'press-permit-core');
+        $title = esc_html__('Click to show only users who have Specific Permissions assigned directly', 'press-permit-core');
         $style = (!PWP::empty_REQUEST('pp_has_exceptions')) ? 'style="font-weight:bold; color:black"' : '';
 
         $defaults['pp_exceptions'] = sprintf(
@@ -125,11 +125,17 @@ class UsersListing
         return $columns;
     }
 
-    public static function fltUsersCustomColumn($content, $column_name, $id)
+    public static function fltUsersCustomColumn($content, $column_name, $id, $args = [])
     {
         $pp_groups = presspermit()->groups();
 
         global $wp_list_table, $wp_roles;
+
+        if (empty($args['table_obj'])) {
+            $table_obj = $wp_list_table;
+        } else {
+            $table_obj = $args['table_obj'];
+        }
 
         switch ($column_name) {
             case 'pp_groups':
@@ -154,7 +160,10 @@ class UsersListing
                     $group_ids = $pp_groups->getGroupsForUser(
                         new \WP_User($id),
                         $agent_type,
-                        ['cols' => 'id', 'query_user_ids' => array_keys($wp_list_table->items)]
+                        [
+                            'cols' => 'id', 
+                            'query_agent_ids' => !empty($args['table_obj']) ? $table_obj->user_ids : array_keys($table_obj->items)
+                        ]
                     );
 
                     if (('pp_group' == $agent_type) && in_array('pp_net_group', $all_group_types, true)
@@ -197,7 +206,8 @@ class UsersListing
                                 } else {
                                     $content .= "<a href='"
                                         . esc_url("admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_type=$agent_type&amp;agent_id=$_id")
-                                        . "'>" . esc_html($name) . "</a>";
+                                        . "' title='" . esc_attr__('edit group', 'presspermit-core') . "'>"
+                                        . esc_html($name) . "</a>";
                                 }
 
                                 $any_done = true;
@@ -219,7 +229,7 @@ class UsersListing
                 if (!isset($role_info)) {
                     $role_info = \PublishPress\Permissions\API::countRoles(
                         'user', 
-                        ['query_agent_ids' => array_keys($wp_list_table->items)]
+                        ['query_agent_ids' => !empty($args['table_obj']) ? $table_obj->user_ids : array_keys($table_obj->items)]
                     );
                 }
 
@@ -250,12 +260,12 @@ class UsersListing
                 if (count($role_titles) > $display_limit) {
                     $excess = count($role_titles) - $display_limit;
                     $role_titles = array_slice($role_titles, 0, $display_limit);
-                    $role_titles[] = sprintf(__('%s more', 'press-permit-core'), (int) $excess);
+                    $role_titles[] = str_replace(' ', '&nbsp;', sprintf(__('%s more', 'press-permit-core'), (int) $excess));
                 }
 
                 if ($do_edit_link = current_user_can('pp_assign_roles') && (is_multisite() || current_user_can('edit_user', $id))) {
                     $edit_link = "admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_id=$id&amp;agent_type=user";
-                    $content .= "<a href='" . esc_url($edit_link) . "'>";
+                    $content .= "<a href='" . esc_url($edit_link) . "' ' title='" . esc_attr__('edit user permissions', 'presspermit-core') . "'>";
                 }
 
                 $content .= '<span class="pp-group-site-roles">' . implode(', ', $role_titles) . '</span>';
@@ -267,7 +277,15 @@ class UsersListing
                 break;
 
             case 'pp_exceptions':
-                $content .= DashboardFilters::listAgentExceptions('user', $id, ['query_agent_ids' => array_keys($wp_list_table->items)]);
+                $_args = [
+                    'query_agent_ids' => !empty($args['table_obj']) ? $table_obj->user_ids : array_keys($table_obj->items)
+                ];
+
+                if (isset($args['join_groups'])) {
+                    $_args['join_groups'] = $args['join_groups'];
+                }
+                
+                $content .= DashboardFilters::listAgentExceptions('user', $id, $_args);
                 break;
         }
 
@@ -276,7 +294,7 @@ class UsersListing
 
     public static function fltUserQueryExceptions($query_obj)
     {
-        global $wpdb;
+        global $wpdb, $current_user, $pagenow;
 
         // Filter the Users Query to support various group filtering / sorting parameters
 
@@ -289,7 +307,7 @@ class UsersListing
 
             $query_obj->query_orderby = "ORDER BY g.group_name $order, $wpdb->users.display_name";                 // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__users
 
-        } elseif (PWP::is_REQUEST('pp_no_group')) {
+        } elseif (!PWP::empty_REQUEST('pp_no_group')) {
             $query_obj->query_where .= " AND $wpdb->users.ID NOT IN ( SELECT gm.user_id FROM $wpdb->pp_group_members AS gm"  // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__users
                 . " INNER JOIN $wpdb->pp_groups as g ON gm.group_id = g.ID AND g.metagroup_id='' )";
         }
@@ -304,7 +322,13 @@ class UsersListing
             $query_obj->query_where .= " AND ID IN ( SELECT agent_id FROM $wpdb->ppc_roles WHERE agent_type = 'user' )";
         }
 
-        if (!PWP::empty_REQUEST('pp_user_perms')) {
+        if (!PWP::is_REQUEST('pp_user_perms') && (empty($pagenow) || ('users.php' != $pagenow))) {
+            $pp_user_perms = get_user_option('pp_user_perms');
+        } else {
+            $pp_user_perms = !PWP::empty_REQUEST('pp_user_perms');
+        }
+        
+        if ($pp_user_perms) {
             $query_obj->query_where .= " AND ( ID IN ( SELECT agent_id FROM $wpdb->ppc_roles"
                 . " WHERE agent_type = 'user' ) OR ID IN ( SELECT agent_id FROM $wpdb->ppc_exceptions AS e"
                 . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
@@ -325,15 +349,21 @@ class UsersListing
                 . " INNER JOIN $wpdb->ppc_roles AS r ON r.agent_id = ug.group_id AND r.agent_type = 'pp_group' )";
         }
 
-        if (!PWP::empty_REQUEST('pp_has_perms')) {
-            $query_obj->query_where .= " AND ID IN ( SELECT agent_id FROM $wpdb->ppc_exceptions AS e"
+        if (!PWP::is_REQUEST('pp_has_perms') && (empty($pagenow) || ('users.php' != $pagenow))) {
+            $pp_has_perms = get_user_option('pp_has_perms');
+        } else {
+            $pp_has_perms = !PWP::empty_REQUEST('pp_has_perms');
+        }
+
+        if ($pp_has_perms) {
+            $query_obj->query_where .= " AND ( ID IN ( SELECT agent_id FROM $wpdb->ppc_exceptions AS e"
                 . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
                 . " WHERE e.agent_type = 'user' )"
                 . " OR ID IN ( SELECT user_id FROM $wpdb->pp_group_members AS ug"
                 . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.agent_id = ug.group_id AND e.agent_type = 'pp_group' )"
                 . " OR ID IN ( SELECT agent_id FROM $wpdb->ppc_roles WHERE agent_type = 'user' )"
                 . " OR ID IN ( SELECT user_id FROM $wpdb->pp_group_members AS ug"
-                . " INNER JOIN $wpdb->ppc_roles AS r ON r.agent_id = ug.group_id AND r.agent_type = 'pp_group' )";
+                . " INNER JOIN $wpdb->ppc_roles AS r ON r.agent_id = ug.group_id AND r.agent_type = 'pp_group' ) )";
         }
 
         if ($pp_group = PWP::REQUEST_int('pp_group')) {

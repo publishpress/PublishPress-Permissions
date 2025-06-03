@@ -65,7 +65,7 @@ class AgentExceptionsAjax
                     exit;
                 }
 
-                $ops = (('post' == $for_source_name) && ('attachment' != $for_type)) ? ['read' => esc_html__('Read', 'press-permit-core')] : [];
+                $ops = (('post' == $for_source_name) && ('attachment' != $for_type)) ? ['read' => esc_html__('View', 'press-permit-core')] : [];
                 $ops = apply_filters('presspermit_exception_operations', $ops, $for_source_name, $for_type);
 
                 if ('pp_group' == $agent_type) {
@@ -104,22 +104,22 @@ class AgentExceptionsAjax
                         || defined('PP_ALL_ANON_FULL_EXCEPTIONS'))
                     && !defined('PP_NO_ADDITIONAL_ACCESS')
                 ) {
-                    $modes['additional'] = esc_html__('Enable:', 'press-permit-core');
+                    $modes['additional'] = esc_html__('Enable', 'press-permit-core');
                 }
 
                 if (('user' == $agent_type) || $is_wp_role || ('assign' == $operation) || defined('PP_GROUP_RESTRICTIONS')) {
                     // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
-                    $modes['exclude'] = esc_html__('Block:', 'press-permit-core');
+                    $modes['exclude'] = esc_html__('Block', 'press-permit-core');
                 }
 
-                $modes['include'] = esc_html__('Limit to:', 'press-permit-core');
+                $modes['include'] = esc_html__('Limit to', 'press-permit-core');
 
                 $modes = apply_filters('presspermit_exception_modes', $modes, $for_source_name, $for_type, $operation);
 
                 $tooltips = [
                     'additional' => esc_html__('Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core'),
-                    'exclude' => esc_html__('Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core'),
-                    'include' => esc_html__('Restrict access by limiting Role Capabilities to apply only for specified items. Users still need capabilities in their main role or supplemental roles.', 'press-permit-core')
+                    'exclude' => esc_html__('Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core'),      // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
+                    'include' => esc_html__('Restrict access by limiting role capabilities to apply only for specified items. Users still need capabilities in their main role or extra roles.', 'press-permit-core')
                 ];
                 ?>
                 <div>
@@ -130,7 +130,7 @@ class AgentExceptionsAjax
                             <?php
                             echo isset($tooltips[$mod_type]) ? 
                                 sprintf(
-                                    '<span data-toggle="tooltip" data-placement="top">%s<span class="tooltip-text"><span>%s</span><i></i></span><i class="dashicons dashicons-info-outline" style="font-size: 18px;width: 16px;height: 16px;margin-left: 1px;"></i></span>',
+                                    '<span data-toggle="tooltip" data-placement="top">%s<span class="tooltip-text"><span>%s</span><i></i></span><i class="dashicons dashicons-info-outline" style="font-size: 18px;width: 16px;height: 16px;margin-left: 3px;"></i></span>',
                                     esc_html($title),
                                     esc_html($tooltips[$mod_type])
                                 ) : esc_html($title); ?>
@@ -156,7 +156,7 @@ class AgentExceptionsAjax
                     if ('associate' != $operation) {
                         if ('assign' != $operation) {  // 'assign' op only pertains to terms
                             if ($type_obj = get_post_type_object($for_type)) {
-                                $types = ['' => esc_html__('selected:', 'press-permit-core')];
+                                $types = ['' => esc_html__('Selected:', 'press-permit-core')];
                             }
                         }
 
@@ -221,14 +221,14 @@ class AgentExceptionsAjax
                     echo '<div class="pp-checkbox">'
                         . '<input type="checkbox" id="pp_select_x_item_assign" name="pp_select_x_for_item" checked="checked" value="1" />'
                         . '<label id="pp_x_item_assign_label" for="pp_select_x_item_assign"> '
-                        . sprintf(esc_html__('selected %s:', 'press-permit-core'), esc_html($type_obj->labels->name)) . '</label></div>';
+                        . sprintf(esc_html__('Selected %s:', 'press-permit-core'), esc_html($type_obj->labels->name)) . '</label></div>';
 
                     if (
                         $type_obj && $type_obj->hierarchical
                         && apply_filters('presspermit_do_assign_for_children_ui', true, $for_type, compact('operation', 'mod_type'))
                     ) {
                         if (!$caption = apply_filters('presspermit_assign_for_children_caption', '', $for_type)) {
-                            $caption = sprintf(esc_html__('sub-%s:', 'press-permit-core'), $type_obj->labels->name);
+                            $caption = sprintf(esc_html__('Sub-%s:', 'press-permit-core'), $type_obj->labels->name);
                         }
 
                         $checked = (apply_filters('presspermit_assign_for_children_checked', false, $for_type, compact('operation', 'mod_type')))

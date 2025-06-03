@@ -160,7 +160,7 @@ var wpNavMenu;
             var matched, newID,
                 takenIDs = {},
                 form = document.getElementById('nav-menu-meta'),
-                pattern = new RegExp('menu-item\\[(\[^\\]\]*)', 'g'),
+                pattern = new RegExp('menu-item\\[([^\\]]*)', 'g'),
                 $items = $('<div>').html(resp).find('li'),
                 $item;
 

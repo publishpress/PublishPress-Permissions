@@ -26,7 +26,7 @@ class AgentPermissions
         }
 
         if ($agent_id = PWP::REQUEST_int('agent_id')) {
-            $agent = $pp_groups->getAgent($agent_id, $agent_type);
+            $agent = $pp_groups->getGroup($agent_id, $agent_type);
         } else {
             $agent_id = 0;
             $agent = (object)['metagroup_type' => ''];
@@ -106,18 +106,6 @@ class AgentPermissions
 
                 </p>
             </div>
-
-        <?php elseif (PWP::is_GET('created')) : ?>
-            <div id="message" class="updated">
-                <p>
-                    <strong><?php esc_html_e('Group created.', 'press-permit-core') ?>&nbsp;</strong>
-                    <?php
-                    if ($wp_http_referer) : ?>
-                        <a href="<?php echo esc_url($groups_link); ?>"><?php esc_html_e('Back to groups list', 'press-permit-core'); ?></a>
-                    <?php endif; ?>
-                </p>
-            </div>
-
         <?php endif; ?>
 
         <?php
@@ -309,8 +297,9 @@ class AgentPermissions
                 if ('user' == $agent_type) : ?>
                     <div>
                         <?php if ($agent_id) {
-                            // @todo: Consider how to reinstate a read-only summary of the Supplemental Roles and Permissions the user has from Group membership
+                            // @todo: Consider how to reinstate a read-only summary of the extra Roles and Permissions the user has from Group membership
 
+                            // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
                             /*
                             $roles = [];
                             $user = $pp->getUser($agent_id);
@@ -341,7 +330,7 @@ class AgentPermissions
                             );
 
                             $role_group_caption = sprintf(
-                                esc_html__('Supplemental Roles %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
+                                esc_html__('Extra Roles %1$s(from primary role or %2$sgroup membership%3$s)%4$s', 'press-permit-core'),
                                 '',
                                 '',
                                 '',
@@ -383,9 +372,9 @@ class AgentPermissions
                                 ?>
                             </h4>
                             <ul class="pp-notes">
-                                <li><?php printf(esc_html__('%1$sUsers who have Supplemental Roles assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_roles=1") . "'>", '</a>'); ?></li>
+                                <li><?php printf(esc_html__('%1$sUsers who have Extra Roles assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_roles=1") . "'>", '</a>'); ?></li>
                                 <li><?php printf(esc_html__('%1$sUsers who have Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_exceptions=1") . "'>", '</a>'); ?></li>
-                                <li><?php printf(esc_html__('%1$sUsers who have Supplemental Roles or Specific Permissions directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_perms=1") . "'>", '</a>'); ?></li>
+                                <li><?php printf(esc_html__('%1$sUsers who have Extra Roles or Specific Permissions directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_perms=1") . "'>", '</a>'); ?></li>
                             </ul>
                         <?php
                         }

@@ -12,10 +12,10 @@ class ItemExceptionsRenderUI
     public function __construct()
     {
         $this->opt_labels = [
-            'default' => esc_html__('(default access)', 'press-permit-core'),
-            'default_yes' => esc_html__('(default: Yes)', 'press-permit-core'),
-            'default_no' => esc_html__('(default: No)', 'press-permit-core'),
-            'no_setting' => esc_html__('(no setting)', 'press-permit-core'),
+            'default' => esc_html__('(Default access)', 'press-permit-core'),
+            'default_yes' => esc_html__('(Default: Yes)', 'press-permit-core'),
+            'default_no' => esc_html__('(Default: No)', 'press-permit-core'),
+            'no_setting' => esc_html__('(No setting)', 'press-permit-core'),
             'enabled' => esc_html__('Enabled', 'press-permit-core'),
             'blocked' => esc_html__('Blocked', 'press-permit-core'),
             'default_blocked' => esc_html__('(Blocked)', 'press-permit-core'),
@@ -91,7 +91,7 @@ class ItemExceptionsRenderUI
 
                 global $wpdb;
 
-                // One locally cached direct query of plugin tables to retrieve supplemental roles for all WP metagroups
+                // One locally cached direct query of plugin tables to retrieve extra roles for all WP metagroups
                 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $results = $wpdb->get_results(
                     "SELECT g.metagroup_id AS wp_rolename, r.role_name AS supplemental_role FROM $wpdb->ppc_roles AS r"

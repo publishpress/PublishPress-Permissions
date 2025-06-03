@@ -36,8 +36,7 @@ jQuery(document).ready(function ($) {
         $('input[name="member_csv"]').val($("input#member_csv").val());
         $('input[name="group_name"]').val($("input#group_name").val());
         $('input[name="description"]').val($("input#description").val());
-        $("#pp_new_x_submission_msg").html(ppRestrict.submissionMsg);
-        $("#pp_new_x_submission_msg").show();
+        $(this).val(ppRestrict.submissionMsg).addClass('is-busy');
     });
 
     $('#agent-profile #submit').on('click', function (e) {
@@ -66,7 +65,7 @@ jQuery(document).ready(function ($) {
     });
 
     var presspermitItemCheckboxClick = function (data_var, t) {
-        var expr = data_var + '\\[(\[^\\]\]*)';
+        var expr = data_var + '\\[([^\\]]*)';
         var re = new RegExp(expr);
 
         itemdata = t.closest('li').getItemData();
@@ -189,7 +188,7 @@ jQuery(document).ready(function ($) {
 
         $(items).each(function (item_index) {
             var t = $(this);
-            var expr = data_var + '\\[(\[^\\]\]*)';
+            var expr = data_var + '\\[([^\\]]*)';
             var re = new RegExp(expr);
 
             // menu-item-title, menu-item-object-id
@@ -608,7 +607,7 @@ jQuery(document).ready(function ($) {
         var matched, newID,
             takenIDs = {},
             form = document.getElementById('nav-menu-meta'),
-            pattern = new RegExp('menu-item\\[(\[^\\]\]*)', 'g'),
+            pattern = new RegExp('menu-item\\[([^\\]]*)', 'g'),
             $items = $('<div>').html(resp).find('li'),
             $item;
 
@@ -647,7 +646,7 @@ jQuery(document).ready(function ($) {
 
 
     // ========== Begin "Edit Exception" Submission scripts ==========
-    // Handle expansion/collapse of sections
+    // Handle expansion/collapse of sections exceptions
     $('#pp_current_exceptions .section-header').on('click', function(e) {
         // Only proceed if the click wasn't on the search box or its children
         if (!$(e.target).closest('.search-box').length) {
@@ -657,12 +656,12 @@ jQuery(document).ready(function ($) {
         }
     });
     
-    // Handle expansion/collapse of subsections
+    // Handle expansion/collapse of subsections exceptions
     $('#pp_current_exceptions .subsection-header').on('click', function(e) {
         // Only proceed if the click wasn't on the search box or its children
         if (!$(e.target).closest('.search-box').length) {
             const $section = $(this).closest('.permission-type');
-            $section.find('.section-content').slideToggle(200);
+            $section.find('.subsection-content').slideToggle(200);
             $section.toggleClass('collapsed');
         }
     });

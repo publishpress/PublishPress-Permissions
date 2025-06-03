@@ -261,7 +261,6 @@ class Permissions
             'non_admins_set_read_exceptions' => 1,
             'user_search_by_role' => 0,
             'anonymous_unfiltered' => 0,
-            //'suppress_administrator_metagroups' => 0,
             'users_bulk_groups' => 1,
             'limit_front_end_term_filtering' => 0,
             'list_all_constants' => 0,
@@ -1058,7 +1057,7 @@ class Permissions
     }
 
     /**
-     * Assign supplemental roles for a user or group
+     * Assign extra roles for a user or group
      * @param array roles : roles[role_name][agent_id] = true
      * @param string agent_type
      */
@@ -1234,13 +1233,15 @@ class Permissions
         // This code is used to override the "Edit Tag" text in the admin area
         // to provide more context for the user.
         if (is_admin() 
-            && isset($_GET['taxonomy'], $_GET['tag_ID'], $text) 
-            && $text === 'Edit Tag' 
-            && $_GET['taxonomy'] === 'post_tag' ) {
-            if (!empty($_GET['pp_universal'])) {
+            && PWP::is_GET('taxonomy') && PWP::is_GET('tag_ID') && isset($text) 
+            && ($text === 'Edit Tag')
+            && (PWP::GET_key('taxonomy') === 'post_tag') 
+        ) {
+            if (!PWP::empty_GET('pp_universal')) {
                 return esc_html__('Edit Tag for All Post Types', 'press-permit-core');
             }
-            if (isset($_GET['post_type']) && $_GET['post_type'] === 'post') {
+            
+            if (PWP::is_GET('post_type') && (PWP::GET_key('post_type') === 'post')) {
                 return esc_html__('Edit Tag for Posts', 'press-permit-core');
             }
         }

@@ -304,7 +304,7 @@ class CapabilityFilters
                                         // This capability check is for a post type capability, but NOT a meta cap check (read_post / edit_post / delete_post)
                                         // Either the check is not for an individual post, or the user does not have a corresponding Specific Permission for that post.
                                         
-                                        global $wpdb, $pagenow;
+                                        global $wpdb;
 
                                         static $listed_post_tt_ids;
 

@@ -149,7 +149,7 @@ class GroupsListTable extends GroupsListTableBase
 
         if (
             current_user_can('pp_delete_groups')
-            && PWP::GET_key('group_variant') !== 'wp_role' // don't allow deletion of WP roles
+            && !in_array(PWP::GET_key('group_variant'), ['wp_role', 'login_state'], true) // don't allow deletion of WP roles
         ) {
             $actions['delete'] = esc_html__('Delete', 'press-permit-core');
         }
@@ -159,7 +159,7 @@ class GroupsListTable extends GroupsListTableBase
 
     public function get_columns()
     {
-        $bulk_check_all = !PWP::is_REQUEST('group_variant', 'wp_role') || $this->deleted_roles_listed()
+        $bulk_check_all = !PWP::is_REQUEST('group_variant', ['wp_role', 'login_state']) || $this->deleted_roles_listed()
             ? '<input type="checkbox" />'
             : '';
 
@@ -168,8 +168,8 @@ class GroupsListTable extends GroupsListTableBase
             'group_name' => esc_html__('Name', 'press-permit-core'),
             'group_type' => esc_html__('Type', 'press-permit-core'),
             'num_users' => _x('Users', 'count', 'press-permit-core'),
-            'roles' => _x('Roles', 'count', 'press-permit-core'),
-            'exceptions' => _x('Permissions', 'count', 'press-permit-core'),
+            'exceptions' => _x('Specific Permissions', 'count', 'press-permit-core'),
+            'roles' => _x('Extra Roles', 'count', 'press-permit-core'),
             'description' => esc_html__('Description', 'press-permit-core'),
         ];
 
@@ -435,33 +435,32 @@ class GroupsListTable extends GroupsListTableBase
 
         if ($detached = PWP::REQUEST_int('detached')) {
             echo '<input type="hidden" name="detached" value="' . esc_attr($detached) . '" />';
-        }
-?>
+        } ?>
         <p class="search-box">
             <label class="screen-reader-text" for="<?php echo esc_attr($input_id); ?>"><?php echo esc_html($text); ?>:</label>
 
             <input type="search" id="<?php echo esc_attr($input_id); ?>" name="s" value="<?php _admin_search_query(); ?>"
-                class="<?php echo esc_attr($class); ?>" <?php if ($tabindex) echo ' tabindex="' . (int) $tabindex . '"'; ?> />
+                class="<?php echo esc_attr($class); ?>" <?php if ($tabindex)
+                       echo ' tabindex="' . (int) $tabindex . '"'; ?> />
 
             <?php
             $attribs = ($tabindex) ? ['id' => 'search-submit', 'tabindex' => $tabindex + 1] : ['id' => 'search-submit'];
             submit_button($text, '', '', false, $attribs);
             ?>
         </p>
-    <?php
+        <?php
     }
 
     protected function display_tablenav($which)
     {
-        wp_nonce_field('pp-bulk-groups');
-    ?>
+        wp_nonce_field('pp-bulk-groups'); ?>
         <div class="tablenav <?php echo esc_attr($which); ?>">
 
-            <?php if ($this->has_items()) : ?>
+            <?php if ($this->has_items()): ?>
                 <div class="alignleft actions bulkactions">
                     <?php $this->bulk_actions($which); ?>
                 </div>
-            <?php
+                <?php
             endif;
             $this->extra_tablenav($which);
             $this->pagination($which);
@@ -469,7 +468,7 @@ class GroupsListTable extends GroupsListTableBase
 
             <br class="clear" />
         </div>
-<?php
+        <?php
     }
 
     private function countRoleUsers($role_name)

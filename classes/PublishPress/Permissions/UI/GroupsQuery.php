@@ -33,6 +33,8 @@ class GroupQuery
 
     public $query_vars;
 
+    public $request;
+
     /**
      *
      * @param string|array $args The query variables
@@ -107,15 +109,34 @@ class GroupQuery
         $this->query_where = "WHERE 1=1";
 
         if ('wp_role' == $this->group_variant) {
-            $this->query_where .= " AND $groups_table.metagroup_type IN ('wp_role')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            $this->query_where .= " AND $groups_table.metagroup_type IN ('wp_role') AND $groups_table.metagroup_id NOT IN ('wp_anon', 'wp_auth', 'wp_all')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        } else if ('login_state' == $this->group_variant) {
+            $this->query_where .= " AND $groups_table.metagroup_type IN ('wp_role') AND $groups_table.metagroup_id IN ('wp_anon', 'wp_auth', 'wp_all')";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
 
         if (!defined('PUBLISHPRESS_REVISIONS_VERSION')) {
             $this->query_where .= " AND $groups_table.metagroup_type != 'rvy_notice'";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
 
+        if (!PWP::is_REQUEST('pp_has_perms')) {
+            $pp_has_perms = get_user_option('pp_has_perms');
+        } else {
+            $pp_has_perms = !PWP::empty_REQUEST('pp_has_perms');
+        }
+
+        if (!empty($pp_has_perms)) {
+            $this->query_where .= " AND ( ID IN ( SELECT agent_id FROM $wpdb->ppc_exceptions AS e"
+                . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
+                . " WHERE e.agent_type = 'user' )"
+                . " OR ID IN ( SELECT user_id FROM $wpdb->pp_group_members AS ug"
+                . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.agent_id = ug.group_id AND e.agent_type = 'pp_group' )"
+                . " OR ID IN ( SELECT agent_id FROM $wpdb->ppc_roles WHERE agent_type = 'user' )"
+                . " OR ID IN ( SELECT user_id FROM $wpdb->pp_group_members AS ug"
+                . " INNER JOIN $wpdb->ppc_roles AS r ON r.agent_id = ug.group_id AND r.agent_type = 'pp_group' ) )";
+        }
+
         $skip_meta_types = [];
-        if ($this->group_variant && ('pp_net_group' != $this->group_variant) && ('wp_role' != $this->group_variant)) {
+        if ($this->group_variant && !in_array($this->group_variant, ['pp_net_group', 'wp_role', 'login_state'], true)) {
             $skip_meta_types[] = 'wp_role';
         } else {
             $pp_only_roles = (array) $pp->getOption('supplemental_role_defs');
@@ -188,7 +209,7 @@ class GroupQuery
             $order = 'DESC';
         }
 
-        if ('ID' == $qv['orderby'] || 'id' == $qv['orderby']) {
+        if ( in_array(strtolower($qv['orderby']), ['id', 'group_name'])) {
         	$this->query_orderby = "ORDER BY $orderby $order";                      // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         } else {
             $this->query_orderby = "ORDER BY metagroup_type ASC, $orderby $order";  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -270,19 +291,21 @@ class GroupQuery
     {
         global $wpdb;
 
+        // Build the SQL string
+        $sql = "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit";
+
+        // Store for debugging
+        $this->request = $sql;
+
         // phpcs Note: Query clauses constructed and sanitized in prepare_query()
 
         if (is_array($this->query_vars['fields']) || 'all' == $this->query_vars['fields']) {
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-            $this->results = $wpdb->get_results(
-                "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-            );
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+            $this->results = $wpdb->get_results($sql);
 
         } else {
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-            $this->results = $wpdb->get_col(
-                "SELECT $this->query_fields $this->query_from $this->query_join $this->query_where $this->query_orderby $this->query_limit"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-            );
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+            $this->results = $wpdb->get_col($sql);
         }
 
         foreach($this->results as $k => $row) {

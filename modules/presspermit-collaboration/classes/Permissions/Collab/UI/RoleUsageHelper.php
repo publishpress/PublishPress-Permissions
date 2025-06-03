@@ -37,7 +37,7 @@ class RoleUsageHelper
             . esc_html__("The 'posts' capabilities in a WP role determine its function as a Pattern Role for supplemental assignment to Permission Groups. When you assign the 'Author' pattern role for Pages, edit_posts and edit_published_posts become edit_pages and edit_published_pages.", 'press-permit-core')
             . '</li>'
             . '<li>'
-            . esc_html__("Capabilities formally defined for other post types (i.e. 'edit_others_pages', 'edit_doohickies') apply to primary role assignment and supplemental direct assignment, but not pattern role assignment.", 'press-permit-core')
+            . esc_html__("Role capabilities defined for other post types (i.e. 'edit_others_pages', 'edit_things') are ignored unless Role Usage is set to Direct Assignment.", 'press-permit-core')
             . '</li>'
             . '<li>'
             . esc_html__("If one of the default roles is deleted from the WP database, it will remain available as a pattern role with default WP capabilities (but can be disabled here).", 'press-permit-core')

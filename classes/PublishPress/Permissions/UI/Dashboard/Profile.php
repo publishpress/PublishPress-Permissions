@@ -28,13 +28,14 @@ class Profile
             $roles,
             [
                 'read_only' => true,
-                'caption' => sprintf(esc_html__('Supplemental Roles %1$s(for this user)%2$s', 'press-permit-core'), '', ''),
+                'context' => 'user-edit',
+                'caption' => sprintf(esc_html__('Extra Roles %1$s(for this user)%2$s', 'press-permit-core'), '', ''),
                 'class' => 'pp-user-roles',
                 'link' => $edit_url
             ]
         );
 
-        $caption = sprintf(esc_html__('Specific Permissions %1$s(for user)%2$s', 'press-permit-core'), '', '');
+        $caption = sprintf(esc_html__('Specific Permissions %1$s(for this user)%2$s', 'press-permit-core'), '', '');
         $new_permissions_link = true;
         $maybe_display_note = !$has_user_roles;
         $display_limit = 12;
@@ -77,7 +78,7 @@ class Profile
             [
                 'read_only' => true,
                 'link' => '',
-                'caption' => sprintf(esc_html__('Supplemental Roles %1$s(from primary role or group membership)%2$s', 'press-permit-core'), '', '')
+                'caption' => sprintf(esc_html__('Extra Roles %1$s(from primary role or group membership)%2$s', 'press-permit-core'), '', '')
             ]
         );
 
@@ -295,7 +296,7 @@ class Profile
 
                     if ($show_link && current_user_can('pp_assign_roles') && (is_multisite() || current_user_can('edit_user', $id))) {
                         $edit_link = "admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_id=$id&amp;agent_type=user";
-                        echo "<a href='" . esc_url($edit_link) . "'>" . esc_html($titles_list) . "</a><br />";
+                        echo "<a href='" . esc_url($edit_link) . "' title='" . esc_attr__('edit user permissions', 'presspermit-core') . "'>" . esc_html($titles_list) . "</a><br />";
                     } else {
                         echo esc_html($titles_list);
                     }
@@ -306,7 +307,7 @@ class Profile
 
                     if ($show_link && current_user_can('pp_assign_roles') && (is_multisite() || current_user_can('edit_user', $id))) {
                         $edit_link = "admin.php?page=presspermit-edit-permissions&amp;action=edit&amp;agent_id=$id&amp;agent_type=user";
-                        $exc_str .= "<a href='" . esc_url($edit_link) . "'>" . esc_html($titles_list) . "</a><br />";
+                        $exc_str .= "<a href='" . esc_url($edit_link) . "' title='" . esc_attr__('edit user permissions', 'presspermit-core') . "'>" . esc_html($titles_list) . "</a><br />";
                     } else {
                         $exc_str .= esc_html($titles_list);
                     }
@@ -372,7 +373,7 @@ class Profile
                     <p>
                         <?php
                         printf(
-                            esc_html__('Supplemental roles and specific permissions assigned to a user\'s primary role or other Permission Groups are usually the cleanest way to customize permissions.  You can also %1$scustomize this user directly%2$s.', 'press-permit-core'),
+                            esc_html__('Permissions assigned to a user\'s role or custom group are usually the cleanest way to customize access. You can also %1$scustomize this user directly%2$s.', 'press-permit-core'),
                             "<a href='" . esc_url($edit_url) . "'>",
                             '</a>'
                         );

@@ -40,7 +40,10 @@ class PermissionsHooksAdmin
         add_action('pp_inserted_exception_item', [$this, 'actPluginSettingsUpdated']);
         add_action('presspermit_removed_exception_items', [$this, 'actPluginSettingsUpdated']);
 
-        add_filter('cme_presspermit_capabilities', [$this, 'fltFlagPermissionsCapabilities']);
+        add_filter('presspermit_cap_descriptions', [$this, 'flt_cap_descriptions'], 3);  // priority 3 for ordering before PPS and PPCC additions in caps list
+        add_filter('cme_presspermit_capabilities', [$this, 'fltFlagPermissionsCapabilities'], 3);
+        add_filter('cme_presspermit_capabilities', [$this, 'fltOrderPermissionsCapabilities'], 999);
+        add_filter('cme_capability_descriptions', [$this, 'fltCapabilityDescriptions']);
 
         add_action('presspermit_trigger_cache_flush', [$this, 'wpeCacheFlush']);
         add_action('presspermit_activate', [$this, 'actPluginSettingsUpdated']);
@@ -100,11 +103,67 @@ class PermissionsHooksAdmin
             }
         }
 
+        if (get_option('presspermit_refresh_role_usage')) {
+            $this->actApplyDefaultRoleUsage();
+            delete_option('presspermit_refresh_role_usage');
+        }
+
         if (PWP::is_GET('pp_agent_search')) {
             require_once(PRESSPERMIT_CLASSPATH . '/UI/AgentsAjax.php');
             new Permissions\UI\AgentsAjax();
             exit;
         }
+    }
+
+    public function actApplyDefaultRoleUsage() {
+        add_action('init', function() {
+            global $wp_roles;
+
+            $pp = presspermit();
+
+            if (!$role_usage = $pp->getOption('role_usage')) {
+                $role_usage = [];
+            }
+
+            $cap_caster = $pp->capCaster();
+            $cap_caster->definePatternCaps(['force_strict' => true]);
+
+            $type_obj = get_post_type_object('post');
+            $post_caps = array_diff_key(get_object_vars($type_obj->cap), array_fill_keys(['read_post', 'edit_post', 'delete_post'], true));
+
+            foreach ($wp_roles->roles as $role_name => $_role) {
+                if (isset($role_usage[$role_name]) || !empty($cap_caster->pattern_role_type_caps[$role_name])) {
+                    continue;
+                }
+
+                if (!$role_post_caps = array_intersect_key(
+                    $post_caps,
+                    $_role['capabilities']
+                )) {
+                    continue;
+                }
+
+                $ignore_caps = array_fill_keys(
+                    ['set_posts_status', 'create_posts', 'list_posts', 'list_published_posts', 'list_private_posts', 'list_others_posts'],
+                    true
+                );
+
+                foreach ($cap_caster->pattern_role_type_caps as $pattern_role_name => $pattern_role_caps) {
+                    if (!array_diff_key($pattern_role_caps, $role_post_caps, $ignore_caps)
+                    && !array_diff_key($role_post_caps, $pattern_role_caps, $ignore_caps)
+                    ) {
+                        continue 2;
+                    }
+                }
+
+                $any_updated = true;
+                $role_usage[$role_name] = 'pattern';
+            }
+
+            if (!empty($any_updated)) {
+                update_option('presspermit_role_usage', $role_usage);
+            }
+        }, 100);
     }
 
     public function actPluginSettingsUpdated() {
@@ -117,20 +176,71 @@ class PermissionsHooksAdmin
         }
     }
 
-    public function fltFlagPermissionsCapabilities($caps) {
-        if (false !== array_search('pp_assign_bulk_roles', $caps)) {
-            die('dfsaafsd');
-        }
+    function flt_cap_descriptions($pp_caps)
+    {
+        require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsAdmin.php');
+        return Permissions\UI\SettingsAdmin::setCapabilityDescriptions($pp_caps);
+    }
 
-        if ($k = array_search('pp_assign_roles', $caps)) {
-            $caps = array_merge(
-                array_slice($caps, 0, $k + 1),
-                ['pp_assign_bulk_roles'],
-                array_slice($caps, $k + 1)
-            );
-        }
+    public function fltFlagPermissionsCapabilities($caps) {
+        $caps = array_merge(
+            $caps,
+            [
+                'pp_administer_content',
+                'pp_assign_roles',
+                'pp_assign_bulk_roles', 
+                'pp_create_groups',
+                'pp_delete_groups',
+                'pp_edit_groups',
+                'pp_manage_members',
+                'pp_manage_settings',
+                'pp_set_read_exceptions',
+                'pp_unfiltered',
+            ]
+        );
+
+        // Prevent PublishPress Capabilities from Pro listing capabilities of modules which are not enabled
+        // These will be added by the related module.
+        $caps = array_diff(
+            $caps, 
+            [
+                'pp_define_moderation',             // obsolete
+                'pp_manage_capabilities',           // not a real capability
+                'pp_set_edit_exceptions',           // Collaboration
+                'pp_set_revise_exceptions',         // Collaboration          
+                'pp_set_associate_exceptions',      // Collaboration
+                'pp_set_term_assign_exceptions',    // Collaboration
+                'pp_set_term_manage_exceptions',    // Collaboration
+                'pp_set_term_associate_exceptions', // Collaboration
+                'edit_own_attachments',             // Collaboration
+                'list_others_unattached_files',     // Collaboration
+                'pp_associate_any_page',            // Collaboration
+                'pp_list_all_files',                // Collaboration
+                'list_posts',                       // Collaboration
+                'list_others_posts',                // Collaboration
+                'list_private_pages',               // Collaboration
+                'pp_force_quick_edit',              // Collaboration
+                'pp_exempt_read_circle',            // Circles module
+                'pp_exempt_edit_circle',            // Circles module
+                'pp_create_network_groups',         // Compatibility module
+                'pp_manage_network_members',        // Compatibility module
+                'set_posts_status',                 // Status Control
+                'pp_moderate_any',                  // Status Control
+                'pp_define_privacy',                // Status Control
+                'pp_define_post_status',            // Status Control
+            ]
+        );
         
         return $caps;
+    }
+
+    public function fltOrderPermissionsCapabilities($caps) {
+        sort($caps);
+        return array_unique($caps);
+    }
+
+    public function fltCapabilityDescriptions($descripts) {
+        return apply_filters('presspermit_cap_descriptions', $descripts);
     }
 
     /**

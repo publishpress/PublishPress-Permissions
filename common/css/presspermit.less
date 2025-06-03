@@ -130,10 +130,6 @@ div.pp-custom-privacy-promo, div.pp-file-filtering-promo {
 
 
 /* --- Users, Groups Listing --- */
-div.presspermit-groups .pp-group-site-roles {
-  font-weight: bold;
-}
-
 th.column-pp_no_groups, td.column-pp_no_groups, th.column-pp_no_groups a {
   width: 30px;
   text-align: right;
@@ -273,11 +269,6 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups:h
   background-position: 0 -60px;
 }
 
-#toplevel_page_presspermit-groups > a.wp-menu-open,
-body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > a {
-  background: @menu_color !important;
-}
-
 body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > a > div,
 body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > li:hover,
 body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > li a:focus
@@ -285,34 +276,24 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   color: #fff;
 }
 
-#toplevel_page_presspermit-groups ul li a[href*="presspermit-edit-permissions"] {
-  display: none;
-}
-
-.pressshack-admin-wrapper p.submit {
-  padding-bottom:0;
-}
-
-.pressshack-admin-wrapper .button-primary {
-  text-shadow: none !important;
+.pressshack-admin-wrapper {
+  p.submit { padding-bottom: 0; }
+  .button-primary { text-shadow: none !important; }
+  footer { margin-top: 25px; }
+  .activating {
+    a, a:link, a:visited {
+      color: rgb(0, 115, 170);
+      text-decoration: underline;
+    }
+    a:active, a:hover {
+      color: #00a0d2;
+      text-decoration: underline;
+    }
+  }
 }
 
 #wpbody-content .pressshack-admin-wrapper > footer > div.pp-rating {
-  margin-top:5px;
-}
-
-.pressshack-admin-wrapper footer {
-  margin-top:25px;
-}
-
-.pressshack-admin-wrapper .activating a, .pressshack-admin-wrapper .activating a:link, .pressshack-admin-wrapper .activating a:visited {
-  color:rgb(0, 115, 170);
-  text-decoration: underline;
-}
-
-.pressshack-admin-wrapper .activating a:active, .pressshack-admin-wrapper .activating a:hover {
-  color:#00a0d2;
-  text-decoration: underline;
+  margin-top: 5px;
 }
 
 // Search user and groups
@@ -400,14 +381,26 @@ div#profile-page.wrap div.pp-group-box h3:first-of-type,
   display: none;
 }
 
-/* Adjust for when dropdown is open */
-.select2-container--open .pp-select2-container:after {
-  transform: translateY(-50%) rotate(180deg); /* Flip icon if needed */
-}
-
 /* Better mobile responsiveness */
 @media (max-width: 768px) {
   .pp-select2-container .select2-search__field {
     min-width: 100px !important;
+  }
+}
+/* --- Busy Button Animation --- */
+@keyframes pp-button__busy-animation{
+  0%{
+    background-position:160px 0;
+  }
+}
+
+.pp-button.is-busy {
+  background-image:linear-gradient(-45deg, #007cba 33%, #005a87 33%, #005a87 70%, #007cba 70%) !important;
+  background-size:80px 100% !important;
+}
+
+@media not (prefers-reduced-motion){
+  .pp-button.is-busy {
+    animation:pp-button__busy-animation 2.5s linear infinite;
   }
 }

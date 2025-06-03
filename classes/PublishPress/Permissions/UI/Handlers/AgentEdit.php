@@ -120,7 +120,7 @@ class AgentEdit
 
                 if (!is_wp_error($retval)) {
                     $type_arg = ('pp_group' == $agent_type) ? '' : "&agent_type=$agent_type";
-                    $redirect = "$url?page=presspermit-edit-permissions&action=edit&agent_id=$retval{$type_arg}&created=1";
+                    $redirect = "$url?page=presspermit-edit-permissions&action=edit&agent_id=$retval{$type_arg}";
                 }
 
                 break;

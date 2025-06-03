@@ -56,10 +56,39 @@ class CollabHooksAdmin
             }
         }
 
+        add_filter('cme_presspermit_capabilities', [$this, 'fltFlagPermissionsCapabilities'], 3);
+
         add_action('presspermit_load_constants', function() {
             require_once(PRESSPERMIT_COLLAB_CLASSPATH . '/Constants.php');
             new \PublishPress\Permissions\Collab\Constants();
         });
+    }
+
+    public function fltFlagPermissionsCapabilities($caps) {
+        $caps = array_merge(
+            $caps,
+            [
+                'pp_set_edit_exceptions',                      
+                'pp_set_associate_exceptions',      
+                'pp_set_term_assign_exceptions',    
+                'pp_set_term_manage_exceptions',    
+                'pp_set_term_associate_exceptions', 
+                'edit_own_attachments',             
+                'list_others_unattached_files',     
+                'pp_associate_any_page',            
+                'pp_list_all_files',                
+                'list_posts',                       
+                'list_others_posts',                
+                'list_private_pages',               
+                'pp_force_quick_edit',              
+            ]
+        );
+
+        if ((defined('PUBLISHPRESS_REVISIONS_VERSION') || defined('REVISIONARY_VERSION'))) {
+            $caps []= 'pp_set_revise_exceptions';
+        }
+        
+        return $caps;
     }
 
     function actAddMediaApplyDefaultTerm($post_id) {
