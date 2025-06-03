@@ -43,8 +43,8 @@ class UsersListTable extends \WP_List_Table
             'name' => esc_html__('Name', 'press-permit-core'),
             'user_email' => esc_html__('Email', 'press-permit-core'),
             'pp_groups' => esc_html__('Groups', 'press-permit-core'),
-            'pp_roles' => esc_html__('Has Extra Roles', 'press-permit-core'),
-            'pp_exceptions' => esc_html__('Has Permissions', 'press-permit-core'),
+            'pp_roles' => esc_html__('Roles', 'press-permit-core'),
+            'pp_exceptions' => esc_html__('Specific Permissions', 'press-permit-core'),
         ];
 
         return $columns;
