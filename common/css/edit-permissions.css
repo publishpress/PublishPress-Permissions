@@ -153,7 +153,6 @@
 .table .sortable:after {
   content: " ⇅";
   /* Default sort indicator */
-  font-size: 0.8em;
 }
 .table .sortable.asc:after {
   content: " ▲";
