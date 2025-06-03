@@ -241,14 +241,14 @@ class Groups
                             echo '<ul class="subsubsub">';
                             printf(esc_html__('%1$sGroup Type:%2$s %3$s', 'press-permit-core'), '<li class="pp-gray">', '</li>', '');
 
-                            $class = (!$group_variant && PWP::empty_REQUEST('pp_has_perms')) ? 'current' : '';
-
                             if (!PWP::is_REQUEST('pp_has_perms')) {
                                 $pp_has_perms = get_user_option('pp_has_perms');
                             } else {
                                 $pp_has_perms = !PWP::empty_REQUEST('pp_has_perms');
                                 update_user_option($current_user->ID, 'pp_has_perms', $pp_has_perms);
                             }
+
+                            $class = (!$group_variant && !$pp_has_perms) ? 'current' : '';
 
                             echo "<li><a href='admin.php?page=presspermit-groups&pp_has_perms=0' class='" . esc_attr($class) . "'>" . esc_html__('All', 'press-permit-core') . "</a>&nbsp;|&nbsp;</li>";
 
@@ -295,8 +295,31 @@ class Groups
                         $pp_user_perms = get_user_option('pp_user_perms');
                     } else {
                         $pp_user_perms = !PWP::empty_REQUEST('pp_user_perms');
-            
                         update_user_option($current_user->ID, 'pp_user_perms', $pp_user_perms);
+                    }
+
+                    // Save and retrieve pp_no_group option per user
+                    if (!PWP::is_REQUEST('pp_no_group')) {
+                        $pp_no_group = get_user_option('pp_no_group') ? 1 : 0;
+                    } else {
+                        $pp_no_group = PWP::REQUEST_int('pp_no_group') ? 1 : 0;
+                        update_user_option($current_user->ID, 'pp_no_group', $pp_no_group);
+                    }
+
+                    // Save and retrieve pp_has_perms option per user (for users tab)
+                    if (!PWP::is_REQUEST('pp_has_exceptions')) {
+                        $pp_has_exceptions = get_user_option('pp_has_exceptions') ? 1 : 0;
+                    } else {
+                        $pp_has_exceptions = PWP::REQUEST_int('pp_has_exceptions') ? 1 : 0;
+                        update_user_option($current_user->ID, 'pp_has_exceptions', $pp_has_exceptions);
+                    }
+
+                    // Save and retrieve pp_has_roles option per user
+                    if (!PWP::is_REQUEST('pp_has_roles')) {
+                        $pp_has_roles = get_user_option('pp_has_roles') ? 1 : 0;
+                    } else {
+                        $pp_has_roles = PWP::REQUEST_int('pp_has_roles') ? 1 : 0;
+                        update_user_option($current_user->ID, 'pp_has_roles', $pp_has_roles);
                     }
                     ?>
 
@@ -306,15 +329,38 @@ class Groups
                             <div class="pp-hint pp-no-hide"></div>
                             <ul class="subsubsub">
                                 <li>
-                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_user_perms=0')); ?>"
-                                        class="<?php echo empty($pp_user_perms) ? 'current' : ''; ?>">
+                                    <?php $all_users_class = (!$pp_user_perms && !$pp_no_group && !$pp_has_exceptions && !$pp_has_roles) ? 'current' : ''; ?>
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_user_perms=0&pp_no_group=0&pp_has_exceptions=0&pp_has_roles=0')); ?>"
+                                        class="<?php echo esc_attr($all_users_class); ?>">
                                         <?php esc_html_e('All Users', 'press-permit-core'); ?>
                                     </a>&nbsp;|&nbsp;
                                 </li>
                                 <li>
-                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_user_perms=1')); ?>"
-                                        class="<?php echo !empty($pp_user_perms) ? 'current' : ''; ?>">
-                                        <?php esc_html_e('Users with Permissions set directly', 'press-permit-core'); ?>
+                                    <?php $has_perms_class = ($pp_has_exceptions && !$pp_user_perms && !$pp_no_group && !$pp_has_roles) ? 'current' : ''; ?>
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_has_exceptions=1&pp_user_perms=0&pp_no_group=0&pp_has_roles=0')); ?>"
+                                        class="<?php echo esc_attr($has_perms_class); ?>">
+                                        <?php esc_html_e('Has Permissions', 'press-permit-core'); ?>
+                                    </a>&nbsp;|&nbsp;
+                                </li>
+                                <li>
+                                    <?php $has_perms_direct_class = ($pp_user_perms && !$pp_no_group && !$pp_has_exceptions && !$pp_has_roles) ? 'current' : ''; ?>
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_user_perms=1&pp_no_group=0&pp_has_exceptions=0&pp_has_roles=0')); ?>"
+                                        class="<?php echo esc_attr($has_perms_direct_class); ?>">
+                                        <?php esc_html_e('Has Permissions set directly', 'press-permit-core'); ?>
+                                    </a>&nbsp;|&nbsp;
+                                </li>
+                                <li>
+                                    <?php $extra_roles_class = ($pp_has_roles && !$pp_user_perms && !$pp_no_group && !$pp_has_exceptions) ? 'current' : ''; ?>
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_has_roles=1&pp_user_perms=0&pp_no_group=0&pp_has_exceptions=0')); ?>"
+                                        class="<?php echo esc_attr($extra_roles_class); ?>">
+                                        <?php esc_html_e('Has Extra Roles', 'press-permit-core'); ?>
+                                    </a>&nbsp;|&nbsp;
+                                </li>
+                                <li>
+                                    <?php $no_group_class = ($pp_no_group && !$pp_user_perms && !$pp_has_exceptions && !$pp_has_roles) ? 'current' : ''; ?>
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_no_group=1&pp_user_perms=0&pp_has_exceptions=0&pp_has_roles=0')); ?>"
+                                        class="<?php echo esc_attr($no_group_class); ?>">
+                                        <?php esc_html_e('No custom Group', 'press-permit-core'); ?>
                                     </a>
                                 </li>
                             </ul>
@@ -324,6 +370,15 @@ class Groups
                                 <?php
                                 if ($pp_user_perms) {
                                     echo '<input type="hidden" name="pp_user_perms" value="1" />';
+                                }
+                                if ($pp_no_group) {
+                                    echo '<input type="hidden" name="pp_no_group" value="1" />';
+                                }
+                                if ($pp_has_exceptions) {
+                                    echo '<input type="hidden" name="pp_has_exceptions" value="1" />';
+                                }
+                                if ($pp_has_roles) {
+                                    echo '<input type="hidden" name="pp_has_roles" value="1" />';
                                 }
                                 if (isset($users_list_table)) {
                                     $users_list_table->search_box(__('Search Users'), 'user');

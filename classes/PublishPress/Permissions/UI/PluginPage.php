@@ -128,8 +128,11 @@ class PluginPage
             $group_variant = 'pp_group';
         }
 
-        if (empty($group_variant)) {
-            global $current_user;
+        global $current_user;
+        if (PWP::is_REQUEST('pp_has_perms') && PWP::REQUEST_int('pp_has_perms') === 0 && PWP::empty_REQUEST('group_variant')) {
+            $group_variant = '';
+            update_user_option($current_user->ID, 'pp_group_variant', $group_variant);
+        } elseif (empty($group_variant)) {
 
             if (!PWP::is_REQUEST('group_variant') && PWP::empty_REQUEST('pp_has_perms') && PWP::empty_REQUEST('pp_user_perms')) {
                 if (!$group_variant = get_user_option('pp_group_variant')) {

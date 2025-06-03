@@ -240,7 +240,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 4.3.0 – 29 May 2025 =
+= 4.3.0 – 3 June 2025 =
 * Added: Tables in the Edit Permissions screen are now sortable for improved usability. #1580
 * Added: New "Users" tab in the Permissions screen for filtering and managing user-based permissions. #1367
 * Added: "Back to Normal View" button on Permissions screen to ease return from filtered views. #1640
