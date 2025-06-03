@@ -336,20 +336,6 @@ class Groups
                                     </a>&nbsp;|&nbsp;
                                 </li>
                                 <li>
-                                    <?php $has_perms_direct_class = ($pp_user_perms && !$pp_no_group && !$pp_has_exceptions && !$pp_has_roles) ? 'current' : ''; ?>
-                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_user_perms=1&pp_no_group=0&pp_has_exceptions=0&pp_has_roles=0')); ?>"
-                                        class="<?php echo esc_attr($has_perms_direct_class); ?>">
-                                        <?php esc_html_e('Has Permissions set directly', 'press-permit-core'); ?>
-                                    </a>&nbsp;|&nbsp;
-                                </li>
-                                <li>
-                                    <?php $no_group_class = ($pp_no_group && !$pp_user_perms && !$pp_has_exceptions && !$pp_has_roles) ? 'current' : ''; ?>
-                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_no_group=1&pp_user_perms=0&pp_has_exceptions=0&pp_has_roles=0')); ?>"
-                                        class="<?php echo esc_attr($no_group_class); ?>">
-                                        <?php esc_html_e('No custom Group', 'press-permit-core'); ?>
-                                    </a>&nbsp;|&nbsp;
-                                </li>
-                                <li>
                                     <?php $has_perms_class = ($pp_has_exceptions && !$pp_user_perms && !$pp_no_group && !$pp_has_roles) ? 'current' : ''; ?>
                                     <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_has_exceptions=1&pp_user_perms=0&pp_no_group=0&pp_has_roles=0')); ?>"
                                         class="<?php echo esc_attr($has_perms_class); ?>">
@@ -357,10 +343,24 @@ class Groups
                                     </a>&nbsp;|&nbsp;
                                 </li>
                                 <li>
+                                    <?php $has_perms_direct_class = ($pp_user_perms && !$pp_no_group && !$pp_has_exceptions && !$pp_has_roles) ? 'current' : ''; ?>
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_user_perms=1&pp_no_group=0&pp_has_exceptions=0&pp_has_roles=0')); ?>"
+                                        class="<?php echo esc_attr($has_perms_direct_class); ?>">
+                                        <?php esc_html_e('Has Permissions set directly', 'press-permit-core'); ?>
+                                    </a>&nbsp;|&nbsp;
+                                </li>
+                                <li>
                                     <?php $extra_roles_class = ($pp_has_roles && !$pp_user_perms && !$pp_no_group && !$pp_has_exceptions) ? 'current' : ''; ?>
                                     <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_has_roles=1&pp_user_perms=0&pp_no_group=0&pp_has_exceptions=0')); ?>"
                                         class="<?php echo esc_attr($extra_roles_class); ?>">
                                         <?php esc_html_e('Has Extra Roles', 'press-permit-core'); ?>
+                                    </a>&nbsp;|&nbsp;
+                                </li>
+                                <li>
+                                    <?php $no_group_class = ($pp_no_group && !$pp_user_perms && !$pp_has_exceptions && !$pp_has_roles) ? 'current' : ''; ?>
+                                    <a href="<?php echo esc_url(admin_url('admin.php?page=presspermit-groups&tab=users&pp_no_group=1&pp_user_perms=0&pp_has_exceptions=0&pp_has_roles=0')); ?>"
+                                        class="<?php echo esc_attr($no_group_class); ?>">
+                                        <?php esc_html_e('No custom Group', 'press-permit-core'); ?>
                                     </a>
                                 </li>
                             </ul>
