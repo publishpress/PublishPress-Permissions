@@ -142,14 +142,14 @@ class UsersListTable extends \WP_List_Table
     // Custom column: Roles (with anchor)
     public function column_pp_roles($item)
     {
-        $join_groups = !PWP::empty_REQUEST('pp_has_exceptions') || !PWP::empty_REQUEST('pp_has_roles');
+        $join_groups = PluginPage::viewFilter('pp_has_perms') || PluginPage::viewFilter('pp_has_exceptions') || PluginPage::viewFilter('pp_has_roles');
         return apply_filters('manage_users_custom_column', '', 'pp_roles', $item->ID, ['join_groups' => $join_groups, 'table_obj' => $this]);
     }
 
     // Custom column: Specific Permissions
     public function column_pp_exceptions($item)
     {
-        $join_groups = !PWP::empty_REQUEST('pp_has_exceptions') || !PWP::empty_REQUEST('pp_has_roles');
+        $join_groups = PluginPage::viewFilter('pp_has_perms') || PluginPage::viewFilter('pp_has_exceptions') || PluginPage::viewFilter('pp_has_roles');
         return apply_filters('manage_users_custom_column', '', 'pp_exceptions', $item->ID, ['join_groups' => $join_groups, 'table_obj' => $this]);
     }
 

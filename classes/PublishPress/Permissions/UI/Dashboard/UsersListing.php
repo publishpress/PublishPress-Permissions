@@ -227,10 +227,13 @@ class UsersListing
                 $role_str = '';
 
                 if (!isset($role_info)) {
-                    $role_info = \PublishPress\Permissions\API::countRoles(
-                        'user', 
-                        ['query_agent_ids' => !empty($args['table_obj']) ? $table_obj->user_ids : array_keys($table_obj->items)]
-                    );
+                    $_args = ['query_agent_ids' => !empty($args['table_obj']) ? $table_obj->user_ids : array_keys($table_obj->items)];
+
+                    if (isset($args['join_groups'])) {
+                        $_args['join_groups'] = $args['join_groups'];
+                    }
+
+                    $role_info = \PublishPress\Permissions\API::countRoles('user', $_args);
                 }
 
                 $user_object = new \WP_User((int)$id);
