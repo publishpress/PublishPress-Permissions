@@ -512,43 +512,6 @@ class SettingsTabAdvanced
                             ?>
                         </div>
                     <?php endif;?>
-                
-                    <div class="pp-user-permissions-help">
-                        <p>
-                            <?php
-                            $url = "users.php";
-                            printf(
-                                esc_html__('For user-specific Extra Roles and Permissions, click a "Roles" cell on the %1$sUsers%2$s screen.', 'press-permit-core'),
-                                "<strong><a href='" . esc_url($url) . "'>",
-                                '</a></strong>'
-                            );
-                            ?>
-                        </p>
-                    </div>
-
-                    <div class="pp-hint pp-user-permissions-help" style="display:none">
-                        <p>
-                            <?php
-                            esc_html_e('To filter the Users list by Permissions, follow a link below:', 'press-permit-core');
-                            ?>
-                        </p>
-
-                        <ul class="pp-notes">
-                            <li><?php printf(esc_html__('%1$sUsers who have no custom Permission Group membership%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_no_group=1") . "'>", '</a>'); ?></li>
-                        </ul>
-                        <br />
-                        <ul class="pp-notes">
-                            <li><?php printf(esc_html__('%1$sUsers who have Extra Roles assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_roles=1") . "'>", '</a>'); ?></li>
-                            <li><?php printf(esc_html__('%1$sUsers who have Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_exceptions=1") . "'>", '</a>'); ?></li>
-                            <li><?php printf(esc_html__('%1$sUsers who have Extra Roles or Specific Permissions assigned directly%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_user_perms=1") . "'>", '</a>'); ?></li>
-                        </ul>
-                        <br />
-                        <ul class="pp-notes">
-                            <li><?php printf(esc_html__('%1$sUsers who have Extra Roles (by group or directly)%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_has_roles=1") . "'>", '</a>'); ?></li>
-                            <li><?php printf(esc_html__('%1$sUsers who have Specific Permissions (by group or directly)%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_has_exceptions=1") . "'>", '</a>'); ?></li>
-                            <li><?php printf(esc_html__('%1$sUsers who have Extra Roles or Specific Permissions (by group or directly)%2$s', 'press-permit-core'), "<a href='" . esc_url("$url?pp_has_perms=1") . "'>", '</a>'); ?></li>
-                        </ul>
-                    </div>
 
                     <?php
                     do_action('presspermit_options_ui_insertion', $tab, $section, $ui);
