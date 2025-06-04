@@ -28,7 +28,7 @@
   white-space: normal;
   /* Arrow */
 }
-body.toplevel_page_presspermit-groups [data-toggle="tooltip"] .tooltip-text {
+div.presspermit-groups table.users [data-toggle="tooltip"] .tooltip-text {
   min-width: 150px;
 }
 [data-toggle="tooltip"] .tooltip-text a {
