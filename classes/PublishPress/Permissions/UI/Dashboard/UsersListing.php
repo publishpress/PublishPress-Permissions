@@ -5,6 +5,28 @@ namespace PublishPress\Permissions\UI\Dashboard;
 class UsersListing
 {
     public function __construct() {
+        add_action('admin_init', function() {
+            global $current_user, $pagenow, $wpdb;
+
+            if ('users.php' == $pagenow) {
+                if (empty($_POST) && !get_user_option('set_default_hidden_users_cols')) {
+                    update_user_option($current_user->ID, 'set_default_hidden_users_cols', true);
+
+                    if (!$hide_cols = get_user_option('manageuserscolumnshidden')) {
+                        $hide_cols = [];
+                    }
+
+                    $hide_cols = array_unique(array_merge((array) $hide_cols, ['pp_exceptions']));
+                    update_user_option($current_user->ID, 'manageuserscolumnshidden', $hide_cols);
+                }
+
+                // Also recover from previous storage to wrong meta_key
+                if (!empty($wpdb->prefix) && get_user_option($wpdb->prefix . 'default_hide_users_cols')) {
+                    delete_user_option($current_user->ID, $wpdb->prefix . 'default_hide_users_cols');
+                }
+            }
+        });
+
         add_filter('manage_users_columns', [$this, 'fltUsersColumns']);
         add_filter('manage_users_custom_column', [$this, 'fltUsersCustomColumn'], 99, 4); // filter late in case other plugin filters do not retain passed value
         add_filter('manage_users_sortable_columns', [$this, 'fltUsersColumnsSortable']);
