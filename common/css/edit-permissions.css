@@ -153,14 +153,17 @@
 .table .sortable:after {
   content: " ⇅";
   /* Default sort indicator */
+  font-size: 1.3em;
 }
 .table .sortable.asc:after {
   content: " ▲";
   /* Ascending sort indicator */
+  font-size: 1.0em;
 }
 .table .sortable.desc:after {
   content: " ▼";
   /* Descending sort indicator */
+  font-size: 1.0em;
 }
 @media (max-width: 768px) {
   .table-responsive {
