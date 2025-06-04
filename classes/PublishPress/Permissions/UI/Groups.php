@@ -253,7 +253,7 @@ class Groups
 
                             $class = (!$group_variant && !$pp_has_perms && !$pp_has_exceptions && !$pp_has_roles) ? 'current' : '';
 
-                            echo "<li><a href='admin.php?page=presspermit-groups&group_variant=pp_has_perms=0&pp_has_exceptions=0&pp_has_roles=0&pp_user_perms=0' class='" . esc_attr($class) . "'>" . esc_html__('All', 'press-permit-core') . "</a>&nbsp;|&nbsp;</li>";
+                            echo "<li><a href='admin.php?page=presspermit-groups&group_variant=&pp_has_perms=0&pp_has_exceptions=0&pp_has_roles=0&pp_user_perms=0' class='" . esc_attr($class) . "'>" . esc_html__('All', 'press-permit-core') . "</a>&nbsp;|&nbsp;</li>";
 
                             $i = 0;
                             foreach ($group_types as $_group_type => $gtype_obj) {
