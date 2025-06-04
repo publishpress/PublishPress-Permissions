@@ -240,6 +240,13 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
+= 4.3.2 - 4 June 2025 =
+* Fixed: Some Permissions list filters (Group Type, etc.) were not correct #1713
+* Fixed: Screen Options for hidden columns on WordPress Users screen did not save #1719
+* Updated: Hide Specific Permissions column by default on WordPress Users screen #1720
+* Updated: Remove filter links from custom columns on WordPress Users screen #1721
+* Updated: Larger default sort icons for Permissions columns #1715
+
 = 4.3.1 – 3 June 2025 =
 * Updated: Adjust icon size for proper UI
 
