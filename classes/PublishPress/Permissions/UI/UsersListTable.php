@@ -31,11 +31,7 @@ class UsersListTable extends \WP_List_Table
 
     public function get_columns()
     {
-        if (!PWP::is_REQUEST('pp_user_perms')) {
-            $pp_user_perms = get_user_option('pp_user_perms');
-        } else {
-            $pp_user_perms = !PWP::empty_REQUEST('pp_user_perms');
-        }
+        $any_group_perms_filter = PluginPage::viewFilter('pp_has_perms') || PluginPage::viewFilter('pp_has_exceptions') || PluginPage::viewFilter('pp_has_roles');
 
         $columns = [
             'cb' => '<input type = "checkbox" />',
@@ -44,10 +40,36 @@ class UsersListTable extends \WP_List_Table
             'user_email' => esc_html__('Email', 'press-permit-core'),
             'pp_groups' => esc_html__('Groups', 'press-permit-core'),
             'pp_roles' => esc_html__('Roles', 'press-permit-core'),
-            'pp_exceptions' => esc_html__('Specific Permissions', 'press-permit-core'),
+            'pp_exceptions' => sprintf(
+                (!$any_group_perms_filter) ? esc_html__('Specific Permissions %1$s', 'press-permit-core') : esc_html__('Specific Permissions %1$s', 'press-permit-core'),
+                (!$any_group_perms_filter) ? $this->generateTooltip(__('Specific Permissions assigned directly to the user', 'press-permit-core')) : $this->generateTooltip(__('Specific Permissions assigned to the user or one of their groups', 'press-permit-core'))
+            ),
+            'pp_roles' => sprintf(
+                (!$any_group_perms_filter) ? esc_html__('User Roles %1$s', 'press-permit-core') : esc_html__('Roles %1$s', 'press-permit-core'),
+                (!$any_group_perms_filter) ? $this->generateTooltip(__('Roles assigned directly to the user', 'press-permit-core')) : $this->generateTooltip(__('Roles assigned to the user or one of their groups', 'press-permit-core'))
+            ),
         ];
-
         return $columns;
+    }
+
+    private function generateTooltip($tooltip, $text = '', $position = 'top', $useIcon = true)
+    {
+        ob_start();
+        ?>
+        <span data-toggle="tooltip" data-placement="<?php esc_attr_e($position); ?>">
+        <?php esc_html_e($text);?>
+        <span class="tooltip-text"><span><?php esc_html_e($tooltip);?></span><i></i></span>
+        <?php 
+        if ($useIcon) : ?>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 50 50" style="margin-left: 4px; vertical-align: text-bottom;">
+                <path d="M 25 2 C 12.264481 2 2 12.264481 2 25 C 2 37.735519 12.264481 48 25 48 C 37.735519 48 48 37.735519 48 25 C 48 12.264481 37.735519 2 25 2 z M 25 4 C 36.664481 4 46 13.335519 46 25 C 46 36.664481 36.664481 46 25 46 C 13.335519 46 4 36.664481 4 25 C 4 13.335519 13.335519 4 25 4 z M 25 11 A 3 3 0 0 0 25 17 A 3 3 0 0 0 25 11 z M 21 21 L 21 23 L 23 23 L 23 36 L 21 36 L 21 38 L 29 38 L 29 36 L 27 36 L 27 21 L 21 21 z"></path>
+            </svg>
+        <?php
+        endif; ?>
+        </span>
+        <?php
+
+        return ob_get_clean();
     }
 
     public function get_sortable_columns()
