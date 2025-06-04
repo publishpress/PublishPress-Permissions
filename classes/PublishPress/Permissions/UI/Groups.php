@@ -232,10 +232,13 @@ class Groups
 
                             if (current_user_can('pp_administer_content')) {
                                 $group_types['wp_role'] = (object) ['labels' => (object) ['singular_name' => esc_html__('WordPress Role', 'press-permit-core'), 'plural_name' => esc_html__('WordPress Roles', 'press-permit-core')]];
-                                $group_types['login_state'] = (object) ['labels' => (object) ['singular_name' => esc_html__('Login State', 'press-permit-core'), 'plural_name' => esc_html__('Login State', 'press-permit-core')]];
                             }
 
                             $group_types['pp_group'] = (object) ['labels' => (object) ['singular_name' => esc_html__('Custom Group', 'press-permit-core'), 'plural_name' => esc_html__('Custom Groups', 'press-permit-core')]];
+
+                            if (current_user_can('pp_administer_content')) {
+                                $group_types['login_state'] = (object) ['labels' => (object) ['singular_name' => esc_html__('Login State', 'press-permit-core'), 'plural_name' => esc_html__('Login State', 'press-permit-core')]];
+                            }
 
                             // currently faking WP Role as a "group type", but want it listed before BuddyPress Group
                             $group_types = apply_filters('presspermit_list_group_types', array_merge($group_types, $pp_groups->getGroupTypes([], 'object')));
