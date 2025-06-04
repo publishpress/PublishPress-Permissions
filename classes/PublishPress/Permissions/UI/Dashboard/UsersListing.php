@@ -298,6 +298,9 @@ class UsersListing
 
         // Filter the Users Query to support various group filtering / sorting parameters
 
+        // Note: View filters are NOT applied on wp-admin/users.php
+        $class_pp_plugin_page = '\PublishPress\Permissions\UI\PluginPage';
+
         if (PWP::is_REQUEST('orderby', 'pp_group') && !defined('AC_VERSION')) {  // Admin Columns plugin conflict
             $query_obj->query_where = " INNER JOIN $wpdb->pp_group_members AS gm ON gm.user_id = $wpdb->users.ID"  // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__users
                 . " INNER JOIN $wpdb->pp_groups as g ON gm.group_id = g.ID AND g.metagroup_id='' "
@@ -307,35 +310,29 @@ class UsersListing
 
             $query_obj->query_orderby = "ORDER BY g.group_name $order, $wpdb->users.display_name";                 // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__users
 
-        } elseif (!PWP::empty_REQUEST('pp_no_group')) {
+        } elseif (class_exists($class_pp_plugin_page) && $class_pp_plugin_page::viewFilter('pp_no_group')) {
             $query_obj->query_where .= " AND $wpdb->users.ID NOT IN ( SELECT gm.user_id FROM $wpdb->pp_group_members AS gm"  // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.user_meta__wpdb__users
                 . " INNER JOIN $wpdb->pp_groups as g ON gm.group_id = g.ID AND g.metagroup_id='' )";
         }
 
-        if (!PWP::empty_REQUEST('pp_user_exceptions')) {
+        if (class_exists($class_pp_plugin_page) && $class_pp_plugin_page::viewFilter('pp_user_exceptions')) {
             $query_obj->query_where .= " AND ID IN ( SELECT agent_id FROM $wpdb->ppc_exceptions AS e"
                 . " INNER JOIN $wpdb->ppc_exception_items AS i"
                 . " ON e.exception_id = i.exception_id WHERE e.agent_type = 'user' )";
         }
 
-        if (!PWP::empty_REQUEST('pp_user_roles')) {
+        if (class_exists($class_pp_plugin_page) && $class_pp_plugin_page::viewFilter('pp_user_roles')) {
             $query_obj->query_where .= " AND ID IN ( SELECT agent_id FROM $wpdb->ppc_roles WHERE agent_type = 'user' )";
         }
 
-        if (!PWP::is_REQUEST('pp_user_perms') && (empty($pagenow) || ('users.php' != $pagenow))) {
-            $pp_user_perms = get_user_option('pp_user_perms');
-        } else {
-            $pp_user_perms = !PWP::empty_REQUEST('pp_user_perms');
-        }
-        
-        if ($pp_user_perms) {
+        if (class_exists($class_pp_plugin_page) && $class_pp_plugin_page::viewFilter('pp_user_perms')) {
             $query_obj->query_where .= " AND ( ID IN ( SELECT agent_id FROM $wpdb->ppc_roles"
                 . " WHERE agent_type = 'user' ) OR ID IN ( SELECT agent_id FROM $wpdb->ppc_exceptions AS e"
                 . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
                 . " WHERE e.agent_type = 'user' ) )";
         }
 
-        if (!PWP::empty_REQUEST('pp_has_exceptions')) {
+        if (class_exists($class_pp_plugin_page) && $class_pp_plugin_page::viewFilter('pp_has_exceptions')) {
             $query_obj->query_where .= " AND ID IN ( SELECT agent_id FROM $wpdb->ppc_exceptions AS e"
                 . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
                 . " WHERE e.agent_type = 'user' )"
@@ -343,19 +340,13 @@ class UsersListing
                 . " INNER JOIN $wpdb->ppc_exceptions AS e ON e.agent_id = ug.group_id AND e.agent_type = 'pp_group' )";
         }
 
-        if (!PWP::empty_REQUEST('pp_has_roles')) {
+        if (class_exists($class_pp_plugin_page) && $class_pp_plugin_page::viewFilter('pp_has_roles')) {
             $query_obj->query_where .= " AND ID IN ( SELECT agent_id FROM $wpdb->ppc_roles WHERE agent_type = 'user' )"
                 . " OR ID IN ( SELECT user_id FROM $wpdb->pp_group_members AS ug"
                 . " INNER JOIN $wpdb->ppc_roles AS r ON r.agent_id = ug.group_id AND r.agent_type = 'pp_group' )";
         }
 
-        if (!PWP::is_REQUEST('pp_has_perms') && (empty($pagenow) || ('users.php' != $pagenow))) {
-            $pp_has_perms = get_user_option('pp_has_perms');
-        } else {
-            $pp_has_perms = !PWP::empty_REQUEST('pp_has_perms');
-        }
-
-        if ($pp_has_perms) {
+        if (class_exists($class_pp_plugin_page) && $class_pp_plugin_page::viewFilter('pp_has_perms')) {
             $query_obj->query_where .= " AND ( ID IN ( SELECT agent_id FROM $wpdb->ppc_exceptions AS e"
                 . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
                 . " WHERE e.agent_type = 'user' )"

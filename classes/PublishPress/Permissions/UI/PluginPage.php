@@ -76,7 +76,7 @@ class PluginPage
             $group_variant = self::getGroupVariant();
 
             if ( ! $this->table = apply_filters('presspermit_groups_list_table', false, $agent_type) ) {
-                if (!$active_tab = PWP::REQUEST_key('tab')) {
+                if (!$active_tab = PluginPage::viewFilter('permissions_tab')) {
                     $active_tab = 'user-group';
                 }
 
@@ -128,22 +128,64 @@ class PluginPage
             $group_variant = 'pp_group';
         }
 
-        global $current_user;
-        if (PWP::is_REQUEST('pp_has_perms') && PWP::REQUEST_int('pp_has_perms') === 0 && PWP::empty_REQUEST('group_variant')) {
-            $group_variant = '';
-            update_user_option($current_user->ID, 'pp_group_variant', $group_variant);
-        } elseif (empty($group_variant)) {
+        if (empty($group_variant)) {
+            $group_variant = self::viewFilter('group_variant');
 
-            if (!PWP::is_REQUEST('group_variant') && PWP::empty_REQUEST('pp_has_perms') && PWP::empty_REQUEST('pp_user_perms')) {
-                if (!$group_variant = get_user_option('pp_group_variant')) {
-                    $group_variant = '';
-                }
-            } else {
-                $group_variant = PWP::REQUEST_key('group_variant');
-                update_user_option($current_user->ID, 'pp_group_variant', $group_variant);
+            // Don't default to Login State, or to a group variant that could become deactivated.
+            if (PWP::empty_REQUEST('group_variant') && !in_array($group_variant, ['pp_group', 'wp_role'])) {
+                $group_variant = '';
             }
         }
 
         return sanitize_key(apply_filters('presspermit_query_group_variant', $group_variant));
+    }
+
+    public static function viewFilter($var) {
+        global $current_user, $pagenow;
+        
+        $valid_views = ['permissions_tab', 'group_variant', 'pp_has_roles', 'pp_has_exceptions', 'pp_has_perms', 'pp_user_roles', 'pp_user_exceptions', 'pp_user_perms', 'pp_no_group'];
+
+        $allow_multiple_retrieval = ['permissions_tab'];
+
+        $is_string = in_array($var, ['permissions_tab', 'group_variant']);
+
+        if ('users.php' == $pagenow) {
+            return '';
+        }
+
+        if (!in_array($var, $valid_views)) {
+            return '';
+        }
+        
+        if (!PWP::is_REQUEST($var)) {
+            foreach ($valid_views as $view_var) {
+                if (in_array($view_var, $allow_multiple_retrieval)) {
+                    continue;
+                }
+                
+                // If another view is explicitly requested, don't default to saved value for this view.
+                if (!PWP::empty_REQUEST($view_var)) {
+                    return '';
+                }
+            }
+
+            if ($is_string) {
+                if (!$filter_val = get_user_option($var)) {
+                    $filter_val = '';
+                }
+            } else {
+                $filter_val = get_user_option($var) ? 1 : 0;
+            }
+        } else {
+            if ($is_string) {
+                $filter_val = PWP::REQUEST_key($var);
+            } else {
+                $filter_val = PWP::REQUEST_int($var) ? 1 : 0;
+            }
+
+            update_user_option($current_user->ID, $var, $filter_val);
+        }
+
+        return $filter_val;
     }
 }
