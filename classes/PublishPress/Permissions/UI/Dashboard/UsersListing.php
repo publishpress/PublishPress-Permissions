@@ -84,22 +84,12 @@ class UsersListing
             ? 'style="font-weight:bold; color:black"'
             : '';
 
-        $defaults['pp_no_groups'] = sprintf(
-            esc_html__('%1$s(x)%2$s', 'press-permit-core'),
-            "<a href='?pp_no_group=1' title='$title' $style>",
-            '</a>'
-        );
-
         $defaults['pp_groups'] = esc_html__('Groups', 'press-permit-core');
 
         $title = esc_html__('Click to show only users who have extra roles', 'press-permit-core');
         $style = (!PWP::empty_REQUEST('pp_has_roles')) ? 'style="font-weight:bold; color:black"' : '';
 
-        $defaults['pp_roles'] = sprintf(
-            esc_html__('Roles %1$s*%2$s', 'press-permit-core'),
-            "<a href='?pp_has_roles=1' title='$title' $style>",
-            '</a>'
-        );
+        $defaults['pp_roles'] = esc_html__('Roles', 'press-permit-core');
 
         unset($defaults['role']);
 
@@ -108,13 +98,11 @@ class UsersListing
         }
 
         $title = esc_html__('Click to show only users who have Specific Permissions assigned directly', 'press-permit-core');
-        $style = (!PWP::empty_REQUEST('pp_has_exceptions')) ? 'style="font-weight:bold; color:black"' : '';
 
-        $defaults['pp_exceptions'] = sprintf(
-            esc_html__('Specific Permissions %1$s*%2$s', 'press-permit-core'),
-            "<a href='?pp_has_exceptions=1' title='$title' $style>",
-            '</a>'
-        );
+        $class_pp_plugin_page = '\PublishPress\Permissions\UI\PluginPage';
+        $style = (class_exists($class_pp_plugin_page) && $class_pp_plugin_page::viewFilter('pp_has_exceptions')) ? 'style="font-weight:bold; color:black"' : '';
+
+        $defaults['pp_exceptions'] = esc_html__('Specific Permissions', 'press-permit-core');
 
         return $defaults;
     }
@@ -216,9 +204,6 @@ class UsersListing
                     }
                 }
 
-                break;
-
-            case 'pp_no_groups':
                 break;
 
             case 'pp_roles':
