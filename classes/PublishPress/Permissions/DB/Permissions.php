@@ -254,10 +254,16 @@ class Permissions
         $inherited_from_clause = ($inherited_from !== '') ? $wpdb->prepare("AND i.inherited_from = %d", $inherited_from) : '';
         $status_clause = (false !== $for_item_status) ? $wpdb->prepare("AND e.for_item_status = %s", $for_item_status) : '';
 
-        if (!$status_clause && !$pp->moduleActive('status-control')) {
+        if (!$status_clause) {
             $stati = ['', 'post_status:private', 'post_status:draft'];
             if ($pp->moduleActive('collaboration')) {
                 $stati[] = 'post_status:{unpublished}';
+            }
+
+            $statuses = PWP::getPostStatuses(['private' => true, 'moderation' => true, 'for_revision' => true], 'names', 'or');
+
+            foreach ($statuses as $status_name) {
+                $stati[] = "post_status:{$status_name}";
             }
 
             // exceptions for other statuses will not be applied correctly without status control module
