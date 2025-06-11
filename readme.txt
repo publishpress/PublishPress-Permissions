@@ -5,7 +5,7 @@ Tags: permissions, access, restrict, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.8
 Requires PHP: 7.2.5
-Stable tag: 4.3.1
+Stable tag: 4.3.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,14 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.3.2 - 10 June 2025 =
+* Fixed: Some Permissions list filters (Group Type, etc.) were not correct #1713
+* Fixed: Screen Options for hidden columns on WordPress Users screen did not save #1719
+* Fixed: Resolved a fatal error (E_ERROR) when managing user permissions in the WordPress admin area #1732
+* Updated: Hide Specific Permissions column by default on WordPress Users screen #1720
+* Updated: Remove filter links from custom columns on WordPress Users screen #1721
+* Updated: Larger default sort icons for Permissions columns #1715
 
 = 4.3.1 – 3 June 2025 =
 * Updated: Adjust icon size for proper UI

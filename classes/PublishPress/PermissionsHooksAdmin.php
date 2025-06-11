@@ -25,6 +25,21 @@ class PermissionsHooksAdmin
         if (!empty($_SERVER['PHP_SELF']) && in_array(basename($_SERVER['PHP_SELF']), ['admin.php', 'admin-ajax.php'])) {
             add_action('wp_ajax_pp_dismiss_msg', [$this, 'dashboardDismissMsg']);
         }
+        
+        // @todo: Why is hidden cols option for Users screen sometimes stored with db prefix prepended to meta_key?
+        if (defined('DOING_AJAX') && DOING_AJAX && ('hidden-columns' == PWP::REQUEST_key('action'))) {
+            add_action('query',
+                function($query) {
+                    global $wpdb;
+
+                    if ((0 === strpos($query, 'UPDATE')) && !empty($wpdb->prefix)) {
+                        $query = str_replace("`meta_key` = '{$wpdb->prefix}manageuserscolumnshidden'", "`meta_key` = 'manageuserscolumnshidden'", $query);
+                    }
+
+                    return $query;
+                }
+            );
+        }
 
         if (defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION')) {
             add_filter('authors_default_author', [$this, 'fltAuthorsPreventPostCreationLockout'], 99, 2);
