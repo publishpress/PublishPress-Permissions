@@ -9,7 +9,7 @@ class UsersListing
             global $current_user, $pagenow, $wpdb;
 
             if ('users.php' == $pagenow) {
-                if (empty($_POST) && !get_user_option('set_default_hidden_users_cols')) {
+                if (empty($_POST) && !get_user_option('set_default_hidden_users_cols')) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
                     update_user_option($current_user->ID, 'set_default_hidden_users_cols', true);
 
                     if (!$hide_cols = get_user_option('manageuserscolumnshidden')) {
