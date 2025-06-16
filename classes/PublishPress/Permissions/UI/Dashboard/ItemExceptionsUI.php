@@ -65,9 +65,10 @@ class ItemExceptionsUI
             $drew_itemroles_marker = true;
         }
 
-        $current_exceptions = (isset($this->data->current_exceptions[$for_item_type]))
+        $current_exceptions_saved = (isset($this->data->current_exceptions[$for_item_type]))
             ? $this->data->current_exceptions[$for_item_type]
             : [];
+        $current_exceptions = [];
 
         // Check for blockage of Everyone, Logged In metagroups
         $metagroup_exclude = [];
@@ -141,9 +142,8 @@ class ItemExceptionsUI
                         continue;
                     }
 
-                    if (!isset($current_exceptions[$op][$agent_type][$agent_id])) {
-                        $current_exceptions[$op][$agent_type][$agent_id] = [];
-                    }
+                    // Use saved exceptions if available, otherwise initialize as empty array
+                    $current_exceptions[$op][$agent_type][$agent_id] = $current_exceptions_saved[$op][$agent_type][$agent_id] ?? [];
                 }
 
                 if (
@@ -213,6 +213,7 @@ class ItemExceptionsUI
                                             // Buffer original reqd_caps value
                                             $_reqd_caps = (is_array($reqd_caps)) ? array_values($reqd_caps) : $reqd_caps;
 
+                                            // error_log(print_r($current_exceptions, true));
                                             foreach ($current_exceptions[$op][$agent_type] as $agent_id => $agent_exceptions) {
                                                 if ($agent_id && isset($this->data->agent_info[$agent_type][$agent_id])) {
                                                     if ((false === strpos($this->data->agent_info[$agent_type][$agent_id]->name, '[WP ')) || defined('PRESSPERMIT_DELETED_ROLE_EXCEPTIONS_UI')) {
