@@ -26,7 +26,6 @@ class SettingsTabCore
         $new = [
             'taxonomies' => esc_html__('Filtered Taxonomies', 'press-permit-core'),
             'post_types' => esc_html__('Filtered Post Types', 'press-permit-core'),
-            'admin' => esc_html__('Admin Back End', 'press-permit-core'),
             'db_maint' => esc_html__('Database Maintenance', 'press-permit-core'),
         ];
 
@@ -52,7 +51,6 @@ class SettingsTabCore
         $new = [
             'taxonomies' => ['enabled_taxonomies'],
             'post_types' => ['enabled_post_types', 'define_media_post_caps'],
-            'admin' => [],
         ];
 
         $key = 'core';
@@ -293,21 +291,6 @@ class SettingsTabCore
             </tr>
         <?php
         } // end foreach scope
-
-        $section = 'admin'; // --- BACK END SECTION ---
-        if (!empty($ui->form_options[$tab][$section])) :
-        ?>
-            <tr>
-                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
-                <td>
-                    <?php
-                    $ui->optionCheckbox('display_branding', $tab, $section);
-                    ?>
-                </td>
-            </tr>
-<?php
-        endif; // any options accessable in this section
-
     }
 
     function generateTooltip($tooltip, $text = '', $position = 'top', $useIcon = true)
