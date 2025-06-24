@@ -213,7 +213,6 @@ class ItemExceptionsUI
                                             // Buffer original reqd_caps value
                                             $_reqd_caps = (is_array($reqd_caps)) ? array_values($reqd_caps) : $reqd_caps;
 
-                                            // error_log(print_r($current_exceptions, true));
                                             foreach ($current_exceptions[$op][$agent_type] as $agent_id => $agent_exceptions) {
                                                 if ($agent_id && isset($this->data->agent_info[$agent_type][$agent_id])) {
                                                     if ((false === strpos($this->data->agent_info[$agent_type][$agent_id]->name, '[WP ')) || defined('PRESSPERMIT_DELETED_ROLE_EXCEPTIONS_UI')) {
