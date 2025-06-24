@@ -224,9 +224,6 @@ class Admin
 
     function publishpressFooter()
     {
-        if (presspermit()->isPro() && !presspermit()->getOption('display_branding')) {
-            return;
-        }
 ?>
         <footer>
 
