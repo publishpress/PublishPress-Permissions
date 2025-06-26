@@ -89,13 +89,6 @@ class PermissionsMeta
                 $agent_clause = '';
             }
 
-            $mod_clause = (defined('PP_NO_ADDITIONAL_ACCESS')) ? "AND e.mod_type != 'additional'" : '';
-
-            if (!defined('PP_GROUP_RESTRICTIONS')) {
-                $groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, 'pp_group');
-                $mod_clause .= "AND ( e.mod_type != 'exclude' OR e.agent_type = 'user' OR ( e.agent_type = 'pp_group' AND e.agent_id IN (SELECT ID FROM $groups_table WHERE metagroup_type = 'wp_role') ) )";
-            }
-
             // Direct query of plugin tables for admin query (clauses sanitized above)
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $results = $wpdb->get_results(
@@ -105,7 +98,6 @@ class PermissionsMeta
                     . " FROM $wpdb->ppc_exception_items AS i"
                     . " INNER JOIN $wpdb->ppc_exceptions AS e ON i.exception_id = e.exception_id"
                     . " WHERE i.inherited_from = '0' AND e.agent_type = %s AND operation IN ('$ops_csv')"           // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                    . " $mod_clause "                                                                               // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                     . " AND e.for_item_type IN ('$types_csv') AND e.via_item_type IN ('$types_csv') $agent_clause"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                     . " GROUP BY e.agent_id, e.for_item_source, e.for_item_type, e.operation",
     

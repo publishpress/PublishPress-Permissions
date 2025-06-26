@@ -556,6 +556,7 @@ class AgentPermissionsUI
 
                 $exc = $pp->getExceptions($_args);
                 $args['class'] = ('user' == $agent_type) ? 'pp-user-roles' : 'pp-group-roles';
+                $args['hidden_exceptions'] = \PublishPress\Permissions\DB\Permissions::$hidden_exceptions;
 
                 self::currentExceptionsUI($exc, $args);
 
@@ -863,13 +864,14 @@ class AgentPermissionsUI
             public static function currentExceptionsUI($exc_results, $args = [])
             {
                 $defaults = [
-                    'read_only' => false,
-                    'class' => 'pp-group-roles',
-                    'item_links' => false,
-                    'caption' => '',
-                    'show_groups_link' => false,
-                    'link' => '',
-                    'agent_type' => ''
+                    'read_only'         => false,
+                    'class'             => 'pp-group-roles',
+                    'item_links'        => false,
+                    'caption'           => '',
+                    'show_groups_link'  => false,
+                    'link'              => '',
+                    'agent_type'        => '',
+                    'hidden_exceptions' => 0,
                 ];
 
                 $args = array_merge($defaults, $args);
@@ -950,7 +952,20 @@ class AgentPermissionsUI
                 }
 
                 echo "<div id='pp_current_exceptions' class='container'>"; // wrapper div for all exceptions
-                
+                ?>
+                <?php if (!empty($hidden_exceptions)) : ?>
+                <div class="alert alert-secondary" role="alert">
+                    <span class="dashicons dashicons-warning"></span>
+                    <?php
+                        printf(
+                            esc_html__('You have %1$s hidden exceptions. %2$s', 'press-permit-core'),
+                            esc_html($hidden_exceptions),
+                            '<a href="' . esc_url(add_query_arg('show_hidden_exceptions', true)) . '"><strong>' . esc_html__('View All Exceptions', 'press-permit-core') . '</strong></a>'
+                        );
+                    ?>
+                </div>
+                <?php endif; ?>
+                <?php
                 if (PWP::empty_REQUEST('all_types') && !empty($exceptions['post'])) {
                     $all_types = array_fill_keys(array_merge($post_types, $taxonomies, ['']), true);
 
