@@ -74,11 +74,29 @@ class AgentExceptionsAjax
                         $ops = \PressShack\LibArray::subset($ops, ['read']);
                     }
                 }
+                $for_type = !empty($for_type) ? $for_type : 'all';
 
+                $tooltips = [
+                    'assign' => sprintf(esc_html__('Enables assigning terms to the %s type', 'press-permit-core'), esc_html($for_type)),
+                    'associate' => sprintf(esc_html__('Permits associating the %s type with other items', 'press-permit-core'), esc_html($for_type)),
+                    'edit' => sprintf(esc_html__('Permits editing the %s type.', 'press-permit-core'), esc_html($for_type)),
+                    'manage' => sprintf(esc_html__('Enables managing terms for the %s type', 'press-permit-core'), esc_html($for_type)),
+                    'read' => sprintf(esc_html__('Allows viewing the %s type.', 'press-permit-core'), esc_html($for_type)),
+                ];
                 ?>
                 <div>
                 <?php foreach ($ops as $val => $title) :?>
-                    <label><input type='radio' name='pp_select_x_operation' class='pp-select-x-operation' value='<?php echo esc_attr($val);?>'> <span><?php echo esc_html($title);?></span></label><br />
+                    <label><input type='radio' name='pp_select_x_operation' class='pp-select-x-operation' value='<?php echo esc_attr($val);?>'> 
+                    <span>
+                        <?php
+                        echo isset($tooltips[$val]) ? 
+                            sprintf(
+                                '<span data-toggle="tooltip" data-placement="top">%s<span class="tooltip-text"><span>%s</span><i></i></span><i class="dashicons dashicons-info-outline" style="font-size: 18px;width: 16px;height: 16px;margin-left: 3px;"></i></span>',
+                                esc_html($title),
+                                esc_html($tooltips[$val])
+                            ) : esc_html($title); ?>
+                    </span>
+                </label><br />
                 <?php endforeach;?>
                 </div>
 
