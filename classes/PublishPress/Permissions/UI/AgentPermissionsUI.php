@@ -731,8 +731,12 @@ class AgentPermissionsUI
                                 $type_obj = (object)['labels' => (object)['name' => esc_html__('objects', 'press-permit-core'), 'singular_name' => esc_html__('objects', 'press-permit-core')]];
                                 $type_caption = esc_html__('Direct-Assigned', 'press-permit-core');
                             } else {
-                                $type_obj = (object)['labels' => (object)['name' => esc_html__('objects', 'press-permit-core'), 'singular_name' => esc_html__('objects', 'press-permit-core')]];
-                                $type_caption = esc_html__('Disabled Type', 'press-permit-core');
+                                if (!defined('PRESSPERMIT_SHOW_DISABLED_TYPE_ROLES')) {
+                                    continue;
+                                } else {
+                                    $type_obj = (object)['labels' => (object)['name' => esc_html__('objects', 'press-permit-core'), 'singular_name' => esc_html__('objects', 'press-permit-core')]];
+                                    $type_caption = esc_html__('Disabled Type', 'press-permit-core');
+                                }
                             }
                         }
 
