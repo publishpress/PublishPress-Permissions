@@ -1655,7 +1655,7 @@ class AgentPermissionsUI
                                     }
 
                                     // Add tooltip for "Fix Sub" link
-                                    $fix_sub_tooltip = esc_html__('PublishPress Permissions will attempt to permissions to sub-pages, even when they are added after the settings are saved. However, other plugins or site change can cause problems. Click this link if you find that permissions are missing for any sub-pages.', 'press-permit-core');
+                                    $fix_sub_tooltip = esc_html__('Other plugins (or deactivation of PublishPress Permissions) can prevent sub-page permissions from being properly applied when a new sub-page is created.', 'press-permit-core');
                                     printf(
                                         '<span data-toggle="tooltip" data-placement="top">%1$s<span class="tooltip-text"><span style="white-space: normal;">%2$s</span><i></i></span><i class="dashicons dashicons-info-outline" style="font-size: 18px;width: 16px;height: 16px;margin-left: 3px;"></i></span>',
                                         sprintf(
