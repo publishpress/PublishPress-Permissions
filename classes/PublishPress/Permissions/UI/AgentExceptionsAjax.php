@@ -74,11 +74,37 @@ class AgentExceptionsAjax
                         $ops = \PressShack\LibArray::subset($ops, ['read']);
                     }
                 }
+                $for_type = !empty($for_type) ? $for_type : 'all';
 
+                if ($type_obj = get_post_type_object($for_type)) {
+                    $items_label = strtolower($type_obj->labels->name);    
+                } else {
+                    $items_label = strtolower(esc_html__('Posts'));    
+                }
+
+                $tooltips = [
+                    'assign' => sprintf(esc_html__('Control assignment of terms to selected %s.', 'press-permit-core'), esc_html($items_label)),
+                    'associate' => sprintf(esc_html__('Control parent selection for selected %s.', 'press-permit-core'), esc_html($items_label)),
+                    'edit' => sprintf(esc_html__('Control editing of selected %s.', 'press-permit-core'), esc_html($items_label)),
+                    'publish' => sprintf(esc_html__('Control publishing of selected %s.', 'press-permit-core'), esc_html($items_label)),
+                    'delete' => sprintf(esc_html__('Control deletion of selected %s.', 'press-permit-core'), esc_html($items_label)),
+                    'manage' => sprintf(esc_html__('Control term management for selected %s.', 'press-permit-core'), esc_html($items_label)),
+                    'read' => sprintf(esc_html__('Control frontend viewing of selected %s.', 'press-permit-core'), esc_html($items_label)),
+                ];
                 ?>
                 <div>
                 <?php foreach ($ops as $val => $title) :?>
-                    <label><input type='radio' name='pp_select_x_operation' class='pp-select-x-operation' value='<?php echo esc_attr($val);?>'> <span><?php echo esc_html($title);?></span></label><br />
+                    <label><input type='radio' name='pp_select_x_operation' class='pp-select-x-operation' value='<?php echo esc_attr($val);?>'> 
+                    <span>
+                        <?php
+                        echo isset($tooltips[$val]) ? 
+                            sprintf(
+                                '<span data-toggle="tooltip" data-placement="top">%s<span class="tooltip-text"><span>%s</span><i></i></span><i class="dashicons dashicons-info-outline" style="font-size: 18px;width: 16px;height: 16px;margin-left: 3px;"></i></span>',
+                                esc_html($title),
+                                esc_html($tooltips[$val])
+                            ) : esc_html($title); ?>
+                    </span>
+                </label><br />
                 <?php endforeach;?>
                 </div>
 
