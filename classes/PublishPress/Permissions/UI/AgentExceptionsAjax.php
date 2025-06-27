@@ -86,6 +86,8 @@ class AgentExceptionsAjax
                     'assign' => sprintf(esc_html__('Control assignment of terms to selected %s.', 'press-permit-core'), esc_html($items_label)),
                     'associate' => sprintf(esc_html__('Control parent selection for selected %s.', 'press-permit-core'), esc_html($items_label)),
                     'edit' => sprintf(esc_html__('Control editing of selected %s.', 'press-permit-core'), esc_html($items_label)),
+                    'publish' => sprintf(esc_html__('Control publishing of selected %s.', 'press-permit-core'), esc_html($items_label)),
+                    'delete' => sprintf(esc_html__('Control deletion of selected %s.', 'press-permit-core'), esc_html($items_label)),
                     'manage' => sprintf(esc_html__('Control term management for selected %s.', 'press-permit-core'), esc_html($items_label)),
                     'read' => sprintf(esc_html__('Control frontend viewing of selected %s.', 'press-permit-core'), esc_html($items_label)),
                 ];
