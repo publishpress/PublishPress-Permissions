@@ -32,8 +32,12 @@ class CommentFilters
         if (empty($clauses['join']) || !strpos($clauses['join'], $wpdb->posts))
             $clauses['join'] .= " INNER JOIN $wpdb->posts ON $wpdb->posts.ID = $wpdb->comments.comment_post_ID";
 
+        $matches = [];
+        preg_match("/ JOIN $wpdb->posts AS ([0-9a-z_$#]+) /", $clauses['join'], $matches);
+        $p = (!empty($matches[1])) ? $matches[1] : $wpdb->posts;
+
         // (subsequent filter will expand to additional statuses as appropriate)
-        $clauses['where'] = preg_replace("/ post_status\s*=\s*[']?publish[']?/", " $wpdb->posts.post_status = 'publish'", $clauses['where']);
+        $clauses['where'] = preg_replace("/ post_status\s*=\s*[']?publish[']?/", " $p.post_status = 'publish'", $clauses['where']);
 
         $post_type = '';
         $post_id = ($qry_obj && !empty($qry_obj->query_vars['post_id'])) ? $qry_obj->query_vars['post_id'] : 0;
@@ -47,6 +51,10 @@ class CommentFilters
 
         if ($post_type && !in_array($post_type, presspermit()->getEnabledPostTypes(), true))
             return $clauses;
+
+        if ($p && ($p != $wpdb->posts)) {
+            $args['source_alias'] = $p;
+        }
 
         $clauses['where'] = "1=1 " . apply_filters( 'presspermit_posts_where', 
                 'AND ' . $clauses['where'],
