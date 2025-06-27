@@ -76,12 +76,18 @@ class AgentExceptionsAjax
                 }
                 $for_type = !empty($for_type) ? $for_type : 'all';
 
+                if ($type_obj = get_post_type_object($for_type)) {
+                    $items_label = strtolower($type_obj->labels->name);    
+                } else {
+                    $items_label = strtolower(esc_html__('Posts'));    
+                }
+
                 $tooltips = [
-                    'assign' => sprintf(esc_html__('Enables assigning terms to the %s type', 'press-permit-core'), esc_html($for_type)),
-                    'associate' => sprintf(esc_html__('Permits associating the %s type with other items', 'press-permit-core'), esc_html($for_type)),
-                    'edit' => sprintf(esc_html__('Permits editing the %s type.', 'press-permit-core'), esc_html($for_type)),
-                    'manage' => sprintf(esc_html__('Enables managing terms for the %s type', 'press-permit-core'), esc_html($for_type)),
-                    'read' => sprintf(esc_html__('Allows viewing the %s type.', 'press-permit-core'), esc_html($for_type)),
+                    'assign' => sprintf(esc_html__('Control assignment of terms to selected %s.', 'press-permit-core'), esc_html($items_label)),
+                    'associate' => sprintf(esc_html__('Control parent selection for selected %s.', 'press-permit-core'), esc_html($items_label)),
+                    'edit' => sprintf(esc_html__('Control editing of selected %s.', 'press-permit-core'), esc_html($items_label)),
+                    'manage' => sprintf(esc_html__('Control term management for selected %s.', 'press-permit-core'), esc_html($items_label)),
+                    'read' => sprintf(esc_html__('Control frontend viewing of selected %s.', 'press-permit-core'), esc_html($items_label)),
                 ];
                 ?>
                 <div>
