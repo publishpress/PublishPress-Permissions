@@ -208,11 +208,15 @@ table.pp-agent-profile {
   background-color: #fff;
   border-color: #6eaebf;
 }
-div.pp-group_members {
+.pp-group_members {
   margin: 0 0 20px;
 }
-div.pp-group_members h3 {
+.pp-group_members h3 {
   margin-bottom: 0;
+}
+.pp-group_members h4 {
+  margin-top: 0;
+  margin-bottom: 1.5em;
 }
 #pp-agent-selection_member-wrapper {
   width: 100%;
@@ -452,9 +456,6 @@ label.pp_faded {
 .pp_exceptions_notes ul {
   list-style-type: circle;
   margin-left: 16px;
-}
-.pp-group_members h4 {
-  margin-bottom: 0.2em;
 }
 #agent_submit_member,
 .pp-members-current #member,
