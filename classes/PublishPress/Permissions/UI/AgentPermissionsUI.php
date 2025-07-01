@@ -1658,11 +1658,17 @@ class AgentPermissionsUI
                                         echo '&nbsp;&nbsp;&bull;';
                                     }
 
+                                    // Add tooltip for "Fix Sub" link
+                                    $fix_sub_tooltip = esc_html__('Other plugins (or deactivation of PublishPress Permissions) can prevent sub-page permissions from being properly applied when a new sub-page is created.', 'press-permit-core');
                                     printf(
-                                        esc_html__(' %1$sFix Sub-%2$s Permissions %3$s', 'press-permit-core'),
-                                        "&nbsp;<a href='" . esc_url($fix_child_url) . "' class='btn btn-link'>",
-                                        esc_html($via_type_obj->labels->singular_name),
-                                        '</a>'
+                                        '<span data-toggle="tooltip" data-placement="top">%1$s<span class="tooltip-text"><span style="white-space: normal;">%2$s</span><i></i></span><i class="dashicons dashicons-info-outline" style="font-size: 18px;width: 16px;height: 16px;"></i></span>',
+                                        sprintf(
+                                            esc_html__(' %1$sFix Sub-%2$s Permissions%3$s', 'press-permit-core'),
+                                        "&nbsp;<a href='" . esc_url($fix_child_url) . "' class='btn btn-link' style='padding-right:0'>",
+                                            esc_html($via_type_obj->labels->singular_name),
+                                            '</a>'
+                                        ),
+                                        $fix_sub_tooltip
                                     );
                                 }
 
