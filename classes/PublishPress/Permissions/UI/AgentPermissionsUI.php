@@ -952,20 +952,7 @@ class AgentPermissionsUI
                 }
 
                 echo "<div id='pp_current_exceptions' class='container'>"; // wrapper div for all exceptions
-                ?>
-                <?php if (!empty($hidden_exceptions)) : ?>
-                <div class="alert alert-secondary" role="alert">
-                    <span class="dashicons dashicons-warning"></span>
-                    <?php
-                        printf(
-                            esc_html__('You have %1$s hidden exceptions. %2$s', 'press-permit-core'),
-                            esc_html($hidden_exceptions),
-                            '<a href="' . esc_url(add_query_arg('show_hidden_exceptions', true)) . '"><strong>' . esc_html__('View All Exceptions', 'press-permit-core') . '</strong></a>'
-                        );
-                    ?>
-                </div>
-                <?php endif; ?>
-                <?php
+
                 if (PWP::empty_REQUEST('all_types') && !empty($exceptions['post'])) {
                     $all_types = array_fill_keys(array_merge($post_types, $taxonomies, ['']), true);
 
@@ -1700,6 +1687,28 @@ class AgentPermissionsUI
                     } // end foreach via_type
 
                 } // end foreach via_src
+
+                if (!empty($hidden_exceptions)) : ?>
+                <div class="alert alert-secondary" role="alert" style="display: flex; align-items: flex-start; gap: 10px;">
+                    <span>
+                        <i class="dashicons dashicons-bell" style="color:#f59e0b; font-size: 24px;"></i>
+                    </span>
+                    <span>
+                        <?php
+                        printf(
+                            '%s <strong>(%s)</strong><br />',
+                            esc_html__('Group Restrictions are not available because of a constant definition', 'press-permit-core'),
+                            esc_html('PP_NO_GROUP_RESTRICTIONS'),
+                        );
+                        printf(
+                            '%s <strong>(%s)</strong><br />',
+                            esc_html__('Permissions to enable access are not available because of a constant definition', 'press-permit-core'),
+                            esc_html('PP_NO_ADDITIONAL_ACCESS'),
+                        );
+                        ?>
+                    </span>
+                </div>
+                <?php endif;
 
                 echo '</div>';  // pp_current_exceptions
             }
