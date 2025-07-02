@@ -1698,9 +1698,10 @@ class AgentPermissionsUI
 
                 } // end foreach via_src
 
-                if (!empty($hidden_exceptions)) : ?>
+                if (!empty($hidden_exceptions) && (defined('PP_NO_GROUP_RESTRICTIONS') || defined('PP_NO_ADDITIONAL_ACCESS'))) : ?>
                 <div class="alert alert-secondary" role="alert">
-                    <div style="display:table">
+                    <?php if (defined('PP_NO_GROUP_RESTRICTIONS')):?>
+                    <div style="display:table; <?php if (defined('PP_NO_ADDITIONAL_ACCESS')) echo 'margin-bottom: 12px';?>">
                         <div style="display:table-cell">
                             <i class="dashicons dashicons-bell" style="color:#f59e0b; font-size: 24px;"></i>
                         </div>
@@ -1714,6 +1715,9 @@ class AgentPermissionsUI
                             ?>
                         </div>
                     </div>
+                    <?php endif;?>
+
+                    <?php if (defined('PP_NO_ADDITIONAL_ACCESS')):?>
                     <div style="display:table">
                         <div style="display:table-cell">
                             <i class="dashicons dashicons-bell" style="color:#f59e0b; font-size: 24px;"></i>
@@ -1728,6 +1732,7 @@ class AgentPermissionsUI
                             ?>
                         </div>
                     </div>
+                    <?php endif;?>
                 </div>
                 <?php endif;
 
