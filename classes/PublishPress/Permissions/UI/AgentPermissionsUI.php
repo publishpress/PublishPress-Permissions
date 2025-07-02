@@ -1699,24 +1699,35 @@ class AgentPermissionsUI
                 } // end foreach via_src
 
                 if (!empty($hidden_exceptions)) : ?>
-                <div class="alert alert-secondary" role="alert" style="display: flex; align-items: flex-start; gap: 10px;">
-                    <span>
-                        <i class="dashicons dashicons-bell" style="color:#f59e0b; font-size: 24px;"></i>
-                    </span>
-                    <span>
-                        <?php
-                        printf(
-                            '%s <strong>(%s)</strong><br />',
-                            esc_html__('Group Restrictions are not available because of a constant definition', 'press-permit-core'),
-                            esc_html('PP_NO_GROUP_RESTRICTIONS'),
-                        );
-                        printf(
-                            '%s <strong>(%s)</strong><br />',
-                            esc_html__('Permissions to enable access are not available because of a constant definition', 'press-permit-core'),
-                            esc_html('PP_NO_ADDITIONAL_ACCESS'),
-                        );
-                        ?>
-                    </span>
+                <div class="alert alert-secondary" role="alert">
+                    <div style="display:table">
+                        <div style="display:table-cell">
+                            <i class="dashicons dashicons-bell" style="color:#f59e0b; font-size: 24px;"></i>
+                        </div>
+                        <div style="display:table-cell; vertical-align:bottom; padding-left: 5px">
+                            <?php
+                            printf(
+                                '%s <strong>(%s)</strong>.',
+                                esc_html__('Group Restrictions are not available because of a constant definition', 'press-permit-core'),
+                                esc_html('PP_NO_GROUP_RESTRICTIONS')
+                            );
+                            ?>
+                        </div>
+                    </div>
+                    <div style="display:table">
+                        <div style="display:table-cell">
+                            <i class="dashicons dashicons-bell" style="color:#f59e0b; font-size: 24px;"></i>
+                        </div>
+                        <div style="display:table-cell; vertical-align:bottom; padding-left: 5px">
+                            <?php
+                            printf(
+                                '%s <strong>(%s)</strong>.',
+                                esc_html__('Permissions to enable access are not available because of a constant definition', 'press-permit-core'),
+                                esc_html('PP_NO_ADDITIONAL_ACCESS')
+                            );
+                            ?>
+                        </div>
+                    </div>
                 </div>
                 <?php endif;
 
