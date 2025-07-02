@@ -556,6 +556,7 @@ class AgentPermissionsUI
 
                 $exc = $pp->getExceptions($_args);
                 $args['class'] = ('user' == $agent_type) ? 'pp-user-roles' : 'pp-group-roles';
+                $args['hidden_exceptions'] = \PublishPress\Permissions\DB\Permissions::$hidden_exceptions;
 
                 self::currentExceptionsUI($exc, $args);
 
@@ -867,13 +868,14 @@ class AgentPermissionsUI
             public static function currentExceptionsUI($exc_results, $args = [])
             {
                 $defaults = [
-                    'read_only' => false,
-                    'class' => 'pp-group-roles',
-                    'item_links' => false,
-                    'caption' => '',
-                    'show_groups_link' => false,
-                    'link' => '',
-                    'agent_type' => ''
+                    'read_only'         => false,
+                    'class'             => 'pp-group-roles',
+                    'item_links'        => false,
+                    'caption'           => '',
+                    'show_groups_link'  => false,
+                    'link'              => '',
+                    'agent_type'        => '',
+                    'hidden_exceptions' => 0,
                 ];
 
                 $args = array_merge($defaults, $args);
@@ -954,7 +956,7 @@ class AgentPermissionsUI
                 }
 
                 echo "<div id='pp_current_exceptions' class='container'>"; // wrapper div for all exceptions
-                
+
                 if (PWP::empty_REQUEST('all_types') && !empty($exceptions['post'])) {
                     $all_types = array_fill_keys(array_merge($post_types, $taxonomies, ['']), true);
 
@@ -1695,6 +1697,28 @@ class AgentPermissionsUI
                     } // end foreach via_type
 
                 } // end foreach via_src
+
+                if (!empty($hidden_exceptions)) : ?>
+                <div class="alert alert-secondary" role="alert" style="display: flex; align-items: flex-start; gap: 10px;">
+                    <span>
+                        <i class="dashicons dashicons-bell" style="color:#f59e0b; font-size: 24px;"></i>
+                    </span>
+                    <span>
+                        <?php
+                        printf(
+                            '%s <strong>(%s)</strong><br />',
+                            esc_html__('Group Restrictions are not available because of a constant definition', 'press-permit-core'),
+                            esc_html('PP_NO_GROUP_RESTRICTIONS'),
+                        );
+                        printf(
+                            '%s <strong>(%s)</strong><br />',
+                            esc_html__('Permissions to enable access are not available because of a constant definition', 'press-permit-core'),
+                            esc_html('PP_NO_ADDITIONAL_ACCESS'),
+                        );
+                        ?>
+                    </span>
+                </div>
+                <?php endif;
 
                 echo '</div>';  // pp_current_exceptions
             }
