@@ -5,7 +5,7 @@ Tags: permissions, access, restrict, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.8
 Requires PHP: 7.2.5
-Stable tag: 4.3.2
+Stable tag: 4.4.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,18 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.4.0 – 3 July 2025 =
+* Fixed: Resolved a mismatch count exception when saving groups. #1747
+* Fixed: Prevented roles from appearing for disabled post types on the Edit Permissions screen.
+* Fixed: Resolved database query error on the WooCommerce Products screen. #1755
+* Fixed: Improved exception handling to maintain consistent sorting of groups before and after saving. #1741
+* Updated: Improved tooltip content and layout for term permissions (View / Edit / Assign) and sub-page permissions. #1740, #1745
+* Updated: Adjusted button and datepicker UI on Memberships screen for better usability. #1761
+* Updated: Enhanced settings UI to match future PublishPress visual style. #1763
+* Updated: Adjusted CSS styling for the File Access feature. #1748
+* Updated: Removed the "Display PublishPress Branding in Admin" option. #1744
+* Updated: Composer dependencies updated and code cleanup for better performance and compatibility.
 
 = 4.3.2 - 11 June 2025 =
 * Fixed: Some Permissions list filters (Group Type, etc.) were not correct #1713
