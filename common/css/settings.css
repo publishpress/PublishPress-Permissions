@@ -631,6 +631,7 @@ div.pp-user-permissions-help p {
 /* Key Display */
 .key-display {
   display: flex;
+  margin-top: 5px;
   margin-bottom: 15px;
 }
 .key-value {
