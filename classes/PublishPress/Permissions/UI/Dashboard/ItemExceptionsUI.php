@@ -65,10 +65,9 @@ class ItemExceptionsUI
             $drew_itemroles_marker = true;
         }
 
-        $current_exceptions_saved = (isset($this->data->current_exceptions[$for_item_type]))
+        $current_exceptions = (isset($this->data->current_exceptions[$for_item_type]))
             ? $this->data->current_exceptions[$for_item_type]
             : [];
-        $current_exceptions = [];
 
         // Check for blockage of Everyone, Logged In metagroups
         $metagroup_exclude = [];
@@ -142,8 +141,9 @@ class ItemExceptionsUI
                         continue;
                     }
 
-                    // Use saved exceptions if available, otherwise initialize as empty array
-                    $current_exceptions[$op][$agent_type][$agent_id] = $current_exceptions_saved[$op][$agent_type][$agent_id] ?? [];
+                    if (!isset($current_exceptions[$op][$agent_type][$agent_id])) {
+                        $current_exceptions[$op][$agent_type][$agent_id] = [];
+                    }
                 }
 
                 if (
