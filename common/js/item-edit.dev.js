@@ -62,4 +62,10 @@ jQuery(document).ready(function ($) {
         $(this).closest('table tbody').find('td.pp-exc-children select').val('').change();
         return false;
     });
+
+    $(document).on('click', 'td.pp-exc-item select', function (e) {
+        if ($(this).val() === '0') {
+            $(this).closest('td.pp-current-item-exceptions').find('div.pp-group-restrictions-warning').show();
+        }
+    });
 });

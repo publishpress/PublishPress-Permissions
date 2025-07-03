@@ -291,7 +291,7 @@ class Permissions
         );
 
         // Determine if group restrictions are enabled
-        $group_restrictions = defined('PP_GROUP_RESTRICTIONS');
+        $group_restrictions = !defined('PP_NO_GROUP_RESTRICTIONS');
         $show_hidden_exceptions = PWP::REQUEST_key('show_hidden_exceptions');
 
         // Count and filter hidden exceptions if group restrictions are not enabled
