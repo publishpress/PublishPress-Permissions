@@ -151,6 +151,8 @@ if (! $presspermit_loaded_by_pro) {
     ) {
         require_once PRESSPERMIT_INTERNAL_VENDORPATH . '/autoload.php';
     }
+
+    include_once PRESSPERMIT_INTERNAL_VENDORPATH . '/publishpress/wordpress-version-notices/src/include.php';
 }
 
 if ((!defined('PRESSPERMIT_FILE') && !$pro_active) || $presspermit_loaded_by_pro) {
