@@ -249,7 +249,7 @@ class Permissions
 
         $groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, 'pp_group');
         // Get all group IDs with metagroup_type = 'wp_role'
-        $wp_role_group_ids = $wpdb->get_col("SELECT ID FROM $groups_table WHERE metagroup_type = 'wp_role'");
+        $wp_role_group_ids = $wpdb->get_col("SELECT ID FROM $groups_table WHERE metagroup_type = 'wp_role'");   // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
         $assign_for_clause = ($assign_for) ? $wpdb->prepare("AND i.assign_for = %s", $assign_for) : '';
         $inherited_from_clause = ($inherited_from !== '') ? $wpdb->prepare("AND i.inherited_from = %d", $inherited_from) : '';

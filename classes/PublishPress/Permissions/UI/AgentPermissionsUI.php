@@ -1670,7 +1670,7 @@ class AgentPermissionsUI
                                             esc_html($via_type_obj->labels->singular_name),
                                             '</a>'
                                         ),
-                                        $fix_sub_tooltip
+                                        esc_html($fix_sub_tooltip)
                                     );
                                 }
 
