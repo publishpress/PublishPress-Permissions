@@ -240,7 +240,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 
 == Changelog ==
 
-= 4.4.0 – 3 July 2025 =
+= 4.4.0 – 7 July 2025 =
 * Fixed: Resolved a mismatch count exception when saving groups. #1747
 * Fixed: Prevented roles from appearing for disabled post types on the Edit Permissions screen.
 * Fixed: Resolved database query error on the WooCommerce Products screen. #1755
