@@ -4,6 +4,9 @@ namespace PublishPress\Permissions\DB;
 
 class Permissions
 {
+    // Variable to store hidden exceptions
+    static $hidden_exceptions;
+
     public static function getRoles($agent_id, $agent_type = 'pp_group', $args = [])
     {
         global $wpdb;
@@ -242,13 +245,11 @@ class Permissions
 
         $operations_csv = implode("','", array_map('sanitize_key', $operations));
 
-        $mod_clause = (defined('PP_NO_ADDITIONAL_ACCESS')) ? "AND e.mod_type != 'additional'" : '';
+        $mod_clause = '';
 
-        if (!defined('PP_GROUP_RESTRICTIONS')) {
-            $wp_group_ids = [];
-            $groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, 'pp_group');
-            $mod_clause .= "AND ( e.mod_type != 'exclude' OR e.agent_type = 'user' OR ( e.agent_type = 'pp_group' AND e.agent_id IN (SELECT ID FROM $groups_table WHERE metagroup_type = 'wp_role') ) )";
-        }
+        $groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, 'pp_group');
+        // Get all group IDs with metagroup_type = 'wp_role'
+        $wp_role_group_ids = $wpdb->get_col("SELECT ID FROM $groups_table WHERE metagroup_type = 'wp_role'");   // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
         $assign_for_clause = ($assign_for) ? $wpdb->prepare("AND i.assign_for = %s", $assign_for) : '';
         $inherited_from_clause = ($inherited_from !== '') ? $wpdb->prepare("AND i.inherited_from = %d", $inherited_from) : '';
@@ -288,6 +289,36 @@ class Permissions
             . " INNER JOIN $wpdb->ppc_exception_items AS i ON e.exception_id = i.exception_id"
             . " WHERE ( 1=1 AND e.operation IN ('$operations_csv') $assign_for_clause $inherited_from_clause $mod_clause $type_clause $status_clause $id_clause ) $ug_clause"  // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
+
+        // Determine if group restrictions are enabled
+        $group_restrictions = !defined('PP_NO_GROUP_RESTRICTIONS');
+        $show_hidden_exceptions = PWP::REQUEST_key('show_hidden_exceptions');
+
+        // Count and filter hidden exceptions if group restrictions are not enabled
+        if (!$group_restrictions) {
+            $count_excluded = 0;
+            $results = array_filter($results, function($row) use ($wp_role_group_ids, $show_hidden_exceptions, &$count_excluded) {
+                $is_hidden = (
+                    !$show_hidden_exceptions
+                    && $row->mod_type === 'exclude'
+                    && $row->agent_type !== 'user'
+                    && ($row->agent_type !== 'pp_group' || !in_array($row->agent_id, $wp_role_group_ids))
+                );
+                if ($is_hidden) {
+                    $count_excluded++;
+                    return false;
+                }
+                return true;
+            });
+            self::$hidden_exceptions = $count_excluded;
+        }
+
+        // Filter out 'additional' mod_type if PP_NO_ADDITIONAL_ACCESS is defined
+        if (defined('PP_NO_ADDITIONAL_ACCESS')) {
+            $results = array_filter($results, function($row) {
+                return $row->mod_type !== 'additional';
+            });
+        }
 
         if ($return_raw_results) {
             return $results;

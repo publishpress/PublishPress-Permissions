@@ -39,7 +39,7 @@ class ItemExceptionsRenderUI
         $this->options['includes'][1] = $this->opt_labels['unblocked'];
         $this->options['includes'][2] = $this->opt_labels['enabled'];
 
-        if (in_array($agent_type, ['wp_role', 'user'], true) || defined('PP_GROUP_RESTRICTIONS')) {
+        if (in_array($agent_type, ['wp_role', 'user'], true) || !defined('PP_NO_GROUP_RESTRICTIONS')) {
             $this->options['standard'][''] = (('user' == $agent_type) || in_array($pagenow, ['edit-tags.php', 'term.php']))
                 ? $this->opt_labels['no_setting']
                 : $this->opt_labels['default'];
@@ -79,6 +79,8 @@ class ItemExceptionsRenderUI
         if ($hierarchical) {
             $assignment_modes[] = 'children';
         }
+
+        $current_vals = [];
 
         $this->opt_class[''] = '';
         $disabled = '';
@@ -242,9 +244,12 @@ class ItemExceptionsRenderUI
 
                 </td>
             <?php
+                $current_vals[$assign_for] = $current_val;
             }
             ?>
         </tr>
 <?php
+        // return the each select element's current value, for downstream UI logic
+        return $current_vals;
     } // end function 
 }

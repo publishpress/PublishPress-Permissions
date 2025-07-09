@@ -1,12 +1,12 @@
-/* PressPermit. Copyright (c) 2020 PublishPress.
- * This file is licensed under the GNU GPL.
- */
+@keyframes pp-button__busy-animation {
+  0% {
+    background-position: 160px 0;
+  }
+}
 [data-toggle="tooltip"] {
   position: relative;
   display: inline-block;
   cursor: pointer;
-  /* Tooltip Box */
-  /* Placements */
 }
 [data-toggle="tooltip"] .tooltip-text {
   display: none;
@@ -26,10 +26,6 @@
   transform: translate(-50%, -100%);
   transition: all 0.65s cubic-bezier(0.84, -0.18, 0.31, 1.26);
   white-space: normal;
-  /* Arrow */
-}
-div.presspermit-groups table.users [data-toggle="tooltip"] .tooltip-text {
-  min-width: 150px;
 }
 [data-toggle="tooltip"] .tooltip-text a {
   color: #a0e0ff;
@@ -59,20 +55,31 @@ div.presspermit-groups table.users [data-toggle="tooltip"] .tooltip-text {
   transform: translate(-50%, -50%) rotate(45deg);
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
-[data-toggle="tooltip"]:not(.click):hover .tooltip-text,
+[data-toggle="tooltip"]:not(.click):hover .tooltip-text {
+  display: block;
+}
 [data-toggle="tooltip"]:not(.click):focus-within .tooltip-text {
   display: block;
+}
+[data-toggle="tooltip"]:not([data-placement]) .tooltip-text {
+  top: -20px;
+  left: 50%;
+  transform: translate(-50%, -100%);
+}
+[data-toggle="tooltip"]:not([data-placement]) .tooltip-text i {
+  margin-left: -12px;
+}
+div.presspermit-groups table.users [data-toggle="tooltip"] .tooltip-text {
+  min-width: 150px;
 }
 [data-toggle="tooltip"].click.is-active .tooltip-text {
   display: block;
 }
-[data-toggle="tooltip"]:not([data-placement]) .tooltip-text,
 [data-toggle="tooltip"][data-placement="top"] .tooltip-text {
   top: -20px;
   left: 50%;
   transform: translate(-50%, -100%);
 }
-[data-toggle="tooltip"]:not([data-placement]) .tooltip-text i,
 [data-toggle="tooltip"][data-placement="top"] .tooltip-text i {
   margin-left: -12px;
 }
@@ -107,34 +114,51 @@ div.presspermit-groups table.users [data-toggle="tooltip"] .tooltip-text {
   left: -12px;
   transform: translateY(-50%) rotate(90deg);
 }
-/* Vars */
-/* Buttons */
-/* Input fields */
-/* Tabs */
-/* Tables */
-/* Alert boxes */
-/* --- Colors --- */
-.pp-gray,
-.pp-gray a,
-.pp-gray a:link,
+.pp-gray {
+  color: #888;
+}
+.pp-gray a {
+  color: #888;
+}
+.pp-gray a:link {
+  color: #888;
+}
 .pp-gray a:visited {
   color: #888;
 }
-.pp-blue,
-.pp-blue a,
-.pp-blue a:link,
+.pp-blue {
+  color: blue;
+}
+.pp-blue a {
+  color: blue;
+}
+.pp-blue a:link {
+  color: blue;
+}
 .pp-blue a:visited {
   color: blue;
 }
-.pp-green,
-.pp-green a,
-.pp-green a:link,
+.pp-green {
+  color: #0a0;
+}
+.pp-green a {
+  color: #0a0;
+}
+.pp-green a:link {
+  color: #0a0;
+}
 .pp-green a:visited {
   color: #0a0;
 }
-.pp-red,
-.pp-red a,
-.pp-red a:link,
+.pp-red {
+  color: #d00;
+}
+.pp-red a {
+  color: #d00;
+}
+.pp-red a:link {
+  color: #d00;
+}
 .pp-red a:visited {
   color: #d00;
 }
@@ -149,7 +173,6 @@ div.presspermit-groups table.users [data-toggle="tooltip"] .tooltip-text {
 .pp-settings-caption {
   margin-top: 10px;
 }
-/* --- Misc Admin --- */
 .pp-hint {
   margin-top: 0.2em;
 }
@@ -162,16 +185,15 @@ div.presspermit-groups table.users [data-toggle="tooltip"] .tooltip-text {
   margin-left: 1.5em;
 }
 .pp-admin-notice {
-  padding: 10px;
   line-height: 18px;
   position: relative;
+  padding: 10px;
 }
 .pp-admin-notice-plugin {
   margin-top: 30px;
+  padding: 10px;
 }
-#pp_dashboard_message,
-.pp-admin-notice,
-.pp-admin-notice-plugin {
+#pp_dashboard_message {
   padding: 10px;
 }
 .pp-ext-promo {
@@ -214,45 +236,58 @@ span.pp-key-expired {
   vertical-align: bottom;
   margin-right: 0.5em;
 }
-/* Contextual Help */
 #tab-panel-pp div {
   margin-left: 20px;
 }
-div.pp-custom-privacy-promo,
+div.pp-custom-privacy-promo {
+  margin-left: 5px;
+}
 div.pp-file-filtering-promo {
   margin-left: 5px;
 }
-/* --- edit-tags.php (PP Exception metaboxes) --- */
 #edittag div.meta-box-sortables {
   min-width: fit-content;
   max-width: 800px;
 }
-/* --- Users, Groups Listing --- */
-th.column-pp_no_groups,
-td.column-pp_no_groups,
+th.column-pp_no_groups {
+  width: 30px;
+  text-align: right;
+  padding-right: 2px;
+}
 th.column-pp_no_groups a {
   width: 30px;
   text-align: right;
   padding-right: 2px;
 }
-th.column-pp_groups,
-td.column-pp_groups,
+td.column-pp_no_groups {
+  width: 30px;
+  text-align: right;
+  padding-right: 2px;
+}
+th.column-pp_groups {
+  padding-left: 2px;
+  text-align: left;
+}
 th.column-pp_groups a {
   padding-left: 2px;
   text-align: left;
 }
-div.pp-bulk-user-perm,
+td.column-pp_groups {
+  padding-left: 2px;
+  text-align: left;
+}
+div.pp-bulk-user-perm {
+  margin-top: 50px;
+}
 p.pp-bulk-user-perm {
   margin-top: 50px;
 }
-/* --- User Profile --- */
 #userprofile_groupsdiv_pp fieldset {
   width: 90%;
 }
 #userprofile_groupsdiv_pp fieldset input {
   width: auto;
 }
-/* --- User Profile and Permissions Edit --- */
 .pp-group-box {
   margin: 0 0 20px !important;
   padding: 20px !important;
@@ -301,7 +336,10 @@ option.pp-new-selection {
 div.pp_dashboard_message {
   margin-top: 20px !important;
 }
-.pp-notice a,
+.pp-notice a {
+  font-weight: bold;
+  color: #655997;
+}
 .pp-notice a:visited {
   font-weight: bold;
   color: #655997;
@@ -309,49 +347,105 @@ div.pp_dashboard_message {
 .pp-notice a:hover {
   text-decoration: underline !important;
 }
-/* Admin icon customized per admin theme, excluding the default and light */
-.admin-color-blue #toplevel_page_presspermit-groups .dashicons-before::before,
-.admin-color-coffee #toplevel_page_presspermit-groups .dashicons-before::before,
-.admin-color-ectoplasm #toplevel_page_presspermit-groups .dashicons-before::before,
-.admin-color-midnight #toplevel_page_presspermit-groups .dashicons-before::before,
-.admin-color-ocean #toplevel_page_presspermit-groups .dashicons-before::before,
-.admin-color-sunrise #toplevel_page_presspermit-groups .dashicons-before::before,
-.admin-color-blue #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
-.admin-color-coffee #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
-.admin-color-ectoplasm #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
-.admin-color-midnight #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
-.admin-color-ocean #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
-.admin-color-sunrise #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before,
-.admin-color-blue #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
-.admin-color-coffee #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
-.admin-color-ectoplasm #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
-.admin-color-midnight #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
-.admin-color-ocean #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
-.admin-color-sunrise #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
-.admin-color-blue #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
-.admin-color-coffee #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
-.admin-color-ectoplasm #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
-.admin-color-midnight #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
-.admin-color-ocean #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before,
+.admin-color-blue #toplevel_page_presspermit-groups .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-blue #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-blue #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-blue #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-coffee #toplevel_page_presspermit-groups .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-coffee #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-coffee #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-coffee #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-ectoplasm #toplevel_page_presspermit-groups .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-ectoplasm #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-ectoplasm #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-ectoplasm #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-midnight #toplevel_page_presspermit-groups .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-midnight #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-midnight #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-midnight #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-ocean #toplevel_page_presspermit-groups .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-ocean #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-ocean #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-ocean #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-sunrise #toplevel_page_presspermit-groups .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-sunrise #toplevel_page_presspermit-groups .wp-has-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-sunrise #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 -60px;
+}
 .admin-color-sunrise #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before {
   background-position: 0 -60px;
 }
-#toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+#toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 -26px;
+}
 #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before {
   background-position: 0 -26px;
 }
-/* Customize the icon for "Light" admin theme's hover and active states */
-.admin-color-light #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before,
+#toplevel_page_presspermit-groups .wp-menu-open .dashicons-before::before {
+  background-position: 0 -60px;
+}
+.admin-color-light #toplevel_page_presspermit-groups:active .wp-not-current-submenu .dashicons-before::before {
+  background-position: 0 8px;
+}
 .admin-color-light #toplevel_page_presspermit-groups:hover .wp-not-current-submenu .dashicons-before::before {
   background-position: 0 8px;
 }
-#toplevel_page_presspermit-groups .wp-menu-open .dashicons-before::before,
-body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups .dashicons-before::before,
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups .dashicons-before::before {
+  background-position: 0 -60px;
+}
 body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups:hover .dashicons-before::before {
   background-position: 0 -60px;
 }
-body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > a > div,
-body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > li:hover,
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > a > div {
+  color: #fff;
+}
+body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > li:hover {
+  color: #fff;
+}
 body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups > li a:focus {
   color: #fff;
 }
@@ -364,13 +458,22 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
 .pressshack-admin-wrapper footer {
   margin-top: 25px;
 }
-.pressshack-admin-wrapper .activating a,
-.pressshack-admin-wrapper .activating a:link,
+.pressshack-admin-wrapper .activating a {
+  color: #0073aa;
+  text-decoration: underline;
+}
+.pressshack-admin-wrapper .activating a:link {
+  color: #0073aa;
+  text-decoration: underline;
+}
 .pressshack-admin-wrapper .activating a:visited {
   color: #0073aa;
   text-decoration: underline;
 }
-.pressshack-admin-wrapper .activating a:active,
+.pressshack-admin-wrapper .activating a:active {
+  color: #00a0d2;
+  text-decoration: underline;
+}
 .pressshack-admin-wrapper .activating a:hover {
   color: #00a0d2;
   text-decoration: underline;
@@ -378,34 +481,45 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
 #wpbody-content .pressshack-admin-wrapper > footer > div.pp-rating {
   margin-top: 5px;
 }
-.pp-select-exception-agents select[id*="agent_results_"],
+.pp-select-exception-agents select[id*="agent_results_"] {
+  width: 240px;
+}
+.pp-select-exception-agents .pp-search-box-with-icon-wrapper {
+  position: relative;
+}
+.pp-select-exception-agents .pp-search-box-with-icon-wrapper i {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  color: #999;
+}
+.pp-select-exception-agents input[id*="agent_search_text_"] {
+  width: 100%;
+}
+.pp-select-exception-agents #agent_search_text_member {
+  width: 100%;
+}
+.pp-select-exception-agents td select {
+  width: 170px;
+}
 .pp-agents-selection select[id*="agent_results_"] {
   width: 240px;
 }
-@media (max-width: 782px) {
-  .pp-select-exception-agents select[id*="agent_results_"],
-  .pp-agents-selection select[id*="agent_results_"] {
-    width: 240px;
-  }
-}
-.pp-select-exception-agents .pp-search-box-with-icon-wrapper,
 .pp-agents-selection .pp-search-box-with-icon-wrapper {
   position: relative;
 }
-.pp-select-exception-agents .pp-search-box-with-icon-wrapper i,
 .pp-agents-selection .pp-search-box-with-icon-wrapper i {
   position: absolute;
   right: 5px;
   top: 5px;
   color: #999;
 }
-.pp-select-exception-agents input[id*="agent_search_text_"],
-.pp-agents-selection input[id*="agent_search_text_"],
-.pp-select-exception-agents #agent_search_text_member,
+.pp-agents-selection input[id*="agent_search_text_"] {
+  width: 100%;
+}
 .pp-agents-selection #agent_search_text_member {
   width: 100%;
 }
-.pp-select-exception-agents td select,
 .pp-agents-selection td select {
   width: 170px;
 }
@@ -421,7 +535,10 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   -moz-box-shadow: 0 0 0 1px #483f6b;
   -webkit-box-shadow: 0 0 0 1px #483f6b;
 }
-.wp-core-ui .pp-default-button:hover,
+.wp-core-ui .pp-default-button:hover {
+  color: #483f6b;
+  border-color: #483f6b;
+}
 .wp-core-ui .pp-default-button:active {
   color: #483f6b;
   border-color: #483f6b;
@@ -438,7 +555,11 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   border-color: #483f6b;
   box-shadow: 0 0 0 1px #fff, 0 0 0 3px #483f6b;
 }
-.wp-core-ui .pp-primary-button:hover,
+.wp-core-ui .pp-primary-button:hover {
+  background: #483f6b;
+  color: #fff;
+  border-color: #483f6b;
+}
 .wp-core-ui .pp-primary-button:active {
   background: #483f6b;
   color: #fff;
@@ -458,7 +579,11 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   -moz-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
   -webkit-box-shadow: 0 0 0 1px #fff, 0 0 0 3px #febe47;
 }
-.wp-core-ui .pp-pro-button:hover,
+.wp-core-ui .pp-pro-button:hover {
+  background: #febe47;
+  color: #222;
+  border-color: #febe47;
+}
 .wp-core-ui .pp-pro-button:active {
   background: #febe47;
   color: #222;
@@ -467,16 +592,34 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
 .wp-core-ui input[type=radio]:checked::before {
   background-color: #655997;
 }
+.wp-core-ui input[type=radio]:focus {
+  border-color: #483f6b;
+  box-shadow: 0 0 0 1px #483f6b;
+  -moz-box-shadow: 0 0 0 1px #483f6b;
+  -webkit-box-shadow: 0 0 0 1px #483f6b;
+}
 .wp-core-ui input[type=checkbox]:checked::before {
   content: url(data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.83%204.89l1.34.94-5.81%208.38H9.02L5.78%209.67l1.34-1.25%202.57%202.4z%27%20fill%3D%27%23655997%27%2F%3E%3C%2Fsvg%3E);
 }
 .wp-core-ui input[type=checkbox]:focus {
   outline: 2px solid transparent;
+  border-color: #483f6b;
+  box-shadow: 0 0 0 1px #483f6b;
+  -moz-box-shadow: 0 0 0 1px #483f6b;
+  -webkit-box-shadow: 0 0 0 1px #483f6b;
 }
-.wp-core-ui input[type=radio]:focus,
-.wp-core-ui input[type=checkbox]:focus,
-.wp-core-ui input[type=text]:focus,
-.wp-core-ui select:focus,
+.wp-core-ui input[type=text]:focus {
+  border-color: #483f6b;
+  box-shadow: 0 0 0 1px #483f6b;
+  -moz-box-shadow: 0 0 0 1px #483f6b;
+  -webkit-box-shadow: 0 0 0 1px #483f6b;
+}
+.wp-core-ui select:focus {
+  border-color: #483f6b;
+  box-shadow: 0 0 0 1px #483f6b;
+  -moz-box-shadow: 0 0 0 1px #483f6b;
+  -webkit-box-shadow: 0 0 0 1px #483f6b;
+}
 .wp-core-ui textarea:focus {
   border-color: #483f6b;
   box-shadow: 0 0 0 1px #483f6b;
@@ -495,8 +638,12 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   float: left;
   margin: 0;
 }
-.wp-core-ui ul.pp-list_horiz li:hover,
-.wp-core-ui ul.pp-list_horiz li:focus,
+.wp-core-ui ul.pp-list_horiz li:hover {
+  outline: none;
+}
+.wp-core-ui ul.pp-list_horiz li:focus {
+  outline: none;
+}
 .wp-core-ui ul.pp-list_horiz li:active {
   outline: none;
 }
@@ -509,8 +656,20 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   padding: 10px 14px 10px;
   display: block;
 }
-.wp-core-ui ul.pp-list_horiz li.agp-agent a:hover,
-.wp-core-ui ul.pp-list_horiz li.agp-agent a:focus,
+.wp-core-ui ul.pp-list_horiz li.agp-agent a:hover {
+  text-decoration: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  color: #222;
+}
+.wp-core-ui ul.pp-list_horiz li.agp-agent a:focus {
+  text-decoration: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  color: #222;
+}
 .wp-core-ui ul.pp-list_horiz li.agp-agent a:active {
   text-decoration: none;
   -webkit-box-shadow: none;
@@ -544,7 +703,10 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   color: #655997;
   text-decoration: none;
 }
-.wp-core-ui .pp-agents a:hover .wp-core-ui .pp-agents a:focus,
+.wp-core-ui .pp-agents a:hover .wp-core-ui .pp-agents a:focus {
+  color: #483f6b;
+  text-decoration: none;
+}
 .wp-core-ui .pp-agents a:focus {
   color: #483f6b;
   text-decoration: none;
@@ -552,22 +714,19 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
 .wp-core-ui .pp-agents input {
   vertical-align: text-bottom;
 }
-/* Edit User screen */
-div#profile-page.wrap div.pp-group-box h3:first-of-type,
+div#profile-page.wrap div.pp-group-box h3:first-of-type {
+  margin-top: 5px !important;
+}
 #pp_current_user_exceptions_ui {
   margin-top: 5px !important;
 }
-/* Custom CSS for Select2 */
-/* Target only Select2 instances with your custom class */
 .pp-select2-dropdown {
   width: fit-content !important;
 }
 .pp-select2-container {
   position: relative;
   padding-right: 30px;
-  /* Make space for the icon */
 }
-/* Add the Dashicon */
 .pp-select2-container:after {
   content: "\f179";
   font-family: dashicons;
@@ -579,34 +738,46 @@ div#profile-page.wrap div.pp-group-box h3:first-of-type,
   pointer-events: none;
   color: #888;
 }
-/* Search field width adjustment */
 .pp-select2-container .select2-search--inline {
   width: auto !important;
   flex-grow: 1;
 }
 .pp-select2-container .select2-search__field {
   min-width: 150px !important;
-  /* Prevent field from collapsing */
 }
-/* Hide default dropdown arrow if present */
 .pp-select2-container .select2-selection__arrow {
   display: none;
-}
-/* Better mobile responsiveness */
-@media (max-width: 768px) {
-  .pp-select2-container .select2-search__field {
-    min-width: 100px !important;
-  }
-}
-/* --- Busy Button Animation --- */
-@keyframes pp-button__busy-animation {
-  0% {
-    background-position: 160px 0;
-  }
 }
 .pp-button.is-busy {
   background-image: linear-gradient(-45deg, #007cba 33%, #005a87 33%, #005a87 70%, #007cba 70%) !important;
   background-size: 80px 100% !important;
+}
+.pp-version-notice-bold-purple-button a,
+.pp-version-notice-bold-purple-button a:active,
+.pp-version-notice-bold-purple-button a:visited {
+  text-decoration: none !important;
+  color: black !important;
+}
+@media only screen and (max-width: 600px) {
+  .pp-version-notice-bold-purple-message {
+    width: auto !important;
+  }
+  .pp-version-notice-bold-purple-button {
+    width: auto !important;
+  }
+}
+@media (max-width: 782px) {
+  .pp-select-exception-agents select[id*="agent_results_"] {
+    width: 240px;
+  }
+  .pp-agents-selection select[id*="agent_results_"] {
+    width: 240px;
+  }
+}
+@media (max-width: 768px) {
+  .pp-select2-container .select2-search__field {
+    min-width: 100px !important;
+  }
 }
 @media not (prefers-reduced-motion) {
   .pp-button.is-busy {

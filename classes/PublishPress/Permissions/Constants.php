@@ -19,7 +19,7 @@ private function loadConstants() {
 $type = 'filtering-switches';
 $consts = [
     'PP_RESTRICTION_PRIORITY' => esc_html__("Specific Permissions: restrictions ('Blocked') take priority over additions ('Enabled')", 'press-permit-core-hints'),
-    'PP_GROUP_RESTRICTIONS' => esc_html__("Specific Permissions: restrictions ('Blocked') can be applied to custom-defined groups", 'press-permit-core-hints'),
+    'PP_NO_GROUP_RESTRICTIONS' => esc_html__("Specific Permissions: no restrictions ('Blocked') can be applied to custom-defined groups", 'press-permit-core-hints'),
     'PP_ALL_ANON_ROLES' => esc_html__("Extra Roles assignment available for {All} and {Anonymous} metagroups", 'press-permit-core-hints'),
     'PP_ALL_ANON_FULL_EXCEPTIONS' => esc_html__("Allow the {All} and {Anonymous} metagroups to be granted specific reading permissions for private content", 'press-permit-core-hints'),
     'PP_EDIT_EXCEPTIONS_ALLOW_DELETION' => esc_html__("Users who have specific editing permissions for a post or attachment can also delete it", 'press-permit-core-hints'),

@@ -36,7 +36,7 @@
 }
 
 .pp-options-table tr {
-    border-bottom: 4px solid #e8e8e8;
+    border-bottom: 1px solid #dcdcde;
 }
 
 .pp-options-table tr td {
@@ -57,7 +57,6 @@
 
 .pp-form-table tr th, .pp-form-table tr td {
     background-color: #f4f4f4;
-    border-bottom: 4px solid #858585;
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -610,4 +609,54 @@ margin-bottom: 10px !important;
 
 #pp-import span.prev-imports {
     padding: 5px;
+}
+
+/* Key Display */
+.key-display {
+    display: flex;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+.key-value {
+    flex-grow: 1;
+    font-family: monospace;
+    padding: 8px 12px;
+    background: #f6f7f7;
+    border: 1px solid #dcdcde;
+    border-radius: 3px 0 0 3px;
+    overflow-x: auto;
+}
+
+.copy-btn {
+    background: #3858e9;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 0 3px 3px 0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.copy-btn:hover {
+    background: #2a4bd6;
+}
+
+/* Buttons */
+.btn-gray {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #898989;
+    color: #fff !important;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 14px;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-gray:hover {
+    background: #495057;
 }

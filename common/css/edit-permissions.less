@@ -1,3 +1,4 @@
+@import "_alert";
 @import "_elements";
 @import "_tables";
 
@@ -37,11 +38,15 @@ table.pp-agent-profile {
   border-color: #6eaebf;
 }
 
-div.pp-group_members {
+.pp-group_members {
 	margin: 0 0 20px;
 	h3 {
 		margin-bottom: 0;
 	}
+  h4 {
+    margin-top: 0;
+    margin-bottom: 1.5em;
+  }
 }
 
 #pp-agent-selection_member-wrapper {
@@ -325,10 +330,6 @@ tr.pp_faded td, label.pp_faded {
 .pp_exceptions_notes ul {
   list-style-type: circle;
   margin-left: 16px;
-}
-
-.pp-group_members h4 {
-  margin-bottom: 0.2em;
 }
 
 #agent_submit_member, .pp-members-current #member, .pp-members-current h4 {

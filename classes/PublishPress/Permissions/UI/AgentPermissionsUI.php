@@ -556,6 +556,7 @@ class AgentPermissionsUI
 
                 $exc = $pp->getExceptions($_args);
                 $args['class'] = ('user' == $agent_type) ? 'pp-user-roles' : 'pp-group-roles';
+                $args['hidden_exceptions'] = \PublishPress\Permissions\DB\Permissions::$hidden_exceptions;
 
                 self::currentExceptionsUI($exc, $args);
 
@@ -731,8 +732,12 @@ class AgentPermissionsUI
                                 $type_obj = (object)['labels' => (object)['name' => esc_html__('objects', 'press-permit-core'), 'singular_name' => esc_html__('objects', 'press-permit-core')]];
                                 $type_caption = esc_html__('Direct-Assigned', 'press-permit-core');
                             } else {
-                                $type_obj = (object)['labels' => (object)['name' => esc_html__('objects', 'press-permit-core'), 'singular_name' => esc_html__('objects', 'press-permit-core')]];
-                                $type_caption = esc_html__('Disabled Type', 'press-permit-core');
+                                if (!defined('PRESSPERMIT_SHOW_DISABLED_TYPE_ROLES')) {
+                                    continue;
+                                } else {
+                                    $type_obj = (object)['labels' => (object)['name' => esc_html__('objects', 'press-permit-core'), 'singular_name' => esc_html__('objects', 'press-permit-core')]];
+                                    $type_caption = esc_html__('Disabled Type', 'press-permit-core');
+                                }
                             }
                         }
 
@@ -863,13 +868,14 @@ class AgentPermissionsUI
             public static function currentExceptionsUI($exc_results, $args = [])
             {
                 $defaults = [
-                    'read_only' => false,
-                    'class' => 'pp-group-roles',
-                    'item_links' => false,
-                    'caption' => '',
-                    'show_groups_link' => false,
-                    'link' => '',
-                    'agent_type' => ''
+                    'read_only'         => false,
+                    'class'             => 'pp-group-roles',
+                    'item_links'        => false,
+                    'caption'           => '',
+                    'show_groups_link'  => false,
+                    'link'              => '',
+                    'agent_type'        => '',
+                    'hidden_exceptions' => 0,
                 ];
 
                 $args = array_merge($defaults, $args);
@@ -950,7 +956,7 @@ class AgentPermissionsUI
                 }
 
                 echo "<div id='pp_current_exceptions' class='container'>"; // wrapper div for all exceptions
-                
+
                 if (PWP::empty_REQUEST('all_types') && !empty($exceptions['post'])) {
                     $all_types = array_fill_keys(array_merge($post_types, $taxonomies, ['']), true);
 
@@ -1654,11 +1660,17 @@ class AgentPermissionsUI
                                         echo '&nbsp;&nbsp;&bull;';
                                     }
 
+                                    // Add tooltip for "Fix Sub" link
+                                    $fix_sub_tooltip = esc_html__('Other plugins (or deactivation of PublishPress Permissions) can prevent sub-page permissions from being properly applied when a new sub-page is created.', 'press-permit-core');
                                     printf(
-                                        esc_html__(' %1$sFix Sub-%2$s Permissions %3$s', 'press-permit-core'),
-                                        "&nbsp;<a href='" . esc_url($fix_child_url) . "' class='btn btn-link'>",
-                                        esc_html($via_type_obj->labels->singular_name),
-                                        '</a>'
+                                        '<span data-toggle="tooltip" data-placement="top">%1$s<span class="tooltip-text"><span style="white-space: normal;">%2$s</span><i></i></span><i class="dashicons dashicons-info-outline" style="font-size: 18px;width: 16px;height: 16px;padding-top:2px"></i></span>',
+                                        sprintf(
+                                            esc_html__(' %1$sFix Sub-%2$s Permissions%3$s', 'press-permit-core'),
+                                        "&nbsp;<a href='" . esc_url($fix_child_url) . "' class='btn btn-link' style='padding-right:4px'>",
+                                            esc_html($via_type_obj->labels->singular_name),
+                                            '</a>'
+                                        ),
+                                        esc_html($fix_sub_tooltip)
                                     );
                                 }
 
@@ -1685,6 +1697,44 @@ class AgentPermissionsUI
                     } // end foreach via_type
 
                 } // end foreach via_src
+
+                if (!empty($hidden_exceptions) && (defined('PP_NO_GROUP_RESTRICTIONS') || defined('PP_NO_ADDITIONAL_ACCESS'))) : ?>
+                <div class="alert alert-secondary" role="alert">
+                    <?php if (defined('PP_NO_GROUP_RESTRICTIONS')):?>
+                    <div style="display:table; <?php if (defined('PP_NO_ADDITIONAL_ACCESS')) echo 'margin-bottom: 12px';?>">
+                        <div style="display:table-cell">
+                            <i class="dashicons dashicons-bell" style="color:#f59e0b; font-size: 24px;"></i>
+                        </div>
+                        <div style="display:table-cell; vertical-align:bottom; padding-left: 5px">
+                            <?php
+                            printf(
+                                '%s <strong>(%s)</strong>.',
+                                esc_html__('Group Restrictions are not available because of a constant definition', 'press-permit-core'),
+                                esc_html('PP_NO_GROUP_RESTRICTIONS')
+                            );
+                            ?>
+                        </div>
+                    </div>
+                    <?php endif;?>
+
+                    <?php if (defined('PP_NO_ADDITIONAL_ACCESS')):?>
+                    <div style="display:table">
+                        <div style="display:table-cell">
+                            <i class="dashicons dashicons-bell" style="color:#f59e0b; font-size: 24px;"></i>
+                        </div>
+                        <div style="display:table-cell; vertical-align:bottom; padding-left: 5px">
+                            <?php
+                            printf(
+                                '%s <strong>(%s)</strong>.',
+                                esc_html__('Permissions to enable access are not available because of a constant definition', 'press-permit-core'),
+                                esc_html('PP_NO_ADDITIONAL_ACCESS')
+                            );
+                            ?>
+                        </div>
+                    </div>
+                    <?php endif;?>
+                </div>
+                <?php endif;
 
                 echo '</div>';  // pp_current_exceptions
             }

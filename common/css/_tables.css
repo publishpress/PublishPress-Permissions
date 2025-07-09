@@ -49,12 +49,12 @@
 .table .sortable.asc:after {
   content: " ▲";
   /* Ascending sort indicator */
-  font-size: 1.0em;
+  font-size: 1em;
 }
 .table .sortable.desc:after {
   content: " ▼";
   /* Descending sort indicator */
-  font-size: 1.0em;
+  font-size: 1em;
 }
 @media (max-width: 768px) {
   .table-responsive {
