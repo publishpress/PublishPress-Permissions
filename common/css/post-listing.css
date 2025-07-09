@@ -29,3 +29,8 @@ span.pp_child_select-close {
     margin-right: 0.5em;
     font-size: 18px;
 }
+
+/* --- WooCommerce compat for Products list table custom cols --- */
+body.edit-php.post-type-product table.table-view-list {
+    width: inherit;
+}

@@ -1663,14 +1663,14 @@ class AgentPermissionsUI
                                     // Add tooltip for "Fix Sub" link
                                     $fix_sub_tooltip = esc_html__('Other plugins (or deactivation of PublishPress Permissions) can prevent sub-page permissions from being properly applied when a new sub-page is created.', 'press-permit-core');
                                     printf(
-                                        '<span data-toggle="tooltip" data-placement="top">%1$s<span class="tooltip-text"><span style="white-space: normal;">%2$s</span><i></i></span><i class="dashicons dashicons-info-outline" style="font-size: 18px;width: 16px;height: 16px;"></i></span>',
+                                        '<span data-toggle="tooltip" data-placement="top">%1$s<span class="tooltip-text"><span style="white-space: normal;">%2$s</span><i></i></span><i class="dashicons dashicons-info-outline" style="font-size: 18px;width: 16px;height: 16px;padding-top:2px"></i></span>',
                                         sprintf(
                                             esc_html__(' %1$sFix Sub-%2$s Permissions%3$s', 'press-permit-core'),
-                                        "&nbsp;<a href='" . esc_url($fix_child_url) . "' class='btn btn-link' style='padding-right:0'>",
+                                        "&nbsp;<a href='" . esc_url($fix_child_url) . "' class='btn btn-link' style='padding-right:4px'>",
                                             esc_html($via_type_obj->labels->singular_name),
                                             '</a>'
                                         ),
-                                        $fix_sub_tooltip
+                                        esc_html($fix_sub_tooltip)
                                     );
                                 }
 
@@ -1698,25 +1698,41 @@ class AgentPermissionsUI
 
                 } // end foreach via_src
 
-                if (!empty($hidden_exceptions)) : ?>
-                <div class="alert alert-secondary" role="alert" style="display: flex; align-items: flex-start; gap: 10px;">
-                    <span>
-                        <i class="dashicons dashicons-bell" style="color:#f59e0b; font-size: 24px;"></i>
-                    </span>
-                    <span>
-                        <?php
-                        printf(
-                            '%s <strong>(%s)</strong><br />',
-                            esc_html__('Group Restrictions are not available because of a constant definition', 'press-permit-core'),
-                            esc_html('PP_NO_GROUP_RESTRICTIONS'),
-                        );
-                        printf(
-                            '%s <strong>(%s)</strong><br />',
-                            esc_html__('Permissions to enable access are not available because of a constant definition', 'press-permit-core'),
-                            esc_html('PP_NO_ADDITIONAL_ACCESS'),
-                        );
-                        ?>
-                    </span>
+                if (!empty($hidden_exceptions) && (defined('PP_NO_GROUP_RESTRICTIONS') || defined('PP_NO_ADDITIONAL_ACCESS'))) : ?>
+                <div class="alert alert-secondary" role="alert">
+                    <?php if (defined('PP_NO_GROUP_RESTRICTIONS')):?>
+                    <div style="display:table; <?php if (defined('PP_NO_ADDITIONAL_ACCESS')) echo 'margin-bottom: 12px';?>">
+                        <div style="display:table-cell">
+                            <i class="dashicons dashicons-bell" style="color:#f59e0b; font-size: 24px;"></i>
+                        </div>
+                        <div style="display:table-cell; vertical-align:bottom; padding-left: 5px">
+                            <?php
+                            printf(
+                                '%s <strong>(%s)</strong>.',
+                                esc_html__('Group Restrictions are not available because of a constant definition', 'press-permit-core'),
+                                esc_html('PP_NO_GROUP_RESTRICTIONS')
+                            );
+                            ?>
+                        </div>
+                    </div>
+                    <?php endif;?>
+
+                    <?php if (defined('PP_NO_ADDITIONAL_ACCESS')):?>
+                    <div style="display:table">
+                        <div style="display:table-cell">
+                            <i class="dashicons dashicons-bell" style="color:#f59e0b; font-size: 24px;"></i>
+                        </div>
+                        <div style="display:table-cell; vertical-align:bottom; padding-left: 5px">
+                            <?php
+                            printf(
+                                '%s <strong>(%s)</strong>.',
+                                esc_html__('Permissions to enable access are not available because of a constant definition', 'press-permit-core'),
+                                esc_html('PP_NO_ADDITIONAL_ACCESS')
+                            );
+                            ?>
+                        </div>
+                    </div>
+                    <?php endif;?>
                 </div>
                 <?php endif;
 

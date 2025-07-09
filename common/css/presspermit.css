@@ -752,6 +752,20 @@ div#profile-page.wrap div.pp-group-box h3:first-of-type {
   background-image: linear-gradient(-45deg, #007cba 33%, #005a87 33%, #005a87 70%, #007cba 70%) !important;
   background-size: 80px 100% !important;
 }
+.pp-version-notice-bold-purple-button a,
+.pp-version-notice-bold-purple-button a:active,
+.pp-version-notice-bold-purple-button a:visited {
+  text-decoration: none !important;
+  color: black !important;
+}
+@media only screen and (max-width: 600px) {
+  .pp-version-notice-bold-purple-message {
+    width: auto !important;
+  }
+  .pp-version-notice-bold-purple-button {
+    width: auto !important;
+  }
+}
 @media (max-width: 782px) {
   .pp-select-exception-agents select[id*="agent_results_"] {
     width: 240px;

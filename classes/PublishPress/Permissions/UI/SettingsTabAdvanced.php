@@ -31,7 +31,7 @@ class SettingsTabAdvanced
     {
         $new = [
             'enable'         => esc_html__('Advanced Settings', 'press-permit-core'),
-            'file_filtering' => esc_html__('File Filtering', 'press-permit-core'),
+            'file_filtering' => esc_html__('File Access', 'press-permit-core'),
             'network'        => esc_html__('Network-Wide Settings', 'press-permit-core'),
             'post_editor'         => esc_html__('Editor Options', 'press-permit-core'),
             'statuses'            => esc_html__('Statuses', 'press-permit-core'),

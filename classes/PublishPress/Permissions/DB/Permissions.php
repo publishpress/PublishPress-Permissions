@@ -249,7 +249,7 @@ class Permissions
 
         $groups_table = apply_filters('presspermit_use_groups_table', $wpdb->pp_groups, 'pp_group');
         // Get all group IDs with metagroup_type = 'wp_role'
-        $wp_role_group_ids = $wpdb->get_col("SELECT ID FROM $groups_table WHERE metagroup_type = 'wp_role'");
+        $wp_role_group_ids = $wpdb->get_col("SELECT ID FROM $groups_table WHERE metagroup_type = 'wp_role'");   // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
         $assign_for_clause = ($assign_for) ? $wpdb->prepare("AND i.assign_for = %s", $assign_for) : '';
         $inherited_from_clause = ($inherited_from !== '') ? $wpdb->prepare("AND i.inherited_from = %d", $inherited_from) : '';
@@ -291,7 +291,7 @@ class Permissions
         );
 
         // Determine if group restrictions are enabled
-        $group_restrictions = defined('PP_GROUP_RESTRICTIONS');
+        $group_restrictions = !defined('PP_NO_GROUP_RESTRICTIONS');
         $show_hidden_exceptions = PWP::REQUEST_key('show_hidden_exceptions');
 
         // Count and filter hidden exceptions if group restrictions are not enabled

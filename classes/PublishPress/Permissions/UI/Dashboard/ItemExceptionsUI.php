@@ -65,10 +65,9 @@ class ItemExceptionsUI
             $drew_itemroles_marker = true;
         }
 
-        $current_exceptions_saved = (isset($this->data->current_exceptions[$for_item_type]))
+        $current_exceptions = (isset($this->data->current_exceptions[$for_item_type]))
             ? $this->data->current_exceptions[$for_item_type]
             : [];
-        $current_exceptions = [];
 
         // Check for blockage of Everyone, Logged In metagroups
         $metagroup_exclude = [];
@@ -142,8 +141,9 @@ class ItemExceptionsUI
                         continue;
                     }
 
-                    // Use saved exceptions if available, otherwise initialize as empty array
-                    $current_exceptions[$op][$agent_type][$agent_id] = $current_exceptions_saved[$op][$agent_type][$agent_id] ?? [];
+                    if (!isset($current_exceptions[$op][$agent_type][$agent_id])) {
+                        $current_exceptions[$op][$agent_type][$agent_id] = [];
+                    }
                 }
 
                 if (
@@ -246,7 +246,7 @@ class ItemExceptionsUI
                                         } else {
                                             foreach (array_keys($this->data->agent_info[$agent_type]) as $agent_id) {  // order by agent name
                                                 if ($agent_id && isset($current_exceptions[$op][$agent_type][$agent_id])) {
-                                                    $this->render->drawRow(
+                                                    $current_selections = $this->render->drawRow(
                                                         $agent_type,
                                                         $agent_id,
                                                         $current_exceptions[$op][$agent_type][$agent_id],
@@ -254,6 +254,13 @@ class ItemExceptionsUI
                                                         $this->data->agent_info[$agent_type][$agent_id],
                                                         compact('for_item_type', 'op', 'reqd_caps', 'hierarchical')
                                                     );
+
+                                                    // The current_selections array is just a convenient way to decide whether to show the group restrictions warning by default.
+                                                    foreach ($current_selections as $current_selection) {
+                                                        if (0 === $current_selection) {
+                                                            $any_groups_blocked = true;
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -281,6 +288,17 @@ class ItemExceptionsUI
                             </table>
 
                         </div>
+
+                        <?php if (('pp_group' == $agent_type) && !defined('PP_NO_GROUP_RESTRICTIONS')):?>
+                        <div class="pp-group-restrictions-warning" style="margin-top: 10px;<?php if (empty($any_groups_blocked)) echo 'display:none';?>">
+                        <?php 
+                        printf(
+                            '<i class="dashicons dashicons-warning" style="color:#b32121; font-size: 18px;width: 16px;height: 16px;margin-left: 3px;"></i> %s',
+                            esc_html__("Group restrictions are not recommended.", 'press-permit-core')
+                        );
+                        ?>
+                        </div>
+                        <?php endif;?>
                     </td>
                 </tr>
             </table>

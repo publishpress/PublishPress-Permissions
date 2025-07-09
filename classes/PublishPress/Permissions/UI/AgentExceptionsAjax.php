@@ -133,7 +133,7 @@ class AgentExceptionsAjax
                     $modes['additional'] = esc_html__('Enable', 'press-permit-core');
                 }
 
-                if (('user' == $agent_type) || $is_wp_role || ('assign' == $operation) || defined('PP_GROUP_RESTRICTIONS')) {
+                if (('user' == $agent_type) || $is_wp_role || ('assign' == $operation) || !defined('PP_NO_GROUP_RESTRICTIONS')) {
                     // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
                     $modes['exclude'] = esc_html__('Block', 'press-permit-core');
                 }
@@ -145,7 +145,7 @@ class AgentExceptionsAjax
                 $tooltips = [
                     'additional' => esc_html__('Expand access to allow specified items regardless of role capabilities or restrictions.', 'press-permit-core'),
                     'exclude' => esc_html__('Restrict access by blocking specified items unless an "Enabled" exception is also stored.', 'press-permit-core'),      // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
-                    'include' => esc_html__('Restrict access by limiting role capabilities to apply only for specified items. Users still need capabilities in their main role or extra roles.', 'press-permit-core')
+                    'include' => esc_html__('Restrict access by limiting role capabilities to apply only for specified items. Users still need capabilities in their main role or extra roles.', 'press-permit-core'),
                 ];
                 ?>
                 <div>
@@ -159,7 +159,15 @@ class AgentExceptionsAjax
                                     '<span data-toggle="tooltip" data-placement="top">%s<span class="tooltip-text"><span>%s</span><i></i></span><i class="dashicons dashicons-info-outline" style="font-size: 18px;width: 16px;height: 16px;margin-left: 3px;"></i></span>',
                                     esc_html($title),
                                     esc_html($tooltips[$mod_type])
-                                ) : esc_html($title); ?>
+                                ) : esc_html($title); 
+                                
+                            if (('exclude' == $mod_type) && ('pp_group' == $agent_type) && !$is_wp_role) {
+                                printf(
+                                    '<span data-toggle="tooltip" data-placement="top"><span class="tooltip-text"><span>%s</span><i></i></span><i class="dashicons dashicons-warning" style="color:#b32121; font-size: 18px;width: 16px;height: 16px;margin-left: 3px;"></i></span>',
+                                    esc_html__("Using group membership to block access is not recommended. Consider reducing the user's role capabilities and using group membership to add access.", 'press-permit-core')
+                                );
+                            }
+                            ?>
                         </span>
                     </label>
                     <br />
