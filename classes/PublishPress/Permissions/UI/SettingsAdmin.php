@@ -81,7 +81,7 @@ class SettingsAdmin
         case 'suppress_administrator_metagroups' :
         return __('If checked, pages blocked from the "All" or "Logged In" groups will still be listed to Administrators.', 'press-permit-core-hints');
 
-        case 'suppress_administrator_metagroups' :
+        case 'non_admins_set_read_exceptions' :
         return __('If enabled, users with the pp_set_read_exceptions capability in the WP role can set reading permissions for their editable posts.', 'press-permit-core-hints');
 
         case 'user_search_by_role' :
@@ -92,6 +92,13 @@ class SettingsAdmin
 
         case 'display_extension_hints' :
         return  __('Display descriptive captions for features available in missing or deactivated modules.', 'press-permit-core-hints');
+
+        // Integrations
+        case 'acf_integration_prompt' :
+        return __('Enhanced compatibility with Advanced Custom Fields field groups and taxonomies is available in PublishPress Permissions Pro.', 'press-permit-core-hints');
+
+        case 'bbpress_integration_prompt' :
+        return __('Forum-specific permissions for bbPress are available in PublishPress Permissions Pro.', 'press-permit-core-hints');
 
         case 'pattern_roles_include_generic_rolecaps':
         return __('Extra Roles cause "_posts" capabilities in the Pattern Role (Author, Editor, etc.) to be assigned for the selected post type. Enable this setting to also include all other capabilities in the Pattern Role.', 'press-permit-core-hints');
@@ -104,12 +111,6 @@ class SettingsAdmin
 
         case 'pp_capabilities_install_prompt' :
         return __('You can add Permissions capabilities to a role using the %1$s plugin.', 'press-permit-core-hints');
-
-        case 'non_admins_set_read_exceptions' :
-        return __('Regardless of this setting, the pp_set_read_exceptions capability is also required.', 'press-permit-core-hints');
-
-        case 'non_admins_set_edit_exceptions' :
-        return __('Regardless of this setting, the pp_set_edit_exceptions capability is also required.', 'press-permit-core-hints');
 
         // Editing
         case 'collaborative-publishing' :
@@ -156,9 +157,6 @@ class SettingsAdmin
 
         case 'limit_user_edit_by_level' :
         return __('Prevent non-Administrators with user editing permissions from editing a higher-level user or assigning a role higher than their own.', 'press-permit-core-hints');
-
-        case 'non_admins_set_edit_exceptions' :
-        return __('If enabled, the capabilities pp_set_edit_exceptions, pp_set_associate_exceptions, etc. will be honored. See list of capabilities below.', 'press-permit-core-hints');
 
         // Circles
         case 'access_circles_limit_revisions':
