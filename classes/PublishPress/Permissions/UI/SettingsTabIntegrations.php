@@ -222,96 +222,51 @@ class SettingsTabIntegrations
                 </td>
             </tr>
             <script type="text/javascript">
-                jQuery(document).ready(function($) {
-                    // Category filtering functionality
+                jQuery(function($) {
+                    // Category filtering
                     $('.pp-category-label').on('click', function() {
-                        // Remove active class from all labels
                         $('.pp-category-label').removeClass('active');
-                        // Add active class to clicked label
                         $(this).addClass('active');
-
                         const category = $(this).data('category');
-                        
-                        // Filter integration cards
                         $('.pp-integration-card').each(function() {
-                            const cardCategories = $(this).data('categories') || 'all';
-                            const categoriesArray = cardCategories.toString().split(',');
-                            
-                            if (category === 'all' || categoriesArray.includes(category)) {
-                                $(this).removeClass('pp-hidden').show();
-                            } else {
-                                $(this).addClass('pp-hidden').hide();
-                            }
+                        const categories = ($(this).data('categories') || 'all').toString().split(',');
+                        $(this).toggle(category === 'all' || categories.includes(category)).toggleClass('pp-hidden', !(category === 'all' || categories.includes(category)));
                         });
                     });
 
-                    // Add click handler for disabled checkboxes to show upgrade message
+                    // Disabled checkbox upgrade message
                     $('.pp-integration-card.pp-disabled input[type="checkbox"]').on('click', function(e) {
                         e.preventDefault();
-                        var card = $(this).closest('.pp-integration-card');
-                        var overlay = card.find('.pp-upgrade-overlay');
-                        
-                        // Flash the overlay to get user attention
-                        overlay.css('opacity', '1').delay(3000).animate({opacity: '0'}, 500);
-                        
-                        // Show a temporary message
+                        const card = $(this).closest('.pp-integration-card');
+                        card.find('.pp-upgrade-overlay').css('opacity', '1').delay(3000).animate({opacity: '0'}, 500);
                         if (!card.find('.pp-temp-message').length) {
-                            var message = $('<div class="pp-temp-message" style="position:absolute;top:10px;right:10px;background:#ff5722;color:white;padding:5px 10px;border-radius:3px;font-size:12px;z-index:999;">Pro Feature</div>');
-                            card.append(message);
-                            setTimeout(function() {
-                                message.fadeOut(500, function() {
-                                    message.remove();
-                                });
-                            }, 2000);
+                        $('<div class="pp-temp-message" style="position:absolute;top:10px;right:10px;background:#ff5722;color:white;padding:5px 10px;border-radius:3px;font-size:12px;z-index:999;">Pro Feature</div>')
+                            .appendTo(card)
+                            .delay(2000).fadeOut(500, function() { $(this).remove(); });
                         }
                     });
-                    
-                    // Toggle switch functionality
+
+                    // Toggle switch
                     $('.pp-toggle-switch input').on('change', function() {
-                        if (!$(this).prop('disabled')) {
-                            // Handle toggle state change here
-                            const isChecked = $(this).prop('checked');
-                            const card = $(this).closest('.pp-integration-card');
-                            const status = card.find('.pp-integration-status');
-                            
-                            if (isChecked) {
-                                status.removeClass('inactive disabled').addClass('active')
-                                    .css({
-                                        'background-color': '#e8f5e9',
-                                        'color': '#4caf50'
-                                    })
-                                    .text('Active');
-                            } else {
-                                status.removeClass('active').addClass('inactive')
-                                    .css({
-                                        'background-color': '#ffebee',
-                                        'color': '#f44336'
-                                    })
-                                    .text('Inactive');
-                            }
+                        if ($(this).prop('disabled')) return;
+                        const status = $(this).closest('.pp-integration-card').find('.pp-integration-status');
+                        if ($(this).prop('checked')) {
+                        status.removeClass('inactive disabled').addClass('active').css({'background-color': '#e8f5e9', 'color': '#4caf50'}).text('Active');
+                        } else {
+                        status.removeClass('active').addClass('inactive').css({'background-color': '#ffebee', 'color': '#f44336'}).text('Inactive');
                         }
                     });
-                    
-                    // Add smooth hover effects for upgrade buttons
+
+                    // Button hover effect
                     $('.pp-upgrade-btn-primary, .pp-upgrade-btn-secondary').hover(
-                        function() {
-                            $(this).css('transform', 'translateY(-1px)');
-                        },
-                        function() {
-                            $(this).css('transform', 'translateY(0)');
-                        }
+                        function() { $(this).css('transform', 'translateY(-1px)'); },
+                        function() { $(this).css('transform', 'translateY(0)'); }
                     );
 
-                    // Enhanced card hover effects
+                    // Card hover effect
                     $('.pp-integration-card').hover(
-                        function() {
-                            if (!$(this).hasClass('pp-disabled')) {
-                                $(this).css('border-left-width', '6px');
-                            }
-                        },
-                        function() {
-                            $(this).css('border-left-width', '4px');
-                        }
+                        function() { if (!$(this).hasClass('pp-disabled')) $(this).css('border-left-width', '6px'); },
+                        function() { $(this).css('border-left-width', '4px'); }
                     );
                 });
             </script>
