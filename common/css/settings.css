@@ -947,7 +947,7 @@ input:disabled + .pp-slider {
   cursor: not-allowed;
 }
 .pp-toggle-label {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #757575;
 }
 .pp-integration-status {
