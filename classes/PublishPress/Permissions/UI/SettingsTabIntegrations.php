@@ -262,12 +262,6 @@ class SettingsTabIntegrations
                         function() { $(this).css('transform', 'translateY(-1px)'); },
                         function() { $(this).css('transform', 'translateY(0)'); }
                     );
-
-                    // Card hover effect
-                    $('.pp-integration-card').hover(
-                        function() { if (!$(this).hasClass('pp-disabled')) $(this).css('border-left-width', '6px'); },
-                        function() { $(this).css('border-left-width', '4px'); }
-                    );
                 });
             </script>
         <?php endif;
