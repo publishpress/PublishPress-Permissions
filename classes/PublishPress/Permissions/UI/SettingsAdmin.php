@@ -93,13 +93,6 @@ class SettingsAdmin
         case 'display_extension_hints' :
         return  __('Display descriptive captions for features available in missing or deactivated modules.', 'press-permit-core-hints');
 
-        // Integrations
-        case 'acf_integration_prompt' :
-        return __('Enhanced compatibility with Advanced Custom Fields field groups and taxonomies is available in PublishPress Permissions Pro.', 'press-permit-core-hints');
-
-        case 'bbpress_integration_prompt' :
-        return __('Forum-specific permissions for bbPress are available in PublishPress Permissions Pro.', 'press-permit-core-hints');
-
         case 'pattern_roles_include_generic_rolecaps':
         return __('Extra Roles cause "_posts" capabilities in the Pattern Role (Author, Editor, etc.) to be assigned for the selected post type. Enable this setting to also include all other capabilities in the Pattern Role.', 'press-permit-core-hints');
 
