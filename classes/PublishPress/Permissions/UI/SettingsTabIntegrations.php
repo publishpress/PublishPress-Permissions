@@ -4,6 +4,8 @@ namespace PublishPress\Permissions\UI;
 
 class SettingsTabIntegrations
 {
+    private const UPGRADE_PRO_URL = 'https://publishpress.com/permissions/';
+
     public function __construct()
     {
         add_filter('presspermit_option_tabs', [$this, 'optionTabs'], 5);
@@ -36,6 +38,12 @@ class SettingsTabIntegrations
         $opt = [
             'acf_compatibility' => esc_html__('Advanced Custom Fields', 'press-permit-core'),
             'bbpress_compatibility' => esc_html__('bbPress Forums', 'press-permit-core'),
+            'buddypress_compatibility' => esc_html__('BuddyPress', 'press-permit-core'),
+            'wpml_compatibility' => esc_html__('WPML', 'press-permit-core'),
+            'yoast_seo_compatibility' => esc_html__('Yoast SEO', 'press-permit-core'),
+            'woocommerce_compatibility' => esc_html__('WooCommerce', 'press-permit-core'),
+            'relevanssi_compatibility' => esc_html__('Relevanssi', 'press-permit-core'),
+            'pagebuilders_compatibility' => esc_html__('Page Builders', 'press-permit-core'),
         ];
 
         return array_merge($captions, $opt);
@@ -44,7 +52,16 @@ class SettingsTabIntegrations
     public function optionSections($sections)
     {
         $new = [
-            'compatibility_packs' => ['acf_compatibility', 'bbpress_compatibility'],
+            'compatibility_packs' => [
+                'acf_compatibility', 
+                'bbpress_compatibility', 
+                'buddypress_compatibility',
+                'wpml_compatibility',
+                'yoast_seo_compatibility', 
+                'woocommerce_compatibility',
+                'relevanssi_compatibility',
+                'pagebuilders_compatibility'
+            ],
         ];
 
         $key = 'integrations';
@@ -61,15 +78,36 @@ class SettingsTabIntegrations
         $section = 'compatibility_packs';
         if (!empty($ui->form_options[$tab][$section])) : ?>
             <tr>
-                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
                 <td>
                     <div class="pp-integrations-container">
+                        <!-- Pro Banner -->
+                        <?php if (presspermit()->isPro()) : ?>
+                            <div class="pp-pro-banner">
+                                <div>
+                                    <h2><?php esc_html_e('Premium Integrations Active', 'press-permit-core'); ?></h2>
+                                    <p><?php esc_html_e('You\'re using the Pro version with access to all premium features', 'press-permit-core'); ?></p>
+                                </div>
+                                <div class="pp-pro-badge-banner"><?php esc_html_e('PRO VERSION', 'press-permit-core'); ?></div>
+                            </div>
+                        <?php endif; ?>
+
+                        <!-- Category Filters -->
+                        <div class="pp-category-labels">
+                            <div class="pp-category-label active" data-category="all"><?php esc_html_e('All', 'press-permit-core'); ?></div>
+                            <div class="pp-category-label" data-category="builder"><?php esc_html_e('Builders', 'press-permit-core'); ?></div>
+                            <div class="pp-category-label" data-category="seo"><?php esc_html_e('SEO', 'press-permit-core'); ?></div>
+                            <div class="pp-category-label" data-category="ecommerce"><?php esc_html_e('E-Commerce', 'press-permit-core'); ?></div>
+                            <div class="pp-category-label" data-category="multilingual"><?php esc_html_e('Multilingual', 'press-permit-core'); ?></div>
+                            <div class="pp-category-label" data-category="community"><?php esc_html_e('Community', 'press-permit-core'); ?></div>
+                        </div>
+
                         <div class="pp-integrations-grid">
                             <?php $this->renderCompatibilityPack(
                                 'acf_compatibility',
                                 esc_html__('Advanced Custom Fields', 'press-permit-core'),
-                                esc_html__('Compatibility with field groups, taxonomies', 'press-permit-core'),
+                                esc_html__('Full compatibility with ACF field groups and taxonomies for granular permission control.', 'press-permit-core'),
                                 'acf',
+                                ['all'],
                                 [
                                     esc_html__('Control access to custom fields', 'press-permit-core'),
                                     esc_html__('Taxonomy-based permissions', 'press-permit-core'),
@@ -80,12 +118,91 @@ class SettingsTabIntegrations
                             <?php $this->renderCompatibilityPack(
                                 'bbpress_compatibility',
                                 esc_html__('bbPress Forums', 'press-permit-core'),
-                                esc_html__('Forum-specific permissions', 'press-permit-core'),
+                                esc_html__('Forum-specific permissions for bbPress with detailed control over discussions.', 'press-permit-core'),
                                 'bbpress',
+                                ['all', 'community'],
                                 [
                                     esc_html__('Forum-specific permissions', 'press-permit-core'),
                                     esc_html__('Topic creation restrictions', 'press-permit-core'),
                                     esc_html__('Reply moderation controls', 'press-permit-core')
+                                ]
+                            ); ?>
+
+                            <?php $this->renderCompatibilityPack(
+                                'buddypress_compatibility',
+                                esc_html__('BuddyPress', 'press-permit-core'),
+                                esc_html__('Assign post and term permissions to BuddyPress groups for community-driven content.', 'press-permit-core'),
+                                'buddypress',
+                                ['all', 'community'],
+                                [
+                                    esc_html__('Group-based permissions', 'press-permit-core'),
+                                    esc_html__('Activity stream controls', 'press-permit-core'),
+                                    esc_html__('Member directory restrictions', 'press-permit-core')
+                                ]
+                            ); ?>
+
+                            <?php $this->renderCompatibilityPack(
+                                'wpml_compatibility',
+                                esc_html__('WPML', 'press-permit-core'),
+                                esc_html__('Full multilingual support with permission synchronization across translations.', 'press-permit-core'),
+                                'wpml',
+                                ['all', 'multilingual'],
+                                [
+                                    esc_html__('Translation permissions', 'press-permit-core'),
+                                    esc_html__('Language-specific access', 'press-permit-core'),
+                                    esc_html__('Synchronized roles across languages', 'press-permit-core')
+                                ]
+                            ); ?>
+
+                            <?php $this->renderCompatibilityPack(
+                                'yoast_seo_compatibility',
+                                esc_html__('Yoast SEO', 'press-permit-core'),
+                                esc_html__('Exclude restricted posts from sitemaps and control SEO visibility.', 'press-permit-core'),
+                                'yoast',
+                                ['all', 'seo'],
+                                [
+                                    esc_html__('Sitemap filtering', 'press-permit-core'),
+                                    esc_html__('SEO meta controls', 'press-permit-core'),
+                                    esc_html__('Search engine visibility', 'press-permit-core')
+                                ]
+                            ); ?>
+
+                            <?php $this->renderCompatibilityPack(
+                                'woocommerce_compatibility',
+                                esc_html__('WooCommerce', 'press-permit-core'),
+                                esc_html__('Advanced permissions for products, orders, and customer data.', 'press-permit-core'),
+                                'woocommerce',
+                                ['all', 'ecommerce'],
+                                [
+                                    esc_html__('Product permissions', 'press-permit-core'),
+                                    esc_html__('Order management controls', 'press-permit-core'),
+                                    esc_html__('Customer data access', 'press-permit-core')
+                                ]
+                            ); ?>
+
+                            <?php $this->renderCompatibilityPack(
+                                'relevanssi_compatibility',
+                                esc_html__('Relevanssi', 'press-permit-core'),
+                                esc_html__('Filter search results based on View Permissions for secure content discovery.', 'press-permit-core'),
+                                'relevanssi',
+                                ['all', 'seo'],
+                                [
+                                    esc_html__('Search result filtering', 'press-permit-core'),
+                                    esc_html__('Permission-aware indexing', 'press-permit-core'),
+                                    esc_html__('Secure content discovery', 'press-permit-core')
+                                ]
+                            ); ?>
+
+                            <?php $this->renderCompatibilityPack(
+                                'pagebuilders_compatibility',
+                                esc_html__('Page Builders', 'press-permit-core'),
+                                esc_html__('Compatible with Elementor, Beaver Builder, Divi, and other popular page builders.', 'press-permit-core'),
+                                'pagebuilders',
+                                ['all', 'builder'],
+                                [
+                                    esc_html__('Elementor compatibility', 'press-permit-core'),
+                                    esc_html__('Beaver Builder support', 'press-permit-core'),
+                                    esc_html__('Divi theme integration', 'press-permit-core')
                                 ]
                             ); ?>
                         </div>
@@ -95,7 +212,7 @@ class SettingsTabIntegrations
                                 <div class="pp-upgrade-cta-content">
                                     <h3><?php esc_html_e('Unlock Premium Integrations', 'press-permit-core'); ?></h3>
                                     <p><?php esc_html_e('Upgrade to the Pro version to get access to all these powerful integrations and more. Take your site\'s permissions to the next level with advanced controls and compatibility.', 'press-permit-core'); ?></p>
-                                    <a href="https://publishpress.com/links/permissions-integrations" target="_blank" class="pp-upgrade-btn">
+                                    <a href="<?php echo self::UPGRADE_PRO_URL; ?>" target="_blank" class="pp-upgrade-btn">
                                         <?php esc_html_e('Upgrade to Pro Now', 'press-permit-core'); ?>
                                     </a>
                                 </div>
@@ -104,390 +221,147 @@ class SettingsTabIntegrations
                     </div>
                 </td>
             </tr>
-            
-            <style>
-                .pp-integrations-container {
-                    max-width: 100%;
-                    margin: 0;
-                }
-
-                .pp-integrations-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-                    gap: 20px;
-                    margin-bottom: 30px;
-                }
-
-                .pp-integration-card {
-                    background: #fff;
-                    border-radius: 8px;
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-                    padding: 20px;
-                    position: relative;
-                    overflow: hidden;
-                    transition: transform 0.2s ease, box-shadow 0.2s ease;
-                    border: 1px solid #e0e0e0;
-                }
-
-                .pp-integration-card:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                }
-
-                .pp-integration-card:hover .pp-upgrade-overlay {
-                    opacity: 1;
-                    pointer-events: auto;
-                }
-
-                .pp-integration-header {
-                    display: flex;
-                    align-items: flex-start;
-                    margin-bottom: 15px;
-                }
-
-                .pp-integration-icon {
-                    width: 48px;
-                    height: 48px;
-                    background: #f5f5f5;
-                    border-radius: 8px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin-right: 15px;
-                    flex-shrink: 0;
-                    position: relative;
-                }
-
-                .pp-integration-icon::before {
-                    font-size: 24px;
-                    color: #757575;
-                }
-
-                .pp-integration-icon.acf::before {
-                    content: "�";
-                }
-
-                .pp-integration-icon.bbpress::before {
-                    content: "💬";
-                }
-
-                .pp-integration-icon.default::before {
-                    content: "🔌";
-                }
-
-                .pp-integration-content {
-                    flex: 1;
-                }
-
-                .pp-integration-title {
-                    font-size: 18px;
-                    font-weight: 600;
-                    margin-bottom: 8px;
-                    color: #1e1e1e;
-                    display: flex;
-                    align-items: center;
-                }
-
-                .pp-pro-badge {
-                    background: #9c27b0;
-                    color: white;
-                    font-size: 11px;
-                    padding: 3px 8px;
-                    border-radius: 4px;
-                    margin-left: 10px;
-                    font-weight: 600;
-                    text-transform: uppercase;
-                }
-
-                .pp-integration-description {
-                    color: #757575;
-                    font-size: 14px;
-                    margin-bottom: 15px;
-                    line-height: 1.5;
-                }
-
-                .pp-integration-features {
-                    font-size: 13px;
-                    color: #757575;
-                }
-
-                .pp-integration-features ul {
-                    list-style: none;
-                    padding: 0;
-                    margin: 0;
-                }
-
-                .pp-integration-features li {
-                    position: relative;
-                    padding-left: 20px;
-                    margin-bottom: 8px;
-                }
-
-                .pp-integration-features li:before {
-                    content: "•";
-                    position: absolute;
-                    left: 0;
-                    color: #3858e9;
-                    font-weight: bold;
-                }
-
-                .pp-upgrade-overlay {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(255, 255, 255, 0.95);
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    text-align: center;
-                    padding: 20px;
-                    opacity: 0;
-                    transition: opacity 0.3s ease;
-                    pointer-events: none;
-                    backdrop-filter: blur(2px);
-                }
-
-                .pp-upgrade-overlay h4 {
-                    color: #ff5722;
-                    font-weight: 600;
-                    margin-bottom: 10px;
-                    font-size: 16px;
-                }
-
-                .pp-upgrade-overlay p {
-                    color: #757575;
-                    margin-bottom: 20px;
-                    max-width: 250px;
-                    line-height: 1.4;
-                }
-
-                .pp-upgrade-overlay .pp-upgrade-buttons {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                    align-items: center;
-                }
-
-                .pp-upgrade-btn-secondary {
-                    background: transparent;
-                    border: 1px solid #9c27b0;
-                    color: #9c27b0;
-                    padding: 8px 16px;
-                    border-radius: 4px;
-                    text-decoration: none;
-                    font-weight: 500;
-                    font-size: 13px;
-                    transition: all 0.2s ease;
-                    display: inline-block;
-                }
-
-                .pp-upgrade-btn-secondary:hover {
-                    background: #f3e5f5;
-                    text-decoration: none;
-                }
-
-                .pp-upgrade-btn-primary {
-                    background: #9c27b0;
-                    color: white;
-                    padding: 10px 20px;
-                    border-radius: 4px;
-                    text-decoration: none;
-                    font-weight: 600;
-                    font-size: 14px;
-                    transition: all 0.2s ease;
-                    display: inline-block;
-                }
-
-                .pp-upgrade-btn-primary:hover {
-                    background: #7b1fa2;
-                    transform: translateY(-1px);
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-                    text-decoration: none;
-                    color: white;
-                }
-
-                .pp-integrations-upgrade-cta {
-                    background: linear-gradient(135deg, #7b1fa2 0%, #9c27b0 100%);
-                    border-radius: 8px;
-                    padding: 30px;
-                    text-align: center;
-                    margin-top: 30px;
-                    color: white;
-                }
-
-                .pp-integrations-upgrade-cta h3 {
-                    font-size: 24px;
-                    margin-bottom: 15px;
-                    font-weight: 600;
-                }
-
-                .pp-integrations-upgrade-cta p {
-                    max-width: 600px;
-                    margin: 0 auto 25px;
-                    opacity: 0.9;
-                    line-height: 1.6;
-                }
-
-                .pp-integrations-upgrade-cta .pp-upgrade-btn {
-                    background: white;
-                    color: #9c27b0;
-                    padding: 12px 30px;
-                    border-radius: 4px;
-                    text-decoration: none;
-                    font-weight: 600;
-                    font-size: 16px;
-                    transition: all 0.2s ease;
-                    display: inline-block;
-                }
-
-                .pp-integrations-upgrade-cta .pp-upgrade-btn:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-                    text-decoration: none;
-                    color: #9c27b0;
-                }
-
-                .pp-integration-card.pp-disabled {
-                    opacity: 0.7;
-                }
-
-                .pp-integration-checkbox {
-                    position: absolute;
-                    top: 20px;
-                    right: 20px;
-                    z-index: 1;
-                }
-
-                .pp-integration-checkbox input[type="checkbox"] {
-                    width: 18px;
-                    height: 18px;
-                    margin: 0;
-                }
-
-                .pp-integration-checkbox input[type="checkbox"]:disabled {
-                    opacity: 0.5;
-                    cursor: not-allowed;
-                }
-
-                @media (max-width: 768px) {
-                    .pp-integrations-grid {
-                        grid-template-columns: 1fr;
-                    }
-
-                    .pp-integration-header {
-                        flex-direction: column;
-                        text-align: center;
-                    }
-
-                    .pp-integration-icon {
-                        margin-right: 0;
-                        margin-bottom: 15px;
-                    }
-
-                    .pp-integrations-upgrade-cta {
-                        padding: 20px;
-                    }
-
-                    .pp-integrations-upgrade-cta h3 {
-                        font-size: 20px;
-                    }
-                }
-            </style>
-            
             <script type="text/javascript">
-                jQuery(document).ready(function($) {
-                    // Add click handler for disabled checkboxes to show upgrade message
+                jQuery(function($) {
+                    // Category filtering
+                    $('.pp-category-label').on('click', function() {
+                        $('.pp-category-label').removeClass('active');
+                        $(this).addClass('active');
+                        const category = $(this).data('category');
+                        $('.pp-integration-card').each(function() {
+                        const categories = ($(this).data('categories') || 'all').toString().split(',');
+                        $(this).toggle(category === 'all' || categories.includes(category)).toggleClass('pp-hidden', !(category === 'all' || categories.includes(category)));
+                        });
+                    });
+
+                    // Disabled checkbox upgrade message
                     $('.pp-integration-card.pp-disabled input[type="checkbox"]').on('click', function(e) {
                         e.preventDefault();
-                        var card = $(this).closest('.pp-integration-card');
-                        var overlay = card.find('.pp-upgrade-overlay');
-                        
-                        // Flash the overlay to get user attention
-                        overlay.css('opacity', '1').delay(3000).animate({opacity: '0'}, 500);
-                        
-                        // Show a temporary message
+                        const card = $(this).closest('.pp-integration-card');
+                        card.find('.pp-upgrade-overlay').css('opacity', '1').delay(3000).animate({opacity: '0'}, 500);
                         if (!card.find('.pp-temp-message').length) {
-                            var message = $('<div class="pp-temp-message" style="position:absolute;top:10px;right:10px;background:#ff5722;color:white;padding:5px 10px;border-radius:3px;font-size:12px;z-index:999;">Pro Feature</div>');
-                            card.append(message);
-                            setTimeout(function() {
-                                message.fadeOut(500, function() {
-                                    message.remove();
-                                });
-                            }, 2000);
+                        $('<div class="pp-temp-message" style="position:absolute;top:10px;right:10px;background:#ff5722;color:white;padding:5px 10px;border-radius:3px;font-size:12px;z-index:999;">Pro Feature</div>')
+                            .appendTo(card)
+                            .delay(2000).fadeOut(500, function() { $(this).remove(); });
                         }
                     });
-                    
-                    // Add smooth hover effects for upgrade buttons
-                    $('.pp-upgrade-btn-primary, .pp-upgrade-btn-secondary').hover(
-                        function() {
-                            $(this).css('transform', 'translateY(-1px)');
-                        },
-                        function() {
-                            $(this).css('transform', 'translateY(0)');
+
+                    // Toggle switch
+                    $('.pp-toggle-switch input').on('change', function() {
+                        if ($(this).prop('disabled')) return;
+                        const status = $(this).closest('.pp-integration-card').find('.pp-integration-status');
+                        if ($(this).prop('checked')) {
+                        status.removeClass('inactive disabled').addClass('active').css({'background-color': '#e8f5e9', 'color': '#4caf50'}).text('Active');
+                        } else {
+                        status.removeClass('active').addClass('inactive').css({'background-color': '#ffebee', 'color': '#f44336'}).text('Inactive');
                         }
+                    });
+
+                    // Button hover effect
+                    $('.pp-upgrade-btn-primary, .pp-upgrade-btn-secondary').hover(
+                        function() { $(this).css('transform', 'translateY(-1px)'); },
+                        function() { $(this).css('transform', 'translateY(0)'); }
+                    );
+
+                    // Card hover effect
+                    $('.pp-integration-card').hover(
+                        function() { if (!$(this).hasClass('pp-disabled')) $(this).css('border-left-width', '6px'); },
+                        function() { $(this).css('border-left-width', '4px'); }
                     );
                 });
             </script>
         <?php endif;
     }
     
-    private function renderCompatibilityPack($id, $title, $description, $plugin_slug, $features = [])
+    private function renderCompatibilityPack($id, $title, $description, $plugin_slug, $categories = ['all'], $features = [])
     {
         $is_pro = presspermit()->isPro();
         $is_checked = $is_pro ? true : false;
         $is_disabled = !$is_pro;
         $card_class = $is_disabled ? 'pp-integration-card pp-disabled' : 'pp-integration-card';
         $icon_class = 'pp-integration-icon ' . $plugin_slug;
+        $categories_string = implode(',', $categories);
+
+        // Determine category tag
+        $category_tag = '';
+        if (in_array('builder', $categories)) {
+            $category_tag = '<span class="pp-category-tag pp-tag-builder">' . esc_html__('Builder', 'press-permit-core') . '</span>';
+        } elseif (in_array('seo', $categories)) {
+            $category_tag = '<span class="pp-category-tag pp-tag-seo">' . esc_html__('SEO', 'press-permit-core') . '</span>';
+        } elseif (in_array('ecommerce', $categories)) {
+            $category_tag = '<span class="pp-category-tag pp-tag-ecommerce">' . esc_html__('E-Commerce', 'press-permit-core') . '</span>';
+        } elseif (in_array('multilingual', $categories)) {
+            $category_tag = '<span class="pp-category-tag pp-tag-multilingual">' . esc_html__('Multilingual', 'press-permit-core') . '</span>';
+        } elseif (in_array('community', $categories)) {
+            $category_tag = '<span class="pp-category-tag pp-tag-community">' . esc_html__('Community', 'press-permit-core') . '</span>';
+        }
+
+        $learn_more_urls = [
+            'acf_compatibility' => esc_url('https://publishpress.com/knowledge-base/acf-publishpress-permissions/'),
+            'bbpress_compatibility' => esc_url('https://publishpress.com/knowledge-base/bbpress-permissions/'),
+            'buddypress_compatibility' => esc_url('https://publishpress.com/knowledge-base/buddypress-content-permissions/'),
+            'pagebuilders_compatibility' => esc_url('https://publishpress.com/links/permissions-integrations/'),
+            'relevanssi_compatibility' => esc_url('https://publishpress.com/knowledge-base/relevanssi-and-presspermit-pro/'),
+            'woocommerce_compatibility' => esc_url('https://publishpress.com/knowledge-base/woocommerce-publishpress-permissions/'),
+            'wpml_compatibility' => esc_url('https://publishpress.com/knowledge-base/wpml-and-presspermit-pro/'),
+            'yoast_seo_compatibility' => esc_url('https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'),
+        ];
         ?>
-        <div class="<?php echo esc_attr($card_class); ?>">
-            <div class="pp-integration-checkbox">
-                <input type="checkbox" 
-                       id="<?php echo esc_attr($id); ?>" 
-                       name="<?php echo esc_attr($id); ?>" 
-                       value="1" 
-                       <?php checked($is_checked); ?>
-                       <?php disabled($is_disabled); ?> />
-            </div>
-            
-            <div class="pp-integration-header">
-                <div class="<?php echo esc_attr($icon_class); ?>"></div>
-                <div class="pp-integration-content">
-                    <h3 class="pp-integration-title">
-                        <?php echo esc_html($title); ?>
-                        <?php if (!$is_pro) : ?>
-                            <span class="pp-pro-badge">Pro</span>
-                        <?php else : ?>
-                            <span class="pp-pro-badge" style="background: #4caf50;"><?php esc_html_e('Available', 'press-permit-core'); ?></span>
-                        <?php endif; ?>
-                    </h3>
-                    <p class="pp-integration-description"><?php echo esc_html($description); ?></p>
+        <div class="<?php echo esc_attr($card_class); ?>" data-categories="<?php echo esc_attr($categories_string); ?>">
+            <div class="pp-integration-icon <?php echo esc_attr($plugin_slug); ?>"></div>
+            <div class="pp-integration-content">
+                <h3 class="pp-integration-title">
+                    <?php echo esc_html($title); ?>
+                    <?php echo $category_tag; ?>
+                    <?php if (!$is_pro) : ?>
+                        <span class="pp-pro-badge">Pro</span>
+                    <?php else : ?>
+                        <span class="pp-pro-badge" style="background: #4caf50;"><?php esc_html_e('Available', 'press-permit-core'); ?></span>
+                    <?php endif; ?>
+                </h3>
+                <p class="pp-integration-description"><?php echo esc_html($description); ?></p>
+                
+                <?php if (!empty($features)) : ?>
+                    <div class="pp-integration-features">
+                        <ul>
+                            <?php foreach ($features as $feature) : ?>
+                                <li><?php echo esc_html($feature); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+                
+                <div class="pp-settings-toggle">
+                    <label class="pp-toggle-switch">
+                        <input type="checkbox" 
+                               id="<?php echo esc_attr($id); ?>" 
+                               name="<?php echo esc_attr($id); ?>" 
+                               value="1" 
+                               <?php checked($is_checked); ?>
+                               <?php disabled($is_disabled); ?> />
+                        <span class="pp-slider"></span>
+                    </label>
+                    <span class="pp-toggle-label"><?php echo esc_html(sprintf(__('Enable %s Integration', 'press-permit-core'), $title)); ?></span>
                 </div>
+                
+                <?php if ($is_pro) : ?>
+                    <div class="pp-integration-status"><?php esc_html_e('Active', 'press-permit-core'); ?></div>
+                <?php else : ?>
+                    <div class="pp-integration-status disabled"><?php esc_html_e('Disabled', 'press-permit-core'); ?></div>
+                <?php endif; ?>
             </div>
-            
-            <?php if (!empty($features)) : ?>
-                <div class="pp-integration-features">
-                    <ul>
-                        <?php foreach ($features as $feature) : ?>
-                            <li><?php echo esc_html($feature); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
             
             <?php if (!$is_pro) : ?>
                 <div class="pp-upgrade-overlay">
                     <h4><?php esc_html_e('Premium Feature', 'press-permit-core'); ?></h4>
                     <p><?php echo esc_html(sprintf(__('Unlock %s integration to enhance your permissions system.', 'press-permit-core'), $title)); ?></p>
                     <div class="pp-upgrade-buttons">
-                        <a href="https://publishpress.com/links/permissions-integrations" 
+                        <a href="<?php echo esc_url($learn_more_urls[$id]); ?>" 
                            target="_blank" 
                            class="pp-upgrade-btn-secondary">
                             <?php esc_html_e('Learn More', 'press-permit-core'); ?>
                         </a>
-                        <a href="https://publishpress.com/links/permissions-integrations" 
+                        <a href="<?php echo esc_url(self::UPGRADE_PRO_URL); ?>" 
                            target="_blank" 
                            class="pp-upgrade-btn-primary">
                             <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
