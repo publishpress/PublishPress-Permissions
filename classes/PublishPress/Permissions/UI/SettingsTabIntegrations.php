@@ -222,45 +222,78 @@ class SettingsTabIntegrations
                 </td>
             </tr>
             <script type="text/javascript">
-                jQuery(function($) {
+                jQuery(function ($) {
                     // Category filtering
-                    $('.pp-category-label').on('click', function() {
-                        $('.pp-category-label').removeClass('active');
-                        $(this).addClass('active');
-                        const category = $(this).data('category');
-                        $('.pp-integration-card').each(function() {
-                        const categories = ($(this).data('categories') || 'all').toString().split(',');
-                        $(this).toggle(category === 'all' || categories.includes(category)).toggleClass('pp-hidden', !(category === 'all' || categories.includes(category)));
+                    $(".pp-category-label").on("click", function () {
+                        $(".pp-category-label").removeClass("active");
+                        $(this).addClass("active");
+                        const category = $(this).data("category");
+                        $(".pp-integration-card").each(function () {
+                        const categories = ($(this).data("categories") || "all")
+                            .toString()
+                            .split(",");
+                        $(this)
+                            .toggle(category === "all" || categories.includes(category))
+                            .toggleClass(
+                            "pp-hidden",
+                            !(category === "all" || categories.includes(category))
+                            );
                         });
                     });
 
                     // Disabled checkbox upgrade message
-                    $('.pp-integration-card.pp-disabled input[type="checkbox"]').on('click', function(e) {
+                    $('.pp-integration-card.pp-disabled input[type="checkbox"]').on(
+                        "click",
+                        function (e) {
                         e.preventDefault();
-                        const card = $(this).closest('.pp-integration-card');
-                        card.find('.pp-upgrade-overlay').css('opacity', '1').delay(3000).animate({opacity: '0'}, 500);
-                        if (!card.find('.pp-temp-message').length) {
-                        $('<div class="pp-temp-message" style="position:absolute;top:10px;right:10px;background:#ff5722;color:white;padding:5px 10px;border-radius:3px;font-size:12px;z-index:999;">Pro Feature</div>')
+                        const card = $(this).closest(".pp-integration-card");
+                        card
+                            .find(".pp-upgrade-overlay")
+                            .css("opacity", "1")
+                            .delay(3000)
+                            .animate({ opacity: "0" }, 500);
+                        if (!card.find(".pp-temp-message").length) {
+                            $(
+                            '<div class="pp-temp-message" style="position:absolute;top:10px;right:10px;background:#ff5722;color:white;padding:5px 10px;border-radius:3px;font-size:12px;z-index:999;">Pro Feature</div>'
+                            )
                             .appendTo(card)
-                            .delay(2000).fadeOut(500, function() { $(this).remove(); });
+                            .delay(2000)
+                            .fadeOut(500, function () {
+                                $(this).remove();
+                            });
                         }
-                    });
+                        }
+                    );
 
                     // Toggle switch
-                    $('.pp-toggle-switch input').on('change', function() {
-                        if ($(this).prop('disabled')) return;
-                        const status = $(this).closest('.pp-integration-card').find('.pp-integration-status');
-                        if ($(this).prop('checked')) {
-                        status.removeClass('inactive disabled').addClass('active').css({'background-color': '#e8f5e9', 'color': '#4caf50'}).text('Active');
+                    $(".pp-toggle-switch input").on("change", function () {
+                        if ($(this).prop("disabled")) return;
+                        const status = $(this)
+                        .closest(".pp-integration-card")
+                        .find(".pp-integration-status");
+                        if ($(this).prop("checked")) {
+                        status
+                            .removeClass("inactive disabled")
+                            .addClass("active")
+                            .css({ "background-color": "#e8f5e9", color: "#4caf50" })
+                            .text("Active");
                         } else {
-                        status.removeClass('active').addClass('inactive').css({'background-color': '#ffebee', 'color': '#f44336'}).text('Inactive');
+                        status
+                            .removeClass("active")
+                            .addClass("inactive")
+                            .css({ "background-color": "#ffebee", color: "#f44336" })
+                            .text("Inactive");
                         }
                     });
 
                     // Button hover effect
-                    $('.pp-upgrade-btn-primary, .pp-upgrade-btn-secondary').hover(
-                        function() { $(this).css('transform', 'translateY(-1px)'); },
-                        function() { $(this).css('transform', 'translateY(0)'); }
+                    $(".pp-upgrade-btn-primary, .pp-upgrade-btn-secondary").hover(
+                        function () {
+                            $(this).css("transform", "translateY(-1px)");
+                        },
+                        function () {
+                            $(this).css("transform", "translateY(0)");
+                        }
                     );
                 });
             </script>
