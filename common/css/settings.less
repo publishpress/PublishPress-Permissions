@@ -793,6 +793,17 @@ margin-bottom: 10px !important;
     align-items: flex-start;
     margin-bottom: 15px;
 }
+// Mixin for icon styles
+.icon(@url) {
+  content: "";
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background-image: url(@url);
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
 
 .pp-integration-icon {
     width: 48px;
@@ -811,14 +822,39 @@ margin-bottom: 10px !important;
         color: #9c27b0;
     }
 
-    &.acf::before { content: "📝"; }
-    &.bbpress::before { content: "💬"; }
-    &.buddypress::before { content: "👥"; }
-    &.wpml::before { content: "🌐"; }
-    &.yoast::before { content: "�"; }
-    &.woocommerce::before { content: "🛒"; }
-    &.relevanssi::before { content: "🔍"; }
-    &.pagebuilders::before { content: "🎨"; }
+    &.acf::before {
+        .icon("../img/acf.svg");
+    }
+    &.bbpress::before {
+        .icon("../img/bbpress.svg");
+    }
+    &.buddypress::before {
+        .icon("../img/buddypress.svg");
+    }
+    &.coauthors::before {
+        .icon("../img/authors.svg");
+    }
+    &.events-calendar::before {
+        .icon("../img/events.svg");
+    }
+    &.pagebuilders::before {
+        .icon("../img/pagebuilder.svg");
+    }
+    &.peepso::before {
+        .icon("../img/peepso.svg");
+    }
+    &.relevanssi::before {
+        .icon("../img/relevanssi.svg");
+    }
+    &.woocommerce::before {
+        .icon("../img/woocommerce.svg");
+    }
+    &.wpml::before {
+        .icon("../img/wpml.svg");
+    }
+    &.yoast::before {
+        .icon("../img/yoast.svg");
+    }
 }
 
 .pp-integration-content {

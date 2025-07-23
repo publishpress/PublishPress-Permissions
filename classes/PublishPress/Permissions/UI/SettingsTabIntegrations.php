@@ -120,109 +120,18 @@ class SettingsTabIntegrations
                         </div>
 
                         <div class="pp-integrations-grid">
-                            <?php $this->renderCompatibilityPack(
-                                'acf_compatibility',
-                                esc_html__('Advanced Custom Fields', 'press-permit-core'),
-                                esc_html__('Full compatibility with ACF field groups and taxonomies for granular permission control.', 'press-permit-core'),
-                                'acf',
-                                ['all'],
-                                [
-                                    esc_html__('Control access to custom fields', 'press-permit-core'),
-                                    esc_html__('Taxonomy-based permissions', 'press-permit-core'),
-                                    esc_html__('Field group restrictions', 'press-permit-core')
-                                ]
-                            ); ?>
-
-                            <?php $this->renderCompatibilityPack(
-                                'bbpress_compatibility',
-                                esc_html__('bbPress Forums', 'press-permit-core'),
-                                esc_html__('Forum-specific permissions for bbPress with detailed control over discussions.', 'press-permit-core'),
-                                'bbpress',
-                                ['all', 'community'],
-                                [
-                                    esc_html__('Forum-specific permissions', 'press-permit-core'),
-                                    esc_html__('Topic creation restrictions', 'press-permit-core'),
-                                    esc_html__('Reply moderation controls', 'press-permit-core')
-                                ]
-                            ); ?>
-
-                            <?php $this->renderCompatibilityPack(
-                                'buddypress_compatibility',
-                                esc_html__('BuddyPress', 'press-permit-core'),
-                                esc_html__('Assign post and term permissions to BuddyPress groups for community-driven content.', 'press-permit-core'),
-                                'buddypress',
-                                ['all', 'community'],
-                                [
-                                    esc_html__('Group-based permissions', 'press-permit-core'),
-                                    esc_html__('Activity stream controls', 'press-permit-core'),
-                                    esc_html__('Member directory restrictions', 'press-permit-core')
-                                ]
-                            ); ?>
-
-                            <?php $this->renderCompatibilityPack(
-                                'wpml_compatibility',
-                                esc_html__('WPML', 'press-permit-core'),
-                                esc_html__('Full multilingual support with permission synchronization across translations.', 'press-permit-core'),
-                                'wpml',
-                                ['all', 'multilingual'],
-                                [
-                                    esc_html__('Translation permissions', 'press-permit-core'),
-                                    esc_html__('Language-specific access', 'press-permit-core'),
-                                    esc_html__('Synchronized roles across languages', 'press-permit-core')
-                                ]
-                            ); ?>
-
-                            <?php $this->renderCompatibilityPack(
-                                'yoast_seo_compatibility',
-                                esc_html__('Yoast SEO', 'press-permit-core'),
-                                esc_html__('Exclude restricted posts from sitemaps and control SEO visibility.', 'press-permit-core'),
-                                'yoast',
-                                ['all', 'seo'],
-                                [
-                                    esc_html__('Sitemap filtering', 'press-permit-core'),
-                                    esc_html__('SEO meta controls', 'press-permit-core'),
-                                    esc_html__('Search engine visibility', 'press-permit-core')
-                                ]
-                            ); ?>
-
-                            <?php $this->renderCompatibilityPack(
-                                'woocommerce_compatibility',
-                                esc_html__('WooCommerce', 'press-permit-core'),
-                                esc_html__('Advanced permissions for products, orders, and customer data.', 'press-permit-core'),
-                                'woocommerce',
-                                ['all', 'ecommerce'],
-                                [
-                                    esc_html__('Product permissions', 'press-permit-core'),
-                                    esc_html__('Order management controls', 'press-permit-core'),
-                                    esc_html__('Customer data access', 'press-permit-core')
-                                ]
-                            ); ?>
-
-                            <?php $this->renderCompatibilityPack(
-                                'relevanssi_compatibility',
-                                esc_html__('Relevanssi', 'press-permit-core'),
-                                esc_html__('Filter search results based on View Permissions for secure content discovery.', 'press-permit-core'),
-                                'relevanssi',
-                                ['all', 'seo'],
-                                [
-                                    esc_html__('Search result filtering', 'press-permit-core'),
-                                    esc_html__('Permission-aware indexing', 'press-permit-core'),
-                                    esc_html__('Secure content discovery', 'press-permit-core')
-                                ]
-                            ); ?>
-
-                            <?php $this->renderCompatibilityPack(
-                                'pagebuilders_compatibility',
-                                esc_html__('Page Builders', 'press-permit-core'),
-                                esc_html__('Compatible with Elementor, Beaver Builder, Divi, and other popular page builders.', 'press-permit-core'),
-                                'pagebuilders',
-                                ['all', 'builder'],
-                                [
-                                    esc_html__('Elementor compatibility', 'press-permit-core'),
-                                    esc_html__('Beaver Builder support', 'press-permit-core'),
-                                    esc_html__('Divi theme integration', 'press-permit-core')
-                                ]
-                            ); ?>
+                            <?php
+                            // Get integrations from registry
+                            if (class_exists('\\PublishPress\\Permissions\\CompatibilityRegistry')) {
+                                $integrations = \PublishPress\Permissions\CompatibilityRegistry::getIntegrations();
+                                foreach ($integrations as $integration) {
+                                    $this->renderCompatibilityPackFromRegistry($integration);
+                                }
+                            } else {
+                                // Fallback to hardcoded integrations if registry not available
+                                $this->renderFallbackIntegrations();
+                            }
+                            ?>
                         </div>
 
                         <?php if (!presspermit()->isPro()): ?>
@@ -251,12 +160,11 @@ class SettingsTabIntegrations
                             const categories = ($(this).data("categories") || "all")
                                 .toString()
                                 .split(",");
-                            $(this)
-                                .toggle(category === "all" || categories.includes(category))
-                                .toggleClass(
-                                    "pp-hidden",
-                                    !(category === "all" || categories.includes(category))
-                                );
+                            if (category === "all" || categories.includes(category)) {
+                                $(this).removeClass("pp-hidden");
+                            } else {
+                                $(this).addClass("pp-hidden");
+                            }
                         });
                     });
 
@@ -314,16 +222,52 @@ class SettingsTabIntegrations
                             $(this).css("transform", "translateY(0)");
                         }
                     );
+
+                    $('.pp-toggle-switch input').on('change', function () {
+                        if ($(this).prop('disabled')) return;
+
+                        const $toggle = $(this);
+                        const integrationId = $toggle.attr('id');
+                        const enabled = $toggle.prop('checked');
+
+                        $.ajax({
+                            url: ajaxurl,
+                            type: 'POST',
+                            data: {
+                                action: 'pp_toggle_integration',
+                                integration_id: integrationId,
+                                enabled: enabled ? 1 : 0,
+                                nonce: '<?php echo wp_create_nonce('pp_toggle_integration'); ?>'
+                            },
+                            success: function (response) {
+                                if (response.success) {
+                                    const status = $toggle.closest('.pp-integration-card').find('.pp-integration-status');
+                                    if (enabled) {
+                                        status.removeClass('inactive disabled').addClass('active')
+                                            .css({ 'background-color': '#e8f5e9', 'color': '#4caf50' })
+                                            .text('<?php esc_html_e('Active', 'press-permit-core'); ?>');
+                                    } else {
+                                        status.removeClass('active').addClass('inactive')
+                                            .css({ 'background-color': '#ffebee', 'color': '#f44336' })
+                                            .text('<?php esc_html_e('Inactive', 'press-permit-core'); ?>');
+                                    }
+                                }
+                            },
+                            error: function () {
+                                // Revert toggle on error
+                                $toggle.prop('checked', !enabled);
+                            }
+                        });
+                    });
                 });
             </script>
         <?php endif;
     }
 
-    private function renderCompatibilityPack($id, $title, $description, $plugin_slug, $categories = ['all'], $features = [])
+    private function renderCompatibilityPack($id, $title, $description, $plugin_slug, $categories = ['all'], $features = [], $is_enabled = false, $is_disabled = false, $learn_more_url = '')
     {
         $is_pro = presspermit()->isPro();
-        $is_checked = $is_pro ? true : false;
-        $is_disabled = !$is_pro;
+        $is_checked = $is_enabled;
         $card_class = $is_disabled ? 'pp-integration-card pp-disabled' : 'pp-integration-card';
         $icon_class = 'pp-integration-icon ' . $plugin_slug;
         $categories_string = implode(',', $categories);
@@ -342,16 +286,20 @@ class SettingsTabIntegrations
             $category_tag = '<span class="pp-category-tag pp-tag-community">' . esc_html__('Community', 'press-permit-core') . '</span>';
         }
 
-        $learn_more_urls = [
-            'acf_compatibility' => esc_url('https://publishpress.com/knowledge-base/acf-publishpress-permissions/'),
-            'bbpress_compatibility' => esc_url('https://publishpress.com/knowledge-base/bbpress-permissions/'),
-            'buddypress_compatibility' => esc_url('https://publishpress.com/knowledge-base/buddypress-content-permissions/'),
-            'pagebuilders_compatibility' => esc_url('https://publishpress.com/links/permissions-integrations/'),
-            'relevanssi_compatibility' => esc_url('https://publishpress.com/knowledge-base/relevanssi-and-presspermit-pro/'),
-            'woocommerce_compatibility' => esc_url('https://publishpress.com/knowledge-base/woocommerce-publishpress-permissions/'),
-            'wpml_compatibility' => esc_url('https://publishpress.com/knowledge-base/wpml-and-presspermit-pro/'),
-            'yoast_seo_compatibility' => esc_url('https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'),
-        ];
+        // Use provided learn_more_url or fallback to default URLs
+        if (empty($learn_more_url)) {
+            $learn_more_urls = [
+                'acf_compatibility' => esc_url('https://publishpress.com/knowledge-base/acf-publishpress-permissions/'),
+                'bbpress_compatibility' => esc_url('https://publishpress.com/knowledge-base/bbpress-permissions/'),
+                'buddypress_compatibility' => esc_url('https://publishpress.com/knowledge-base/buddypress-content-permissions/'),
+                'pagebuilders_compatibility' => esc_url('https://publishpress.com/links/permissions-integrations/'),
+                'relevanssi_compatibility' => esc_url('https://publishpress.com/knowledge-base/relevanssi-and-presspermit-pro/'),
+                'woocommerce_compatibility' => esc_url('https://publishpress.com/knowledge-base/woocommerce-publishpress-permissions/'),
+                'wpml_compatibility' => esc_url('https://publishpress.com/knowledge-base/wpml-and-presspermit-pro/'),
+                'yoast_seo_compatibility' => esc_url('https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'),
+            ];
+            $learn_more_url = isset($learn_more_urls[$id]) ? $learn_more_urls[$id] : '';
+        }
         ?>
         <div class="<?php echo esc_attr($card_class); ?>" data-categories="<?php echo esc_attr($categories_string); ?>">
             <div class="pp-integration-icon <?php echo esc_attr($plugin_slug); ?>"></div>
@@ -362,8 +310,13 @@ class SettingsTabIntegrations
                     <?php if (!$is_pro): ?>
                         <span class="pp-pro-badge">Pro</span>
                     <?php else: ?>
-                        <span class="pp-pro-badge"
-                            style="background: #4caf50;"><?php esc_html_e('Available', 'press-permit-core'); ?></span>
+                        <?php if ($is_disabled): ?>
+                            <span class="pp-pro-badge"
+                                style="background: #9e9e9e;"><?php esc_html_e('Unavailable', 'press-permit-core'); ?></span>
+                        <?php else: ?>
+                            <span class="pp-pro-badge"
+                                style="background: #4caf50;"><?php esc_html_e('Available', 'press-permit-core'); ?></span>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </h3>
                 <p class="pp-integration-description"><?php echo esc_html($description); ?></p>
@@ -388,8 +341,10 @@ class SettingsTabIntegrations
                         class="pp-toggle-label"><?php echo esc_html(sprintf(__('Enable %s Integration', 'press-permit-core'), $title)); ?></span>
                 </div>
 
-                <?php if ($is_pro): ?>
-                    <div class="pp-integration-status"><?php esc_html_e('Active', 'press-permit-core'); ?></div>
+                <?php if ($is_enabled && $is_pro): ?>
+                    <div class="pp-integration-status active"><?php esc_html_e('Active', 'press-permit-core'); ?></div>
+                <?php elseif ($is_pro): ?>
+                    <div class="pp-integration-status inactive"><?php esc_html_e('Inactive', 'press-permit-core'); ?></div>
                 <?php else: ?>
                     <div class="pp-integration-status disabled"><?php esc_html_e('Disabled', 'press-permit-core'); ?></div>
                 <?php endif; ?>
@@ -401,9 +356,11 @@ class SettingsTabIntegrations
                     <p><?php echo esc_html(sprintf(__('Unlock %s integration to enhance your permissions system.', 'press-permit-core'), $title)); ?>
                     </p>
                     <div class="pp-upgrade-buttons">
-                        <a href="<?php echo esc_url($learn_more_urls[$id]); ?>" target="_blank" class="pp-upgrade-btn-secondary">
-                            <?php esc_html_e('Learn More', 'press-permit-core'); ?>
-                        </a>
+                        <?php if (!empty($learn_more_url)): ?>
+                            <a href="<?php echo esc_url($learn_more_url); ?>" target="_blank" class="pp-upgrade-btn-secondary">
+                                <?php esc_html_e('Learn More', 'press-permit-core'); ?>
+                            </a>
+                        <?php endif; ?>
                         <a href="<?php echo esc_url(self::UPGRADE_PRO_URL); ?>" target="_blank" class="pp-upgrade-btn-primary">
                             <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
                         </a>
@@ -412,5 +369,221 @@ class SettingsTabIntegrations
             <?php endif; ?>
         </div>
         <?php
+    }
+
+    private function renderCompatibilityPackFromRegistry($integration)
+    {
+        $is_pro = presspermit()->isPro();
+        $is_available = \PublishPress\Permissions\CompatibilityRegistry::isAvailable($integration['id']);
+        $is_enabled = \PublishPress\Permissions\CompatibilityRegistry::isEnabled($integration['id']);
+        $is_disabled = !$is_pro || !$is_available;
+
+        $this->renderCompatibilityPack(
+            $integration['id'],
+            $integration['title'],
+            $integration['description'],
+            $integration['icon_class'],
+            $integration['categories'],
+            $integration['features'],
+            $is_enabled,
+            $is_disabled,
+            $integration['learn_more_url']
+        );
+    }
+
+    private function renderFallbackIntegrations()
+    {
+        // Fallback integrations when CompatibilityRegistry is not available
+        $fallback_integrations = [
+            [
+                'id' => 'acf_compatibility',
+                'title' => esc_html__('Advanced Custom Fields', 'press-permit-core'),
+                'description' => esc_html__('Full compatibility with ACF field groups and taxonomies for granular permission control.', 'press-permit-core'),
+                'icon_class' => 'acf',
+                'categories' => ['all'],
+                'features' => [
+                    esc_html__('Control access to custom fields', 'press-permit-core'),
+                    esc_html__('Taxonomy-based permissions', 'press-permit-core'),
+                    esc_html__('Field group restrictions', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => function_exists('acf'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/acf-publishpress-permissions/'
+            ],
+            [
+                'id' => 'bbpress_compatibility',
+                'title' => esc_html__('bbPress Forums', 'press-permit-core'),
+                'description' => esc_html__('Forum-specific permissions for bbPress with detailed control over discussions.', 'press-permit-core'),
+                'icon_class' => 'bbpress',
+                'categories' => ['all', 'community'],
+                'features' => [
+                    esc_html__('Forum-specific permissions', 'press-permit-core'),
+                    esc_html__('Topic creation restrictions', 'press-permit-core'),
+                    esc_html__('Reply moderation controls', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => function_exists('bbp_get_version'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/bbpress-permissions/'
+            ],
+            [
+                'id' => 'buddypress_compatibility',
+                'title' => esc_html__('BuddyPress', 'press-permit-core'),
+                'description' => esc_html__('Assign post and term permissions to BuddyPress groups for community-driven content.', 'press-permit-core'),
+                'icon_class' => 'buddypress',
+                'categories' => ['all', 'community'],
+                'features' => [
+                    esc_html__('Group-based permissions', 'press-permit-core'),
+                    esc_html__('Activity stream controls', 'press-permit-core'),
+                    esc_html__('Member directory restrictions', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => function_exists('buddypress'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/buddypress-content-permissions/'
+            ],
+            [
+                'id' => 'coauthors_compatibility',
+                'title' => esc_html__('Co-Authors Plus', 'press-permit-core'),
+                'description' => esc_html__('Support for multiple authors per post with permission controls.', 'press-permit-core'),
+                'icon_class' => 'coauthors',
+                'categories' => ['all', 'authors'],
+                'features' => [
+                    esc_html__('Multi-author support', 'press-permit-core'),
+                    esc_html__('Author permission controls', 'press-permit-core'),
+                ],
+                'enabled' => false,
+                'available' => defined('COAUTHORS_PLUS_VERSION'),
+                'learn_more_url' => 'https://publishpress.com/links/permissions-integrations/'
+            ],
+            [
+                'id' => 'events_calendar_compatibility',
+                'title' => esc_html__('The Events Calendar', 'press-permit-core'),
+                'description' => esc_html__('Event permissions and calendar access controls.', 'press-permit-core'),
+                'icon_class' => 'events-calendar',
+                'categories' => ['all', 'events'],
+                'features' => [
+                    esc_html__('Event permissions', 'press-permit-core'),
+                    esc_html__('Calendar access controls', 'press-permit-core'),
+                ],
+                'enabled' => false,
+                'available' => defined('EVENTS_CALENDAR_PRO_FILE') || class_exists('Tribe__Events__Pro__Main'),
+                'learn_more_url' => 'https://publishpress.com/links/permissions-integrations/'
+            ],
+            [
+                'id' => 'pagebuilders_compatibility',
+                'title' => esc_html__('Page Builders', 'press-permit-core'),
+                'description' => esc_html__('Compatible with Elementor, Beaver Builder, Divi, and other popular page builders.', 'press-permit-core'),
+                'icon_class' => 'pagebuilders',
+                'categories' => ['all', 'builder'],
+                'features' => [
+                    esc_html__('Elementor compatibility', 'press-permit-core'),
+                    esc_html__('Beaver Builder support', 'press-permit-core'),
+                    esc_html__('Divi theme integration', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => (
+                    defined('ELEMENTOR_VERSION') ||
+                    class_exists('FLBuilder') ||
+                    function_exists('et_divi_load_scripts_styles')
+                ),
+                'learn_more_url' => 'https://publishpress.com/links/permissions-integrations/'
+            ],
+            [
+                'id' => 'peepso_compatibility',
+                'title' => esc_html__('PeepSo', 'presspermit-pro'),
+                'description' => esc_html__('Social network permissions and community controls.', 'presspermit-pro'),
+                'icon_class' => 'peepso',
+                'categories' => ['all', 'community'],
+                'features' => [
+                    esc_html__('Social network permissions', 'presspermit-pro'),
+                    esc_html__('Community access controls', 'presspermit-pro'),
+                ],
+                'enabled' => false,
+                'available' => class_exists('PeepSo'),
+                'learn_more_url' => 'https://publishpress.com/links/permissions-integrations/'
+            ],
+            [
+                'id' => 'relevanssi_compatibility',
+                'title' => esc_html__('Relevanssi', 'press-permit-core'),
+                'description' => esc_html__('Filter search results based on View Permissions for secure content discovery.', 'press-permit-core'),
+                'icon_class' => 'relevanssi',
+                'categories' => ['all', 'seo'],
+                'features' => [
+                    esc_html__('Search result filtering', 'press-permit-core'),
+                    esc_html__('Permission-aware indexing', 'press-permit-core'),
+                    esc_html__('Secure content discovery', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => function_exists('relevanssi_init'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/relevanssi-and-presspermit-pro/'
+            ],
+            [
+                'id' => 'woocommerce_compatibility',
+                'title' => esc_html__('WooCommerce', 'press-permit-core'),
+                'description' => esc_html__('Advanced permissions for products, orders, and customer data.', 'press-permit-core'),
+                'icon_class' => 'woocommerce',
+                'categories' => ['all', 'ecommerce'],
+                'features' => [
+                    esc_html__('Product permissions', 'press-permit-core'),
+                    esc_html__('Order management controls', 'press-permit-core'),
+                    esc_html__('Customer data access', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => class_exists('WooCommerce'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/woocommerce-publishpress-permissions/'
+            ],
+            [
+                'id' => 'wpml_compatibility',
+                'title' => esc_html__('WPML', 'press-permit-core'),
+                'description' => esc_html__('Full multilingual support with permission synchronization across translations.', 'press-permit-core'),
+                'icon_class' => 'wpml',
+                'categories' => ['all', 'multilingual'],
+                'features' => [
+                    esc_html__('Translation permissions', 'press-permit-core'),
+                    esc_html__('Language-specific access', 'press-permit-core'),
+                    esc_html__('Synchronized roles across languages', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => defined('ICL_SITEPRESS_VERSION'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/wpml-and-presspermit-pro/'
+            ],
+            [
+                'id' => 'yoast_seo_compatibility',
+                'title' => esc_html__('Yoast SEO', 'press-permit-core'),
+                'description' => esc_html__('Exclude restricted posts from sitemaps and control SEO visibility.', 'press-permit-core'),
+                'icon_class' => 'yoast',
+                'categories' => ['all', 'seo'],
+                'features' => [
+                    esc_html__('Sitemap filtering', 'press-permit-core'),
+                    esc_html__('SEO meta controls', 'press-permit-core'),
+                    esc_html__('Search engine visibility', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => defined('WPSEO_VERSION'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
+            ],
+        ];
+
+        // Get enabled integrations from options (fallback method)
+        $enabled_integrations = get_option('presspermit_enabled_integrations', []);
+
+        // Render each fallback integration
+        foreach ($fallback_integrations as $integration) {
+            $is_pro = presspermit()->isPro();
+            $is_available = $integration['available'];
+            $is_enabled = isset($enabled_integrations[$integration['id']]) && $enabled_integrations[$integration['id']];
+            $is_disabled = !$is_pro || !$is_available;
+
+            $this->renderCompatibilityPack(
+                $integration['id'],
+                $integration['title'],
+                $integration['description'],
+                $integration['icon_class'],
+                $integration['categories'],
+                $integration['features'],
+                $is_enabled,
+                $is_disabled,
+                $integration['learn_more_url']
+            );
+        }
     }
 }

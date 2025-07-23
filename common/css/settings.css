@@ -800,28 +800,114 @@ div.pp-user-permissions-help p {
   color: #9c27b0;
 }
 .pp-integration-icon.acf::before {
-  content: "📝";
+  content: "";
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background-image: url("../img/acf.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
 }
 .pp-integration-icon.bbpress::before {
-  content: "💬";
+  content: "";
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background-image: url("../img/bbpress.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
 }
 .pp-integration-icon.buddypress::before {
-  content: "👥";
+  content: "";
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background-image: url("../img/buddypress.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
 }
-.pp-integration-icon.wpml::before {
-  content: "🌐";
+.pp-integration-icon.coauthors::before {
+  content: "";
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background-image: url("../img/authors.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
 }
-.pp-integration-icon.yoast::before {
-  content: "�";
-}
-.pp-integration-icon.woocommerce::before {
-  content: "🛒";
-}
-.pp-integration-icon.relevanssi::before {
-  content: "🔍";
+.pp-integration-icon.events-calendar::before {
+  content: "";
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background-image: url("../img/events.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
 }
 .pp-integration-icon.pagebuilders::before {
-  content: "🎨";
+  content: "";
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background-image: url("../img/pagebuilder.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+.pp-integration-icon.peepso::before {
+  content: "";
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background-image: url("../img/peepso.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+.pp-integration-icon.relevanssi::before {
+  content: "";
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background-image: url("../img/relevanssi.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+.pp-integration-icon.woocommerce::before {
+  content: "";
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background-image: url("../img/woocommerce.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+.pp-integration-icon.wpml::before {
+  content: "";
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background-image: url("../img/wpml.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+.pp-integration-icon.yoast::before {
+  content: "";
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  background-image: url("../img/yoast.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
 }
 .pp-integration-content {
   flex: 1;
