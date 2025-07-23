@@ -53,11 +53,11 @@ class SettingsTabIntegrations
     {
         $new = [
             'compatibility_packs' => [
-                'acf_compatibility', 
-                'bbpress_compatibility', 
+                'acf_compatibility',
+                'bbpress_compatibility',
                 'buddypress_compatibility',
                 'wpml_compatibility',
-                'yoast_seo_compatibility', 
+                'yoast_seo_compatibility',
                 'woocommerce_compatibility',
                 'relevanssi_compatibility',
                 'pagebuilders_compatibility'
@@ -76,16 +76,17 @@ class SettingsTabIntegrations
         $tab = 'integrations';
 
         $section = 'compatibility_packs';
-        if (!empty($ui->form_options[$tab][$section])) : ?>
+        if (!empty($ui->form_options[$tab][$section])): ?>
             <tr>
                 <td>
                     <div class="pp-integrations-container">
                         <!-- Pro Banner -->
-                        <?php if (presspermit()->isPro()) : ?>
+                        <?php if (presspermit()->isPro()): ?>
                             <div class="pp-pro-banner">
                                 <div>
                                     <h2><?php esc_html_e('Premium Integrations Active', 'press-permit-core'); ?></h2>
-                                    <p><?php esc_html_e('You\'re using the Pro version with access to all premium features', 'press-permit-core'); ?></p>
+                                    <p><?php esc_html_e('You\'re using the Pro version with access to all premium features', 'press-permit-core'); ?>
+                                    </p>
                                 </div>
                                 <div class="pp-pro-badge-banner"><?php esc_html_e('PRO VERSION', 'press-permit-core'); ?></div>
                             </div>
@@ -93,12 +94,29 @@ class SettingsTabIntegrations
 
                         <!-- Category Filters -->
                         <div class="pp-category-labels">
-                            <div class="pp-category-label active" data-category="all"><?php esc_html_e('All', 'press-permit-core'); ?></div>
-                            <div class="pp-category-label" data-category="builder"><?php esc_html_e('Builders', 'press-permit-core'); ?></div>
-                            <div class="pp-category-label" data-category="seo"><?php esc_html_e('SEO', 'press-permit-core'); ?></div>
-                            <div class="pp-category-label" data-category="ecommerce"><?php esc_html_e('E-Commerce', 'press-permit-core'); ?></div>
-                            <div class="pp-category-label" data-category="multilingual"><?php esc_html_e('Multilingual', 'press-permit-core'); ?></div>
-                            <div class="pp-category-label" data-category="community"><?php esc_html_e('Community', 'press-permit-core'); ?></div>
+                            <div class="pp-category-label active" data-category="all">
+                                <?php esc_html_e('All', 'press-permit-core'); ?>
+                            </div>
+                            <div class="pp-category-label" data-category="authors">
+                                <?php esc_html_e('Authors', 'press-permit-core'); ?>
+                            </div>
+                            <div class="pp-category-label" data-category="builder">
+                                <?php esc_html_e('Builders', 'press-permit-core'); ?>
+                            </div>
+                            <div class="pp-category-label" data-category="community">
+                                <?php esc_html_e('Community', 'press-permit-core'); ?>
+                            </div>
+                            <div class="pp-category-label" data-category="ecommerce">
+                                <?php esc_html_e('E-Commerce', 'press-permit-core'); ?>
+                            </div>
+                            <div class="pp-category-label" data-category="events">
+                                <?php esc_html_e('Events', 'press-permit-core'); ?>
+                            </div>
+                            <div class="pp-category-label" data-category="multilingual">
+                                <?php esc_html_e('Multilingual', 'press-permit-core'); ?>
+                            </div>
+                            <div class="pp-category-label" data-category="seo"><?php esc_html_e('SEO', 'press-permit-core'); ?>
+                            </div>
                         </div>
 
                         <div class="pp-integrations-grid">
@@ -114,7 +132,7 @@ class SettingsTabIntegrations
                                     esc_html__('Field group restrictions', 'press-permit-core')
                                 ]
                             ); ?>
-                            
+
                             <?php $this->renderCompatibilityPack(
                                 'bbpress_compatibility',
                                 esc_html__('bbPress Forums', 'press-permit-core'),
@@ -206,12 +224,13 @@ class SettingsTabIntegrations
                                 ]
                             ); ?>
                         </div>
-                        
-                        <?php if (!presspermit()->isPro()) : ?>
+
+                        <?php if (!presspermit()->isPro()): ?>
                             <div class="pp-integrations-upgrade-cta">
                                 <div class="pp-upgrade-cta-content">
                                     <h3><?php esc_html_e('Unlock Premium Integrations', 'press-permit-core'); ?></h3>
-                                    <p><?php esc_html_e('Upgrade to the Pro version to get access to all these powerful integrations and more. Take your site\'s permissions to the next level with advanced controls and compatibility.', 'press-permit-core'); ?></p>
+                                    <p><?php esc_html_e('Upgrade to the Pro version to get access to all these powerful integrations and more. Take your site\'s permissions to the next level with advanced controls and compatibility.', 'press-permit-core'); ?>
+                                    </p>
                                     <a href="<?php echo self::UPGRADE_PRO_URL; ?>" target="_blank" class="pp-upgrade-btn">
                                         <?php esc_html_e('Upgrade to Pro Now', 'press-permit-core'); ?>
                                     </a>
@@ -229,15 +248,15 @@ class SettingsTabIntegrations
                         $(this).addClass("active");
                         const category = $(this).data("category");
                         $(".pp-integration-card").each(function () {
-                        const categories = ($(this).data("categories") || "all")
-                            .toString()
-                            .split(",");
-                        $(this)
-                            .toggle(category === "all" || categories.includes(category))
-                            .toggleClass(
-                            "pp-hidden",
-                            !(category === "all" || categories.includes(category))
-                            );
+                            const categories = ($(this).data("categories") || "all")
+                                .toString()
+                                .split(",");
+                            $(this)
+                                .toggle(category === "all" || categories.includes(category))
+                                .toggleClass(
+                                    "pp-hidden",
+                                    !(category === "all" || categories.includes(category))
+                                );
                         });
                     });
 
@@ -245,23 +264,23 @@ class SettingsTabIntegrations
                     $('.pp-integration-card.pp-disabled input[type="checkbox"]').on(
                         "click",
                         function (e) {
-                        e.preventDefault();
-                        const card = $(this).closest(".pp-integration-card");
-                        card
-                            .find(".pp-upgrade-overlay")
-                            .css("opacity", "1")
-                            .delay(3000)
-                            .animate({ opacity: "0" }, 500);
-                        if (!card.find(".pp-temp-message").length) {
-                            $(
-                            '<div class="pp-temp-message" style="position:absolute;top:10px;right:10px;background:#ff5722;color:white;padding:5px 10px;border-radius:3px;font-size:12px;z-index:999;">Pro Feature</div>'
-                            )
-                            .appendTo(card)
-                            .delay(2000)
-                            .fadeOut(500, function () {
-                                $(this).remove();
-                            });
-                        }
+                            e.preventDefault();
+                            const card = $(this).closest(".pp-integration-card");
+                            card
+                                .find(".pp-upgrade-overlay")
+                                .css("opacity", "1")
+                                .delay(3000)
+                                .animate({ opacity: "0" }, 500);
+                            if (!card.find(".pp-temp-message").length) {
+                                $(
+                                    '<div class="pp-temp-message" style="position:absolute;top:10px;right:10px;background:#ff5722;color:white;padding:5px 10px;border-radius:3px;font-size:12px;z-index:999;">Pro Feature</div>'
+                                )
+                                    .appendTo(card)
+                                    .delay(2000)
+                                    .fadeOut(500, function () {
+                                        $(this).remove();
+                                    });
+                            }
                         }
                     );
 
@@ -269,20 +288,20 @@ class SettingsTabIntegrations
                     $(".pp-toggle-switch input").on("change", function () {
                         if ($(this).prop("disabled")) return;
                         const status = $(this)
-                        .closest(".pp-integration-card")
-                        .find(".pp-integration-status");
+                            .closest(".pp-integration-card")
+                            .find(".pp-integration-status");
                         if ($(this).prop("checked")) {
-                        status
-                            .removeClass("inactive disabled")
-                            .addClass("active")
-                            .css({ "background-color": "#e8f5e9", color: "#4caf50" })
-                            .text("Active");
+                            status
+                                .removeClass("inactive disabled")
+                                .addClass("active")
+                                .css({ "background-color": "#e8f5e9", color: "#4caf50" })
+                                .text("Active");
                         } else {
-                        status
-                            .removeClass("active")
-                            .addClass("inactive")
-                            .css({ "background-color": "#ffebee", color: "#f44336" })
-                            .text("Inactive");
+                            status
+                                .removeClass("active")
+                                .addClass("inactive")
+                                .css({ "background-color": "#ffebee", color: "#f44336" })
+                                .text("Inactive");
                         }
                     });
 
@@ -299,7 +318,7 @@ class SettingsTabIntegrations
             </script>
         <?php endif;
     }
-    
+
     private function renderCompatibilityPack($id, $title, $description, $plugin_slug, $categories = ['all'], $features = [])
     {
         $is_pro = presspermit()->isPro();
@@ -340,57 +359,52 @@ class SettingsTabIntegrations
                 <h3 class="pp-integration-title">
                     <?php echo esc_html($title); ?>
                     <?php echo $category_tag; ?>
-                    <?php if (!$is_pro) : ?>
+                    <?php if (!$is_pro): ?>
                         <span class="pp-pro-badge">Pro</span>
-                    <?php else : ?>
-                        <span class="pp-pro-badge" style="background: #4caf50;"><?php esc_html_e('Available', 'press-permit-core'); ?></span>
+                    <?php else: ?>
+                        <span class="pp-pro-badge"
+                            style="background: #4caf50;"><?php esc_html_e('Available', 'press-permit-core'); ?></span>
                     <?php endif; ?>
                 </h3>
                 <p class="pp-integration-description"><?php echo esc_html($description); ?></p>
-                
-                <?php if (!empty($features)) : ?>
+
+                <?php if (!empty($features)): ?>
                     <div class="pp-integration-features">
                         <ul>
-                            <?php foreach ($features as $feature) : ?>
+                            <?php foreach ($features as $feature): ?>
                                 <li><?php echo esc_html($feature); ?></li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
                 <?php endif; ?>
-                
+
                 <div class="pp-settings-toggle">
                     <label class="pp-toggle-switch">
-                        <input type="checkbox" 
-                               id="<?php echo esc_attr($id); ?>" 
-                               name="<?php echo esc_attr($id); ?>" 
-                               value="1" 
-                               <?php checked($is_checked); ?>
-                               <?php disabled($is_disabled); ?> />
+                        <input type="checkbox" id="<?php echo esc_attr($id); ?>" name="<?php echo esc_attr($id); ?>" value="1"
+                            <?php checked($is_checked); ?>         <?php disabled($is_disabled); ?> />
                         <span class="pp-slider"></span>
                     </label>
-                    <span class="pp-toggle-label"><?php echo esc_html(sprintf(__('Enable %s Integration', 'press-permit-core'), $title)); ?></span>
+                    <span
+                        class="pp-toggle-label"><?php echo esc_html(sprintf(__('Enable %s Integration', 'press-permit-core'), $title)); ?></span>
                 </div>
-                
-                <?php if ($is_pro) : ?>
+
+                <?php if ($is_pro): ?>
                     <div class="pp-integration-status"><?php esc_html_e('Active', 'press-permit-core'); ?></div>
-                <?php else : ?>
+                <?php else: ?>
                     <div class="pp-integration-status disabled"><?php esc_html_e('Disabled', 'press-permit-core'); ?></div>
                 <?php endif; ?>
             </div>
-            
-            <?php if (!$is_pro) : ?>
+
+            <?php if (!$is_pro): ?>
                 <div class="pp-upgrade-overlay">
                     <h4><?php esc_html_e('Premium Feature', 'press-permit-core'); ?></h4>
-                    <p><?php echo esc_html(sprintf(__('Unlock %s integration to enhance your permissions system.', 'press-permit-core'), $title)); ?></p>
+                    <p><?php echo esc_html(sprintf(__('Unlock %s integration to enhance your permissions system.', 'press-permit-core'), $title)); ?>
+                    </p>
                     <div class="pp-upgrade-buttons">
-                        <a href="<?php echo esc_url($learn_more_urls[$id]); ?>" 
-                           target="_blank" 
-                           class="pp-upgrade-btn-secondary">
+                        <a href="<?php echo esc_url($learn_more_urls[$id]); ?>" target="_blank" class="pp-upgrade-btn-secondary">
                             <?php esc_html_e('Learn More', 'press-permit-core'); ?>
                         </a>
-                        <a href="<?php echo esc_url(self::UPGRADE_PRO_URL); ?>" 
-                           target="_blank" 
-                           class="pp-upgrade-btn-primary">
+                        <a href="<?php echo esc_url(self::UPGRADE_PRO_URL); ?>" target="_blank" class="pp-upgrade-btn-primary">
                             <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
                         </a>
                     </div>

@@ -841,6 +841,7 @@ div.pp-user-permissions-help p {
   border-radius: 4px;
   margin-left: 0.5rem;
   font-weight: 600;
+  white-space: nowrap;
 }
 .pp-tag-builder {
   background-color: #ff7043;
