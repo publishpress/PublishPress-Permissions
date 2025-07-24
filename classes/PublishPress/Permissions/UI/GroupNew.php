@@ -47,7 +47,7 @@ class GroupNew
                         : admin_url("admin.php?page=presspermit-groups&group_variant=$group_variant");
                     ?>
 
-                    <a href="<?php echo esc_url($groups_link); ?>"><?php esc_html_e('Back to groups list', 'press-permit-core'); ?></a>
+                    <a href="<?php echo esc_url($groups_link); ?>"><?php esc_html_e('Back to permissions list', 'press-permit-core'); ?></a>
                 </p>
             </div>
         <?php endif; ?>

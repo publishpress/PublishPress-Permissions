@@ -12,7 +12,7 @@ require_once ABSPATH . 'wp-admin/includes/template.php';
 /**
  * Create HTML list of nav menu input items.
  *
- * Ported from Walker_Nav_Menu_Checklist to eliminate hidden inputs which are not useful to PP usage on Edit Permission Group screen
+ * Ported from Walker_Nav_Menu_Checklist to eliminate hidden inputs which are not useful to PP usage on Edit Permissions screen
  */
 class ItemsMetabox extends \Walker_Nav_Menu
 {

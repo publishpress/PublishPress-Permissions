@@ -99,7 +99,7 @@ class AgentPermissions
 
                         <?php
                         if ($wp_http_referer) : ?>
-                            <a href="<?php echo esc_url($groups_link); ?>"><?php esc_html_e('Back to groups list', 'press-permit-core'); ?></a>
+                            <a href="<?php echo esc_url($groups_link); ?>"><?php esc_html_e('Back to permissions list', 'press-permit-core'); ?></a>
                         <?php endif; ?>
 
                     <?php endif; ?>
@@ -127,9 +127,9 @@ class AgentPermissions
                     if ('user' == $agent_type) {
                         ($agent_id) ? esc_html_e('Edit User Permissions', 'press-permit-core') : esc_html_e('Add User Permissions', 'press-permit-core');
                     } elseif ('wp_role' == $metagroup_type) {
-                        esc_html_e('Edit Permission Group', 'press-permit-core');
+                        esc_html_e('Edit Permissions', 'press-permit-core');
                     } elseif ('pp_group' == $agent_type) {
-                        esc_html_e('Edit Permission Group', 'press-permit-core');
+                        esc_html_e('Edit Permissions', 'press-permit-core');
                     } elseif ($group_type_obj = $pp_groups->getGroupTypeObject($agent_type)) {
                         printf(esc_html__('Edit Permissions (%s)', 'press-permit-core'), esc_html($group_type_obj->labels->singular_name));
                     }
@@ -247,7 +247,7 @@ class AgentPermissions
                                         || apply_filters('presspermit_metagroup_editable', false, $agent->metagroup_type, $agent_id))
                                 ) {
                                 ?>
-                                    <input type="submit" name="submit" id="submit" class="button button-primary pp-primary-button" value="<?php esc_attr_e('Update Group', 'press-permit-core') ?>">
+                                    <input type="submit" name="submit" id="submit" class="button button-primary pp-primary-button" value="<?php esc_attr_e('Update Permissions', 'press-permit-core') ?>">
                                 <?php
                                 }
                                 ?>
