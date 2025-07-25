@@ -18,6 +18,9 @@ class Settings
         require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabCore.php');
         new SettingsTabCore();
 
+        require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabIntegrations.php');
+        new SettingsTabIntegrations();
+
         require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabAdvanced.php');
         new SettingsTabAdvanced();
 
