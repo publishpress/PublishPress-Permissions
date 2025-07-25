@@ -6,8 +6,6 @@ class HintsPostEdit
 {
     public static function postStatusPromo()
     {
-        $pp = presspermit();
-
         if (!defined('PUBLISHPRESS_STATUSES_VERSION')) {
             ?>
             <script type="text/javascript">
