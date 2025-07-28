@@ -21,8 +21,13 @@ class Settings
         require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabIntegrations.php');
         new SettingsTabIntegrations();
 
-        require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabFileAccess.php');
-        new SettingsTabFileAccess();
+        if (!presspermit()->isPro()) {
+            require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabMembership.php');
+            new SettingsTabMembership();
+
+            require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabFileAccess.php');
+            new SettingsTabFileAccess();
+        }
 
         require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabAdvanced.php');
         new SettingsTabAdvanced();
