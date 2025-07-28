@@ -142,7 +142,7 @@
 }
 .pp-form-table tr th span a {
   color: #333;
-  background-color: #CFEBF7;
+  background-color: #cfebf7;
 }
 .pp-form-table tr th,
 .pp-form-table tr td {
@@ -1206,4 +1206,96 @@ input:disabled + .pp-slider {
   .pp-integrations-upgrade-cta h3 {
     font-size: 20px;
   }
+}
+.pp-features-card {
+  position: relative;
+  width: max-content;
+}
+.pp-features-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.pp-features-card:hover .pp-upgrade-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+.pp-file-access-promo .pp-feature-card {
+  position: relative;
+  overflow: hidden;
+}
+.pp-file-access-promo .pp-feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+}
+.pp-file-access-promo .pp-feature-card:hover .pp-upgrade-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+.pp-file-access-promo .pp-feature-card:hover .pp-feature-icon {
+  transform: scale(1.1);
+}
+.pp-file-access-promo .pp-upgrade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  backdrop-filter: blur(2px);
+}
+.pp-file-access-promo .pp-upgrade-overlay h4 {
+  font-weight: 600;
+  margin: 0 auto 10px auto;
+  font-size: 16px;
+}
+.pp-file-access-promo .pp-upgrade-overlay p {
+  margin-bottom: 15px !important;
+  max-width: 200px;
+  line-height: 1.4;
+  font-size: 13px;
+}
+.pp-file-access-promo .pp-upgrade-overlay .pp-upgrade-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+.pp-file-access-promo .pp-upgrade-btn-primary {
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  display: inline-block;
+  color: white !important;
+}
+.pp-file-access-promo .pp-upgrade-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+}
+.pp-file-access-promo .pp-upgrade-btn-secondary {
+  background: transparent;
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 11px;
+  transition: all 0.2s ease;
+  display: inline-block;
+  border: 1px solid;
+}
+.pp-file-access-promo .pp-upgrade-btn-secondary:hover {
+  background: rgba(139, 92, 246, 0.1);
+  text-decoration: none;
 }

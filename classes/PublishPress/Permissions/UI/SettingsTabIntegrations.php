@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\UI;
 
 class SettingsTabIntegrations
 {
-    private const UPGRADE_PRO_URL = 'https://publishpress.com/permissions/';
+    public const UPGRADE_PRO_URL = 'https://publishpress.com/permissions/';
 
     public function __construct()
     {

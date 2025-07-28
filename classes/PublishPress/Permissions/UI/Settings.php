@@ -21,6 +21,9 @@ class Settings
         require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabIntegrations.php');
         new SettingsTabIntegrations();
 
+        require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabFileAccess.php');
+        new SettingsTabFileAccess();
+
         require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabAdvanced.php');
         new SettingsTabAdvanced();
 
@@ -55,6 +58,7 @@ class Settings
         $ui->all_options = [];
 
         $ui->tab_captions = apply_filters('presspermit_option_tabs', []);
+        $ui->tab_badges = apply_filters('presspermit_option_tab_badges', []); // Add support for tab badges
         $ui->section_captions = apply_filters('presspermit_section_captions', []);
         $ui->option_captions = apply_filters('presspermit_option_captions', []);
         $ui->form_options = apply_filters('presspermit_option_sections', []);
@@ -118,11 +122,58 @@ class Settings
                 if (!empty($ui->form_options[$tab])) {
                     $class = ($default_tab == $tab) ? $class_selected : $class_unselected;  // todo: return to last tab
 
+                    // Check if this tab has a badge
+                    $badge_html = '';
+                    if (!empty($ui->tab_badges[$tab])) {
+                        $badge = $ui->tab_badges[$tab];
+                        $badge_text = isset($badge['text']) ? esc_html($badge['text']) : 'PRO';
+                        $badge_color = isset($badge['color']) ? esc_attr($badge['color']) : '#8B5CF6';
+                        $badge_bg_color = isset($badge['bg_color']) ? esc_attr($badge['bg_color']) : '#8B5CF6';
+                        $badge_class = isset($badge['class']) ? esc_attr($badge['class']) : '';
+                        
+                        $badge_html = sprintf(
+                            '<span class="pp-tab-badge %s" style="background: %s; color: white; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 10px; margin-left: 6px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">%s</span>',
+                            $badge_class,
+                            $badge_bg_color,
+                            $badge_text
+                        );
+                    }
+
                     echo "<li class='" . esc_attr($class) . "'><a href='#pp-" . esc_attr($tab) . "'>"
-                        . esc_html($ui->tab_captions[$tab]) . '</a></li>';
+                        . esc_html($ui->tab_captions[$tab]) . $badge_html . '</a></li>';
                 }
             }
             echo '</ul>';
+
+            // Add CSS for tab badges
+            echo '<style>
+            .pp-tab-badge {
+                display: inline-block;
+                vertical-align: middle;
+                animation: pp-badge-pulse 2s infinite;
+            }
+            
+            @keyframes pp-badge-pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+            }
+            
+            .nav-tab:hover .pp-tab-badge {
+                animation: none;
+                transform: scale(1.1);
+                transition: transform 0.2s ease;
+            }
+            
+            .nav-tab-active .pp-tab-badge {
+                background: #2271b1 !important;
+                animation: none;
+            }
+            
+            .pp-pro-badge {
+                background: linear-gradient(135deg, #8B5CF6, #7C3AED) !important;
+                box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3) !important;
+            }
+            </style>';
 
             echo '<div class="pp-group-wrapper" style="display: flex;width: 100%;flex-wrap: wrap;">';
             echo '<div class="pp-options-wrapper" style="flex-basis: calc(99% - 270px);">';
