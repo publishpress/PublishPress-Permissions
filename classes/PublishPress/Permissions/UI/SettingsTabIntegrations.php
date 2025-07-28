@@ -36,21 +36,21 @@ class SettingsTabIntegrations
     public function optionCaptions($captions)
     {
         $opt = [
-            'acf_compatibility'                   => esc_html__('Advanced Custom Fields', 'press-permit-core'),
-            'bbpress_compatibility'               => esc_html__('bbPress Forums', 'press-permit-core'),
-            'beaver_compatibility'                => esc_html__('Beaver Builder', 'press-permit-core'),
-            'breakdance_compatibility'            => esc_html__('Breakdance', 'press-permit-core'),
-            'buddypress_compatibility'            => esc_html__('BuddyPress', 'press-permit-core'),
-            'cms_tree_view_compatibility'         => esc_html__('CMS Tree View', 'press-permit-core'),
-            'elementor_compatibility'             => esc_html__('Elementor', 'press-permit-core'),
-            'nested_pages_compatibility'          => esc_html__('Nested Pages', 'press-permit-core'),
+            'acf_compatibility' => esc_html__('Advanced Custom Fields', 'press-permit-core'),
+            'bbpress_compatibility' => esc_html__('bbPress Forums', 'press-permit-core'),
+            'beaver_compatibility' => esc_html__('Beaver Builder', 'press-permit-core'),
+            'breakdance_compatibility' => esc_html__('Breakdance', 'press-permit-core'),
+            'buddypress_compatibility' => esc_html__('BuddyPress', 'press-permit-core'),
+            'cms_tree_view_compatibility' => esc_html__('CMS Tree View', 'press-permit-core'),
+            'elementor_compatibility' => esc_html__('Elementor', 'press-permit-core'),
+            'nested_pages_compatibility' => esc_html__('Nested Pages', 'press-permit-core'),
             'publishpress_statuses_compatibility' => esc_html__('PublishPress Statuses', 'press-permit-core'),
-            'relevanssi_compatibility'            => esc_html__('Relevanssi', 'press-permit-core'),
-            'searchwp_compatibility'              => esc_html__('SearchWP', 'press-permit-core'),
-            'woocommerce_compatibility'           => esc_html__('WooCommerce', 'press-permit-core'),
-            'wpml_compatibility'                  => esc_html__('WPML', 'press-permit-core'),
-            'yoast_seo_compatibility'             => esc_html__('Yoast SEO', 'press-permit-core'),
-            'yootheme_compatibility'              => esc_html__('YooTheme', 'press-permit-core'),
+            'relevanssi_compatibility' => esc_html__('Relevanssi', 'press-permit-core'),
+            'searchwp_compatibility' => esc_html__('SearchWP', 'press-permit-core'),
+            'woocommerce_compatibility' => esc_html__('WooCommerce', 'press-permit-core'),
+            'wpml_compatibility' => esc_html__('WPML', 'press-permit-core'),
+            'yoast_seo_compatibility' => esc_html__('Yoast SEO', 'press-permit-core'),
+            'yootheme_compatibility' => esc_html__('YooTheme', 'press-permit-core'),
         ];
 
         return array_merge($captions, $opt);
@@ -130,7 +130,8 @@ class SettingsTabIntegrations
                             </div>
                             <div class="pp-category-label" data-category="seo"><?php esc_html_e('SEO', 'press-permit-core'); ?>
                             </div>
-                            <div class="pp-category-label" data-category="statuses"><?php esc_html_e('Statuses', 'press-permit-core'); ?>
+                            <div class="pp-category-label" data-category="statuses">
+                                <?php esc_html_e('Statuses', 'press-permit-core'); ?>
                             </div>
                         </div>
 
@@ -304,22 +305,22 @@ class SettingsTabIntegrations
         // Use provided learn_more_url or fallback to default URLs
         if (empty($learn_more_url)) {
             $learn_more_urls = [
-                'acf_compatibility'                   => esc_url('https: //publishpress.com/knowledge-base/acf-publishpress-permissions/'),
-                'bbpress_compatibility'               => esc_url('https: //publishpress.com/knowledge-base/bbpress-permissions/'),
-                'beaver_compatibility'                => esc_url('https: //publishpress.com/links/permissions-integrations/'),
-                'breakdance_compatibility'            => esc_url('https: //publishpress.com/links/permissions-integrations/'),
-                'buddypress_compatibility'            => esc_url('https: //publishpress.com/knowledge-base/buddypress-content-permissions/'),
-                'cms_tree_view_compatibility'         => esc_url('https: //publishpress.com/links/permissions-integrations/'),
-                'elementor_compatibility'             => esc_url('https: //publishpress.com/links/permissions-integrations/'),
-                'nested_pages_compatibility'          => esc_url('https: //publishpress.com/links/permissions-integrations/'),
-                'pagebuilders_compatibility'          => esc_url('https: //publishpress.com/links/permissions-integrations/'),
+                'acf_compatibility' => esc_url('https: //publishpress.com/knowledge-base/acf-publishpress-permissions/'),
+                'bbpress_compatibility' => esc_url('https: //publishpress.com/knowledge-base/bbpress-permissions/'),
+                'beaver_compatibility' => esc_url('https: //publishpress.com/links/permissions-integrations/'),
+                'breakdance_compatibility' => esc_url('https: //publishpress.com/links/permissions-integrations/'),
+                'buddypress_compatibility' => esc_url('https: //publishpress.com/knowledge-base/buddypress-content-permissions/'),
+                'cms_tree_view_compatibility' => esc_url('https: //publishpress.com/links/permissions-integrations/'),
+                'elementor_compatibility' => esc_url('https: //publishpress.com/links/permissions-integrations/'),
+                'nested_pages_compatibility' => esc_url('https: //publishpress.com/links/permissions-integrations/'),
+                'pagebuilders_compatibility' => esc_url('https: //publishpress.com/links/permissions-integrations/'),
                 'publishpress_statuses_compatibility' => esc_url('https: //publishpress.com/links/permissions-integrations/'),
-                'relevanssi_compatibility'            => esc_url('https: //publishpress.com/knowledge-base/relevanssi-and-presspermit-pro/'),
-                'searchwp_compatibility'              => esc_url('https: //publishpress.com/links/permissions-integrations/'),
-                'woocommerce_compatibility'           => esc_url('https: //publishpress.com/knowledge-base/woocommerce-publishpress-permissions/'),
-                'wpml_compatibility'                  => esc_url('https: //publishpress.com/knowledge-base/wpml-and-presspermit-pro/'),
-                'yoast_seo_compatibility'             => esc_url('https: //publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'),
-                'yootheme_compatibility'              => esc_url('https: //publishpress.com/links/permissions-integrations/'),
+                'relevanssi_compatibility' => esc_url('https: //publishpress.com/knowledge-base/relevanssi-and-presspermit-pro/'),
+                'searchwp_compatibility' => esc_url('https: //publishpress.com/links/permissions-integrations/'),
+                'woocommerce_compatibility' => esc_url('https: //publishpress.com/knowledge-base/woocommerce-publishpress-permissions/'),
+                'wpml_compatibility' => esc_url('https: //publishpress.com/knowledge-base/wpml-and-presspermit-pro/'),
+                'yoast_seo_compatibility' => esc_url('https: //publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'),
+                'yootheme_compatibility' => esc_url('https: //publishpress.com/links/permissions-integrations/'),
             ];
             $learn_more_url = isset($learn_more_urls[$id]) ? $learn_more_urls[$id] : '';
         }
