@@ -92,6 +92,21 @@ class SettingsTabIntegrations
         if (!empty($ui->form_options[$tab][$section])): ?>
             <tr>
                 <td>
+                    <?php if (!presspermit()->isPro()): ?>
+                        <div class="pp-integrations-upgrade-cta">
+                            <div class="pp-pro-banner">
+                                <div>
+                                    <h3><?php esc_html_e('Unlock Premium Integrations', 'press-permit-core'); ?></h3>
+                                    <p><?php esc_html_e('Upgrade to the Pro version to get access to all these powerful integrations and more.', 'press-permit-core'); ?></p>
+                                </div>
+                                <div class="pp-pro-badge-banner no-bg">
+                                    <a href="<?php echo self::UPGRADE_PRO_URL; ?>" target="_blank" class="pp-upgrade-btn">
+                                        <?php esc_html_e('Upgrade to Pro', 'press-permit-core'); ?>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                     <div class="pp-integrations-container">
                         <!-- Pro Banner -->
                         <?php if (presspermit()->isPro()): ?>
@@ -149,19 +164,6 @@ class SettingsTabIntegrations
                             }
                             ?>
                         </div>
-
-                        <?php if (!presspermit()->isPro()): ?>
-                            <div class="pp-integrations-upgrade-cta">
-                                <div class="pp-upgrade-cta-content">
-                                    <h3><?php esc_html_e('Unlock Premium Integrations', 'press-permit-core'); ?></h3>
-                                    <p><?php esc_html_e('Upgrade to the Pro version to get access to all these powerful integrations and more. Take your site\'s permissions to the next level with advanced controls and compatibility.', 'press-permit-core'); ?>
-                                    </p>
-                                    <a href="<?php echo self::UPGRADE_PRO_URL; ?>" target="_blank" class="pp-upgrade-btn">
-                                        <?php esc_html_e('Upgrade to Pro Now', 'press-permit-core'); ?>
-                                    </a>
-                                </div>
-                            </div>
-                        <?php endif; ?>
                     </div>
                 </td>
             </tr>

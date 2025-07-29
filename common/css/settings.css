@@ -103,10 +103,12 @@
 }
 /* --- CSS Custom Properties (accessible globally) --- */
 :root {
-  --primary-color: #9c27b0;
+  --primary-color: #68589b;
   --primary-dark: #7b1fa2;
   --primary-light: #f3e5f5;
   --primary-lighter: #e1bee7;
+  --cta-color: #feb123;
+  --cta-hover: #fcca46;
   --text-primary: #1e1e1e;
   --text-secondary: #757575;
   --text-muted: #6b7280;
@@ -707,9 +709,10 @@ div.pp-user-permissions-help p {
 }
 .pp-pro-banner {
   background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+  background: var(--primary-color);
   border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+  padding: 0.4rem 1rem 0.4rem 1rem;
+  margin-bottom: 10px;
   color: white;
   display: flex;
   align-items: center;
@@ -732,6 +735,10 @@ div.pp-user-permissions-help p {
   border-radius: 4px;
   font-weight: 600;
   font-size: 0.9rem;
+}
+.pp-pro-badge-banner.no-bg {
+  background-color: transparent;
+  color: var(--primary-color);
 }
 .pp-category-labels {
   display: flex;
@@ -1090,7 +1097,7 @@ div.pp-user-permissions-help p {
   margin-bottom: 0.3rem;
 }
 .pp-integration-features li:before {
-  content: "•";
+  content: "\2713";
   position: absolute;
   left: 0;
   color: var(--primary-color);
@@ -1219,7 +1226,7 @@ input:disabled + .pp-slider {
   text-decoration: none;
 }
 .pp-upgrade-btn-primary {
-  background: var(--primary-color);
+  background: var(--cta-color);
   color: white !important;
   padding: 10px 20px;
   border-radius: 4px;
@@ -1230,7 +1237,7 @@ input:disabled + .pp-slider {
   display: inline-block;
 }
 .pp-upgrade-btn-primary:hover {
-  background: var(--primary-dark);
+  background: var(--cta-hover);
   transform: translateY(-1px);
   box-shadow: 0 2px 5px var(--shadow-heavy);
   text-decoration: none;
@@ -1238,28 +1245,32 @@ input:disabled + .pp-slider {
 }
 .pp-integrations-upgrade-cta {
   background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+  background: var(--primary-color);
   border-radius: 8px;
-  padding: 30px;
+  padding: 0;
   text-align: center;
-  margin-top: 30px;
+  margin-top: 5px;
+  margin-bottom: 10px;
   color: white;
 }
 .pp-integrations-upgrade-cta h3 {
-  font-size: 24px;
-  margin-bottom: 15px;
-  font-weight: 600;
+  font-size: 1.5rem;
+  margin: 0;
   color: white;
+  margin-bottom: 0.3rem;
+  padding: 0;
+  text-align: left;
 }
 .pp-integrations-upgrade-cta p {
   max-width: 600px;
-  margin: 0 auto 12px !important;
+  margin: 0 auto 2px !important;
   opacity: 0.9;
   line-height: 1.6;
 }
 .pp-integrations-upgrade-cta .pp-upgrade-btn {
-  background: white;
-  color: var(--primary-color);
-  padding: 12px 30px;
+  background: var(--cta-color);
+  color: black;
+  padding: 8px 12px;
   border-radius: 4px;
   text-decoration: none;
   font-weight: 600;
@@ -1268,10 +1279,11 @@ input:disabled + .pp-slider {
   display: inline-block;
 }
 .pp-integrations-upgrade-cta .pp-upgrade-btn:hover {
+  background: var(--cta-hover);
   transform: translateY(-2px);
   box-shadow: 0 4px 15px var(--shadow-medium);
   text-decoration: none;
-  color: var(--primary-color);
+  color: black;
 }
 .pp-integration-checkbox {
   position: absolute;
@@ -1534,14 +1546,15 @@ input:disabled + .pp-slider {
   flex-wrap: wrap;
 }
 .pp-file-access-promo .pp-cta-section .pp-cta-buttons .button-primary {
-  background: var(--primary-color);
+  background: var(--cta-color);
+  border-color: var(--cta-color);
   padding: 8px 24px;
   border-radius: 8px;
   font-weight: 500;
   transition: all 0.3s ease;
 }
 .pp-file-access-promo .pp-cta-section .pp-cta-buttons .button-primary:hover {
-  background: var(--primary-color) !important;
+  background: var(--cta-hover) !important;
   transform: translateY(-1px) !important;
   box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25) !important;
 }
