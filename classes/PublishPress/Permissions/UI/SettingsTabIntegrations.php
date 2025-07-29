@@ -108,18 +108,6 @@ class SettingsTabIntegrations
                         </div>
                     <?php endif; ?>
                     <div class="pp-integrations-container">
-                        <!-- Pro Banner -->
-                        <?php if (presspermit()->isPro()): ?>
-                            <div class="pp-pro-banner">
-                                <div>
-                                    <h2><?php esc_html_e('Premium Integrations Active', 'press-permit-core'); ?></h2>
-                                    <p><?php esc_html_e('You\'re using the Pro version with access to all premium features', 'press-permit-core'); ?>
-                                    </p>
-                                </div>
-                                <div class="pp-pro-badge-banner"><?php esc_html_e('PRO VERSION', 'press-permit-core'); ?></div>
-                            </div>
-                        <?php endif; ?>
-
                         <!-- Category Filters -->
                         <div class="pp-category-labels">
                             <div class="pp-category-label active" data-category="all">
