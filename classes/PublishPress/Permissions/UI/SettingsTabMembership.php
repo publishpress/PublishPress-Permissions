@@ -185,11 +185,11 @@ class SettingsTabMembership
                             <?php esc_html_e('Upgrade to Pro to unlock circles-based access control for author relationships', 'press-permit-core'); ?>
                         </p>
                         <div class="pp-upgrade-buttons">
+                          <a href="https://publishpress.com/links/permissions-membership" target="_blank" class="pp-upgrade-btn-primary">
+                              <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
+                          </a>
                             <a href="https://publishpress.com/knowledge-base/circles-permissions/" target="_blank" class="pp-upgrade-btn-secondary">
                                 <?php esc_html_e('Learn More', 'press-permit-core'); ?>
-                            </a>
-                            <a href="https://publishpress.com/links/permissions-membership" target="_blank" class="pp-upgrade-btn-primary">
-                                <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
                             </a>
                         </div>
                     </div>
@@ -219,11 +219,11 @@ class SettingsTabMembership
                             <?php esc_html_e('Get advanced time-limited membership features with automatic expiration and notifications', 'press-permit-core'); ?>
                         </p>
                         <div class="pp-upgrade-buttons">
+                          <a href="https://publishpress.com/links/permissions-membership" target="_blank" class="pp-upgrade-btn-primary">
+                              <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
+                          </a>
                             <a href="https://publishpress.com/knowledge-base/time-limited-membership/" target="_blank" class="pp-upgrade-btn-secondary">
                                 <?php esc_html_e('Learn More', 'press-permit-core'); ?>
-                            </a>
-                            <a href="https://publishpress.com/links/permissions-membership" target="_blank" class="pp-upgrade-btn-primary">
-                                <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
                             </a>
                         </div>
                     </div>
