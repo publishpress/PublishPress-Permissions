@@ -8,6 +8,7 @@ class SettingsAdmin
 
     var $form_options;
     var $tab_captions;
+    var $tab_badges;
     var $section_captions;
     var $option_captions;
     var $all_options;

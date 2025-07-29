@@ -311,16 +311,16 @@
         },
         {
             "name": "publishpress/wordpress-version-notices",
-            "version": "2.1.4",
+            "version": "2.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/publishpress/library-wordpress-version-notices.git",
-                "reference": "7b32b0183e37b512a84231b730476834bd8755d0"
+                "reference": "caf37ca4705f89b882c1e53d9e592939568df944"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/publishpress/library-wordpress-version-notices/zipball/7b32b0183e37b512a84231b730476834bd8755d0",
-                "reference": "7b32b0183e37b512a84231b730476834bd8755d0",
+                "url": "https://api.github.com/repos/publishpress/library-wordpress-version-notices/zipball/caf37ca4705f89b882c1e53d9e592939568df944",
+                "reference": "caf37ca4705f89b882c1e53d9e592939568df944",
                 "shasum": ""
             },
             "require": {
@@ -371,9 +371,9 @@
             "description": "Library for displaying version notices for Pro plugins in WordPress.",
             "support": {
                 "issues": "https://github.com/publishpress/library-wordpress-version-notices/issues",
-                "source": "https://github.com/publishpress/library-wordpress-version-notices/tree/2.1.4"
+                "source": "https://github.com/publishpress/library-wordpress-version-notices/tree/2.1.5"
             },
-            "time": "2025-06-23T21:33:42+00:00"
+            "time": "2025-07-23T03:00:53+00:00"
         }
     ],
     "packages-dev": [],
