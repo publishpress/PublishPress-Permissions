@@ -149,37 +149,6 @@ class Settings
                 }
             }
             echo '</ul>';
-
-            // Add CSS for tab badges
-            echo '<style>
-            .pp-tab-badge {
-                display: inline-block;
-                vertical-align: middle;
-                animation: pp-badge-pulse 2s infinite;
-            }
-            
-            @keyframes pp-badge-pulse {
-                0%, 100% { transform: scale(1); }
-                50% { transform: scale(1.05); }
-            }
-            
-            .nav-tab:hover .pp-tab-badge {
-                animation: none;
-                transform: scale(1.1);
-                transition: transform 0.2s ease;
-            }
-            
-            .nav-tab-active .pp-tab-badge {
-                background: #2271b1 !important;
-                animation: none;
-            }
-            
-            .pp-pro-badge {
-                background: linear-gradient(135deg, #8B5CF6, #7C3AED) !important;
-                box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3) !important;
-            }
-            </style>';
-
             echo '<div class="pp-group-wrapper" style="display: flex;width: 100%;flex-wrap: wrap;">';
             echo '<div class="pp-options-wrapper" style="flex-basis: calc(99% - 270px);">';
             $table_class = 'form-table pp-form-table pp-options-table';

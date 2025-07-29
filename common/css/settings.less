@@ -1960,3 +1960,32 @@ input:disabled + .pp-slider {
     }
   }
 }
+
+// Add CSS for tab badges
+@keyframes pp-badge-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+.pp-tab-badge {
+  display: inline-block;
+  vertical-align: middle;
+  animation: pp-badge-pulse 2s infinite;
+}
+.nav-tab:hover .pp-tab-badge {
+  animation: none;
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+.nav-tab-active .pp-tab-badge {
+  background: #2271b1 !important;
+  animation: none;
+}
+.pp-pro-badge {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+  box-shadow: 0 2px 4px rgb(139 92 246 / 0.3) !important;
+}
