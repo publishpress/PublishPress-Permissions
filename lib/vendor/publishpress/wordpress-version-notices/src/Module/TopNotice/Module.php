@@ -195,6 +195,11 @@ class Module implements AdInterface
                 color: #000000 !important;
             }
 
+            .pp-version-notice-bold-purple-button a {
+                text-decoration: none !important;
+                color: #414141 !important;
+            }
+
             @media only screen and (max-width: 600px) {
                 .pp-version-notice-bold-purple {
                     padding: 55px 15px 10px 15px;
