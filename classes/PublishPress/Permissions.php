@@ -1279,7 +1279,7 @@ class Permissions
                 ],
                 'enabled' => false,
                 'available' => (class_exists('FLBuilder') || defined('FL_BUILDER_VERSION')),
-                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
+                'learn_more_url' => ''
             ],
             [
                 'id' => 'bbpress_compatibility',
@@ -1323,7 +1323,7 @@ class Permissions
                 ],
                 'enabled' => false,
                 'available' => (defined('CMS_TREE_VIEW_PLUGIN_URL') || class_exists('\CMS_Tree_View\Setup')),
-                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
+                'learn_more_url' => ''
             ],
             [
                 'id' => 'elementor_compatibility',
@@ -1338,7 +1338,7 @@ class Permissions
                 ],
                 'enabled' => false,
                 'available' => (defined('ELEMENTOR_VERSION') || class_exists('\Elementor\Plugin')),
-                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
+                'learn_more_url' => ''
             ],
             [
                 'id' => 'events_calendar_compatibility',
@@ -1352,7 +1352,7 @@ class Permissions
                 ],
                 'enabled' => false,
                 'available' => defined('EVENTS_CALENDAR_PRO_FILE') || class_exists('Tribe__Events__Pro__Main'),
-                'learn_more_url' => 'https://publishpress.com/links/permissions-integrations/'
+                'learn_more_url' => ''
             ],
             [
                 'id' => 'nested_pages_compatibility',
@@ -1366,7 +1366,7 @@ class Permissions
                 ],
                 'enabled' => false,
                 'available' => (defined('NESTED_PAGES_PLUGIN_URL') || class_exists('\Nested_Pages\Setup')),
-                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
+                'learn_more_url' => ''
             ],
             [
                 'id' => 'publishpress_statuses_compatibility',
@@ -1381,7 +1381,7 @@ class Permissions
                 ],
                 'enabled' => false,
                 'available' => (defined('PUBLISHPRESS_STATUSES_VERSION') || class_exists('PublishPress\Statuses\Factory')),
-                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
+                'learn_more_url' => ''
             ],
             [
                 'id' => 'relevanssi_compatibility',
@@ -1411,7 +1411,7 @@ class Permissions
                 ],
                 'enabled' => false,
                 'available' => class_exists('SearchWP'),
-                'learn_more_url' => 'https://publishpress.com/knowledge-base/'
+                'learn_more_url' => ''
             ],
             [
                 'id' => 'woocommerce_compatibility',
@@ -1470,7 +1470,7 @@ class Permissions
                 ],
                 'enabled' => false,
                 'available' => function_exists('yootheme'),
-                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
+                'learn_more_url' => ''
             ],
 
             [
