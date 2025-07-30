@@ -316,6 +316,26 @@ class SettingsTabIntegrations
                     </div>
                 </div>
 
+            <?php elseif ($is_pro && !$integration['free'] && !empty($integration['learn_more_url'])): ?>
+                <div class="pp-upgrade-overlay">
+                    <h4><?php esc_html_e('Active Plugin Integration', 'revisionary'); ?></h4>
+                    <div class="pp-upgrade-buttons">
+                            <a href="<?php echo esc_url($integration['learn_more_url']); ?>" target="_blank" class="pp-upgrade-btn-secondary">
+                                <?php esc_html_e('Learn More', 'revisionary'); ?>
+                            </a>
+                    </div>
+                </div>
+
+            <?php elseif (!$integration['free'] && !empty($integration['learn_more_url'])): ?>
+                <div class="pp-upgrade-overlay">
+                    <h4><?php esc_html_e('Supported Plugin Integration', 'revisionary'); ?></h4>
+                    <div class="pp-upgrade-buttons">
+                            <a href="<?php echo esc_url($integration['learn_more_url']); ?>" target="_blank" class="pp-upgrade-btn-secondary">
+                                <?php esc_html_e('Learn More', 'revisionary'); ?>
+                            </a>
+                    </div>
+                </div>
+
             <?php elseif ($integration['free'] && !empty($integration['learn_more_url'])): ?>
                 <div class="pp-upgrade-overlay">
                     <h4><?php esc_html_e('Supported Plugin', 'revisionary'); ?></h4>
