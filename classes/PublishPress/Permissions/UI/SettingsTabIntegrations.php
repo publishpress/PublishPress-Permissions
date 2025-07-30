@@ -4,7 +4,7 @@ namespace PublishPress\Permissions\UI;
 
 class SettingsTabIntegrations
 {
-    public const UPGRADE_PRO_URL = 'https://publishpress.com/permissions/';
+    public const UPGRADE_PRO_URL = 'https://publishpress.com/links/permissions/';
 
     public function __construct()
     {
@@ -112,9 +112,6 @@ class SettingsTabIntegrations
                         <div class="pp-category-labels">
                             <div class="pp-category-label active" data-category="all">
                                 <?php esc_html_e('All', 'press-permit-core'); ?>
-                            </div>
-                            <div class="pp-category-label" data-category="authors">
-                                <?php esc_html_e('Authors', 'press-permit-core'); ?>
                             </div>
                             <div class="pp-category-label" data-category="builder">
                                 <?php esc_html_e('Builders', 'press-permit-core'); ?>
@@ -412,13 +409,13 @@ class SettingsTabIntegrations
             [
                 'id' => 'acf_compatibility',
                 'title' => esc_html__('Advanced Custom Fields', 'press-permit-core'),
-                'description' => esc_html__('Full compatibility with ACF field groups and taxonomies for granular permission control.', 'press-permit-core'),
+                'description' => esc_html__('Control front-end access to Field Groups with advanced permission management.', 'press-permit-core'),
                 'icon_class' => 'acf',
                 'categories' => ['all'],
                 'features' => [
-                    esc_html__('Control access to custom fields', 'press-permit-core'),
-                    esc_html__('Taxonomy-based permissions', 'press-permit-core'),
-                    esc_html__('Field group restrictions', 'press-permit-core')
+                    esc_html__('Control access to Field Groups', 'press-permit-core'),
+                    esc_html__('Front-end visibility restrictions', 'press-permit-core'),
+                    esc_html__('Integration with permission groups', 'press-permit-core')
                 ],
                 'enabled' => false,
                 'available' => function_exists('acf'),
@@ -442,43 +439,28 @@ class SettingsTabIntegrations
             [
                 'id' => 'bbpress_compatibility',
                 'title' => esc_html__('bbPress Forums', 'press-permit-core'),
-                'description' => esc_html__('Forum-specific permissions for bbPress with detailed control over discussions.', 'press-permit-core'),
+                'description' => esc_html__('Forum-specific permissions for bbPress with detailed control over forum access and participation.', 'press-permit-core'),
                 'icon_class' => 'bbpress',
                 'categories' => ['all', 'community'],
                 'features' => [
                     esc_html__('Forum-specific permissions', 'press-permit-core'),
                     esc_html__('Topic creation restrictions', 'press-permit-core'),
-                    esc_html__('Reply moderation controls', 'press-permit-core')
+                    esc_html__('Forum access controls', 'press-permit-core')
                 ],
                 'enabled' => false,
                 'available' => function_exists('bbp_get_version'),
                 'learn_more_url' => 'https://publishpress.com/knowledge-base/bbpress-permissions/'
             ],
             [
-                'id' => 'breakdance_compatibility',
-                'title' => esc_html__('Breakdance', 'press-permit-core'),
-                'description' => esc_html__('Compatibility with Edit Permissions in Breakdance.', 'press-permit-core'),
-                'icon_class' => 'breakdance',
-                'categories' => ['all', 'builder'],
-                'features' => [
-                    esc_html__('Breakdance editor integration', 'press-permit-core'),
-                    esc_html__('Element-level permission controls', 'press-permit-core'),
-                    esc_html__('Design system access management', 'press-permit-core')
-                ],
-                'enabled' => false,
-                'available' => (defined('BREAKDANCE_PLUGIN_URL') || class_exists('\Breakdance\Setup')),
-                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
-            ],
-            [
                 'id' => 'buddypress_compatibility',
                 'title' => esc_html__('BuddyPress', 'press-permit-core'),
-                'description' => esc_html__('Assign post and term permissions to BuddyPress groups for community-driven content.', 'press-permit-core'),
+                'description' => esc_html__('Assign post and term permissions to BuddyPress groups for enhanced content control.', 'press-permit-core'),
                 'icon_class' => 'buddypress',
                 'categories' => ['all', 'community'],
                 'features' => [
                     esc_html__('Assign post permissions to BuddyPress groups', 'press-permit-core'),
                     esc_html__('Assign term permissions to BuddyPress groups', 'press-permit-core'),
-                    esc_html__('Group-based content access control', 'press-permit-core'),
+                    esc_html__('Group-based content permissions', 'press-permit-core'),
                 ],
                 'enabled' => false,
                 'available' => function_exists('buddypress'),
@@ -499,20 +481,6 @@ class SettingsTabIntegrations
                 'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
             ],
             [
-                'id' => 'coauthors_compatibility',
-                'title' => esc_html__('Co-Authors Plus', 'press-permit-core'),
-                'description' => esc_html__('Support for multiple authors per post with permission controls.', 'press-permit-core'),
-                'icon_class' => 'coauthors',
-                'categories' => ['all', 'authors'],
-                'features' => [
-                    esc_html__('Multi-author support', 'press-permit-core'),
-                    esc_html__('Author permission controls', 'press-permit-core'),
-                ],
-                'enabled' => false,
-                'available' => defined('COAUTHORS_PLUS_VERSION'),
-                'learn_more_url' => 'https://publishpress.com/links/permissions-integrations/'
-            ],
-            [
                 'id' => 'elementor_compatibility',
                 'title' => esc_html__('Elementor', 'press-permit-core'),
                 'description' => esc_html__('Compatibility with Edit Permissions in Elementor.', 'press-permit-core'),
@@ -530,12 +498,12 @@ class SettingsTabIntegrations
             [
                 'id' => 'events_calendar_compatibility',
                 'title' => esc_html__('The Events Calendar', 'press-permit-core'),
-                'description' => esc_html__('Event permissions and calendar access controls.', 'press-permit-core'),
+                'description' => esc_html__('Apply permission controls to events and event-related content.', 'press-permit-core'),
                 'icon_class' => 'events-calendar',
                 'categories' => ['all', 'events'],
                 'features' => [
-                    esc_html__('Event permissions', 'press-permit-core'),
-                    esc_html__('Calendar access controls', 'press-permit-core'),
+                    esc_html__('Event post permissions', 'press-permit-core'),
+                    esc_html__('Event taxonomy controls', 'press-permit-core'),
                 ],
                 'enabled' => false,
                 'available' => defined('EVENTS_CALENDAR_PRO_FILE') || class_exists('Tribe__Events__Pro__Main'),
@@ -571,20 +539,6 @@ class SettingsTabIntegrations
                 'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
             ],
             [
-                'id' => 'peepso_compatibility',
-                'title' => esc_html__('PeepSo', 'presspermit-pro'),
-                'description' => esc_html__('Social network permissions and community controls.', 'presspermit-pro'),
-                'icon_class' => 'peepso',
-                'categories' => ['all', 'community'],
-                'features' => [
-                    esc_html__('Social network permissions', 'presspermit-pro'),
-                    esc_html__('Community access controls', 'presspermit-pro'),
-                ],
-                'enabled' => false,
-                'available' => class_exists('PeepSo'),
-                'learn_more_url' => 'https://publishpress.com/links/permissions-integrations/'
-            ],
-            [
                 'id' => 'relevanssi_compatibility',
                 'title' => esc_html__('Relevanssi', 'press-permit-core'),
                 'description' => esc_html__('Filter search results based on View Permissions for secure content discovery.', 'press-permit-core'),
@@ -617,13 +571,12 @@ class SettingsTabIntegrations
             [
                 'id' => 'woocommerce_compatibility',
                 'title' => esc_html__('WooCommerce', 'press-permit-core'),
-                'description' => esc_html__('Advanced permissions for products, orders, and customer data.', 'press-permit-core'),
+                'description' => esc_html__('Apply permission controls to WooCommerce products and product categories.', 'press-permit-core'),
                 'icon_class' => 'woocommerce',
                 'categories' => ['all', 'ecommerce'],
                 'features' => [
                     esc_html__('Product permissions', 'press-permit-core'),
-                    esc_html__('Order management controls', 'press-permit-core'),
-                    esc_html__('Customer data access', 'press-permit-core')
+                    esc_html__('Product category controls', 'press-permit-core'),
                 ],
                 'enabled' => false,
                 'available' => class_exists('WooCommerce'),
@@ -632,13 +585,13 @@ class SettingsTabIntegrations
             [
                 'id' => 'wpml_compatibility',
                 'title' => esc_html__('WPML', 'press-permit-core'),
-                'description' => esc_html__('Full multilingual support with permission synchronization across translations.', 'press-permit-core'),
+                'description' => esc_html__('Multilingual support with permission synchronization across content translations.', 'press-permit-core'),
                 'icon_class' => 'wpml',
                 'categories' => ['all', 'multilingual'],
                 'features' => [
-                    esc_html__('Translation permissions', 'press-permit-core'),
-                    esc_html__('Language-specific access', 'press-permit-core'),
-                    esc_html__('Synchronized roles across languages', 'press-permit-core')
+                    esc_html__('Permission synchronization across translations', 'press-permit-core'),
+                    esc_html__('Language-specific content access', 'press-permit-core'),
+                    esc_html__('Multilingual permission management', 'press-permit-core')
                 ],
                 'enabled' => false,
                 'available' => defined('ICL_SITEPRESS_VERSION'),
@@ -647,13 +600,13 @@ class SettingsTabIntegrations
             [
                 'id' => 'yoast_seo_compatibility',
                 'title' => esc_html__('Yoast SEO', 'press-permit-core'),
-                'description' => esc_html__('Exclude restricted posts from sitemaps and control SEO visibility.', 'press-permit-core'),
+                'description' => esc_html__('Exclude restricted posts from XML sitemaps to maintain proper SEO indexing.', 'press-permit-core'),
                 'icon_class' => 'yoast',
                 'categories' => ['all', 'seo'],
                 'features' => [
-                    esc_html__('Sitemap filtering', 'press-permit-core'),
-                    esc_html__('SEO meta controls', 'press-permit-core'),
-                    esc_html__('Search engine visibility', 'press-permit-core')
+                    esc_html__('Sitemap filtering for restricted content', 'press-permit-core'),
+                    esc_html__('Search engine visibility controls', 'press-permit-core'),
+                    esc_html__('Permission-aware XML sitemaps', 'press-permit-core')
                 ],
                 'enabled' => false,
                 'available' => defined('WPSEO_VERSION'),
