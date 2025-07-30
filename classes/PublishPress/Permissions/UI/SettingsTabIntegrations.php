@@ -316,7 +316,7 @@ class SettingsTabIntegrations
                     </div>
                 </div>
 
-            <?php elseif ($is_pro && !$integration['free'] && !empty($integration['learn_more_url'])): ?>
+            <?php elseif ($is_pro && $integration['available'] && !empty($integration['learn_more_url'])): ?>
                 <div class="pp-upgrade-overlay">
                     <h4><?php esc_html_e('Active Plugin Integration', 'revisionary'); ?></h4>
                     <div class="pp-upgrade-buttons">
