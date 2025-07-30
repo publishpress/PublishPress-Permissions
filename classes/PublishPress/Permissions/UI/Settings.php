@@ -148,7 +148,7 @@ class Settings
                         . esc_html($ui->tab_captions[$tab]) . $badge_html . '</a>';
                         
                     if (('integrations' == $tab) && !empty($ui->available_integrations)) :?>
-                            <span class="pp-integrations <?php echo (defined('PRESSPERMI_PRO_VERSION')) ? 'pp-integrations-active' : 'pp-integrations-missing';?> count-<?php echo intval(count($ui->available_integrations));?>"><span class="plugin-count"><?php echo intval(count($ui->available_integrations));?></span></span>
+                            <span class="pp-integrations <?php echo (defined('PRESSPERMIT_PRO_VERSION')) ? 'pp-integrations-active' : 'pp-integrations-missing';?> count-<?php echo intval(count($ui->available_integrations));?>"><span class="plugin-count"><?php echo intval(count($ui->available_integrations));?></span></span>
                     <?php endif;
                         
                     echo '</li>';
