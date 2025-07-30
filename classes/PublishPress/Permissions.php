@@ -1248,4 +1248,413 @@ class Permissions
     
         return $translated_text;
     }
+
+    public static function getDefinedIntegrations() {
+        $integrations = [
+            [
+                'id' => 'acf_compatibility',
+                'title' => esc_html__('Advanced Custom Fields', 'press-permit-core'),
+                'description' => esc_html__('Control front-end access to Field Groups with advanced permission management.', 'press-permit-core'),
+                'icon_class' => 'acf',
+                'categories' => ['all', 'fields'],
+                'features' => [
+                    esc_html__('Control access to Field Groups', 'press-permit-core'),
+                    esc_html__('Front-end visibility restrictions', 'press-permit-core'),
+                    esc_html__('Integration with permission groups', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => function_exists('acf'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/acf-publishpress-permissions/'
+            ],
+            [
+                'id' => 'beaver_compatibility',
+                'title' => esc_html__('Beaver Builder', 'press-permit-core'),
+                'description' => esc_html__('Compatibility with Edit Permissions in Beaver Builder.', 'press-permit-core'),
+                'icon_class' => 'beaver',
+                'categories' => ['all', 'builder'],
+                'features' => [
+                    esc_html__('Beaver editor integration', 'press-permit-core'),
+                    esc_html__('Widget-level permission controls', 'press-permit-core'),
+                    esc_html__('Template access restrictions', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => (class_exists('FLBuilder') || defined('FL_BUILDER_VERSION')),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
+            ],
+            [
+                'id' => 'bbpress_compatibility',
+                'title' => esc_html__('bbPress Forums', 'press-permit-core'),
+                'description' => esc_html__('Forum-specific permissions for bbPress with detailed control over forum access and participation.', 'press-permit-core'),
+                'icon_class' => 'bbpress',
+                'categories' => ['all', 'community'],
+                'features' => [
+                    esc_html__('Forum-specific permissions', 'press-permit-core'),
+                    esc_html__('Topic creation restrictions', 'press-permit-core'),
+                    esc_html__('Forum access controls', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => function_exists('bbp_get_version'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/bbpress-permissions/'
+            ],
+            [
+                'id' => 'buddypress_compatibility',
+                'title' => esc_html__('BuddyPress', 'press-permit-core'),
+                'description' => esc_html__('Assign post and term permissions to BuddyPress groups for enhanced content control.', 'press-permit-core'),
+                'icon_class' => 'buddypress',
+                'categories' => ['all', 'community'],
+                'features' => [
+                    esc_html__('Assign post permissions to BuddyPress groups', 'press-permit-core'),
+                    esc_html__('Assign term permissions to BuddyPress groups', 'press-permit-core'),
+                    esc_html__('Group-based content permissions', 'press-permit-core'),
+                ],
+                'enabled' => false,
+                'available' => function_exists('buddypress'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/buddypress-content-permissions/'
+            ],
+            [
+                'id' => 'cms_tree_view_compatibility',
+                'title' => esc_html__('CMS Tree View', 'press-permit-core'),
+                'description' => esc_html__('Compatibility with Edit Permissions in CMS Tree View.', 'press-permit-core'),
+                'icon_class' => 'cms_tree_view',
+                'categories' => ['all', 'admin'],
+                'features' => [
+                    esc_html__('Permission-aware tree view', 'press-permit-core'),
+                    esc_html__('Hierarchical content controls', 'press-permit-core'),
+                ],
+                'enabled' => false,
+                'available' => (defined('CMS_TREE_VIEW_PLUGIN_URL') || class_exists('\CMS_Tree_View\Setup')),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
+            ],
+            [
+                'id' => 'elementor_compatibility',
+                'title' => esc_html__('Elementor', 'press-permit-core'),
+                'description' => esc_html__('Compatibility with Edit Permissions in Elementor.', 'press-permit-core'),
+                'icon_class' => 'elementor',
+                'categories' => ['all', 'builder'],
+                'features' => [
+                    esc_html__('Elementor editor integration', 'press-permit-core'),
+                    esc_html__('Widget-level permission controls', 'press-permit-core'),
+                    esc_html__('Template access restrictions', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => (defined('ELEMENTOR_VERSION') || class_exists('\Elementor\Plugin')),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
+            ],
+            [
+                'id' => 'events_calendar_compatibility',
+                'title' => esc_html__('The Events Calendar', 'press-permit-core'),
+                'description' => esc_html__('Apply permission controls to events and event-related content.', 'press-permit-core'),
+                'icon_class' => 'events-calendar',
+                'categories' => ['all', 'events'],
+                'features' => [
+                    esc_html__('Event post permissions', 'press-permit-core'),
+                    esc_html__('Event taxonomy controls', 'press-permit-core'),
+                ],
+                'enabled' => false,
+                'available' => defined('EVENTS_CALENDAR_PRO_FILE') || class_exists('Tribe__Events__Pro__Main'),
+                'learn_more_url' => 'https://publishpress.com/links/permissions-integrations/'
+            ],
+            [
+                'id' => 'nested_pages_compatibility',
+                'title' => esc_html__('Nested Pages', 'press-permit-core'),
+                'description' => esc_html__('Compatibility with Edit Permissions in Nested Pages.', 'press-permit-core'),
+                'icon_class' => 'nested_pages',
+                'categories' => ['all', 'admin'],
+                'features' => [
+                    esc_html__('Permission-aware nested view', 'press-permit-core'),
+                    esc_html__('Quick edit integration', 'press-permit-core'),
+                ],
+                'enabled' => false,
+                'available' => (defined('NESTED_PAGES_PLUGIN_URL') || class_exists('\Nested_Pages\Setup')),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
+            ],
+            [
+                'id' => 'publishpress_statuses_compatibility',
+                'title' => esc_html__('PublishPress Statuses', 'press-permit-core'),
+                'description' => esc_html__('Compatibility with PublishPress Statuses plugin.', 'press-permit-core'),
+                'icon_class' => 'publishpress_statuses',
+                'categories' => ['all', 'workflow'],
+                'features' => [
+                    esc_html__('Custom status permissions', 'press-permit-core'),
+                    esc_html__('Workflow-specific access controls', 'press-permit-core'),
+                    esc_html__('Status-based editing capabilities', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => (defined('PUBLISHPRESS_STATUSES_VERSION') || class_exists('PublishPress\Statuses\Factory')),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
+            ],
+            [
+                'id' => 'relevanssi_compatibility',
+                'title' => esc_html__('Relevanssi', 'press-permit-core'),
+                'description' => esc_html__('Filter search results based on View Permissions for secure content discovery.', 'press-permit-core'),
+                'icon_class' => 'relevanssi',
+                'categories' => ['all', 'seo'],
+                'features' => [
+                    esc_html__('Search result filtering', 'press-permit-core'),
+                    esc_html__('Permission-aware indexing', 'press-permit-core'),
+                    esc_html__('Secure content discovery', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => function_exists('relevanssi_init'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/relevanssi-and-presspermit-pro/'
+            ],
+            [
+                'id' => 'searchwp_compatibility',
+                'title' => esc_html__('SearchWP', 'press-permit-core'),
+                'description' => esc_html__('Compatibility with SearchWP term filtering for advanced search capabilities.', 'press-permit-core'),
+                'icon_class' => 'searchwp',
+                'categories' => ['all', 'seo'],
+                'features' => [
+                    esc_html__('Permission-aware search results', 'press-permit-core'),
+                    esc_html__('Term-based filtering', 'press-permit-core'),
+                    esc_html__('Advanced search controls', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => class_exists('SearchWP'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/'
+            ],
+            [
+                'id' => 'woocommerce_compatibility',
+                'title' => esc_html__('WooCommerce', 'press-permit-core'),
+                'description' => esc_html__('Apply permission controls to WooCommerce products and product categories.', 'press-permit-core'),
+                'icon_class' => 'woocommerce',
+                'categories' => ['all', 'ecommerce'],
+                'features' => [
+                    esc_html__('Product permissions', 'press-permit-core'),
+                    esc_html__('Product category controls', 'press-permit-core'),
+                ],
+                'enabled' => false,
+                'available' => class_exists('WooCommerce'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/woocommerce-publishpress-permissions/'
+            ],
+            [
+                'id' => 'wpml_compatibility',
+                'title' => esc_html__('WPML', 'press-permit-core'),
+                'description' => esc_html__('Multilingual support with permission synchronization across content translations.', 'press-permit-core'),
+                'icon_class' => 'wpml',
+                'categories' => ['all', 'multilingual'],
+                'features' => [
+                    esc_html__('Permission synchronization across translations', 'press-permit-core'),
+                    esc_html__('Language-specific content access', 'press-permit-core'),
+                    esc_html__('Multilingual permission management', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => defined('ICL_SITEPRESS_VERSION'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/wpml-and-presspermit-pro/'
+            ],
+            [
+                'id' => 'yoast_seo_compatibility',
+                'title' => esc_html__('Yoast SEO', 'press-permit-core'),
+                'description' => esc_html__('Exclude restricted posts from XML sitemaps to maintain proper SEO indexing.', 'press-permit-core'),
+                'icon_class' => 'yoast',
+                'categories' => ['all', 'seo'],
+                'features' => [
+                    esc_html__('Sitemap filtering for restricted content', 'press-permit-core'),
+                    esc_html__('Search engine visibility controls', 'press-permit-core'),
+                    esc_html__('Permission-aware XML sitemaps', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => defined('WPSEO_VERSION'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
+            ],
+            [
+                'id' => 'yootheme_compatibility',
+                'title' => esc_html__('YooTheme', 'press-permit-core'),
+                'description' => esc_html__('Compatibility with YooTheme builder and term permissions.', 'press-permit-core'),
+                'icon_class' => 'yootheme',
+                'categories' => ['all', 'builder'],
+                'features' => [
+                    esc_html__('Builder interface compatibility', 'press-permit-core'),
+                    esc_html__('Term permission integration', 'press-permit-core'),
+                    esc_html__('Template access controls', 'press-permit-core')
+                ],
+                'enabled' => false,
+                'available' => function_exists('yootheme'),
+                'learn_more_url' => 'https://publishpress.com/knowledge-base/publishpress-permissions-yoast-seo/'
+            ],
+
+            [
+                'id' => 'litespeed_compatibility',
+                'title' => esc_html__('Litespeed Cache', 'press-permit-core'),
+                'description' => esc_html__('.', 'press-permit-core'),
+                'icon_class' => 'litespeed',
+                'categories' => ['all', 'cache'],
+                'features' => [
+                ],
+                'enabled' => false,
+                'available' => defined('LSCWP_V'),
+                'learn_more_url' => '',
+                'free' => true
+            ],
+            [
+                'id' => 'w3tc_compatibility',
+                'title' => esc_html__('W3 Total Cache', 'press-permit-core'),
+                'description' => esc_html__('.', 'press-permit-core'),
+                'icon_class' => 'w3tc',
+                'categories' => ['all', 'cache'],
+                'features' => [
+                ],
+                'enabled' => false,
+                'available' => defined('W3TC_VERSION'),
+                'learn_more_url' => '',
+                'free' => true
+            ],
+            [
+                'id' => 'wp_optimize',
+                'title' => esc_html__('WP Optimize', 'press-permit-core'),
+                'description' => esc_html__('.', 'press-permit-core'),
+                'icon_class' => 'wp-optimize',
+                'categories' => ['all', 'cache'],
+                'features' => [
+                ],
+                'enabled' => false,
+                'available' => defined('WPO_VERSION'),
+                'learn_more_url' => '',
+                'free' => true
+            ],
+            [
+                'id' => 'wp_super_cache',
+                'title' => esc_html__('WP Super Cache', 'press-permit-core'),
+                'description' => esc_html__('.', 'press-permit-core'),
+                'icon_class' => 'wp-super-cache',
+                'categories' => ['all', 'cache'],
+                'features' => [
+                ],
+                'enabled' => false,
+                'available' => defined('WPSC_VERSION_ID'),
+                'learn_more_url' => '',
+                'free' => true
+            ],
+            [
+                'id' => 'wp_fastest_cache',
+                'title' => esc_html__('WP Fastest Cache', 'press-permit-core'),
+                'description' => esc_html__('.', 'press-permit-core'),
+                'icon_class' => 'wp-fastest-cache',
+                'categories' => ['all', 'cache'],
+                'features' => [
+                ],
+                'enabled' => false,
+                'available' => class_exists('WpFastestCache'),
+                'learn_more_url' => '',
+                'free' => true
+            ],
+            [
+                'id' => 'rank_math',
+                'title' => esc_html__('Rank Math SEO', 'press-permit-core'),
+                'description' => esc_html__('.', 'press-permit-core'),
+                'icon_class' => 'rank-math',
+                'categories' => ['all', 'seo'],
+                'features' => [
+                ],
+                'enabled' => false,
+                'available' => class_exists('RankMath'),
+                'learn_more_url' => '',
+                'free' => true
+            ],
+            [
+                'id' => 'all_in_one_seo',
+                'title' => esc_html__('All in One SEO', 'press-permit-core'),
+                'description' => esc_html__('.', 'press-permit-core'),
+                'icon_class' => 'all-in-one-seo',
+                'categories' => ['all', 'seo'],
+                'features' => [
+                ],
+                'enabled' => false,
+                'available' => defined('AIOSEO_FILE'),
+                'learn_more_url' => '',
+                'free' => true
+            ],
+            [
+                'id' => 'capabilities',
+                'title' => esc_html__('PublishPress Capabilities', 'press-permit-core'),
+                'description' => esc_html__('.', 'press-permit-core'),
+                'icon_class' => 'capabilities',
+                'categories' => ['all', 'admin'],
+                'features' => [
+                ],
+                'enabled' => false,
+                'available' => defined('PUBLISHPRESS_CAPS_VERSION'),
+                'learn_more_url' => 'https://publishpress.com/capabilities/',
+                'free' => true
+            ],
+            [
+                'id' => 'authors',
+                'title' => esc_html__('PublishPress Authors', 'press-permit-core'),
+                'description' => esc_html__('.', 'press-permit-core'),
+                'icon_class' => 'authors',
+                'categories' => ['all', 'workflow'],
+                'features' => [
+                ],
+                'enabled' => false,
+                'available' => defined('PUBLISHPRESS_MULTIPLE_AUTHORS_VERSION'),
+                'learn_more_url' => 'https://publishpress.com/authors/',
+                'free' => true
+            ],
+            [
+                'id' => 'revisions',
+                'title' => esc_html__('PublishPress Revisions', 'press-permit-core'),
+                'description' => esc_html__('.', 'press-permit-core'),
+                'icon_class' => 'revisions',
+                'categories' => ['all', 'workflow'],
+                'features' => [
+                ],
+                'enabled' => false,
+                'available' => defined('PUBLISHPRESS_REVISONS_VERSION'),
+                'learn_more_url' => 'https://publishpress.com/revisions/',
+                'free' => true
+            ],
+            [
+                'id' => 'planner',
+                'title' => esc_html__('PublishPress Planner', 'press-permit-core'),
+                'description' => esc_html__('.', 'press-permit-core'),
+                'icon_class' => 'planner',
+                'categories' => ['all', 'workflow'],
+                'features' => [
+                ],
+                'enabled' => false,
+                'available' => defined('PUBLISHPRESS_VERSION'),
+                'learn_more_url' => 'https://publishpress.com/planner/',
+                'free' => true
+            ],
+            [
+                'id' => 'checklists',
+                'title' => esc_html__('PublishPress Checklists', 'press-permit-core'),
+                'description' => esc_html__('.', 'press-permit-core'),
+                'icon_class' => 'checklists',
+                'categories' => ['all', 'workflow'],
+                'features' => [
+                ],
+                'enabled' => false,
+                'available' => defined('PUBLISHPRESS_CHECKLISTS_VERSION'),
+                'learn_more_url' => 'https://publishpress.com/checklists/',
+                'free' => true
+            ],
+            [
+                'id' => 'taxopress',
+                'title' => esc_html__('Taxopress', 'press-permit-core'),
+                'description' => esc_html__('.', 'press-permit-core'),
+                'icon_class' => 'taxopress',
+                'categories' => ['all', 'admin'],
+                'features' => [
+                ],
+                'enabled' => false,
+                'available' => defined('STAGS_VERSION'),
+                'learn_more_url' => 'https://taxopress.com/',
+                'free' => true
+            ],
+
+        ];
+
+        foreach (array_keys($integrations) as $i) {
+            if (!isset($integrations[$i]['free'])) {
+                $integrations[$i]['free'] = false;
+            }
+        }
+
+        usort($integrations, function($a, $b) {
+            return $a['title'] <=> $b['title'];
+        });
+
+        return $integrations;
+    }
 }
