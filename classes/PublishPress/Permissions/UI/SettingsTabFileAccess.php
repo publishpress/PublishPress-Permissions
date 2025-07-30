@@ -82,19 +82,20 @@ class SettingsTabFileAccess
 
     public function optionTabBadges($badges)
     {
-        // Add PRO badge to File Access tab using the helper method
-        // This is configurable - you can customize:
-        // - Use helper: self::createTabBadge('pro') or self::createTabBadge('new')
-        // - Custom text: self::createTabBadge('pro', 'CUSTOM')
-        // - Custom color: self::createTabBadge('pro', '', '#FF0000')
-        // - Manual: ['text' => 'TEXT', 'bg_color' => '#COLOR', 'class' => 'css-class']
-        //
-        // Examples:
-        // $badges['my_tab'] = self::createTabBadge('new');           // Green NEW badge
-        // $badges['my_tab'] = self::createTabBadge('beta');          // Orange BETA badge  
-        // $badges['my_tab'] = self::createTabBadge('hot');           // Red HOT badge
-        // $badges['my_tab'] = self::createTabBadge('pro', 'PLUS');   // Purple PLUS badge
-        // $badges['my_tab'] = self::createTabBadge('new', '', '#FF0000'); // Red NEW badge
+        /**
+         * Add PRO badge to File Access tab using the helper method
+         * This is configurable - you can customize:
+         * - Use helper: self::createTabBadge('pro') or self::createTabBadge('new')
+         * - Custom text: self::createTabBadge('pro', 'CUSTOM')
+         * - Custom color: self::createTabBadge('pro', '', '#FF0000')
+         * - Manual: ['text' => 'TEXT', 'bg_color' => '#COLOR', 'class' => 'css-class']
+         * Examples:
+         * $badges['my_tab'] = self::createTabBadge('new');           // Green NEW badge
+         * $badges['my_tab'] = self::createTabBadge('beta');          // Orange BETA badge
+         * $badges['my_tab'] = self::createTabBadge('hot');           // Red HOT badge
+         * $badges['my_tab'] = self::createTabBadge('pro', 'PLUS');   // Purple PLUS badge
+         * $badges['my_tab'] = self::createTabBadge('new', '', '#FF0000'); // Red NEW badge
+         */
         
         $badges['file_access'] = self::createTabBadge('pro');
         return $badges;

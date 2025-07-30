@@ -100,7 +100,7 @@ class SettingsTabIntegrations
                                     <p><?php esc_html_e('Upgrade to the Pro version to get access to all these powerful integrations and more.', 'press-permit-core'); ?></p>
                                 </div>
                                 <div class="pp-pro-badge-banner no-bg">
-                                    <a href="<?php echo self::UPGRADE_PRO_URL; ?>" target="_blank" class="pp-upgrade-btn">
+                                    <a href="<?php echo esc_url(self::UPGRADE_PRO_URL); ?>" target="_blank" class="pp-upgrade-btn">
                                         <?php esc_html_e('Upgrade to Pro', 'press-permit-core'); ?>
                                     </a>
                                 </div>
@@ -240,7 +240,7 @@ class SettingsTabIntegrations
                                 action: 'pp_toggle_integration',
                                 integration_id: integrationId,
                                 enabled: enabled ? 1 : 0,
-                                nonce: '<?php echo wp_create_nonce('pp_toggle_integration'); ?>'
+                                nonce: '<?php echo esc_js(wp_create_nonce('pp_toggle_integration')); ?>'
                             },
                             success: function (response) {
                                 if (response.success) {
@@ -317,7 +317,7 @@ class SettingsTabIntegrations
             <div class="pp-integration-content">
                 <h3 class="pp-integration-title">
                     <?php echo esc_html($title); ?>
-                    <?php echo $category_tag; ?>
+                    <?php echo esc_html($category_tag); ?>
                     <?php if (!$is_pro): ?>
                         <span class="pp-pro-badge">Pro</span>
                     <?php else: ?>

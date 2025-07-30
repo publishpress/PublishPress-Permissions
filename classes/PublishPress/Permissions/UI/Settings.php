@@ -145,7 +145,7 @@ class Settings
                     }
 
                     echo "<li class='" . esc_attr($class) . "'><a href='#pp-" . esc_attr($tab) . "'>"
-                        . esc_html($ui->tab_captions[$tab]) . $badge_html . '</a></li>';
+                        . esc_html($ui->tab_captions[$tab]) . wp_kses_post($badge_html) . '</a></li>';
                 }
             }
             echo '</ul>';
