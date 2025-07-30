@@ -317,7 +317,7 @@ class SettingsTabIntegrations
             <div class="pp-integration-content">
                 <h3 class="pp-integration-title">
                     <?php echo esc_html($title); ?>
-                    <?php echo esc_html($category_tag); ?>
+                    <?php echo wp_kses_post($category_tag); ?>
                     <?php if (!$is_pro): ?>
                         <span class="pp-pro-badge">Pro</span>
                     <?php else: ?>
