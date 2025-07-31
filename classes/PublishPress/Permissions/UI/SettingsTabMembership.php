@@ -83,20 +83,19 @@ class SettingsTabMembership
 
     public function optionTabBadges($badges)
     {
-        /**
-         * Add PRO badge to Membership tab using the helper method
-         * This is configurable - you can customize:
-         * - Use helper: SettingsTabFileAccess::createTabBadge('pro') or SettingsTabFileAccess::createTabBadge('new')
-         * - Custom text: SettingsTabFileAccess::createTabBadge('pro', 'CUSTOM')
-         * - Custom color: SettingsTabFileAccess::createTabBadge('pro', '', '#FF0000')
-         * - Manual: ['text' => 'TEXT', 'bg_color' => '#COLOR', 'class' => 'css-class']
-         * Examples:
-         * $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('new');           // Green NEW badge
-         * $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('beta');          // Orange BETA badge  
-         * $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('hot');           // Red HOT badge
-         * $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('pro', 'PLUS');   // Purple PLUS badge
-         * $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('new', '', '#FF0000'); // Red NEW badge
-         */
+        // Add PRO badge to Membership tab using the helper method
+        // This is configurable - you can customize:
+        // - Use helper: SettingsTabFileAccess::createTabBadge('pro') or SettingsTabFileAccess::createTabBadge('new')
+        // - Custom text: SettingsTabFileAccess::createTabBadge('pro', 'CUSTOM')
+        // - Custom color: SettingsTabFileAccess::createTabBadge('pro', '', '#FF0000')
+        // - Manual: ['text' => 'TEXT', 'bg_color' => '#COLOR', 'class' => 'css-class']
+        //
+        // Examples:
+        // $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('new');           // Green NEW badge
+        // $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('beta');          // Orange BETA badge  
+        // $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('hot');           // Red HOT badge
+        // $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('pro', 'PLUS');   // Purple PLUS badge
+        // $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('new', '', '#FF0000'); // Red NEW badge
         
         $badges['membership'] = SettingsTabFileAccess::createTabBadge('pro');
         return $badges;
@@ -165,17 +164,17 @@ class SettingsTabMembership
                     <div class="pp-integration-icon circles">👥</div>
                     <div class="pp-integration-content">
                         <h3 class="pp-integration-title">
-                            <?php esc_html_e('Circles', 'press-permit-core'); ?> <span class="pp-pro-badge"><?php esc_html_e('Pro', 'press-permit-core'); ?></span>
+                            <?php esc_html_e('Access Circles', 'press-permit-core'); ?> <span class="pp-badge pp-pro-badge"><?php esc_html_e('Pro', 'press-permit-core'); ?></span>
                         </h3>
                         <p class="pp-integration-description">
-                            <?php esc_html_e('Limit access based on post author relationships with advanced circles functionality for granular permission control.', 'press-permit-core'); ?>
+                            <?php esc_html_e('Limit access based on post authorship and group membership for more granular permissions control.', 'press-permit-core'); ?>
                         </p>
 
                         <div class="pp-integration-features">
                             <ul>
-                                <li><?php esc_html_e('Post author-based access control', 'press-permit-core'); ?></li>
-                                <li><?php esc_html_e('User circle creation and management', 'press-permit-core'); ?></li>
-                                <li><?php esc_html_e('Hierarchical permission inheritance', 'press-permit-core'); ?></li>
+                                <li><?php esc_html_e('Modify viewing or editing access', 'press-permit-core'); ?></li>
+                                <li><?php esc_html_e('Use any Role or Permission Group', 'press-permit-core'); ?></li>
+                                <li><?php esc_html_e('Circle member\'s capabilities apply only for other member\'s posts', 'press-permit-core'); ?></li>
                             </ul>
                         </div>
                     </div>
@@ -183,7 +182,7 @@ class SettingsTabMembership
                     <div class="pp-upgrade-overlay">
                         <h4><?php esc_html_e('Premium Feature', 'press-permit-core'); ?></h4>
                         <p>
-                            <?php esc_html_e('Upgrade to Pro to unlock circles-based access control for author relationships', 'press-permit-core'); ?>
+                            <?php esc_html_e('Upgrade to Pro to limit access based on post author relationships', 'press-permit-core'); ?>
                         </p>
                         <div class="pp-upgrade-buttons">
                           <a href="https://publishpress.com/links/permissions-membership" target="_blank" class="pp-upgrade-btn-primary">
@@ -198,18 +197,20 @@ class SettingsTabMembership
 
                 <!-- Membership Card -->
                 <div class="pp-integration-card pp-disabled" data-categories="all">
-                    <div class="pp-integration-icon membership">⏰</div>
+                    <div class="pp-integration-icon membership">&#9200;</div>
                     <div class="pp-integration-content">
                         <h3 class="pp-integration-title">
-                            <?php esc_html_e('Time-limited Membership', 'press-permit-core'); ?> <span class="pp-pro-badge"><?php esc_html_e('Pro', 'press-permit-core'); ?></span>
+                            <?php esc_html_e('Time-limited Membership', 'press-permit-core'); ?> <span class="pp-badge pp-pro-badge"><?php esc_html_e('Pro', 'press-permit-core'); ?></span>
                         </h3>
                         <p class="pp-integration-description">
-                            <?php esc_html_e('Create time-limited permission group memberships with automatic expiration and renewal capabilities.', 'press-permit-core'); ?>
+                            <?php esc_html_e('Create time-limited permission group memberships with automatic expiration.', 'press-permit-core'); ?>
                         </p>
 
                         <div class="pp-integration-features">
                             <ul>
-                                <li><?php esc_html_e('Set membership expiration dates', 'press-permit-core'); ?></li>
+                                <li><?php esc_html_e('Delay membership start date', 'press-permit-core'); ?></li>
+                                <li><?php esc_html_e('Set membership expiration date', 'press-permit-core'); ?></li>
+                                <li><?php esc_html_e('Group membership grants access to content of your choice', 'press-permit-core'); ?></li>
                             </ul>
                         </div>
                     </div>
@@ -217,7 +218,7 @@ class SettingsTabMembership
                     <div class="pp-upgrade-overlay">
                         <h4><?php esc_html_e('Premium Feature', 'press-permit-core'); ?></h4>
                         <p>
-                            <?php esc_html_e('Get advanced time-limited membership features with automatic expiration and notifications', 'press-permit-core'); ?>
+                            <?php esc_html_e('Go Pro for time-limited group membership', 'press-permit-core'); ?>
                         </p>
                         <div class="pp-upgrade-buttons">
                           <a href="https://publishpress.com/links/permissions-membership" target="_blank" class="pp-upgrade-btn-primary">
