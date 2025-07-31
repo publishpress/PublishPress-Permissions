@@ -15,6 +15,9 @@ class SettingsAdmin
     var $all_otype_options;
     var $display_hints;
 
+    var $defined_integrations = [];
+	var $available_integrations = [];
+
     public static function instance()
     {
         if (!isset(self::$instance)) {
@@ -26,7 +29,19 @@ class SettingsAdmin
 
     private function __construct()
     {
+        $this->loadIntegrations();
+    }
 
+    private function loadIntegrations() {
+        $this->defined_integrations = \PublishPress\Permissions::getDefinedIntegrations();
+        
+        $this->available_integrations = [];
+    
+        foreach ($this->defined_integrations as $i => $integration) {
+            if ($this->defined_integrations[$i]['available']) {
+                $this->available_integrations[$integration['id']] = true;
+            }
+        }
     }
 
     public static function echoStr($string_id) {
