@@ -50,7 +50,7 @@
   overflow: hidden;
 }
 [data-toggle="tooltip"] .tooltip-text i::after {
-  content: "";
+  content: '';
   position: absolute;
   width: 12px;
   height: 12px;
@@ -618,7 +618,7 @@ div.pp-user-permissions-help p {
 .btn-gray:hover {
   background: #495057;
 }
-.pp-ads-right-sidebar > :first-child {
+.pp-ads-right-sidebar > div:first-child {
   display: none;
 }
 body.permissions_page_presspermit-settings .nav-tab span.pp-integrations {
@@ -802,6 +802,10 @@ body.permissions_page_presspermit-settings .nav-tab span.pp-integrations-active 
 .pp-integration-icon::before {
   font-size: 24px;
   color: #68589b;
+}
+.pp-integration-icon img.emoji {
+  width: 22px !important;
+  height: 22px !important;
 }
 .pp-integration-icon.acf::before {
   content: "";
@@ -1225,7 +1229,7 @@ body.permissions_page_presspermit-settings .nav-tab span.pp-integrations-active 
   margin-bottom: 0.3rem;
 }
 .pp-integration-features li:before {
-  content: "\2713";
+  content: '\2713';
   position: absolute;
   left: 0;
   color: #68589b;
@@ -1326,7 +1330,7 @@ input:disabled + .pp-slider {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 .pp-upgrade-btn-primary {
-  background: #feb123;
+  background: var(--cta-color);
   color: #000000 !important;
   padding: 10px 16px;
   margin-top: 4px;
@@ -1365,7 +1369,7 @@ input:disabled + .pp-slider {
   line-height: 1.6;
 }
 .pp-integrations-upgrade-cta .pp-upgrade-btn {
-  background: #feb123;
+  background: var(--cta-color);
   color: #000000 !important;
   font-weight: 600;
   text-decoration: none;
@@ -1547,7 +1551,7 @@ input:disabled + .pp-slider {
   font-size: 12px;
   transition: all 0.2s ease;
   display: inline-block;
-  color: white !important;
+  color: black !important;
 }
 .pp-file-access-promo .pp-upgrade-btn-primary:hover {
   transform: translateY(-1px) !important;
@@ -1623,9 +1627,10 @@ input:disabled + .pp-slider {
 .pp-file-access-promo .pp-cta-section .pp-cta-buttons .button-primary {
   background: var(--cta-color);
   border-color: var(--cta-color);
+  color: black;
   padding: 8px 24px;
   border-radius: 8px;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.3s ease;
 }
 .pp-file-access-promo .pp-cta-section .pp-cta-buttons .button-primary:hover {
