@@ -285,7 +285,7 @@ class SettingsTabFileAccess
                 </p>
                 <div class="pp-cta-buttons">
                     <a href="https://publishpress.com/links/permissions-file-access" 
-                       class="pp-upgrade-btn-primary" 
+                       class="button-primary button-large" 
                        target="_blank">
                         <?php esc_html_e('Upgrade to Pro', 'press-permit-core'); ?>
                     </a>
