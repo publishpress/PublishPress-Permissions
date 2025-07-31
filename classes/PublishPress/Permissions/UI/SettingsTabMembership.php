@@ -83,19 +83,21 @@ class SettingsTabMembership
 
     public function optionTabBadges($badges)
     {
-        // Add PRO badge to Membership tab using the helper method
-        // This is configurable - you can customize:
-        // - Use helper: SettingsTabFileAccess::createTabBadge('pro') or SettingsTabFileAccess::createTabBadge('new')
-        // - Custom text: SettingsTabFileAccess::createTabBadge('pro', 'CUSTOM')
-        // - Custom color: SettingsTabFileAccess::createTabBadge('pro', '', '#FF0000')
-        // - Manual: ['text' => 'TEXT', 'bg_color' => '#COLOR', 'class' => 'css-class']
-        //
-        // Examples:
-        // $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('new');           // Green NEW badge
-        // $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('beta');          // Orange BETA badge  
-        // $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('hot');           // Red HOT badge
-        // $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('pro', 'PLUS');   // Purple PLUS badge
-        // $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('new', '', '#FF0000'); // Red NEW badge
+        /**
+         * Add PRO badge to Membership tab using the helper method
+         * This is configurable - you can customize:
+         * - Use helper: SettingsTabFileAccess::createTabBadge('pro') or SettingsTabFileAccess::createTabBadge('new')
+         * - Custom text: SettingsTabFileAccess::createTabBadge('pro', 'CUSTOM')
+         * - Custom color: SettingsTabFileAccess::createTabBadge('pro', '', '#FF0000')
+         * - Manual: ['text' => 'TEXT', 'bg_color' => '#COLOR', 'class' => 'css-class']
+         * 
+         * Examples:
+         * $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('new');           // Green NEW badge
+         * $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('beta');          // Orange BETA badge  
+         * $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('hot');           // Red HOT badge
+         * $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('pro', 'PLUS');   // Purple PLUS badge
+         * $badges['my_tab'] = SettingsTabFileAccess::createTabBadge('new', '', '#FF0000'); // Red NEW badge
+         */
         
         $badges['membership'] = SettingsTabFileAccess::createTabBadge('pro');
         return $badges;
