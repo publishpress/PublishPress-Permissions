@@ -104,7 +104,7 @@ class SettingsTabIntegrations
                                     <p><?php esc_html_e('Upgrade to the Pro version for optimal compatibility and prompt, professional support.', 'press-permit-core'); ?></p>
                                 </div>
                                 <div class="pp-pro-badge-banner no-bg">
-                                    <a href="<?php echo self::UPGRADE_PRO_URL; ?>" target="_blank" class="pp-upgrade-btn">
+                                    <a href="<?php echo esc_url(self::UPGRADE_PRO_URL); ?>" target="_blank" class="pp-upgrade-btn">
                                         <?php esc_html_e('Upgrade to Pro', 'press-permit-core'); ?>
                                     </a>
                                 </div>
