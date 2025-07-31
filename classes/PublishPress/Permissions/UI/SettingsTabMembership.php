@@ -244,7 +244,7 @@ class SettingsTabMembership
                 </p>
                 <div class="pp-cta-buttons">
                     <a href="https://publishpress.com/links/permissions-membership" 
-                       class="button button-primary button-large" 
+                       class="pp-upgrade-btn-primary" 
                        target="_blank">
                         <?php esc_html_e('Upgrade to Pro', 'press-permit-core'); ?>
                     </a>
