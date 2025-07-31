@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the PublishPress Permissions plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: PublishPress Permissions 4.4.0\n"
+"Project-Id-Version: PublishPress Permissions 4.4.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-08T18:39:34+00:00\n"
+"POT-Creation-Date: 2025-07-31T08:22:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: press-permit-core\n"
@@ -47,11 +47,372 @@ msgstr ""
 msgid "Edit Tag for Posts"
 msgstr ""
 
+#: classes/PublishPress/Permissions.php:1256
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:43
+msgid "Advanced Custom Fields"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1257
+msgid "Control front-end access to Field Groups with advanced permission management."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1261
+msgid "Control access to Field Groups"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1262
+msgid "Front-end visibility restrictions"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1263
+msgid "Integration with permission groups"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1271
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:45
+msgid "Beaver Builder"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1272
+msgid "Compatibility with Edit Permissions in Beaver Builder."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1276
+msgid "Beaver editor integration"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1277
+#: classes/PublishPress/Permissions.php:1336
+msgid "Widget-level permission controls"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1278
+#: classes/PublishPress/Permissions.php:1337
+msgid "Template access restrictions"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1286
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:44
+msgid "bbPress Forums"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1287
+msgid "Forum-specific permissions for bbPress with detailed control over forum access and participation."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1291
+msgid "Forum-specific permissions"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1292
+msgid "Topic creation restrictions"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1293
+msgid "Forum access controls"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1301
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:47
+msgid "BuddyPress"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1302
+msgid "Assign post and term permissions to BuddyPress groups for enhanced content control."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1306
+msgid "Assign post permissions to BuddyPress groups"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1307
+msgid "Assign term permissions to BuddyPress groups"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1308
+msgid "Group-based content permissions"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1316
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:48
+msgid "CMS Tree View"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1317
+msgid "Compatibility with Edit Permissions in CMS Tree View."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1321
+msgid "Permission-aware tree view"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1322
+msgid "Hierarchical content controls"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1330
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:49
+msgid "Elementor"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1331
+msgid "Compatibility with Edit Permissions in Elementor."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1335
+msgid "Elementor editor integration"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1345
+msgid "The Events Calendar"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1346
+msgid "Apply permission controls to events and event-related content."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1350
+msgid "Event post permissions"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1351
+msgid "Event taxonomy controls"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1359
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:50
+msgid "Nested Pages"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1360
+msgid "Compatibility with Edit Permissions in Nested Pages."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1364
+msgid "Permission-aware nested view"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1365
+msgid "Quick edit integration"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1373
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:51
+msgid "PublishPress Statuses"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1374
+msgid "Compatibility with PublishPress Statuses plugin."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1378
+msgid "Custom status permissions"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1379
+msgid "Workflow-specific access controls"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1380
+msgid "Status-based editing capabilities"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1388
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:52
+msgid "Relevanssi"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1389
+msgid "Filter search results based on View Permissions for secure content discovery."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1393
+msgid "Search result filtering"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1394
+msgid "Permission-aware indexing"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1395
+msgid "Secure content discovery"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1403
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:53
+msgid "SearchWP"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1404
+msgid "Compatibility with SearchWP term filtering for advanced search capabilities."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1408
+msgid "Permission-aware search results"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1409
+msgid "Term-based filtering"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1410
+msgid "Advanced search controls"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1418
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:54
+msgid "WooCommerce"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1419
+msgid "Apply permission controls to WooCommerce products and product categories."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1423
+msgid "Product permissions"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1424
+msgid "Product category controls"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1432
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:55
+msgid "WPML"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1433
+msgid "Multilingual support with permission synchronization across content translations."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1437
+msgid "Permission synchronization across translations"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1438
+msgid "Language-specific content access"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1439
+msgid "Multilingual permission management"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1447
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:56
+msgid "Yoast SEO"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1448
+msgid "Exclude restricted posts from XML sitemaps to maintain proper SEO indexing."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1452
+msgid "Sitemap filtering for restricted content"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1453
+msgid "Search engine visibility controls"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1454
+msgid "Permission-aware XML sitemaps"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1462
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:57
+msgid "YooTheme"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1463
+msgid "Compatibility with YooTheme builder and term permissions."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1467
+msgid "Builder interface compatibility"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1468
+msgid "Term permission integration"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1469
+msgid "Template access controls"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1478
+msgid "Litespeed Cache"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1479
+#: classes/PublishPress/Permissions.php:1492
+#: classes/PublishPress/Permissions.php:1505
+#: classes/PublishPress/Permissions.php:1518
+#: classes/PublishPress/Permissions.php:1531
+#: classes/PublishPress/Permissions.php:1544
+#: classes/PublishPress/Permissions.php:1557
+#: classes/PublishPress/Permissions.php:1570
+#: classes/PublishPress/Permissions.php:1583
+#: classes/PublishPress/Permissions.php:1596
+#: classes/PublishPress/Permissions.php:1609
+#: classes/PublishPress/Permissions.php:1622
+#: classes/PublishPress/Permissions.php:1635
+msgid "."
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1491
+msgid "W3 Total Cache"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1504
+msgid "WP Optimize"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1517
+msgid "WP Super Cache"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1530
+msgid "WP Fastest Cache"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1543
+msgid "Rank Math SEO"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1556
+msgid "All in One SEO"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1569
+msgid "PublishPress Capabilities"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1582
+msgid "PublishPress Authors"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1595
+msgid "PublishPress Revisions"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1608
+msgid "PublishPress Planner"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1621
+msgid "PublishPress Checklists"
+msgstr ""
+
+#: classes/PublishPress/Permissions.php:1634
+msgid "Taxopress"
+msgstr ""
+
 #: classes/PublishPress/Permissions/Admin.php:100
 msgid "Viewing"
 msgstr ""
 
 #: classes/PublishPress/Permissions/Admin.php:165
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:169
 msgid "Access Circles"
 msgstr ""
 
@@ -75,10 +436,14 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/Admin.php:170
 #: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:34
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:79
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:108
 msgid "File Access"
 msgstr ""
 
 #: classes/PublishPress/Permissions/Admin.php:171
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:80
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:109
 msgid "Membership"
 msgstr ""
 
@@ -483,7 +848,7 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:102
 #: classes/PublishPress/Permissions/UI/GroupNew.php:50
-msgid "Back to groups list"
+msgid "Back to permissions list"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:128
@@ -496,7 +861,8 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:130
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:132
-msgid "Edit Permission Group"
+#: classes/PublishPress/Permissions/UI/Dashboard/DashboardFilters.php:282
+msgid "Edit Permissions"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:134
@@ -535,7 +901,7 @@ msgid "Description:"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:250
-msgid "Update Group"
+msgid "Update Permissions"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/AgentPermissions.php:371
@@ -1189,10 +1555,6 @@ msgstr ""
 msgid "Add New Permission Group"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Dashboard/DashboardFilters.php:282
-msgid "Edit Permissions"
-msgstr ""
-
 #: classes/PublishPress/Permissions/UI/Dashboard/DashboardFilters.php:286
 msgid "Edit"
 msgstr ""
@@ -1287,7 +1649,7 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/UI/Dashboard/PostEdit.php:77
 #: classes/PublishPress/Permissions/UI/Dashboard/TermEdit.php:326
-#: classes/PublishPress/Permissions/UI/Settings.php:85
+#: classes/PublishPress/Permissions/UI/Settings.php:97
 msgid "Permissions Settings"
 msgstr ""
 
@@ -1550,6 +1912,7 @@ msgid "%1$sGroup Type:%2$s %3$s"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/Groups.php:256
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:118
 msgid "All"
 msgstr ""
 
@@ -1582,15 +1945,6 @@ msgstr ""
 msgid "No Custom Group"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Groups.php:389
-msgid "To assign roles or permissions to BuddyPress groups, activate the Compatibility Pack feature"
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/Groups.php:392
-#, php-format
-msgid "To assign roles or permissions to BuddyPress groups, %1$supgrade to Permissions Pro%2$s and enable the Compatibility Pack feature."
-msgstr ""
-
 #: classes/PublishPress/Permissions/UI/GroupsListTable.php:115
 msgid "No matching groups were found."
 msgstr ""
@@ -1620,6 +1974,8 @@ msgid "Extra Roles"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/GroupsListTable.php:334
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:145
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:245
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/DashboardFilters.php:191
 msgid "Workflow"
 msgstr ""
@@ -1667,24 +2023,11 @@ msgstr ""
 msgid "To block direct URL access to attachments of unreadable posts, %1$supgrade to Permissions Pro%2$s and enable the File Access feature."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/HintsPostEdit.php:16
-msgid "define custom privacy"
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/HintsPostEdit.php:20
-msgid "To define custom privacy statuses, activate the Status Control feature."
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/HintsPostEdit.php:23
-#, php-format
-msgid "To define custom privacy statuses, %1$supgrade to Permissions Pro%2$s and enable the Status Control feature."
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/HintsPostEdit.php:48
+#: classes/PublishPress/Permissions/UI/HintsPostEdit.php:14
 msgid "Customize"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/HintsPostEdit.php:52
+#: classes/PublishPress/Permissions/UI/HintsPostEdit.php:18
 #, php-format
 msgid "To customize publication workflow, %1$sinstall PublishPress Statuses%2$s."
 msgstr ""
@@ -1734,6 +2077,10 @@ msgid "If you need help or have a new feature request, let us know."
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/PromoBanner.php:225
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:290
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:108
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:314
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:249
 #: includes/CoreAdmin.php:120
 #: includes/CoreAdmin.php:121
 #: includes/promo/posts-teaser-promo.php:22
@@ -1755,23 +2102,23 @@ msgstr ""
 msgid "View Knowledge Base"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Settings.php:132
+#: classes/PublishPress/Permissions/UI/Settings.php:166
 msgid "All settings were updated."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Settings.php:140
+#: classes/PublishPress/Permissions/UI/Settings.php:174
 msgid "All settings were reset to defaults."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Settings.php:163
+#: classes/PublishPress/Permissions/UI/Settings.php:197
 msgid "Save Changes"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Settings.php:184
+#: classes/PublishPress/Permissions/UI/Settings.php:218
 msgid "Upgrade to Permissions Pro"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/Settings.php:185
+#: classes/PublishPress/Permissions/UI/Settings.php:219
 msgid "Need Permissions Support?"
 msgstr ""
 
@@ -2109,6 +2456,305 @@ msgstr ""
 msgid "To enforce capability requirements for post creation, install %3$sPublishPress Capabilities%4$s."
 msgstr ""
 
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:119
+msgid "Make Unattached Files Private"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:120
+msgid "Small Thumbnails Unfiltered"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:121
+msgid "Compatibility Mode: Apply extra redirect"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:167
+msgid "Media File Protection"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:172
+msgid "Control direct access to Media files"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:176
+msgid "Automatic .htaccess file management"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:180
+msgid "File Access key with on-demand regeneration"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:186
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:224
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:262
+msgid "Pro Feature"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:188
+msgid "Upgrade to Pro to unlock advanced file protection capabilities"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:192
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:230
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:268
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:191
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:227
+#: includes/CoreAdmin.php:214
+msgid "Upgrade Now"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:195
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:233
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:271
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:310
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:324
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:334
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:344
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:194
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:230
+#: includes/CoreAdmin.php:210
+msgid "Learn More"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:205
+msgid "Privacy & Performance"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:210
+msgid "Limit attachment access by post permissions"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:214
+msgid "Make unattached files private"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:218
+msgid "Directly control specific files"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:226
+msgid "Optimize your site with advanced privacy and performance controls"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:243
+msgid "Advanced Integration"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:248
+msgid "Nginx integration support"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:252
+msgid "Process externally uploaded files"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:256
+msgid "Supports network (multisite) installs"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:264
+msgid "Get advanced integration features with Nginx, FTP, and more"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:281
+msgid "Ready to secure your files?"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:284
+msgid "Upgrade to Pro and get advanced file access control with all these features and more."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:295
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:254
+msgid "Learn more →"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:25
+msgid "Integrations"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:32
+msgid "Compatibility Packs"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:46
+msgid "Breakdance"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:103
+msgid "Unlock Premium Integrations"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:104
+msgid "Upgrade to the Pro version for optimal compatibility and prompt, professional support."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:121
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:229
+msgid "Admin"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:124
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:227
+msgid "Builder"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:127
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:237
+msgid "Cache"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:130
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:243
+msgid "Community"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:133
+msgid "E-Commerce"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:136
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:231
+msgid "Events"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:139
+msgid "Multilingual"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:142
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:233
+msgid "SEO"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:235
+msgid "Fields"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:239
+msgid "Commerce"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:241
+msgid "Multilang"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:261
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:169
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:205
+msgid "Pro"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:266
+msgid "Supported"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:269
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:321
+msgid "Active Plugin"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:280
+msgid "Supported by PublishPress Revisions"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:282
+msgid "Supported by Revisions Pro"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:294
+msgid "Integration Active"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:296
+msgid "Integration Missing"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:304
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:185
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:221
+#: includes/CoreAdmin.php:204
+msgid "Premium Feature"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:305
+#, php-format
+msgid "Unlock %s integration to enhance your revisions solution."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:321
+msgid "Active Plugin Integration"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:331
+msgid "Supported Plugin Integration"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:341
+msgid "Supported Plugin"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:120
+msgid "Enable Circles"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:121
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:205
+msgid "Time-limited Membership"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:122
+msgid "Membership Notifications"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:172
+msgid "Limit access based on post authorship and group membership for more granular permissions control."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:177
+msgid "Modify viewing or editing access"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:178
+msgid "Use any Role or Permission Group"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:179
+msgid "Circle member's capabilities apply only for other member's posts"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:187
+msgid "Upgrade to Pro to limit access based on post author relationships"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:208
+msgid "Create time-limited permission group memberships with automatic expiration."
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:213
+msgid "Delay membership start date"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:214
+msgid "Set membership expiration date"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:215
+msgid "Group membership grants access to content of your choice"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:223
+msgid "Go Pro for time-limited group membership"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:240
+msgid "Ready to enhance your membership features?"
+msgstr ""
+
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:243
+msgid "Upgrade to Pro and get advanced membership management with circles, time-limited memberships, and more."
+msgstr ""
+
 #: classes/PublishPress/Permissions/UI/SettingsTabModules.php:21
 msgid "Features"
 msgstr ""
@@ -2191,8 +2837,13 @@ msgstr ""
 msgid "You're using PublishPress Permissions Free. The Pro version has more features and support. %sUpgrade to Pro%s"
 msgstr ""
 
-#: includes/CoreAdmin.php:161
+#: includes/CoreAdmin.php:163
 msgid "Pro Modules:"
+msgstr ""
+
+#: includes/CoreAdmin.php:205
+#, php-format
+msgid "Unlock %s integration to enhance your permissions system."
 msgstr ""
 
 #: includes/promo/posts-teaser-promo.php:4

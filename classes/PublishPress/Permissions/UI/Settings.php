@@ -18,6 +18,17 @@ class Settings
         require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabCore.php');
         new SettingsTabCore();
 
+        require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabIntegrations.php');
+        new SettingsTabIntegrations();
+
+        if (!presspermit()->isPro()) {
+            require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabMembership.php');
+            new SettingsTabMembership();
+
+            require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabFileAccess.php');
+            new SettingsTabFileAccess();
+        }
+
         require_once(PRESSPERMIT_CLASSPATH . '/UI/SettingsTabAdvanced.php');
         new SettingsTabAdvanced();
 
@@ -52,6 +63,7 @@ class Settings
         $ui->all_options = [];
 
         $ui->tab_captions = apply_filters('presspermit_option_tabs', []);
+        $ui->tab_badges = apply_filters('presspermit_option_tab_badges', []); // Add support for tab badges
         $ui->section_captions = apply_filters('presspermit_section_captions', []);
         $ui->option_captions = apply_filters('presspermit_option_captions', []);
         $ui->form_options = apply_filters('presspermit_option_sections', []);
@@ -115,12 +127,34 @@ class Settings
                 if (!empty($ui->form_options[$tab])) {
                     $class = ($default_tab == $tab) ? $class_selected : $class_unselected;  // todo: return to last tab
 
+                    // Check if this tab has a badge
+                    $badge_html = '';
+                    if (!empty($ui->tab_badges[$tab])) {
+                        $badge = $ui->tab_badges[$tab];
+                        $badge_text = isset($badge['text']) ? esc_html($badge['text']) : 'PRO';
+                        $badge_color = isset($badge['color']) ? esc_attr($badge['color']) : '#8B5CF6';
+                        $badge_bg_color = isset($badge['bg_color']) ? esc_attr($badge['bg_color']) : '#8B5CF6';
+                        $badge_class = isset($badge['class']) ? esc_attr($badge['class']) : '';
+                        
+                        $badge_html = sprintf(
+                            '<span class="pp-tab-badge %s" style="background: %s; color: white; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 10px; margin-left: 6px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);">%s</span>',
+                            $badge_class,
+                            $badge_bg_color,
+                            $badge_text
+                        );
+                    }
+
                     echo "<li class='" . esc_attr($class) . "'><a href='#pp-" . esc_attr($tab) . "'>"
-                        . esc_html($ui->tab_captions[$tab]) . '</a></li>';
+                        . esc_html($ui->tab_captions[$tab]) . wp_kses_post($badge_html) . '</a>';
+                        
+                    if (('integrations' == $tab) && !empty($ui->available_integrations)) :?>
+                            <span class="pp-integrations <?php echo (defined('PRESSPERMIT_PRO_VERSION')) ? 'pp-integrations-active' : 'pp-integrations-missing';?> count-<?php echo intval(count($ui->available_integrations));?>"><span class="plugin-count"><?php echo intval(count($ui->available_integrations));?></span></span>
+                    <?php endif;
+                        
+                    echo '</li>';
                 }
             }
             echo '</ul>';
-
             echo '<div class="pp-group-wrapper" style="display: flex;width: 100%;flex-wrap: wrap;">';
             echo '<div class="pp-options-wrapper" style="flex-basis: calc(99% - 270px);">';
             $table_class = 'form-table pp-form-table pp-options-table';

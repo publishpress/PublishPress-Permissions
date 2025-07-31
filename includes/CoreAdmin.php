@@ -156,46 +156,67 @@ class CoreAdmin
 
         sort($pro_modules);
         if ($pro_modules) :
+            $is_pro = presspermit()->isPro();
+            $learn_more_url = 'https://publishpress.com/links/permissions-integrations/';
             $ext_info = presspermit()->admin()->getModuleInfo();
-        ?>
+            ?>
             <h4 style="margin:20px 0 5px 0"><?php esc_html_e('Pro Modules:', 'press-permit-core'); ?></h4>
-            <table class="pp-extensions">
-                <?php foreach ($pro_modules as $plugin_slug) :
-                    $slug = str_replace('presspermit-', '', $plugin_slug);
-                ?>
-                    <tr>
-                        <th>
+            <div class="pp-features-card">
+                <table class="pp-extensions">
+                    <?php foreach ($pro_modules as $plugin_slug) :
+                        $slug = str_replace('presspermit-', '', $plugin_slug);
+                    ?>
+                        <tr>
+                            <th>
 
-                            <?php $id = "module_deactivated_{$slug}"; ?>
+                                <?php $id = "module_deactivated_{$slug}"; ?>
 
-                            <label for="<?php echo esc_attr($id); ?>">
-                                <input type="checkbox" id="<?php echo esc_attr($id); ?>" disabled
-                                    name="presspermit_deactivated_modules[<?php echo esc_attr($plugin_slug); ?>]"
-                                    value="1" />
+                                <label for="<?php echo esc_attr($id); ?>">
+                                    <input type="checkbox" id="<?php echo esc_attr($id); ?>" disabled
+                                        name="presspermit_deactivated_modules[<?php echo esc_attr($plugin_slug); ?>]"
+                                        value="1" />
 
-                                <?php
-                                if (!empty($ext_info->title[$slug])) echo esc_html($ext_info->title[$slug]);
-                                else echo esc_html($this->prettySlug($slug));
-                                ?>
-                            </label>
-                        </th>
+                                    <?php
+                                    if (!empty($ext_info->title[$slug])) echo esc_html($ext_info->title[$slug]);
+                                    else echo esc_html($this->prettySlug($slug));
+                                    ?>
+                                </label>
+                            </th>
 
-                        <?php if (!empty($ext_info)) : ?>
-                            <td>
-                                <?php if (isset($ext_info->blurb[$slug])) : ?>
-                                    <span class="pp-ext-info"
-                                        title="<?php if (isset($ext_info->descript[$slug])) {
-                                                    echo esc_attr($ext_info->descript[$slug]);
-                                                }
-                                                ?>">
-                                        <?php echo esc_html($ext_info->blurb[$slug]); ?>
-                                    </span>
-                                <?php endif; ?>
-                            </td>
+                            <?php if (!empty($ext_info)) : ?>
+                                <td>
+                                    <?php if (isset($ext_info->blurb[$slug])) : ?>
+                                        <span class="pp-ext-info"
+                                            title="<?php if (isset($ext_info->descript[$slug])) {
+                                                        echo esc_attr($ext_info->descript[$slug]);
+                                                    }
+                                                    ?>">
+                                            <?php echo esc_html($ext_info->blurb[$slug]); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </td>
+                            <?php endif; ?>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+                <?php if (!$is_pro): ?>
+                <div class="pp-upgrade-overlay">
+                    <h4><?php esc_html_e('Premium Feature', 'press-permit-core'); ?></h4>
+                    <p><?php echo esc_html(sprintf(__('Unlock %s integration to enhance your permissions system.', 'press-permit-core'), "All Pro Modules")); ?>
+                    </p>
+                    <div class="pp-upgrade-buttons">
+                        <?php if (!empty($learn_more_url)): ?>
+                            <a href="<?php echo esc_url($learn_more_url); ?>" target="_blank" class="pp-upgrade-btn-secondary">
+                                <?php esc_html_e('Learn More', 'press-permit-core'); ?>
+                            </a>
                         <?php endif; ?>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
+                        <a href="<?php echo esc_url(\PublishPress\Permissions\UI\SettingsTabIntegrations::UPGRADE_PRO_URL); ?>" target="_blank" class="pp-upgrade-btn-primary">
+                            <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
+                        </a>
+                    </div>
+                </div>
+                <?php endif; ?>
+            </div>
 <?php
         endif;
     }

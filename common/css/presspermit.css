@@ -46,7 +46,7 @@
   overflow: hidden;
 }
 [data-toggle="tooltip"] .tooltip-text i::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 12px;
   height: 12px;
@@ -245,6 +245,23 @@ div.pp-custom-privacy-promo {
 div.pp-file-filtering-promo {
   margin-left: 5px;
 }
+div.pp-file-access-promo .key-display {
+  display: flex;
+  align-items: center;
+  background: #f1f1f1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+div.pp-file-access-promo .key-value {
+  flex: 1;
+  font-family: monospace;
+  font-size: 13px;
+}
+.pp-warning {
+  color: #d54e21;
+  font-weight: bold;
+}
 #edittag div.meta-box-sortables {
   min-width: fit-content;
   max-width: 800px;
@@ -308,7 +325,7 @@ p.pp-bulk-user-perm {
   margin-right: 20px;
 }
 .pp-user-roles {
-  background-color: #EAF7F7;
+  background-color: #eaf7f7;
 }
 .pp-current-roles-note {
   color: #777;
@@ -589,26 +606,26 @@ body.admin_page_presspermit-edit-permissions #toplevel_page_presspermit-groups >
   color: #222;
   border-color: #febe47;
 }
-.wp-core-ui input[type=radio]:checked::before {
+.wp-core-ui input[type="radio"]:checked::before {
   background-color: #655997;
 }
-.wp-core-ui input[type=radio]:focus {
+.wp-core-ui input[type="radio"]:focus {
   border-color: #483f6b;
   box-shadow: 0 0 0 1px #483f6b;
   -moz-box-shadow: 0 0 0 1px #483f6b;
   -webkit-box-shadow: 0 0 0 1px #483f6b;
 }
-.wp-core-ui input[type=checkbox]:checked::before {
+.wp-core-ui input[type="checkbox"]:checked::before {
   content: url(data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20d%3D%27M14.83%204.89l1.34.94-5.81%208.38H9.02L5.78%209.67l1.34-1.25%202.57%202.4z%27%20fill%3D%27%23655997%27%2F%3E%3C%2Fsvg%3E);
 }
-.wp-core-ui input[type=checkbox]:focus {
+.wp-core-ui input[type="checkbox"]:focus {
   outline: 2px solid transparent;
   border-color: #483f6b;
   box-shadow: 0 0 0 1px #483f6b;
   -moz-box-shadow: 0 0 0 1px #483f6b;
   -webkit-box-shadow: 0 0 0 1px #483f6b;
 }
-.wp-core-ui input[type=text]:focus {
+.wp-core-ui input[type="text"]:focus {
   border-color: #483f6b;
   box-shadow: 0 0 0 1px #483f6b;
   -moz-box-shadow: 0 0 0 1px #483f6b;
