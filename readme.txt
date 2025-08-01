@@ -5,7 +5,7 @@ Tags: permissions, access, restrict, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.8
 Requires PHP: 7.2.5
-Stable tag: 4.4.0
+Stable tag: 4.4.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,10 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.4.1 – 30 July 2025 =
+* Added: New UI Promotions Compatibility Pack in the free version to be integration tab. #1789
+* Updated: Changed terminology from "Groups" to "Permissions" in various UI elements for better clarity. #1790
 
 = 4.4.0 – 9 July 2025 =
 * Fixed: Resolved a mismatch count exception when saving groups. #1747

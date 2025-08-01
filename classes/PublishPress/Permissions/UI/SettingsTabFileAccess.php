@@ -82,19 +82,21 @@ class SettingsTabFileAccess
 
     public function optionTabBadges($badges)
     {
-        // Add PRO badge to File Access tab using the helper method
-        // This is configurable - you can customize:
-        // - Use helper: self::createTabBadge('pro') or self::createTabBadge('new')
-        // - Custom text: self::createTabBadge('pro', 'CUSTOM')
-        // - Custom color: self::createTabBadge('pro', '', '#FF0000')
-        // - Manual: ['text' => 'TEXT', 'bg_color' => '#COLOR', 'class' => 'css-class']
-        //
-        // Examples:
-        // $badges['my_tab'] = self::createTabBadge('new');           // Green NEW badge
-        // $badges['my_tab'] = self::createTabBadge('beta');          // Orange BETA badge  
-        // $badges['my_tab'] = self::createTabBadge('hot');           // Red HOT badge
-        // $badges['my_tab'] = self::createTabBadge('pro', 'PLUS');   // Purple PLUS badge
-        // $badges['my_tab'] = self::createTabBadge('new', '', '#FF0000'); // Red NEW badge
+        /**
+         * Add PRO badge to File Access tab using the helper method
+         * This is configurable - you can customize:
+         * - Use helper: self::createTabBadge('pro') or self::createTabBadge('new')
+         * - Custom text: self::createTabBadge('pro', 'CUSTOM')
+         * - Custom color: self::createTabBadge('pro', '', '#FF0000')
+         * - Manual: ['text' => 'TEXT', 'bg_color' => '#COLOR', 'class' => 'css-class']
+         * 
+         * Examples:
+         * $badges['my_tab'] = self::createTabBadge('new');           // Green NEW badge
+         * $badges['my_tab'] = self::createTabBadge('beta');          // Orange BETA badge
+         * $badges['my_tab'] = self::createTabBadge('hot');           // Red HOT badge
+         * $badges['my_tab'] = self::createTabBadge('pro', 'PLUS');   // Purple PLUS badge
+         * $badges['my_tab'] = self::createTabBadge('new', '', '#FF0000'); // Red NEW badge
+         */
         
         $badges['file_access'] = self::createTabBadge('pro');
         return $badges;
@@ -161,27 +163,27 @@ class SettingsTabFileAccess
                 <!-- Core Protection Card -->
                 <div class="pp-feature-card pp-feature-card-hover">
                     <div class="pp-feature-header">
-                        <div class="pp-feature-icon core-protection">🛡️</div>
-                        <h4><?php esc_html_e('Core File Protection', 'press-permit-core'); ?></h4>
+                        <div class="pp-feature-icon core-protection">&#128737;&#65039;</div>
+                        <h4><?php esc_html_e('Media File Protection', 'press-permit-core'); ?></h4>
                     </div>
                     <ul class="pp-feature-list">
                         <li>
-                            <span class="check-icon">✓</span>
-                            <?php esc_html_e('Block direct access based on post permissions', 'press-permit-core'); ?>
+                            <span class="check-icon">&check;</span>
+                            <?php esc_html_e('Control direct access to Media files', 'press-permit-core'); ?>
                         </li>
                         <li>
-                            <span class="check-icon">✓</span>
+                            <span class="check-icon">&check;</span>
                             <?php esc_html_e('Automatic .htaccess file management', 'press-permit-core'); ?>
                         </li>
                         <li>
-                            <span class="check-icon">✓</span>
-                            <?php esc_html_e('File Access Reset Key generation', 'press-permit-core'); ?>
+                            <span class="check-icon">&check;</span>
+                            <?php esc_html_e('File Access key with on-demand regeneration', 'press-permit-core'); ?>
                         </li>
                     </ul>
                     
                     <!-- Upgrade Overlay -->
                     <div class="pp-upgrade-overlay">
-                        <h4 class="core-protection">🔒 <?php esc_html_e('Pro Feature', 'press-permit-core'); ?></h4>
+                        <h4 class="core-protection">&#128274; <?php esc_html_e('Pro Feature', 'press-permit-core'); ?></h4>
                         <p>
                             <?php esc_html_e('Upgrade to Pro to unlock advanced file protection capabilities', 'press-permit-core'); ?>
                         </p>
@@ -189,7 +191,7 @@ class SettingsTabFileAccess
                             <a href="https://publishpress.com/links/permissions-file-access" target="_blank" class="pp-upgrade-btn-primary">
                                 <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
                             </a>
-                            <a href="https://publishpress.com/knowledge-base/file-filtering-nginx/" target="_blank" class="pp-upgrade-btn-secondary">
+                            <a href="https://publishpress.com/knowledge-base/regulate-file-url-access/" target="_blank" class="pp-upgrade-btn-secondary">
                                 <?php esc_html_e('Learn More', 'press-permit-core'); ?>
                             </a>
                         </div>
@@ -199,27 +201,27 @@ class SettingsTabFileAccess
                 <!-- Privacy & Performance Card -->
                 <div class="pp-feature-card pp-feature-card-hover">
                     <div class="pp-feature-header">
-                        <div class="pp-feature-icon privacy-performance">⚡</div>
+                        <div class="pp-feature-icon privacy-performance">&#9889;</div>
                         <h4><?php esc_html_e('Privacy & Performance', 'press-permit-core'); ?></h4>
                     </div>
                     <ul class="pp-feature-list">
                         <li>
-                            <span class="check-icon">✓</span>
+                            <span class="check-icon">&check;</span>
+                            <?php esc_html_e('Limit attachment access by post permissions', 'press-permit-core'); ?>
+                        </li>
+                        <li>
+                            <span class="check-icon">&check;</span>
                             <?php esc_html_e('Make unattached files private', 'press-permit-core'); ?>
                         </li>
                         <li>
-                            <span class="check-icon">✓</span>
-                            <?php esc_html_e('Performance optimization for thumbnails', 'press-permit-core'); ?>
-                        </li>
-                        <li>
-                            <span class="check-icon">✓</span>
-                            <?php esc_html_e('Compatibility mode with redirects', 'press-permit-core'); ?>
+                            <span class="check-icon">&check;</span>
+                            <?php esc_html_e('Directly control specific files', 'press-permit-core'); ?>
                         </li>
                     </ul>
                     
                     <!-- Upgrade Overlay -->
                     <div class="pp-upgrade-overlay">
-                        <h4 class="privacy-performance">⚡ <?php esc_html_e('Pro Feature', 'press-permit-core'); ?></h4>
+                        <h4 class="privacy-performance">&#9889; <?php esc_html_e('Pro Feature', 'press-permit-core'); ?></h4>
                         <p>
                             <?php esc_html_e('Optimize your site with advanced privacy and performance controls', 'press-permit-core'); ?>
                         </p>
@@ -237,27 +239,27 @@ class SettingsTabFileAccess
                 <!-- Advanced Integration Card -->
                 <div class="pp-feature-card pp-feature-card-hover">
                     <div class="pp-feature-header">
-                        <div class="pp-feature-icon advanced-integration">🔧</div>
+                        <div class="pp-feature-icon advanced-integration">&#128295;</div>
                         <h4><?php esc_html_e('Advanced Integration', 'press-permit-core'); ?></h4>
                     </div>
                     <ul class="pp-feature-list">
                         <li>
-                            <span class="check-icon">✓</span>
+                            <span class="check-icon">&check;</span>
                             <?php esc_html_e('Nginx integration support', 'press-permit-core'); ?>
                         </li>
                         <li>
-                            <span class="check-icon">✓</span>
-                            <?php esc_html_e('FTP uploaded files protection', 'press-permit-core'); ?>
+                            <span class="check-icon">&check;</span>
+                            <?php esc_html_e('Process externally uploaded files', 'press-permit-core'); ?>
                         </li>
                         <li>
-                            <span class="check-icon">✓</span>
-                            <?php esc_html_e('Attachments utility scanner', 'press-permit-core'); ?>
+                            <span class="check-icon">&check;</span>
+                            <?php esc_html_e('Supports network (multisite) installs', 'press-permit-core'); ?>
                         </li>
                     </ul>
                     
                     <!-- Upgrade Overlay -->
                     <div class="pp-upgrade-overlay">
-                        <h4 class="advanced-integration">🔧 <?php esc_html_e('Pro Feature', 'press-permit-core'); ?></h4>
+                        <h4 class="advanced-integration">&#128295; <?php esc_html_e('Pro Feature', 'press-permit-core'); ?></h4>
                         <p>
                             <?php esc_html_e('Get advanced integration features with Nginx, FTP, and more', 'press-permit-core'); ?>
                         </p>
@@ -265,7 +267,7 @@ class SettingsTabFileAccess
                             <a href="https://publishpress.com/links/permissions-file-access" target="_blank" class="pp-upgrade-btn-primary">
                                 <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
                             </a>
-                            <a href="https://publishpress.com/knowledge-base/file-filtering-nginx/" target="_blank" class="pp-upgrade-btn-secondary">
+                            <a href="https://publishpress.com/knowledge-base/regulate-file-url-access/" target="_blank" class="pp-upgrade-btn-secondary">
                                 <?php esc_html_e('Learn More', 'press-permit-core'); ?>
                             </a>
                         </div>
@@ -283,11 +285,11 @@ class SettingsTabFileAccess
                 </p>
                 <div class="pp-cta-buttons">
                     <a href="https://publishpress.com/links/permissions-file-access" 
-                       class="button button-primary button-large" 
+                       class="button-primary button-large" 
                        target="_blank">
                         <?php esc_html_e('Upgrade to Pro', 'press-permit-core'); ?>
                     </a>
-                    <a href="https://publishpress.com/knowledge-base/file-filtering-nginx/" 
+                    <a href="https://publishpress.com/knowledge-base/regulate-file-url-access/" 
                        target="_blank"
                        class="pp-learn-more-link">
                         <?php esc_html_e('Learn more →', 'press-permit-core'); ?>

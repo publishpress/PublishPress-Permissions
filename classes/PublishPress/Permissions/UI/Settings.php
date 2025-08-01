@@ -145,7 +145,13 @@ class Settings
                     }
 
                     echo "<li class='" . esc_attr($class) . "'><a href='#pp-" . esc_attr($tab) . "'>"
-                        . esc_html($ui->tab_captions[$tab]) . $badge_html . '</a></li>';
+                        . esc_html($ui->tab_captions[$tab]) . wp_kses_post($badge_html) . '</a>';
+                        
+                    if (('integrations' == $tab) && !empty($ui->available_integrations)) :?>
+                            <span class="pp-integrations <?php echo (defined('PRESSPERMIT_PRO_VERSION')) ? 'pp-integrations-active' : 'pp-integrations-missing';?> count-<?php echo intval(count($ui->available_integrations));?>"><span class="plugin-count"><?php echo intval(count($ui->available_integrations));?></span></span>
+                    <?php endif;
+                        
+                    echo '</li>';
                 }
             }
             echo '</ul>';
