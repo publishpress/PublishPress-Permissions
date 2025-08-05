@@ -506,9 +506,11 @@ class AgentsDynamicUI
     {
         global $wp_scripts;
 
-        // Load libraries for select2
-        wp_enqueue_style('presspermit-select2-css', PRESSPERMIT_URLPATH . "/common/lib/select2-4.0.13/css/select2.min.css", false, PRESSPERMIT_VERSION, 'screen');
-        wp_enqueue_script('presspermit-select2-js', PRESSPERMIT_URLPATH . "/common/lib/select2-4.0.13/js/select2.full.min.js", ['jquery'], PRESSPERMIT_VERSION);
+        // Only load Select2 assets on the presspermit admin page or not registered
+        if (!wp_script_is('select2', 'registered') || false !== strpos(presspermitPluginPage(), 'presspermit')) {
+            wp_enqueue_style('presspermit-select2-css', PRESSPERMIT_URLPATH . "/common/lib/select2-4.0.13/css/select2.min.css", array(), PRESSPERMIT_VERSION, 'screen');
+            wp_enqueue_script('presspermit-select2-js', PRESSPERMIT_URLPATH . "/common/lib/select2-4.0.13/js/select2.full.min.js", ['jquery'], PRESSPERMIT_VERSION);
+        }
 
         // note: this is also done in AdminFiltersItemUI() constructor
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
@@ -535,7 +537,7 @@ class AgentsDynamicUI
             $arr = array_merge($args, ['agent_type' => $agent_type, 'ajaxurl' => wp_nonce_url(admin_url(''), 'pp-ajax')]);
             wp_localize_script('presspermit-agent-select', 'ppException', $arr);
         } else {
-        	// @todo: API
+            // @todo: API
             $_args = ['omit_admins' => $allow_administrator_members ? '0' : '1', 'metagroups' => 0];
 
             if (!PWP::empty_REQUEST('page') && PWP::REQUEST_key_match('page', 'presspermit-edit-permissions')) {
