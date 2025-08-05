@@ -1974,7 +1974,6 @@ input:disabled + .pp-slider {
   transition: transform 0.2s ease;
 }
 .nav-tab-active .pp-tab-badge {
-  background: #2271b1 !important;
   animation: none;
 }
 @media screen and (max-width: 782px) {
