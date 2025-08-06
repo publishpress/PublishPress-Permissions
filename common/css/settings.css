@@ -1330,19 +1330,18 @@ input:disabled + .pp-slider {
 }
 .pp-upgrade-btn-primary {
   background: var(--cta-color);
-  color: #000000 !important;
+  color: #414141 !important;
   padding: 10px 16px;
   margin-top: 4px;
   border-radius: 4px;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: normal;
   font-size: 14px;
   transition: all 0.2s ease;
   display: inline-block;
 }
 .pp-upgrade-btn-primary:hover {
   background: #fcca46;
-  color: #181818 !important;
   transform: translateY(-1px);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   text-decoration: none;
@@ -1369,8 +1368,8 @@ input:disabled + .pp-slider {
 }
 .pp-integrations-upgrade-cta .pp-upgrade-btn {
   background: var(--cta-color);
-  color: #000000 !important;
-  font-weight: 600;
+  color: #414141 !important;
+  font-weight: normal;
   text-decoration: none;
   padding: 8px 12px;
   -webkit-border-radius: 4px;
@@ -1547,11 +1546,11 @@ input:disabled + .pp-slider {
   padding: 8px 16px;
   border-radius: 6px;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: normal;
   font-size: 12px;
   transition: all 0.2s ease;
   display: inline-block;
-  color: black !important;
+  color: #414141 !important;
 }
 .pp-file-access-promo .pp-upgrade-btn-primary:hover {
   transform: translateY(-1px) !important;
@@ -1627,10 +1626,10 @@ input:disabled + .pp-slider {
 .pp-file-access-promo .pp-cta-section .pp-cta-buttons .button-primary {
   background: var(--cta-color);
   border-color: var(--cta-color);
-  color: black;
+  color: #414141 !important;
   padding: 8px 24px;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: normal;
   transition: all 0.3s ease;
 }
 .pp-file-access-promo .pp-cta-section .pp-cta-buttons .button-primary:hover {
