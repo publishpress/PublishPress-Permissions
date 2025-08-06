@@ -182,7 +182,7 @@ class SettingsTabMembership
                     </div>
 
                     <div class="pp-upgrade-overlay">
-                        <h4><?php esc_html_e('Premium Feature', 'press-permit-core'); ?></h4>
+                        <h4><?php esc_html_e('Pro Feature', 'press-permit-core'); ?></h4>
                         <p>
                             <?php esc_html_e('Upgrade to Pro to limit access based on post author relationships', 'press-permit-core'); ?>
                         </p>
@@ -218,7 +218,7 @@ class SettingsTabMembership
                     </div>
 
                     <div class="pp-upgrade-overlay">
-                        <h4><?php esc_html_e('Premium Feature', 'press-permit-core'); ?></h4>
+                        <h4><?php esc_html_e('Pro Feature', 'press-permit-core'); ?></h4>
                         <p>
                             <?php esc_html_e('Go Pro for time-limited group membership', 'press-permit-core'); ?>
                         </p>
