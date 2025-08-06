@@ -352,14 +352,20 @@ class SettingsTabIntegrations
 
     private function renderIntegrations()
     {
-        $int = array_merge(
-            wp_filter_object_list($this->ui->defined_integrations, ['available' => true, 'free' => false]),
-            wp_filter_object_list($this->ui->defined_integrations, ['available' => false, 'free' => false]),
-            wp_filter_object_list($this->ui->defined_integrations, ['available' => true, 'free' => true]),
-            wp_filter_object_list($this->ui->defined_integrations, ['available' => false, 'free' => true])
-        );
+        $int = $this->ui->defined_integrations;
+        
+        // Sort integrations: available=true first, then by title
+        usort($int, function($a, $b) {
+            // Active plugins first
+            if ($a['available'] !== $b['available']) {
+                return $a['available'] ? -1 : 1;
+            }
+            
+            // Then sort alphabetically by title
+            return strcasecmp($a['title'], $b['title']);
+        });
 
-        // Render each fallback integration
+        // Render each integration
         foreach ($int as $integration) {
             $this->renderCompatibilityPack($integration);
         }
