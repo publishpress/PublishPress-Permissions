@@ -637,7 +637,7 @@ body.permissions_page_presspermit-settings .nav-tab span.pp-integrations {
   z-index: 26;
 }
 body.permissions_page_presspermit-settings .nav-tab span.pp-integrations-missing {
-  background-color: #d63638;
+  background-color: #4caf50;
 }
 body.permissions_page_presspermit-settings .nav-tab span.pp-integrations-active {
   background-color: #3f9716;

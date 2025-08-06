@@ -277,9 +277,9 @@ class SettingsTabIntegrations
                 <div class="pp-integration-features">
                     <ul>
                         <?php if (!empty($integration['free'])) :?>
-                            <li><?php esc_html_e('Supported by PublishPress Revisions', 'press-permit-core');?></li>
+                            <li><?php esc_html_e('Supported by PublishPress Permissions', 'press-permit-core');?></li>
                         <?php else :?>
-                            <li><?php esc_html_e('Supported by Revisions Pro', 'press-permit-core');?></li>
+                            <li><?php esc_html_e('Supported by Permissions Pro', 'press-permit-core');?></li>
                         <?php endif;?>
 
                         <?php foreach ($integration['features'] as $feature): ?>
