@@ -1543,6 +1543,7 @@ input:disabled + .pp-slider {
   align-items: center;
 }
 .pp-file-access-promo .pp-upgrade-btn-primary {
+  margin: 0;
   padding: 8px 16px;
   border-radius: 6px;
   text-decoration: none;
@@ -1568,7 +1569,7 @@ input:disabled + .pp-slider {
 }
 .pp-file-access-promo .pp-upgrade-btn-secondary {
   background: transparent;
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 4px;
   text-decoration: none;
   font-weight: 500;
