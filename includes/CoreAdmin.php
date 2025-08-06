@@ -201,7 +201,7 @@ class CoreAdmin
                 </table>
                 <?php if (!$is_pro): ?>
                 <div class="pp-upgrade-overlay">
-                    <h4><?php esc_html_e('Premium Feature', 'press-permit-core'); ?></h4>
+                    <h4><?php esc_html_e('Pro Feature', 'press-permit-core'); ?></h4>
                     <p><?php echo esc_html(sprintf(__('Unlock %s integration to enhance your permissions system.', 'press-permit-core'), "All Pro Modules")); ?>
                     </p>
                     <div class="pp-upgrade-buttons">

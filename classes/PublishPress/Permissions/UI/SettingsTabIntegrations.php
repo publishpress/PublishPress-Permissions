@@ -301,7 +301,7 @@ class SettingsTabIntegrations
 
             <?php if (!$is_pro && !$integration['free']): ?>
                 <div class="pp-upgrade-overlay">
-                    <h4><?php esc_html_e('Premium Feature', 'press-permit-core'); ?></h4>
+                    <h4><?php esc_html_e('Pro Feature', 'press-permit-core'); ?></h4>
                     <p><?php echo esc_html(sprintf(__('Unlock %s integration to enhance your revisions solution.', 'press-permit-core'), $integration['title'])); ?>
                     </p>
                     <div class="pp-upgrade-buttons">
