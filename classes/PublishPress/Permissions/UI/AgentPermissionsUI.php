@@ -1468,7 +1468,7 @@ class AgentPermissionsUI
                                                 $mirror_ops[] = 'assign';
                                             }
 
-                                            if ($for_type_obj->hierarchical) {
+                                            if (isset($for_type_obj->hierarchical)) {
                                                 $mirror_ops[] = 'associate';
                                             }
 
