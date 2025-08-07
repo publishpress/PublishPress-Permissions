@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-06T21:00:34+00:00\n"
+"POT-Creation-Date: 2025-08-07T14:59:12+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: press-permit-core\n"
@@ -2077,12 +2077,18 @@ msgid "If you need help or have a new feature request, let us know."
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/PromoBanner.php:225
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:192
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:230
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:268
 #: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:290
 #: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:108
 #: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:314
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:191
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:227
 #: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:249
 #: includes/CoreAdmin.php:120
 #: includes/CoreAdmin.php:121
+#: includes/CoreAdmin.php:214
 #: includes/promo/posts-teaser-promo.php:22
 #: includes/promo/statuses-promo.php:23
 #: includes/promo/sync-promo.php:22
@@ -2498,24 +2504,17 @@ msgstr ""
 msgid "Upgrade to Pro to unlock advanced file protection capabilities"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:192
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:230
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:268
-#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:191
-#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:227
-#: includes/CoreAdmin.php:214
-msgid "Upgrade Now"
-msgstr ""
-
 #: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:195
 #: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:233
 #: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:271
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:295
 #: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:310
 #: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:324
 #: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:334
 #: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:344
 #: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:194
 #: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:230
+#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:254
 #: includes/CoreAdmin.php:210
 msgid "Learn More"
 msgstr ""
@@ -2568,11 +2567,6 @@ msgstr ""
 msgid "Upgrade to Pro and get advanced file access control with all these features and more."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:295
-#: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:254
-msgid "Learn more →"
-msgstr ""
-
 #: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:25
 msgid "Integrations"
 msgstr ""
@@ -2586,7 +2580,7 @@ msgid "Breakdance"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:103
-msgid "Unlock Premium Integrations"
+msgid "Unlock Pro Integrations"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:104
@@ -2671,7 +2665,7 @@ msgid "Integration Active"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:296
-msgid "Integration Missing"
+msgid "Upgrade to Pro to enable this integration"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:305
