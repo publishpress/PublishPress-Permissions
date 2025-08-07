@@ -100,7 +100,7 @@ class SettingsTabIntegrations
                         <div class="pp-integrations-upgrade-cta">
                             <div class="pp-pro-banner">
                                 <div>
-                                    <h2><?php esc_html_e('Unlock Premium Integrations', 'press-permit-core'); ?></h2>
+                                    <h2><?php esc_html_e('Unlock Pro Integrations', 'press-permit-core'); ?></h2>
                                     <p><?php esc_html_e('Upgrade to the Pro version for optimal compatibility and prompt, professional support.', 'press-permit-core'); ?></p>
                                 </div>
                                 <div class="pp-pro-badge-banner no-bg">

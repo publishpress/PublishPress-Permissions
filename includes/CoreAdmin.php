@@ -211,7 +211,7 @@ class CoreAdmin
                             </a>
                         <?php endif; ?>
                         <a href="<?php echo esc_url(\PublishPress\Permissions\UI\SettingsTabIntegrations::UPGRADE_PRO_URL); ?>" target="_blank" class="pp-upgrade-btn-primary">
-                            <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
+                            <?php esc_html_e('Upgrade to Pro', 'press-permit-core'); ?>
                         </a>
                     </div>
                 </div>
