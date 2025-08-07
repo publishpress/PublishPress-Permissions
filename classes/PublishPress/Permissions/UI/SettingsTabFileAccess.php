@@ -189,7 +189,7 @@ class SettingsTabFileAccess
                         </p>
                         <div class="pp-upgrade-buttons">
                             <a href="https://publishpress.com/links/permissions-file-access" target="_blank" class="pp-upgrade-btn-primary">
-                                <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
+                                <?php esc_html_e('Upgrade to Pro', 'press-permit-core'); ?>
                             </a>
                             <a href="https://publishpress.com/knowledge-base/regulate-file-url-access/" target="_blank" class="pp-upgrade-btn-secondary">
                                 <?php esc_html_e('Learn More', 'press-permit-core'); ?>
@@ -227,7 +227,7 @@ class SettingsTabFileAccess
                         </p>
                         <div class="pp-upgrade-buttons">
                             <a href="https://publishpress.com/links/permissions-file-access" target="_blank" class="pp-upgrade-btn-primary">
-                                <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
+                                <?php esc_html_e('Upgrade to Pro', 'press-permit-core'); ?>
                             </a>
                             <a href="https://publishpress.com/knowledge-base/file-filtering-nginx/" target="_blank" class="pp-upgrade-btn-secondary">
                                 <?php esc_html_e('Learn More', 'press-permit-core'); ?>
@@ -265,7 +265,7 @@ class SettingsTabFileAccess
                         </p>
                         <div class="pp-upgrade-buttons">
                             <a href="https://publishpress.com/links/permissions-file-access" target="_blank" class="pp-upgrade-btn-primary">
-                                <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
+                                <?php esc_html_e('Upgrade to Pro', 'press-permit-core'); ?>
                             </a>
                             <a href="https://publishpress.com/knowledge-base/regulate-file-url-access/" target="_blank" class="pp-upgrade-btn-secondary">
                                 <?php esc_html_e('Learn More', 'press-permit-core'); ?>
@@ -292,7 +292,7 @@ class SettingsTabFileAccess
                     <a href="https://publishpress.com/knowledge-base/regulate-file-url-access/" 
                        target="_blank"
                        class="pp-learn-more-link">
-                        <?php esc_html_e('Learn more →', 'press-permit-core'); ?>
+                        <?php esc_html_e('Learn More', 'press-permit-core'); ?>
                     </a>
                 </div>
             </div>

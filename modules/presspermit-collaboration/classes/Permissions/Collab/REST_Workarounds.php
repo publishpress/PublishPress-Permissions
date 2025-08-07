@@ -54,6 +54,9 @@ class REST_Workarounds
         $pp = presspermit();
 
         foreach ($pp->getEnabledPostTypes([], 'object') as $type_obj) {
+            if (empty($type_obj) || (!isset($type_obj->name) && !isset($type_obj->rest_base))) {
+                continue;
+            }
             $type_rest_base = (!empty($type_obj->rest_base)) ? $type_obj->rest_base : $type_obj->name;
 
             if (false === strpos($request_uri, "/wp-json/wp/v2/$type_rest_base/"))

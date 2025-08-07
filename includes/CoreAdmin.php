@@ -201,7 +201,7 @@ class CoreAdmin
                 </table>
                 <?php if (!$is_pro): ?>
                 <div class="pp-upgrade-overlay">
-                    <h4><?php esc_html_e('Premium Feature', 'press-permit-core'); ?></h4>
+                    <h4><?php esc_html_e('Pro Feature', 'press-permit-core'); ?></h4>
                     <p><?php echo esc_html(sprintf(__('Unlock %s integration to enhance your permissions system.', 'press-permit-core'), "All Pro Modules")); ?>
                     </p>
                     <div class="pp-upgrade-buttons">
@@ -211,7 +211,7 @@ class CoreAdmin
                             </a>
                         <?php endif; ?>
                         <a href="<?php echo esc_url(\PublishPress\Permissions\UI\SettingsTabIntegrations::UPGRADE_PRO_URL); ?>" target="_blank" class="pp-upgrade-btn-primary">
-                            <?php esc_html_e('Upgrade Now', 'press-permit-core'); ?>
+                            <?php esc_html_e('Upgrade to Pro', 'press-permit-core'); ?>
                         </a>
                     </div>
                 </div>

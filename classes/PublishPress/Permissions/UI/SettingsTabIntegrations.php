@@ -100,7 +100,7 @@ class SettingsTabIntegrations
                         <div class="pp-integrations-upgrade-cta">
                             <div class="pp-pro-banner">
                                 <div>
-                                    <h2><?php esc_html_e('Unlock Premium Integrations', 'press-permit-core'); ?></h2>
+                                    <h2><?php esc_html_e('Unlock Pro Integrations', 'press-permit-core'); ?></h2>
                                     <p><?php esc_html_e('Upgrade to the Pro version for optimal compatibility and prompt, professional support.', 'press-permit-core'); ?></p>
                                 </div>
                                 <div class="pp-pro-badge-banner no-bg">
@@ -277,9 +277,9 @@ class SettingsTabIntegrations
                 <div class="pp-integration-features">
                     <ul>
                         <?php if (!empty($integration['free'])) :?>
-                            <li><?php esc_html_e('Supported by PublishPress Revisions', 'press-permit-core');?></li>
+                            <li><?php esc_html_e('Supported by PublishPress Permissions', 'press-permit-core');?></li>
                         <?php else :?>
-                            <li><?php esc_html_e('Supported by Revisions Pro', 'press-permit-core');?></li>
+                            <li><?php esc_html_e('Supported by Permissions Pro', 'press-permit-core');?></li>
                         <?php endif;?>
 
                         <?php foreach ($integration['features'] as $feature): ?>
@@ -293,7 +293,7 @@ class SettingsTabIntegrations
                         <?php if ($is_pro && $is_enabled): ?>
                             <div class="pp-integration-status active"><?php esc_html_e('Integration Active', 'press-permit-core'); ?></div>
                         <?php else: ?>
-                            <div class="pp-integration-status disabled"><?php esc_html_e('Integration Missing', 'press-permit-core'); ?></div>
+                            <div class="pp-integration-status disabled"><?php esc_html_e('Upgrade to Pro to enable this integration', 'press-permit-core'); ?></div>
                         <?php endif; ?>
                     </div>
                 <?php endif;?>
@@ -301,7 +301,7 @@ class SettingsTabIntegrations
 
             <?php if (!$is_pro && !$integration['free']): ?>
                 <div class="pp-upgrade-overlay">
-                    <h4><?php esc_html_e('Premium Feature', 'press-permit-core'); ?></h4>
+                    <h4><?php esc_html_e('Pro Feature', 'press-permit-core'); ?></h4>
                     <p><?php echo esc_html(sprintf(__('Unlock %s integration to enhance your revisions solution.', 'press-permit-core'), $integration['title'])); ?>
                     </p>
                     <div class="pp-upgrade-buttons">
@@ -352,14 +352,20 @@ class SettingsTabIntegrations
 
     private function renderIntegrations()
     {
-        $int = array_merge(
-            wp_filter_object_list($this->ui->defined_integrations, ['available' => true, 'free' => false]),
-            wp_filter_object_list($this->ui->defined_integrations, ['available' => false, 'free' => false]),
-            wp_filter_object_list($this->ui->defined_integrations, ['available' => true, 'free' => true]),
-            wp_filter_object_list($this->ui->defined_integrations, ['available' => false, 'free' => true])
-        );
+        $int = $this->ui->defined_integrations;
+        
+        // Sort integrations: available=true first, then by title
+        usort($int, function($a, $b) {
+            // Active plugins first
+            if ($a['available'] !== $b['available']) {
+                return $a['available'] ? -1 : 1;
+            }
+            
+            // Then sort alphabetically by title
+            return strcasecmp($a['title'], $b['title']);
+        });
 
-        // Render each fallback integration
+        // Render each integration
         foreach ($int as $integration) {
             $this->renderCompatibilityPack($integration);
         }

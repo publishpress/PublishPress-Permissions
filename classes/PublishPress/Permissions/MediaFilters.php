@@ -40,7 +40,9 @@ class MediaFilters
                         }
 
                         if ($status_obj->public || ($status_obj->private && ($user_id == $post_author_id))) {
-                            $caps[] = $post_type->cap->read;
+                            if ($post_type && isset($post_type->cap) && isset($post_type->cap->read)) {
+                                $caps[] = $post_type->cap->read;
+                            }
                             break;
                         }
 
