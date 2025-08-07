@@ -100,7 +100,7 @@ class SettingsTabIntegrations
                         <div class="pp-integrations-upgrade-cta">
                             <div class="pp-pro-banner">
                                 <div>
-                                    <h2><?php esc_html_e('Unlock Premium Integrations', 'press-permit-core'); ?></h2>
+                                    <h2><?php esc_html_e('Unlock Pro Integrations', 'press-permit-core'); ?></h2>
                                     <p><?php esc_html_e('Upgrade to the Pro version for optimal compatibility and prompt, professional support.', 'press-permit-core'); ?></p>
                                 </div>
                                 <div class="pp-pro-badge-banner no-bg">
@@ -293,7 +293,7 @@ class SettingsTabIntegrations
                         <?php if ($is_pro && $is_enabled): ?>
                             <div class="pp-integration-status active"><?php esc_html_e('Integration Active', 'press-permit-core'); ?></div>
                         <?php else: ?>
-                            <div class="pp-integration-status disabled"><?php esc_html_e('Integration Missing', 'press-permit-core'); ?></div>
+                            <div class="pp-integration-status disabled"><?php esc_html_e('Upgrade to Pro to enable this integration', 'press-permit-core'); ?></div>
                         <?php endif; ?>
                     </div>
                 <?php endif;?>

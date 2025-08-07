@@ -1639,9 +1639,26 @@ input:disabled + .pp-slider {
 }
 .pp-file-access-promo .pp-cta-section .pp-cta-buttons .pp-learn-more-link {
   color: var(--primary-color);
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: 4px;
   text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
+  font-weight: normal;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  display: inline-block;
+  border: 1px solid;
+  line-height: 2.15384615;
+  cursor: pointer;
+  white-space: nowrap;
+  box-sizing: border-box;
+  min-height: 30px;
+  padding: 8px 24px;
+  border-radius: 8px;
+}
+.pp-file-access-promo .pp-cta-section .pp-cta-buttons .pp-learn-more-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 .pp-file-access-settings .pp-settings-header {
   background: linear-gradient(135deg, #f8fafc, #f1f5f9);
