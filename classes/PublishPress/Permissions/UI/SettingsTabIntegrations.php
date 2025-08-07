@@ -293,7 +293,7 @@ class SettingsTabIntegrations
                         <?php if ($is_pro && $is_enabled): ?>
                             <div class="pp-integration-status active"><?php esc_html_e('Integration Active', 'press-permit-core'); ?></div>
                         <?php else: ?>
-                            <div class="pp-integration-status disabled"><?php esc_html_e('Integration Missing', 'press-permit-core'); ?></div>
+                            <div class="pp-integration-status disabled"><?php esc_html_e('Upgrade to Pro to enable this integration', 'press-permit-core'); ?></div>
                         <?php endif; ?>
                     </div>
                 <?php endif;?>
