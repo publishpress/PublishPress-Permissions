@@ -601,7 +601,9 @@ class Permissions
         $additions['post'] = apply_filters('presspermit_apply_additions', $additions['post'], $where, $required_operation, $post_type, $args);
 
         if (!empty($additions['post']) || !empty($additions['term'])) {
-            $where = "( $where )";
+            if (false === strpos(trim($where), '(')) {
+                $where = "( $where )";
+            }
 
 			if (!empty($additions['post'])) {
 				$where .= " OR ( " . Arr::implode(' OR ', $additions['post']) . " )";
@@ -651,7 +653,13 @@ class Permissions
 		}
 
         if ($append_post_type_clause) {
-            $where = "$src_table.post_type = '$post_type' AND ( $where )";
+            $ipos = strpos(trim($where), 'AND');
+
+            if ($ipos === 0) {
+                $where = "$src_table.post_type = '$post_type' AND ( 1=1 $where )";
+            } else {
+                $where = "$src_table.post_type = '$post_type' AND ( $where )";
+            }
 		}
 
         return $where;

@@ -67,7 +67,7 @@ class ItemExceptionsRenderUI
     {
         global $wp_roles;
 
-        $defaults = ['reqd_caps' => false, 'hierarchical' => false, 'for_item_type' => '', 'op' => '', 'default_select' => false];
+        $defaults = ['reqd_caps' => false, 'hierarchical' => false, 'for_item_type' => '', 'op' => '', 'default_select' => false, 'item_id' => 0];
         $args = array_merge($defaults, $args);
         foreach (array_keys($defaults) as $var) {
             $$var = $args[$var];
@@ -85,7 +85,8 @@ class ItemExceptionsRenderUI
         $this->opt_class[''] = '';
         $disabled = '';
 
-        if ('wp_role' == $agent_type) {
+        if (('wp_role' == $agent_type) && (!function_exists('rvy_in_revision_workflow') || !rvy_in_revision_workflow($item_id))) {
+        
             // also credit sitewide caps attached via supplemental role assignment to WP Role metagroup
             static $metagroup_caps;
             if (!isset($metagroup_caps)) {

@@ -256,6 +256,9 @@ class CapabilityFilters
 
     function has_post_cap_vars($force_vars, $wp_sitecaps, $pp_reqd_caps, $vars)
     {
+        static $exclude_ids;
+        static $additional_ids;
+
         $return = [];
 
         if (('read_post' == reset($pp_reqd_caps))) {
@@ -266,8 +269,52 @@ class CapabilityFilters
         }
 
         if (('edit_post' == reset($pp_reqd_caps)) && !empty($vars['post_id'])) {
-            if (rvy_in_revision_workflow($vars['post_id'])) {
-                $return['return_caps'] = $wp_sitecaps;
+            if (rvy_in_revision_workflow($vars['post_id'])) { 
+
+                // Normally, revisions capability checks are applied instead of a full permissions query. 
+                // But if this post or its main page have permissions stored, allow the permissions query to execute.
+                if ($rvy_is_compatible = defined('PUBLISHPRESS_REVISIONS_VERSION') && version_compare(PUBLISHPRESS_REVISIONS_VERSION, '3.7.9-beta', '>=')) {
+                    $main_post_id = rvy_post_id($vars['post_id']);
+    
+                    if (!isset($exclude_ids)) {
+                        $exclude_ids = [];
+                    }
+    
+                    $exception_key = $vars['required_operation'] . $vars['post_type'];
+    
+                    if (!isset($exclude_ids[$exception_key])) {
+                        $user = presspermit()->getUser();
+    
+                        if ($ids = $user->getExceptionPosts($vars['required_operation'], 'exclude', $vars['post_type'], ['status' => true])) {
+                            if (isset($ids[''])) {
+                                $exclude_ids[$exception_key] = $ids[''];
+                            }
+                        }
+    
+                        if ($ids = $user->getExceptionPosts($vars['required_operation'], 'additional', $vars['post_type'], ['status' => true])) {
+                            if (isset($ids[''])) {
+                                $additional_ids[$exception_key] = $ids[''];
+                            }
+                        }
+                    }
+                }
+
+                if (
+                    !$rvy_is_compatible ||
+                    (
+                        (
+                            !isset($exclude_ids[$exception_key]) 
+                            || (!in_array($vars['post_id'], $exclude_ids[$exception_key]) && (!get_option('rvy_apply_post_exceptions') || !in_array($main_post_id, $exclude_ids[$exception_key])))
+                        )
+            
+                        && (
+                            !isset($additional_ids[$exception_key]) 
+                            || (!in_array($vars['post_id'], $additional_ids[$exception_key]) && (!get_option('rvy_apply_post_exceptions') || !in_array($main_post_id, $additional_ids[$exception_key])))
+                        )
+                    )
+                ) {
+                    $return['return_caps'] = $wp_sitecaps;
+                }
             }
         }
 

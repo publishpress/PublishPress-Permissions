@@ -63,6 +63,22 @@ class PermissionsHooks
         ) {
             add_action('init', [$this, 'actCreatedEventCategory'], 50);
         }
+
+
+        add_filter(
+            'posts_request',
+            function ($request) {
+                global $wpdb;
+
+                if (strpos($request, "WHERE 1=1 $wpdb->posts")) {
+                    $request = str_replace("WHERE 1=1 $wpdb->posts", "WHERE 1=1 AND $wpdb->posts", $request);
+                }
+
+                return $request;
+            },
+            999, 2
+        );
+
     }
 
 	public function loadUpdater() {
