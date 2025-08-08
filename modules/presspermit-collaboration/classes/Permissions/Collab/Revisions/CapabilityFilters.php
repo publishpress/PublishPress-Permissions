@@ -270,6 +270,9 @@ class CapabilityFilters
 
         if (('edit_post' == reset($pp_reqd_caps)) && !empty($vars['post_id'])) {
             if (rvy_in_revision_workflow($vars['post_id'])) { 
+
+                // Normally, revisions capability checks are applied instead of a full permissions query. 
+                // But if this post or its main page have permissions stored, allow the permissions query to execute.
                 if ($rvy_is_compatible = defined('PUBLISHPRESS_REVISIONS_VERSION') && version_compare(PUBLISHPRESS_REVISIONS_VERSION, '3.7.9-beta', '>=')) {
                     $main_post_id = rvy_post_id($vars['post_id']);
     
