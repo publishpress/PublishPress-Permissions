@@ -645,6 +645,12 @@ class CapabilityFilters
             $this_id_okay = $this->memcache['tested_ids'][$post_type][$capreqs_key][$post_id];
         }
 
+        if (!$this_id_okay) {
+            if ('auto-draft' == get_post_field('post_status', $post_id)) {
+                return $wp_sitecaps;
+            }
+        }
+
         if ($this_id_okay) {
             return array_merge($wp_sitecaps, array_fill_keys($orig_reqd_caps, true));
         } else {
