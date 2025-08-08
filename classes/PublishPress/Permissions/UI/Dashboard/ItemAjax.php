@@ -114,7 +114,7 @@ class ItemAjax
                         [],
                         $exc_data->inclusions_active,
                         $exc_data->agent_info[$agent_type][$agent_id],
-                        compact('echo', 'default_select', 'for_item_type', 'op', 'reqd_caps', 'hierarchical')
+                        compact('echo', 'default_select', 'for_item_type', 'op', 'reqd_caps', 'hierarchical', 'item_id')
                     );
                 }
 

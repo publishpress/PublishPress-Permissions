@@ -234,7 +234,7 @@ class ItemExceptionsUI
                                                             $current_exceptions[$op][$agent_type][$agent_id],
                                                             $this->data->inclusions_active,
                                                             $this->data->agent_info[$agent_type][$agent_id],
-                                                            compact('for_item_type', 'op', 'reqd_caps', 'hierarchical')
+                                                            compact('for_item_type', 'op', 'reqd_caps', 'hierarchical', 'item_id')
                                                         );
                                                     }
                                                 }
@@ -252,7 +252,7 @@ class ItemExceptionsUI
                                                         $current_exceptions[$op][$agent_type][$agent_id],
                                                         $this->data->inclusions_active,
                                                         $this->data->agent_info[$agent_type][$agent_id],
-                                                        compact('for_item_type', 'op', 'reqd_caps', 'hierarchical')
+                                                        compact('for_item_type', 'op', 'reqd_caps', 'hierarchical', 'item_id')
                                                     );
 
                                                     // The current_selections array is just a convenient way to decide whether to show the group restrictions warning by default.
