@@ -302,8 +302,15 @@ class CapabilityFilters
                 if (
                     !$rvy_is_compatible ||
                     (
-                        (!isset($exclude_ids[$exception_key]) || (!in_array($vars['post_id'], $exclude_ids[$exception_key]) && !in_array($main_post_id, $exclude_ids[$exception_key])))
-                        && (!isset($additional_ids[$exception_key]) || (!in_array($vars['post_id'], $additional_ids[$exception_key]) && !in_array($main_post_id, $additional_ids[$exception_key])))
+                        (
+                            !isset($exclude_ids[$exception_key]) 
+                            || (!in_array($vars['post_id'], $exclude_ids[$exception_key]) && (!get_option('rvy_apply_post_exceptions') || !in_array($main_post_id, $exclude_ids[$exception_key])))
+                        )
+            
+                        && (
+                            !isset($additional_ids[$exception_key]) 
+                            || (!in_array($vars['post_id'], $additional_ids[$exception_key]) && (!get_option('rvy_apply_post_exceptions') || !in_array($main_post_id, $additional_ids[$exception_key])))
+                        )
                     )
                 ) {
                     $return['return_caps'] = $wp_sitecaps;
