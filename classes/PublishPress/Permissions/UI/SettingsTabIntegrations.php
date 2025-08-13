@@ -10,7 +10,7 @@ class SettingsTabIntegrations
 
     public function __construct()
     {
-        add_filter('presspermit_option_tabs', [$this, 'optionTabs'], 5);
+        add_filter('presspermit_option_tabs', [$this, 'optionTabs'], 90);
         add_filter('presspermit_section_captions', [$this, 'sectionCaptions']);
         add_filter('presspermit_option_captions', [$this, 'optionCaptions']);
         add_filter('presspermit_option_sections', [$this, 'optionSections']);

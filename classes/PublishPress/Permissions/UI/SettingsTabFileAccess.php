@@ -65,7 +65,8 @@ class SettingsTabFileAccess
 {
     public function __construct()
     {
-        add_filter('presspermit_option_tabs', [$this, 'optionTabs'], 5);
+        $order = defined('PRESSPERMIT_PRO_VERSION') ? 5 : 110;
+        add_filter('presspermit_option_tabs', [$this, 'optionTabs'], $order);
         add_filter('presspermit_option_tab_badges', [$this, 'optionTabBadges'], 5);
         add_filter('presspermit_section_captions', [$this, 'sectionCaptions']);
         add_filter('presspermit_option_captions', [$this, 'optionCaptions']);
