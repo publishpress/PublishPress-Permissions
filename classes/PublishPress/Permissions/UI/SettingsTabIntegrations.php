@@ -257,16 +257,13 @@ class SettingsTabIntegrations
                 <h3 class="pp-integration-title">
                     <?php echo esc_html($integration['title']); ?>
                     
-                    <?php if (!$is_pro && !$integration['free']): ?>
+                    <?php if (!$is_pro && empty($integration['free'])): ?>
                         <span class="pp-badge pp-pro-badge"><?php esc_html_e('Pro', 'press-permit-core');?></span>
                     <?php endif; ?>
 
-                    <?php if (!$integration['available']): ?>
+                    <?php if ($integration['available']): ?>
                         <span class="pp-badge"
-                            style="background: #5e92c4;"><?php esc_html_e('Supported', 'press-permit-core'); ?></span>
-                    <?php else: ?>
-                        <span class="pp-badge"
-                            style="background: #4caf50;"><?php esc_html_e('Active Plugin', 'press-permit-core'); ?></span>
+                            style="background: #5e92c4;"><?php esc_html_e('Active Plugin', 'press-permit-core'); ?></span>
                     <?php endif; ?>
                 </h3>
 
@@ -276,19 +273,13 @@ class SettingsTabIntegrations
 
                 <div class="pp-integration-features">
                     <ul>
-                        <?php if (!empty($integration['free'])) :?>
-                            <li><?php esc_html_e('Supported by PublishPress Permissions', 'press-permit-core');?></li>
-                        <?php else :?>
-                            <li><?php esc_html_e('Supported by Permissions Pro', 'press-permit-core');?></li>
-                        <?php endif;?>
-
                         <?php foreach ($integration['features'] as $feature): ?>
                             <li><?php echo esc_html($feature); ?></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
 
-                <?php if (!$integration['free'] && $integration['available']):?>
+                <?php if (empty($integration['free']) && $integration['available']):?>
                     <div class="pp-settings-toggle">
                         <?php if ($is_pro && $is_enabled): ?>
                             <div class="pp-integration-status active"><?php esc_html_e('Integration Active', 'press-permit-core'); ?></div>
@@ -299,7 +290,7 @@ class SettingsTabIntegrations
                 <?php endif;?>
             </div>
 
-            <?php if (!$is_pro && !$integration['free']): ?>
+            <?php if (!$is_pro && empty($integration['free'])): ?>
                 <div class="pp-upgrade-overlay">
                     <h4><?php esc_html_e('Pro Feature', 'press-permit-core'); ?></h4>
                     <p><?php echo esc_html(sprintf(__('Unlock %s integration to enhance your revisions solution.', 'press-permit-core'), $integration['title'])); ?>
@@ -326,7 +317,7 @@ class SettingsTabIntegrations
                     </div>
                 </div>
 
-            <?php elseif (!$integration['free'] && !empty($integration['learn_more_url'])): ?>
+            <?php elseif (empty($integration['free']) && !empty($integration['learn_more_url'])): ?>
                 <div class="pp-upgrade-overlay">
                     <h4><?php esc_html_e('Supported Plugin Integration', 'press-permit-core'); ?></h4>
                     <div class="pp-upgrade-buttons">
@@ -336,15 +327,6 @@ class SettingsTabIntegrations
                     </div>
                 </div>
 
-            <?php elseif ($integration['free'] && !empty($integration['learn_more_url'])): ?>
-                <div class="pp-upgrade-overlay">
-                    <h4><?php esc_html_e('Supported Plugin', 'press-permit-core'); ?></h4>
-                    <div class="pp-upgrade-buttons">
-                            <a href="<?php echo esc_url($integration['learn_more_url']); ?>" target="_blank" class="pp-upgrade-btn-secondary">
-                                <?php esc_html_e('Learn More', 'press-permit-core'); ?>
-                            </a>
-                    </div>
-                </div>
             <?php endif; ?>
         </div>
         <?php
