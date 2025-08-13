@@ -263,7 +263,7 @@ class SettingsTabIntegrations
 
                     <?php if (!$integration['available']): ?>
                         <span class="pp-badge"
-                            style="background: #9e9e9e;"><?php esc_html_e('Supported', 'press-permit-core'); ?></span>
+                            style="background: #5e92c4;"><?php esc_html_e('Supported', 'press-permit-core'); ?></span>
                     <?php else: ?>
                         <span class="pp-badge"
                             style="background: #4caf50;"><?php esc_html_e('Active Plugin', 'press-permit-core'); ?></span>
