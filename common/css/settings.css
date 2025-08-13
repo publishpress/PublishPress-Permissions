@@ -1271,8 +1271,8 @@ input:disabled + .pp-slider {
   color: #f44336;
 }
 .pp-integration-status.disabled {
-  background-color: #fff3e0;
-  color: #aa2222;
+  color: white;
+  background-color: #d63638;
 }
 .pp-upgrade-overlay {
   position: absolute;
