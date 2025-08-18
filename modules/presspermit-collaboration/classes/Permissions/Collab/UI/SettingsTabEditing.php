@@ -47,12 +47,12 @@ class SettingsTabEditing
         $opt = [
             'editor_hide_html_ids'                   => esc_html__('Limited Editing Elements', 'press-permit-core'),
             'editor_ids_sitewide_requirement'        => esc_html__('Specified element IDs also require the following site-wide Role: ', 'press-permit-core'),
-            'admin_others_attached_files'            => esc_html__("List other users' uploads if attached to an editable post", 'press-permit-core'),
-            'admin_others_attached_to_readable'      => esc_html__("List other users' uploads if attached to a readable post", 'press-permit-core'),
-            'admin_others_unattached_files'          => esc_html__("Other users' unattached uploads listed by default", 'press-permit-core'),
-            'edit_others_attached_files'             => esc_html__("Allow editing other users' uploads if attached to an editable post", 'press-permit-core'),
-            'attachment_edit_requires_parent_access' => esc_html__('Prevent editing uploads if attached to a non-editable post', 'press-permit-core'),
-            'own_attachments_always_editable'        => esc_html__('Users can always edit their own attachments', 'press-permit-core'),
+            'admin_others_attached_files'            => esc_html__("List other users' files if attached to a editable post", 'press-permit-core'),
+            'admin_others_attached_to_readable'      => esc_html__("List other users' files if attached to a viewable post", 'press-permit-core'),
+            'admin_others_unattached_files'          => esc_html__("List other users' unattached files by default", 'press-permit-core'),
+            'edit_others_attached_files'             => esc_html__("Edit other users' files if attached to an editable post", 'press-permit-core'),
+            'attachment_edit_requires_parent_access' => esc_html__('Prevent editing files if attached to a non-editable post', 'press-permit-core'),
+            'own_attachments_always_editable'        => esc_html__('Users can always edit their own files', 'press-permit-core'),
             'default_privacy'                        => esc_html__('Default visibility for new posts                               : ', 'press-permit-core'),
             'list_others_uneditable_posts'           => esc_html__('List other user\'s uneditable posts', 'press-permit-core'),
         ];
@@ -308,7 +308,7 @@ class SettingsTabEditing
         if (!empty($ui->form_options[$tab][$section])) :
         ?>
             <tr>
-                <th scope="row"><?php echo esc_html($ui->section_captions[$tab][$section]); ?></th>
+                <th scope="row"><?php echo esc_html("List Files"); ?></th>
                 <td>
                     <?php
 
@@ -319,7 +319,7 @@ class SettingsTabEditing
                             </span></div><br />
                     <?php else : ?>
                         <div><span style="font-weight:bold">
-                                <?php esc_html_e('The following settings apply to users who have the upload_files or edit_files capability:', 'press-permit-core'); ?>
+                                <?php esc_html_e('The following settings apply to users who are able to access the Media Library. Normally this requires the upload_files or edit_files capability.', 'press-permit-core'); ?>
                             </span></div><br />
                     <?php endif;
 
@@ -328,9 +328,13 @@ class SettingsTabEditing
                     $ret = $ui->optionCheckbox('admin_others_attached_to_readable', $tab, $section, true, '');
 
                     $ret = $ui->optionCheckbox('admin_others_attached_files', $tab, $section, true, '');
-
-                    echo '<br />';
-
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><?php echo esc_html("Edit Files"); ?></th>
+                <td>
+                    <?php
                     $ret = $ui->optionCheckbox('edit_others_attached_files', $tab, $section, true, '');
 
                     $ret = $ui->optionCheckbox('attachment_edit_requires_parent_access', $tab, $section, true, '');

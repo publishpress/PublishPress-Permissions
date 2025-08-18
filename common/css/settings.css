@@ -637,7 +637,7 @@ body.permissions_page_presspermit-settings .nav-tab span.pp-integrations {
   z-index: 26;
 }
 body.permissions_page_presspermit-settings .nav-tab span.pp-integrations-missing {
-  background-color: #4caf50;
+  background-color: #d63638;
 }
 body.permissions_page_presspermit-settings .nav-tab span.pp-integrations-active {
   background-color: #3f9716;
@@ -1271,8 +1271,8 @@ input:disabled + .pp-slider {
   color: #f44336;
 }
 .pp-integration-status.disabled {
-  background-color: #fff3e0;
-  color: #aa2222;
+  background-color: #d63638;
+  color: white;
 }
 .pp-upgrade-overlay {
   position: absolute;

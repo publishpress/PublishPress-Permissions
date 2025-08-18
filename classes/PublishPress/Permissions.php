@@ -1473,6 +1473,7 @@ class Permissions
                 'learn_more_url' => ''
             ],
 
+            /* phpcs:ignore Squiz.PHP.CommentedOutCode.Found
             [
                 'id' => 'litespeed_compatibility',
                 'title' => esc_html__('Litespeed Cache', 'press-permit-core'),
@@ -1642,7 +1643,7 @@ class Permissions
                 'learn_more_url' => 'https://taxopress.com/',
                 'free' => true
             ],
-
+            */
         ];
 
         foreach (array_keys($integrations) as $i) {
