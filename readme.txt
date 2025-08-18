@@ -241,6 +241,7 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 == Changelog ==
 
 = 4.4.3 – 18 August 2025 =
+* Added: Description text in the Media Library settings for better clarity. #1866
 * Fixed: Bug with default visibility and content lock feature not working correctly. #1859
 * Fixed: Permissions now correctly applied to post revisions. #1837
 * Fixed: Non-administrators can now properly edit new posts created with Crocoblock JetThemeCore. #1841
