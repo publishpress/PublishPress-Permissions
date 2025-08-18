@@ -150,19 +150,22 @@ class SettingsAdmin
         return __('The following settings are currently overridden by the constant PP_MEDIA_LIB_UNFILTERED (defined in wp-config.php or some other file you maintain). Media Library access will not be altered by Permissions.', 'press-permit-core-hints');
 
         case 'admin_others_attached_to_readable' :
-        return __("To allow a role to view all Media regardless of this setting, give it the pp_list_all_files capability.", 'press-permit-core-hints');
+        return __("Checking this box will show files uploaded by other users if they are attached a post the user is allowed to read.", 'press-permit-core-hints');
 
         case 'admin_others_attached_files' :
-        return '';
+        return 'Checking this box will show files uploaded by other users if they are attached a post the user is allowed to edit.';
 
         case 'edit_others_attached_files' :
-        return __("To enable a specific role instead, give it the list_others_unattached_files capability. Note that Media Editors can always view and edit these files.", 'press-permit-core-hints');
+        return __("Checking this box will allow users to edit files uploaded by other users if they are attached a post the user is allowed to edit.", 'press-permit-core-hints');
 
         case 'admin_others_unattached_files' :
-        return '';
+        return 'Checking this box will show users all the files in the Media Library. Unchecking this box will hide media files that are uploaded by other users.';
+
+        case 'attachment_edit_requires_parent_access':
+        return 'Checking this box will allow stop users from to edit files uploaded by other users unless they are attached a post the user is allowed to edit.';
 
         case 'own_attachments_always_editable' :
-        return __("If disabled, access may be blocked based on the attachment page. In that case, a role can be given the edit_own_attachments capability, or Permissions for a specific file.", 'press-permit-core-hints');
+        return __("Checking this box will allow users to edit files they have uploaded, regardless of other restrictions.", 'press-permit-core-hints');
 
         case 'admin_nav_menu_partial_editing' :
         return __('Allow non-Administrators to rename menu items they cannot fully edit. Menu items will be locked into current positions.', 'press-permit-core-hints');
