@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-18T15:12:44+00:00\n"
+"POT-Creation-Date: 2025-08-18T16:12:49+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: press-permit-core\n"
@@ -3184,7 +3184,7 @@ msgid "Specified element IDs also require the following site-wide Role: "
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:50
-msgid "List other users' files if attached to an editable post"
+msgid "List other users' files if attached to a editable post"
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:51
@@ -3254,7 +3254,7 @@ msgid "Option Administrator"
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:322
-msgid "The following settings apply to users who have the upload_files or edit_files capability:"
+msgid "The following settings apply to users who are able to access the Media Library. Normally this requires the upload_files or edit_files capability."
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/CollabHooks.php:640
