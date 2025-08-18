@@ -48,7 +48,7 @@ class SettingsTabEditing
             'editor_hide_html_ids'                   => esc_html__('Limited Editing Elements', 'press-permit-core'),
             'editor_ids_sitewide_requirement'        => esc_html__('Specified element IDs also require the following site-wide Role: ', 'press-permit-core'),
             'admin_others_attached_files'            => esc_html__("List other users' files if attached to a editable post", 'press-permit-core'),
-            'admin_others_attached_to_readable'      => esc_html__("List other users' files if attached to a readable post", 'press-permit-core'),
+            'admin_others_attached_to_readable'      => esc_html__("List other users' files if attached to a viewable post", 'press-permit-core'),
             'admin_others_unattached_files'          => esc_html__("List other users' unattached files by default", 'press-permit-core'),
             'edit_others_attached_files'             => esc_html__("Edit other users' files if attached to an editable post", 'press-permit-core'),
             'attachment_edit_requires_parent_access' => esc_html__('Prevent editing files if attached to a non-editable post', 'press-permit-core'),

@@ -150,7 +150,7 @@ class SettingsAdmin
         return __('The following settings are currently overridden by the constant PP_MEDIA_LIB_UNFILTERED (defined in wp-config.php or some other file you maintain). Media Library access will not be altered by Permissions.', 'press-permit-core-hints');
 
         case 'admin_others_attached_to_readable' :
-        return __("Checking this box will show files uploaded by other users if they are attached a post the user is allowed to read.", 'press-permit-core-hints');
+        return __("Checking this box will show files uploaded by other users if they are attached a post the user is allowed to view.", 'press-permit-core-hints');
 
         case 'admin_others_attached_files' :
         return 'Checking this box will show files uploaded by other users if they are attached a post the user is allowed to edit.';
