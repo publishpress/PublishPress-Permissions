@@ -1,6 +1,9 @@
 <?php
 namespace PublishPress\Permissions\Collab\UI\Gutenberg;
 
+use PublishPress\Permissions\Collab;
+use PublishPress\PWP;
+
 class PostEdit
 {
     function __construct() 
@@ -21,8 +24,9 @@ class PostEdit
         }
 
         $args = [];
+        $post_type = PWP::findPostType();
 
-        if (!Collab::userCanAssociateMain(PWP::findPostType())) {
+        if (!Collab::userCanAssociateMain($post_type)) {
             if ($post_id = PWP::getPostID()) {
                 if (!get_post_field('post_parent', $post_id)) {
                     return;
@@ -40,5 +44,9 @@ class PostEdit
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '.dev' : '';
         wp_enqueue_script('presspermit-object-edit', PRESSPERMIT_COLLAB_URLPATH . "/common/js/post-block-edit{$suffix}.js", ['jquery', 'jquery-form'], PRESSPERMIT_COLLAB_VERSION, true);
         wp_localize_script('presspermit-object-edit', 'ppCollabEdit', $args);
+        
+        // Pass default_privacy setting to JavaScript for Gutenberg
+        $default_privacy = presspermit()->getTypeOption('default_privacy', $post_type);
+        wp_localize_script('presspermit-object-edit', 'ppEditorConfig', ['defaultPrivacy' => $default_privacy]);
     }
 }
