@@ -5,7 +5,7 @@ Tags: permissions, access, restrict, privacy, capabilities
 Requires at least: 5.5
 Tested up to: 6.8
 Requires PHP: 7.2.5
-Stable tag: 4.4.2
+Stable tag: 4.4.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -239,6 +239,16 @@ Yes, we use the phrase "publishpress-ppcore-install" to share install links. You
 9. Create your own Privacy Statuses: Create visibility options for your content. One example is a "Premium" status that makes content visible only for paying members. 
 
 == Changelog ==
+
+= 4.4.3 – 18 August 2025 =
+* Fixed: Bug with default visibility and content lock feature not working correctly. #1859
+* Fixed: Permissions now correctly applied to post revisions. #1837
+* Fixed: Non-administrators can now properly edit new posts created with Crocoblock JetThemeCore. #1841
+* Fixed: Adjusted integration tab count colors for better visibility. #1851
+* Fixed: Updated text color in integration promos for better readability. #1855
+* Fixed: Removed "Free" plugin listings from the Integrations tab to avoid confusion. #1852
+* Updated: Improved captions for the Media Library tab in the settings screen. #1857
+* Updated: Pro Settings tabs are now displayed at the end for a more organized layout.
 
 = 4.4.2 – 5 August 2025 =
 * Fixed: Prevented warning or error when handling fake post IDs. #1814
