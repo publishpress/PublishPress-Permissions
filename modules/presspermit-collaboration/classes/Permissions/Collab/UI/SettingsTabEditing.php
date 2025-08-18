@@ -47,8 +47,8 @@ class SettingsTabEditing
         $opt = [
             'editor_hide_html_ids'                   => esc_html__('Limited Editing Elements', 'press-permit-core'),
             'editor_ids_sitewide_requirement'        => esc_html__('Specified element IDs also require the following site-wide Role: ', 'press-permit-core'),
-            'admin_others_attached_files'            => esc_html__("List other users' files if attached to an editable post", 'press-permit-core'),
-            'admin_others_attached_to_readable'      => esc_html__("List other users' files if attached to a readable post", 'press-permit-core'),
+            'admin_others_attached_files'            => esc_html__("List other users' files if attached to a editable post", 'press-permit-core'),
+            'admin_others_attached_to_readable'      => esc_html__("List other users' files if attached to a viewable post", 'press-permit-core'),
             'admin_others_unattached_files'          => esc_html__("List other users' unattached files by default", 'press-permit-core'),
             'edit_others_attached_files'             => esc_html__("Edit other users' files if attached to an editable post", 'press-permit-core'),
             'attachment_edit_requires_parent_access' => esc_html__('Prevent editing files if attached to a non-editable post', 'press-permit-core'),
@@ -319,7 +319,7 @@ class SettingsTabEditing
                             </span></div><br />
                     <?php else : ?>
                         <div><span style="font-weight:bold">
-                                <?php esc_html_e('The following settings apply to users who have the upload_files or edit_files capability:', 'press-permit-core'); ?>
+                                <?php esc_html_e('The following settings apply to users who are able to access the Media Library. Normally this requires the upload_files or edit_files capability.', 'press-permit-core'); ?>
                             </span></div><br />
                     <?php endif;
 

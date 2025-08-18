@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the PublishPress Permissions plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: PublishPress Permissions 4.4.2\n"
+"Project-Id-Version: PublishPress Permissions 4.4.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/project\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-07T14:59:12+00:00\n"
+"POT-Creation-Date: 2025-08-18T17:09:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: press-permit-core\n"
@@ -339,74 +339,6 @@ msgstr ""
 msgid "Template access controls"
 msgstr ""
 
-#: classes/PublishPress/Permissions.php:1478
-msgid "Litespeed Cache"
-msgstr ""
-
-#: classes/PublishPress/Permissions.php:1479
-#: classes/PublishPress/Permissions.php:1492
-#: classes/PublishPress/Permissions.php:1505
-#: classes/PublishPress/Permissions.php:1518
-#: classes/PublishPress/Permissions.php:1531
-#: classes/PublishPress/Permissions.php:1544
-#: classes/PublishPress/Permissions.php:1557
-#: classes/PublishPress/Permissions.php:1570
-#: classes/PublishPress/Permissions.php:1583
-#: classes/PublishPress/Permissions.php:1596
-#: classes/PublishPress/Permissions.php:1609
-#: classes/PublishPress/Permissions.php:1622
-#: classes/PublishPress/Permissions.php:1635
-msgid "."
-msgstr ""
-
-#: classes/PublishPress/Permissions.php:1491
-msgid "W3 Total Cache"
-msgstr ""
-
-#: classes/PublishPress/Permissions.php:1504
-msgid "WP Optimize"
-msgstr ""
-
-#: classes/PublishPress/Permissions.php:1517
-msgid "WP Super Cache"
-msgstr ""
-
-#: classes/PublishPress/Permissions.php:1530
-msgid "WP Fastest Cache"
-msgstr ""
-
-#: classes/PublishPress/Permissions.php:1543
-msgid "Rank Math SEO"
-msgstr ""
-
-#: classes/PublishPress/Permissions.php:1556
-msgid "All in One SEO"
-msgstr ""
-
-#: classes/PublishPress/Permissions.php:1569
-msgid "PublishPress Capabilities"
-msgstr ""
-
-#: classes/PublishPress/Permissions.php:1582
-msgid "PublishPress Authors"
-msgstr ""
-
-#: classes/PublishPress/Permissions.php:1595
-msgid "PublishPress Revisions"
-msgstr ""
-
-#: classes/PublishPress/Permissions.php:1608
-msgid "PublishPress Planner"
-msgstr ""
-
-#: classes/PublishPress/Permissions.php:1621
-msgid "PublishPress Checklists"
-msgstr ""
-
-#: classes/PublishPress/Permissions.php:1634
-msgid "Taxopress"
-msgstr ""
-
 #: classes/PublishPress/Permissions/Admin.php:100
 msgid "Viewing"
 msgstr ""
@@ -436,8 +368,8 @@ msgstr ""
 
 #: classes/PublishPress/Permissions/Admin.php:170
 #: classes/PublishPress/Permissions/UI/SettingsTabAdvanced.php:34
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:79
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:108
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:80
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:109
 msgid "File Access"
 msgstr ""
 
@@ -2077,12 +2009,12 @@ msgid "If you need help or have a new feature request, let us know."
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/PromoBanner.php:225
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:192
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:230
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:268
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:290
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:193
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:231
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:269
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:291
 #: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:108
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:314
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:305
 #: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:191
 #: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:227
 #: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:249
@@ -2462,56 +2394,55 @@ msgstr ""
 msgid "To enforce capability requirements for post creation, install %3$sPublishPress Capabilities%4$s."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:119
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:120
 msgid "Make Unattached Files Private"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:120
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:121
 msgid "Small Thumbnails Unfiltered"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:121
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:122
 msgid "Compatibility Mode: Apply extra redirect"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:167
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:168
 msgid "Media File Protection"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:172
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:173
 msgid "Control direct access to Media files"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:176
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:177
 msgid "Automatic .htaccess file management"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:180
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:181
 msgid "File Access key with on-demand regeneration"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:186
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:224
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:262
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:304
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:187
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:225
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:263
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:295
 #: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:185
 #: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:221
 #: includes/CoreAdmin.php:204
 msgid "Pro Feature"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:188
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:189
 msgid "Upgrade to Pro to unlock advanced file protection capabilities"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:195
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:233
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:271
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:295
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:310
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:324
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:334
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:344
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:196
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:234
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:272
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:296
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:301
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:315
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:325
 #: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:194
 #: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:230
 #: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:254
@@ -2519,51 +2450,51 @@ msgstr ""
 msgid "Learn More"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:205
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:206
 msgid "Privacy & Performance"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:210
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:211
 msgid "Limit attachment access by post permissions"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:214
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:215
 msgid "Make unattached files private"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:218
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:219
 msgid "Directly control specific files"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:226
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:227
 msgid "Optimize your site with advanced privacy and performance controls"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:243
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:244
 msgid "Advanced Integration"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:248
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:249
 msgid "Nginx integration support"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:252
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:253
 msgid "Process externally uploaded files"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:256
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:257
 msgid "Supports network (multisite) installs"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:264
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:265
 msgid "Get advanced integration features with Nginx, FTP, and more"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:281
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:282
 msgid "Ready to secure your files?"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:284
+#: classes/PublishPress/Permissions/UI/SettingsTabFileAccess.php:285
 msgid "Upgrade to Pro and get advanced file access control with all these features and more."
 msgstr ""
 
@@ -2644,45 +2575,29 @@ msgid "Pro"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:266
-msgid "Supported"
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:269
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:321
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:312
 msgid "Active Plugin"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:280
-msgid "Supported by PublishPress Permissions"
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:282
-msgid "Supported by Permissions Pro"
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:294
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:285
 msgid "Integration Active"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:296
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:287
 msgid "Upgrade to Pro to enable this integration"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:305
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:296
 #, php-format
 msgid "Unlock %s integration to enhance your revisions solution."
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:321
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:312
 msgid "Active Plugin Integration"
 msgstr ""
 
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:331
+#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:322
 msgid "Supported Plugin Integration"
-msgstr ""
-
-#: classes/PublishPress/Permissions/UI/SettingsTabIntegrations.php:341
-msgid "Supported Plugin"
 msgstr ""
 
 #: classes/PublishPress/Permissions/UI/SettingsTabMembership.php:120
@@ -3045,23 +2960,23 @@ msgstr ""
 msgid "You are not permitted to manage menu locations"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:90
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:93
 msgid "Post Approved"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:91
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:94
 msgid "Page Approved"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:298
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:315
 msgid "Author Search / Select"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:326
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:343
 msgid "select other"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:327
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Dashboard/PostEdit.php:344
 msgid "close"
 msgstr ""
 
@@ -3143,7 +3058,7 @@ msgstr ""
 msgid "Add Pages"
 msgstr ""
 
-#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Gutenberg/PostEdit.php:33
+#: modules/presspermit-collaboration/classes/Permissions/Collab/UI/Gutenberg/PostEdit.php:37
 msgid "(select...)"
 msgstr ""
 
@@ -3269,27 +3184,27 @@ msgid "Specified element IDs also require the following site-wide Role: "
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:50
-msgid "List other users' uploads if attached to an editable post"
+msgid "List other users' files if attached to a editable post"
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:51
-msgid "List other users' uploads if attached to a readable post"
+msgid "List other users' files if attached to a viewable post"
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:52
-msgid "Other users' unattached uploads listed by default"
+msgid "List other users' unattached files by default"
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:53
-msgid "Allow editing other users' uploads if attached to an editable post"
+msgid "Edit other users' files if attached to an editable post"
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:54
-msgid "Prevent editing uploads if attached to a non-editable post"
+msgid "Prevent editing files if attached to a non-editable post"
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:55
-msgid "Users can always edit their own attachments"
+msgid "Users can always edit their own files"
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:56
@@ -3339,7 +3254,7 @@ msgid "Option Administrator"
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/Collab/UI/SettingsTabEditing.php:322
-msgid "The following settings apply to users who have the upload_files or edit_files capability:"
+msgid "The following settings apply to users who are able to access the Media Library. Normally this requires the upload_files or edit_files capability."
 msgstr ""
 
 #: modules/presspermit-collaboration/classes/Permissions/CollabHooks.php:640
