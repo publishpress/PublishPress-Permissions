@@ -1417,13 +1417,13 @@ input:disabled + .pp-slider {
   opacity: 1;
   pointer-events: auto;
 }
-.pp-file-access-promo .pp-feature-grid {
+.pp-feature-promo .pp-feature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
   margin-bottom: 24px;
 }
-.pp-file-access-promo .pp-feature-card {
+.pp-feature-promo .pp-feature-card {
   background: white;
   border: 2px solid var(--border-color);
   border-radius: 12px;
@@ -1433,30 +1433,30 @@ input:disabled + .pp-slider {
   position: relative;
   overflow: hidden;
 }
-.pp-file-access-promo .pp-feature-card:hover {
+.pp-feature-promo .pp-feature-card:hover {
   box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15) !important;
   transform: translateY(-2px) !important;
 }
-.pp-file-access-promo .pp-feature-card:hover .pp-upgrade-overlay {
+.pp-feature-promo .pp-feature-card:hover .pp-upgrade-overlay {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
-.pp-file-access-promo .pp-feature-card:hover .pp-feature-icon {
+.pp-feature-promo .pp-feature-card:hover .pp-feature-icon {
   transform: scale(1.1) !important;
 }
-.pp-file-access-promo .pp-feature-header {
+.pp-feature-promo .pp-feature-header {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 16px;
 }
-.pp-file-access-promo .pp-feature-header h4 {
+.pp-feature-promo .pp-feature-header h4 {
   margin: 0;
   color: var(--text-muted);
   font-size: 16px;
   font-weight: 600;
 }
-.pp-file-access-promo .pp-feature-icon {
+.pp-feature-promo .pp-feature-icon {
   width: 40px;
   height: 40px;
   border-radius: 10px;
@@ -1467,16 +1467,16 @@ input:disabled + .pp-slider {
   font-size: 18px;
   transition: transform 0.3s ease;
 }
-.pp-file-access-promo .pp-feature-icon.core-protection {
+.pp-feature-promo .pp-feature-icon.core-protection {
   background-color: #f5f5f5;
 }
-.pp-file-access-promo .pp-feature-icon.privacy-performance {
+.pp-feature-promo .pp-feature-icon.privacy-performance {
   background-color: #f5f5f5;
 }
-.pp-file-access-promo .pp-feature-icon.advanced-integration {
+.pp-feature-promo .pp-feature-icon.advanced-integration {
   background-color: #f5f5f5;
 }
-.pp-file-access-promo .pp-feature-list {
+.pp-feature-promo .pp-feature-list {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1484,19 +1484,19 @@ input:disabled + .pp-slider {
   font-size: 14px;
   line-height: 1.6;
 }
-.pp-file-access-promo .pp-feature-list li {
+.pp-feature-promo .pp-feature-list li {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
 }
-.pp-file-access-promo .pp-feature-list li:last-child {
+.pp-feature-promo .pp-feature-list li:last-child {
   margin-bottom: 0;
 }
-.pp-file-access-promo .pp-feature-list li .check-icon {
+.pp-feature-promo .pp-feature-list li .check-icon {
   color: var(--success-color);
 }
-.pp-file-access-promo .pp-upgrade-overlay {
+.pp-feature-promo .pp-upgrade-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -1514,34 +1514,34 @@ input:disabled + .pp-slider {
   pointer-events: none;
   backdrop-filter: blur(2px);
 }
-.pp-file-access-promo .pp-upgrade-overlay h4 {
+.pp-feature-promo .pp-upgrade-overlay h4 {
   font-weight: 600;
   margin: 0 auto 10px auto;
   font-size: 16px;
 }
-.pp-file-access-promo .pp-upgrade-overlay h4.core-protection {
+.pp-feature-promo .pp-upgrade-overlay h4.core-protection {
   color: var(--primary-color);
 }
-.pp-file-access-promo .pp-upgrade-overlay h4.privacy-performance {
+.pp-feature-promo .pp-upgrade-overlay h4.privacy-performance {
   color: var(--primary-color);
 }
-.pp-file-access-promo .pp-upgrade-overlay h4.advanced-integration {
+.pp-feature-promo .pp-upgrade-overlay h4.advanced-integration {
   color: var(--primary-color);
 }
-.pp-file-access-promo .pp-upgrade-overlay p {
+.pp-feature-promo .pp-upgrade-overlay p {
   color: #6b7280;
   margin-bottom: 15px !important;
   max-width: 200px;
   line-height: 1.4;
   font-size: 13px;
 }
-.pp-file-access-promo .pp-upgrade-overlay .pp-upgrade-buttons {
+.pp-feature-promo .pp-upgrade-overlay .pp-upgrade-buttons {
   display: flex;
   flex-direction: row;
   gap: 8px;
   align-items: center;
 }
-.pp-file-access-promo .pp-upgrade-btn-primary {
+.pp-feature-promo .pp-upgrade-btn-primary {
   margin: 0;
   padding: 8px 16px;
   border-radius: 6px;
@@ -1552,21 +1552,21 @@ input:disabled + .pp-slider {
   display: inline-block;
   color: #414141 !important;
 }
-.pp-file-access-promo .pp-upgrade-btn-primary:hover {
+.pp-feature-promo .pp-upgrade-btn-primary:hover {
   transform: translateY(-1px) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
   text-decoration: none !important;
 }
-.pp-file-access-promo .pp-upgrade-btn-primary.core-protection {
+.pp-feature-promo .pp-upgrade-btn-primary.core-protection {
   background: var(--primary-color);
 }
-.pp-file-access-promo .pp-upgrade-btn-primary.privacy-performance {
+.pp-feature-promo .pp-upgrade-btn-primary.privacy-performance {
   background: var(--primary-color);
 }
-.pp-file-access-promo .pp-upgrade-btn-primary.advanced-integration {
+.pp-feature-promo .pp-upgrade-btn-primary.advanced-integration {
   background: var(--primary-color);
 }
-.pp-file-access-promo .pp-upgrade-btn-secondary {
+.pp-feature-promo .pp-upgrade-btn-secondary {
   background: transparent;
   padding: 8px 16px;
   border-radius: 4px;
@@ -1577,53 +1577,53 @@ input:disabled + .pp-slider {
   display: inline-block;
   border: 1px solid;
 }
-.pp-file-access-promo .pp-upgrade-btn-secondary:hover {
+.pp-feature-promo .pp-upgrade-btn-secondary:hover {
   text-decoration: none !important;
 }
-.pp-file-access-promo .pp-upgrade-btn-secondary.core-protection {
+.pp-feature-promo .pp-upgrade-btn-secondary.core-protection {
   color: var(--primary-color);
 }
-.pp-file-access-promo .pp-upgrade-btn-secondary.core-protection:hover {
+.pp-feature-promo .pp-upgrade-btn-secondary.core-protection:hover {
   background: rgba(139, 92, 246, 0.1) !important;
 }
-.pp-file-access-promo .pp-upgrade-btn-secondary.privacy-performance {
+.pp-feature-promo .pp-upgrade-btn-secondary.privacy-performance {
   color: var(--primary-color);
 }
-.pp-file-access-promo .pp-upgrade-btn-secondary.privacy-performance:hover {
+.pp-feature-promo .pp-upgrade-btn-secondary.privacy-performance:hover {
   background: rgba(245, 158, 11, 0.1) !important;
 }
-.pp-file-access-promo .pp-upgrade-btn-secondary.advanced-integration {
+.pp-feature-promo .pp-upgrade-btn-secondary.advanced-integration {
   color: var(--primary-color);
 }
-.pp-file-access-promo .pp-upgrade-btn-secondary.advanced-integration:hover {
+.pp-feature-promo .pp-upgrade-btn-secondary.advanced-integration:hover {
   background: rgba(16, 185, 129, 0.1) !important;
 }
-.pp-file-access-promo .pp-cta-section {
+.pp-feature-promo .pp-cta-section {
   background: linear-gradient(135deg, #f8fafc, #f1f5f9);
   border: 2px solid var(--border-color);
   border-radius: 12px;
   padding: 24px;
   text-align: center;
 }
-.pp-file-access-promo .pp-cta-section h4 {
+.pp-feature-promo .pp-cta-section h4 {
   margin: 0 0 12px 0;
   color: var(--text-muted);
   font-size: 18px;
   font-weight: 600;
 }
-.pp-file-access-promo .pp-cta-section p {
+.pp-feature-promo .pp-cta-section p {
   margin: 0 0 20px 0;
   color: #6b7280;
   font-size: 14px;
 }
-.pp-file-access-promo .pp-cta-section .pp-cta-buttons {
+.pp-feature-promo .pp-cta-section .pp-cta-buttons {
   display: flex;
   gap: 12px;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
 }
-.pp-file-access-promo .pp-cta-section .pp-cta-buttons .button-primary {
+.pp-feature-promo .pp-cta-section .pp-cta-buttons .button-primary {
   background: var(--cta-color);
   border-color: var(--cta-color);
   color: #414141 !important;
@@ -1632,12 +1632,12 @@ input:disabled + .pp-slider {
   font-weight: normal;
   transition: all 0.3s ease;
 }
-.pp-file-access-promo .pp-cta-section .pp-cta-buttons .button-primary:hover {
+.pp-feature-promo .pp-cta-section .pp-cta-buttons .button-primary:hover {
   background: var(--cta-hover) !important;
   transform: translateY(-1px) !important;
   box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25) !important;
 }
-.pp-file-access-promo .pp-cta-section .pp-cta-buttons .pp-learn-more-link {
+.pp-feature-promo .pp-cta-section .pp-cta-buttons .pp-learn-more-link {
   color: var(--primary-color);
   background: transparent;
   padding: 8px 16px;
@@ -1656,7 +1656,7 @@ input:disabled + .pp-slider {
   padding: 8px 24px;
   border-radius: 8px;
 }
-.pp-file-access-promo .pp-cta-section .pp-cta-buttons .pp-learn-more-link:hover {
+.pp-feature-promo .pp-cta-section .pp-cta-buttons .pp-learn-more-link:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
@@ -2136,4 +2136,500 @@ input:disabled + .pp-slider {
   .pp-integrations-upgrade-cta h3 {
     font-size: 20px;
   }
+}
+
+/* Module Cards using Integration Card Style */
+.pp-modules-grid {
+  margin-top: 15px;
+}
+
+.pp-integration-card.pp-module-card {
+  min-height: 160px;
+}
+
+.pp-module-icon {
+  position: relative;
+  background: #f3e5f5 !important;
+}
+
+.pp-module-icon .pp-module-emoji {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.pp-integration-card.pp-module-card.pp-available {
+  border-left-color: #10b981;
+}
+
+.pp-integration-card.pp-module-card.pp-available .pp-module-icon {
+  background: #dcfce7 !important;
+}
+
+.pp-integration-card.pp-module-card.pp-disabled {
+  border-left-color: #e5e7eb;
+  opacity: 0.9;
+}
+
+.pp-integration-card.pp-module-card.pp-disabled .pp-module-icon {
+  background: #f5f5f5 !important;
+}
+
+.pp-module-controls-integration {
+  margin: 12px 0;
+}
+
+.pp-module-controls-integration .pp-module-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+}
+
+.pp-module-controls-integration input[type="checkbox"] {
+  margin: 0;
+  transform: scale(1.1);
+}
+
+.pp-module-controls-integration input[type="checkbox"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pp-integration-card.pp-module-card .pp-integration-status {
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.pp-integration-card.pp-module-card .pp-integration-status.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.pp-integration-card.pp-module-card .pp-integration-status.disabled {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Module specific icon backgrounds */
+.pp-module-icon.collaboration,
+.pp-module-icon.membership {
+  background: #dbeafe !important;
+}
+
+.pp-module-icon.file-access,
+.pp-module-icon.status-control {
+  background: #fef3c7 !important;
+}
+
+.pp-module-icon.circles,
+.pp-module-icon.sync {
+  background: #ede9fe !important;
+}
+
+.pp-module-icon.import,
+.pp-module-icon.teaser {
+  background: #ecfdf5 !important;
+}
+
+.pp-module-icon.compatibility {
+  background: #f1f5f9 !important;
+}
+
+/* Module grid responsive adjustments */
+@media (max-width: 768px) {
+  .pp-modules-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .pp-integration-card.pp-module-card {
+    min-height: auto;
+  }
+}
+
+/* Legacy row styles - keeping for backward compatibility */
+.pp-modules-section {
+  margin-bottom: 30px;
+}
+
+.pp-modules-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pp-module-row-card {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: 80px;
+}
+
+.pp-module-row-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.pp-module-row-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+}
+
+.pp-module-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 0; /* Allow text truncation */
+}
+
+.pp-module-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.pp-module-title {
+  margin: 0;
+  color: #1e293b;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.pp-module-description {
+  flex: 2;
+  text-align: right;
+  min-width: 0;
+}
+
+.pp-module-description .pp-ext-info {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.pp-module-controls {
+  margin: 0;
+  padding: 0;
+}
+
+.pp-module-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+  margin: 0;
+}
+
+.pp-module-checkbox-label input[type="checkbox"] {
+  margin: 0;
+  transform: scale(1.1);
+}
+
+/* Active module row styling */
+.pp-module-row-card.active {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+}
+
+.pp-module-row-card.active .pp-module-title {
+  color: #059669;
+}
+
+.pp-module-row-card.active .pp-module-checkbox-label {
+  color: #059669;
+}
+
+.pp-module-row-card.active .pp-feature-icon {
+  background-color: #dcfce7;
+}
+
+/* Inactive module row styling */
+.pp-module-row-card.inactive {
+  opacity: 0.8;
+  border-color: #e2e8f0;
+  background: #fafafa;
+}
+
+.pp-module-row-card.inactive .pp-module-title {
+  color: #64748b;
+}
+
+.pp-module-row-card.inactive:hover {
+  opacity: 1;
+  background: white;
+}
+
+.pp-module-row-card.inactive:hover .pp-upgrade-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Feature icon in row cards */
+.pp-module-row-card .pp-feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.pp-module-row-card:hover .pp-feature-icon {
+  transform: scale(1.05);
+}
+
+/* Upgrade overlay for row cards */
+.pp-module-row-card .pp-upgrade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  backdrop-filter: blur(2px);
+  gap: 20px;
+}
+
+.pp-module-row-card .pp-upgrade-overlay h4 {
+  font-weight: 600;
+  margin: 0;
+  font-size: 14px;
+  color: var(--primary-color);
+}
+
+.pp-module-row-card .pp-upgrade-overlay p {
+  color: #6b7280;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.pp-module-row-card .pp-upgrade-overlay .pp-upgrade-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.pp-module-row-card .pp-upgrade-btn-primary {
+  margin: 0;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  display: inline-block;
+  background: var(--primary-color);
+  color: white !important;
+}
+
+.pp-module-row-card .pp-upgrade-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+}
+
+.pp-module-row-card .pp-upgrade-btn-secondary {
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 11px;
+  transition: all 0.2s ease;
+  display: inline-block;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.pp-module-row-card .pp-upgrade-btn-secondary:hover {
+  background: rgba(139, 92, 246, 0.1);
+  text-decoration: none;
+}
+
+/* Responsive design for row cards */
+@media (max-width: 768px) {
+  .pp-module-row-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .pp-module-header {
+    width: 100%;
+  }
+  
+  .pp-module-description {
+    width: 100%;
+    text-align: left;
+  }
+  
+  .pp-module-row-card {
+    min-height: auto;
+    padding: 16px;
+  }
+  
+  .pp-module-row-card .pp-upgrade-overlay {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+/* Legacy grid styles - keeping for backward compatibility but not used in row cards */
+.pp-modules-promo .pp-feature-card {
+  min-height: 280px;
+}
+
+.pp-module-card .pp-feature-header {
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.pp-module-card .pp-feature-description {
+  flex-grow: 1;
+  margin-bottom: 20px;
+}
+
+.pp-module-card .pp-feature-description p {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.pp-module-card .pp-module-controls {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.pp-module-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+}
+
+.pp-module-checkbox-label input[type="checkbox"] {
+  margin: 0;
+  transform: scale(1.1);
+}
+
+.pp-module-card.active {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+}
+
+.pp-module-card.active .pp-feature-header h4 {
+  color: #059669;
+}
+
+.pp-module-card.active .pp-module-checkbox-label {
+  color: #059669;
+}
+
+.pp-module-card.inactive {
+  opacity: 0.7;
+  border-color: #e2e8f0;
+}
+
+.pp-module-card.inactive .pp-feature-header h4 {
+  color: #64748b;
+}
+
+.pp-module-card.inactive:hover {
+  opacity: 1;
+}
+
+/* Module specific icon colors */
+.pp-feature-icon.collaboration,
+.pp-feature-icon.membership {
+  background-color: #e0f2fe;
+}
+
+.pp-feature-icon.file-access,
+.pp-feature-icon.status-control {
+  background-color: #fef3c7;
+}
+
+.pp-feature-icon.circles,
+.pp-feature-icon.sync {
+  background-color: #ede9fe;
+}
+
+.pp-feature-icon.import,
+.pp-feature-icon.teaser {
+  background-color: #ecfdf5;
+}
+
+.pp-feature-icon.compatibility {
+  background-color: #f1f5f9;
+}
+
+/* Responsive adjustments for modules */
+@media (max-width: 768px) {
+  .pp-modules-promo .pp-feature-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .pp-modules-promo .pp-feature-card {
+    min-height: auto;
+  }
+}
+
+/* Icon Pulse Animation */
+@keyframes pp-icon-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.pp-icon-pulse {
+  animation: pp-icon-pulse 0.6s ease-in-out;
 }
