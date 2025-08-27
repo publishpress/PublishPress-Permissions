@@ -1531,6 +1531,15 @@ input {
 			background-color: @background_color_12;
 			&:before {
 				transform: translateX(26px);
+				position: absolute;
+				content: "";
+				height: 16px;
+				width: 16px;
+				left: 4px;
+				bottom: 4px;
+				background-color: white;
+				transition: .4s;
+				border-radius: 50%;
 			}
 		}
 	}
@@ -1951,7 +1960,7 @@ input {
 		}
 	}
 }
-.pp-file-access-settings {
+.pp-file-access-settings, .pp-modules-settings {
 	.pp-settings-header {
 		background: linear-gradient(135deg, #f8fafc, #f1f5f9);
 		border: 2px solid var(--border-color);
