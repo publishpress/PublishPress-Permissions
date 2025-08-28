@@ -103,7 +103,6 @@ class SettingsTabModules
                         }
 
                         if (!empty($all_modules)): ?>
-                            <h4 style="margin:0 0 5px 0"><?php esc_html_e('Modules:', 'press-permit-core'); ?></h4>
                             <div class="pp-integrations-container">
                                 <div class="pp-integrations-grid">
                                     <?php foreach ($all_modules as $module):
