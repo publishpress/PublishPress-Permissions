@@ -1246,15 +1246,6 @@ input:checked + .pp-slider {
 }
 input:checked + .pp-slider:before {
   transform: translateX(26px);
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: 0.4s;
-  border-radius: 50%;
 }
 input:disabled + .pp-slider {
   background-color: #e0e0e0;
