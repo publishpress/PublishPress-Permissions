@@ -164,7 +164,7 @@ class SettingsTabFileAccess
                 <!-- Core Protection Card -->
                 <div class="pp-feature-card pp-feature-card-hover">
                     <div class="pp-feature-header">
-                        <div class="        pp-feature-icon core-protection">&#128737;&#65039;</div>
+                        <div class="pp-feature-icon core-protection">&#128737;&#65039;</div>
                         <h4><?php esc_html_e('Media File Protection', 'press-permit-core'); ?></h4>
                     </div>
                     <ul class="pp-feature-list">
